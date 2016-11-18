@@ -1,0 +1,176 @@
+mbp_produccion_calculoaireaceite:
+    path:     /calculo
+    defaults: { _controller: MbpProduccionBundle:Calculo:radiadoresAceiteAire }
+    options:
+      expose: true
+mbp_produccion_reportecalculo:
+    path: /reporteHR
+    defaults: { _controller: MbpProduccionBundle:Reportes:reporteCalculo }
+    options:
+      expose: true
+mbp_produccion_reportecalculopdf:
+    path: /reporteHRpdf
+    defaults: { _controller: MbpProduccionBundle:Reportes:reporteCalculoPdf }
+    options:
+      expose: true
+mbp_produccion_reporteArmadoPanel:
+    path: /reporteArmadoPanel
+    defaults: { _controller: MbpProduccionBundle:Reportes:reporteArmado }
+    options:
+      expose: true
+mbp_produccion_reporteArmadoPanelPDF:
+    path: /reporteArmadoPanelPDF
+    defaults: { _controller: MbpProduccionBundle:Reportes:reporteArmadoPdf }
+    options:
+      expose: true
+mbp_produccion_verificacalculo:
+    path: /verificaCalculo
+    defaults: { _controller: MbpProduccionBundle:Calculo:verificaCalc }
+    options:
+      expose: true
+mbp_produccion_savecalculo:
+    path: /saveCalculo
+    defaults: { _controller: MbpProduccionBundle:Calculo:saveCalculo }
+    options:
+      expose: true
+mbp_produccion_readOtPaneles:
+    path: /readotpaneles
+    defaults: { _controller: MbpProduccionBundle:Ot:readOtPaneles }
+    options:
+      expose: true
+mbp_produccion_nuevaotpanel:
+    path: /nuevaotpanel
+    defaults: { _controller: MbpProduccionBundle:Ot:nuevaOtPanel }
+    options:
+      expose: true
+mbp_produccion_verificaot:
+    path: /verificaOt
+    defaults: { _controller: MbpProduccionBundle:Ot:verificaOt }
+    options:
+      expose: true
+mbp_produccion_verificapanelcalculado:
+    path: /verificaPanelCalculado
+    defaults: { _controller: MbpProduccionBundle:Ot:verificaPanelCalculado }
+    options:
+      expose: true
+mbp_produccion_readbrazingparams:
+    path: /readbrazingparams
+    defaults: { _controller: MbpProduccionBundle:Calculo:readBrazingParams }
+    options:
+      expose: true
+mbp_produccion_updatebrazingparams:
+    path: /updatebrazingparams
+    defaults: { _controller: MbpProduccionBundle:Calculo:updateBrazingParams }
+    options:
+      expose: true
+
+#CALCULO PARA RADIADORES DE AGUA
+mbp_produccion_calculoagua:
+    path: /calculoagua
+    defaults: { _controller: MbpProduccionBundle:CalculoAgua:calculoAgua }
+    options:
+      expose: true
+
+#PEDIDOS DE CLIENTES
+mbp_produccion_nuevo_pedido:
+    path: /nuevopedido
+    defaults: { _controller: MbpProduccionBundle:PedidoClientes:nuevoPedido }
+    options:
+      expose: true
+mbp_produccion_listar_pedidos:
+    path: /listarPedidos
+    defaults: { _controller: MbpProduccionBundle:PedidoClientes:listarPedidos }
+    options:
+      expose: true
+mbp_produccion_reporte_pedido:
+    path: /reportepedido
+    defaults: { _controller: MbpProduccionBundle:PedidoClientes:reportePedido }
+    options:
+      expose: true
+mbp_produccion_reporte_pedidoPdf:
+    path: /reportepedidoPdf
+    defaults: { _controller: MbpProduccionBundle:PedidoClientes:reportePedidoPdf }
+    options:
+      expose: true
+
+#SECTORES DE MBP
+mbp_produccion_seleccion_sector:
+    path: /seleccionSector
+    defaults: { _controller: MbpProduccionBundle:Sectores:seleccionSector }
+    options:
+      expose: true
+mbp_produccion_personal_sector:
+    path: /personalsector
+    defaults: { _controller: MbpProduccionBundle:Sectores:personalSector }
+    options:
+      expose: true
+
+#OPERACIONES DE MBP
+mbp_produccion_operaciones_list:
+    path: /operacionesList
+    defaults: { _controller: MbpProduccionBundle:Operaciones:operacionesList }
+    options:
+      expose: true
+
+mbp_produccion_operaciones_create:
+    path: /operacionesCreate
+    defaults: { _controller: MbpProduccionBundle:Operaciones:operacionesCreate }
+    options:
+      expose: true
+
+#MAQUINAS DE MBP
+mbp_produccion_maquinas_sector:
+    path: /maquinassector
+    defaults: { _controller: MbpProduccionBundle:Maquinas:listarMaquina }
+    options:
+      expose: true
+
+mbp_produccion_maquinas_segun_sector:
+    path: /maquinas_segun_sector
+    defaults: { _controller: MbpProduccionBundle:Maquinas:maquinaSector }
+    options:
+      expose: true
+
+#FORMULAS DE MANO DE OBRA
+mbp_produccion_formulasMo_list:
+    path: /formulasMoList
+    defaults: { _controller: MbpProduccionBundle:FormulasMo:formulasMoList }
+    options:
+      expose: true
+
+mbp_produccion_formulasMo_create:
+    path: /formulasMoCreate
+    defaults: { _controller: MbpProduccionBundle:FormulasMo:formulasMoCreate }
+    options:
+      expose: true
+
+mbp_produccion_formulasMo_delete:
+    path: /formulasMoDelete
+    defaults: { _controller: MbpProduccionBundle:FormulasMo:formulasMoDelete }
+    options:
+      expose: true
+
+#PROGRAMACION DE LA PRODUCCION
+mbp_produccion_programacion_select:
+    path: /programacionSelect
+    defaults: { _controller: MbpProduccionBundle:Programacion:programacionSelect }
+    options:
+      expose: true
+
+mbp_produccion_programacion_calculo:
+    path: /programacionCalculo
+    defaults: { _controller: MbpProduccionBundle:Programacion:programacionCalculo }
+    options:
+      expose: true
+
+mbp_produccion_programacion_controlRecurso:
+    path: /programacionControlRecurso
+    defaults: { _controller: MbpProduccionBundle:Programacion:programacionControlRecurso }
+    options:
+      expose: true
+
+mbp_produccion_programacion_reporte:
+    path: /programacionReporte
+    defaults: { _controller: MbpProduccionBundle:Programacion:programacionReporte }
+    options:
+      expose: true

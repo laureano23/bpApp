@@ -1,0 +1,61 @@
+mbp_web:
+    resource: "@MbpWebBundle/Controller/"
+    type:     annotation
+    prefix:   /web
+
+mbp_compras:
+    resource: "@MbpComprasBundle/Controller/ComprasController.php"
+    type:     annotation
+    prefix:   /compras
+
+mbp_articulos_subFamilia:
+    resource: "@MbpArticulosBundle/Controller/SubFamiliaController.php"
+    type:     annotation
+    prefix:   /articulos
+
+mbp_articulos_familia:
+    resource: "@MbpArticulosBundle/Controller/FamiliaController.php"
+    type:     annotation
+    prefix:   /articulos
+
+mbp_proveedores:
+    resource: "@MbpProveedoresBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+mbp_finanzas:
+    resource: "@MbpFinanzasBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+mbp_personal:
+    resource: "@MbpPersonalBundle/Controller/"
+    type:     annotation
+    prefix:   /personal
+
+mbp_produccion:
+    resource: "@MbpProduccionBundle/Resources/config/routing.yml"
+    prefix:   /produccion/
+
+mbp_security:
+    resource: "@MbpSecurityBundle/Resources/config/routing.yml"
+    prefix:   /
+
+mbp_clientes:
+    resource: "@MbpClientesBundle/Resources/config/routing.yml"
+    prefix:   /clientes/
+
+mbp_articulos:
+    resource: "@MbpArticulosBundle/Resources/config/routing.yml"
+    prefix:   /articulos/
+
+mbp_calidad:
+    resource: "@MbpCalidadBundle/Resources/config/routing.yml"
+    prefix:   /calidad/
+
+mbp_sencha:
+    resource: "@MbpSenchaBundle/Resources/config/routing.yml"
+    prefix:   /
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

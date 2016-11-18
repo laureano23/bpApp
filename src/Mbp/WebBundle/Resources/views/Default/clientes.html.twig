@@ -1,0 +1,37 @@
+{% extends 'baseWeb.html.twig' %}
+
+{% block body %} 
+<section class="main container">
+		
+
+		<!-- IMAGENES -->
+		<div class="row">
+			<div class="col-md-8 cols-xs-12 col-md-offset-3">
+
+				<div class="row">
+					<h2>Algunos de nuestros principales clientes son:</h2>		
+				</div>
+
+				<div class="row row-top">
+					<div class="col-md-4 col-xs-6">
+						<img src="{{ asset('bundles/mbpweb/images/clientes/pauny2') }}" class="img-responsive">
+					</div>
+					<div class="col-md-4 col-xs-6" id="deutz">
+						<img src="{{ asset('bundles/mbpweb/images/clientes/deutz1') }}" class="img-responsive">
+					</div>	
+				</div>
+
+				<div class="row row-top">
+					<div class="col-md-4 col-xs-6">
+						<img src="{{ asset('bundles/mbpweb/images/clientes/agco1') }}" class="img-responsive">
+					</div>
+					<div class="col-md-4 col-xs-6">
+						<img src="{{ asset('bundles/mbpweb/images/clientes/sullair1') }}" class="img-responsive">
+					</div>	
+				</div>
+
+			</div>			
+		</div>
+</section>
+{% endblock %} 
+

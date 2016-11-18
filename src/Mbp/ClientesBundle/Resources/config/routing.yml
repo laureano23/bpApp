@@ -1,0 +1,17 @@
+mbp_clientes_search:
+    path:     /clientesearch
+    defaults: { _controller: MbpClientesBundle:Default:clientesearch }
+    options:
+      expose: true
+
+mbp_clientes_new:
+    path:     /newcliente
+    defaults: { _controller: MbpClientesBundle:Default:newCliente }
+    options:
+      expose: true
+
+mbp_clientes_eliminar:
+    path:     /eliminar
+    defaults: { _controller: MbpClientesBundle:Default:eliminar }
+    options:
+      expose: true

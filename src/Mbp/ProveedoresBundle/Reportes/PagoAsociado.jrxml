@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PagoAsociado" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c366abc2-a143-4c3f-a3ea-77814affd3e6">
+	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="FacturaId" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ProveedorId" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     SUM(TransaccionOPFC.`aplicado`) AS TransaccionOPFC_aplicado,
+     OrdenPago.`id` AS OrdenPago_id,
+     OrdenPago.`fechaEmision` AS OrdenPago_fechaEmision,
+     OrdenPago.`proveedorId` AS OrdenPago_proveedorId,
+     Pago_FacturaProveedores.`pago_id` AS Pago_FacturaProveedores_pago_id,
+     Pago_FacturaProveedores.`factura_id` AS Pago_FacturaProveedores_factura_id,
+     TransaccionOPFC.`id` AS TransaccionOPFC_id,
+     TransaccionOPFC.`facturaId` AS TransaccionOPFC_facturaId,
+     TransaccionOPFC.`ordenPagoId` AS TransaccionOPFC_ordenPagoId,
+     Factura.`id` AS Factura_id,
+     Factura.`sucursal` AS Factura_sucursal,
+     Factura.`numFc` AS Factura_numFc,
+     Factura.`totalFc` AS Factura_totalFc,
+     Factura.`tipo` AS Factura_tipo,
+     Factura.`proveedorId` AS Factura_proveedorId,
+     Proveedor.`id` AS Proveedor_id
+FROM
+     `OrdenPago` OrdenPago INNER JOIN `Pago_FacturaProveedores` Pago_FacturaProveedores ON OrdenPago.`id` = Pago_FacturaProveedores.`pago_id`
+     INNER JOIN `TransaccionOPFC` TransaccionOPFC ON OrdenPago.`id` = TransaccionOPFC.`ordenPagoId`
+     INNER JOIN `Proveedor` Proveedor ON OrdenPago.`proveedorId` = Proveedor.`id`
+     INNER JOIN `Factura` Factura ON Proveedor.`id` = Factura.`proveedorId`
+     AND TransaccionOPFC.`facturaId` = Factura.`id`
+     AND Factura.`id` = Pago_FacturaProveedores.`factura_id`
+WHERE
+     Factura.`id` = $P{FacturaId} AND
+     Proveedor.`id` = $P{ProveedorId}
+GROUP BY
+     OrdenPago.`id`]]>
+	</queryString>
+	<field name="TransaccionOPFC_aplicado" class="java.math.BigDecimal"/>
+	<field name="OrdenPago_id" class="java.lang.Integer"/>
+	<field name="OrdenPago_fechaEmision" class="java.sql.Timestamp"/>
+	<field name="OrdenPago_proveedorId" class="java.lang.Integer"/>
+	<field name="Pago_FacturaProveedores_pago_id" class="java.lang.Integer"/>
+	<field name="Pago_FacturaProveedores_factura_id" class="java.lang.Integer"/>
+	<field name="TransaccionOPFC_id" class="java.lang.Integer"/>
+	<field name="TransaccionOPFC_facturaId" class="java.lang.Integer"/>
+	<field name="TransaccionOPFC_ordenPagoId" class="java.lang.Integer"/>
+	<field name="Factura_id" class="java.lang.Integer"/>
+	<field name="Factura_sucursal" class="java.lang.Integer"/>
+	<field name="Factura_numFc" class="java.lang.Integer"/>
+	<field name="Factura_totalFc" class="java.math.BigDecimal"/>
+	<field name="Factura_tipo" class="java.lang.String"/>
+	<field name="Factura_proveedorId" class="java.lang.Integer"/>
+	<field name="Proveedor_id" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="31" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="31" uuid="4b872869-4b92-4c10-ada6-b0c91a41ae1a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Detalle de pagos asociados]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="15" width="61" height="20" uuid="24c7ab10-ddaf-4a7a-a232-09e4c9ab8f93"/>
+				<text><![CDATA[Factura N°:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="61" y="15" width="186" height="20" uuid="60c5c775-1238-437f-8af1-e4f014e90625"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Factura_sucursal} + "-" + $F{Factura_numFc}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="41" width="61" height="20" uuid="072f485d-169e-472e-a600-681a44a09352"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[OP N°]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="61" y="41" width="100" height="20" uuid="4cc23ce2-688e-454c-ac6b-434f068bab95"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[OP Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="161" y="41" width="100" height="20" uuid="64c04338-f084-4d2c-a8be-ee4589f4a5f0"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Aplicado ($)]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="61" height="20" uuid="948acfa8-8224-4713-a15c-35e6b98e7e4d"/>
+				<box leftPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{OrdenPago_id}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="61" y="0" width="100" height="20" uuid="a3fccdcb-9de2-4f15-8725-f209570b3778"/>
+				<box leftPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{OrdenPago_fechaEmision}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="161" y="0" width="100" height="20" uuid="66772b87-bc69-4d1a-a16f-7cc5d41c115d"/>
+				<box rightPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{TransaccionOPFC_aplicado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

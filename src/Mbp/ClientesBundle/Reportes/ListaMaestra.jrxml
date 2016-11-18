@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ListaMaestra" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d6bcf44d-f1d8-4758-96e0-1533080d926e">
+	<property name="ireport.zoom" value="1.2100000000000026"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="cliente_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     Clientes_Familias.`id` AS Clientes_Familias_id,
+     Clientes_Familias.`familia_id` AS Clientes_Familias_familia_id,
+     Clientes_Familias.`cliente_id` AS Clientes_Familias_cliente_id,
+     Clientes_Familias.`descuento` AS Clientes_Familias_descuento,
+     Clientes_Familias.`subFamilia_id` AS Clientes_Familias_subFamilia_id,
+     Familia.`id` AS Familia_id,
+     Familia.`familia` AS Familia_familia,
+     Familia.`isActive` AS Familia_isActive,
+     SubFamilia.`id` AS SubFamilia_id,
+     SubFamilia.`subFamilia` AS SubFamilia_subFamilia,
+     SubFamilia.`isActive` AS SubFamilia_isActive,
+     articulos.`idArticulos` AS articulos_idArticulos,
+     articulos.`codigo` AS articulos_codigo,
+     articulos.`descripcion` AS articulos_descripcion,
+     articulos.`precio` AS articulos_precio,
+     articulos.`familiaId` AS articulos_familiaId,
+     articulos.`subFamiliaId` AS articulos_subFamiliaId,
+     cliente.`idCliente` AS cliente_idCliente,
+     cliente.`rsocial` AS cliente_rsocial,
+     cliente.`denominacion` AS cliente_denominacion,
+     articulos.`monedaPrecio` AS articulos_monedaPrecio
+FROM
+     `Familia` Familia INNER JOIN `Clientes_Familias` Clientes_Familias ON Familia.`id` = Clientes_Familias.`familia_id`
+     INNER JOIN `SubFamilia` SubFamilia ON Clientes_Familias.`subFamilia_id` = SubFamilia.`id`
+     INNER JOIN `cliente` cliente ON Clientes_Familias.`cliente_id` = cliente.`idCliente`
+     INNER JOIN `articulos` articulos ON SubFamilia.`id` = articulos.`subFamiliaId`
+     AND Familia.`id` = articulos.`familiaId`
+WHERE
+     Clientes_Familias.`cliente_id` = $P{cliente_id}]]>
+	</queryString>
+	<field name="Clientes_Familias_id" class="java.lang.Integer"/>
+	<field name="Clientes_Familias_familia_id" class="java.lang.Integer"/>
+	<field name="Clientes_Familias_cliente_id" class="java.lang.Integer"/>
+	<field name="Clientes_Familias_descuento" class="java.math.BigDecimal"/>
+	<field name="Clientes_Familias_subFamilia_id" class="java.lang.Integer"/>
+	<field name="Familia_id" class="java.lang.Integer"/>
+	<field name="Familia_familia" class="java.lang.String"/>
+	<field name="Familia_isActive" class="java.lang.Boolean"/>
+	<field name="SubFamilia_id" class="java.lang.Integer"/>
+	<field name="SubFamilia_subFamilia" class="java.lang.String"/>
+	<field name="SubFamilia_isActive" class="java.lang.Boolean"/>
+	<field name="articulos_idArticulos" class="java.lang.Integer"/>
+	<field name="articulos_codigo" class="java.lang.String"/>
+	<field name="articulos_descripcion" class="java.lang.String"/>
+	<field name="articulos_precio" class="java.math.BigDecimal"/>
+	<field name="articulos_familiaId" class="java.lang.Integer"/>
+	<field name="articulos_subFamiliaId" class="java.lang.Integer"/>
+	<field name="cliente_idCliente" class="java.lang.Integer"/>
+	<field name="cliente_rsocial" class="java.lang.String"/>
+	<field name="cliente_denominacion" class="java.lang.String"/>
+	<field name="articulos_monedaPrecio" class="java.lang.Boolean"/>
+	<group name="Cliente">
+		<groupExpression><![CDATA[$F{Clientes_Familias_cliente_id}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField>
+					<reportElement x="88" y="0" width="467" height="20" uuid="cdc12c48-a586-4bea-a4b0-a9c47c9a0fa6"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textFieldExpression><![CDATA[$F{cliente_rsocial}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="0" width="88" height="20" uuid="ac62b48a-2920-4302-8387-cf87b6c68a6b"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<text><![CDATA[Cliente:]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="50"/>
+		</groupFooter>
+	</group>
+	<group name="Familia">
+		<groupExpression><![CDATA[$F{Clientes_Familias_familia_id}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<staticText>
+					<reportElement x="0" y="0" width="88" height="20" uuid="9edb10b6-4d51-4a16-9689-0b77ac30115c"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<text><![CDATA[Familia:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="88" y="0" width="467" height="20" uuid="bb2d4e74-6376-4bec-802d-2e6008a32d7b"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textFieldExpression><![CDATA[$F{Familia_familia}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="50"/>
+		</groupFooter>
+	</group>
+	<group name="SubFamilia">
+		<groupExpression><![CDATA[$F{Clientes_Familias_subFamilia_id}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField>
+					<reportElement x="88" y="0" width="266" height="20" uuid="4cfe4dc6-4ed3-402c-a6b7-3479c1513d14"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textFieldExpression><![CDATA[$F{SubFamilia_subFamilia}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="0" width="88" height="20" uuid="1b3fd7aa-95f9-41c8-90c8-4f9ca9046769"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<text><![CDATA[Sub Familia:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="354" y="0" width="88" height="20" uuid="e0b53bd0-59c1-4c60-ada4-54255d4b35b5"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<text><![CDATA[Descuento:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="442" y="0" width="113" height="20" uuid="0bd5ae3d-1e2b-4f89-8db8-e9ff8229366d"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textFieldExpression><![CDATA[$F{Clientes_Familias_descuento}]]></textFieldExpression>
+				</textField>
+			</band>
+			<band height="20">
+				<staticText>
+					<reportElement x="0" y="0" width="59" height="20" uuid="e0be36be-a0dc-4be8-aed2-c4a23f38819a"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Bottom"/>
+					<text><![CDATA[Codigo]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="59" y="0" width="359" height="20" uuid="ad8b8dab-7908-44fe-b059-483106d44e14"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Bottom"/>
+					<text><![CDATA[Descripcion]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="418" y="0" width="59" height="20" uuid="66fcfc11-cf51-4795-ba4a-aca992e6310f"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Bottom"/>
+					<text><![CDATA[Precio]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="477" y="0" width="59" height="20" uuid="6af6ed6b-a65d-428c-8b71-48ff05f8238f"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Bottom"/>
+					<text><![CDATA[Moneda]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="66" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="43" uuid="1b0ff59e-649d-4f96-aa6a-b7b8ce39787a"/>
+				<textElement textAlignment="Center">
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Lista de Precios por Cliente, Familia y Sub Familia]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="59" height="20" uuid="c8ae1b3f-84f2-451b-a2e0-b9d33d693f76"/>
+				<textFieldExpression><![CDATA[$F{articulos_codigo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="59" y="0" width="359" height="20" uuid="643ee72f-5311-4ad1-a81f-8da1ae8e5a92"/>
+				<textFieldExpression><![CDATA[$F{articulos_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="418" y="0" width="59" height="20" uuid="294222cf-1be2-493c-8cbd-75c403a802f3"/>
+				<textFieldExpression><![CDATA[$F{articulos_precio} * (100 - $F{Clientes_Familias_descuento}) / 100]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" pattern="#,##0.00">
+				<reportElement x="477" y="0" width="59" height="20" uuid="c2ae1cdf-0019-40da-b713-92b95be21c87"/>
+				<textFieldExpression><![CDATA[$F{articulos_monedaPrecio} == true ? "U\$D" : "ARS"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

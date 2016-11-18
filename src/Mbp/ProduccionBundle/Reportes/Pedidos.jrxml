@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Pedidos" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="faabb94c-b32d-4f38-913c-e824ee7dd96c">
+	<property name="ireport.zoom" value="1.210000000000001"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="codigoDesde" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="codigoHasta" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["ZZZ"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaDesde" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaHasta" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="clienteDesde" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="clienteHasta" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1500]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     PedidoClientes.`codigo` AS PedidoClientes_codigo,
+     PedidoClientes.`cantidad` AS PedidoClientes_cantidad,
+     PedidoClientes.`fechaProg` AS PedidoClientes_fechaProg,
+     PedidoClientes.`oc` AS PedidoClientes_oc,
+     articulos.`codigo` AS articulos_codigo,
+     articulos.`descripcion` AS articulos_descripcion,
+     articulos.`idArticulos` AS articulos_idArticulos,
+     articulos.`unidad` AS articulos_unidad,
+     PedidoClientes.`id` AS PedidoClientes_id,
+     PedidoClientes.`cliente` AS PedidoClientes_cliente,
+     cliente.`idCliente` AS cliente_idCliente,
+     cliente.`rsocial` AS cliente_rsocial,
+     articulos.`costo` AS articulos_costo
+FROM
+     `articulos` articulos INNER JOIN `PedidoClientes` PedidoClientes ON articulos.`idArticulos` = PedidoClientes.`codigo`
+     INNER JOIN `cliente` cliente ON PedidoClientes.`cliente` = cliente.`idCliente`
+WHERE
+     PedidoClientes.`cliente` BETWEEN $P{clienteDesde} AND $P{clienteHasta}
+ AND articulos.`codigo` BETWEEN $P{codigoDesde} AND $P{codigoHasta}
+ AND PedidoClientes.`fechaProg` BETWEEN $P{fechaDesde} AND $P{fechaHasta}]]>
+	</queryString>
+	<field name="PedidoClientes_codigo" class="java.lang.Integer"/>
+	<field name="PedidoClientes_cantidad" class="java.math.BigDecimal"/>
+	<field name="PedidoClientes_fechaProg" class="java.sql.Date"/>
+	<field name="PedidoClientes_oc" class="java.lang.String"/>
+	<field name="articulos_codigo" class="java.lang.String"/>
+	<field name="articulos_descripcion" class="java.lang.String"/>
+	<field name="articulos_idArticulos" class="java.lang.Integer"/>
+	<field name="articulos_unidad" class="java.lang.String"/>
+	<field name="PedidoClientes_id" class="java.lang.Integer"/>
+	<field name="PedidoClientes_cliente" class="java.lang.Integer"/>
+	<field name="cliente_idCliente" class="java.lang.Integer"/>
+	<field name="cliente_rsocial" class="java.lang.String"/>
+	<field name="articulos_costo" class="java.lang.Double"/>
+	<group name="PedidosPorCliente">
+		<groupExpression><![CDATA[$F{PedidoClientes_cliente}]]></groupExpression>
+		<groupHeader>
+			<band height="25">
+				<textField>
+					<reportElement x="0" y="5" width="802" height="20" uuid="ddb2734c-f29a-4ad2-a448-39772159cb1e"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textFieldExpression><![CDATA[$F{cliente_rsocial}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="49" splitType="Stretch">
+			<staticText>
+				<reportElement x="225" y="0" width="364" height="49" uuid="416ca4b2-40c6-40ed-87ce-5de536fdd176"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="15"/>
+				</textElement>
+				<text><![CDATA[Articulos pedidos por cliente y periodo]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="f6dd0a29-e562-4504-b8db-51e91f7757b0"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Codigo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="0" width="451" height="20" uuid="f0425b4a-b5c8-4dcf-aa2f-506effb82f50"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Descripcion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="551" y="0" width="64" height="20" uuid="d9f72297-8c01-4c0e-851f-ed1d26f68363"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[OC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="615" y="0" width="64" height="20" uuid="a6c65b39-157c-4934-9eb0-312a0dd09e92"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="679" y="0" width="123" height="20" uuid="7dcab7bb-210e-4d93-a3b4-dd1a0d132a18"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Fecha Programada]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20" uuid="ce076702-864e-420b-b7f3-d27766d01ca9"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{articulos_codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="451" height="20" uuid="eda36d26-bfcf-4f60-bb81-c476766dbf04"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{articulos_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="615" y="0" width="64" height="20" uuid="5d9787f4-248e-43a5-98f5-def87db5d6b9"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{PedidoClientes_cantidad}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="679" y="0" width="123" height="20" uuid="e9685f59-f47f-4bf0-b4b2-338c32bd443f"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{PedidoClientes_fechaProg}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="551" y="0" width="64" height="20" uuid="df5db287-17aa-4a62-93ab-4ab5f628d9e8"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{PedidoClientes_oc}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="34" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

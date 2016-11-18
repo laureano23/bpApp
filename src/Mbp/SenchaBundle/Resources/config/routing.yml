@@ -1,0 +1,10 @@
+mbp_sencha_index:
+    path:     /index    
+    defaults: { _controller: MbpSenchaBundle:Default:index }
+
+### RUTAS PARA MANUAL DE USUARIO ###
+mbp_manual_index:
+    path:     /manualIndex   
+    defaults: { _controller: MbpSenchaBundle:Default:manualIndex } 
+    options:
+        expose: true

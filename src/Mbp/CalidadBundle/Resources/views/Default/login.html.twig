@@ -1,0 +1,27 @@
+{% extends "ModeloBundle:Default:layout.html.twig" %}
+{% block stylesheets %}
+{{ parent() }}
+<link href="{{ asset('bundles/mbpsecurity/css/form_login.css') }}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+{% block contenido %}
+{% if error %}
+    <div>{{ error.message }}</div>
+{% endif %}
+
+    <div class="login">
+        <h1>Iniciar Sesion</h1>
+        <form action="{{ path('login_check') }}" method="post" id="form_login">
+            <label for="username">Usuario:</label>
+            <input type="text" id="username" name="_username" value="{{ last_username }}" /></br>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="_password" />
+            <input type="hidden" name="_target_path" value="/index" /></br>
+            <input type="checkbox" id="remember_me" name="_remember_me" checked/>
+            <label for="remember_me">Mantenerme logueado</label>
+
+            <p class="submit"><button type="submit">login</button></p>
+        </form>
+    </div>
+
+{% endblock %}

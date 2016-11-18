@@ -1,0 +1,421 @@
+<?php
+namespace Mbp\ProduccionBundle\Controller;
+
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Mbp\ProduccionBundle\Entity\CalculoRad;
+
+use Mbp\ProduccionBundle\Clases\Calculo;
+
+class ReportesController extends Controller
+{
+	public function reporteCalculoAction()
+	{
+		$repo = $this->get('reporteador');
+		$calc = $this->get('mbp.calculo');
+		$kernel = $this->get('kernel');
+		
+		/*
+		 * Recibo parametros del request 
+		 */
+		$em = $this->getDoctrine()->getManager();
+		$req = $this->getRequest();
+		$idArt = $req->request->get('codigo'); 
+		$ot = (int)$req->request->get('ot');
+		$otCant = (int)$req->request->get('cantidad');
+		$cliente = $req->request->get('cliente');
+		
+		/*
+		 * Consulta BD
+		 */
+		try{
+			/*
+			 * Busco el objeto en la BD para pasarlo al calculo
+			 */			
+			$rep = $em->getRepository('MbpProduccionBundle:CalculoRad');
+			
+			$obj = $rep->findOneByCod($idArt);
+			
+			/*
+             * Paso el obj al calculo
+             */
+			
+			$calc->setTipo($obj->gettipo());
+			$calc->setapoyoTapas($obj->getapoyoTapas());
+			$calc->setprof($obj->getprof());
+			$calc->setanchoPanel($obj->getancho());
+			$calc->setpisosManual($obj->getpisosManual());
+			$calc->setperfilIntermedio($obj->getperfilInt());
+			$calc->setpisosManual7($obj->getpisosManual7());
+			$calc->setchapaPisoAdicional($obj->getchapaPiso());
+			$calc->setcantChapaPisoAdicional($obj->getcantAdic());
+			$calc->setmaxAlt($obj->getmaxAlt());
+			$calc->setcantPaneles($obj->getcantPaneles());
+			$calc->setabiertoCerrado($obj->getaletaTipo());
+			$calc->setaletaVenA($obj->getaletaVenA());
+			$calc->setaletaFluA($obj->getaletaFluA());
+			
+			/*
+			 * Configuro reporte
+			 */
+			$jru = $repo->jru();
+			/*
+			 * Ruta archivo Jasper
+			 */				
+			$ruta = $kernel->locateResource('@MbpProduccionBundle/Reportes/calculoRad1.jasper');
+			/*
+			 * Ruta de destino del PDF
+			 */
+			$destino = $kernel->locateResource('@MbpProduccionBundle/Resources/public/pdf/').'calculoRad1.pdf';
+			/*
+			 * Calculos del panel
+			 */
+			$getCantidadChapaIntermedia = $calc->getCantidadChapaIntermedia();
+			$getCantidadChapaPiso = $calc->getCantidadChapaPiso();
+			$getCantidadChapaAdicional = $calc->getCantidadChapaAdicional();
+			$getCantidadPerfilVen = $calc->getCantidadPerfilVen();
+			$getCantidadPerfilFlu = $calc->getCantidadPerfilFlu();
+			$getCantidadPerfilAdicional7 = $calc->getCantidadPerfilAdicional7();
+	        $getCantidadPerfilFlu = $calc->getCantidadPerfilFlu();
+	        $getPisosAletaVen = $calc->getPisosAletaVen();
+			$getPisosAletaAdicional7 = $calc->getPisosAletaAdicional7();
+			$getCantidadAletaFlu = $calc->getCantidadAletaFlu();
+			$getCantidadRecorteFlu = $calc->getCantidadRecorteFlu();
+			/*
+			 * Busco el codigo del articulo			 * 
+			 */		
+			$artRepo = $em->getRepository('MbpArticulosBundle:Articulos');
+			$articulo = $artRepo->findOneById($idArt);
+			
+			//Parametros HashMap
+			$param = $repo->getJava('java.util.HashMap');
+			$param->put('codigo',$articulo->getCodigo());
+			$param->put('tipo', $calc->getTipoPanel());
+			$param->put('ot', $ot);
+			$param->put('otCant', $otCant);
+			$param->put('cliente', $cliente);
+	        
+			$param->put('chIntEsp', $calc->getEspesorChapaIntermedia());
+			$param->put('chIntC', $getCantidadChapaIntermedia['totalChapaIntermedia']);
+			$param->put('chIntL', $calc->getLargoChapaIntermedia());
+			$param->put('chIntA', $calc->getAnchoChapaIntermedia());
+	        
+			$param->put('chPisoE', $calc->getEspesorChapaPiso());
+			$param->put('chPisoC', $getCantidadChapaPiso['totalChapasPiso']);
+			$param->put('chPisoL', $calc->getLargoChapaPiso());
+			$param->put('chPisoA', $calc->getAnchoChapaPiso());
+	        
+			$param->put('chAdE', $calc->getEspesorChapaAdicional());
+			$param->put('chAdC', $getCantidadChapaAdicional['totalChapaPisoAd']);
+			$param->put('chAdL', $calc->getLargoChapaAdicional());
+			$param->put('chAdA', $calc->getAnchoChapaAdicional());
+	        
+			$param->put('perfilLadoVen', $calc->getTipoPerfilVen());
+			$param->put('chPer1C', $getCantidadPerfilVen['cantidadTotalPerfilVen']);
+			$param->put('chPer1L', $calc->getLargoPerfilVen());
+	        
+			$param->put('perfilAd', $calc->getTipoPerfilAdicional7());		
+			$param->put('chPer2C', $getCantidadPerfilAdicional7['totalPerfilAd']);
+			$param->put('chPer2L', $calc->getLargoPerfilAdicional7());
+	        
+			$param->put('perfilLadoFluido', $calc->getTipoPerfilFlu());        
+			$param->put('chPer3C', $getCantidadPerfilFlu['totalPerfilesFluido']);
+			$param->put('chPer3L', $calc->getLargoPerfilFlu());
+			       
+	        
+	        $param->put('aletaVentilador', $calc->getTipoAletaVen());
+			$param->put('aleta10E', $calc->getEspesorAletaVen());
+			$param->put('aleta10C', $getPisosAletaVen['pisosAletaVenTotal']);
+			$param->put('aleta10A', $calc->getAnchoAletaVen());
+			$param->put('aleta10L', $calc->getLargoAletaVen());
+			$param->put('aletaTipo', $calc->getTipoDeAleta()); 
+	        
+			$param->put('aleta7E', $calc->getEspesorPisoAdcional7());
+			$param->put('aleta7C', $getPisosAletaAdicional7['totalAletaAdicional']);
+			$param->put('aleta7L', $calc->getLargoPisoAdicional7());
+			$param->put('aleta7A', $calc->getAnchoPisoAdicional7());
+			
+			$param->put('aletaFluido', $calc->getTipoAletaFlu());
+			$param->put('aceiteE', $calc->getEspesorAletaFlu());
+			$param->put('aceiteC', $getCantidadAletaFlu['cantidadTotalAletaFlu']);
+			$param->put('aceiteL', $calc->getLargoAletaFlu());
+			$param->put('aceiteA', $calc->getAnchoAletaFlu());
+			
+			$param->put('recorteFluido', $calc->getTipoRecorteFlu());
+			$param->put('recorteE', $calc->getEspesorRecorteFlu());
+			$param->put('recorteC', $getCantidadRecorteFlu['totalRecorteFlu']);
+			$param->put('recorteL', $calc->getLargoRecorteFlu());
+			$param->put('recorteA', $calc->getAnchoRecorteFlu());
+			
+			
+			
+			//Exportamos el reporte
+			$jru->runReportEmpty($ruta, $destino, $param);
+			
+			
+			echo json_encode(
+					array(
+						'success'=> true,
+						'reporte' => $destino,		
+					)
+				);
+				
+			return new Response();	
+		}catch(\Doctrine\ORM\ORMException $e){
+				$this->get('logger')->error($e->getMessage());
+		}
+		
+				
+		
+		
+		
+	}
+	
+	public function reporteCalculoPdfAction()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpProduccionBundle/Resources/public/pdf/').'calculoRad1.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'calculoRad1.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+
+        return $response;
+	}
+	
+	public function reporteArmadoAction()
+	{
+		//Llamada a los servicios
+		$calc = $this->get('mbp.calculo');
+		$repo = $this->get('reporteador');
+		$kernel = $this->get('kernel');
+		
+		/*
+		 * Recibo parametros del request 
+		 */
+		$em = $this->getDoctrine()->getManager();
+		$req = $this->getRequest();
+		$idArt = $req->request->get('codigo'); 
+		$ot = (int)$req->request->get('ot');
+		$otCant = (int)$req->request->get('cantidad');
+		$cliente = $req->request->get('cliente');
+        
+        //Busco el articulo
+        $repArt = $em->getRepository('MbpArticulosBundle:Articulos');
+        $art = $repArt->findOneById($idArt);
+        
+		
+		/*
+		 * Consulta BD
+		 */
+		try{
+			/*
+			 * Busco el objeto en la BD para pasarlo al calculo
+			 */			
+			$rep = $em->getRepository('MbpProduccionBundle:CalculoRad');
+			
+			$obj = $rep->findOneByCod($idArt);
+            
+            
+			/*
+             * Paso el obj al calculo
+             */
+			
+			$calc->setTipo($obj->gettipo());
+			$calc->setapoyoTapas($obj->getapoyoTapas());
+			$calc->setprof($obj->getprof());
+			$calc->setanchoPanel($obj->getancho());
+			$calc->setpisosManual($obj->getpisosManual());
+			$calc->setperfilIntermedio($obj->getperfilInt());
+			$calc->setpisosManual7($obj->getpisosManual7());
+			$calc->setchapaPisoAdicional($obj->getchapaPiso());
+			$calc->setcantChapaPisoAdicional($obj->getcantAdic());
+			$calc->setmaxAlt($obj->getmaxAlt());
+			$calc->setcantPaneles($obj->getcantPaneles());
+			$calc->setabiertoCerrado($obj->getaletaTipo());
+			$calc->setaletaVenA($obj->getaletaVenA());
+			$calc->setaletaFluA($obj->getaletaFluA());
+			
+			//Nuevo objeto de repo
+			$jru = $repo->jru();
+			
+			//Ruta del .jasper
+			$ruta = $kernel->locateResource('@MbpProduccionBundle/Reportes/ArmadoPanel.jasper');
+			
+			//Ruta de destino
+			$destino = $kernel->locateResource('@MbpProduccionBundle/Resources/public/pdf/').'ArmadoPanel.pdf';
+			
+			//Guardo en variables parametros con Arrays
+			$ancho = $calc->getAnchoPaneles();
+			$cantPaneles = $calc->getPisosAletaVen();
+			$getCantidadChapaAdicional = $calc->getCantidadChapaAdicional();
+			$getCantidadChapaPiso = $calc->getCantidadChapaPiso();
+			$getPisosAletaVen = $calc->getPisosAletaVen();
+			$getCantidadPerfilVen = $calc->getCantidadPerfilVen();
+			$getPisosAletaAdicional7 = $calc->getPisosAletaAdicional7();
+			$getCantidadPerfilAdicional7 = $calc->getCantidadPerfilAdicional7();
+			$getCantidadAletaFlu = $calc->getCantidadAletaFlu();
+			$getCantidadRecorteFlu = $calc->getCantidadRecorteFlu();
+			$getCantidadPerfilFlu = $calc->getCantidadPerfilFlu();
+			$getCantidadChapaIntermedia = $calc->getCantidadChapaIntermedia();
+			
+			
+			
+			//Parametros de reportes
+			$param = $repo->getJava('java.util.HashMap');
+			//Imagen del logo
+			$param->put('imageDir', $kernel->getRootDir().'/../web/bundles/mbpsencha/images/');
+			//Encabezado
+			$param->put('codigo', $art->getCodigo());
+			$param->put('tipo', $calc->getTipoPanel());
+			$param->put('apoyoTapas', $obj->getapoyoTapas());
+			$param->put('prof', $obj->getprof());
+			$param->put('ot', $ot);
+			$param->put('otCantidad', $otCant);
+			$param->put('cliente', $cliente);
+			
+			$param->put('anchoP1', $ancho['anchoP1']);
+			$param->put('anchoP2', $ancho['anchoP2']);
+			$param->put('anchoP3', $ancho['anchoP3']);
+			$param->put('anchoP4', $ancho['anchoP4']);
+			$param->put('pisosP1', $cantPaneles['pisosAletaVenP1']);
+			$param->put('pisosP2', $cantPaneles['pisosAletaVenP2']);
+			$param->put('pisosP3', $cantPaneles['pisosAletaVenP3']);
+			$param->put('pisosP4', $cantPaneles['pisosAletaVenP4']);
+			$param->put('chapaAdE', $calc->getEspesorChapaAdicional());
+			$param->put('chapaPisoE', $calc->getEspesorChapaPiso());
+			$param->put('chapaIntE', $calc->getEspesorChapaIntermedia());
+			//Cantidad chapa Adicional
+			$param->put('chapaAdP1', $getCantidadChapaAdicional['cantP1PisoAd']);
+			$param->put('chapaAdP2', $getCantidadChapaAdicional['cantP2PisoAd']);
+			$param->put('chapaAdP3', $getCantidadChapaAdicional['cantP3PisoAd']);
+			$param->put('chapaAdP4', $getCantidadChapaAdicional['cantP4PisoAd']);
+			//Cantidad chapa de piso
+			$param->put('chapaPisoP1', $getCantidadChapaPiso['cantP1Piso'] > 0 ? 1 : 0);
+			$param->put('chapaPisoP2', $getCantidadChapaPiso['cantP2Piso'] > 0 ? 1 : 0);
+			$param->put('chapaPisoP3', $getCantidadChapaPiso['cantP3Piso'] > 0 ? 1 : 0);
+			$param->put('chapaPisoP4', $getCantidadChapaAdicional['totalChapaPisoAd'] >= 1 ? 0 : 1);
+			//Cantidad chapa intermedia
+			$param->put('chapaInterTapaInfP1', $intInfP1 = ($getCantidadChapaAdicional['cantP1PisoAd'] + $getCantidadChapaPiso['cantP1Piso']) > 0 ? 1 : 0);
+			$param->put('chapaInterTapaInfP2', $intInfP2 = ($getCantidadChapaAdicional['cantP2PisoAd'] + $getCantidadChapaPiso['cantP2Piso']) > 0 ? 1 : 0);
+			$param->put('chapaInterTapaInfP3', $intInfP3 = ($getCantidadChapaAdicional['cantP3PisoAd'] + $getCantidadChapaPiso['cantP3Piso']) > 0 ? 1 : 0);
+			$param->put('chapaInterTapaInfP4', $intInfP4 = ($getCantidadChapaAdicional['cantP4PisoAd'] + $getCantidadChapaPiso['cantP4Piso']) > 0 ? 1 : 0);
+			//Cantidad aleta de ventilador
+			$param->put('aletaVenP1', $getPisosAletaVen['pisosAletaVenP1']);
+			$param->put('aletaVenP2', $getPisosAletaVen['pisosAletaVenP2']);
+			$param->put('aletaVenP3', $getPisosAletaVen['pisosAletaVenP3']);
+			$param->put('aletaVenP4', $getPisosAletaVen['pisosAletaVenP4']);
+			//Cantidad de perfil ventilador
+			$param->put('perfilVenP1', $getCantidadPerfilVen['cantPerfilVenP1']);
+			$param->put('perfilVenP2', $getCantidadPerfilVen['cantPerfilVenP2']);
+			$param->put('perfilVenP3', $getCantidadPerfilVen['cantPerfilVenP3']);
+			$param->put('perfilVenP4', $getCantidadPerfilVen['cantPerfilVenP4']);
+			//Cantidad de aleta de 7mm adicional
+			$param->put('aletaAdP1', $getPisosAletaAdicional7['pisosP1Aleta7']);
+			$param->put('aletaAdP2', $getPisosAletaAdicional7['pisosP2Aleta7']);
+			$param->put('aletaAdP3', $getPisosAletaAdicional7['pisosP3Aleta7']);
+			$param->put('aletaAdP4', $getPisosAletaAdicional7['pisosP4Aleta7']);
+			//Cantidad de perfil de 7mm adicional
+			$param->put('perfilAdP1', $getCantidadPerfilAdicional7['cantP1PerfilAd7']);
+			$param->put('perfilAdP2', $getCantidadPerfilAdicional7['cantP2PerfilAd7']);
+			$param->put('perfilAdP3', $getCantidadPerfilAdicional7['cantP3PerfilAd7']);
+			$param->put('perfilAdP4', $getCantidadPerfilAdicional7['cantP4PerfilAd7']);
+			//Cantidad de aleta fluido
+			$param->put('aletaFluP1', $getCantidadAletaFlu['cantidadP1AletaFlu']);
+			$param->put('aletaFluP2', $getCantidadAletaFlu['cantidadP2AletaFlu']);
+			$param->put('aletaFluP3', $getCantidadAletaFlu['cantidadP3AletaFlu']);
+			$param->put('aletaFluP4', $getCantidadAletaFlu['cantidadP4AletaFlu']);
+			//Cantidad de recorte fluido
+			$param->put('recorteFluP1', $getCantidadRecorteFlu['cantP1RecorteFlu']);
+			$param->put('recorteFluP2', $getCantidadRecorteFlu['cantP2RecorteFlu']);
+			$param->put('recorteFluP3', $getCantidadRecorteFlu['cantP3RecorteFlu']);
+			$param->put('recorteFluP4', $getCantidadRecorteFlu['cantP4RecorteFlu']);
+			//Cantidad de perfil fluido
+			$param->put('perfilFluP1', $getCantidadPerfilFlu['perfilesP1Fluido']);
+			$param->put('perfilFluP2', $getCantidadPerfilFlu['perfilesP2Fluido']);
+			$param->put('perfilFluP3', $getCantidadPerfilFlu['perfilesP3Fluido']);
+			$param->put('perfilFluP4', $getCantidadPerfilFlu['perfilesP4Fluido']);
+			//Perfil Piso
+			$param->put('perfilPiso', $calc->getPerfilIntStatus() == 1 ? 3 : 2);
+			//Cantidad chapa intermedia tapa superior
+			$param->put('chapaIntTapaSupP1', $intSupP1 = ($getCantidadChapaAdicional['cantP1PisoAd'] + $getCantidadChapaPiso['cantP1Piso']) > 0 ? 1 : 0);
+			$param->put('chapaIntTapaSupP2', $intSupP2 = ($getCantidadChapaAdicional['cantP2PisoAd'] + $getCantidadChapaPiso['cantP2Piso']) > 0 ? 1 : 0);
+			$param->put('chapaIntTapaSupP3', $intSupP3 = ($getCantidadChapaAdicional['cantP3PisoAd'] + $getCantidadChapaPiso['cantP3Piso']) > 0 ? 1 : 0);
+			$param->put('chapaIntTapaSupP4', $intSupP4 = ($getCantidadChapaAdicional['cantP4PisoAd'] + $getCantidadChapaPiso['cantP4Piso']) > 0 ? 1 : 0);
+			//Cantidad de chapa intermedia por panel
+			$param->put('chapaIntP1', $getCantidadChapaIntermedia['cantidadP1ChapaIntermedia'] - $intInfP1 - $intSupP1);
+			$param->put('chapaIntP2', $getCantidadChapaIntermedia['cantidadP2ChapaIntermedia'] - $intInfP2 - $intSupP2);
+			$param->put('chapaIntP3', $getCantidadChapaIntermedia['cantidadP3ChapaIntermedia'] - $intInfP3 - $intSupP3);
+			$param->put('chapaIntP4', $getCantidadChapaIntermedia['cantidadP4ChapaIntermedia'] - $intInfP4 - $intSupP4);
+			//Cantidad chapa de piso en tapa superior
+			$param->put('chapaPisoSupP1', $getCantidadChapaAdicional['totalChapaPisoAd'] == 2 ? 0 : 1);
+			$param->put('chapaPisoSupP2', $getCantidadChapaPiso['cantP2Piso'] > 0 ? 1 : 0);
+			$param->put('chapaPisoSupP3', $getCantidadChapaPiso['cantP3Piso'] > 0 ? 1 : 0);
+			$param->put('chapaPisoSupP4', $getCantidadChapaPiso['cantP4Piso'] > 0 ? 1 : 0);
+			//Cantidad chapa de piso adicional en tapa superior
+			$param->put('chapaAdTapaSupP1', $getCantidadChapaAdicional['totalChapaPisoAd'] <= 1 ? 0 : 1);
+			$param->put('chapaAdTapaSupP2', 0);
+			$param->put('chapaAdTapaSupP3', 0);
+			$param->put('chapaAdTapaSupP4', 0);
+			
+			//Exportamos el reporte
+			$jru->runReportEmpty($ruta, $destino, $param);
+			
+			echo json_encode(
+					array(
+						'success'=> true,
+						'reporte' => $destino,						
+					)
+				);
+			
+			$response = new Response(); 
+			$response->headers->set('Content-type', 'application/pdf');
+			return $response;
+		}catch(\Doctrine\ORM\ORMException $e){
+				$this->get('logger')->error($e->getMessage());
+		}		
+	}
+	
+	public function reporteArmadoPdfAction()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpProduccionBundle/Resources/public/pdf/').'ArmadoPanel.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$response->headers->set('Content-type', 'application/pdf');
+		$filename = 'ArmadoPanel.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		
+		return $response;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

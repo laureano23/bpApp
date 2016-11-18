@@ -1,0 +1,17 @@
+parameters:
+    concepto: 1
+    docTipo: 80
+    docNro: 30711504547
+    ptoVta: 1
+
+services:
+    mbp.faele:
+        class: Mbp\FinanzasBundle\Clases\Faele
+        arguments: [%concepto%, %docTipo%, %docNro%, %ptoVta%]
+        
+    tipo_cambio:
+       class: Mbp\FinanzasBundle\Clases\TipoCambio
+       arguments: [ @doctrine.orm.entity_manager ]
+
+    AuxiliarFinanzas:
+       class: Mbp\FinanzasBundle\Clases\AuxiliarFinanzas

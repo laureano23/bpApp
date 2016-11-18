@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="recibos_subreport1" language="groovy" pageWidth="802" pageHeight="555" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="faabb94c-b32d-4f38-913c-e824ee7dd96c">
+	<property name="ireport.zoom" value="0.7513148009015789"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     RecibosPersonal.`recibos_id` AS RecibosPersonal_recibos_id,
+     RecibosPersonal.`personal_id` AS RecibosPersonal_personal_id,
+     Recibos.`id` AS Recibos_id,
+     Recibos.`cantConceptoVar` AS Recibos_cantConceptoVar,
+     Recibos.`periodo` AS Recibos_periodo,
+     Recibos.`valorConcepto` AS Recibos_valorConcepto,
+     Recibos.`mes` AS Recibos_mes,
+     Recibos.`anio` AS Recibos_anio,
+     Personal.`localidad` AS Personal_localidad,
+     Personal.`categoria` AS Personal_categoria,
+     Personal.`idP` AS Personal_idP,
+     Personal.`nombre` AS Personal_nombre,
+     Personal.`direccion` AS Personal_direccion,
+     Personal.`documentoTipo` AS Personal_documentoTipo,
+     Personal.`documentoNum` AS Personal_documentoNum,
+     Personal.`fechaIngreso` AS Personal_fechaIngreso,
+     Personal.`tarea` AS Personal_tarea,
+     RecibosCodigoSueldos.`recibos_id` AS RecibosCodigoSueldos_recibos_id,
+     RecibosCodigoSueldos.`codigoSueldos_id` AS RecibosCodigoSueldos_codigoSueldos_id,
+     CodigoSueldos.`id` AS CodigoSueldos_id,
+     CodigoSueldos.`codigo` AS CodigoSueldos_codigo,
+     CodigoSueldos.`descripcion` AS CodigoSueldos_descripcion,
+     CodigoSueldos.`importe` AS CodigoSueldos_importe,
+     CodigoSueldos.`variable` AS CodigoSueldos_variable,
+     Categorias.`id` AS Categorias_id,
+     Categorias.`idSindicato` AS Categorias_idSindicato,
+     Categorias.`categoria` AS Categorias_categoria,
+     Categorias.`salario` AS Categorias_salario,
+     CodigoSueldos.`porcentaje` AS CodigoSueldos_porcentaje,
+     CodigoSueldos.`remunerativo` AS CodigoSueldos_remunerativo,
+     CodigoSueldos.`descuento` AS CodigoSueldos_descuento,
+     Personal.`cuil` AS Personal_cuil,
+     Personal.`tipoContratacion` AS Personal_tipoContratacion
+FROM
+     `Recibos` Recibos INNER JOIN `RecibosPersonal` RecibosPersonal ON Recibos.`id` = RecibosPersonal.`recibos_id`
+     INNER JOIN `Personal` Personal ON RecibosPersonal.`personal_id` = Personal.`idP`
+     INNER JOIN `Categorias` Categorias ON Personal.`categoria` = Categorias.`id`
+     INNER JOIN `RecibosCodigoSueldos` RecibosCodigoSueldos ON Recibos.`id` = RecibosCodigoSueldos.`recibos_id`
+     INNER JOIN `CodigoSueldos` CodigoSueldos ON RecibosCodigoSueldos.`codigoSueldos_id` = CodigoSueldos.`id`
+WHERE
+     Recibos.`mes` = 4
+ AND Recibos.`anio` = 2015
+ AND Recibos.`periodo` = 1
+ORDER BY
+     Personal.`nombre` ASC,
+     CodigoSueldos.`remunerativo` DESC]]>
+	</queryString>
+	<field name="RecibosPersonal_recibos_id" class="java.lang.Integer"/>
+	<field name="RecibosPersonal_personal_id" class="java.lang.Integer"/>
+	<field name="Recibos_id" class="java.lang.Integer"/>
+	<field name="Recibos_cantConceptoVar" class="java.lang.Integer"/>
+	<field name="Recibos_periodo" class="java.lang.Integer"/>
+	<field name="Recibos_valorConcepto" class="java.math.BigDecimal"/>
+	<field name="Recibos_mes" class="java.lang.Integer"/>
+	<field name="Recibos_anio" class="java.lang.Integer"/>
+	<field name="Personal_localidad" class="java.lang.Integer"/>
+	<field name="Personal_categoria" class="java.lang.Integer"/>
+	<field name="Personal_idP" class="java.lang.Integer"/>
+	<field name="Personal_nombre" class="java.lang.String"/>
+	<field name="Personal_direccion" class="java.lang.String"/>
+	<field name="Personal_documentoTipo" class="java.lang.String"/>
+	<field name="Personal_documentoNum" class="java.lang.Integer"/>
+	<field name="Personal_fechaIngreso" class="java.sql.Date"/>
+	<field name="Personal_tarea" class="java.lang.String"/>
+	<field name="RecibosCodigoSueldos_recibos_id" class="java.lang.Integer"/>
+	<field name="RecibosCodigoSueldos_codigoSueldos_id" class="java.lang.Integer"/>
+	<field name="CodigoSueldos_id" class="java.lang.Integer"/>
+	<field name="CodigoSueldos_codigo" class="java.lang.Integer"/>
+	<field name="CodigoSueldos_descripcion" class="java.lang.String"/>
+	<field name="CodigoSueldos_importe" class="java.math.BigDecimal"/>
+	<field name="CodigoSueldos_variable" class="java.lang.Boolean"/>
+	<field name="Categorias_id" class="java.lang.Integer"/>
+	<field name="Categorias_idSindicato" class="java.lang.Integer"/>
+	<field name="Categorias_categoria" class="java.lang.String"/>
+	<field name="Categorias_salario" class="java.math.BigDecimal"/>
+	<field name="CodigoSueldos_porcentaje" class="java.lang.Boolean"/>
+	<field name="CodigoSueldos_remunerativo" class="java.lang.Boolean"/>
+	<field name="CodigoSueldos_descuento" class="java.lang.Boolean"/>
+	<field name="Personal_cuil" class="java.lang.Integer"/>
+	<field name="Personal_tipoContratacion" class="java.lang.String"/>
+	<group name="RecibosPersonal_recibos_id">
+		<groupExpression><![CDATA[$F{RecibosPersonal_recibos_id}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="49" splitType="Stretch">
+			<staticText>
+				<reportElement x="171" y="0" width="282" height="47" uuid="054a2832-2eca-47a1-ac0c-08cbeaf77329"/>
+				<textElement textAlignment="Center">
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[                      hola]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="460" splitType="Stretch"/>
+	</detail>
+	<pageFooter>
+		<band height="34" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

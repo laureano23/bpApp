@@ -1,0 +1,7 @@
+parameters:
+#    mbp_clientes.example.class: Mbp\ClientesBundle\Example
+
+services:
+#    mbp_clientes.example:
+#        class: %mbp_clientes.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

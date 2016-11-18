@@ -1,0 +1,1267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="recibos" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="807" leftMargin="15" rightMargin="20" topMargin="20" bottomMargin="20" uuid="faabb94c-b32d-4f38-913c-e824ee7dd96c">
+	<property name="ireport.zoom" value="1.3310000000000288"/>
+	<property name="ireport.x" value="467"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Table Dataset 1" uuid="4e2cc8af-8453-4a21-829a-59562f3c15a7">
+		<parameter name="periodo" class="java.lang.String"/>
+		<parameter name="mes" class="java.lang.String"/>
+		<parameter name="anio" class="java.lang.String"/>
+	</subDataset>
+	<scriptlet name="scriptlet1" class="net.sf.jasperreports.engine.JRDefaultScriptlet"/>
+	<parameter name="periodo" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="mes" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[11]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anio" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[2015]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["\\\\192.168.0.123\\metbp-test\\Metbp\\src\\Mbp\\PersonalBundle\\Reportes\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dirFirma" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     Recibos.`id` AS Recibos_id,
+     Recibos.`compensatorio` AS Recibos_compensatorio,
+     Recibos.`banco_id` AS Recibos_banco_id,
+     Recibos.`fechaPago` AS Recibos_fechaPago,
+     Recibos.`periodo` AS Recibos_periodo,
+     Recibos.`mes` AS Recibos_mes,
+     Recibos.`anio` AS Recibos_anio,
+     Recibos.`tipoPago` AS Recibos_tipoPago,
+     RecibosDetalle.`id` AS RecibosDetalle_id,
+     RecibosDetalle.`cantConceptoVar` AS RecibosDetalle_cantConceptoVar,
+     RecibosDetalle.`valorConceptoHist` AS RecibosDetalle_valorConceptoHist,
+     RecibosDetalle.`remunerativo` AS RecibosDetalle_remunerativo,
+     RecibosDetalle.`exento` AS RecibosDetalle_exento,
+     RecibosDetalle.`descuento` AS RecibosDetalle_descuento,
+     RecibosDetalles_CodigoSueldos.`recibosDetalles_id` AS RecibosDetalles_CodigoSueldos_recibosDetalles_id,
+     RecibosDetalles_CodigoSueldos.`codigoSueldos_id` AS RecibosDetalles_CodigoSueldos_codigoSueldos_id,
+     RecibosPersonal.`recibos_id` AS RecibosPersonal_recibos_id,
+     RecibosPersonal.`personal_id` AS RecibosPersonal_personal_id,
+     recibo_detallesRecibos.`recibo_id` AS recibo_detallesRecibos_recibo_id,
+     recibo_detallesRecibos.`recibosdetalle_id` AS recibo_detallesRecibos_recibosdetalle_id,
+     CodigoSueldos.`id` AS CodigoSueldos_id,
+     CodigoSueldos.`descripcion` AS CodigoSueldos_descripcion,
+     CodigoSueldos.`remunerativo` AS CodigoSueldos_remunerativo,
+     CodigoSueldos.`noRemunerativo` AS CodigoSueldos_noRemunerativo,
+     CodigoSueldos.`descuento` AS CodigoSueldos_descuento,
+     CodigoSueldos.`asignacion` AS CodigoSueldos_asignacion,
+     CodigoSueldos.`fijo` AS CodigoSueldos_fijo,
+     CodigoSueldos.`porcentaje` AS CodigoSueldos_porcentaje,
+     CodigoSueldos.`importe` AS CodigoSueldos_importe,
+     Bancos.`id` AS Bancos_id,
+     Bancos.`nombre` AS Bancos_nombre,
+     Personal.`idP` AS Personal_idP,
+     Personal.`nombre` AS Personal_nombre,
+     Personal.`localidad` AS Personal_localidad,
+     Personal.`categoria` AS Personal_categoria,
+     Personal.`documentoNum` AS Personal_documentoNum,
+     Personal.`fechaIngreso` AS Personal_fechaIngreso,
+     Personal.`cuil` AS Personal_cuil,
+     Personal.`antPorcentaje` AS Personal_antPorcentaje,
+     Personal.`tarea` AS Personal_tarea,
+     Personal.`antiguedad` AS Personal_antiguedad,
+     Categorias.`id` AS Categorias_id,
+     Categorias.`categoria` AS Categorias_categoria,
+     Categorias.`salario` AS Categorias_salario,
+     Categorias.`idSindicato` AS Categorias_idSindicato,
+     Sindicatos.`id` AS Sindicatos_id,
+     Sindicatos.`sindicato` AS Sindicatos_sindicato,
+     Personal.`tipoContratacion` AS Personal_tipoContratacion,
+     Recibos.`basicoHist` AS Recibos_basicoHist,
+     Recibos.`categoriaHist` AS Recibos_categoriaHist,
+     Recibos.`sindicatoHist` AS Recibos_sindicatoHist,
+     Personal.`compensatorio` AS Personal_compensatorio
+FROM
+     `RecibosDetalle` RecibosDetalle INNER JOIN `RecibosDetalles_CodigoSueldos` RecibosDetalles_CodigoSueldos ON RecibosDetalle.`id` = RecibosDetalles_CodigoSueldos.`recibosDetalles_id`
+     INNER JOIN `recibo_detallesRecibos` recibo_detallesRecibos ON RecibosDetalle.`id` = recibo_detallesRecibos.`recibosdetalle_id`
+     INNER JOIN `Recibos` Recibos ON recibo_detallesRecibos.`recibo_id` = Recibos.`id`
+     INNER JOIN `RecibosPersonal` RecibosPersonal ON Recibos.`id` = RecibosPersonal.`recibos_id`
+     INNER JOIN `Bancos` Bancos ON Recibos.`banco_id` = Bancos.`id`
+     INNER JOIN `Personal` Personal ON RecibosPersonal.`personal_id` = Personal.`idP`
+     INNER JOIN `Categorias` Categorias ON Personal.`categoria` = Categorias.`id`
+     INNER JOIN `Sindicatos` Sindicatos ON Categorias.`idSindicato` = Sindicatos.`id`
+     INNER JOIN `CodigoSueldos` CodigoSueldos ON RecibosDetalles_CodigoSueldos.`codigoSueldos_id` = CodigoSueldos.`id`
+WHERE
+     Recibos.`mes` = $P{mes}
+ AND Recibos.`anio` = $P{anio}
+ AND Recibos.`periodo` = $P{periodo}
+ AND Recibos.`compensatorio` = 1
+ORDER BY
+     Personal.`nombre` ASC,
+     CodigoSueldos.`remunerativo` DESC]]>
+	</queryString>
+	<field name="Recibos_id" class="java.lang.Integer"/>
+	<field name="Recibos_compensatorio" class="java.lang.Boolean"/>
+	<field name="Recibos_banco_id" class="java.lang.Integer"/>
+	<field name="Recibos_fechaPago" class="java.sql.Date"/>
+	<field name="Recibos_periodo" class="java.lang.Integer"/>
+	<field name="Recibos_mes" class="java.lang.Integer"/>
+	<field name="Recibos_anio" class="java.lang.Integer"/>
+	<field name="Recibos_tipoPago" class="java.lang.String"/>
+	<field name="RecibosDetalle_id" class="java.lang.Integer"/>
+	<field name="RecibosDetalle_cantConceptoVar" class="java.math.BigDecimal"/>
+	<field name="RecibosDetalle_valorConceptoHist" class="java.math.BigDecimal"/>
+	<field name="RecibosDetalle_remunerativo" class="java.math.BigDecimal"/>
+	<field name="RecibosDetalle_exento" class="java.math.BigDecimal"/>
+	<field name="RecibosDetalle_descuento" class="java.math.BigDecimal"/>
+	<field name="RecibosDetalles_CodigoSueldos_recibosDetalles_id" class="java.lang.Integer"/>
+	<field name="RecibosDetalles_CodigoSueldos_codigoSueldos_id" class="java.lang.Integer"/>
+	<field name="RecibosPersonal_recibos_id" class="java.lang.Integer"/>
+	<field name="RecibosPersonal_personal_id" class="java.lang.Integer"/>
+	<field name="recibo_detallesRecibos_recibo_id" class="java.lang.Integer"/>
+	<field name="recibo_detallesRecibos_recibosdetalle_id" class="java.lang.Integer"/>
+	<field name="CodigoSueldos_id" class="java.lang.Integer"/>
+	<field name="CodigoSueldos_descripcion" class="java.lang.String"/>
+	<field name="CodigoSueldos_remunerativo" class="java.lang.Boolean"/>
+	<field name="CodigoSueldos_noRemunerativo" class="java.lang.Boolean"/>
+	<field name="CodigoSueldos_descuento" class="java.lang.Boolean"/>
+	<field name="CodigoSueldos_asignacion" class="java.lang.Boolean"/>
+	<field name="CodigoSueldos_fijo" class="java.lang.Boolean"/>
+	<field name="CodigoSueldos_porcentaje" class="java.lang.Boolean"/>
+	<field name="CodigoSueldos_importe" class="java.math.BigDecimal"/>
+	<field name="Bancos_id" class="java.lang.Integer"/>
+	<field name="Bancos_nombre" class="java.lang.String"/>
+	<field name="Personal_idP" class="java.lang.Integer"/>
+	<field name="Personal_nombre" class="java.lang.String"/>
+	<field name="Personal_localidad" class="java.lang.Integer"/>
+	<field name="Personal_categoria" class="java.lang.Integer"/>
+	<field name="Personal_documentoNum" class="java.lang.Integer"/>
+	<field name="Personal_fechaIngreso" class="java.sql.Date"/>
+	<field name="Personal_cuil" class="java.lang.Long"/>
+	<field name="Personal_antPorcentaje" class="java.lang.Integer"/>
+	<field name="Personal_tarea" class="java.lang.String"/>
+	<field name="Personal_antiguedad" class="java.lang.Boolean"/>
+	<field name="Categorias_id" class="java.lang.Integer"/>
+	<field name="Categorias_categoria" class="java.lang.String"/>
+	<field name="Categorias_salario" class="java.math.BigDecimal"/>
+	<field name="Categorias_idSindicato" class="java.lang.Integer"/>
+	<field name="Sindicatos_id" class="java.lang.Integer"/>
+	<field name="Sindicatos_sindicato" class="java.lang.String"/>
+	<field name="Personal_tipoContratacion" class="java.lang.String"/>
+	<field name="Recibos_basicoHist" class="java.math.BigDecimal"/>
+	<field name="Recibos_categoriaHist" class="java.lang.String"/>
+	<field name="Recibos_sindicatoHist" class="java.lang.String"/>
+	<field name="Personal_compensatorio" class="java.math.BigDecimal"/>
+	<variable name="sumRem" class="java.lang.Float" resetType="Group" resetGroup="empleado" calculation="Sum">
+		<variableExpression><![CDATA[$F{CodigoSueldos_remunerativo} ? $F{RecibosDetalle_remunerativo} + $F{RecibosDetalle_exento} : $F{RecibosDetalle_exento}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="RecibosPersonal_recibos_id_SUM" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{RecibosPersonal_recibos_id}]]></variableExpression>
+	</variable>
+	<variable name="sumaDesc" class="java.lang.Float" resetType="Group" resetGroup="empleado" calculation="Sum">
+		<variableExpression><![CDATA[$F{CodigoSueldos_descuento} ? $F{RecibosDetalle_descuento} : 0]]></variableExpression>
+	</variable>
+	<variable name="totalNeto" class="java.lang.Float" resetType="Group" resetGroup="empleado">
+		<variableExpression><![CDATA[$V{sumRem} - $V{sumaDesc}]]></variableExpression>
+	</variable>
+	<group name="empleado">
+		<groupExpression><![CDATA[$F{Personal_nombre}]]></groupExpression>
+		<groupHeader>
+			<band height="216">
+				<rectangle radius="10">
+					<reportElement x="12" y="0" width="359" height="45" uuid="c1307a7d-1389-4088-b4de-ac5efe28e2f6"/>
+				</rectangle>
+				<textField>
+					<reportElement x="12" y="106" width="172" height="15" uuid="09ca1954-6edf-4fd0-b9a6-8c50a65f650b"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Recibos_tipoPago}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="39" y="0" width="100" height="15" uuid="83ada48f-a0c6-47b3-9887-ecb3b764269e"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Metalurgica BP S.R.L]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="39" y="30" width="117" height="15" uuid="356aa9d9-434c-4092-ae15-d700656af47a"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[CUIT: 33-67876743-9]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="39" y="15" width="172" height="15" uuid="ef1d17a2-93c3-4659-859b-53e1275f5244"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Ombu 3865 San Justo Buenos Aires]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="255" y="49" width="115" height="15" backcolor="#CCCCCC" uuid="adade2c9-a629-43f6-ba89-16a034394ae5"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[CUIL]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="12" y="49" width="243" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="0eb779bb-ec6f-4d58-a6cf-ab94898d071a"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Apellido y Nombres]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="223" y="165" width="147" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="1071106c-a585-4a01-9cf7-54ad3f9806f3"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Categoria]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="12" y="64" width="243" height="15" uuid="10078d3d-4e86-4651-8f92-180b4d4e3f63"/>
+					<box>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Personal_nombre}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="255" y="64" width="115" height="15" uuid="522d878a-7348-43d6-9a62-a792a38564d6"/>
+					<box>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Personal_cuil}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="223" y="180" width="147" height="15" uuid="abfae723-a8b7-46d6-b063-d70863e42d32"/>
+					<box>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Recibos_categoriaHist}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="12" y="91" width="172" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="307fa1c6-976e-436a-93d3-1d9acf34cc59"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Periodo de pago]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="184" y="91" width="119" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="6b978bbe-d964-43a2-91b9-d39f498d7f6a"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Tarea]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="184" y="106" width="119" height="15" uuid="7770ef91-4ea7-4f2c-9c8d-4b595cf23b8e"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Personal_tarea}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="12" y="129" width="213" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="1df0e85e-aa52-481d-824d-cc0e46cb226d"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Tipo de contratacion]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="225" y="129" width="84" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="096a0c1c-3b76-45f7-96cd-53d2c84277a7"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Fecha Ingreso]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="309" y="129" width="62" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="bcaeea7f-ff2c-47d7-aa71-72b1ba08fd0e"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Antiguedad]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement x="225" y="144" width="84" height="15" uuid="39115ca0-c314-48ac-ba2e-08773eb53d32"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Personal_fechaIngreso}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0" isBlankWhenNull="true">
+					<reportElement x="309" y="144" width="62" height="15" uuid="996e0a9c-e60d-4a63-b0a8-e56a0e56d62a"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[((((new Date().getTime() - $F{Personal_fechaIngreso}.getTime()) / (1000*60*60*24)) / 365)).setScale(0, RoundingMode.DOWN)]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="12" y="201" width="127" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="e07aa435-8dc4-4f84-88db-6473c4b944e5"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Concepto]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="139" y="201" width="33" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="6a1dce29-d3e0-41fd-b42a-a956c1c0c009"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Dias/Hs]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="172" y="201" width="29" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="76e99c4d-1086-414d-bbd2-f5c2d1ea8832"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Porc.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="201" y="201" width="55" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="5ed1f45a-88f9-4f06-8157-634fc8261d4f"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Rem. Suj. Ret.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="256" y="201" width="62" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="717829d9-1e96-4442-be5d-93574931b6b0"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Rem. Exentas]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="318" y="201" width="53" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="4ce9c308-ae41-4c68-af7c-cbb85b1dc06b"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Descuentos]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="12" y="144" width="213" height="15" uuid="7f5357ac-b5f1-4d61-bdc6-486b8985b2af"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Personal_tipoContratacion}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="303" y="91" width="68" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="24b70b61-4023-41c5-b372-be12bab508c9"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Rem. Basica]]></text>
+				</staticText>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement x="303" y="106" width="68" height="15" uuid="041b08b0-6329-4f04-abcb-ba1ff96a09c6"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Recibos_basicoHist}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="12" y="165" width="127" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="d3e43044-3af6-45bf-bc33-1d61a07b98b5"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Banco]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="139" y="165" width="84" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="6c733e9a-675f-4cb4-b96a-5409f643e469"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Fecha Deposito]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement x="139" y="180" width="84" height="15" uuid="fef63fe6-6ebb-47a3-b2f7-5846f6ae04f6"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Recibos_fechaPago}]]></textFieldExpression>
+				</textField>
+				<rectangle radius="10">
+					<reportElement x="443" y="0" width="359" height="45" uuid="abfcf11b-635b-4832-9f6f-0c5fa2ac608e"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="470" y="0" width="100" height="15" uuid="499824e2-6ed8-4eeb-bcb5-48ddfae768cf"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Metalurgica BP S.R.L]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="470" y="15" width="172" height="15" uuid="9022d3ba-a409-432f-a29d-44e5247a3c82"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Ombu 3865 San Justo Buenos Aires]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="470" y="30" width="117" height="15" uuid="d312c106-b9dd-4b02-949e-0d1236a1f42a"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[CUIT: 33-67876743-9]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="443" y="201" width="127" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="8ad8fa87-fc00-48fa-921c-11b4f7cf8bba"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Concepto]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="687" y="201" width="62" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="3be29424-8b7b-45d8-b1fc-de4327f4cc69"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Rem. Exentas]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="632" y="201" width="55" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="25cd4215-3154-4037-bf59-d56006e041d8"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Rem. Suj. Ret.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="570" y="201" width="33" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="b2bbbd5a-43a8-436c-8b6f-fee8b0b9939a"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Dias/Hs]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="749" y="201" width="53" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="3fb277d2-33d7-47ae-a89e-e2b4b5b01cd3"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Descuentos]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="603" y="201" width="29" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="9e50939b-7463-4920-9d5e-601d7db550e8"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Porc.]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement x="12" y="180" width="127" height="15" uuid="b10efaea-fa9b-4730-a8ce-cf8ad18ebdb9"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Bancos_nombre}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="443" y="49" width="243" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="9d6ae1a0-c1d8-457d-bb0e-983d5b0158c5"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Apellido y Nombres]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="686" y="49" width="115" height="15" backcolor="#CCCCCC" uuid="1ef25917-b487-4a5a-94dc-e54926c81789"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[CUIL]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="686" y="64" width="115" height="15" uuid="cd859297-b7e8-44e3-8110-d4e6a42d75d7"/>
+					<box>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Personal_cuil}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="443" y="64" width="243" height="15" uuid="0142eadc-3ac0-4323-a039-3e303e1d640f"/>
+					<box>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Personal_nombre}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="443" y="91" width="172" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="66d1a90c-e7cc-4d0f-a9bc-c0cb6e1e8d5d"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Periodo de pago]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="734" y="91" width="68" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="f7d0fd0f-b968-41ae-959b-9237a2be054f"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Rem. Basica]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="615" y="91" width="119" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="78da6489-0d6f-4717-8ff9-bac15b6d42f4"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Tarea]]></text>
+				</staticText>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement x="734" y="106" width="68" height="15" uuid="67e22553-3d7a-4fc4-90bd-174943ba7583"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Recibos_basicoHist}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="615" y="106" width="119" height="15" uuid="ece71672-ac31-4996-b6be-b95301b8de56"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Personal_tarea}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0" isBlankWhenNull="true">
+					<reportElement x="740" y="144" width="62" height="15" uuid="a0ec8db4-aa62-461e-ae55-3fd8d862c32f"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[((((new Date().getTime() - $F{Personal_fechaIngreso}.getTime()) / (1000*60*60*24)) / 365)).setScale(0, RoundingMode.DOWN)]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="443" y="129" width="213" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="5397cfee-47da-4b78-81e1-bb5e8caa0b83"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Tipo de contratacion]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="656" y="129" width="84" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="21466d93-3d0b-417d-a5f5-9959fee3bf98"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Fecha Ingreso]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="443" y="144" width="213" height="15" uuid="7e1f8f05-a24f-462a-9979-75bcd436391b"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Personal_tipoContratacion}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="740" y="129" width="62" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="0a81cca3-ff9c-4862-b0f7-3c46b2da4007"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Antiguedad]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement x="656" y="144" width="84" height="15" uuid="12b12f7b-d47b-4b25-8a9a-074f6e3623b3"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Personal_fechaIngreso}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="654" y="165" width="147" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="9e8f0792-1263-4906-a856-313f6b070ddf"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Categoria]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="443" y="165" width="127" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="bd851784-d4ca-4f4c-80b9-3217afd6d977"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Banco]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="654" y="180" width="147" height="15" uuid="ff348d02-943c-4967-ad53-61cbca971f81"/>
+					<box>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Recibos_categoriaHist}]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement x="443" y="180" width="127" height="15" uuid="f8dbe211-6fa3-44d1-a1c3-0612b3603269"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Bancos_nombre}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="570" y="165" width="84" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="889abd4b-09b3-43fc-a879-1c3e4acd5480"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Fecha Deposito]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="443" y="106" width="172" height="15" uuid="32549db9-49c8-4c24-b4d4-cc41f3f01c52"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Recibos_tipoPago}]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement x="570" y="180" width="84" height="15" uuid="112f94a4-a371-4792-b233-7605f99df956"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Recibos_fechaPago}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="250" y="0" width="53" height="15" uuid="b738f39c-f375-417a-8b2e-1a7f67951ccb"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Recibo N°:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="303" y="0" width="67" height="15" uuid="42bcd1e8-813c-44bd-89b2-aab168a7a2e8"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Recibos_id}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="734" y="0" width="67" height="15" uuid="dfefb6cd-5301-4980-a45c-793df127ff73"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Recibos_id}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="681" y="0" width="53" height="15" uuid="49b384ed-4dca-4f72-b9ac-70cb6b415bfa"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Recibo N°:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="305" y="15" width="66" height="30" uuid="8685be45-332f-4d96-93cf-addced77f3ea"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="22"/>
+					</textElement>
+					<text><![CDATA[C]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="736" y="15" width="66" height="30" uuid="883fb7b2-51d9-4515-a80f-3263a13731f1"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="22"/>
+					</textElement>
+					<text><![CDATA[C]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField evaluationTime="Auto" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="318" y="0" width="53" height="15" uuid="9225b8ec-7d7a-4a2c-a6b5-5f12a852fc84"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CodigoSueldos_descuento} ? $F{RecibosDetalle_descuento} : ""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="12" y="0" width="127" height="15" uuid="701a3094-0c96-4633-b6cb-f828be2a6948"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CodigoSueldos_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="201" y="0" width="55" height="15" uuid="7d769a83-2121-4360-9ecc-6367651dde09"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CodigoSueldos_remunerativo} ? $F{RecibosDetalle_remunerativo} : ""]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="256" y="0" width="62" height="15" uuid="b5d3a40c-1c1d-4329-9c65-977de43bf8e9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CodigoSueldos_noRemunerativo} ? $F{RecibosDetalle_exento} : ""]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="139" y="0" width="33" height="15" uuid="9185b081-8f2d-4224-9e6d-3fc0d68e8847"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{RecibosDetalle_cantConceptoVar}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="172" y="0" width="29" height="15" uuid="8fbfc411-b6ba-40a2-a245-ff16de657b9c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="603" y="0" width="29" height="15" uuid="b405b68a-8527-4527-adde-0e941235c389"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="443" y="0" width="127" height="15" uuid="ad4bdd8a-d0c3-43a4-bb73-7870add699fb"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CodigoSueldos_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="570" y="0" width="33" height="15" uuid="40a8a81a-4bc6-498b-842c-d0227eca9875"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{RecibosDetalle_cantConceptoVar}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="632" y="0" width="55" height="15" uuid="4a5fb93d-fa48-4c84-b99f-86d2d4b14850"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CodigoSueldos_remunerativo} ? $F{RecibosDetalle_remunerativo} : ""]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="687" y="0" width="62" height="15" uuid="e650d994-c6fd-4f90-a449-430d9b74b15f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CodigoSueldos_noRemunerativo} ? $F{RecibosDetalle_exento} : ""]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Auto" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="748" y="0" width="53" height="15" uuid="d3960984-09fe-46e2-94f0-08ad0a67e446"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CodigoSueldos_descuento} ? $F{RecibosDetalle_descuento} : ""]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="40">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="256" y="0" width="62" height="20" uuid="84ddcb99-bed2-4112-9daa-76d785f67371"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{sumRem}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="211" y="0" width="45" height="20" uuid="03294452-0c6d-40d1-b4b0-a7112d52d665"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Bruto]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement x="318" y="0" width="53" height="20" uuid="7606c22a-9d11-464c-a2e5-b66be6b9e84f"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{sumaDesc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="256" y="20" width="62" height="20" uuid="cd801b85-f2c7-4672-a94f-cea7c20d671f"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Total Neto]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement x="318" y="20" width="53" height="20" uuid="5ae55bcf-6093-43a4-abf5-595786dd1563"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{totalNeto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="13" y="0" width="198" height="40" forecolor="#000000" backcolor="#CCCCCC" uuid="107e54e3-8d5d-470f-94a7-4debc58829c7"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[Recibi de la firma cuyo rubro se indica arriba el importe
+neto de esta liquidación en pago de mi remuneración
+correspondiente al periodo arriba indicado y duplicado
+de la misma.]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement x="749" y="20" width="53" height="20" uuid="8793acc7-c4ce-42ff-973e-7af213498c1f"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{totalNeto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement x="749" y="0" width="53" height="20" uuid="f2c0598a-88cd-402d-afdf-8702d3164f62"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{sumaDesc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="642" y="0" width="45" height="20" uuid="275493e7-64ab-4f52-aa29-cd657585576a"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Bruto]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="687" y="0" width="62" height="20" uuid="eaa34891-feec-413e-ab03-3799d20ebba5"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{sumRem}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="444" y="0" width="198" height="40" forecolor="#000000" backcolor="#CCCCCC" uuid="35180ac3-99b4-4541-8af3-60d0d612549f"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[Recibi de la firma cuyo rubro se indica arriba el importe
+neto de esta liquidación en pago de mi remuneración
+correspondiente al periodo arriba indicado y duplicado
+de la misma.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="687" y="20" width="62" height="20" uuid="25036474-4711-419d-8e42-c8fb8293ca37"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Total Neto]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="124" splitType="Stretch">
+			<staticText>
+				<reportElement x="39" y="104" width="117" height="16" uuid="f98b5bbd-b4ab-490e-ba21-6572caa70e9b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Firma del empleador]]></text>
+			</staticText>
+			<line>
+				<reportElement x="12" y="100" width="160" height="1" uuid="4e01f6cd-b8cd-4607-b790-83802714ffcf"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="470" y="104" width="100" height="16" uuid="09b6c367-895e-49cf-a469-08a3d6fd79f2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Firma del empleado]]></text>
+			</staticText>
+			<line>
+				<reportElement x="443" y="100" width="160" height="1" uuid="5f1b3d29-a8bc-4f44-a2a3-267e7ecff340"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<image scaleImage="FillFrame" onErrorType="Blank">
+				<reportElement x="12" y="10" width="127" height="69" uuid="738475db-e14d-4143-9599-80061c5490ed"/>
+				<imageExpression><![CDATA[$P{dirFirma}]]></imageExpression>
+			</image>
+		</band>
+	</pageFooter>
+</jasperReport>

@@ -1,0 +1,374 @@
+<?php
+namespace Mbp\ArticulosBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * Articulos
+ *
+ * @ORM\Table(name="articulos")
+ * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Mbp\ArticulosBundle\Entity\ArticulosRepository")
+ */
+class Articulos
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="codigo", type="string", length=50, nullable=false, unique=true)
+	 * @Assert\NotNull()
+	 * @Assert\Length(
+     *      max = 50
+	 * )
+     */
+    private $codigo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descripcion", type="string", length=250, nullable=false)
+	 * @Assert\NotNull()
+	 * @Assert\NotBlank()
+	 * @Assert\Length(
+     *      max = 250
+	 * )
+     */
+    private $descripcion;
+	
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="unidad", type="string", length=25, nullable=false)
+	 * @Assert\NotNull()
+	 * @Assert\Length(
+     *      max = 25
+	 * )
+     */
+    private $unidad;
+	
+	/**
+     * @var decimal
+     *
+     * @ORM\Column(name="costo", type="decimal", precision=11, scale=4, nullable=false)
+	 * @Assert\Range(
+     *      min = 0,
+	 * )
+     */
+    private $costo=0;
+	
+	/**
+     * @var decimal
+     *
+     * @ORM\Column(name="iva", type="decimal", precision=4, scale=2, nullable=true)
+	 * @Assert\Range(
+     *      min = 0,
+	 * 		max = 100
+	 * )
+     */
+    private $iva;
+	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="moneda", type="boolean")
+	 * @Assert\Range(
+     *      min = 0,
+     *      max = 1
+	 * )
+     */
+    private $moneda=0;
+	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="monedaPrecio", type="boolean")
+	 * @Assert\Range(
+     *      min = 0,
+     *      max = 1
+	 * )
+     */
+    private $monedaPrecio=0;
+	
+	/**
+     * @var decimal
+     *
+     * @ORM\Column(name="precio", type="decimal", precision=11, scale=4, nullable=false)
+	 * @Assert\Range(
+     *      min = 0,
+	 * )
+     */
+    private $precio=0;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="idArticulos", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+	
+	/**
+     * @var \Mbp\ArticulosBundle\Entity\Familia
+     *
+     * @ORM\ManyToOne(targetEntity="Mbp\ArticulosBundle\Entity\Familia")
+     * @ORM\JoinColumn(name="familiaId", referencedColumnName="id", unique=false)	 
+     */
+    private $familiaId;
+	
+	/**
+     * @var \Mbp\ArticulosBundle\Entity\SubFamilia
+     *
+     * @ORM\ManyToOne(targetEntity="Mbp\ArticulosBundle\Entity\SubFamilia")
+     * @ORM\JoinColumn(name="subFamiliaId", referencedColumnName="id", unique=false)	 
+     */
+    private $subFamiliaId;
+
+
+    /**
+     * Set codigo
+     *
+     * @param string $codigo
+     * @return Articulos
+     */
+    public function setCodigo($codigo)
+    {
+        $this->codigo = $codigo;
+
+        return $this;
+    }
+
+    /**
+     * Get codigo
+     *
+     * @return string 
+     */
+    public function getCodigo()
+    {
+        return $this->codigo;
+    }
+
+    /**
+     * Set descripcion
+     *
+     * @param string $descripcion
+     * @return Articulos
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+
+        return $this;
+    }
+
+    /**
+     * Get descripcion
+     *
+     * @return string 
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+	
+	/**
+     * Set unidad
+     *
+     * @param string $unidad
+     * @return Articulos
+     */
+    public function setUnidad($unidad)
+    {
+        $this->unidad = $unidad;
+
+        return $this;
+    }
+
+    /**
+     * Get unidad
+     *
+     * @return string 
+     */
+    public function getUnidad()
+    {
+        return $this->unidad;
+    }
+	
+	/**
+     * Set costo
+     *
+     * @param float $costo
+     * @return Articulos
+     */
+    public function setCosto($costo)
+    {
+        $this->costo = $costo;
+
+        return $this;
+    }
+
+    /**
+     * Get costo
+     *
+     * @return float 
+     */
+    public function getCosto()
+    {
+        return $this->costo;
+    }
+
+    /**
+     * Get id
+     *
+     * @return float 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set moneda
+     *
+     * @param boolean $moneda
+     *
+     * @return Articulos
+     */
+    public function setMoneda($moneda)
+    {
+        $this->moneda = $moneda;
+
+        return $this;
+    }
+
+    /**
+     * Get monedaPrecio
+     *
+     * @return boolean
+     */
+    public function getMonedaPrecio()
+    {
+        return $this->monedaPrecio;
+    }
+	
+	/**
+     * Set monedaPrecio
+     *
+     * @param boolean $monedaPrecio
+     *
+     * @return Articulos
+     */
+    public function setMonedaPrecio($monedaPrecio)
+    {
+        $this->monedaPrecio = $monedaPrecio;
+
+        return $this;
+    }
+
+    /**
+     * Get moneda
+     *
+     * @return boolean
+     */
+    public function getMoneda()
+    {
+        return $this->moneda;
+    }
+
+    /**
+     * Set precio
+     *
+     * @param string $precio
+     *
+     * @return Articulos
+     */
+    public function setPrecio($precio)
+    {
+        $this->precio = $precio;
+
+        return $this;
+    }
+
+    /**
+     * Get precio
+     *
+     * @return string
+     */
+    public function getPrecio()
+    {
+        return $this->precio;
+    }
+
+    /**
+     * Set familiaId
+     *
+     * @param \Mbp\ArticulosBundle\Entity\Familia $familiaId
+     *
+     * @return Articulos
+     */
+    public function setFamiliaId(\Mbp\ArticulosBundle\Entity\Familia $familiaId = null)
+    {
+        $this->familiaId = $familiaId;
+
+        return $this;
+    }
+
+    /**
+     * Get familiaId
+     *
+     * @return \Mbp\ArticulosBundle\Entity\Familia
+     */
+    public function getFamiliaId()
+    {
+        return $this->familiaId;
+    }
+
+    /**
+     * Set subFamiliaId
+     *
+     * @param \Mbp\ArticulosBundle\Entity\SubFamilia $subFamiliaId
+     *
+     * @return Articulos
+     */
+    public function setSubFamiliaId(\Mbp\ArticulosBundle\Entity\SubFamilia $subFamiliaId = null)
+    {
+        $this->subFamiliaId = $subFamiliaId;
+
+        return $this;
+    }
+
+    /**
+     * Get subFamiliaId
+     *
+     * @return \Mbp\ArticulosBundle\Entity\SubFamilia
+     */
+    public function getSubFamiliaId()
+    {
+        return $this->subFamiliaId;
+    }
+
+    /**
+     * Set iva
+     *
+     * @param string $iva
+     *
+     * @return Articulos
+     */
+    public function setIva($iva)
+    {
+        $this->iva = $iva;
+
+        return $this;
+    }
+
+    /**
+     * Get iva
+     *
+     * @return string
+     */
+    public function getIva()
+    {
+        return $this->iva;
+    }
+}

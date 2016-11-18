@@ -1,0 +1,7 @@
+parameters:
+#    mbp_sencha.example.class: Mbp\SenchaBundle\Example
+
+services:
+#    mbp_sencha.example:
+#        class: %mbp_sencha.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

@@ -1,0 +1,138 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: doctrine_extensions.yml }
+    - { resource: "@MbpArticulosBundle/Resources/config/services.yml" }
+    - { resource: "@MbpFinanzasBundle/Resources/config/services.yml" }
+
+framework:
+    #esi:             ~
+    translator:      { fallback: "%locale%" }
+    secret:          "%secret%"
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+        #assets_version: SomeVersionScheme
+    default_locale:  "%locale%"
+    trusted_hosts:   ~
+    trusted_proxies: ~
+    session:
+        # handler_id set to null will use default session handler from php.ini
+        handler_id:  ~
+    fragments:       ~
+    http_method_override: true
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+
+# Assetic Configuration
+assetic:
+    debug:          "%kernel.debug%"
+    use_controller: false
+    bundles:        [ ]
+    #java: /usr/bin/java
+    filters:
+        cssrewrite: ~
+        #closure:
+        #    jar: "%kernel.root_dir%/Resources/java/compiler.jar"
+        #yui_css:
+        #    jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        default_connection: default
+        connections:
+          default:
+            driver:   "%database_driver%"
+            host:     "%database_host%"
+            port:     "%database_port%"
+            dbname:   "%database_name%"
+            user:     "%database_user%"
+            password: "%database_password%"
+            charset:  UTF8
+          
+          web:
+            driver:   "%database_driver2%"
+            host:     "%database_host2%"
+            port:     "%database_port2%"
+            dbname:   "%database_name2%"
+            user:     "%database_user2%"
+            password: "%database_password2%"
+            charset:  UTF8
+            # if using pdo_sqlite as your database driver, add the path in parameters.yml
+            # e.g. database_path: "%kernel.root_dir%/data/data.db3"
+            # path:     "%database_path%"
+
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        entity_managers:
+            default:
+                #auto_mapping: true
+                # ...
+                connection: default
+                dql:
+                    numeric_functions:
+                        rand:        Mapado\MysqlDoctrineFunctions\DQL\MysqlRand
+                        round:       Mapado\MysqlDoctrineFunctions\DQL\MysqlRound
+                    datetime_functions:
+                        date:        Mapado\MysqlDoctrineFunctions\DQL\MysqlDate
+                        date_format: Mapado\MysqlDoctrineFunctions\DQL\MysqlDateFormat
+                mappings:
+                    tree:
+                        type: annotation
+                        alias: Gedmo
+                        prefix: Gedmo\Tree\Entity
+                        dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity"
+                    MbpArticulosBundle: ~
+                    MbpCalidadBundle: ~
+                    MbpClientesBundle: ~
+                    MbpComprasBundle: ~
+                    MbpFinanzasBundle: ~
+                    MbpPersonalBundle: ~
+                    MbpProduccionBundle: ~
+                    MbpProveedoresBundle: ~    
+                    MbpSecurityBundle: ~
+                    MbpSenchaBundle: ~  
+            web:
+                connection: web
+                mappings:
+                    MbpWebBundle: ~        
+# Swiftmailer Configuration
+swiftmailer:
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+    spool:     { type: memory }
+    auth_mode: login
+    encryption: null
+    port: "%mailer_port%"
+
+services:
+   get_set_method_normalizer:
+      class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
+      tags:
+         - { name: serializer.normalizer }
+   mbp.calculo:
+     class: Mbp\ProduccionBundle\Clases\AceiteIntercooler\Calculo
+     arguments: [ @doctrine.orm.entity_manager, @request_stack ]
+   reporteador:
+     class: Mbp\SenchaBundle\Librerias\Reporteador
+     arguments: ['%driver%', '%user%', '%password%']
+   programacion:
+     class: Mbp\ProduccionBundle\Clases\Programacion
+     arguments: [ @doctrine.orm.entity_manager ]
+   calculoConceptos:
+     class: Mbp\PersonalBundle\Clases\CalculosConceptos
+     arguments: [ @doctrine.orm.entity_manager ]  
+parameters:
+   driver: com.mysql.jdbc.Driver
+   user: root
+   password: logged07

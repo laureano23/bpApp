@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LibroSueldos" language="groovy" pageWidth="595" pageHeight="842" columnWidth="480" leftMargin="90" rightMargin="25" topMargin="20" bottomMargin="20" uuid="d50e8f88-c6e0-49d2-9334-cd40f9c3d6a6">
+	<property name="ireport.zoom" value="1.771561000000022"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="40"/>
+	<parameter name="anioHasta" class="java.lang.Integer"/>
+	<parameter name="mesDesde" class="java.lang.Integer"/>
+	<parameter name="periodoDesde" class="java.lang.Integer"/>
+	<parameter name="anioDesde" class="java.lang.Integer"/>
+	<parameter name="mesHasta" class="java.lang.Integer"/>
+	<parameter name="compensatorio" class="java.lang.String"/>
+	<parameter name="periodoHasta" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT
+     Recibos.`id` AS Recibos_id,
+     Recibos.`compensatorio` AS Recibos_compensatorio,
+     Recibos.`banco_id` AS Recibos_banco_id,
+     Recibos.`fechaPago` AS Recibos_fechaPago,
+     Recibos.`periodo` AS Recibos_periodo,
+     Recibos.`mes` AS Recibos_mes,
+     Recibos.`anio` AS Recibos_anio,
+     Recibos.`tipoPago` AS Recibos_tipoPago,
+     RecibosDetalle.`id` AS RecibosDetalle_id,
+     RecibosDetalle.`cantConceptoVar` AS RecibosDetalle_cantConceptoVar,
+     RecibosDetalle.`valorConceptoHist` AS RecibosDetalle_valorConceptoHist,
+     RecibosDetalle.`remunerativo` AS RecibosDetalle_remunerativo,
+     RecibosDetalle.`exento` AS RecibosDetalle_exento,
+     RecibosDetalle.`descuento` AS RecibosDetalle_descuento,
+     RecibosPersonal.`recibos_id` AS RecibosPersonal_recibos_id,
+     RecibosPersonal.`personal_id` AS RecibosPersonal_personal_id,
+     recibo_detallesRecibos.`recibo_id` AS recibo_detallesRecibos_recibo_id,
+     recibo_detallesRecibos.`recibosdetalle_id` AS recibo_detallesRecibos_recibosdetalle_id,
+     Personal.`idP` AS Personal_idP,
+     Personal.`nombre` AS Personal_nombre,
+     Personal.`localidad` AS Personal_localidad,
+     Personal.`documentoNum` AS Personal_documentoNum,
+     Personal.`fechaIngreso` AS Personal_fechaIngreso,
+     Personal.`cuil` AS Personal_cuil,
+     CodigoSueldos.`id` AS CodigoSueldos_id,
+     CodigoSueldos.`descripcion` AS CodigoSueldos_descripcion,
+     RecibosDetalles_CodigoSueldos.`recibosDetalles_id` AS RecibosDetalles_CodigoSueldos_recibosDetalles_id,
+     RecibosDetalles_CodigoSueldos.`codigoSueldos_id` AS RecibosDetalles_CodigoSueldos_codigoSueldos_id,
+     Recibos.`basicoHist` AS Recibos_basicoHist,
+     Recibos.`categoriaHist` AS Recibos_categoriaHist,
+     Recibos.`sindicatoHist` AS Recibos_sindicatoHist,
+     Recibos.`domicilio` AS Recibos_domicilio,
+     Recibos.`eCivil` AS Recibos_eCivil,
+     Recibos.`obraSocial` AS Recibos_obraSocial,
+     Personal.`nacionalidad` AS Personal_nacionalidad,
+     Personal.`fechaNacimiento` AS Personal_fechaNacimiento,
+     Recibos.`tarea` AS Recibos_tarea,
+     Recibos.`antiguedad` AS Recibos_antiguedad
+FROM
+     `Recibos` Recibos INNER JOIN `RecibosPersonal` RecibosPersonal ON Recibos.`id` = RecibosPersonal.`recibos_id`
+     INNER JOIN `recibo_detallesRecibos` recibo_detallesRecibos ON Recibos.`id` = recibo_detallesRecibos.`recibo_id`
+     INNER JOIN `RecibosDetalle` RecibosDetalle ON recibo_detallesRecibos.`recibosdetalle_id` = RecibosDetalle.`id`
+     INNER JOIN `RecibosDetalles_CodigoSueldos` RecibosDetalles_CodigoSueldos ON RecibosDetalle.`id` = RecibosDetalles_CodigoSueldos.`recibosDetalles_id`
+     INNER JOIN `CodigoSueldos` CodigoSueldos ON RecibosDetalles_CodigoSueldos.`codigoSueldos_id` = CodigoSueldos.`id`
+     INNER JOIN `Personal` Personal ON RecibosPersonal.`personal_id` = Personal.`idP`
+WHERE
+     Recibos.`mes` BETWEEN $P{mesDesde} AND $P{mesHasta}
+ AND Recibos.`anio` BETWEEN $P{anioDesde} AND $P{anioHasta}
+ AND Recibos.`periodo` BETWEEN $P{periodoDesde} AND $P{periodoHasta}
+ AND Recibos.`compensatorio` = $P{compensatorio}
+ORDER BY
+     Personal.`nombre` ASC,
+     RecibosDetalle.`remunerativo` DESC]]>
+	</queryString>
+	<field name="Recibos_id" class="java.lang.Integer"/>
+	<field name="Recibos_compensatorio" class="java.lang.Boolean"/>
+	<field name="Recibos_banco_id" class="java.lang.Integer"/>
+	<field name="Recibos_fechaPago" class="java.sql.Date"/>
+	<field name="Recibos_periodo" class="java.lang.Integer"/>
+	<field name="Recibos_mes" class="java.lang.Integer"/>
+	<field name="Recibos_anio" class="java.lang.Integer"/>
+	<field name="Recibos_tipoPago" class="java.lang.String"/>
+	<field name="RecibosDetalle_id" class="java.lang.Integer"/>
+	<field name="RecibosDetalle_cantConceptoVar" class="java.math.BigDecimal"/>
+	<field name="RecibosDetalle_valorConceptoHist" class="java.math.BigDecimal"/>
+	<field name="RecibosDetalle_remunerativo" class="java.math.BigDecimal"/>
+	<field name="RecibosDetalle_exento" class="java.math.BigDecimal"/>
+	<field name="RecibosDetalle_descuento" class="java.math.BigDecimal"/>
+	<field name="RecibosPersonal_recibos_id" class="java.lang.Integer"/>
+	<field name="RecibosPersonal_personal_id" class="java.lang.Integer"/>
+	<field name="recibo_detallesRecibos_recibo_id" class="java.lang.Integer"/>
+	<field name="recibo_detallesRecibos_recibosdetalle_id" class="java.lang.Integer"/>
+	<field name="Personal_idP" class="java.lang.Integer"/>
+	<field name="Personal_nombre" class="java.lang.String"/>
+	<field name="Personal_localidad" class="java.lang.Integer"/>
+	<field name="Personal_documentoNum" class="java.lang.Integer"/>
+	<field name="Personal_fechaIngreso" class="java.sql.Date"/>
+	<field name="Personal_cuil" class="java.lang.Long"/>
+	<field name="CodigoSueldos_id" class="java.lang.Integer"/>
+	<field name="CodigoSueldos_descripcion" class="java.lang.String"/>
+	<field name="RecibosDetalles_CodigoSueldos_recibosDetalles_id" class="java.lang.Integer"/>
+	<field name="RecibosDetalles_CodigoSueldos_codigoSueldos_id" class="java.lang.Integer"/>
+	<field name="Recibos_basicoHist" class="java.math.BigDecimal"/>
+	<field name="Recibos_categoriaHist" class="java.lang.String"/>
+	<field name="Recibos_sindicatoHist" class="java.lang.String"/>
+	<field name="Recibos_domicilio" class="java.lang.String"/>
+	<field name="Recibos_eCivil" class="java.lang.String"/>
+	<field name="Recibos_obraSocial" class="java.lang.String"/>
+	<field name="Personal_nacionalidad" class="java.lang.String"/>
+	<field name="Personal_fechaNacimiento" class="java.sql.Date"/>
+	<field name="Recibos_tarea" class="java.lang.String"/>
+	<field name="Recibos_antiguedad" class="java.lang.Integer"/>
+	<variable name="sumaRem" class="java.lang.Float" resetType="Group" resetGroup="header" calculation="Sum">
+		<variableExpression><![CDATA[$F{RecibosDetalle_remunerativo}]]></variableExpression>
+	</variable>
+	<variable name="sumaNoRem" class="java.lang.Float" resetType="Group" resetGroup="header" calculation="Sum">
+		<variableExpression><![CDATA[$F{RecibosDetalle_exento}]]></variableExpression>
+	</variable>
+	<variable name="sumaDesc" class="java.lang.Float" resetType="Group" resetGroup="header" calculation="Sum">
+		<variableExpression><![CDATA[$F{RecibosDetalle_descuento}]]></variableExpression>
+	</variable>
+	<variable name="neto" class="java.lang.Float">
+		<variableExpression><![CDATA[$V{sumaRem} - $V{sumaDesc}]]></variableExpression>
+	</variable>
+	<variable name="totalNeto" class="java.lang.Float" incrementType="Group" incrementGroup="header" calculation="Sum">
+		<variableExpression><![CDATA[$V{neto}]]></variableExpression>
+	</variable>
+	<variable name="totalBruto" class="java.lang.Float" incrementType="Group" incrementGroup="header" calculation="Sum">
+		<variableExpression><![CDATA[$V{sumaRem} + $V{sumaNoRem}]]></variableExpression>
+	</variable>
+	<group name="header" keepTogether="true">
+		<groupExpression><![CDATA[$F{Personal_nombre}]]></groupExpression>
+		<groupHeader>
+			<band height="84">
+				<rectangle>
+					<reportElement mode="Transparent" x="0" y="24" width="480" height="45" uuid="59d7b695-ca50-40a6-a8fe-7cce88d4eaeb"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="0" y="38" width="57" height="15" uuid="a87aaa34-1e4b-4269-b692-d14d28bf4e13"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Categoria:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="135" y="38" width="46" height="15" uuid="ee863e89-b704-4e8e-9b11-fc225a3a683a"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Domicilio:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="204" y="24" width="26" height="15" uuid="0856e545-9d45-4405-80df-889e0ceb803d"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="false"/>
+					</textElement>
+					<text><![CDATA[CUIL:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="292" y="24" width="21" height="15" uuid="44f842ea-fa5f-434d-b189-93c1baafcd6f"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="false"/>
+					</textElement>
+					<text><![CDATA[DNI:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="147" y="68" width="57" height="15" uuid="158541e9-cb4e-45dd-abe2-12e4afe341eb"/>
+					<box>
+						<bottomPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[V. unitario]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="204" y="68" width="97" height="15" uuid="84b93ef0-a51c-4ef4-b716-11bb55e79917"/>
+					<box>
+						<bottomPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Remunerativos]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="301" y="68" width="118" height="15" uuid="de5c39ce-fc63-4781-abac-a2435cd513cb"/>
+					<box>
+						<bottomPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[No Remunerativos]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="419" y="68" width="61" height="15" uuid="0a47943c-1d16-4725-9a30-da20543d121d"/>
+					<box>
+						<bottomPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Descuentos]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="68" width="147" height="15" uuid="880698fc-b03b-4d82-ae5b-2d65269b0c19"/>
+					<box>
+						<bottomPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Concepto]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="57" y="24" width="146" height="15" uuid="be3dc003-22d0-4828-a030-8c5c34add923"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Personal_nombre}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="57" y="38" width="78" height="15" uuid="ae7f49f2-a89d-41a3-974e-a725940691c1"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Recibos_categoriaHist}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="229" y="24" width="62" height="15" uuid="0e8e706f-9976-420b-8f5f-9c1c96e43f55"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Personal_cuil}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="180" y="38" width="178" height="15" uuid="e5c9eb5f-c319-475b-9aec-0be5425dba6e"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Recibos_domicilio}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="312" y="24" width="43" height="15" uuid="2e4e556b-e32c-49a1-8bf0-e4a7ca0af351"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Personal_documentoNum}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="0" y="0" width="162" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="33854053-c623-4fb5-b054-4c67d568c3f0"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Periodo y liquidacion:]]></text>
+				</staticText>
+				<textField>
+					<reportElement mode="Opaque" x="162" y="0" width="319" height="20" forecolor="#000000" backcolor="#CCCCCC" uuid="33675285-005c-49cb-a000-fcba8b17700d"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{periodoDesde}==1?"1° quincena "+$P{mesDesde}+"-"+$P{anioHasta}:
+$P{periodoDesde}==2?"2° quincena "+$P{mesDesde}+"-"+$P{anioHasta}:
+$P{mesDesde}+"-"+$P{anioHasta}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="24" width="58" height="15" uuid="1b17d88c-1edb-474c-8b53-33755c58c86d"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Nombre:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="356" y="38" width="56" height="15" uuid="1ea1a351-1952-4569-bc98-124e2c10d9eb"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Fecha Ingreso:]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement x="411" y="39" width="68" height="15" uuid="02158b3c-5204-4e38-8ac2-7470cdfb5029"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Personal_fechaIngreso}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="54" width="57" height="15" uuid="370abed3-b742-4c08-b061-9c503b9c3320"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Basico:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="57" y="54" width="30" height="15" uuid="20d23d71-0ead-4175-bbbe-595c4859ec5f"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Recibos_basicoHist}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="87" y="54" width="46" height="15" uuid="a8870455-5436-44c2-9b77-fe62e9dd6062"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Estado Civil:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="132" y="54" width="52" height="15" uuid="7b463f7c-df6d-4964-b27f-38cbeaaa3dd1"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Recibos_eCivil}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="185" y="54" width="70" height="15" uuid="fb971cd5-a5eb-45e0-aa79-3120b5b79483"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Fecha ingreso:]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement x="254" y="54" width="55" height="15" uuid="4ee4f4d1-94e7-47c2-81b2-64efd410c8c1"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Personal_fechaIngreso}]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement x="423" y="54" width="55" height="15" uuid="74cf59c5-0a36-47ab-8a50-179cc2aa173a"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Personal_nacionalidad}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="359" y="24" width="76" height="15" uuid="84f631a6-4fb6-47ad-a648-e3250b6168dd"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Fecha Nacimiento:]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement x="435" y="24" width="44" height="15" uuid="d7371a92-a0de-446d-8d86-8e503cec4225"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Personal_fechaNacimiento}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="310" y="54" width="21" height="15" uuid="6a2b0ee2-a6b2-44d4-940b-9771c33fcc28"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="false"/>
+					</textElement>
+					<text><![CDATA[O.S:]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement x="331" y="54" width="64" height="15" uuid="bb4f83b6-5faf-452d-a587-d427ea3bf04a"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Recibos_obraSocial}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="66">
+				<rectangle>
+					<reportElement mode="Transparent" x="0" y="3" width="481" height="40" uuid="ac6b8f77-e702-4bf3-8bed-98f069f5bee2"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="0" y="5" width="87" height="20" uuid="b4940ef3-8485-4557-8ba0-f8245ee1d3aa"/>
+					<textElement textAlignment="Justified" verticalAlignment="Middle">
+						<font size="15" isBold="true"/>
+					</textElement>
+					<text><![CDATA[ SubTotal:]]></text>
+				</staticText>
+				<textField pattern="#,##0.00">
+					<reportElement x="204" y="5" width="97" height="20" uuid="08f7db23-f81a-4bde-8950-05f44a84a00f"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumaRem}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement x="301" y="5" width="118" height="20" uuid="c247e5d8-0522-42e2-859d-975c9a3bbbec"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumaNoRem}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement x="419" y="5" width="61" height="20" uuid="831aa96e-544b-4402-b10d-db6cbb42d123"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumaDesc}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="348" y="25" width="71" height="20" uuid="fa5aeca0-275b-445f-94b9-fcba1bcdd78a"/>
+					<textElement textAlignment="Justified" verticalAlignment="Middle">
+						<font size="15" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Neto:]]></text>
+				</staticText>
+				<textField pattern="#,##0.00">
+					<reportElement x="419" y="25" width="62" height="20" uuid="5cac0973-9f22-4d94-a5fc-e59d717e256b"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{neto}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="39" splitType="Stretch">
+			<staticText>
+				<reportElement x="128" y="0" width="230" height="20" uuid="01ca87a6-613f-48e2-8b2e-4129b5c40703"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Libro de Sueldos y Jornales]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="19" width="353" height="20" uuid="9650bc8e-5fb0-43be-b185-7308816b4eb4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Hojas móviles en reemplazo del libro especial ley 20744 T.O. (art. 52)]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="60">
+			<staticText>
+				<reportElement x="0" y="0" width="147" height="15" uuid="fd5d21e8-7b4c-411d-b07a-f3748f8d4305"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[METALURGICA B.P. S.R.L]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="15" width="147" height="15" uuid="483255eb-bb90-4565-b8ad-a7797ca2f2ac"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[CUIT: 33-67876743-9]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="30" width="271" height="15" uuid="7e6c9054-d826-4d6b-b6d2-ca942ff658be"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Ombu 3865 San Justo (1754) Buenos Aires]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="45" width="58" height="15" uuid="aa88e628-192d-4b04-bf81-ffdebed2c2d9"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Actividad: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="58" y="45" width="408" height="15" uuid="d6e3cc95-1901-4506-8a04-b14007b96b66"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[FABRICACIÓN DE PRODUCTOS METÁLICOS DE TORNERÍA Y/O MATRICERÍA]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Prevent">
+			<textField pattern="#,##0.00">
+				<reportElement x="204" y="0" width="97" height="17" uuid="7920a2b9-de93-4a13-a9de-c56dca732981"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{RecibosDetalle_remunerativo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="301" y="0" width="118" height="17" uuid="1f33b438-5547-48d7-a1fb-1333b1c4d0b0"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{RecibosDetalle_exento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="419" y="0" width="62" height="17" uuid="b3c50e88-2383-4c78-8a4c-3fa619895ac3"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{RecibosDetalle_descuento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="147" height="17" uuid="246a076a-5dee-4a27-a76c-2d04938d02ea"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CodigoSueldos_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="147" y="0" width="57" height="17" uuid="e9d5fd51-9045-4e0e-8ad7-04033166be7e"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{RecibosDetalle_valorConceptoHist}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<textField pattern="#,##0.00">
+				<reportElement x="385" y="0" width="95" height="28" uuid="5990084e-8fa8-4098-983b-2d679c3837cd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalNeto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="250" y="0" width="135" height="28" uuid="c8318886-9a33-4b00-afb8-9793916cb18f"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total general:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="135" y="0" width="113" height="28" uuid="4705e317-c629-4789-b371-02425be122c4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="15" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalBruto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="0" width="133" height="28" uuid="9b547ee6-3be0-4d9d-ac89-be888e8b62a1"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total bruto:]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

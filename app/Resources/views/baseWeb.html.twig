@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Metalurgica BP SRL</title>
+    
+
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('bundles/mbpweb/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('bundles/mbpweb/css/estilos.css') }}">    
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">          
+        <link rel="stylesheet" href="{{ asset('bundles/mbpweb/css/footer.css') }}">  
+    {% endblock %}
+    
+</head>
+<body>
+    <header>
+        <!--  COLOCAMOS LA BARRA DE NAVEGACION SUPERIOR -->
+        {{ include('barra-navegacion.html.twig') }}   
+        
+    </header>
+
+    {% block body %}    
+
+    {% endblock %}
+
+
+    {% block javascripts %}
+        <!-- FOS RoutingBundle -->
+        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+
+        <!-- Jquery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <!-- Bootstrap -->
+        <script src="{{ asset('bundles/mbpweb/js/bootstrap.min.js') }}"></script>
+    {% endblock %}
+
+    {% block footer %}
+        <footer>
+            <div class="footer" id="footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3  col-md-3 col-sm-4 col-xs-6">
+                            <h3> Quienes somos </h3>
+                            <ul>
+                                <li> <a href="{{ path('historiaEmpresa') }}"> Historia de la empresa </a> </li>
+                                <li> <a href="{{ path('mision') }}"> Misión, visión </a> </li>
+                                <li> <a href="{{ path('calidad') }}"> Calidad </a> </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-3  col-md-3 col-sm-4 col-xs-6">
+                            <h3> Que hacemos </h3>
+                            <ul>
+                                <li> <a href="{{ path('productos', {'cat': 1}) }}"> Equipos de enfriamiento </a> </li>
+                                <li> <a href="{{ path('productos', {'cat': 2}) }}"> Radiadores de aceite </a> </li>
+                                <li> <a href="{{ path('productos', {'cat': 3}) }}"> Intercoolers </a> </li>
+                                <li> <a href="{{ path('productos', {'cat': 4}) }}"> Radiadores de agua </a> </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-3  col-md-3 col-sm-4 col-xs-6">
+                            <h3> Ubicacion </h3>
+                            <ul>
+                                <li> <a href="{{ path('contacto') }}"> Contacto </a> </li>
+                                <li> <a href="#"> Como llegar </a> </li>
+                            </ul>
+                        </div>               
+                        <div class="col-lg-3  col-md-3 col-sm-6 col-xs-12 ">
+                            <h3> Seguinos en </h3>
+                            <ul class="social">
+                                <li> <a href="https://www.facebook.com/profile.php?id=100011079996789"> <i class="fa fa-facebook-official">   </i> </a> </li>
+                                <li> <a href="https://twitter.com/MetalurgicaBp"> <i class="fa fa-twitter">   </i> </a> </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!--/.row--> 
+                </div>
+                <!--/.container--> 
+            </div>
+            <!--/.footer-->
+            
+            <div class="footer-bottom">
+                <div class="container">
+                    <p class="pull-left"> Copyright © 2016 Metalurgica BP SRL. Todos los derechos reservados. </p>
+                </div>
+            </div>
+            <!--/.footer-bottom--> 
+        </footer>
+    {% endblock %}
+</body>
+</html>

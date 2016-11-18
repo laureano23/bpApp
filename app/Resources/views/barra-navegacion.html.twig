@@ -1,0 +1,53 @@
+<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navegacion-fm">
+				<span class="sr-only">Desplegar / Ocultar Menu</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a href="#" class="navbar-brand">Metalurgica BP</a>
+		</div>
+		<!-- Inicia Menu -->
+		<div class="collapse navbar-collapse" id="navegacion-fm">
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="{{ path('index') }}">Inicio</a></li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+						Productos <span class="caret"></span>
+					</a>
+
+
+					<ul class="dropdown-menu" role="menu">
+						<!-- LA LISTA SE REALIZA EN OTRA VISTA -->
+						{{ render(controller('MbpWebBundle:Default:listarCategorias')) }}
+					</ul>
+				</li>
+				<li><a href="#">Novedades</a></li>
+				<li><a href="{{ path('clientes') }}">Clientes</a></li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+						Nosotros <span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="{{ path('mision') }}">Mision, vision</a></li>
+						<li><a href="#">Instalaciones</a></li>
+						<li><a href="{{ path('historiaEmpresa') }}">Historia de la empresa</a></li>
+						<li><a href="{{ path('calidad') }}">Calidad y medio ambiente</a></li>
+					</ul>
+				</li>
+				<li><a href="{{ path('contacto') }}">Contacto</a></li>
+			</ul>
+			<img src={{ asset('bundles/mbpweb/images/icon_social_facebook') }} class="navbar-brand">	
+			<form action="" class="navbar-form navbar-right" role="search">								
+				<div class="form-group">					
+					<input type="text" class="form-control" placeholder="buscar">
+				</div>
+				<button type="submit" class="btn btn-primary">
+					<span class="glyphicon glyphicon-search"></span>
+				</button>
+			</form>					
+		</div>
+	</div>
+</nav>

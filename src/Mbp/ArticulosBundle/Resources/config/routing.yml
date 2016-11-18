@@ -1,0 +1,71 @@
+mbp_articulos_read:
+    path:     /articuloslist
+    defaults: { _controller: MbpArticulosBundle:Articulos:articuloslist }
+    options:
+      expose: true
+
+mbp_articulos_conCosto:
+    path:     /articuloConCosto
+    defaults: { _controller: MbpArticulosBundle:Articulos:articuloConCosto }
+    options:
+      expose: true
+
+mbp_articulos_create:
+    path:     /articuloscreate
+    defaults: { _controller: MbpArticulosBundle:Articulos:articuloscreate }
+    options:
+      expose: true
+
+mbp_articulos_destroy:
+    path:     /articulosdestroy
+    defaults: { _controller: MbpArticulosBundle:Articulos:articulosdestroy }
+    options:
+      expose: true
+
+mbp_articulos_validate:
+    path:     /articulosvalidate
+    defaults: { _controller: MbpArticulosBundle:Articulos:validart }
+    options:
+      expose: true
+
+mbp_formulas_read:
+    path:     /formulaslist
+    defaults: { _controller: MbpArticulosBundle:Formulas:formulaslist }
+    options:
+      expose: true
+
+mbp_formulas_InsertNodo:
+    path:     /formulasInsertNodo
+    defaults: { _controller: MbpArticulosBundle:Formulas:formulasInsertNodo }
+    options:
+      expose: true
+
+mbp_formulas_BorrarNodo:
+    path:     /formulasBorrarNodo
+    defaults: { _controller: MbpArticulosBundle:Formulas:formulasBorrarNodo }
+    options:
+      expose: true
+
+mbp_formulas_updateNodo:
+    path:     /formulasUpdateNodo
+    defaults: { _controller: MbpArticulosBundle:Formulas:formulasUpdateNodo }
+    options:
+      expose: true
+
+mbp_formulas_idNodo:
+    path:     /formulasIdNodo
+    defaults: { _controller: MbpArticulosBundle:Formulas:formulasIdNodo }
+    options:
+      expose: true
+
+mbp_formulas_generaReporte:
+    path:     /generaReporteEstructura
+    defaults: { _controller: MbpArticulosBundle:Reportes:generaReporteEstructura }
+    options:
+      expose: true
+
+mbp_formulas_muestraReporte:
+    path:     /muestraReporteEstructura
+    defaults: { _controller: MbpArticulosBundle:Reportes:muestraReporteEstructura }
+    options:
+      expose: true

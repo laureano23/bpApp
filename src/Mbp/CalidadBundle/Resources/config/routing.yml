@@ -1,0 +1,107 @@
+mbp_calidad_correlativos:
+    path:     /correlativos
+    defaults: { _controller: MbpCalidadBundle:Default:correlativos }
+    options:
+       expose: true
+
+mbp_calidad_newcorrelativo:
+    path:     /newcorrelativo
+    defaults: { _controller: MbpCalidadBundle:Default:newcorrelativo }
+    options:
+       expose: true
+
+mbp_calidad_updatecorrelativo:
+    path:     /updatecorrelativo
+    defaults: { _controller: MbpCalidadBundle:Default:updatecorrelativo }
+    options:
+       expose: true
+
+mbp_calidad_destroycorrelativo:
+    path:     /destroycorrelativo
+    defaults: { _controller: MbpCalidadBundle:Default:destroycorrelativo }
+    options:
+       expose: true
+
+#URL Control de estanqueidad
+
+mbp_calidad_addEstanqueidadReg:
+    path:     /addEstanqueidadReg
+    defaults: { _controller: MbpCalidadBundle:Default:addEstanqueidadReg }
+    options:
+       expose: true
+
+#Formulario Control de estanqueidad
+
+mbp_calidad_showFormRg010:
+    path:     /showFormRg010
+    defaults: { _controller: MbpCalidadBundle:Reportes:showFormRg010 }
+    options:
+       expose: true
+
+mbp_calidad_generateFormRg010:
+    path:     /generateFormRg010
+    defaults: { _controller: MbpCalidadBundle:Reportes:generateFormRg010 }
+    options:
+       expose: true
+
+#Reportes Control de estanqueidad
+
+mbp_calidad_generateReporteRg010:
+    path:     /generateReporteRg010
+    defaults: { _controller: MbpCalidadBundle:Reportes:generateReporteRg010 }
+    options:
+       expose: true
+       
+mbp_calidad_showReporteRg010:
+    path:     /showReporteRg010
+    defaults: { _controller: MbpCalidadBundle:Reportes:showReporteRg010 }
+    options:
+       expose: true
+
+mbp_calidad_listEstanqueidad:
+    path:     /listEstanqueidad
+    defaults: { _controller: MbpCalidadBundle:Default:listEstanqueidad }
+    options:
+       expose: true
+
+mbp_calidad_deleteEstanqueidad:
+    path:     /deleteEstanqueidad
+    defaults: { _controller: MbpCalidadBundle:Default:deleteEstanqueidadReg }
+    options:
+       expose: true
+
+mbp_calidad_generateReporteRg010Fechas:
+    path:     /generateReporteRg010Fechas
+    defaults: { _controller: MbpCalidadBundle:Reportes:generateReporteRg010Fechas }
+    options:
+       expose: true
+
+mbp_calidad_showReporteRg010Fechas:
+    path:     /showReporteRg010Fechas
+    defaults: { _controller: MbpCalidadBundle:Reportes:showReporteRg010Fechas }
+    options:
+       expose: true
+
+mbp_calidad_generateRepoFallasSoldadura:
+    path:     /generateRepoFallasSoldadura
+    defaults: { _controller: MbpCalidadBundle:Reportes:generateRepoFallasSoldadura }
+    options:
+       expose: true
+
+mbp_calidad_showRepoFallasSoldadura:
+    path:     /showRepoFallasSoldadura
+    defaults: { _controller: MbpCalidadBundle:Reportes:showRepoFallasSoldadura }
+    options:
+       expose: true
+
+mbp_calidad_generateRepoEstanqueidad3D:
+    path:     /generateRepoEstanqueidad3D
+    defaults: { _controller: MbpCalidadBundle:Reportes:generateRepoEstanqueidad3D }
+    options:
+       expose: true
+
+mbp_calidad_showRepoEstanqueidad3D:
+    path:     /showRepoEstanqueidad3D
+    defaults: { _controller: MbpCalidadBundle:Reportes:showRepoEstanqueidad3D }
+    options:
+       expose: true

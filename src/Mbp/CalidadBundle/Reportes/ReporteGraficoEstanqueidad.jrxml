@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteGraficoEstanqueidad" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6754ff70-09b0-498b-ae8b-02c00c2a6744">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="FECHA_DESDE" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FECHA_HASTA" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     SUM(if(Estanqueidad.`mChapa`=1,1,0)) AS Estanqueidad_mChapa,
+     SUM(if(Estanqueidad.`mBagueta`=1,1,0)) AS Estanqueidad_mBagueta,
+     SUM(if( Estanqueidad.`mPerfil`=1,1,0)) AS Estanqueidad_mPerfil,
+     SUM(if(Estanqueidad.`mPisoDesp`=1,1,0)) AS Estanqueidad_mPisoDesp,
+     SUM(if(Estanqueidad.`tRosca`=1,1,0)) AS Estanqueidad_tRosca,
+     SUM(if(Estanqueidad.`tPoros`=1,1,0)) AS Estanqueidad_tPoros,
+     SUM(if(Estanqueidad.`sConector`=1,1,0)) AS Estanqueidad_sConector,
+     SUM(if(Estanqueidad.`sTapaPanel`=1,1,0)) AS Estanqueidad_sTapaPanel,
+     SUM(if(Estanqueidad.`sPlanchuelas`=1,1,0)) AS Estanqueidad_sPlanchuelas,
+     SUM(if(Estanqueidad.`mAnulado`=1,1,0)) AS Estanqueidad_mAnulado,
+     SUM(if(Estanqueidad.`mCiba`=1,1,0)) AS Estanqueidad_mCiba,
+     SUM(if(Estanqueidad.`tFijacion`=1,1,0)) AS Estanqueidad_tFijacion,
+     COUNT(Estanqueidad.`id`) AS total,
+     Estanqueidad.`fechaPrueba` AS Estanqueidad_fechaPrueba
+FROM
+     `Estanqueidad` Estanqueidad
+WHERE
+     Estanqueidad.`fechaPrueba` BETWEEN $P{FECHA_DESDE} AND $P{FECHA_HASTA}]]>
+	</queryString>
+	<field name="Estanqueidad_mChapa" class="java.math.BigDecimal"/>
+	<field name="Estanqueidad_mBagueta" class="java.math.BigDecimal"/>
+	<field name="Estanqueidad_mPerfil" class="java.math.BigDecimal"/>
+	<field name="Estanqueidad_mPisoDesp" class="java.math.BigDecimal"/>
+	<field name="Estanqueidad_tRosca" class="java.math.BigDecimal"/>
+	<field name="Estanqueidad_tPoros" class="java.math.BigDecimal"/>
+	<field name="Estanqueidad_sConector" class="java.math.BigDecimal"/>
+	<field name="Estanqueidad_sTapaPanel" class="java.math.BigDecimal"/>
+	<field name="Estanqueidad_sPlanchuelas" class="java.math.BigDecimal"/>
+	<field name="Estanqueidad_mAnulado" class="java.math.BigDecimal"/>
+	<field name="Estanqueidad_mCiba" class="java.math.BigDecimal"/>
+	<field name="Estanqueidad_tFijacion" class="java.lang.Double"/>
+	<field name="total" class="java.lang.Long"/>
+	<field name="Estanqueidad_fechaPrueba" class="java.sql.Date"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="802" height="79" uuid="c3648210-f09c-4214-8c55-c6108b295390"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="24" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Reporte de fallas de estanqueidad]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="402" splitType="Stretch">
+			<pie3DChart>
+				<chart>
+					<reportElement x="0" y="0" width="802" height="402" isRemoveLineWhenBlank="true" uuid="a4ee2513-d519-4296-8724-72b0c5ef7977"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend position="Bottom"/>
+				</chart>
+				<pieDataset>
+					<pieSeries>
+						<keyExpression><![CDATA["Bagueta"]]></keyExpression>
+						<valueExpression><![CDATA[$F{Estanqueidad_mBagueta}]]></valueExpression>
+						<labelExpression><![CDATA["Bagueta " + new java.text.DecimalFormat("0.00").format(($F{Estanqueidad_mBagueta}.doubleValue()*100)/$F{total})+"%"]]></labelExpression>
+					</pieSeries>
+					<pieSeries>
+						<keyExpression><![CDATA["Chapa" ]]></keyExpression>
+						<valueExpression><![CDATA[$F{Estanqueidad_mChapa}]]></valueExpression>
+						<labelExpression><![CDATA["Chapa " + new java.text.DecimalFormat("0.00").format(($F{Estanqueidad_mChapa}.doubleValue()*100)/$F{total})+"%"
+]]></labelExpression>
+					</pieSeries>
+					<pieSeries>
+						<keyExpression><![CDATA["Perfil"]]></keyExpression>
+						<valueExpression><![CDATA[$F{Estanqueidad_mPerfil}]]></valueExpression>
+						<labelExpression><![CDATA["Perfil " + new java.text.DecimalFormat("0.00").format(($F{Estanqueidad_mPerfil}.doubleValue()*100)/$F{total})+"%"]]></labelExpression>
+					</pieSeries>
+					<pieSeries>
+						<keyExpression><![CDATA["Pisos despegados"]]></keyExpression>
+						<valueExpression><![CDATA[$F{Estanqueidad_mPisoDesp}]]></valueExpression>
+						<labelExpression><![CDATA["Pisos despegados " + new java.text.DecimalFormat("0.00").format(($F{Estanqueidad_mPisoDesp}.doubleValue()*100)/$F{total})+"%"]]></labelExpression>
+					</pieSeries>
+					<pieSeries>
+						<keyExpression><![CDATA["Rosca"]]></keyExpression>
+						<valueExpression><![CDATA[$F{Estanqueidad_tRosca}]]></valueExpression>
+						<labelExpression><![CDATA["Rosca " + new java.text.DecimalFormat("0.00").format(($F{Estanqueidad_tRosca}.doubleValue()*100)/$F{total})+"%"]]></labelExpression>
+					</pieSeries>
+					<pieSeries>
+						<keyExpression><![CDATA["Poros"]]></keyExpression>
+						<valueExpression><![CDATA[$F{Estanqueidad_tPoros}]]></valueExpression>
+						<labelExpression><![CDATA["Poros " + new java.text.DecimalFormat("0.00").format(($F{Estanqueidad_tPoros}.doubleValue()*100)/$F{total})+"%"]]></labelExpression>
+					</pieSeries>
+					<pieSeries>
+						<keyExpression><![CDATA["Conector"]]></keyExpression>
+						<valueExpression><![CDATA[$F{Estanqueidad_sConector}]]></valueExpression>
+						<labelExpression><![CDATA["Conector " + new java.text.DecimalFormat("0.00").format(($F{Estanqueidad_sConector}.doubleValue()*100)/$F{total})+"%"]]></labelExpression>
+					</pieSeries>
+					<pieSeries>
+						<keyExpression><![CDATA["Tapa panel"]]></keyExpression>
+						<valueExpression><![CDATA[$F{Estanqueidad_sTapaPanel}]]></valueExpression>
+						<labelExpression><![CDATA["Tapa panel " + new java.text.DecimalFormat("0.00").format(($F{Estanqueidad_sTapaPanel}.doubleValue()*100)/$F{total})+"%"]]></labelExpression>
+					</pieSeries>
+					<pieSeries>
+						<keyExpression><![CDATA["Planchuelas"]]></keyExpression>
+						<valueExpression><![CDATA[$F{Estanqueidad_sPlanchuelas}]]></valueExpression>
+						<labelExpression><![CDATA["Planchuelas " + new java.text.DecimalFormat("0.00").format(($F{Estanqueidad_sPlanchuelas}.doubleValue()*100)/$F{total})+"%"]]></labelExpression>
+					</pieSeries>
+					<pieSeries>
+						<keyExpression><![CDATA["Anulado"]]></keyExpression>
+						<valueExpression><![CDATA[$F{Estanqueidad_mAnulado}]]></valueExpression>
+						<labelExpression><![CDATA["Anulado " + new java.text.DecimalFormat("0.00").format(($F{Estanqueidad_mAnulado}.doubleValue()*100)/$F{total})+"%"]]></labelExpression>
+					</pieSeries>
+					<pieSeries>
+						<keyExpression><![CDATA["Ciba"]]></keyExpression>
+						<valueExpression><![CDATA[$F{Estanqueidad_mCiba}]]></valueExpression>
+						<labelExpression><![CDATA["Ciba " + new java.text.DecimalFormat("0.00").format(($F{Estanqueidad_mCiba}.doubleValue()*100)/$F{total})+"%"]]></labelExpression>
+					</pieSeries>
+					<pieSeries>
+						<keyExpression><![CDATA["Fijacion"]]></keyExpression>
+						<valueExpression><![CDATA[$F{Estanqueidad_tFijacion}]]></valueExpression>
+						<labelExpression><![CDATA["Fijacion " + new java.text.DecimalFormat("0.00").format(($F{Estanqueidad_tFijacion}.doubleValue()*100)/$F{total})+"%"]]></labelExpression>
+					</pieSeries>
+				</pieDataset>
+				<pie3DPlot isShowLabels="true" isCircular="false" labelFormat="{0}">
+					<plot/>
+					<itemLabel/>
+				</pie3DPlot>
+			</pie3DChart>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

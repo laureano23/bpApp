@@ -1,0 +1,4 @@
+parameters:
+#    mbp_produccion.example.class: Mbp\ProduccionBundle\Example
+
+services:

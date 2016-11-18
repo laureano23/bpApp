@@ -1,0 +1,11 @@
+parameters:
+#    mbp_personal.example.class: Mbp\PersonalBundle\Example
+
+services:
+    #liquidacion_listener:
+        #class: Mbp\PersonalBundle\Listener\LiquidacionListener
+        #arguments: ["@request_stack", "@service_container"]
+        #tags:
+            #- { name: doctrine.event_listener, event: prePersist }
+            #- { name: doctrine.event_listener, event: postFlush }
+    

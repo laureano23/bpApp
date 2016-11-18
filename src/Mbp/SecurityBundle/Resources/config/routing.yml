@@ -1,0 +1,18 @@
+login:
+    path:     /login
+    defaults: { _controller: MbpSecurityBundle:Default:login }
+
+login_check:
+    path: /login_check
+    defaults:
+
+logout:
+    pattern: logout
+    options:
+        expose: true
+
+sesion:
+    path: /sesion
+    defaults: { _controller: MbpSecurityBundle:Default:sesion }
+    options:
+        expose: true

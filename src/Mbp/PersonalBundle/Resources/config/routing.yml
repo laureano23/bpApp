@@ -1,0 +1,40 @@
+#RUTAS DE OPERACIONES CON RECIBOS
+
+mbp_personal_recibosCompensatorio:
+    path:     /recibosCompensatorio
+    defaults: { _controller: MbpPersonalBundle:Recibos:recibosCompensatorio }
+    options:
+       expose: true
+
+mbp_personal_recibosEliminar:
+    path:     /recibosEliminar
+    defaults: { _controller: MbpPersonalBundle:Recibos:recibosEliminar }
+    options:
+       expose: true
+
+
+#RUTA DE CUENTA CORRIENTE DE EMPLEADOS
+
+mbp_personal_cuentaEmpleadosList:
+    path:     /cuentaEmpleadosList
+    defaults: { _controller: MbpPersonalBundle:CuentaEmpleados:cuentaEmpleadosList }
+    options:
+       expose: true
+
+mbp_personal_cuentaEmpleadosCreate:
+    path:     /cuentaEmpleadosCreate
+    defaults: { _controller: MbpPersonalBundle:CuentaEmpleados:cuentaEmpleadosCreate }
+    options:
+       expose: true
+
+mbp_personal_cuentaEmpleadosDelete:
+    path:     /cuentaEmpleadosDelete
+    defaults: { _controller: MbpPersonalBundle:CuentaEmpleados:cuentaEmpleadosDelete }
+    options:
+       expose: true
+
+mbp_personal_cuentaEmpleadosDelete:
+    path:     /cuentaEmpleadosDelete
+    defaults: { _controller: MbpPersonalBundle:CuentaEmpleados:cuentaEmpleadosDelete }
+    options:
+       expose: true

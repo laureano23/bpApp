@@ -1,0 +1,71 @@
+{% extends 'baseWeb.html.twig' %}
+
+
+{% block body %}    
+	<section class="jumbotron">
+	<div class="container">
+		<h1>Metalurgica BP</h1>
+		<p>Soluciones térmicas para la industria</p>
+	</div>
+	</section>
+
+	<section class="main container">
+		<div class="row">
+			<section class="posts col-md-9">
+				<div class="miga-de-pan">
+					<ol class="breadcrumb">
+						<li><a href="#">Inicio</a></li>
+					</ol>
+				</div>
+				<article class="post clearfix">
+					<a href="#" class="thumb pull-left">
+						<img class="img-thumbnail" src="{{ asset('bundles/mbpweb/images/img1.jpg') }}" alt="">
+					</a>
+					<h2 class="post-title">
+						<a href="#">Equipos autonomos para enfriar aire y aceite</a>
+					</h2>
+					<p class="post-contenido text-justify">
+						Equipos estandar y a medida, diseñados para montar en cualquier tipo de maquina que requiera
+						enfriar aceite y/o aire. Aplicaciones para la industria del aire comprimido, agricola, petroleros, etc.
+					</p>
+					<div class="contenedor-botones">
+						<a href="#" class="btn btn-primary">Ver Mas</a>						
+					</div>
+				</article>
+
+				<article class="post clearfix">
+					<a href="#" class="thumb pull-left">
+						<img class="img-thumbnail" src="{{ asset('bundles/mbpweb/images/img2.jpg') }}" alt="">
+					</a>
+					<h2 class="post-title">
+						<a href="#">Radiadores para enfriar aceite</a>
+					</h2>					
+					<p class="post-contenido text-justify">
+						Construidos integramente en aluminio para lograr un mejor intercambio de temperatura. Diseño en base a los requisitos del cliente. Todo tipo de aplicaciones, viales, agricolas, petroleras, etc.
+					</p>
+
+					<div class="contenedor-botones">
+						<a href="#" class="btn btn-primary">Ver Mas</a>						
+					</div>
+				</article>
+
+				<article class="post clearfix">
+					<a href="#" class="thumb pull-left">
+						<img class="img-thumbnail" src="{{ asset('bundles/mbpweb/images/img3.jpg') }}" alt="">
+					</a>
+					<h2 class="post-title">
+						<a href="#">Intercoolers, radiadores para enfriar agua</a>
+					</h2>
+					<p class="post-contenido text-justify">
+						Contamos con modelos estandares del mercado, para maquinas viales y agricolas. Diseñamos segun muestra y/o requisitos del cliente. Construccion en aluminio brazado.
+					</p>
+
+					<div class="contenedor-botones">
+						<a href="#" class="btn btn-primary">Ver Mas</a>
+					</div>
+				</article>
+			</section>
+		</div>
+	</section>
+{% endblock %}
+

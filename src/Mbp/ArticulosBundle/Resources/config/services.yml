@@ -1,0 +1,7 @@
+parameters:
+    mbp_articulos.example.class: Mbp\ArticulosBundle\Example
+
+services:
+  articulos_class_formulas:
+        class: Mbp\ArticulosBundle\Clases\FormulasClass
+        arguments: [idNodoFormula, idNodoFormulado, idArt, cantidad, @doctrine.orm.entity_manager]
