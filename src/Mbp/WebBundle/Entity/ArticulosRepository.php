@@ -36,5 +36,22 @@ class ArticulosRepository extends \Doctrine\ORM\EntityRepository
 
 	}
 
+	public function listarArtPorSubCat($subCat){
+		$em = $this->getEntityManager('web');
+		$repo = $em->getRepository('MbpWebBundle:Articulos');
 
+		$qb = $repo->createQueryBuilder('art')
+			->select('art.id,
+				 art.descripcion',
+				 'marca.marca')
+			->join('art.subCategoriaId', 'subCat')	
+			->join('art.marcaId', 'marca')		
+			->where('subCat.id = :idSubCategoria')
+			->setParameter('idSubCategoria', $subCat)			
+			->getQuery()
+			->getArrayResult();
+
+
+		return $qb;
+	}
 }

@@ -11,42 +11,31 @@
         </ul>   
       </aside>
 
-      <article class="post clearfix col-md-9">
-        
+      <article class="post clearfix col-md-9">        
         <h2 class="post-title">
           <a href="#">
             {{ categorias.descripcion }}
           </a>
         </h2>
-
-        {% for subCat in categorias.subCategoria %}
-
-
-
           <section class="col-md-9 productos-container">              
-            <h3>{{subCat.descripcion}}</h3>
-            <div class="row">
-              <div class="col-md-12">
-                <img class="img-responsive" src="{{ asset('bundles/mbpweb/images/13070 MBP200 Aceite - Aire.JPG') }}">
+            {% for subCat in categorias.subCategoria %}             
+              <h3>{{subCat.descripcion}}</h3>
+              <div class="row">
               </div>
-            </div>
-            {% for item in subCat.articulos %}                
-
-                <div class="row">                    
-                    <div class="panel panel-default">
-                      <div class="panel-heading">
-                        <p class="post-contenido text-justify">
-                          {{ item.descripcion }}
-                          <a class="pull-right" target="_blank" href="{{ asset('bundles/mbpweb/pdf/catalogo/') }}{{ item.rutaHojaDatos }}">Hoja de datos <span class="glyphicon glyphicon-file"></span></a>
-                        </p>                             
-                      </div>
-                    </div>                    
-                </div>                
-                
-          {% endfor %}           
+              {% for item in subCat.articulos %}                
+                  <div class="row">                    
+                      <div class="panel panel-default">
+                        <div class="panel-heading">
+                          <p class="post-contenido text-justify">
+                            {{ item.descripcion }}
+                            <a class="pull-right" target="_blank" href="{{ asset('bundles/mbpweb/pdf/catalogo/') }}{{ item.rutaHojaDatos }}">Hoja de datos <span class="glyphicon glyphicon-file"></span></a>
+                          </p>                             
+                        </div>
+                      </div>                    
+                  </div>                
+              {% endfor %}           
+            {% endfor %}
           </section>
-           
-        {% endfor %}
       </article>
     </div>
   </section>

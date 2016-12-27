@@ -43,6 +43,8 @@ class Articulos
      */ 
     private $subCategoriaId; 
 
+    
+
     /**
      * Get id
      *

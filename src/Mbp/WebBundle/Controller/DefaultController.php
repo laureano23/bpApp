@@ -5,6 +5,7 @@ namespace Mbp\WebBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Mbp\WebBundle\Entity\Categorias;
 
 class DefaultController extends Controller
 {
@@ -24,27 +25,46 @@ class DefaultController extends Controller
      */
     public function contactoAction()
     {
-        return $this->render('MbpWebBundle:Default:contacto.html.twig');
+        $req = $this->getRequest();
+        $nombre = $req->request->get('nombre');
+
+        if($nombre){
+            try{
+                $message = \Swift_Message::newInstance();
+                $message->setSubject("hola");
+                $message->setFrom("sasa@metalurgicabp.com.ar");
+                $message->setTo("laureano@metalurgicabp.com.ar");
+                $message->setBody("Prueba");
+
+                $mailer = $this->get('mailer');
+                $mailer->send($message);
+                
+
+                $req->getSession()
+                    ->getFlashBag()
+                    ->add('success', 'En breve responderemos su mensaje');
+
+                $req->getSession()
+                    ->getFlashBag()
+                    ->add('statusOk', '');
+                
+                
+            }catch(\Exception $e){
+                $req->getSession()
+                    ->getFlashBag()
+                    ->add('statusFail', '');
+
+                $req->getSession()
+                    ->getFlashBag()
+                    ->add('fail', 'Error en el envío, intente más tarde!'); 
+            }
+           
+        }
+
+         return $this->render('MbpWebBundle:Default:contacto.html.twig');
+        
     }
 
-     /**
-     * @Route("/productos", name="productos")
-     * @Template()
-     */
-    public function productosAction()
-    {
-    	$em = $this->getDoctrine()->getManager('web');
-    	$repo = $em->getRepository('MbpWebBundle:Categorias');
-    	$req = $this->getRequest();
-    	$categoria = $repo->find($req->query->get('cat'));
-
-    	//$productos = $categoria->getArticulos();
-		$sub = $categoria->getSubCategoria();
-       // \Doctrine\Common\Util\Debug::dump($sub); 
- 
-
-        return $this->render('MbpWebBundle:Default:productos.html.twig', array('categorias' => $categoria));
-    }
 
      /**
      * @Route("/clientes", name="clientes")
@@ -70,13 +90,15 @@ class DefaultController extends Controller
     public function listarCategoriasAsideAction()
     {
     	$em = $this->getDoctrine()->getManager('web');
+        $em->clear();
     	$repo = $em->getRepository('MbpWebBundle:Categorias');
+    	$items = $repo->findAll();		
 
-    	$items = $repo->listarCategorias();		
-		 
 
     	return $this->render('MbpWebBundle:Default:lista_categorias_aside.html.twig', array('items' => $items));
     }
+
+     
 
     /**
      * @Route("/prueba", name="prueba")
@@ -113,5 +135,26 @@ class DefaultController extends Controller
     {
         return $this->render('MbpWebBundle:Default:mision.html.twig');
     }
+
+
+    /**
+     * @Route("/como-llegar", name="comoLlegar")
+     * @Template()
+     */
+    public function comoLlegarAction()
+    {
+        return $this->render('MbpWebBundle:Default:comoLlegar.html.twig');
+    }
+
+
+    /**
+     * @Route("/novedades", name="novedades")
+     * @Template()
+     */
+    public function novedadesAction()
+    {
+        return $this->render('MbpWebBundle:Default:novedades.html.twig');
+    }
+	
 }
  
