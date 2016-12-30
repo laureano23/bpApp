@@ -9,12 +9,17 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
+    	$logged = $this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY');
     	$env = $this->container->get('kernel')->getEnvironment();
-		if($env == 'dev'){
+		if($env == 'dev' && $logged){
 			return $this->render('MbpSenchaBundle:MetApp:index.html.twig');
-		}else{
+		}
+
+		if($env = 'prod' && $logged){
 			return $this->render('MbpSenchaBundle:MetApp:indexBuild.html.twig');
 		}
+
+		return $this->render('MbpWebBundle:Default:index.html.twig');
         
     }
 	
@@ -23,3 +28,4 @@ class DefaultController extends Controller
 		return $this->render('MbpSenchaBundle:MetApp:manualIndex.html.php');
     }
 }
+   
