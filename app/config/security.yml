@@ -15,6 +15,7 @@ security:
                 key: prueba123
 
     access_control:
+        - { path: ^/web/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/calidad, roles: ROLE_CALIDAD }
