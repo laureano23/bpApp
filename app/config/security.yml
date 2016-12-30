@@ -16,6 +16,7 @@ security:
 
     access_control:
         - { path: ^/index, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/web/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin, roles: ROLE_ADMIN }
