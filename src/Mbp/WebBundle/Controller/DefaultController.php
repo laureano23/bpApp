@@ -27,14 +27,27 @@ class DefaultController extends Controller
     {
         $req = $this->getRequest();
         $nombre = $req->request->get('nombre');
+        $apellido = $req->request->get('apellido');
+        $email = $req->request->get('email');
+        $telefono = $req->request->get('telefono');
+        $empresa = $req->request->get('empresa');        
+        $asunto = $req->request->get('asunto');
+        $consulta = $req->request->get('consulta');
+
 
         if($nombre){
             try{
                 $message = \Swift_Message::newInstance();
-                $message->setSubject("hola");
-                $message->setFrom("sasa@metalurgicabp.com.ar");
-                $message->setTo("laureano@metalurgicabp.com.ar");
-                $message->setBody("Prueba");
+                $message->setSubject("Consulta web: ".$asunto);
+                $message->setFrom($email);
+                $message->setTo("info@metalurgicabp.com.ar");
+                $message->setBody("
+                    <strong>Nombre y Apellido: </strong>".$nombre." ".$apellido."<br>
+                    <strong>Email: </strong>".$email."<br>
+                    <strong>Teléfono: </strong>".$telefono."<br>
+                    <strong>Empresa: </strong>".$empresa."<br>
+                    <strong>Consulta: </strong>".$consulta."<br>
+                    ", "text/html");
 
                 $mailer = $this->get('mailer');
                 $mailer->send($message);
