@@ -33,7 +33,7 @@ class DefaultController extends Controller
         $empresa = $req->request->get('empresa');        
         $asunto = $req->request->get('asunto');
         $consulta = $req->request->get('consulta');
-        //asas
+        //asasss
 
         if($nombre){
             try{
