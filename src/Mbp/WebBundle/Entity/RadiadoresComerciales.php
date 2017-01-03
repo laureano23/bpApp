@@ -58,6 +58,14 @@ class RadiadoresComerciales
      */ 
     private $aplicacionId; 
 
+    /**
+     * @var \Mbp\WebBundle\Entity\TiposRadiadores
+     *
+     * @ORM\ManyToOne(targetEntity="Mbp\WebBundle\Entity\TiposRadiadores", inversedBy="radId")
+     * @ORM\JoinColumn(name="tipoId", referencedColumnName="id") 
+     */ 
+    private $tipoId; 
+
      /**
      * @var string
      *

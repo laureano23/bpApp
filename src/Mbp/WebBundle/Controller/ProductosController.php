@@ -75,11 +75,27 @@ class ProductosController extends Controller
     	$em = $this->getDoctrine()->getManager('web');
     	$repo = $em->getRepository('MbpWebBundle:TiposRadiadores');
         $repoRadCom = $em->getRepository('MbpWebBundle:RadiadoresComerciales');
+        /* REQUEST */
     	$req = $this->getRequest();
     	$tipo = $req->query->get('tipo');
-    	$aplicaciones = $repo->listarAplicaciones($tipo);
+        $aplicacion = $req->query->get('aplicacion');
+        /* EOF REQUEST */
+
+    	$aplicaciones = $repo->listarAplicaciones();
     	
-        $lista = $repoRadCom->listarRadPorTipo($tipo);
+        $lista;
+        if(empty($aplicacion)){
+            $lista = $repoRadCom->createQueryBuilder('rad')
+                ->select('rad.codigoBp as codigo, rad.descripcion, rad.oem, rad.imagenCatalogo as imagen, marca.marca')
+                ->join('rad.marcaId', 'marca')
+                ->where('rad.tipoId = :tipo')
+                ->setParameter('tipo', $tipo)
+                ->getQuery()
+                ->getArrayResult();
+        }else{
+            $lista = $repoRadCom->listarRadPorTipo($tipo, $aplicacion);    
+        }
+        
         
         $path = $this->get('templating.helper.assets')->getUrl('bundles/mbpweb/images/catalogo/');
 
@@ -104,19 +120,22 @@ class ProductosController extends Controller
     	$aplicacion = $req->query->get('aplicacion');
         $tipo = $req->query->get('tipo');
     	$marcas = $repo->marcasPorAplicaciones($aplicacion);
-
-    	$lista = $repoRadCom->listarRadPorAplicacion($aplicacion);
-
+    	
         $path = $this->get('templating.helper.assets')->getUrl('bundles/mbpweb/images/catalogo/');
 
+        $lista;
         if($aplicacion == 'all'){
             return new Response(json_encode(array(
                 'marcas' => $marcas,
-                'lista' => $repoRadCom->listarRadPorTipo($tipo),
+                'lista' => $repoRadCom->listarSoloTipo($tipo),
                 'pathImg' => $path
                 )
             ));    
+        }else{
+            $lista = $repoRadCom->listarRadPorTipo($tipo, $aplicacion);    
         }
+
+        
     	
     	return new Response(json_encode(array(
     		'marcas' => $marcas,
@@ -143,7 +162,7 @@ class ProductosController extends Controller
 
         if($marca == 'all'){            
             return new Response(json_encode(array(
-                'lista' => $repoRadCom->listarRadPorAplicacion($aplicacion),
+                'lista' => $repoRadCom->listarRadPorTipo($tipo, $aplicacion),
                 'pathImg' => $path
                 )
             ));

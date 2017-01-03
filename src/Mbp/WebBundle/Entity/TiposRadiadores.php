@@ -29,9 +29,9 @@ class TiposRadiadores
     private $tipo;
 
     /**
-     * @ORM\OneToMany(targetEntity="Mbp\WebBundle\Entity\AplicacionesRadiadores", mappedBy="tipoId", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="Mbp\WebBundle\Entity\RadiadoresComerciales", mappedBy="tipoId", cascade={"all"})
      */
-    private $aplicacionId;
+    private $radId;
 
     public function __construct()
     {

@@ -33,14 +33,7 @@ class AplicacionesRadiadores
      * @ORM\OneToMany(targetEntity="Mbp\WebBundle\Entity\RadiadoresComerciales", mappedBy="aplicacionId", cascade={"all"})
      */
     private $radiadoresComerciales;
-
-    /**
-     * @var \Mbp\WebBundle\Entity\TiposRadiadores
-     *
-     * @ORM\ManyToOne(targetEntity="Mbp\WebBundle\Entity\TiposRadiadores", inversedBy="aplicacionId")
-     * @ORM\JoinColumn(name="tipoId", referencedColumnName="id") 
-     */ 
-    private $tipoId; 
+    
 
     public function __construct()
     {

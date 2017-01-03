@@ -10,15 +10,13 @@ namespace Mbp\WebBundle\Entity;
  */
 class TiposRadiadoresRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function listarAplicaciones($tipo)
+	public function listarAplicaciones()
 	{
 		$em = $this->getEntityManager();
 		$repo = $em->getRepository('MbpWebBundle:AplicacionesRadiadores');
 
 		$res = $repo->createQueryBuilder('apli')		
 			->select('apli')
-			->where('apli.tipoId = :tipo')
-			->setParameter('tipo', $tipo)
 			->getQuery()
 			->getArrayResult();
 

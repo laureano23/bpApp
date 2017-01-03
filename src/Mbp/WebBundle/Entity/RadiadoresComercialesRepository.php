@@ -32,15 +32,37 @@ class RadiadoresComercialesRepository extends \Doctrine\ORM\EntityRepository
 		return $qb;
 	}
 
-	public function listarRadPorTipo($tipo){
+	public function listarSoloTipo($tipoId){
 		$em = $this->getEntityManager('web');
-		$repo = $em->getRepository('MbpWebBundle:TiposRadiadores');
+		$repo = $em->getRepository('MbpWebBundle:RadiadoresComerciales');
 
-		$qb = $repo->createQueryBuilder('tipos')
+		$qb = $repo->createQueryBuilder('rad')
 			->select('rad.descripcion, rad.oem, marca.marca, rad.codigoBp as codigo, rad.imagenCatalogo as imagen')	
-			->join('tipos.aplicacionId', 'aplicacion')
-			->join('aplicacion.radiadoresComerciales', 'rad')
+			->join('rad.aplicacionId', 'aplicacion')
+			->join('rad.tipoId', 'tipo')
 			->join('rad.marcaId', 'marca')
+			->where('rad.tipoId = :tipo')
+			->setParameter('tipo', $tipoId)
+			->getQuery()
+			->getArrayResult();
+
+
+		return $qb;
+	}
+
+	public function listarRadPorTipo($tipoId, $aplicacionId){
+		$em = $this->getEntityManager('web');
+		$repo = $em->getRepository('MbpWebBundle:RadiadoresComerciales');
+
+		$qb = $repo->createQueryBuilder('rad')
+			->select('rad.descripcion, rad.oem, marca.marca, rad.codigoBp as codigo, rad.imagenCatalogo as imagen')	
+			->join('rad.aplicacionId', 'aplicacion')
+			->join('rad.tipoId', 'tipo')
+			->join('rad.marcaId', 'marca')
+			->where('rad.aplicacionId = :aplicacion')
+			->andWhere('rad.tipoId = :tipo')
+			->setParameter('aplicacion', $aplicacionId)
+			->setParameter('tipo', $tipoId)
 			->getQuery()
 			->getArrayResult();
 
@@ -50,17 +72,16 @@ class RadiadoresComercialesRepository extends \Doctrine\ORM\EntityRepository
 
 	public function filtrarPorMarca($tipo, $aplicacion, $marca){
 		$em = $this->getEntityManager('web');
-		$repo = $em->getRepository('MbpWebBundle:TiposRadiadores');
+		$repo = $em->getRepository('MbpWebBundle:RadiadoresComerciales');
 		
 
-		$qb = $repo->createQueryBuilder('tipos')
+		$qb = $repo->createQueryBuilder('rad')
 			->select('rad.descripcion, rad.oem, marca.marca, rad.codigoBp as codigo, rad.imagenCatalogo as imagen')	
-			->join('tipos.aplicacionId', 'aplicacion')
-			->join('aplicacion.radiadoresComerciales', 'rad')
+			->join('rad.aplicacionId', 'aplicacion')
 			->join('rad.marcaId', 'marca')
-			->where('tipos.id = :tipo')
-			->andWhere('aplicacion.id = :aplicacion')
-			->andWhere('marca.id = :marca')
+			->where('rad.tipoId = :tipo')
+			->andWhere('rad.aplicacionId = :aplicacion')
+			->andWhere('rad.marcaId = :marca')
 			->setParameter('tipo', $tipo)
 			->setParameter('aplicacion', $aplicacion)
 			->setParameter('marca', $marca)
