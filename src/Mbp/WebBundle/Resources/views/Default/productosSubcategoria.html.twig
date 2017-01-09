@@ -18,6 +18,14 @@
             {{ categorias.descripcion }}
           </a>
         </h2>
+
+        <!-- SI LA CATEGORIA TIENE CATALOGO SE AGREGA ACA -->
+        <p>            
+          {% if categorias.rutaCatalogo != "" %}
+            <a class="" target="_blank" href="{{ asset('bundles/mbpweb/pdf/catalogo/') }}{{ categorias.rutaCatalogo }}">Catalogo general <span class="glyphicon glyphicon-file"></span></a>
+          {% endif %}
+        </p>
+        
         <section class="col-md-9 productos-container">              
           <h3>{{categorias.subCategoria[0].descripcion}}</h3>
           <div class="row">

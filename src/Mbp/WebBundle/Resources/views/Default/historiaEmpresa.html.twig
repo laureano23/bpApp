@@ -1,5 +1,11 @@
 {% extends 'baseWeb.html.twig' %}
 
+{% block head %}	
+	{{parent()}}
+	<title>Historia | Metalúrgica BP SRL</title>
+	<meta name=”robots” content=”noindex, follow”>
+{% endblock %}
+
 {% block body %}
 
 	<section class="main container">
@@ -56,17 +62,17 @@
 				</div>
 				<div class="col-md-4">
 					
-					<img class="img-responsive" src="{{ asset('bundles/mbpweb/images/img1.jpg') }}" alt="">
+					<img class="img-responsive" src="{{ asset('bundles/mbpweb/images/img1.jpg') }}" alt="empresa1">
 					
 				</div>
 				<div class="col-md-4 row-top">
 					
-					<img class="img-responsive" src="{{ asset('bundles/mbpweb/images/mitutoyo.jpg') }}" alt="">
+					<img class="img-responsive" src="{{ asset('bundles/mbpweb/images/mitutoyo.jpg') }}" alt="empresa2">
 					
 				</div>
 				<div class="col-md-4 row-top">
 					
-					<img class="img-responsive" src="{{ asset('bundles/mbpweb/images/historia2.jpg') }}" alt="">
+					<img class="img-responsive" src="{{ asset('bundles/mbpweb/images/historia2.jpg') }}" alt="empresa3">
 					
 				</div>
 			</section>

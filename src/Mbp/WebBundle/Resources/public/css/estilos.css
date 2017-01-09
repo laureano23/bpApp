@@ -1,3 +1,24 @@
+#nav_header {
+  background:#184571;
+  height: 2.5em;
+}
+
+#nav_header a{
+  color: white;
+  font-size: 0.8em;
+}
+
+#cnt_sub {
+  background:#184571;
+}
+
+#index_sub {
+  text-align: center;
+  color: white;
+}
+
+
+
 .categorias {
   background:#184571;
   text-align: center;
@@ -46,17 +67,13 @@
 .navbar {
 	padding-bottom: 0px;
   font-size: 18px;
+  position: relative;
 }
 
 /* PARA QUE EL TEXTO DEL NAVBAR QUEDE CENTRADO VERTICALMENTE */
 .navbar-nav li a{
- line-height: 50px;
+  line-height: 50px;
 }
-
-.navbar {
-    position: relative;
-}
-
 
 @media (max-width: 767px) {
     .navbar-collapse .nav > .divider-vertical {

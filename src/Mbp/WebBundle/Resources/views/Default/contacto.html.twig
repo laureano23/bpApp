@@ -1,5 +1,10 @@
 {% extends 'baseWeb.html.twig' %}
 
+{% block head %}
+	{{ parent() }}
+	<title>Contacto | Metalurgica BP SRL</title>	
+{% endblock %}
+
 {% block body %} 
 	{{ parent() }}
 	<div class="container" id="contact-form">
@@ -7,34 +12,34 @@
 			<div class="col-sm-6 col-md-4 col-md-offset-1">
 				<form role="form" method="post" id="contactForm">
 					<div class="form-group">
-						<label for="nombre">Nombre</label>
-						<input required="true" type="text" id="nombre" name="nombre" class="form-control" placeholder="Introduce tu nombre completo" required/>
+						<label for="nombre">{{"Nombre"|trans}}</label>
+						<input required="true" type="text" id="nombre" name="nombre" class="form-control" placeholder="{{"Introduce tu nombre completo"|trans}}" required/>
 					</div>
 					<div class="form-group">
-						<label for="apellido">Apellido</label>
-						<input type="text" id="apellido" name="apellido" class="form-control" placeholder="Introduce tu apellido" />
+						<label for="apellido">{{"Apellido"|trans}}</label>
+						<input type="text" id="apellido" name="apellido" class="form-control" placeholder="{{"Introduce tu apellido"|trans}}" />
 					</div>
 					<div class="form-group">
 						<label for="email">Email</label>
-						<input type="email" id="email" name="email" class="form-control" placeholder="Introduce tu direccion de email" required/>
+						<input type="email" id="email" name="email" class="form-control" placeholder="{{"Introduce tu direccion de email"|trans}}" required/>
 					</div>
 					<div class="form-group">
-						<label for="telefono">Telefono</label>
+						<label for="telefono">{{"Telefono"|trans}}</label>
 						<input type="text" id="telefono" name="telefono" class="form-control"/>
 					</div>
 					<div class="form-group">
-						<label for="empresa">Empresa</label>
+						<label for="empresa">{{"Empresa"|trans}}</label>
 						<input type="text" id="empresa" name="empresa" class="form-control"/>
 					</div>
 					<div class="form-group">
-						<label for="asunto">Asunto</label>
+						<label for="asunto">{{"Asunto"|trans}}</label>
 						<input type="text" id="asunto" name="asunto" class="form-control" required/>
 					</div>
 					<div class="form-group">
-						<label for="consulta">Consulta</label>
+						<label for="consulta">{{"Consulta"|trans}}</label>
 						<textarea rows="8" id="consulta" name="consulta" class="form-control" required></textarea>
 					</div>
-					<button type="submit" id="btnContacto" class="btn btn-default">Enviar</button>
+					<button type="submit" id="btnContacto" class="btn btn-default">{{"Enviar"|trans}}</button>
 				</form>	
 			</div>
 			<div class="col-md-5 col-md-offset-1">
@@ -44,7 +49,7 @@
 					<button class="btn btn-success btn-lg">
 			          <span class="glyphicon glyphicon-phone fa-2x"></span>
 			        </button>
-			        Telefono: (011) 4484-2416
+			        {{"Telefono"|trans}}: (011) 4484-2416
 				</h4>
 		        
 		      	<h4>

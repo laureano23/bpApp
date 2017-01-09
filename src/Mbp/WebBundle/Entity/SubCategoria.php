@@ -3,6 +3,8 @@
 namespace Mbp\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Translatable\Translatable;
 
 /**
  * SubCategoria
@@ -10,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Mbp\WebBundle\Entity\SubCategoriaRepository")
  */
-class SubCategoria
+class SubCategoria implements Translatable
 {
     /**
      * @var integer
@@ -23,7 +25,8 @@ class SubCategoria
 
     /**
      * @var string
-     *
+     * 
+     * @Gedmo\Translatable
      * @ORM\Column(name="descripcion", type="string", length=255)
      */
     private $descripcion;
@@ -41,7 +44,13 @@ class SubCategoria
      */
     private $articulos;
 
-	
+	/**
+     * @Gedmo\Locale
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     */
+    private $locale;
+
 	 public function __construct()
     {
         $this->articulos = new ArrayCollection(); 	
@@ -137,5 +146,10 @@ class SubCategoria
     public function getArticulos()
     {
         return $this->articulos;
+    }
+
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
     }
 }

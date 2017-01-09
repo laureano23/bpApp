@@ -3,6 +3,9 @@
 namespace Mbp\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Translatable\Translatable;
 
 /**
  * TiposRadiadores
@@ -10,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Mbp\WebBundle\Entity\TiposRadiadoresRepository")
  */
-class TiposRadiadores
+class TiposRadiadores implements Translatable
 {
     /**
      * @var integer
@@ -23,7 +26,8 @@ class TiposRadiadores
 
     /**
      * @var string
-     *
+     * 
+     * @Gedmo\Translatable
      * @ORM\Column(name="tipo", type="string", length=100)
      */
     private $tipo;
@@ -32,6 +36,14 @@ class TiposRadiadores
      * @ORM\OneToMany(targetEntity="Mbp\WebBundle\Entity\RadiadoresComerciales", mappedBy="tipoId", cascade={"all"})
      */
     private $radId;
+
+    /**
+     * @Gedmo\Locale
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     */
+    private $locale;
+
 
     public function __construct()
     {
@@ -71,6 +83,11 @@ class TiposRadiadores
     public function getTipo()
     {
         return $this->tipo;
+    }
+
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
     }
 }
 

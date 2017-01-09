@@ -99,11 +99,37 @@ doctrine:
                     MbpProduccionBundle: ~
                     MbpProveedoresBundle: ~    
                     MbpSecurityBundle: ~
-                    MbpSenchaBundle: ~  
+                    MbpSenchaBundle: ~                      
             web:
                 connection: web
                 mappings:
-                    MbpWebBundle: ~        
+                    tree:
+                        type: annotation
+                        alias: Gedmo
+                        prefix: Gedmo\Tree\Entity
+                        dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity"
+                    gedmo_translatable:
+                        type: annotation
+                        prefix: Gedmo\Translatable\Entity
+                        dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity"
+                        alias: GedmoTranslatable # (optional) it will default to the name set for the mapping
+                        is_bundle: false
+                    gedmo_translator:
+                        type: annotation
+                        prefix: Gedmo\Translator\Entity
+                        dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translator/Entity"
+                        alias: GedmoTranslator # (optional) it will default to the name set for the mapping
+                        is_bundle: false
+                    MbpWebBundle: ~ 
+
+# StofDoctrineExtensionsBundle Configuration
+stof_doctrine_extensions:
+    default_locale: es_AR
+    translation_fallback: true
+    orm:
+        web: 
+            translatable: true
+                    
 # Swiftmailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"
@@ -132,6 +158,7 @@ services:
    calculoConceptos:
      class: Mbp\PersonalBundle\Clases\CalculosConceptos
      arguments: [ @doctrine.orm.entity_manager ]  
+
 parameters:
    driver: com.mysql.jdbc.Driver
    user: root

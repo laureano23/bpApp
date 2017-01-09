@@ -1,5 +1,21 @@
 <nav class="navbar navbar-default navbar-static-top" role="navigation">
-	<div class="container">
+	
+	<div class="container-fluid" id="nav_header">
+		<div id="idioma" class="pull-right">
+			<span class="glyphicon glyphicon-log-in" style="color: white;"></span>
+            <a href="">{{"Acceso a clientes"|trans}}</a>    
+			{% set locale = app.request.locale %}
+			{% if locale == 'es' %}
+				<span style="color: white;">&nbsp;&nbsp; ES | </span>
+				<a href="{{ path('index', { _locale: 'en' }) }}" style="color: grey;">EN</a>
+			{% elseif locale == 'en' %}
+				<a href="{{ path('index', { _locale: 'es' }) }}" style="color: grey;">ES</a>
+				<span style="color: white;"> | EN</span>
+			{% endif %}
+		</div>
+	</div>
+	
+	<div class="container-fluid">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navegacion-fm">
 				<span class="sr-only">Desplegar / Ocultar Menu</span>
@@ -13,34 +29,39 @@
 		<!-- Inicia Menu -->
 		<div class="collapse navbar-collapse" id="navegacion-fm">
 			<ul class="nav navbar-nav">
-				<li><a href="{{ path('index') }}">Inicio</a></li>
+				<li><a href="{{ path('index') }}">{{"Inicio"|trans}}</a></li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
-						Productos <span class="caret"></span>
+						{{"Productos"|trans}} <span class="caret"></span>
 					</a>
 
 
 					<ul class="dropdown-menu" role="menu">
 						<!-- LA LISTA SE REALIZA EN OTRA VISTA -->
 						{{ render(controller('MbpWebBundle:Default:listarCategorias')) }}
-						<li><a href="{{ path('productosComerciales') }}">Radiadores de agua</a></li>
+						<li><a href="{{ path('productosComerciales') }}">{{"Radiadores de agua"|trans}}</a></li>
 					</ul>
 				</li>
-				<li><a href="{{ path('novedades') }}">Novedades</a></li>
-				<li><a href="{{ path('clientes') }}">Clientes</a></li>
+				<li><a href="{{ path('novedades') }}">{{"Novedades"|trans}}</a></li>
+				<li><a href="{{ path('clientes') }}">{{"Clientes"|trans}}</a></li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
-						Nosotros <span class="caret"></span>
+						{{"Nosotros"|trans}} <span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="{{ path('mision') }}">Mision, vision</a></li>
-						<li><a href="{{ path('historiaEmpresa') }}">Historia de la empresa</a></li>
-						<li><a href="{{ path('calidad') }}">Calidad y medio ambiente</a></li>
+						<li><a href="{{ path('mision') }}">{{"Mision, vision"|trans}}</a></li>
+						<li><a href="{{ path('historiaEmpresa') }}">{{"Historia de la empresa"|trans}}</a></li>						
+						<li><a href="{{ path('calidad') }}">{{"Calidad y medio ambiente"|trans}}</a></li>
 					</ul>
 				</li>
-				<li><a href="{{ path('contacto') }}">Contacto</a></li>
+				<li><a href="{{ path('contacto') }}">{{"Contacto"|trans}}</a></li>
+
+				
 			</ul>
 
+			
+			
+				
 			
 		</div>
 	</div>

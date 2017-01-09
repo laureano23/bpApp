@@ -1,5 +1,10 @@
 {% extends 'baseWeb.html.twig' %}
 
+{% block head %}
+	{{ parent() }}
+	<title>Inicio | Metalurgica BP SRL</title>	
+{% endblock %}
+
 {% block body %}
 
 
@@ -15,26 +20,26 @@
 	  <!-- Wrapper for slides -->
 	  <div class="carousel-inner" role="listbox">
 	    <div class="item active">
-	      <img class="img-responsive center-block" src="{{ asset('bundles/mbpweb/images/carousel1.jpg') }}" alt="...">
+	      <img class="img-responsive center-block" src="{{ asset('bundles/mbpweb/images/carousel1.jpg') }}" alt="enfriador mbp">
 	      <div class="carousel-caption">
 	        <p>
-	        	<h4 class="text-center" id="tituloCaption">Soluciones térmicas para la industria</h5>
+	        	<h4 class="text-center" id="tituloCaption">{{"Soluciones térmicas para la industria"|trans}}</h5>
 	        </p>
 	      </div>
 	    </div>
 	    <div class="item">
-	      <img class="img-responsive center-block" src="{{ asset('bundles/mbpweb/images/carousel2.jpg') }}" alt="...">
+	      <img class="img-responsive center-block" src="{{ asset('bundles/mbpweb/images/carousel2.jpg') }}" alt="radiador de aceite">
 	      <div class="carousel-caption">
 	        <p>
-	        	<h4 class="text-center" id="tituloCaption">Radiadores de aceite</h2>
+	        	<h4 class="text-center" id="tituloCaption">{{"Radiadores de aceite"|trans}}</h2>
 	        </p>
 	      </div>
 	    </div>
 	    <div class="item">
-	      <img class="img-responsive center-block" src="{{ asset('bundles/mbpweb/images/carousel3.jpg') }}" alt="...">
+	      <img class="img-responsive center-block" src="{{ asset('bundles/mbpweb/images/carousel3.jpg') }}" alt="enfriador de aceite">
 	      <div class="carousel-caption">
 	        <p>
-	        	<h4 class="text-center" id="tituloCaption">Diseños a medida</h2>
+	        	<h4 class="text-center" id="tituloCaption">{{"Diseños a medida"|trans}}</h2>
 	        </p>
 	      </div>
 	    </div>
@@ -57,31 +62,36 @@
 <div class="container-fluid" id="main">
 
 
+<div id="cnt_sub" class="container-fluid">
+	<h2 id="index_sub">{{"PRINCIPALES PRODUCTOS"|trans}}</h2>						
+</div>
+
 <!-- IMAGENES -->
-<div class="col-md-9 cols-xs-12 col-md-offset-1" id="indexProd">
+<div class="col-md-10 cols-xs-12 col-md-offset-1" id="indexProd">
 		
-		<h2>Principales productos:</h2>						
+		
+		
 
 		<div class="row row-top categorias">
 			<div class="col-md-6 col-xs-6">
 				<div class="thumbnail">
-					<img src="{{ asset('bundles/mbpweb/images/index1') }}" class="img-responsive">
+					<img src="{{ asset('bundles/mbpweb/images/index1') }}" class="img-responsive" alt="radiador de aceite">
 				</div>						
 				<div class="caption">
-					<a href="{{ path('productos', {'cat': 1}) }}"><h3>Equipos, enfiradores aceite/aire</h3></a>
+					<a href="{{ path('productos', {'cat': 1}) }}"><h3>{{"Radiadores de aceite"|trans}}</h3></a>
 					<p>
-						Trifasico y 12/24V, con electroventilador
+						{{"Trifasico y 12/24V, con electroventilador"|trans}}
 					</p>
 				</div>
 			</div>
 			<div class="col-md-6 col-xs-6">
 				<div class="thumbnail">
-					<img src="{{ asset('bundles/mbpweb/images/index3') }}" class="img-responsive">
+					<img src="{{ asset('bundles/mbpweb/images/index3') }}" class="img-responsive" alt="intercooler">
 				</div>						
 				<div class="caption">
 					<a href="{{ path('productosComerciales') }}"><h3>Intercoolers</h3></a>
 					<p>
-						En aluminio para diversas aplicaciones
+						{{"En aluminio para diversas aplicaciones"|trans}}
 					</p>
 				</div>
 			</div>	
@@ -90,23 +100,23 @@
 		<div class="row row-top categorias">
 			<div class="col-md-6 col-xs-6">
 				<div class="thumbnail">
-					<img src="{{ asset('bundles/mbpweb/images/posenfriador1') }}" class="img-responsive">
+					<img src="{{ asset('bundles/mbpweb/images/posenfriador1') }}" class="img-responsive" alt="posenfriador">
 				</div>						
 				<div class="caption">
-					<a href="{{ path('productos', {'cat': 3}) }}"><h3>PosEnfriadores</h3></a>
+					<a href="{{ path('productos', {'cat': 3}) }}"><h3>{{"Pos Enfriadores"|trans}}</h3></a>
 					<p>
-						Para compresores, diversas aplicaciones.
+						{{"Para compresores, diversas aplicaciones"|trans}}
 					</p>
 				</div>
 			</div>
 			<div class="col-md-6 col-xs-6">
 				<div class="thumbnail">
-					<img src="{{ asset('bundles/mbpweb/images/index4') }}" class="img-responsive">
+					<img src="{{ asset('bundles/mbpweb/images/index4') }}" class="img-responsive" alt="radiador de agua">
 				</div>						
 				<div class="caption">
-					<a href="{{ path('productosComerciales') }}"><h3>Radiadores de agua</h3></a>
+					<a href="{{ path('productosComerciales') }}"><h3>{{"Radiadores de agua"|trans}}</h3></a>
 					<p>
-						En aluminio, diversas aplicaciones
+						{{"En aluminio para diversas aplicaciones"|trans}}
 					</p>
 				</div>
 			</div>	
@@ -119,10 +129,6 @@
 
 
 </div>
-
-
-
-	
 
 
 

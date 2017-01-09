@@ -1,4 +1,9 @@
 {% extends 'baseWeb.html.twig' %}
+
+{% block head %}
+  {{ parent() }}
+  <title>Productos | Metalurgica BP SRL</title>  
+{% endblock %}
   
 {% block body %} 
   <section class="main container" id="contenedorProductos">
@@ -15,8 +20,18 @@
         <h2 class="post-title">
           <a href="#">
             {{ categorias.descripcion }}
-          </a>
+          </a>          
         </h2>
+
+          <!-- SI LA CATEGORIA TIENE CATALOGO SE AGREGA ACA -->
+          <p>            
+            {% if categorias.rutaCatalogo != "" %}
+              <a class="" target="_blank" href="{{ asset('bundles/mbpweb/pdf/catalogo/') }}{{ categorias.rutaCatalogo }}">{{ "Catalogo general"|trans }} <span class="glyphicon glyphicon-file"></span></a>
+            {% endif %}
+          </p>
+          
+
+
           <section class="col-md-9 productos-container">              
             {% for subCat in categorias.subCategoria %}             
               <h3>{{subCat.descripcion}}</h3>

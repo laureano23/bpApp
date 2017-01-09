@@ -1,5 +1,11 @@
 {% extends 'baseWeb.html.twig' %}
 
+{% block head %}	
+	{{parent()}}
+	<title>Calidad | Metalúrgica BP</title>
+	<meta name=”robots” content=”noindex, follow”>
+{% endblock %}
+
 {% block body %}
 
 <section class="main container">
@@ -51,10 +57,10 @@
 			</section>
 			<section class="posts col-md-3">
 				<a href="#" class="thumb pull-right" id="pop1">
-					<img id="imageresource1" class="img-thumbnail" src="{{ asset('bundles/mbpweb/images/IRAM ISO9001.jpg') }}" alt="">
+					<img id="imageresource1" class="img-thumbnail" src="{{ asset('bundles/mbpweb/images/IRAM ISO9001.jpg') }}" alt="iso9001">
 				</a>
 				<a href="#" class="thumb pull-right" id="pop2">
-					<img id="imageresource2" class="img-thumbnail" src="{{ asset('bundles/mbpweb/images/IRAM ISO14001.jpg') }}" alt="">
+					<img id="imageresource2" class="img-thumbnail" src="{{ asset('bundles/mbpweb/images/IRAM ISO14001.jpg') }}" alt="iso14001">
 				</a>
 			</section>
 		</div>

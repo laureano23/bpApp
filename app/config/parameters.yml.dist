@@ -1,0 +1,29 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_driver: pdo_mysql
+    database_host: localhost
+    database_port: null
+    database_name: metbp
+    database_user: root
+    database_password: logged07
+    locale: es
+    secret: lalo23490
+    debug_toolbar: true
+    debug_redirects: false
+    use_assetic_controller: true
+
+#PARAMETROS DE BD WEB
+    database_driver2: pdo_mysql
+    database_host2: localhost
+    database_port2: null
+    database_name2: bpweb
+    database_user2: root
+    database_password2: logged07
+    
+#PARAMETROS DE MAILER
+    mailer_transport: smtp
+    mailer_host: smtp.metalurgicabp.com.ar
+    mailer_user: laureano@metalurgicabp.com.ar
+    mailer_password: lalo23490
+    mailer_port: 25
+    
