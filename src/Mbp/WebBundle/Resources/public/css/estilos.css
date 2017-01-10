@@ -1,6 +1,6 @@
 #nav_header {
   background:#184571;
-  height: 2.5em;
+  height: 25px;
 }
 
 #nav_header a{
@@ -16,7 +16,6 @@
   text-align: center;
   color: white;
 }
-
 
 
 .categorias {

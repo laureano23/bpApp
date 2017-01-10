@@ -1,20 +1,20 @@
 <nav class="navbar navbar-default navbar-static-top" role="navigation">
-	
+
 	<div class="container-fluid" id="nav_header">
 		<div id="idioma" class="pull-right">
 			<span class="glyphicon glyphicon-log-in" style="color: white;"></span>
-            <a href="">{{"Acceso a clientes"|trans}}</a>    
+            <a href="{{ path("login") }}">{{"Acceso a clientes"|trans}}</a>    
 			{% set locale = app.request.locale %}
 			{% if locale == 'es' %}
 				<span style="color: white;">&nbsp;&nbsp; ES | </span>
 				<a href="{{ path('index', { _locale: 'en' }) }}" style="color: grey;">EN</a>
 			{% elseif locale == 'en' %}
-				<a href="{{ path('index', { _locale: 'es' }) }}" style="color: grey;">ES</a>
+				<a href="{{ path('index', { _locale: 'es' }) }}" style="color: grey;">&nbsp;&nbsp;ES</a>
 				<span style="color: white;"> | EN</span>
 			{% endif %}
 		</div>
 	</div>
-	
+
 	<div class="container-fluid">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navegacion-fm">
