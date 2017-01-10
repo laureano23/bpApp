@@ -8,11 +8,11 @@
   font-size: 0.8em;
 }
 
-#cnt_sub {
+.cnt_sub {
   background:#184571;
 }
 
-#index_sub {
+.index_sub {
   text-align: center;
   color: white;
 }
