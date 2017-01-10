@@ -10,7 +10,7 @@
     <div class="row">
 
       <aside class="col-md-3 hidden-xs hidden-sm">
-        <h4>Productos</h4>
+        <h4>{{"Productos"|trans}}</h4>
         <ul class="list-group">
           {{ render(controller('MbpWebBundle:Default:listarCategoriasAside')) }}
         </ul>   
@@ -43,7 +43,7 @@
                         <div class="panel-heading">
                           <p class="post-contenido text-justify">
                             {{ item.descripcion }}
-                            <a class="pull-right" target="_blank" href="{{ asset('bundles/mbpweb/pdf/catalogo/') }}{{ item.rutaHojaDatos }}">Hoja de datos <span class="glyphicon glyphicon-file"></span></a>
+                            <a class="pull-right" target="_blank" href="{{ asset('bundles/mbpweb/pdf/catalogo/') }}{{ item.rutaHojaDatos }}">{{"Hoja de datos"|trans}} <span class="glyphicon glyphicon-file"></span></a>
                           </p>                             
                         </div>
                       </div>                    
