@@ -28,8 +28,7 @@
             {% if categorias.rutaCatalogo != "" %}
               <a class="" target="_blank" href="{{ asset('bundles/mbpweb/pdf/catalogo/') }}{{ categorias.rutaCatalogo }}">{{ "Catalogo general"|trans }} <span class="glyphicon glyphicon-file"></span></a>
             {% endif %}
-          </p>
-          
+          </p>          
 
 
           <section class="col-md-9 productos-container">              
@@ -43,7 +42,7 @@
                         <div class="panel-heading">
                           <p class="post-contenido text-justify">
                             {{ item.descripcion }}
-                            <a class="pull-right" target="_blank" href="{{ asset('bundles/mbpweb/pdf/catalogo/') }}{{ item.rutaHojaDatos }}">{{"Hoja de datos"|trans}} <span class="glyphicon glyphicon-file"></span></a>
+                            <a class="pull-right" target="_blank" href="{{ asset('bundles/mbpweb/pdf/catalogo/') }}{{ item.rutaHojaDatos }}">{{"Hoja de datos"|trans}} <span class="glyphicon glyphicon-file"></span></a> 
                           </p>                             
                         </div>
                       </div>                    
