@@ -4,6 +4,8 @@ namespace Mbp\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Translatable\Translatable;
 
 /**
  * Categorias
@@ -11,7 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Mbp\WebBundle\Entity\CategoriasRepository")
  */
-class Categorias
+class Categorias implements Translatable
 {
     /**
      * @var integer
@@ -24,7 +26,8 @@ class Categorias
 
     /**
      * @var string
-     *
+     * 
+     * @Gedmo\Translatable
      * @ORM\Column(name="descripcion", type="string", length=80)
      */
     private $descripcion;
@@ -32,9 +35,9 @@ class Categorias
     /**
      * @var string
      *
-     * @ORM\Column(name="resenia", type="string", length=250)
+     * @ORM\Column(name="rutaCatalogo", type="string", length=250)
      */
-    private $resenia;
+    private $rutaCatalogo;
 
     /**
      * @var string
@@ -42,6 +45,13 @@ class Categorias
      * @ORM\Column(name="imagen", type="string", length=250)
      */
     private $imagen;
+
+    /**
+     * @Gedmo\Locale
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     */
+    private $locale;
 
     
 	
@@ -93,27 +103,27 @@ class Categorias
     }
 
     /**
-     * Set resenia
+     * Set rutaCatalogo
      *
-     * @param string $resenia
+     * @param string $rutaCatalogo
      *
      * @return Categorias
      */
-    public function setResenia($resenia)
+    public function setRutaCatalogo($rutaCatalogo)
     {
-        $this->resenia = $resenia;
+        $this->rutaCatalogo = $rutaCatalogo;
 
         return $this;
     }
 
     /**
-     * Get resenia
+     * Get rutaCatalogo
      *
      * @return string
      */
-    public function getResenia()
+    public function getRutaCatalogo()
     {
-        return $this->resenia;
+        return $this->rutaCatalogo;
     }
 
     /**
@@ -206,5 +216,10 @@ class Categorias
     public function getSubCategoria()
     {
         return $this->subCategoria;
+    }
+
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
     }
 }

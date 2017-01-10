@@ -1,5 +1,11 @@
 {% extends 'baseWeb.html.twig' %}
 
+{% block head %}	
+	{{parent()}}
+	<title>Calidad | Metalúrgica BP</title>
+	<meta name=”robots” content=”noindex, follow”>
+{% endblock %}
+
 {% block body %}
 
 <section class="main container">
@@ -8,42 +14,39 @@
 				<article class="post clearfix">
 					
 					<h2 class="post-title">
-						<a href="#">Normas de calidad y medio ambiente ISO9001, ISO14001</a>
+						<a href="#">{{"Normas de calidad y medio ambiente ISO9001, ISO14001"|trans}}</a>
 					</h2>
-					<p class="post-contenido text-justify">
-						Metalúrgica BP S.R.L., empresa argentina en constante crecimiento desde su fundación, ha decidido desarrollar sus actividades dentro del marco de un Sistema de Gestión de la Calidad y cuidado del Medio Ambiente basado en la norma ISO 9001 / 2008, ISO 14001/2004; con el objeto de satisfacer a sus clientes con productos de calidad, respetando el medio ambiente y asegurando una rentabilidad que permita un crecimiento sustentable.
-						Esto queda representado en su Política de Calidad, donde se compromete a:
+					<p class="post-contenido text-justify">{{"Metalúrgica BP S.R.L., empresa argentina en constante crecimiento desde su fundación, ha decidido desarrollar sus actividades dentro del marco de un Sistema de Gestión de la Calidad y cuidado del Medio Ambiente basado en la norma ISO 9001 / 2008, ISO 14001/2004; con el objeto de satisfacer a sus clientes con productos de calidad, respetando el medio ambiente y asegurando una rentabilidad que permita un crecimiento sustentable. Esto queda representado en su Política de Calidad, donde se compromete a"|trans}}:
 						<em>
 						<strong>
-							Todos los que integramos Metalúrgica BP, asumimos el compromiso de “Satisfacer las necesidades de nuestros clientes, a través del suministro de productos de calidad asegurada y el cuidado del medio ambiente”
+							{{"Todos los que integramos Metalúrgica BP, asumimos el compromiso de “Satisfacer las necesidades de nuestros clientes, a través del suministro de productos de calidad asegurada y el cuidado del medio ambiente”"|trans}}
 						</strong>
 						</em>
 
 					</p>
 					<p>
-						La Dirección de Metalúrgica BP S.R.L establece Objetivos de Calidad y Medio Ambiente mensurables y coherentes con la Política de Calidad y Medio Ambiente expresado. En ese sentido los objetivos están orientados a la mejora continua de los procesos y a la búsqueda de la eficacia del Sistema de Gestión de Calidad y Medio Ambiente.
+						{{"La Dirección de Metalúrgica BP S.R.L establece Objetivos de Calidad y Medio Ambiente mensurables y coherentes con la Política de Calidad y Medio Ambiente expresado. En ese sentido los objetivos están orientados a la mejora continua de los procesos y a la búsqueda de la eficacia del Sistema de Gestión de Calidad y Medio Ambiente."|trans}}
 
-						Estos objetivos son revisados en forma continua para lograr su adecuación a las exigencias del Sistema de Gestión de Calidad y Medio Ambiente de la empresa.
-						Los objetivos generales determinados por la empresa son:
+						{{"Estos objetivos son revisados en forma continua para lograr su adecuación a las exigencias del Sistema de Gestión de Calidad y Medio Ambiente de la empresa. Los objetivos generales determinados por la empresa son"|trans}}:
 
 						<ul class="list-group">
 							<li class="list-group-item list-group-item-success">
-								Trabajar por la mejora continua de nuestros procesos e impacto ambiental y un índice de cero defectos. 
+								{{"Trabajar por la mejora continua de nuestros procesos e impacto ambiental y un índice de cero defectos."|trans}}
 							</li>
 							<li class="list-group-item list-group-item-success">
-								Obtener el reconocimiento de nuestros productos a nivel internacional. 
+								{{"Obtener el reconocimiento de nuestros productos a nivel internacional."|trans}}
 							</li>
 							<li class="list-group-item list-group-item-success">
-								Desarrollar y mantener fluidos canales de comunicación con nuestros clientes, proveedores y el mercado en general.  
+								{{"Desarrollar y mantener fluidos canales de comunicación con nuestros clientes, proveedores y el mercado en general."|trans}}  
 							</li class="list-group-item list-group-item-success">
 							<li class="list-group-item list-group-item-success">
-								Mantener la fidelidad de nuestros clientes.
+								{{"Mantener la fidelidad de nuestros clientes."|trans}}
 							</li class="list-group-item list-group-item-success">
 							<li class="list-group-item list-group-item-success">
-								Mantener adecuados niveles de capacitación del personal para lograr que la seguridad, la salud, la protección del medio ambiente y la calidad sean aseguradas por todos,  y contribuya de manera decisiva a la imagen de la Empresa. 
+								{{"Mantener adecuados niveles de capacitación del personal para lograr que la seguridad, la salud, la protección del medio ambiente y la calidad sean aseguradas por todos,  y contribuya de manera decisiva a la imagen de la Empresa."|trans}} 
 							</li class="list-group-item list-group-item-success">
 							<li class="list-group-item list-group-item-success">
-								Obtener la productividad y rentabilidad esperada en función de los costos de producción estimados, para garantizar la competitividad y permanencia en el mercado.
+								{{"Obtener la productividad y rentabilidad esperada en función de los costos de producción estimados, para garantizar la competitividad y permanencia en el mercado."|trans}}
 							</li>
 						</ul>
 					</p>
@@ -51,10 +54,10 @@
 			</section>
 			<section class="posts col-md-3">
 				<a href="#" class="thumb pull-right" id="pop1">
-					<img id="imageresource1" class="img-thumbnail" src="{{ asset('bundles/mbpweb/images/IRAM ISO9001.jpg') }}" alt="">
+					<img id="imageresource1" class="img-thumbnail" src="{{ asset('bundles/mbpweb/images/IRAM ISO9001.jpg') }}" alt="iso9001">
 				</a>
 				<a href="#" class="thumb pull-right" id="pop2">
-					<img id="imageresource2" class="img-thumbnail" src="{{ asset('bundles/mbpweb/images/IRAM ISO14001.jpg') }}" alt="">
+					<img id="imageresource2" class="img-thumbnail" src="{{ asset('bundles/mbpweb/images/IRAM ISO14001.jpg') }}" alt="iso14001">
 				</a>
 			</section>
 		</div>

@@ -1,5 +1,10 @@
 {% extends 'baseWeb.html.twig' %}
 
+{% block head %}
+	{{ parent() }}
+	<title>Novedades | Metalurgica BP SRL</title>	
+{% endblock %}
+
 
 {% block body %}    
 
@@ -10,18 +15,18 @@
 				<article class="post clearfix jumbotron">					
 					<div class="col-md-7">
 						<h3 class="post-title">
-						<a href="#">Modernización de maquinaria</a>
+						<a href="#">{{"Modernización de maquinaria"|trans}}</a>
 						</h3>
 						<p class="lead">
 							<small>
-								Con vistas de ampliar el mercado local hacia la fabricacion de enfriadores de agua, Metalurgica BP ha incorporado una serie de máquinas para la conformacion y corte de aletas de aluminio de forma automática.
+								{{"Con vistas de ampliar el mercado local hacia la fabricacion de enfriadores de agua, Metalurgica BP ha incorporado una serie de máquinas para la conformacion y corte de aletas de aluminio de forma automática."|trans}}
 							</small>
 							
 						</p>
 					</div>
 					<div class="col-md-5">
 						<a href="#" class="thumb pull-left">
-							<img class="img-responsive" src="{{ asset('bundles/mbpweb/images/maquinaria1.jpg') }}" alt="">
+							<img class="img-responsive" src="{{ asset('bundles/mbpweb/images/maquinaria1.jpg') }}" alt="maquinaria">
 						</a>
 					</div>					
 					
@@ -32,18 +37,18 @@
 				<article class="post clearfix jumbotron">					
 					<div class="col-md-7">
 						<h2 class="post-title">
-						<a href="#">Automec 2015 Brasil</a>
+						<a href="#">{{"Automec 2015 Brasil"|trans}}</a>
 						</h2>
 						<p class="lead">
 							<small>
-								El equipo comercial de Metalurgica BP viajó a Brasil junto con la colaboración dela fundación Exportar para promocionar sus productos en la región.	
+								{{"El equipo comercial de Metalurgica BP viajó a Brasil junto con la colaboración dela fundación Exportar para promocionar sus productos en la región."|trans}}	
 							</small>
 							
 						</p>
 					</div>
 					<div class="col-md-5">
 						<a href="#" class="thumb pull-left">
-							<img class="img-responsive" src="{{ asset('bundles/mbpweb/images/automec1.jpg') }}" alt="">
+							<img class="img-responsive" src="{{ asset('bundles/mbpweb/images/automec1.jpg') }}" alt="automec">
 						</a>
 					</div>										
 				</article>		

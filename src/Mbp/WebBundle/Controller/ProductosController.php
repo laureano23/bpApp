@@ -57,7 +57,12 @@ class ProductosController extends Controller
     	
         
         
-        $tipos = $repo->findAll();            
+        $tipos = $repo->findAll(); 
+        foreach ($tipos as $tipo) {
+                       $tipo->setTranslatableLocale("es_ar");
+                       $em->refresh($tipo);
+                   }           
+
         return $this->render('MbpWebBundle:Default:radiadoresComerciales.html.twig', array(
             'tipos' => $tipos,
 

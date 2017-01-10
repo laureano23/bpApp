@@ -1,5 +1,10 @@
 {% extends 'baseWeb.html.twig' %}
 
+{% block head %}
+	{{ parent() }}
+	<title>Ubicación | Metalurgica BP SRL</title>	
+{% endblock %}
+
 {% block body %}
 	<div id="map" class="col-md-7"></div>
 

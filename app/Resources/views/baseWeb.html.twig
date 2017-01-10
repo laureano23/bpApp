@@ -1,19 +1,27 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <title>Metalurgica BP SRL</title>
-    
 
-    {% block stylesheets %}
-        <link rel="stylesheet" href="{{ asset('bundles/mbpweb/css/bootstrap.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('bundles/mbpweb/css/estilos.css') }}">    
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">          
-        <link rel="stylesheet" href="{{ asset('bundles/mbpweb/css/footer.css') }}">  
-    {% endblock %}
-    
+
+<head>
+    {% block head %}
+        <meta charset="UTF-8">
+        <link rel="alternate" href="http://www.metalurgicabp.com.ar/" hreflang="x-default" />
+        <link rel="alternate" hreflang="en" href="http://www.metalurgicabp.com.ar/en/index" />
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta name="description" content="Fábrica de radiadores de aluminio para diversas aplicaciones, uso industrial, agrícola, vial, etc">
+        <meta name="keywords" content="radiadores, ">        
+        
+
+        {% block stylesheets %}
+            <link rel="shortcut icon" href="{{ asset('bundles/mbpweb/images/favicon.ico') }}" >
+            <link rel="stylesheet" href="{{ asset('bundles/mbpweb/css/bootstrap.min.css') }}">
+            <link rel="stylesheet" href="{{ asset('bundles/mbpweb/css/estilos.css') }}">    
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">          
+            <link rel="stylesheet" href="{{ asset('bundles/mbpweb/css/footer.css') }}">  
+        {% endblock %}
+    {% endblock %}    
 </head>
+
 <body>
     <header>
         <!--  COLOCAMOS LA BARRA DE NAVEGACION SUPERIOR -->
@@ -84,33 +92,33 @@
     {% block footer %}
         <footer>
             <div class="footer" id="footer">
-                <div class="container">
+                <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-3  col-md-3 col-sm-4 col-xs-6">
-                            <h3> Quienes somos </h3>
+                            <h3> {{"Quienes somos"|trans}} </h3>
                             <ul>
-                                <li> <a href="{{ path('historiaEmpresa') }}"> Historia de la empresa </a> </li>
-                                <li> <a href="{{ path('mision') }}"> Misión, visión </a> </li>
-                                <li> <a href="{{ path('calidad') }}"> Calidad </a> </li>
+                                <li> <a href="{{ path('historiaEmpresa') }}"> {{"Historia de la empresa"|trans}} </a> </li>
+                                <li> <a href="{{ path('mision') }}"> {{"Mision, vision"|trans}} </a> </li>
+                                <li> <a href="{{ path('calidad') }}"> {{"Calidad y medio ambiente"|trans}} </a> </li>
                             </ul>
                         </div>
                         <div class="col-lg-3  col-md-3 col-sm-4 col-xs-6">
-                            <h3> Que hacemos </h3>
+                            <h3> {{"Que hacemos"|trans}} </h3>
                             <ul>
-                                <li> <a href="{{ path('productos', {'cat': 1}) }}"> Radiadores de aceite-aire </a> </li>
-                                <li> <a href="{{ path('productos', {'cat': 3}) }}"> Posenfriadores </a> </li>
-                                <li> <a href="{{ path('productosComerciales') }}"> Radiadores de agua </a> </li>
+                                <li> <a href="{{ path('productos', {'cat': 1}) }}"> {{"Radiadores de aceite"|trans}} </a> </li>
+                                <li> <a href="{{ path('productos', {'cat': 3}) }}"> {{"PosEnfriadores"|trans}} </a> </li>
+                                <li> <a href="{{ path('productosComerciales') }}"> {{"Radiadores de agua"|trans}} </a> </li>
                             </ul>
                         </div>
                         <div class="col-lg-3  col-md-3 col-sm-4 col-xs-6">
-                            <h3> Ubicacion </h3>
+                            <h3> {{"Ubicacion"|trans}} </h3>
                             <ul>
-                                <li> <a href="{{ path('contacto') }}"> Contacto </a> </li>
-                                <li> <a href="{{ path('comoLlegar') }}"> Como llegar </a> </li>
+                                <li> <a href="{{ path('contacto') }}"> {{"Contacto"|trans}} </a> </li>
+                                <li> <a href="{{ path('comoLlegar') }}"> {{"Como llegar"|trans}} </a> </li>
                             </ul>
                         </div>               
                         <div class="col-lg-3  col-md-3 col-sm-6 col-xs-12 ">
-                            <h3> Seguinos en </h3>
+                            <h3> {{"Seguinos en"|trans}} </h3>
                             <ul class="social">
                                 <li> <a href="https://www.facebook.com/profile.php?id=100011079996789"> <i class="fa fa-facebook-official">   </i> </a> </li>
                                 <li> <a href="https://twitter.com/MetalurgicaBp"> <i class="fa fa-twitter">   </i> </a> </li>
@@ -120,20 +128,14 @@
                         </div>
                     </div>
                     <!--/.row--> 
-                    <div class="row">
-                        <div class="pull-right">
-                            <span class="glyphicon glyphicon-log-in"></span>
-                            <a href="">Acceso a clientes</a>            
-                        </div>  
-                    </div>
                 </div>
                 <!--/.container--> 
             </div>
             <!--/.footer-->
             
             <div class="footer-bottom">
-                <div class="container">
-                    <p class="pull-left"> Copyright © 2016 Metalurgica BP SRL. Todos los derechos reservados. 
+                <div class="container-fluid">
+                    <p class="pull-left"> Copyright © 2016 Metalurgica BP SRL. {{"Todos los derechos reservados"|trans}}. 
                         <br>
                         Ombu 3865 San Justo - Buenos Aires - Argentina - (011) 4484-2416
                     </p>

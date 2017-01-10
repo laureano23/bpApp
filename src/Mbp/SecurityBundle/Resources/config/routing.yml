@@ -1,6 +1,8 @@
 login:
     path:     /login
     defaults: { _controller: MbpSecurityBundle:Default:login }
+    options:
+        expose: true
 
 login_check:
     path: /login_check

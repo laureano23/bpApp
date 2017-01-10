@@ -1,7 +1,11 @@
 mbp_web:
     resource: "@MbpWebBundle/Controller/"
     type:     annotation
-    prefix:   /web
+    prefix:   /web/{_locale}
+    defaults:
+        _locale: '%locale%'
+    requirements:
+        _locale: en|es
 
 mbp_compras:
     resource: "@MbpComprasBundle/Controller/ComprasController.php"

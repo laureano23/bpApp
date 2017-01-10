@@ -12,14 +12,19 @@ class CategoriasRepository extends \Doctrine\ORM\EntityRepository
 {
 
 	//LISTADO POR CATEGORIA Y SUBCATEGORIA
-	public function listarCategorias()
+	public function listarCategorias($locale)
 	{
 		$em = $this->getEntityManager();
 		$repo = $em->getRepository('MbpWebBundle:Categorias');
 
 		$res = $repo->createQueryBuilder('cat')
-			->select('cat.descripcion, cat.id')
+			->select('cat.descripcion, cat.id')			
 			->getQuery()
+			->setHint( \Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER,
+            	'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker')
+			->setHint(
+	            \Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE,
+	            $locale)
 			->getResult();
 
 		return $res;

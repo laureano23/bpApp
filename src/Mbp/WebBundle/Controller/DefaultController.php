@@ -4,24 +4,39 @@ namespace Mbp\WebBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Mbp\WebBundle\Entity\Categorias;
+use Mbp\WebBundle\Entity\SubCategoria;
+
+
+
+use Mbp\WebBundle\Entity\TiposRadiadores;
 
 class DefaultController extends Controller
 {
     /**
      * @Route("/index", name="index")
      * @Template() 
+     * @Cache(smaxage="604800")
      */
     public function indexAction()
     {
-    	
+        $em = $this->getDoctrine()->getManager('web');
+        $repo = $em->getRepository('MbpWebBundle:SubCategoria');
+
+        $sub = $repo->find(1);
+        $sub->setDescripcion("Engine 220V");
+        $sub->setTranslatableLocale("en");
+
+        $em->persist($sub);
+        $em->flush();
+
         return $this->render('MbpWebBundle:Default:index.html.twig');
     }
 
     /**
      * @Route("/contacto", name="contacto")
-     * @Template()
+     * @Cache(smaxage="604800")
      */
     public function contactoAction()
     {
@@ -33,7 +48,6 @@ class DefaultController extends Controller
         $empresa = $req->request->get('empresa');        
         $asunto = $req->request->get('asunto');
         $consulta = $req->request->get('consulta');
-        //asasss
 
         if($nombre){
             try{
@@ -82,6 +96,7 @@ class DefaultController extends Controller
      /**
      * @Route("/clientes", name="clientes")
      * @Template()
+     * @Cache(smaxage="604800")
      */
     public function clientesAction()
     {
@@ -92,8 +107,9 @@ class DefaultController extends Controller
     {
     	$em = $this->getDoctrine()->getManager('web');
     	$repo = $em->getRepository('MbpWebBundle:Categorias');
+        $locale = $req = $this->getRequest()->getLocale();
 
-    	$items = $repo->listarCategorias();
+    	$items = $repo->listarCategorias($locale);
 		
 		
 
@@ -111,20 +127,12 @@ class DefaultController extends Controller
     	return $this->render('MbpWebBundle:Default:lista_categorias_aside.html.twig', array('items' => $items));
     }
 
-     
 
-    /**
-     * @Route("/prueba", name="prueba")
-     * @Template()
-     */
-    public function pruebaAction()
-    {
-        return $this->render('MbpWebBundle:Default:prueba.html.twig');
-    }
 
     /**
      * @Route("/calidad", name="calidad")
      * @Template()
+     * @Cache(smaxage="604800")
      */
     public function calidadAction()
     {
@@ -133,6 +141,7 @@ class DefaultController extends Controller
 
     /**
      * @Route("/historiaEmpresa", name="historiaEmpresa")
+     * @Cache(smaxage="604800")
      * @Template()
      */
     public function historiaEmpresaAction()
@@ -142,6 +151,7 @@ class DefaultController extends Controller
 
     /**
      * @Route("/mision", name="mision")
+     * @Cache(smaxage="604800")
      * @Template()
      */
     public function misionAction()
@@ -153,6 +163,7 @@ class DefaultController extends Controller
     /**
      * @Route("/como-llegar", name="comoLlegar")
      * @Template()
+     * @Cache(smaxage="604800")
      */
     public function comoLlegarAction()
     {
@@ -162,6 +173,7 @@ class DefaultController extends Controller
 
     /**
      * @Route("/novedades", name="novedades")
+     * @Cache(smaxage="604800")
      * @Template()
      */
     public function novedadesAction()
