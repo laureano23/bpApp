@@ -11,6 +11,7 @@ class DefaultController extends Controller
     {
     	$logged = $this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY');
     	$env = $this->container->get('kernel')->getEnvironment();
+    	
 		if($env == 'dev' && $logged){
 			return $this->render('MbpSenchaBundle:MetApp:index.html.twig');
 		}
