@@ -99,21 +99,21 @@ class Facturas
      *      max = 99
 	 * )
      */
-    private $dtoTotal;
+    private $dtoTotal=0;
 	
 	/**
      * @var \Decimal
      *
      * @ORM\Column(name="perIIBB", type="decimal", precision=9, scale=2)
      */
-    private $perIIBB;
+    private $perIIBB=0;
 	
 	/**
      * @var \Decimal
      *
      * @ORM\Column(name="iva21", type="decimal", precision=9, scale=2)
      */
-    private $iva21;
+    private $iva21=0;
 
 
     /**

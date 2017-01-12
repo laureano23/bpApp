@@ -1,0 +1,28 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block content %}
+	<table id="grid-data-api" class="table table-condensed table-hover table-striped">
+	    <thead>
+	        <tr>
+	            <th data-column-id="id" data-type="numeric">ID</th>
+	            <th data-column-id="cantidad">Cantidad</th>
+	            <th data-column-id="fechaProg" data-order="desc">Fecha de entrega</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	    	{% for el in pedidos.rows %}
+	    		<tr>
+		            <td>{{ el.id }}</td>
+		            <td>{{ el.cantidad }}</td>
+		            <td>{{ el.fechaProg|date('d-m-Y') }}</td>
+		        </tr>				
+			{% endfor %}
+	        
+	        ...
+	    </tbody>
+	</table>
+
+	
+
+	
+{% endblock %}

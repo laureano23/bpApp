@@ -15,6 +15,66 @@ use Mbp\WebBundle\Entity\TiposRadiadores;
 class DefaultController extends Controller
 {
     /**
+     * @Route("/ingresarUsuario", name="ingresarUsuario")
+     * @Template() 
+     * @Cache(smaxage="604800")
+     */
+    public function ingresarUsuarioAction()
+    {
+        $req = $this->getRequest();
+        $nombre = $req->request->get('nombre');
+        $email = $req->request->get('email');
+        $empresa = $req->request->get('empresa');        
+
+        if($nombre){
+            try{
+                $message = \Swift_Message::newInstance();
+                $message->setSubject("Nuevo usuario:");
+                $message->setFrom($email);
+                $message->setTo("info@metalurgicabp.com.ar");
+                $message->setBody("
+                    <strong>Nombre y Apellido: </strong>".$nombre."<br>
+                    <strong>Email: </strong>".$email."<br>
+                    <strong>Empresa: </strong>".$empresa."<br>", "text/html");
+
+                $mailer = $this->get('mailer');
+                $mailer->send($message);                
+
+                $req->getSession()
+                    ->getFlashBag()
+                    ->add('success', 'En breve responderemos su mensaje');
+
+                $req->getSession()
+                    ->getFlashBag()
+                    ->add('statusOk', '');
+                
+                
+            }catch(\Exception $e){
+                $req->getSession()
+                    ->getFlashBag()
+                    ->add('statusFail', '');
+
+                $req->getSession()
+                    ->getFlashBag()
+                    ->add('fail', 'Error en el envío, intente más tarde!'); 
+            }
+           
+        }
+
+         return $this->render('MbpWebBundle:Default:nuevoUsuario.html.twig');
+    }
+
+    /**
+     * @Route("/nuevoUsuario", name="nuevoUsuario")
+     * @Template() 
+     * @Cache(smaxage="604800")
+     */
+    public function nuevoUsuarioAction()
+    {
+        return $this->render('MbpWebBundle:Default:nuevoUsuario.html.twig');
+    }
+
+    /**
      * @Route("/index", name="index")
      * @Template() 
      * @Cache(smaxage="604800")

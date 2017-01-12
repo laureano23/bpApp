@@ -40,8 +40,8 @@ class DefaultController extends Controller
     {
     	$sesion="Usted ha cerrado Sesion correctamente";
         return $this->render('MbpSecurity:Default:logout.html.twig', array(
-		'mensaje'=>$sesion
-		));
+        'mensaje'=>$sesion
+        ));
     }
 	
 	public function sesionAction()

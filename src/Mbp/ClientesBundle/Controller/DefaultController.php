@@ -3,6 +3,7 @@
 namespace Mbp\ClientesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Mbp\ClientesBundle\Entity\Cliente;
@@ -10,6 +11,9 @@ use Mbp\ClientesBundle\Entity\ClienteRepository;
 
 class DefaultController extends Controller
 {   
+	 /**
+     * @Route("/clientesearch", name="mbp_clientes_search", options={"expose"=true})
+     */
     public function clientesearchAction()
     {
         $em = $this->getDoctrine()->getManager();
@@ -20,7 +24,9 @@ class DefaultController extends Controller
 		return new Response();
     }
     
-	 
+	/**
+     * @Route("/newcliente", name="mbp_clientes_new", options={"expose"=true})
+     */ 
     public function newClienteAction()
     {
         $em = $this->getDoctrine()->getManager();
@@ -68,6 +74,9 @@ class DefaultController extends Controller
         return new Response();
     }
 
+    /**
+     * @Route("/eliminar", name="mbp_clientes_eliminar", options={"expose"=true})
+     */ 
 	public function eliminarAction()
 	{
 		$em = $this->getDoctrine()->getManager();

@@ -46,7 +46,8 @@ mbp_security:
     prefix:   /
 
 mbp_clientes:
-    resource: "@MbpClientesBundle/Resources/config/routing.yml"
+    resource: "@MbpClientesBundle/Controller/"
+    type:     annotation
     prefix:   /clientes/
 
 mbp_articulos:

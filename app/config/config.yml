@@ -120,7 +120,7 @@ doctrine:
                         dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translator/Entity"
                         alias: GedmoTranslator # (optional) it will default to the name set for the mapping
                         is_bundle: false
-                    MbpWebBundle: ~ 
+                    MbpWebBundle: ~
 
 # StofDoctrineExtensionsBundle Configuration
 stof_doctrine_extensions:

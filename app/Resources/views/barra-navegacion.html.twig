@@ -39,6 +39,7 @@
 					<ul class="dropdown-menu" role="menu">
 						<!-- LA LISTA SE REALIZA EN OTRA VISTA -->
 						{{ render(controller('MbpWebBundle:Default:listarCategorias')) }}
+						<li><a href="{{ path('productosComerciales') }}">Intercoolers</a></li>
 						<li><a href="{{ path('productosComerciales') }}">{{"Radiadores de agua"|trans}}</a></li>
 					</ul>
 				</li>
