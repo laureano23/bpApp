@@ -55,13 +55,7 @@ class ReportesController extends Controller
 		$param->put('mes', (int)$mes);
 		$param->put('dirFirma', $kernel->locateResource('@MbpPersonalBundle/Reportes/rob.jpg'));
 		
-		//Parametros de conexion
-		$host = $this->container->getParameter('database_host');
-		$dbName = $this->container->getParameter('database_name');
-		$dbUser = $this->container->getParameter('database_user');
-		$dbPass = $this->container->getParameter('database_password');
-		
-		$conn = $reporteador->getJdbc("com.mysql.jdbc.Driver","jdbc:mysql://".$host."/".$dbName, $dbUser, $dbPass);
+		$conn = $reporteador->getJdbc();
 		
 				
 		$sqlSimple = "SELECT
@@ -299,14 +293,7 @@ class ReportesController extends Controller
 		$param->put('mesDesde', (int)$mesDesde);
 		$param->put('anioHasta', (int)$anioHasta);
 		
-		
-		//Parametros de conexion
-		$host = $this->container->getParameter('database_host');
-		$dbName = $this->container->getParameter('database_name');
-		$dbUser = $this->container->getParameter('database_user');
-		$dbPass = $this->container->getParameter('database_password');
-		
-		$conn = $reporteador->getJdbc("com.mysql.jdbc.Driver","jdbc:mysql://".$host."/".$dbName, $dbUser, $dbPass);
+		$conn = $reporteador->getJdbc();
 		
 		$sql = "SELECT
 		     Recibos.`id` AS Recibos_id,
@@ -438,13 +425,7 @@ class ReportesController extends Controller
 		$param->put('anioInicio', (int)$anioDesde);
 		$param->put('anioFin', (int)$anioHasta);
 		
-		//Parametros de conexion
-		$host = $this->container->getParameter('database_host');
-		$dbName = $this->container->getParameter('database_name');
-		$dbUser = $this->container->getParameter('database_user');
-		$dbPass = $this->container->getParameter('database_password');
-		
-		$conn = $reporteador->getJdbc("com.mysql.jdbc.Driver","jdbc:mysql://".$host."/".$dbName, $dbUser, $dbPass);
+		$conn = $reporteador->getJdbc();
 		
 				
 		$sql = "

@@ -58,13 +58,7 @@ class ReportesController extends Controller
 		$param->put('rutaLogo', $rutaLogo);
 		$param->put('idFactura', $idFactura);
 		
-		//Parametros de conexion
-		$host = $this->container->getParameter('database_host');
-		$dbName = $this->container->getParameter('database_name');
-		$dbUser = $this->container->getParameter('database_user');
-		$dbPass = $this->container->getParameter('database_password');
-		
-		$conn = $reporteador->getJdbc("com.mysql.jdbc.Driver","jdbc:mysql://".$host."/".$dbName, $dbUser, $dbPass);
+		$conn = $reporteador->getJdbc();
 		
 		$sql = "SELECT
 		     CASE Facturas.`vtoCae` WHEN 0 THEN NULL ELSE Facturas.`vtoCae` END AS Facturas_vtoCae, 
@@ -194,13 +188,7 @@ class ReportesController extends Controller
 		$param->put('idCliente', $idCliente);
 		$param->put('cobranzaId', $idCobranza);
 		
-		//Parametros de conexion
-		$host = $this->container->getParameter('database_host');
-		$dbName = $this->container->getParameter('database_name');
-		$dbUser = $this->container->getParameter('database_user');
-		$dbPass = $this->container->getParameter('database_password');
-		
-		$conn = $reporteador->getJdbc("com.mysql.jdbc.Driver","jdbc:mysql://".$host."/".$dbName, $dbUser, $dbPass);
+		$conn = $reporteador->getJdbc();
 		
 		$sql = "SELECT
 		     Cobranzas.`id` AS Cobranzas_id,

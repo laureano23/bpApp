@@ -53,13 +53,7 @@ class ReportesController extends Controller
 			$param->put('proveedorId', $idProv);
 			$param->put('ordenPagoId', $idOp);
 			
-			//Parametros de conexion
-			$host = $this->container->getParameter('database_host');
-			$dbName = $this->container->getParameter('database_name');
-			$dbUser = $this->container->getParameter('database_user');
-			$dbPass = $this->container->getParameter('database_password');
-			
-			$conn = $reporteador->getJdbc("com.mysql.jdbc.Driver","jdbc:mysql://".$host."/".$dbName, $dbUser, $dbPass);
+			$conn = $reporteador->getJdbc();
 						
 			$sql = "SELECT
 			     Pago.`id` AS Pago_id,
@@ -180,13 +174,7 @@ class ReportesController extends Controller
 			$param->put('ProveedorId', $proveedorId);
 			$param->put('FacturaId', $idF);
 			
-			//Parametros de conexion
-			$host = $this->container->getParameter('database_host');
-			$dbName = $this->container->getParameter('database_name');
-			$dbUser = $this->container->getParameter('database_user');
-			$dbPass = $this->container->getParameter('database_password');
-			
-			$conn = $reporteador->getJdbc("com.mysql.jdbc.Driver","jdbc:mysql://".$host."/".$dbName, $dbUser, $dbPass);
+			$conn = $reporteador->getJdbc();
 						
 			$sql = "SELECT
 			     SUM(TransaccionOPFC.`aplicado`) AS TransaccionOPFC_aplicado,

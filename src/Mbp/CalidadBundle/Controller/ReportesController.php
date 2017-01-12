@@ -88,13 +88,7 @@ class ReportesController extends Controller
 		$param = $repo->getJava('java.util.HashMap');
 		$param->put('ot', $ot);
 		
-		//Parametros de conexion
-		$host = $this->container->getParameter('database_host');
-		$dbName = $this->container->getParameter('database_name');
-		$dbUser = $this->container->getParameter('database_user');
-		$dbPass = $this->container->getParameter('database_password');
-		
-		$conn = $repo->getJdbc("com.mysql.jdbc.Driver","jdbc:mysql://".$host."/".$dbName, $dbUser, $dbPass);
+		$conn = $repo->getJdbc();
 		
 		/*
 		 * SQL
@@ -194,14 +188,8 @@ class ReportesController extends Controller
 						
 		$param->put('fechaDesde', $fechaDesde[0]);
 		$param->put('fechaHasta', $fechaHasta[0]);
-		;
-		//Parametros de conexion
-		$host = $this->container->getParameter('database_host');
-		$dbName = $this->container->getParameter('database_name');
-		$dbUser = $this->container->getParameter('database_user');
-		$dbPass = $this->container->getParameter('database_password');
 		
-		$conn = $repo->getJdbc("com.mysql.jdbc.Driver","jdbc:mysql://".$host."/".$dbName, $dbUser, $dbPass);
+		$conn = $repo->getJdbc();
 		
 		/*
 		 * SQL
@@ -314,13 +302,7 @@ class ReportesController extends Controller
 			$param->put('hasta', $fechaHasta->format('d/m/y'));
 			$param->put('rutaLogo', $rutaLogo);
 			
-			//Parametros de conexion
-			$host = $this->container->getParameter('database_host');
-			$dbName = $this->container->getParameter('database_name');
-			$dbUser = $this->container->getParameter('database_user');
-			$dbPass = $this->container->getParameter('database_password');
-			
-			$conn = $repo->getJdbc("com.mysql.jdbc.Driver","jdbc:mysql://".$host."/".$dbName, $dbUser, $dbPass);
+			$conn = $repo->getJdbc();
 			
 			/*
 			 * SQL
@@ -421,15 +403,8 @@ class ReportesController extends Controller
 			$param->put('FECHA_DESDE', $fechaDesde->format('d/m/Y'));
 			$param->put('FECHA_HASTA', $fechaHasta->format('d/m/Y'));
 			
-			//Parametros de conexion
-			$host = $this->container->getParameter('database_host');
-			$dbName = $this->container->getParameter('database_name');
-			$dbUser = $this->container->getParameter('database_user');
-			$dbPass = $this->container->getParameter('database_password');
+			$conn = $repo->getJdbc();
 			
-			$conn = $repo->getJdbc("com.mysql.jdbc.Driver","jdbc:mysql://".$host."/".$dbName, $dbUser, $dbPass);
-			
-			//print_r($desde);
 						
 			$sql = "SELECT
 			     SUM(if(Estanqueidad.`mChapa`=1,1,0)) AS Estanqueidad_mChapa,

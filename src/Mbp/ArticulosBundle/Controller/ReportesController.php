@@ -42,14 +42,8 @@ class ReportesController extends Controller
 		$param->put('idNodo', $idNodo);
 		$param->put('rutaLogo', $rutaLogo);
 		$param->put('tc', $tc);
-		
-		//Parametros de conexion
-		$host = $this->container->getParameter('database_host');
-		$dbName = $this->container->getParameter('database_name');
-		$dbUser = $this->container->getParameter('database_user');
-		$dbPass = $this->container->getParameter('database_password');
-		
-		$conn = $repo->getJdbc("com.mysql.jdbc.Driver","jdbc:mysql://".$host."/".$dbName, $dbUser, $dbPass);
+				
+		$conn = $repo->getJdbc();
 		
 		/*
 		 * SQL

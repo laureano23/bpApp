@@ -12,6 +12,12 @@ require_once __DIR__.'/Java.inc';
 class Reporteador extends Controller
 {	
 	public $rutaLogo;
+	public $con;
+
+	public function __construct($driver, $host, $user, $pass)
+	{		
+		$this->con = new \JdbcConnection($driver, "jdbc:mysql://localhost/".$host, $user, $pass);
+	}
 	
 	public function getRutaLogo($kernel)
 	{		
@@ -31,9 +37,8 @@ class Reporteador extends Controller
 		return $java;
 	}
 		
-	public function getJdbc($driver, $host, $user, $pass)
+	public function getJdbc()
 	{
-		$jdbc = new \JdbcConnection($driver, $host, $user, $pass);
-		return $jdbc;
+		return $this->con;
 	}
 }

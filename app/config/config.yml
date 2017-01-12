@@ -151,15 +151,11 @@ services:
      arguments: [ @doctrine.orm.entity_manager, @request_stack ]
    reporteador:
      class: Mbp\SenchaBundle\Librerias\Reporteador
-     arguments: ['%driver%', '%user%', '%password%']
+     arguments: ['%driver%', '%database_name%', '%database_user%', '%database_password%']
    programacion:
      class: Mbp\ProduccionBundle\Clases\Programacion
      arguments: [ @doctrine.orm.entity_manager ]
    calculoConceptos:
      class: Mbp\PersonalBundle\Clases\CalculosConceptos
      arguments: [ @doctrine.orm.entity_manager ]  
-
-parameters:
-   driver: com.mysql.jdbc.Driver
-   user: root
-   password: logged07
+   

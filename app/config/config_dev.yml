@@ -47,3 +47,8 @@ doctrine:
             user:     "%database_user%"
             password: "%database_password%"
             charset:  UTF8
+
+services:
+   reporteador:
+     class: Mbp\SenchaBundle\Librerias\Reporteador
+     arguments: ['%driver%', '%database_name_dev%', '%database_user2%', '%database_password2%']
