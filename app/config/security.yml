@@ -16,10 +16,11 @@ security:
                 key: prueba123
 
     access_control:
-        #- { path: ^/index, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/index, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        #- { path: ^/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/web/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/articulos/*, roles: ROLE_ADMINISTRACION }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/calidad, roles: ROLE_CALIDAD }
         - { path: ^/personal, roles: ROLE_USER }
