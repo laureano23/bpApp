@@ -7,20 +7,16 @@ class Faele
 {
 	private $wsaa;
 	protected $wsfev1;
-	public $concepto;
 	public $docTipo;
-	public $docNro;
 	public $ptoVta;
 	
-	public function __construct($concepto, $docTipo, $docNro, $ptoVta){
-		$this->concepto = $concepto;
+	public function __construct($ptoVta, $docTipo){
 		$this->docTipo = $docTipo;
-		$this->docNro = $docNro;
 		$this->ptoVta = $ptoVta;	
 		$this->wsaa = new wsaa(); 
 		$this->wsfev1 = new wsfev1();
 		
-		
+
 		// Carga el archivo TA.xml
 		if($this->wsfev1->openTA() == false) return array(
 			'success' => false,
@@ -41,14 +37,6 @@ class Faele
 				'msg' => 'TA expiracion '. $this->wsaa->get_expiration()
 			);
 		}
-		try{
-			
-		}catch(\Exception $e){
-			echo $e->getMessage();
-			
-		}
-		
- 
 		
 	}
 	
@@ -62,11 +50,10 @@ class Faele
 	 * */
 	public function generarFc($regfe, $regfeasoc, $regfetrib, $regfeiva)
 	{
-		$nro = $this->ultimoNroComp($this->ptoVta, $regfe['CbteTipo']);
+		$nro = $this->ultimoNroComp($regfe['CbteTipo']);
 		if($nro['success'] == FALSE){ return $nro; }
 		$nro = $nro['nro'];
 		$nro++;
-		$tipocbte = 1; //1=Factura A
 				
 		$cae = $this->wsfev1->FECAESolicitar($nro, // ultimo numero de comprobante autorizado mas uno 
                 $this->ptoVta,  // el punto de venta
@@ -87,9 +74,9 @@ class Faele
 	}
 	
 	//OBTIENE EL ULTIMO NUMERO DE COMPROBANTE AUTOIRIZADO, POR ERROR DEVUELVE FALSE
-	public function ultimoNroComp($ptovta, $tipocbte)
+	public function ultimoNroComp($tipoCbte)
 	{
-		$nro = $this->wsfev1->FECompUltimoAutorizado($ptovta, $tipocbte);
+		$nro = $this->wsfev1->FECompUltimoAutorizado($this->ptoVta, $tipoCbte);
 		
 		if($nro === FALSE){ return array(
 			'success' => false,
@@ -102,5 +89,11 @@ class Faele
 				'nro' => $nro
 			);
 		}
+	}
+
+	//OBTIENE LOS TIPOS DE COMPROBANTE
+	public function getTiposCbte()
+	{
+		return $this->wsfev1->FEParamGetTiposCbte();
 	}
 }

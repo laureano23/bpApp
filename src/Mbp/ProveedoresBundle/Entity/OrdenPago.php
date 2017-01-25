@@ -3,6 +3,7 @@
 namespace Mbp\ProveedoresBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * OrdenPago
@@ -30,18 +31,14 @@ class OrdenPago
 	/**
 	 * @ORM\ManyToMany(targetEntity="Pago", cascade={"remove", "persist"})
 	 * @ORM\JoinTable(name="OrdenDePago_detallesPagos",
-	 *  joinColumns={ @ORM\JoinColumn(name = "ordenPago_id", referencedColumnName="id", onDelete="CASCADE") }),
+	 *  joinColumns={ @ORM\JoinColumn(name = "ordenPago_id", referencedColumnName="id") }),
 	 *  inverseJoinColumns={@JoinColumn(name="detallesPagos_id", referencedColumnName="id", unique=true)}
 	 * )
 	 */
 	private $pagoDetalleId;
 	
 	/**
-	 * @ORM\ManyToMany(targetEntity="Factura")
-	 * @ORM\JoinTable(name="Pago_FacturaProveedores",
-	 *  joinColumns={ @ORM\JoinColumn(name = "pago_id", referencedColumnName="id", onDelete="CASCADE") }),
-	 *  inverseJoinColumns={@JoinColumn(name="facturaProveedor_id", referencedColumnName="id", unique=true)}
-	 * )
+	 * @ORM\OneToMany(targetEntity="TransaccionOPFC", mappedBy="facturaImputada")
 	 */
 	private $facturasImputadas;
 
@@ -52,6 +49,10 @@ class OrdenPago
      */
     private $emision;
 
+    public function __construct() {
+        $this->facturasImputadas = new ArrayCollection();
+        $this->pagoDetalleId = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -85,13 +86,6 @@ class OrdenPago
     public function getEmision()
     {
         return $this->emision;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->pagoDetalleId = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -155,11 +149,11 @@ class OrdenPago
     /**
      * Add facturasImputada
      *
-     * @param \Mbp\ProveedoresBundle\Entity\Factura $facturasImputada
+     * @param \Mbp\ProveedoresBundle\Entity\TransaccionOPFC $facturasImputada
      *
      * @return OrdenPago
      */
-    public function addFacturasImputada(\Mbp\ProveedoresBundle\Entity\Factura $facturasImputada)
+    public function addFacturasImputada(\Mbp\ProveedoresBundle\Entity\TransaccionOPFC $facturasImputada)
     {
         $this->facturasImputadas[] = $facturasImputada;
 
@@ -169,9 +163,9 @@ class OrdenPago
     /**
      * Remove facturasImputada
      *
-     * @param \Mbp\ProveedoresBundle\Entity\Factura $facturasImputada
+     * @param \Mbp\ProveedoresBundle\Entity\TransaccionOPFC $facturasImputada
      */
-    public function removeFacturasImputada(\Mbp\ProveedoresBundle\Entity\Factura $facturasImputada)
+    public function removeFacturasImputada(\Mbp\ProveedoresBundle\Entity\TransaccionOPFC $facturasImputada)
     {
         $this->facturasImputadas->removeElement($facturasImputada);
     }

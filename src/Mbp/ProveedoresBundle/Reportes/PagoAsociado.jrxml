@@ -11,51 +11,41 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-     SUM(TransaccionOPFC.`aplicado`) AS TransaccionOPFC_aplicado,
-     OrdenPago.`id` AS OrdenPago_id,
-     OrdenPago.`fechaEmision` AS OrdenPago_fechaEmision,
-     OrdenPago.`proveedorId` AS OrdenPago_proveedorId,
-     Pago_FacturaProveedores.`pago_id` AS Pago_FacturaProveedores_pago_id,
-     Pago_FacturaProveedores.`factura_id` AS Pago_FacturaProveedores_factura_id,
+     FacturaProveedor.`id` AS FacturaProveedor_id,
+     FacturaProveedor.`fechaEmision` AS FacturaProveedor_fechaEmision,
+     FacturaProveedor.`tipo` AS FacturaProveedor_tipo,
+     FacturaProveedor.`sucursal` AS FacturaProveedor_sucursal,
+     FacturaProveedor.`numFc` AS FacturaProveedor_numFc,
+     FacturaProveedor.`totalFc` AS FacturaProveedor_totalFc,
+     FacturaProveedor.`proveedorId` AS FacturaProveedor_proveedorId,
      TransaccionOPFC.`id` AS TransaccionOPFC_id,
+     TransaccionOPFC.`aplicado` AS TransaccionOPFC_aplicado,
      TransaccionOPFC.`facturaId` AS TransaccionOPFC_facturaId,
      TransaccionOPFC.`ordenPagoId` AS TransaccionOPFC_ordenPagoId,
-     Factura.`id` AS Factura_id,
-     Factura.`sucursal` AS Factura_sucursal,
-     Factura.`numFc` AS Factura_numFc,
-     Factura.`totalFc` AS Factura_totalFc,
-     Factura.`tipo` AS Factura_tipo,
-     Factura.`proveedorId` AS Factura_proveedorId,
-     Proveedor.`id` AS Proveedor_id
+     OrdenPago.`id` AS OrdenPago_id,
+     OrdenPago.`fechaEmision` AS OrdenPago_fechaEmision,
+     OrdenPago.`proveedorId` AS OrdenPago_proveedorId
 FROM
-     `OrdenPago` OrdenPago INNER JOIN `Pago_FacturaProveedores` Pago_FacturaProveedores ON OrdenPago.`id` = Pago_FacturaProveedores.`pago_id`
-     INNER JOIN `TransaccionOPFC` TransaccionOPFC ON OrdenPago.`id` = TransaccionOPFC.`ordenPagoId`
-     INNER JOIN `Proveedor` Proveedor ON OrdenPago.`proveedorId` = Proveedor.`id`
-     INNER JOIN `Factura` Factura ON Proveedor.`id` = Factura.`proveedorId`
-     AND TransaccionOPFC.`facturaId` = Factura.`id`
-     AND Factura.`id` = Pago_FacturaProveedores.`factura_id`
+     `FacturaProveedor` FacturaProveedor INNER JOIN `TransaccionOPFC` TransaccionOPFC ON FacturaProveedor.`id` = TransaccionOPFC.`facturaId`
+     INNER JOIN `OrdenPago` OrdenPago ON TransaccionOPFC.`ordenPagoId` = OrdenPago.`id`
 WHERE
-     Factura.`id` = $P{FacturaId} AND
-     Proveedor.`id` = $P{ProveedorId}
-GROUP BY
-     OrdenPago.`id`]]>
+     TransaccionOPFC.`facturaId` = $P{FacturaId}
+ AND OrdenPago.`proveedorId` = $P{ProveedorId}]]>
 	</queryString>
+	<field name="FacturaProveedor_id" class="java.lang.Integer"/>
+	<field name="FacturaProveedor_fechaEmision" class="java.sql.Timestamp"/>
+	<field name="FacturaProveedor_tipo" class="java.lang.String"/>
+	<field name="FacturaProveedor_sucursal" class="java.lang.Integer"/>
+	<field name="FacturaProveedor_numFc" class="java.lang.Integer"/>
+	<field name="FacturaProveedor_totalFc" class="java.math.BigDecimal"/>
+	<field name="FacturaProveedor_proveedorId" class="java.lang.Integer"/>
+	<field name="TransaccionOPFC_id" class="java.lang.Integer"/>
 	<field name="TransaccionOPFC_aplicado" class="java.math.BigDecimal"/>
+	<field name="TransaccionOPFC_facturaId" class="java.lang.Integer"/>
+	<field name="TransaccionOPFC_ordenPagoId" class="java.lang.Integer"/>
 	<field name="OrdenPago_id" class="java.lang.Integer"/>
 	<field name="OrdenPago_fechaEmision" class="java.sql.Timestamp"/>
 	<field name="OrdenPago_proveedorId" class="java.lang.Integer"/>
-	<field name="Pago_FacturaProveedores_pago_id" class="java.lang.Integer"/>
-	<field name="Pago_FacturaProveedores_factura_id" class="java.lang.Integer"/>
-	<field name="TransaccionOPFC_id" class="java.lang.Integer"/>
-	<field name="TransaccionOPFC_facturaId" class="java.lang.Integer"/>
-	<field name="TransaccionOPFC_ordenPagoId" class="java.lang.Integer"/>
-	<field name="Factura_id" class="java.lang.Integer"/>
-	<field name="Factura_sucursal" class="java.lang.Integer"/>
-	<field name="Factura_numFc" class="java.lang.Integer"/>
-	<field name="Factura_totalFc" class="java.math.BigDecimal"/>
-	<field name="Factura_tipo" class="java.lang.String"/>
-	<field name="Factura_proveedorId" class="java.lang.Integer"/>
-	<field name="Proveedor_id" class="java.lang.Integer"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -81,7 +71,7 @@ GROUP BY
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Factura_sucursal} + "-" + $F{Factura_numFc}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{FacturaProveedor_sucursal} + "-" + $F{FacturaProveedor_numFc}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

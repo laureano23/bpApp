@@ -27,7 +27,7 @@ class RecibosController extends Controller
 	public static $mes = 30;
 	public static $horas_mensualizados = 180;
 	
-	
+
 	
 	/**
      * @Route("/recibosLiquida", name="mbp_personal_recibosLiquida", options={"expose"=true})

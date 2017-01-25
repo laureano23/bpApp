@@ -25,7 +25,7 @@ class Facturas
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha", type="date")
+     * @ORM\Column(name="fecha", type="datetime")
 	 * @Assert\NotNull()
      */
     private $fecha;
@@ -65,6 +65,12 @@ class Facturas
 	 * @Assert\NotNull()
 	 */
 	private $ptoVta;
+
+    /**
+     * @ORM\Column(name="fcNro", type="integer")    
+     * @Assert\NotNull()
+     */
+    private $fcNro;
 	
 	/**
 	 * @ORM\Column(name="tipo", type="smallint")	  
@@ -114,6 +120,47 @@ class Facturas
      * @ORM\Column(name="iva21", type="decimal", precision=9, scale=2)
      */
     private $iva21=0;
+
+    /**
+     * @ORM\Column(name="rSocial", type="string", length=250)
+     * @Assert\NotNull()
+     */
+    private $rSocial;
+
+    /**
+     * @ORM\Column(name="domicilio", type="string", length=250)
+     * @Assert\NotNull()
+     */
+    private $domicilio;
+
+    /**
+     * @ORM\Column(name="localidad", type="string", length=250, nullable=true)
+     * @Assert\NotNull()
+     */
+    private $localidad;
+
+    /**
+     * @ORM\Column(name="cuit", type="string", length=12)
+     * @Assert\NotNull()
+     */
+    private $cuit;
+
+    /**
+     * @ORM\Column(name="ivaCond", type="string", length=250)
+     * @Assert\NotNull()
+     */
+    private $ivaCond;
+
+    /**
+     * @ORM\Column(name="condVta", type="string", length=250, nullable=true)
+     * @Assert\NotNull()
+     */
+    private $condVta;
+
+    /**
+     * @ORM\Column(name="rtoNro", type="string", length=250, nullable=true)
+     */
+    private $rtoNro=NULL;
 
 
     /**
@@ -357,5 +404,269 @@ class Facturas
     public function getPtoVta()
     {
         return $this->ptoVta;
+    }
+
+    /**
+     * Set dtoTotal
+     *
+     * @param string $dtoTotal
+     *
+     * @return Facturas
+     */
+    public function setDtoTotal($dtoTotal)
+    {
+        $this->dtoTotal = $dtoTotal;
+
+        return $this;
+    }
+
+    /**
+     * Get dtoTotal
+     *
+     * @return string
+     */
+    public function getDtoTotal()
+    {
+        return $this->dtoTotal;
+    }
+
+    /**
+     * Set perIIBB
+     *
+     * @param string $perIIBB
+     *
+     * @return Facturas
+     */
+    public function setPerIIBB($perIIBB)
+    {
+        $this->perIIBB = $perIIBB;
+
+        return $this;
+    }
+
+    /**
+     * Get perIIBB
+     *
+     * @return string
+     */
+    public function getPerIIBB()
+    {
+        return $this->perIIBB;
+    }
+
+    /**
+     * Set iva21
+     *
+     * @param string $iva21
+     *
+     * @return Facturas
+     */
+    public function setIva21($iva21)
+    {
+        $this->iva21 = $iva21;
+
+        return $this;
+    }
+
+    /**
+     * Get iva21
+     *
+     * @return string
+     */
+    public function getIva21()
+    {
+        return $this->iva21;
+    }
+
+    /**
+     * Set rSocial
+     *
+     * @param string $rSocial
+     *
+     * @return Facturas
+     */
+    public function setRSocial($rSocial)
+    {
+        $this->rSocial = $rSocial;
+
+        return $this;
+    }
+
+    /**
+     * Get rSocial
+     *
+     * @return string
+     */
+    public function getRSocial()
+    {
+        return $this->rSocial;
+    }
+
+    /**
+     * Set domicilio
+     *
+     * @param string $domicilio
+     *
+     * @return Facturas
+     */
+    public function setDomicilio($domicilio)
+    {
+        $this->domicilio = $domicilio;
+
+        return $this;
+    }
+
+    /**
+     * Get domicilio
+     *
+     * @return string
+     */
+    public function getDomicilio()
+    {
+        return $this->domicilio;
+    }
+
+    /**
+     * Set localidad
+     *
+     * @param string $localidad
+     *
+     * @return Facturas
+     */
+    public function setLocalidad($localidad)
+    {
+        $this->localidad = $localidad;
+
+        return $this;
+    }
+
+    /**
+     * Get localidad
+     *
+     * @return string
+     */
+    public function getLocalidad()
+    {
+        return $this->localidad;
+    }
+
+    /**
+     * Set cuit
+     *
+     * @param string $cuit
+     *
+     * @return Facturas
+     */
+    public function setCuit($cuit)
+    {
+        $this->cuit = $cuit;
+
+        return $this;
+    }
+
+    /**
+     * Get cuit
+     *
+     * @return string
+     */
+    public function getCuit()
+    {
+        return $this->cuit;
+    }
+
+    /**
+     * Set ivaCond
+     *
+     * @param string $ivaCond
+     *
+     * @return Facturas
+     */
+    public function setIvaCond($ivaCond)
+    {
+        $this->ivaCond = $ivaCond;
+
+        return $this;
+    }
+
+    /**
+     * Get ivaCond
+     *
+     * @return string
+     */
+    public function getIvaCond()
+    {
+        return $this->ivaCond;
+    }
+
+    /**
+     * Set condVta
+     *
+     * @param string $condVta
+     *
+     * @return Facturas
+     */
+    public function setCondVta($condVta)
+    {
+        $this->condVta = $condVta;
+
+        return $this;
+    }
+
+    /**
+     * Get condVta
+     *
+     * @return string
+     */
+    public function getCondVta()
+    {
+        return $this->condVta;
+    }
+
+    /**
+     * Set rtoNro
+     *
+     * @param string $rtoNro
+     *
+     * @return Facturas
+     */
+    public function setRtoNro($rtoNro)
+    {
+        $this->rtoNro = $rtoNro;
+
+        return $this;
+    }
+
+    /**
+     * Get rtoNro
+     *
+     * @return string
+     */
+    public function getRtoNro()
+    {
+        return $this->rtoNro;
+    }
+
+    /**
+     * Set fcNro
+     *
+     * @param integer $fcNro
+     *
+     * @return Facturas
+     */
+    public function setFcNro($fcNro)
+    {
+        $this->fcNro = $fcNro;
+
+        return $this;
+    }
+
+    /**
+     * Get fcNro
+     *
+     * @return integer
+     */
+    public function getFcNro()
+    {
+        return $this->fcNro;
     }
 }

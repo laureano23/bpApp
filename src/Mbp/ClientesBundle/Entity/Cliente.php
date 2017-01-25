@@ -79,9 +79,9 @@ class Cliente
     private $cPostal;
     
     /**
-     * @var decimal
+     * @var string
      *
-     * @ORM\Column(name="iva", type="decimal", scale=2, nullable=true)
+     * @ORM\Column(name="iva", type="string", length=250, nullable=true)
      */
     private $iva;
     

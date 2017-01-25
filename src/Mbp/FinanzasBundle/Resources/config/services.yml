@@ -1,13 +1,11 @@
 parameters:
-    concepto: 1
-    docTipo: 80
-    docNro: 30711504547
     ptoVta: 1
+    docTipo: 80    
 
 services:
     mbp.faele:
         class: Mbp\FinanzasBundle\Clases\Faele
-        arguments: [%concepto%, %docTipo%, %docNro%, %ptoVta%]
+        arguments: [%ptoVta%, %docTipo%]
         
     tipo_cambio:
        class: Mbp\FinanzasBundle\Clases\TipoCambio

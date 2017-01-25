@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b7fbe4cc-9642-4a30-b319-1f1509ec7bd0">
-	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.zoom" value="1.7715610000000044"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="rutaLogo" class="java.lang.String"/>
@@ -30,16 +30,20 @@
      articulos.`unidad` AS articulos_unidad,
      articulos.`precio` AS articulos_precio,
      cliente.`idCliente` AS cliente_idCliente,
-     cliente.`rsocial` AS cliente_rsocial,
-     cliente.`direccion` AS cliente_direccion,
-     cliente.`localidad` AS cliente_localidad,
-     cliente.`provincia` AS cliente_provincia,
-     cliente.`cuit` AS cliente_cuit,
-     cliente.`netoPercepcion` AS cliente_netoPercepcion,
-     cliente.`porcentajePercepcion` AS cliente_porcentajePercepcion,
-     cliente.`condVenta` AS cliente_condVenta,
      Facturas.`cae` AS Facturas_cae,
-     Facturas.`ptoVta` AS Facturas_ptoVta
+     Facturas.`ptoVta` AS Facturas_ptoVta,
+     Facturas.`ivaCond` AS Facturas_ivaCond,
+     Facturas.`rSocial` AS Facturas_rSocial,
+     Facturas.`domicilio` AS Facturas_domicilio,
+     Facturas.`localidad` AS Facturas_localidad,
+     Facturas.`cuit` AS Facturas_cuit,
+     Facturas.`condVta` AS Facturas_condVta,
+     Facturas.`rtoNro` AS Facturas_rtoNro,
+     Facturas.`perIIBB` AS Facturas_perIIBB,
+     Facturas.`iva21` AS Facturas_iva21,
+     Facturas.`dtoTotal` AS Facturas_dtoTotal,
+     Facturas.`vtoCae` AS Facturas_vtoCae,
+     Facturas.`fcNro` AS Facturas_fcNro
 FROM
      `Facturas` Facturas INNER JOIN `factura_detallesFacturas` factura_detallesFacturas ON Facturas.`id` = factura_detallesFacturas.`factura_id`
      INNER JOIN `FacturaDetalle` FacturaDetalle ON factura_detallesFacturas.`facturadetalle_id` = FacturaDetalle.`id`
@@ -52,7 +56,7 @@ WHERE
 	<field name="factura_detallesFacturas_factura_id" class="java.lang.Integer"/>
 	<field name="factura_detallesFacturas_facturadetalle_id" class="java.lang.Integer"/>
 	<field name="Facturas_id" class="java.lang.Integer"/>
-	<field name="Facturas_fecha" class="java.sql.Date"/>
+	<field name="Facturas_fecha" class="java.sql.Timestamp"/>
 	<field name="Facturas_concepto" class="java.lang.String"/>
 	<field name="Facturas_vencimiento" class="java.sql.Date"/>
 	<field name="Facturas_clienteId" class="java.lang.Integer"/>
@@ -68,16 +72,19 @@ WHERE
 	<field name="articulos_unidad" class="java.lang.String"/>
 	<field name="articulos_precio" class="java.math.BigDecimal"/>
 	<field name="cliente_idCliente" class="java.lang.Integer"/>
-	<field name="cliente_rsocial" class="java.lang.String"/>
-	<field name="cliente_direccion" class="java.lang.String"/>
-	<field name="cliente_localidad" class="java.lang.Integer"/>
-	<field name="cliente_provincia" class="java.lang.Integer"/>
-	<field name="cliente_cuit" class="java.lang.String"/>
-	<field name="cliente_netoPercepcion" class="java.lang.Integer"/>
-	<field name="cliente_porcentajePercepcion" class="java.math.BigDecimal"/>
-	<field name="cliente_condVenta" class="java.lang.String"/>
 	<field name="Facturas_cae" class="java.lang.Long"/>
 	<field name="Facturas_ptoVta" class="java.lang.Integer"/>
+	<field name="Facturas_ivaCond" class="java.lang.String"/>
+	<field name="Facturas_rSocial" class="java.lang.String"/>
+	<field name="Facturas_domicilio" class="java.lang.String"/>
+	<field name="Facturas_localidad" class="java.lang.String"/>
+	<field name="Facturas_cuit" class="java.lang.String"/>
+	<field name="Facturas_condVta" class="java.lang.String"/>
+	<field name="Facturas_rtoNro" class="java.lang.String"/>
+	<field name="Facturas_perIIBB" class="java.math.BigDecimal"/>
+	<field name="Facturas_iva21" class="java.math.BigDecimal"/>
+	<field name="Facturas_dtoTotal" class="java.math.BigDecimal"/>
+	<field name="Facturas_fcNro" class="java.lang.Integer"/>
 	<variable name="subTotal" class="java.lang.Float" calculation="Sum">
 		<variableExpression><![CDATA[$F{FacturaDetalle_cantidad} * $F{FacturaDetalle_precio}]]></variableExpression>
 	</variable>
@@ -135,20 +142,21 @@ IVA: RESPONSABLE INSCRIPTO]]></text>
 				</textElement>
 				<text><![CDATA[N°]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
+			<textField pattern="########00000000" isBlankWhenNull="true">
 				<reportElement x="463" y="34" width="90" height="20" uuid="0f8971e1-80e5-4b9a-9098-e13697303206"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{Facturas_id}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Facturas_fcNro}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="369" y="60" width="34" height="20" uuid="37c5e304-fad9-4428-8219-3c7e705a2b87"/>
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="403" y="60" width="100" height="20" uuid="66b360a0-f984-4eb2-be81-bbb3356bb509"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="403" y="60" width="125" height="20" uuid="66b360a0-f984-4eb2-be81-bbb3356bb509"/>
+				<textElement verticalAlignment="Top">
 					<font isBold="true"/>
 				</textElement>
+				<textFieldExpression><![CDATA[$F{Facturas_fecha}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="369" y="84" width="186" height="44" uuid="77090121-7d0e-4bca-bac9-f3dcd08374dd"/>
@@ -161,7 +169,7 @@ INICIO DE ACTIVIDADES: 01-08-1994
 PARTIDA MUNICIPAL N° 070-039139]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="151" width="101" height="20" uuid="16c7a8cf-56ad-4585-a966-cc4cd640dcd5"/>
+				<reportElement x="0" y="151" width="113" height="20" uuid="16c7a8cf-56ad-4585-a966-cc4cd640dcd5"/>
 				<box leftPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -172,7 +180,7 @@ PARTIDA MUNICIPAL N° 070-039139]]></text>
 				<text><![CDATA[Señor(es)]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="101" y="151" width="454" height="20" uuid="1f4fe8c2-ecff-4bea-acf7-605d2e125e11"/>
+				<reportElement x="113" y="151" width="442" height="20" uuid="1f4fe8c2-ecff-4bea-acf7-605d2e125e11"/>
 				<box leftPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -180,10 +188,10 @@ PARTIDA MUNICIPAL N° 070-039139]]></text>
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{cliente_rsocial}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Facturas_rSocial}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="171" width="101" height="20" uuid="f384e8d9-7cd7-495c-9c8f-350a4a5598f8"/>
+				<reportElement x="0" y="171" width="113" height="20" uuid="f384e8d9-7cd7-495c-9c8f-350a4a5598f8"/>
 				<box leftPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -194,7 +202,7 @@ PARTIDA MUNICIPAL N° 070-039139]]></text>
 				<text><![CDATA[Domicilio]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="191" width="101" height="20" uuid="e916be6a-3bef-41ab-b178-653598a1f1d6"/>
+				<reportElement x="0" y="191" width="113" height="20" uuid="e916be6a-3bef-41ab-b178-653598a1f1d6"/>
 				<box leftPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -205,7 +213,7 @@ PARTIDA MUNICIPAL N° 070-039139]]></text>
 				<text><![CDATA[I.V.A.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="211" width="101" height="20" uuid="eaa39413-b178-4c39-bc81-eb3463836767"/>
+				<reportElement x="0" y="211" width="113" height="20" uuid="eaa39413-b178-4c39-bc81-eb3463836767"/>
 				<box leftPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -218,7 +226,7 @@ PARTIDA MUNICIPAL N° 070-039139]]></text>
 				<text><![CDATA[Condiciones de venta]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="101" y="171" width="253" height="20" uuid="689c621a-c945-489b-90ae-5fe236bb0c82"/>
+				<reportElement x="113" y="171" width="241" height="20" uuid="689c621a-c945-489b-90ae-5fe236bb0c82"/>
 				<box leftPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -226,10 +234,10 @@ PARTIDA MUNICIPAL N° 070-039139]]></text>
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{cliente_direccion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Facturas_domicilio}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="101" y="191" width="253" height="20" uuid="9a8620c8-c742-4d80-80af-aac119e0a0a3"/>
+				<reportElement x="113" y="191" width="241" height="20" uuid="9a8620c8-c742-4d80-80af-aac119e0a0a3"/>
 				<box leftPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -237,9 +245,10 @@ PARTIDA MUNICIPAL N° 070-039139]]></text>
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Facturas_ivaCond}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="101" y="211" width="253" height="20" uuid="ee3399b6-9712-4dee-afa7-8d0b6c5cf3bb"/>
+				<reportElement x="113" y="211" width="241" height="20" uuid="ee3399b6-9712-4dee-afa7-8d0b6c5cf3bb"/>
 				<box leftPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -247,7 +256,7 @@ PARTIDA MUNICIPAL N° 070-039139]]></text>
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{cliente_condVenta}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Facturas_condVta}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="354" y="171" width="55" height="20" uuid="dbe9a6bc-5af6-4c97-8888-78b3e673480f"/>
@@ -269,7 +278,7 @@ PARTIDA MUNICIPAL N° 070-039139]]></text>
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{cliente_localidad}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Facturas_localidad}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="354" y="191" width="55" height="20" uuid="df65f1ec-a58a-46ec-b054-35997a48ef2a"/>
@@ -291,7 +300,7 @@ PARTIDA MUNICIPAL N° 070-039139]]></text>
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{cliente_cuit}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Facturas_cuit}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="354" y="211" width="55" height="20" uuid="8c784af9-484d-48a1-9d2e-e2a147a3ce4e"/>
@@ -313,6 +322,7 @@ PARTIDA MUNICIPAL N° 070-039139]]></text>
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Facturas_rtoNro}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="250" y="7" width="52" height="43" forecolor="#FFFFFF" backcolor="#000000" uuid="65081864-a8b3-4d72-b5ba-29690f46ca45"/>
@@ -370,11 +380,14 @@ $F{Facturas_tipo} == 3 ? "A" : ""]]></textFieldExpression>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{Facturas_tipo} == 3 ? "X" : ""]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="true">
-				<reportElement x="413" y="34" width="50" height="20" uuid="63846302-6ee3-4407-ade6-947614dba2f2"/>
-				<textElement verticalAlignment="Middle"/>
+			<textField pattern="#0000" isBlankWhenNull="true">
+				<reportElement x="403" y="34" width="50" height="20" uuid="63846302-6ee3-4407-ade6-947614dba2f2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{Facturas_ptoVta}]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement x="453" y="44" width="5" height="1" uuid="b3db02f5-df1a-4bf4-8ff0-f2fe0357efeb"/>
+			</line>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -622,7 +635,7 @@ $F{Facturas_tipo} == 3 ? "A" : ""]]></textFieldExpression>
 				<textFieldExpression><![CDATA[$V{subTotal} + ($V{subTotal} * 0.21)]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="1" y="40" width="51" height="20" uuid="6b179f87-0e7c-4b25-ad40-d89fa81923e8"/>
+				<reportElement x="1" y="45" width="51" height="20" uuid="6b179f87-0e7c-4b25-ad40-d89fa81923e8"/>
 				<box leftPadding="3"/>
 				<textElement>
 					<font isBold="true"/>
@@ -630,11 +643,11 @@ $F{Facturas_tipo} == 3 ? "A" : ""]]></textFieldExpression>
 				<text><![CDATA[CAE N°:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="52" y="40" width="155" height="20" uuid="30759bbc-81b2-4534-88ed-4631e56e3fee"/>
+				<reportElement x="52" y="45" width="155" height="20" uuid="30759bbc-81b2-4534-88ed-4631e56e3fee"/>
 				<textFieldExpression><![CDATA[$F{Facturas_cae}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="207" y="40" width="83" height="20" uuid="de6648fb-4702-46ca-b6d1-73b612ff76be"/>
+				<reportElement x="207" y="45" width="98" height="20" uuid="de6648fb-4702-46ca-b6d1-73b612ff76be"/>
 				<box leftPadding="3"/>
 				<textElement>
 					<font isBold="true"/>
@@ -642,7 +655,7 @@ $F{Facturas_tipo} == 3 ? "A" : ""]]></textFieldExpression>
 				<text><![CDATA[Fecha de Vto.:]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="290" y="40" width="139" height="20" uuid="ea1c6822-a6a2-4999-a13c-d238cbc534b9"/>
+				<reportElement x="305" y="45" width="139" height="20" uuid="ea1c6822-a6a2-4999-a13c-d238cbc534b9"/>
 				<textFieldExpression><![CDATA[$F{Facturas_vtoCae}]]></textFieldExpression>
 			</textField>
 			<staticText>

@@ -35,7 +35,7 @@ class TransaccionOPFC
 	private $facturaImputada;
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="Mbp\ProveedoresBundle\Entity\OrdenPago", cascade={"persist"})
+	 * @ORM\ManyToOne(targetEntity="Mbp\ProveedoresBundle\Entity\OrdenPago")
 	 * @ORM\JoinColumn(name="ordenPagoId", referencedColumnName="id")
 	 */
 	private $ordenPagoImputada;

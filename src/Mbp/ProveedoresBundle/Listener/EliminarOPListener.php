@@ -30,12 +30,12 @@ class EliminarOPListener
 			}
 		}
 		
-		$repo = $entityManager->getRepository('MbpProveedoresBundle:TransaccionOPFC');
+		/*$repo = $entityManager->getRepository('MbpProveedoresBundle:TransaccionOPFC');
 		$entity = $repo->findByOrdenPagoImputada($ordenPago);
 		
 		for ($i=0; $i < count($entity); $i++) { 
 			$entityManager->remove($entity[$i]);			
-		}
+		}*/
 		
 		$entityManager->flush();
 	}

@@ -233,6 +233,14 @@ class wsfev1 {
 			)
 		);
 	} //end function FECAESolicitar
+
+	public function FEParamGetTiposCbte()
+	{
+		return $this->client->FEParamGetTiposCbte(
+		array('Auth'=>array('Token' => $this->TA->credentials->token,
+							'Sign' => $this->TA->credentials->sign,
+							'Cuit' => self::CUIT)));
+	}
 	
 } // class
 

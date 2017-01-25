@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Detalle_Pago_Proveedor" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="890e90cc-cf89-4202-bb29-76354a7dbc5d">
 	<property name="ireport.zoom" value="1.3310000000000035"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="48"/>
 	<parameter name="ordenPagoId" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -267,14 +267,8 @@ Tel/Fax: 4484-2416]]></text>
 	</detail>
 	<columnFooter>
 		<band height="200" splitType="Stretch">
-			<subreport isUsingCache="false">
-				<reportElement positionType="Float" x="0" y="0" width="200" height="100" uuid="ddf41e35-3ccf-4cb6-8e1c-372eb434309e"/>
-				<subreportParameter name="ordenPagoId">
-					<subreportParameterExpression><![CDATA[$P{ordenPagoId}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="SUBREPORT_DIR">
-					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
-				</subreportParameter>
+			<subreport>
+				<reportElement x="0" y="100" width="200" height="100" uuid="aab1638e-bc61-4981-99ce-12033e4df880"/>
 				<subreportParameter name="OpId">
 					<subreportParameterExpression><![CDATA[$P{ordenPagoId}]]></subreportParameterExpression>
 				</subreportParameter>

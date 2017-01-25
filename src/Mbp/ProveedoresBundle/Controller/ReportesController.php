@@ -96,8 +96,7 @@ class ReportesController extends Controller
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 			
-			//$jru->runReportEmpty($ruta,$destino, $param);
-			
+						
 			echo json_encode(
 				array(
 					'success'=> true,	
@@ -177,34 +176,26 @@ class ReportesController extends Controller
 			$conn = $reporteador->getJdbc();
 						
 			$sql = "SELECT
-			     SUM(TransaccionOPFC.`aplicado`) AS TransaccionOPFC_aplicado,
-			     OrdenPago.`id` AS OrdenPago_id,
-			     OrdenPago.`fechaEmision` AS OrdenPago_fechaEmision,
-			     OrdenPago.`proveedorId` AS OrdenPago_proveedorId,
-			     Pago_FacturaProveedores.`pago_id` AS Pago_FacturaProveedores_pago_id,
-			     Pago_FacturaProveedores.`factura_id` AS Pago_FacturaProveedores_factura_id,
+			     FacturaProveedor.`id` AS FacturaProveedor_id,
+			     FacturaProveedor.`fechaEmision` AS FacturaProveedor_fechaEmision,
+			     FacturaProveedor.`tipo` AS FacturaProveedor_tipo,
+			     FacturaProveedor.`sucursal` AS FacturaProveedor_sucursal,
+			     FacturaProveedor.`numFc` AS FacturaProveedor_numFc,
+			     FacturaProveedor.`totalFc` AS FacturaProveedor_totalFc,
+			     FacturaProveedor.`proveedorId` AS FacturaProveedor_proveedorId,
 			     TransaccionOPFC.`id` AS TransaccionOPFC_id,
+			     TransaccionOPFC.`aplicado` AS TransaccionOPFC_aplicado,
 			     TransaccionOPFC.`facturaId` AS TransaccionOPFC_facturaId,
 			     TransaccionOPFC.`ordenPagoId` AS TransaccionOPFC_ordenPagoId,
-			     Factura.`id` AS Factura_id,
-			     Factura.`sucursal` AS Factura_sucursal,
-			     Factura.`numFc` AS Factura_numFc,
-			     Factura.`totalFc` AS Factura_totalFc,
-			     Factura.`tipo` AS Factura_tipo,
-			     Factura.`proveedorId` AS Factura_proveedorId,
-			     Proveedor.`id` AS Proveedor_id
+			     OrdenPago.`id` AS OrdenPago_id,
+			     OrdenPago.`fechaEmision` AS OrdenPago_fechaEmision,
+			     OrdenPago.`proveedorId` AS OrdenPago_proveedorId
 			FROM
-			     `OrdenPago` OrdenPago INNER JOIN `Pago_FacturaProveedores` Pago_FacturaProveedores ON OrdenPago.`id` = Pago_FacturaProveedores.`pago_id`
-			     INNER JOIN `TransaccionOPFC` TransaccionOPFC ON OrdenPago.`id` = TransaccionOPFC.`ordenPagoId`
-			     INNER JOIN `Proveedor` Proveedor ON OrdenPago.`proveedorId` = Proveedor.`id`
-			     INNER JOIN `Factura` Factura ON Proveedor.`id` = Factura.`proveedorId`
-			     AND TransaccionOPFC.`facturaId` = Factura.`id`
-			     AND Factura.`id` = Pago_FacturaProveedores.`factura_id`
+			     `FacturaProveedor` FacturaProveedor INNER JOIN `TransaccionOPFC` TransaccionOPFC ON FacturaProveedor.`id` = TransaccionOPFC.`facturaId`
+			     INNER JOIN `OrdenPago` OrdenPago ON TransaccionOPFC.`ordenPagoId` = OrdenPago.`id`
 			WHERE
-			     Factura.`id` = $idF AND
-			     Proveedor.`id` = $proveedorId
-			GROUP BY
-			     OrdenPago.`id`";		     
+			     TransaccionOPFC.`facturaId` = $idF
+			 AND OrdenPago.`proveedorId` = $proveedorId";		     
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 			

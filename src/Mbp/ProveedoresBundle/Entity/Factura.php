@@ -3,6 +3,7 @@
 namespace Mbp\ProveedoresBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * FacturaProveedor
@@ -152,6 +153,14 @@ class Factura
      */
     private $imputado=0;
 
+    /**
+     * @ORM\OneToMany(targetEntity="TransaccionOPFC", mappedBy="ordenPagoImputada")
+     */
+    private $ordenPago;
+
+    public function __construct() {
+        $this->ordenPago = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -606,7 +615,7 @@ class Factura
     {
         $this->imputacionGasto = $imputacionGasto;
 
-        return $this;
+        return $this; 
     }
 
     /**
@@ -617,5 +626,39 @@ class Factura
     public function getImputacionGasto()
     {
         return $this->imputacionGasto;
+    }
+
+    /**
+     * Add ordenPago
+     *
+     * @param \Mbp\ProveedoresBundle\Entity\TransaccionOPFC $ordenPago
+     *
+     * @return Factura
+     */
+    public function addOrdenPago(\Mbp\ProveedoresBundle\Entity\TransaccionOPFC $ordenPago)
+    {
+        $this->ordenPago[] = $ordenPago;
+
+        return $this;
+    }
+
+    /**
+     * Remove ordenPago
+     *
+     * @param \Mbp\ProveedoresBundle\Entity\TransaccionOPFC $ordenPago
+     */
+    public function removeOrdenPago(\Mbp\ProveedoresBundle\Entity\TransaccionOPFC $ordenPago)
+    {
+        $this->ordenPago->removeElement($ordenPago);
+    }
+
+    /**
+     * Get ordenPago
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOrdenPago()
+    {
+        return $this->ordenPago;
     }
 }

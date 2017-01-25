@@ -16,7 +16,11 @@ class CobranzasController extends Controller
 	{
 		$em = $this->getDoctrine()->getEntityManager();		
 		$repo = $em->getRepository('MbpFinanzasBundle:FormasPago');
-		$resu = $repo->findAll();
+		$resu = $repo->createQueryBuilder('t')
+			->select()
+			->where('t.inactivo = 0')
+			->getQuery()
+			->getResult();
 		
 		$resp = array();
 		$i=0;

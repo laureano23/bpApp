@@ -10,4 +10,17 @@ namespace Mbp\ProveedoresBundle\Entity;
  */
 class TransaccionOPFCRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function selectSumImputacionByFc($fc){
+		$em = $this->getEntityManager();
+		$repo = $em->getRepository('MbpProveedoresBundle:TransaccionOPFC');
+
+		$res = $repo->createQueryBuilder("t")
+			->select("SUM(t.aplicado) as total")			
+			->where("t.facturaImputada = :fc")
+			->setParameter("fc", $fc)
+			->getQuery()
+			->getOneOrNullResult();
+
+		return $res;
+	}
 }

@@ -59,10 +59,17 @@ class VentasController extends Controller
 		$repo = $em->getRepository('MbpFinanzasBundle:FacturaDetalle');
 		$repoFacturas = $em->getRepository('MbpFinanzasBundle:Facturas');
 		$repoCobranzas = $em->getRepository('MbpFinanzasBundle:Cobranzas');
+		$repoClientes = $em->getRepository('MbpClientesBundle:Cliente');
 		$req = $this->getRequest();
 		
 		/* RECIBO PARAMETROS */
 		$idCliente = $req->query->get('idCliente');
+
+		$clienteObj = $repoClientes->find($idCliente);
+		if($clienteObj->getCuentaCerrada() == 1){
+			echo json_encode(array("success"=>false, "msg"=>"El cliente tiene la cuenta cerrada"));
+			return new Response;
+		}
 		
 		/* CONSULTA POR FACTURACION */
 		$resulFacturas = $repoFacturas->listaFacturasClientes($idCliente);
@@ -84,6 +91,7 @@ class VentasController extends Controller
 		if(!empty($resulFacturas)){
 			foreach ($resulFacturas as $factura) {
 				$resp[$i]['id'] = $factura->getId();
+				$resp[$i]['emisionCalc'] = $factura->getFecha();//SOLO PARA ORDENAMIENTO POSTERIOR
 				$resp[$i]['emision'] = $factura->getFecha()->format('d-m-Y');
 				$resp[$i]['concepto'] = $factura->getConcepto();
 				$resp[$i]['vencimiento'] = $factura->getVencimiento()->format('d-m-Y'); 
@@ -100,6 +108,7 @@ class VentasController extends Controller
 		if(!empty($resulPagos)){
 			foreach ($resulPagos as $pagos) {
 				$respPagos['id'] = $pagos->getId(); 
+				$respPagos['emisionCalc'] = $pagos->getEmision();//SOLO PARA ORDENAMIENTO POSTERIOR
 				$respPagos['emision'] = $pagos->getEmision()->format('d-m-Y');
 				$respPagos['concepto'] = 'PAGO';
 				$respPagos['vencimiento'] = $pagos->getEmision()->format('d-m-Y'); 
@@ -126,7 +135,7 @@ class VentasController extends Controller
     }
 	
 	function ordenar($a, $b) {
-	    return strtotime($a['emision']) - strtotime($b['emision']);
+	    return ($b['emisionCalc'] < $a['emisionCalc']) ? -1 : 1;
 	}
 	
 	/**
@@ -137,115 +146,135 @@ class VentasController extends Controller
 		//RECIBO PARAMETROS
 		$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
-		$faele = $this->get('mbp.faele'); //FACTURA ELECTRONICA
-		$auxFinanzas = $this->get('AuxiliarFinanzas');
-		$response = new Response();
-		
-		$data = $req->request->get('data');
-		$fcData = $req->request->get('fcData');
-		$decodeData = json_decode($data);
-		$decodefcData = json_decode($fcData);
-		
-		
-		//CREO OBJETO FACTURA
-		$factura = new Facturas();
-		
-		//CLIENTE
-		$repoCliente = $em->getRepository('MbpClientesBundle:Cliente');
-		$cliente = $repoCliente->find($decodefcData->idCliente);
-		
-		//ARTICULO
-		$repoArticulo = $em->getRepository('MbpArticulosBundle:Articulos');
-		$fechaFc = \DateTime::createFromFormat('d/m/Y', $decodefcData->fecha);
-		
-		$factura->setPtoVta($faele->ptoVta);
-		$factura->setFecha($fechaFc);
-		$factura->setConcepto($auxFinanzas->TipoDeComprobante($decodefcData->tipo));
-		$factura->setVencimiento($fechaFc->add(new \DateInterval('P'.$cliente->getVencimientoFc().'D'))); //ES LA FECHA DE FC + LA CONDICION DE VENTA DEL CLIENTE
-		$factura->setClienteId($cliente);
-		$factura->setTipo($decodefcData->tipo);
-		
-		$netoGrabado = 0;
-		$ivaLiquidado = 0;
-		foreach($decodeData as $items){
-			$detalleFc = new FacturaDetalle();
-			$detalleFc->setDescripcion($items->descripcion);
-			$detalleFc->setCantidad($items->cantidad);
-			$detalleFc->setPrecio($items->precio);
-			$articulo = $repoArticulo->findByCodigo($items->codigo);
-			$detalleFc->setArticuloId($articulo[0]);			
-			$factura->addFacturaDetalleId($detalleFc);
-			$em->persist($detalleFc);
-			
-			//NETO GRABADO
-			$netoGrabado += $items->cantidad * $items->precio;					
-		}
-		$ivaLiquidado = $netoGrabado * 0.21;
-						
-		$regfe['CbteTipo']=$decodefcData->tipo;
-		$regfe['Concepto']=$faele->concepto;
-		$regfe['DocTipo']=$faele->docTipo; //80=CUIT
-		$regfe['DocNro']=$faele->docNro;
-		$regfe['CbteDesde']=1; 	// nro de comprobante desde (para cuando es lote)
-		$regfe['CbteHasta']=1;	// nro de comprobante hasta (para cuando es lote)
-		$regfe['CbteFch']=\date('Ymd'); 	// fecha emision de factura
-		$regfe['ImpNeto']=$netoGrabado;			// neto gravado
-		$regfe['ImpTotConc']=0;			// no gravado
-		$regfe['ImpIVA']=$ivaLiquidado;			// IVA liquidado
-		$regfe['ImpTrib']=0;			// otros tributos
-		$regfe['ImpOpEx']=0;			// operacion exentas
-		$regfe['ImpTotal']=$netoGrabado + $ivaLiquidado;			// total de la factura. ImpNeto + ImpTotConc + ImpIVA + ImpTrib + ImpOpEx
-		$regfe['FchServDesde']=null;	// solo concepto 2 o 3
-		$regfe['FchServHasta']=null;	// solo concepto 2 o 3
-		$regfe['FchVtoPago']=null;		// solo concepto 2 o 3
-		$regfe['MonId']='PES'; 			// Id de moneda 'PES'
-		$regfe['MonCotiz']=1;			// Cotizacion moneda. Solo exportacion
-		
-		// Comprobantes asociados (solo notas de crédito y débito):
-		$regfeasoc['Tipo'] = 91; //91; //tipo 91|5			
-		$regfeasoc['PtoVta'] = 1;
-		$regfeasoc['Nro'] = 1;
-		
-		// Detalle de otros tributos
-		$regfetrib['Id'] = 1; 			
-		$regfetrib['Desc'] = 'impuesto';
-		$regfetrib['BaseImp'] = 0;
-		$regfetrib['Alic'] = 0; 
-		$regfetrib['Importe'] = 0;
-		 
-		// Detalle de iva
-		$regfeiva['Id'] = 5; 
-		$regfeiva['BaseImp'] = $netoGrabado; 
-		$regfeiva['Importe'] = $ivaLiquidado;
-		
-		$cae = $faele->generarFc($regfe, $regfeasoc, $regfetrib, $regfeiva);	//GENERO FC ELECTRONICA
-		
-		if($cae['success'] == FALSE){
-			$response->setContent(json_encode($cae));
-			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR); 
-			return $response;
-		}
-		
-		
-		$factura->setCae($cae['cae']['cae']);
-		$factura->setVtoCae(new \DateTime($cae['cae']['fecha_vencimiento']));
-		$response->setContent(json_encode($cae));
-		$response->setStatusCode(Response::HTTP_OK); 
-		
+
 		try{
-			$validador = $this->get('validator');
+			$faele = $this->get('mbp.faele'); //FACTURA ELECTRONICA
 			
+			
+			$auxFinanzas = $this->get('AuxiliarFinanzas');
+			$response = new Response();
+			
+			$data = $req->request->get('data');
+			$fcData = $req->request->get('fcData');
+			$decodeData = json_decode($data);
+			$decodefcData = json_decode($fcData);
+		
+		
+			//CREO OBJETO FACTURA
+			$factura = new Facturas();
+			
+			//CLIENTE
+			$repoCliente = $em->getRepository('MbpClientesBundle:Cliente');
+			$cliente = $repoCliente->find($decodefcData->idCliente);
+			if($cliente->getCuentaCerrada() == 1){
+				echo json_encode(array("success"=>false, "msg"=>"Cuenta cerrada, no se puede realizar la operacion"));
+				return new Response;
+			}
+			
+			//ARTICULO
+			$repoArticulo = $em->getRepository('MbpArticulosBundle:Articulos');
+			$fechaFc = \DateTime::createFromFormat('d/m/Y', $decodefcData->fecha);
+			
+			$factura->setPtoVta($faele->ptoVta);
+			$factura->setFecha($fechaFc);
+			$factura->setConcepto($auxFinanzas->TipoDeComprobante($decodefcData->tipo));
+			$factura->setVencimiento($fechaFc->add(new \DateInterval('P'.$cliente->getVencimientoFc().'D'))); //ES LA FECHA DE FC + LA CONDICION DE VENTA DEL CLIENTE
+			$factura->setClienteId($cliente);
+			$factura->setTipo($decodefcData->tipo);
+			
+			$netoGrabado = 0;
+			$ivaLiquidado = 0;
+			foreach($decodeData as $items){
+				$detalleFc = new FacturaDetalle();
+				$detalleFc->setDescripcion($items->descripcion);
+				$detalleFc->setCantidad($items->cantidad);
+				$detalleFc->setPrecio($items->precio);
+				$articulo = $repoArticulo->findByCodigo($items->codigo);
+				$detalleFc->setArticuloId($articulo[0]);			
+				$factura->addFacturaDetalleId($detalleFc);
+				$em->persist($detalleFc);
+				
+				//NETO GRABADO
+				$netoGrabado += $items->cantidad * $items->precio;					
+			}
+			$ivaLiquidado = $netoGrabado * 0.21;
+
+			$ultimoComp = $faele->ultimoNroComp($decodefcData->tipo);	
+
+
+			$regfe['CbteTipo']=$decodefcData->tipo;
+			$regfe['Concepto']=1;//ESTE DATO DEBE VENIR DEL CLIENTE 1=PRODUCTOS, 2=SERVICIOS, 3=PRODUCTOS Y SERVICIOS
+			$regfe['DocTipo']=$faele->docTipo; //80=CUIT
+			$regfe['DocNro']=$cliente->getCuit();
+			$regfe['CbteDesde']= $ultimoComp['nro'] + 1;	// nro de comprobante desde (para cuando es lote)
+			$regfe['CbteHasta']=$ultimoComp['nro'] + 1;	// nro de comprobante hasta (para cuando es lote)
+			$regfe['CbteFch']=\date('Ymd'); 	// fecha emision de factura
+			$regfe['ImpNeto']=$netoGrabado;			// neto gravado
+			$regfe['ImpTotConc']=0;			// no gravado
+			$regfe['ImpIVA']=$ivaLiquidado;			// IVA liquidado
+			$regfe['ImpTrib']=0;			// otros tributos
+			$regfe['ImpOpEx']=0;			// operacion exentas
+			$regfe['ImpTotal']=$netoGrabado + $ivaLiquidado;			// total de la factura. ImpNeto + ImpTotConc + ImpIVA + ImpTrib + ImpOpEx
+			$regfe['FchServDesde']=null;	// solo concepto 2 o 3
+			$regfe['FchServHasta']=null;	// solo concepto 2 o 3
+			$regfe['FchVtoPago']=null;		// solo concepto 2 o 3
+			$regfe['MonId']='PES'; 			// Id de moneda 'PES'
+			$regfe['MonCotiz']=1;			// Cotizacion moneda. Solo exportacion
+			
+			// Comprobantes asociados (solo notas de crédito y débito):
+			$regfeasoc['Tipo'] = 91; //91; //tipo 91|5			
+			$regfeasoc['PtoVta'] = 1;
+			$regfeasoc['Nro'] = 0;
+			
+			// Detalle de otros tributos
+			$regfetrib['Id'] = 1; 			
+			$regfetrib['Desc'] = 'impuesto';
+			$regfetrib['BaseImp'] = 0;
+			$regfetrib['Alic'] = 0; 
+			$regfetrib['Importe'] = 0;
+			 
+			// Detalle de iva
+			$regfeiva['Id'] = 5; 
+			$regfeiva['BaseImp'] = $netoGrabado; 
+			$regfeiva['Importe'] = $ivaLiquidado;
+			
+			$cae = $faele->generarFc($regfe, $regfeasoc, $regfetrib, $regfeiva);	//GENERO FC ELECTRONICA
+			
+			if($cae['success'] == FALSE){
+				$response->setContent(json_encode($cae));
+				$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR); 
+				return $response;
+			}
+			
+			
+			$factura->setCae($cae['cae']['cae']);
+			$factura->setVtoCae(new \DateTime($cae['cae']['fecha_vencimiento']));
+
+			//DATOS DEL CLIENTES
+			$factura->setRSocial($cliente->getRSocial());
+			$factura->setDomicilio($cliente->getDireccion());
+			$factura->setLocalidad($cliente->getLocalidad()->getNombre());
+			$factura->setCuit($cliente->getCuit());
+			$factura->setIvaCond($cliente->getIva());
+			$factura->setCondVta($cliente->getCondVenta()); 
+			$factura->setFcNro($ultimoComp['nro'] + 1);
+			//$factura->setRtoNro(); COMPLETAR LOGICA PARA VINCULAR REMITO
+
+			
+			
+				
 			$em->persist($factura);
 			$em->flush();	
+			$cae["idFc"] = $factura->getId();
+			$response->setContent(json_encode($cae));
+			$response->setStatusCode(Response::HTTP_OK); 
+			
 			return $response;
+
 		}catch(\Exception $e){
-			print_r($e->getMessage());
+			echo json_encode(array("success"=>false, "msg"=>$e->getMessage()));
+			return new Response;
 		}
-		
-		echo json_encode(array(
-			'success' => true
-		));
-		
 	}
 
 	
@@ -330,25 +359,33 @@ class VentasController extends Controller
 	{
 		$req = $this->getRequest();
 		$em = $this->getDoctrine()->getManager();
+		$response = new Response();
 		
 		$data = $req->request->get('data');
 		$decData = json_decode($data);
 		
-		$repo=0;
-		if($decData->tipo == 'cobranza'){
-			$repo = $em->getRepository('MbpFinanzasBundle:Cobranzas');
-		}else{
-			$repo = $em->getRepository('MbpFinanzasBundle:Facturas');
+		$repo = $em->getRepository('MbpFinanzasBundle:Cobranzas');
+				
+		try{
+			$record = $repo->find($decData->id);
+			if(empty($record)){
+				throw new \Exception("No se encontró el registro", 1);			
+			}	
+		}catch(\Exception $e){
+			$response->setContent(json_encode(array("success" => false, "msg" => $e->getMessage())));
+			return $response;
 		}
 		
-		$record = $repo->find($decData->id);
-		$em->remove($record);
-		$em->flush();
+		try{
+			$em->remove($record);
+			$em->flush();	
+		}catch(\Exception $e){
+			$response->setContent(json_encode(array("success" => false, "msg" => "Error al eliminar el comprobante")));
+			return $response;	
+		}
 		
-		echo json_encode(array(
-			'success' => true,
-		));
-		return new Response();
+		$response->setContent(json_encode(array("success" => true)));
+		return $response;
 	}
 	
 	/**

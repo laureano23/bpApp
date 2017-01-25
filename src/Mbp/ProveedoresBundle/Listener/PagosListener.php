@@ -41,6 +41,8 @@ class PagosListener
 		
 		$repoCobranzaDetalle = $this->em->getRepository('MbpFinanzasBundle:CobranzasDetalle');
 		foreach ($data as $rec) {
+			/* SI EL CHEQUE TIENE ID = 0 ES PORQUE ES UN CHEQUE PROPIO */
+			if($rec->idCheque == 0){ return; }
 			if($rec->formaPago == "CHEQUE DE TERCEROS"){
 				$cheque = $repoCobranzaDetalle->find($rec->idCheque);
 				$cheque->setEstado(1);

@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * FormasPago
- *
+ * 
  * @ORM\Table()
  * @ORM\Entity
  */
@@ -27,6 +27,13 @@ class FormasPago
      * @ORM\Column(name="descripcion", type="string", length=35)
      */
     private $descripcion;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="inactivo", type="boolean")
+     */
+    private $inactivo; 
 
 
     /**
@@ -62,5 +69,28 @@ class FormasPago
     {
         return $this->descripcion;
     }
-}
 
+    /**
+     * Set inactivo
+     *
+     * @param boolean $inactivo
+     *
+     * @return FormasPago
+     */
+    public function setInactivo($inactivo)
+    {
+        $this->inactivo = $inactivo;
+
+        return $this;
+    }
+
+    /**
+     * Get inactivo
+     *
+     * @return boolean
+     */
+    public function getInactivo()
+    {
+        return $this->inactivo;
+    }
+}

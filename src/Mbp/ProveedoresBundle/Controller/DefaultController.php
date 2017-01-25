@@ -222,7 +222,7 @@ class DefaultController extends Controller
 				usort($fc, array($this, 'ordenar'));
 				
 				//UTILIZO ESTA CLASE AUXILIAR PARA CALCULAR EL SALDO DE LA CUENTA
-				$calculoClass = $this->get('ParametrosFinanzas');	
+				$calculoClass = $this->get('AuxiliarFinanzas');	
 				$calculoClass->calculaSaldo($fc, $haber='haber', $debe='debe');	
 			}	
 			
@@ -261,6 +261,7 @@ class DefaultController extends Controller
 		$repoProv = $em->getRepository('MbpProveedoresBundle:Proveedor');
 		$repoFc = $em->getRepository('MbpProveedoresBundle:Factura');
 		$repoOP = $em->getRepository('MbpProveedoresBundle:OrdenPago');
+		$repoTrans = $em->getRepository('MbpProveedoresBundle:TransaccionOPFC');
 		
 		try{
 			$proveedor = $repoProv->find($idProv); //PROVEEDOR ASOCIADO
@@ -285,14 +286,26 @@ class DefaultController extends Controller
 			}else{
 				$ordenPago = $repoOP->find($idOP);
 			}
+
+
 			
 			//FACTURAS A IMPUTAR
 			$factura;
 			$transOpFc;	//OBEJTO QUE GUARDA EL MONTO APLICADO A CADA FC EN UN MOMENTO DADO
 			foreach ($fcImputarDec as $fc) {
 				$factura = $repoFc->find($fc->id);	
+
+				//VALIDAR QUE NO SE IMPUTE MAS DEL TOTAL DE UNA FACTURA
+				$imputaciones = $repoTrans->selectSumImputacionByFc($factura);
+				$saldoImputar = $factura->getTotalFc() - $imputaciones['total'];
+
+				if($fc->aplicar > $saldoImputar){
+					throw new \Exception("Esta fc tiene un saldo menor al imputado", 1);					
+				}
+				//FIN DE LA VALIDACION
+
 				$factura->setImputado($factura->getImputado() + $fc->aplicar);	
-				$ordenPago->addFacturasImputada($factura);
+				
 			}
 				
 			$em->persist($ordenPago);
@@ -304,6 +317,7 @@ class DefaultController extends Controller
 				$transOpFc->setFacturaImputada($factura);
 				$transOpFc->setAplicado($fc->aplicar);				
 				$transOpFc->setOrdenPagoImputada($ordenPago);
+				$ordenPago->addFacturasImputada($transOpFc);
 				$em->persist($transOpFc);
 				$em->flush();
 			}		
@@ -312,12 +326,13 @@ class DefaultController extends Controller
 			echo json_encode(array(
 				'success' => true,
 			));
-		}catch(Exception $e){
+		}catch(\Exception $e){
 			echo json_encode(array(
 				'success' => false,
 				'msg' => $e->getMessage()
 			));
 		}
+
 		return new Response();
     }
 
@@ -331,31 +346,72 @@ class DefaultController extends Controller
 		$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
 		$data = json_decode($req->request->get('data'));
-		$repo;
+		
 		$id = 0;
+		$response = new Response;
 		
-		if($data->haber > 0){
-			$repo = $em->getRepository('MbpProveedoresBundle:Factura');
-			$id = $data->idF;			
-		}else{
-			$repo = $em->getRepository('MbpProveedoresBundle:OrdenPago');
-			$id = $data->idOP;
-		}
-		
+		//HACEMOS LA OPERACION COMO UNA TRANSACCION
+		$em->getConnection()->beginTransaction();
 		try{
-			$comprobante = $repo->find($id);
-			$em->remove($comprobante);			
+
+			if($data->haber > 0){
+				$id = $data->idF;	
+				$repo = $em->getRepository("MbpProveedoresBundle:Factura");	
+				$repoTr = $em->getRepository("MbpProveedoresBundle:TransaccionOPFC");	
+				$comprobante = $repo->find($id);
+
+				$transacciones = $repoTr->createQueryBuilder("tr")
+					->select()
+					->where("tr.facturaImputada = :fc")
+					->setParameter("fc", $id)
+					->getQuery()
+					->getResult();
+
+				foreach ($transacciones as $tr) {
+					$em->remove($tr);								
+				}
+
+				$em->remove($comprobante);	
+			}else{
+				$id = $data->idOP;
+				$repo = $em->getRepository("MbpProveedoresBundle:TransaccionOPFC");
+				$comprobante = $repo->createQueryBuilder("tr")
+					->select()
+					->where("tr.ordenPagoImputada = :op")
+					->setParameter("op", $id)
+					->getQuery()
+					->getResult();
+				
+				foreach ($comprobante as $comp) {
+					$em->remove($comp);								
+				}	
+
+				//ELIMINO LA ORDEN DE PAGO CON TODOS LOS DETALLES ASOCIADOS
+				$repoOP = $em->getRepository("MbpProveedoresBundle:OrdenPago");
+				$ordenPago = $repoOP->find($id);
+				$em->remove($ordenPago);
+			}
+			
 			$em->flush();
 			
-			echo json_encode(array(
-				'success' => true,
-			));
-			return new Response();
-		}catch(Exception $e){
-			echo json_encode(array(
-				'success' => false,
-				'msg' => $e->getMessage()
-			));
+			$em->getConnection()->commit();
+			
+
+			return $response->setContent(
+				json_encode(array(
+					'success' => true
+				))
+			);
+
+		}catch(\Exception $e){
+			$em->getConnection()->rollBack();
+			
+			return $response->setContent(
+				json_encode(array(
+					'success' => false,
+					'msg' => $e->getMessage()
+				))
+			);
 		}
     }
 	
@@ -375,7 +431,7 @@ class DefaultController extends Controller
 			->where('f.id = :idTipoPago')	//EL ID 3 CORRESPONDE A CHEQUE DE TERCEROS
 			->andWhere('cd.estado = :estado')
 			->setParameter('idTipoPago', 3)
-			->setParameter('estado', 0)
+			->setParameter('estado', 0)	//ESTADO QUE INDICA CHEQUE EN CARTERA
 			->getQuery();
 		
 		$res = $qb->getArrayResult();

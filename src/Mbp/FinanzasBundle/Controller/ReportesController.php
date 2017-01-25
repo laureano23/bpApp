@@ -61,7 +61,7 @@ class ReportesController extends Controller
 		$conn = $reporteador->getJdbc();
 		
 		$sql = "SELECT
-		     CASE Facturas.`vtoCae` WHEN 0 THEN NULL ELSE Facturas.`vtoCae` END AS Facturas_vtoCae, 
+		     CASE WHEN Facturas.`vtoCae`=0 THEN NULL ELSE Facturas.`vtoCae` END AS Facturas_vtoCae,
 		     factura_detallesFacturas.`factura_id` AS factura_detallesFacturas_factura_id,
 		     factura_detallesFacturas.`facturadetalle_id` AS factura_detallesFacturas_facturadetalle_id,
 		     Facturas.`id` AS Facturas_id,
@@ -81,16 +81,20 @@ class ReportesController extends Controller
 		     articulos.`unidad` AS articulos_unidad,
 		     articulos.`precio` AS articulos_precio,
 		     cliente.`idCliente` AS cliente_idCliente,
-		     cliente.`rsocial` AS cliente_rsocial,
-		     cliente.`direccion` AS cliente_direccion,
-		     cliente.`localidad` AS cliente_localidad,
-		     cliente.`provincia` AS cliente_provincia,
-		     cliente.`cuit` AS cliente_cuit,
-		     cliente.`netoPercepcion` AS cliente_netoPercepcion,
-		     cliente.`porcentajePercepcion` AS cliente_porcentajePercepcion,
-		     cliente.`condVenta` AS cliente_condVenta,
 		     Facturas.`cae` AS Facturas_cae,
-		     Facturas.`ptoVta` AS Facturas_ptoVta
+		     Facturas.`ptoVta` AS Facturas_ptoVta,
+		     Facturas.`ivaCond` AS Facturas_ivaCond,
+		     Facturas.`rSocial` AS Facturas_rSocial,
+		     Facturas.`domicilio` AS Facturas_domicilio,
+		     Facturas.`localidad` AS Facturas_localidad,
+		     Facturas.`cuit` AS Facturas_cuit,
+		     Facturas.`condVta` AS Facturas_condVta,
+		     Facturas.`rtoNro` AS Facturas_rtoNro,
+		     Facturas.`perIIBB` AS Facturas_perIIBB,
+		     Facturas.`iva21` AS Facturas_iva21,
+		     Facturas.`dtoTotal` AS Facturas_dtoTotal,
+		     Facturas.`vtoCae` AS Facturas_vtoCae,
+		     Facturas.`fcNro` AS Facturas_fcNro
 		FROM
 		     `Facturas` Facturas INNER JOIN `factura_detallesFacturas` factura_detallesFacturas ON Facturas.`id` = factura_detallesFacturas.`factura_id`
 		     INNER JOIN `FacturaDetalle` FacturaDetalle ON factura_detallesFacturas.`facturadetalle_id` = FacturaDetalle.`id`

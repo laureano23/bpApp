@@ -8,35 +8,28 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-     Factura.`id` AS Factura_id,
-     Factura.`tipo` AS Factura_tipo,
-     Factura.`sucursal` AS Factura_sucursal,
-     Factura.`numFc` AS Factura_numFc,
-     Factura.`totalFc` AS Factura_totalFc,
-     Pago_FacturaProveedores.`pago_id` AS Pago_FacturaProveedores_pago_id,
-     Pago_FacturaProveedores.`factura_id` AS Pago_FacturaProveedores_factura_id,
      TransaccionOPFC.`id` AS TransaccionOPFC_id,
      TransaccionOPFC.`aplicado` AS TransaccionOPFC_aplicado,
      TransaccionOPFC.`facturaId` AS TransaccionOPFC_facturaId,
      TransaccionOPFC.`ordenPagoId` AS TransaccionOPFC_ordenPagoId,
      OrdenPago.`id` AS OrdenPago_id,
      OrdenPago.`fechaEmision` AS OrdenPago_fechaEmision,
-     OrdenPago.`proveedorId` AS OrdenPago_proveedorId
+     OrdenPago.`proveedorId` AS OrdenPago_proveedorId,
+     FacturaProveedor.`id` AS FacturaProveedor_id,
+     FacturaProveedor.`fechaEmision` AS FacturaProveedor_fechaEmision,
+     FacturaProveedor.`tipo` AS FacturaProveedor_tipo,
+     FacturaProveedor.`sucursal` AS FacturaProveedor_sucursal,
+     FacturaProveedor.`numFc` AS FacturaProveedor_numFc,
+     FacturaProveedor.`totalFc` AS FacturaProveedor_totalFc,
+     FacturaProveedor.`imputado` AS FacturaProveedor_imputado,
+     SUM(TransaccionOPFC.`aplicado`) as aplicado
 FROM
-     `Factura` Factura INNER JOIN `Pago_FacturaProveedores` Pago_FacturaProveedores ON Factura.`id` = Pago_FacturaProveedores.`factura_id`
-     INNER JOIN `TransaccionOPFC` TransaccionOPFC ON Factura.`id` = TransaccionOPFC.`facturaId`
-     LEFT OUTER JOIN `OrdenPago` OrdenPago ON TransaccionOPFC.`ordenPagoId` = OrdenPago.`id`
-     AND OrdenPago.`id` = Pago_FacturaProveedores.`pago_id`
+     `OrdenPago` OrdenPago INNER JOIN `TransaccionOPFC` TransaccionOPFC ON OrdenPago.`id` = TransaccionOPFC.`ordenPagoId`
+     INNER JOIN `FacturaProveedor` FacturaProveedor ON TransaccionOPFC.`facturaId` = FacturaProveedor.`id`
 WHERE
-     OrdenPago.`id` = $P{OpId}]]>
+     OrdenPago.`id` = $P{OpId}
+GROUP BY TransaccionOPFC.`facturaId`]]>
 	</queryString>
-	<field name="Factura_id" class="java.lang.Integer"/>
-	<field name="Factura_tipo" class="java.lang.String"/>
-	<field name="Factura_sucursal" class="java.lang.Integer"/>
-	<field name="Factura_numFc" class="java.lang.Integer"/>
-	<field name="Factura_totalFc" class="java.math.BigDecimal"/>
-	<field name="Pago_FacturaProveedores_pago_id" class="java.lang.Integer"/>
-	<field name="Pago_FacturaProveedores_factura_id" class="java.lang.Integer"/>
 	<field name="TransaccionOPFC_id" class="java.lang.Integer"/>
 	<field name="TransaccionOPFC_aplicado" class="java.math.BigDecimal"/>
 	<field name="TransaccionOPFC_facturaId" class="java.lang.Integer"/>
@@ -44,6 +37,16 @@ WHERE
 	<field name="OrdenPago_id" class="java.lang.Integer"/>
 	<field name="OrdenPago_fechaEmision" class="java.sql.Timestamp"/>
 	<field name="OrdenPago_proveedorId" class="java.lang.Integer"/>
+	<field name="FacturaProveedor_id" class="java.lang.Integer"/>
+	<field name="FacturaProveedor_fechaEmision" class="java.sql.Timestamp"/>
+	<field name="FacturaProveedor_tipo" class="java.lang.String"/>
+	<field name="FacturaProveedor_sucursal" class="java.lang.Integer"/>
+	<field name="FacturaProveedor_numFc" class="java.lang.Integer"/>
+	<field name="FacturaProveedor_totalFc" class="java.math.BigDecimal"/>
+	<field name="FacturaProveedor_imputado" class="java.math.BigDecimal"/>
+	<field name="aplicado" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -116,18 +119,18 @@ WHERE
 			<textField>
 				<reportElement x="0" y="0" width="65" height="20" uuid="3448f6e3-5e53-4a1a-9165-2610631b6b1c"/>
 				<box leftPadding="3"/>
-				<textFieldExpression><![CDATA[$F{Factura_numFc}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{FacturaProveedor_numFc}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="65" y="0" width="69" height="20" uuid="dcfd3a28-2652-44fb-be30-3213a4025e79"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{Factura_totalFc}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{FacturaProveedor_totalFc}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="134" y="0" width="66" height="20" uuid="0f8fb90d-6933-43b8-8b04-642e10e40c86"/>
 				<box rightPadding="3"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{TransaccionOPFC_aplicado}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{aplicado}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
