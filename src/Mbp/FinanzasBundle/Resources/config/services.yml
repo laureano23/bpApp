@@ -1,6 +1,9 @@
 parameters:
     ptoVta: 1
     docTipo: 80    
+    userArba: 33678767439
+    passArba: 336787
+    urlArba: 'http://dfe.arba.gov.ar/DomicilioElectronico/SeguridadCliente/dfeServicioConsulta.do'
 
 services:
     mbp.faele:
@@ -13,3 +16,7 @@ services:
 
     AuxiliarFinanzas:
        class: Mbp\FinanzasBundle\Clases\AuxiliarFinanzas
+    
+    ServiceIIBB:
+        class: Mbp\FinanzasBundle\Clases\ServiceIIBB
+        arguments: [%userArba%, %passArba%, '%kernel.root_dir%', %urlArba%]

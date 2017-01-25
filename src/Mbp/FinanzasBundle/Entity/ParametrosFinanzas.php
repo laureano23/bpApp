@@ -19,7 +19,7 @@ class ParametrosFinanzas
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private $id;  
 
     /**
      * @var string
@@ -42,6 +42,11 @@ class ParametrosFinanzas
      */
     private $dolarBlue;
 
+    /**
+     * @ORM\OneToOne(targetEntity="Mbp\PersonalBundle\Entity\Provincias")
+     * @ORM\JoinColumn(name="provincia_id", referencedColumnName="id")
+     */
+    private $provincia;
 
     /**
      * Get id
@@ -124,5 +129,28 @@ class ParametrosFinanzas
     {
         return $this->dolarBlue;
     }
-}
 
+    /**
+     * Set provincia
+     *
+     * @param \Mbp\PersonalBundle\Entity\Provincias $provincia
+     *
+     * @return ParametrosFinanzas
+     */
+    public function setProvincia(\Mbp\PersonalBundle\Entity\Provincias $provincia = null)
+    {
+        $this->provincia = $provincia;
+
+        return $this;
+    }
+
+    /**
+     * Get provincia
+     *
+     * @return \Mbp\PersonalBundle\Entity\Provincias
+     */
+    public function getProvincia()
+    {
+        return $this->provincia;
+    }
+}

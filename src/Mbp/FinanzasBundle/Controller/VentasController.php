@@ -148,8 +148,7 @@ class VentasController extends Controller
 		$req = $this->getRequest();
 
 		try{
-			$faele = $this->get('mbp.faele'); //FACTURA ELECTRONICA
-			
+			$faele = $this->get('mbp.faele'); //FACTURA ELECTRONICA			
 			
 			$auxFinanzas = $this->get('AuxiliarFinanzas');
 			$response = new Response();
@@ -162,6 +161,7 @@ class VentasController extends Controller
 		
 			//CREO OBJETO FACTURA
 			$factura = new Facturas();
+			$fechaFc = \DateTime::createFromFormat('d/m/Y', $decodefcData->fecha);
 			
 			//CLIENTE
 			$repoCliente = $em->getRepository('MbpClientesBundle:Cliente');
@@ -170,10 +170,11 @@ class VentasController extends Controller
 				echo json_encode(array("success"=>false, "msg"=>"Cuenta cerrada, no se puede realizar la operacion"));
 				return new Response;
 			}
-			
+
+    					
 			//ARTICULO
 			$repoArticulo = $em->getRepository('MbpArticulosBundle:Articulos');
-			$fechaFc = \DateTime::createFromFormat('d/m/Y', $decodefcData->fecha);
+			
 			
 			$factura->setPtoVta($faele->ptoVta);
 			$factura->setFecha($fechaFc);
@@ -199,7 +200,20 @@ class VentasController extends Controller
 			}
 			$ivaLiquidado = $netoGrabado * 0.21;
 
-			$ultimoComp = $faele->ultimoNroComp($decodefcData->tipo);	
+			$ultimoComp = $faele->ultimoNroComp($decodefcData->tipo);
+
+			//CONSULTA PERCEPCION DE IIBB
+			$iibbService = $this->get('ServiceIIBB');	//SERVICIO PARA ALICUOTAS DE IIBB
+			$iibbService->setOpts($cliente->getCuit());
+			$alicuotaPercepcion = $iibbService->getAlicuotaPercepcion();			
+			$percepcionIIBB=0;
+			
+			$repoFinanzas = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
+			$parametrosFinanzas = $repoFinanzas->find(1);
+			
+			if($cliente->getProvincia()->getId() == $repoFinanzas->getProvincia()->getId() && $alicuotaPercepcion > 0){
+				$percepcionIIBB = $netoGrabado * $alicuotaPercepcion; 
+			}	
 
 
 			$regfe['CbteTipo']=$decodefcData->tipo;
