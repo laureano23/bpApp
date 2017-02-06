@@ -45,27 +45,27 @@ class wsaa {
 	*/
 	public function __construct($service = 'wsfe') 
 	{
-    $this->service = $service;    
-    
-    // seteos en php
-    ini_set("soap.wsdl_cache_enabled", "0");    
-    
-    // validar archivos necesarios
-    if (!file_exists($this->path.self::CERT)) $this->error .= " Failed to open ".self::CERT;
-    if (!file_exists($this->path.self::PRIVATEKEY)) $this->error .= " Failed to open ".self::PRIVATEKEY;
-    if (!file_exists($this->path.self::WSDL)) $this->error .= " Failed to open ".self::WSDL;
-    
-    if(!empty($this->error)) {
-		throw new \Exception('WSAA class. Faltan archivos necesarios para el funcionamiento '.$this->error);
-    }
-    
-    $this->client = new \SoapClient($this->path.self::WSDL, array(
-		'soap_version'   => SOAP_1_2,
-		'location'       => self::URL,
-		'trace'          => 1,
-		'exceptions'     => 0
-		)
-    );
+	    $this->service = $service;    
+	    
+	    // seteos en php
+	    ini_set("soap.wsdl_cache_enabled", "0");    
+	    
+	    // validar archivos necesarios
+	    if (!file_exists($this->path.self::CERT)) $this->error .= " Failed to open ".self::CERT;
+	    if (!file_exists($this->path.self::PRIVATEKEY)) $this->error .= " Failed to open ".self::PRIVATEKEY;
+	    if (!file_exists($this->path.self::WSDL)) $this->error .= " Failed to open ".self::WSDL;
+	    
+	    if(!empty($this->error)) {
+			throw new \Exception('WSAA class. Faltan archivos necesarios para el funcionamiento '.$this->error);
+	    }
+	    
+	    $this->client = new \SoapClient($this->path.self::WSDL, array(
+			'soap_version'   => SOAP_1_2,
+			'location'       => self::URL,
+			'trace'          => 1,
+			'exceptions'     => 0
+			)
+	    );
 	}
   
 	/*
