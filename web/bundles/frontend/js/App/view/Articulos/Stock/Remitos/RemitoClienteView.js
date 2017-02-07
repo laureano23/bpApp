@@ -119,8 +119,8 @@ Ext.define('MetApp.view.Articulos.Stock.Remitos.RemitoClienteView' ,{
 			{
 				xtype: 'textfield',
 				name: 'unidad',
+				itemId: 'unidad',
 				allowBlank: true,
-				readOnly: true,
 				width: 100,
 				labelWidth: 30,
 				fieldLabel: 'Un:'
@@ -131,11 +131,13 @@ Ext.define('MetApp.view.Articulos.Stock.Remitos.RemitoClienteView' ,{
 				width: 150,
 				labelWidth: 40,
 				name: 'oc',
+				itemId: 'oc',
 				fieldLabel: 'O/C :'
 			},
 			{
 				xtype: 'textfield',
 				name: 'pedidoNum',
+				itemId: 'pedidoNum',
 				fieldLabel: 'Pedido N°'
 			},					
 		]
@@ -144,29 +146,29 @@ Ext.define('MetApp.view.Articulos.Stock.Remitos.RemitoClienteView' ,{
 			{
 				xtype: 'button',
 				margins: '5 5 5 5',
-				itemId: 'insertPedido',
-				action: 'insertPedido',
+				itemId: 'insertarItem',
+				action: 'insertarItem',
 				text: 'Insertar'				
 			},
 			{
 				xtype: 'button',
 				margins: '5 5 5 5',
-				itemId: 'editPedido',
-				action: 'editPedido',
+				itemId: 'editarItem',
+				action: 'editarItem',
 				text: 'Editar'				
 			},
 			{
 				xtype: 'button',
 				margins: '5 5 5 5',
-				itemId: 'deletePedido',
-				action: 'deletePedido',
+				itemId: 'borrarItem',
+				action: 'borrarItem',
 				text: 'Borrar'				
 			},
 			{
 				xtype: 'button',
 				margins: '5 5 5 5',
-				itemId: 'savePedido',
-				action: 'savePedido',
+				itemId: 'guardarRemito',
+				action: 'guardarRemito',
 				text: 'Guardar'				
 			}
 		]
@@ -174,9 +176,7 @@ Ext.define('MetApp.view.Articulos.Stock.Remitos.RemitoClienteView' ,{
 		Ext.applyIf(me,{
 			items: [
 				{
-					xtype: 'form',		
-					border: false,
-					frame: false,			
+					xtype: 'container',				
 					fieldDefaults: {
 						margins: '5 5 5 5',	
 						allowBlank: false
@@ -197,23 +197,35 @@ Ext.define('MetApp.view.Articulos.Stock.Remitos.RemitoClienteView' ,{
 							layout: 'anchor'
 						},
 						{
-							xtype: 'container',
+							xtype: 'form',
+							fieldDefaults: {
+								margins: '5 5 5 5',	
+								allowBlank: false
+							},	
 							border: false,
-							items: line3,
-							layout: 'hbox'
+							frame: false,
+							items: [
+								{
+									xtype: 'container',
+									border: false,
+									items: line3,
+									layout: 'hbox'
+								},
+								{
+									xtype: 'container',
+									border: false,
+									items: line4,
+									layout: 'hbox'
+								},
+								{
+									xtype: 'container',
+									border: false,
+									items: line5,
+									layout: 'hbox'
+								}		
+							]
 						},
-						{
-							xtype: 'container',
-							border: false,
-							items: line4,
-							layout: 'hbox'
-						},
-						{
-							xtype: 'container',
-							border: false,
-							items: line5,
-							layout: 'hbox'
-						}		
+								
 					]
 				}
 			]

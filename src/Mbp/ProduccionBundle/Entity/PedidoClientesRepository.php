@@ -82,6 +82,25 @@ class PedidoClientesRepository extends \Doctrine\ORM\EntityRepository
 			));
 		}
 	}
+
+	public function pedidosPorArticuloCliente($codigo, $idCliente)
+	{
+		$em = $this->getEntityManager();
+		$repo = $em->getRepository('MbpProduccionBundle:PedidoClientes');
+
+		$qb = $repo->createQueryBuilder('p')
+			->select('p.oc, p.id as pedidoNum, art.codigo')
+			->join('p.codigo', 'art')
+			->where('art.codigo = :cod')
+			->andWhere('p.cliente = :cliente')
+			->setParameter('cliente' , $idCliente)
+			->setParameter('cod' , $codigo)
+			->getQuery()
+			->getArrayResult();
+
+		return $qb;
+
+	}
 }
 
 

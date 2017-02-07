@@ -20,6 +20,15 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 			'RemitoClienteView button[itemId=buscaArt]': {
 				click: this.BuscarArticulo
 			},
+			'RemitoClienteView textfield[itemId=oc]': {
+				specialkey: this.BuscarOC
+			},
+			'RemitoClienteView button[itemId=insertarItem]': {
+				click: this.InsertarItem
+			},
+			'RemitoClienteView button[itemId=guardarRemito]': {
+				click: this.GuardarRemito
+			},
 		});
 	},
 	
@@ -55,15 +64,67 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 
 			winRemito.queryById('codigo').setValue(selection.data.codigo);
 			winRemito.queryById('descripcion').setValue(selection.data.descripcion);
+			winRemito.queryById('unidad').setValue(selection.data.unidad);
 
 			winArt.close();
 			winRemito.queryById('cantidad').focus('', 20);
 		});
 	},
 
-	
-	
+
+	BuscarOC: function(txt, ev){
+		if (ev.getKey() != ev.ENTER) {
+            return;
+        }
+
+        var winRemito = txt.up('window');
+        var winPendientes = Ext.widget('ArticulosOrdenCompraView');
+        var grid = winPendientes.down('grid');
+
+        Ext.Ajax.request({
+        	url: Routing.generate('mbp_produccion_pedidos_articulo_cliente'),
+
+        	params: {
+        		idCliente: winRemito.queryById('idCliente').getValue(),
+        		codigo: winRemito.queryById('codigo').getValue(),
+        	},
+
+        	success: function(resp){
+        		grid.getStore().loadRawData(resp);
+
+        		winPendientes.queryById('ingresaOC').on('click', function(){
+		        	
+		        	var selection = grid.getSelectionModel().getSelection();
+		        	selection = selection[0];
+
+		        	winRemito.queryById('oc').setValue(selection.data.oc);
+		        	winRemito.queryById('pedidoNum').setValue(selection.data.pedidoNum);
+
+		        	winPendientes.close();
+
+		        	console.log(selection);
+		        });
+        	}
+        });     
+	},
+
+	InsertarItem: function(btn){
+		var winRemito = btn.up('window');
+		var grid = winRemito.down('grid');
+		var form = winRemito.down('form');
+		var values = form.getForm().getValues();
+
+		grid.getStore().add(values);
+
+		form.getForm().reset();
+
+	},
+
+	GuardarRemito: function(btn){
+
+	}
 });
+
 
 
 
