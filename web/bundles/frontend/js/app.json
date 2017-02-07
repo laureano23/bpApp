@@ -2,14 +2,11 @@
     "name": "MetApp",
 
     "requires": [
-<<<<<<< HEAD
     ],
-=======
     	"ext-locale"
     ],
     
     "locale": "es", 
->>>>>>> d1bd69930f0ff9cfab1724517f9b44631e258409
 
     "id": "de5fc562-d5a8-4254-a89b-4fd5cd54568f"
 }

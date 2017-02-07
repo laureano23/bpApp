@@ -285,6 +285,17 @@ Ext.define('MetApp.view.Principal.MyViewport', {
     			itemId: 'ordenDeCompra'
     		}
     	]
+
+        var menuRemitos = [
+            {
+                text: 'Cliente',
+                itemId: 'remitoCliente'
+            },
+            {
+                text: 'Proveedor',
+                itemId: 'remitoProveedor'
+            },
+        ]
     		    	
     	var me = this;    	
     	me.items = [
@@ -347,7 +358,7 @@ Ext.define('MetApp.view.Principal.MyViewport', {
         				menu: autz.getAuthorizedElements(menuRRHH)
         			},
         			{
-        				text: 'Ventas',
+        				text: 'Ventas',  
         				itemId: 'tbCCClientes'
         			},
         			{
@@ -362,6 +373,10 @@ Ext.define('MetApp.view.Principal.MyViewport', {
         				text: 'Compras',
         				menu: autz.getAuthorizedElements(menuCompras)
         			},
+                    {
+                        text: 'Remitos',
+                        menu: autz.getAuthorizedElements(menuRemitos)
+                    },
         			'->',   
         			{
         				xtype: 'button',
