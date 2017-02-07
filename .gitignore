@@ -17,4 +17,5 @@
 !app/logs/.gitkeep
 /build/
 /vendor/
+/bin/
 
