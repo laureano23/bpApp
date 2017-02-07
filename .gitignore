@@ -1,4 +1,14 @@
-/web/bundles/
+/web/bundles/*
+!/web/bundles/frontend/
+
+/web/bundles/frontend/*
+!/web/bundles/frontend/js/
+
+/web/bundles/frontend/js/*
+!/web/bundles/frontend/js/App/
+!/web/bundles/frontend/js/Resources/
+!/web/bundles/frontend/js/app.json
+!/web/bundles/frontend/js/build.xml
 /app/bootstrap.php.cache
 /app/cache/*
 /app/config/parameters.yml
