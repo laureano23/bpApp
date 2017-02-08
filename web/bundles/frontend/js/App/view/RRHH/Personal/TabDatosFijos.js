@@ -1,0 +1,105 @@
+Ext.define('MetApp.view.RRHH.Personal.TabDatosFijos', {
+	extend: 'Ext.form.Panel',
+	modal: true,	
+	width: 900,
+	height: 350,
+	layout: 'border',
+	border: false,
+	itemId: 'personalDatosFijos',
+	alias: 'widget.personalDatosFijos',	
+	autoShow: true,
+	defaults: {
+		border: false,
+		frame: false
+	},
+	items: [
+		{
+			xtype: 'form',
+			itemId: 'formDatosFijos',
+			region: 'center',
+			margins: '5 5 5 5',
+			frame: false,
+			border: false,
+			layout: 'vbox',
+			items: [
+				{
+					xtype: 'container',
+					frame: false,
+					layout: 'hbox',
+					items: [
+						{
+							xtype: 'numberfield',
+							itemId: 'idDatosFijos',
+							name: 'idDatosFijos',
+							fieldLabel: 'Id',
+							hidden: true
+						},
+						{
+							xtype: 'textfield',
+							disabled: true,
+							disabledCls: 'myDisabledClass',
+							name: 'descripcionConcepto',
+							itemId: 'descripcionConcepto',
+							fieldLabel: 'Concepto',
+							width: 300
+						},
+						{
+							xtype: 'button',
+							itemId: 'btnSearchConcepto',
+							iconCls: 'search',
+							disabled: true,
+							margins: '0 0 5 5'
+						}	
+					]
+				},
+				{
+					xtype: 'numberfield',
+					name: 'cantDatosFijos',
+					itemId: 'cantDatosFijos',
+					fieldLabel: 'Importe/Cant',
+					disabled: true,
+					disabledCls: 'myDisabledClass'
+				},
+				{
+					xtype: 'grid',
+					border: false,
+					frame: false,
+					itemId: 'gridDatosFijos',
+					store: 'MetApp.store.Personal.PersonalDatosFijosStore',
+					width: 450,
+					layout: 'fit',
+					columns: [
+						{ 
+							text: 'Codigo',
+							dataIndex: 'datosFijos',
+							width: 75,
+							renderer: function(val){ 
+								return val.codigo;
+							}
+						},
+						{ 
+							text: 'Concepto',
+							dataIndex: 'datosFijos',
+							width: 300,
+							renderer: function(val){
+								return val.descripcion;
+							}
+						},
+						{ 
+							text: 'Importe',
+							xtype: 'numbercolumn',
+							format: '0.000,00',
+							dataIndex: 'datosFijos',
+							width: 75,
+							renderer: function(val){
+								return val.importe;
+							}
+						}
+					]
+				}								
+			]
+		}	
+	]
+		
+	
+});

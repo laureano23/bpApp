@@ -149,6 +149,34 @@ class PedidoClientesController extends Controller
 
         return $response;
 	}
+
+	public function pedidosArticuloClienteAction()
+	{
+		$req = $this->getRequest();		
+		$codigo = $req->request->get('codigo');
+		$idCliente = $req->request->get('idCliente');
+		$response = new Response;
+
+		$em = $this->getDoctrine()->getManager();
+		$repo = $em->getRepository('MbpProduccionBundle:PedidoClientes');
+
+		try{
+			$res = $repo->pedidosPorArticuloCliente($codigo, $idCliente);	
+
+			$response->setContent(json_encode($res));
+
+		}catch(\Exception $e){
+			$res = array('success' => false, 'msg' => $e->getMessage());
+
+			$response->setContent(json_encode($res));
+			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+
+			return $response;
+		}
+
+		return $response;
+		
+	}
 }
 
 
