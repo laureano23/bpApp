@@ -16,6 +16,7 @@ Ext.define('MetApp.view.Articulos.Stock.Remitos.RemitoClienteView' ,{
 				name: 'cliente',
 				itemId: 'idCliente',				
 				readOnly: true,
+				allowBlank: false,
 				hidden: true,
 				width: 150,
 				fieldLabel: 'IdCliente:'
@@ -25,6 +26,7 @@ Ext.define('MetApp.view.Articulos.Stock.Remitos.RemitoClienteView' ,{
 				name: 'rsocial',
 				itemId: 'cliente',				
 				readOnly: true,
+				allowBlank: false,
 				width: 600,
 				fieldLabel: 'Cliente:'
 			},
@@ -81,6 +83,7 @@ Ext.define('MetApp.view.Articulos.Stock.Remitos.RemitoClienteView' ,{
 			{
 				xtype: 'textfield',
 				name: 'codigo',
+				allowBlank: false,
 				itemId: 'codigo',
 				readOnly: true,
 				width: 200,
@@ -111,6 +114,7 @@ Ext.define('MetApp.view.Articulos.Stock.Remitos.RemitoClienteView' ,{
 				xtype: 'numberfield',
 				name: 'cantidad',
 				itemId: 'cantidad',
+				allowBlank: false,
 				labelWidth: 55,
 				width: 150,
 				decimalSeparator: '.',
@@ -136,6 +140,7 @@ Ext.define('MetApp.view.Articulos.Stock.Remitos.RemitoClienteView' ,{
 			},
 			{
 				xtype: 'textfield',
+				readOnly: true,
 				name: 'pedidoNum',
 				itemId: 'pedidoNum',
 				fieldLabel: 'Pedido N°'
@@ -179,11 +184,13 @@ Ext.define('MetApp.view.Articulos.Stock.Remitos.RemitoClienteView' ,{
 					xtype: 'container',				
 					fieldDefaults: {
 						margins: '5 5 5 5',	
-						allowBlank: false
 					},					
 					items: [
 						{
 							xtype: 'container',
+							fieldDefaults: {
+								margins: '5 5 5 5',	
+							},	
 							border: false,
 							items: line1,
 							layout: 'hbox'
@@ -199,8 +206,7 @@ Ext.define('MetApp.view.Articulos.Stock.Remitos.RemitoClienteView' ,{
 						{
 							xtype: 'form',
 							fieldDefaults: {
-								margins: '5 5 5 5',	
-								allowBlank: false
+								margins: '5 5 5 5'
 							},	
 							border: false,
 							frame: false,
