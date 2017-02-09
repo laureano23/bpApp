@@ -23,38 +23,6 @@ class RemitosClientes
     private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="descripcion", type="string", length=255)
-     */
-    private $descripcion;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="cantidad", type="decimal", precision=9, scale=2)
-     * @Assert\Range(
-     *      min = 0.01,
-     *      max = 1000000
-     * )
-     */
-    private $cantidad;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="unidad", type="string", length=50)
-     */
-    private $unidad;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="oc", type="string", length=100)
-     */
-    private $oc;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="fecha", type="datetime")
@@ -78,14 +46,14 @@ class RemitosClientes
     private $clienteId;
 
     /**
-     * @var \Mbp\ArticulosBundle\Entity\Articulo
-     *
-     * @ORM\ManyToOne(targetEntity="Mbp\ArticulosBundle\Entity\Articulos")
-     * @ORM\JoinColumn(name="articuloId", referencedColumnName="idArticulos", nullable=true)    
-     */
-    private $articuloId;
-
-
+     * @var \Mbp\ArticulosBundle\Entity\RemitosClientesDetalles
+     * 
+     * @ORM\ManyToMany(targetEntity="Mbp\ArticulosBundle\Entity\RemitosClientesDetalles", cascade={"persist"})
+     * @ORM\JoinTable(name="RemitoClientes_detalle")
+     *      joinColumns={@ORM\JoinColumn(name="idRemito", referencedColumnName="id")},
+     *      inverseJoinConlumns={@ORM\JoinColumn(name="idDetalleRemito", referencedColumnName="id", unique=true)}
+     */ 
+    private $detalleRemito;
 
     /**
      * Get id
@@ -95,102 +63,6 @@ class RemitosClientes
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set descripcion
-     *
-     * @param string $descripcion
-     *
-     * @return RemitosClientes
-     */
-    public function setDescripcion($descripcion)
-    {
-        $this->descripcion = $descripcion;
-
-        return $this;
-    }
-
-    /**
-     * Get descripcion
-     *
-     * @return string
-     */
-    public function getDescripcion()
-    {
-        return $this->descripcion;
-    }
-
-    /**
-     * Set cantidad
-     *
-     * @param string $cantidad
-     *
-     * @return RemitosClientes
-     */
-    public function setCantidad($cantidad)
-    {
-        $this->cantidad = $cantidad;
-
-        return $this;
-    }
-
-    /**
-     * Get cantidad
-     *
-     * @return string
-     */
-    public function getCantidad()
-    {
-        return $this->cantidad;
-    }
-
-    /**
-     * Set unidad
-     *
-     * @param string $unidad
-     *
-     * @return RemitosClientes
-     */
-    public function setUnidad($unidad)
-    {
-        $this->unidad = $unidad;
-
-        return $this;
-    }
-
-    /**
-     * Get unidad
-     *
-     * @return string
-     */
-    public function getUnidad()
-    {
-        return $this->unidad;
-    }
-
-    /**
-     * Set oc
-     *
-     * @param string $oc
-     *
-     * @return RemitosClientes
-     */
-    public function setOc($oc)
-    {
-        $this->oc = $oc;
-
-        return $this;
-    }
-
-    /**
-     * Get oc
-     *
-     * @return string
-     */
-    public function getOc()
-    {
-        return $this->oc;
     }
 
     /**
@@ -265,27 +137,46 @@ class RemitosClientes
         return $this->clienteId;
     }
 
+
     /**
-     * Set articuloId
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->detalleRemito = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add detalleRemito
      *
-     * @param \Mbp\ArticulosBundle\Entity\Articulos $articuloId
+     * @param \Mbp\ArticulosBundle\Entity\RemitosClientesDetalles $detalleRemito
      *
      * @return RemitosClientes
      */
-    public function setArticuloId(\Mbp\ArticulosBundle\Entity\Articulos $articuloId = null)
+    public function addDetalleRemito(\Mbp\ArticulosBundle\Entity\RemitosClientesDetalles $detalleRemito)
     {
-        $this->articuloId = $articuloId;
+        $this->detalleRemito[] = $detalleRemito;
 
         return $this;
     }
 
     /**
-     * Get articuloId
+     * Remove detalleRemito
      *
-     * @return \Mbp\ArticulosBundle\Entity\Articulos
+     * @param \Mbp\ArticulosBundle\Entity\RemitosClientesDetalles $detalleRemito
      */
-    public function getArticuloId()
+    public function removeDetalleRemito(\Mbp\ArticulosBundle\Entity\RemitosClientesDetalles $detalleRemito)
     {
-        return $this->articuloId;
+        $this->detalleRemito->removeElement($detalleRemito);
+    }
+
+    /**
+     * Get detalleRemito
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDetalleRemito()
+    {
+        return $this->detalleRemito;
     }
 }

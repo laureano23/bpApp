@@ -4,7 +4,7 @@ namespace Mbp\ArticulosBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Formulas
+ * Formulas 
  * @ORM\Entity(repositoryClass="Mbp\ArticulosBundle\Entity\FormulasRepository")
  */
 class Formulas

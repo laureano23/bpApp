@@ -100,7 +100,7 @@ class Articulos
      */
     private $precio=0;
 
-    /**
+    /** 
      * @var integer
      *
      * @ORM\Column(name="idArticulos", type="integer")
@@ -124,6 +124,13 @@ class Articulos
      * @ORM\JoinColumn(name="subFamiliaId", referencedColumnName="id", unique=false)	 
      */
     private $subFamiliaId;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="stock", type="decimal", precision=11, scale=2, nullable=false)
+     */
+    private $stock=0;
 
 
     /**
@@ -370,5 +377,29 @@ class Articulos
     public function getIva()
     {
         return $this->iva;
+    }
+
+    /**
+     * Set stock
+     *
+     * @param string $stock
+     *
+     * @return Articulos
+     */
+    public function setStock($stock)
+    {
+        $this->stock = $stock;
+
+        return $this;
+    }
+
+    /**
+     * Get stock
+     *
+     * @return string
+     */
+    public function getStock()
+    {
+        return $this->stock;
     }
 }

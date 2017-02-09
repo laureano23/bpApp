@@ -156,7 +156,6 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 			data.push(rec.data);
 		});
 
-		console.log(data);
 		Ext.Ajax.request({
 			url: Routing.generate('mbp_articulos_generarRemitoCliente'),
 
@@ -165,9 +164,23 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 				clienteId: winRemito.queryById('idCliente').getValue()
 			},
 
-			success: function(resp){
-				console.log(resp);
-				var response = Ext.JSON.decode(resp.responseText);				
+			success: function(resp){			
+				store.removeAll();
+			},
+
+			failure: function(resp){				
+				var response = Ext.JSON.decode(resp.responseText);
+				if(!response.tipo) return;
+				var errors='';
+				for(var key in response.errors){
+					errors += key + ": " + response.errors[key];
+				}
+				Ext.Msg.show({		 			
+	    			title: 'Error al crear remito',
+	    			msg: errors,
+	    			buttons: Ext.Msg.OK,
+	    			icon: Ext.Msg.WARNING
+    			});
 			}
 		});
 	}
