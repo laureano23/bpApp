@@ -69,3 +69,7 @@ mbp_formulas_muestraReporte:
     defaults: { _controller: MbpArticulosBundle:Reportes:muestraReporteEstructura }
     options:
       expose: true
+
+mbp_articulos_remitoClientes:
+    resource: "@MbpArticulosBundle/Controller/RemitosController.php"
+    type:     annotation

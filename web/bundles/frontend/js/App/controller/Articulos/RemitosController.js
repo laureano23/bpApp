@@ -26,6 +26,12 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 			'RemitoClienteView button[itemId=insertarItem]': {
 				click: this.InsertarItem
 			},
+			'RemitoClienteView button[itemId=editarItem]': {
+				click: this.EditarItem
+			},
+			'RemitoClienteView button[itemId=borrarItem]': {
+				click: this.BorrarItem
+			},
 			'RemitoClienteView button[itemId=guardarRemito]': {
 				click: this.GuardarRemito
 			},
@@ -101,8 +107,6 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 		        	winRemito.queryById('pedidoNum').setValue(selection.data.pedidoNum);
 
 		        	winPendientes.close();
-
-		        	console.log(selection);
 		        });
         	}
         });     
@@ -114,14 +118,58 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 		var form = winRemito.down('form');
 		var values = form.getForm().getValues();
 
-		grid.getStore().add(values);
-
-		form.getForm().reset();
+		if(form.isValid()){
+			grid.getStore().add(values);
+			form.getForm().reset();
+		}	
 
 	},
 
-	GuardarRemito: function(btn){
+	EditarItem: function(btn)
+	{
+		var winRemito = btn.up('window');
+		var grid = winRemito.down('grid');
+		var form = winRemito.down('form');
+		var selection = grid.getSelectionModel().getSelection();
+		selection = selection[0];
+		
+		form.loadRecord(selection);
+		grid.getStore().remove(selection);
+	},
 
+	BorrarItem: function(btn){
+		var winRemito = btn.up('window');
+		var grid = winRemito.down('grid');
+		var selection = grid.getSelectionModel().getSelection();
+		selection = selection[0];
+
+		grid.getStore().remove(selection);
+	},
+
+	GuardarRemito: function(btn){
+		var winRemito = btn.up('window');
+		var grid = winRemito.down('grid');
+		var store = grid.getStore();
+		var data = [];
+
+		store.each(function(rec){
+			data.push(rec.data);
+		});
+
+		console.log(data);
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_articulos_generarRemitoCliente'),
+
+			params: {
+				items: Ext.JSON.encode(data),
+				clienteId: winRemito.queryById('idCliente').getValue()
+			},
+
+			success: function(resp){
+				console.log(resp);
+				var response = Ext.JSON.decode(resp.responseText);				
+			}
+		});
 	}
 });
 
