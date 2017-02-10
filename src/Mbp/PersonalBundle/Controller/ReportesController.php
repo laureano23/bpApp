@@ -490,6 +490,118 @@ class ReportesController extends Controller
 
         return $response;
 	}
+
+	/**
+     * @Route("/crearResumenLiquidaciones", name="mbp_personal_crearResumenLiquidaciones", options={"expose"=true})
+     */ 
+	public function crearResumenLiquidacionesAction()
+	{
+		$em = $this->getDoctrine()->getManager();
+		$req = $this->getRequest();
+		$repo = $em->getRepository('MbpPersonalBundle:Recibos');
+		
+		/*
+		 * PARAMETROS
+		 */
+		$mes = $req->request->get('mes');
+		$anio = $req->request->get('anio');
+		
+		$reporteador = $this->get('reporteador');
+		$kernel = $this->get('kernel');
+		
+		/*
+		 * Configuro reporte
+		 */
+		$jru = $reporteador->jru();
+		
+		/*
+		 * Ruta archivo Jasper
+		 */				
+				
+		$ruta = $kernel->locateResource('@MbpPersonalBundle/Reportes/ResumenDepositos.jrxml');
+		
+		/*
+		 * Ruta de destino del PDF
+		 */
+		$destino = $kernel->locateResource('@MbpPersonalBundle/Resources/public/pdf/').'ResumenDepositos.pdf';
+				
+		//Parametros HashMap
+		$param = $reporteador->getJava('java.util.HashMap');
+		$param->put('mes', (int)$mes);
+		$param->put('anio', (int)$anio);
+		
+		$conn = $reporteador->getJdbc();
+
+		$sql = "
+			SELECT
+		     Personal.`idP` AS Personal_idP,
+		     Personal.`nombre` AS Personal_nombre,
+		     Recibos.`id` AS Recibos_id,
+		     Recibos.`compensatorio` AS Recibos_compensatorio,
+		     Recibos.`periodo` AS Recibos_periodo,
+		     Recibos.`mes` AS Recibos_mes,
+		     Recibos.`anio` AS Recibos_anio,
+		     recibo_detallesRecibos.`recibo_id` AS recibo_detallesRecibos_recibo_id,
+		     recibo_detallesRecibos.`recibosdetalle_id` AS recibo_detallesRecibos_recibosdetalle_id,
+		     RecibosPersonal.`recibos_id` AS RecibosPersonal_recibos_id,
+		     RecibosPersonal.`personal_id` AS RecibosPersonal_personal_id,
+		     RecibosDetalle.`id` AS RecibosDetalle_id,
+		     RecibosDetalle.`cantConceptoVar` AS RecibosDetalle_cantConceptoVar,
+		     RecibosDetalle.`valorConceptoHist` AS RecibosDetalle_valorConceptoHist,
+		     RecibosDetalle.`remunerativo` AS RecibosDetalle_remunerativo,
+		     RecibosDetalle.`exento` AS RecibosDetalle_exento,
+		     RecibosDetalle.`descuento` AS RecibosDetalle_descuento,
+		     SUM(CASE WHEN  Recibos.`periodo` = 1 AND Recibos.`compensatorio` = 0 THEN RecibosDetalle.`remunerativo` + RecibosDetalle.`exento` - RecibosDetalle.`descuento` ELSE 0 END) AS totalQuincena1B,
+		     SUM(CASE WHEN  Recibos.`periodo` = 1 AND Recibos.`compensatorio` = 1 THEN RecibosDetalle.`remunerativo` + RecibosDetalle.`exento` - RecibosDetalle.`descuento` ELSE 0 END) AS totalQuincena1N,
+		     SUM(CASE WHEN  Recibos.`periodo` = 2 AND Recibos.`compensatorio` = 0 THEN RecibosDetalle.`remunerativo` + RecibosDetalle.`exento` - RecibosDetalle.`descuento` ELSE 0 END) AS totalquincena2B,
+		     SUM(CASE WHEN  Recibos.`periodo` = 2 AND Recibos.`compensatorio` = 1 THEN RecibosDetalle.`remunerativo` + RecibosDetalle.`exento` - RecibosDetalle.`descuento` ELSE 0 END) AS totalQuincena2N,
+		     SUM(CASE WHEN  Recibos.`periodo` = 3 AND Recibos.`compensatorio` = 0 THEN RecibosDetalle.`remunerativo` + RecibosDetalle.`exento` - RecibosDetalle.`descuento` ELSE 0 END) AS mensualesB,
+		     SUM(CASE WHEN  Recibos.`periodo` = 3 AND Recibos.`compensatorio` = 1 THEN RecibosDetalle.`remunerativo` + RecibosDetalle.`exento` - RecibosDetalle.`descuento` ELSE 0 END) AS mensualesN,
+		     SUM(CASE WHEN  Recibos.`periodo` = 4 AND Recibos.`compensatorio` = 0 THEN RecibosDetalle.`remunerativo` + RecibosDetalle.`exento` - RecibosDetalle.`descuento` ELSE 0 END) AS vacacionesB,
+		     SUM(CASE WHEN  Recibos.`periodo` = 4 AND Recibos.`compensatorio` = 1 THEN RecibosDetalle.`remunerativo` + RecibosDetalle.`exento` - RecibosDetalle.`descuento` ELSE 0 END) AS vacacionesN,
+		     SUM(CASE WHEN  Recibos.`periodo` = 5 AND Recibos.`compensatorio` = 0 THEN RecibosDetalle.`remunerativo` + RecibosDetalle.`exento` - RecibosDetalle.`descuento` ELSE 0 END) AS SAC_B,
+		     SUM(CASE WHEN  Recibos.`periodo` = 5 AND Recibos.`compensatorio` = 1 THEN RecibosDetalle.`remunerativo` + RecibosDetalle.`exento` - RecibosDetalle.`descuento` ELSE 0 END) AS SAC_N,
+		     SUM(CASE WHEN  Recibos.`periodo` = 6 AND Recibos.`compensatorio` = 0 THEN RecibosDetalle.`remunerativo` + RecibosDetalle.`exento` - RecibosDetalle.`descuento` ELSE 0 END) AS variosPrimerQuincenaB,
+		     SUM(CASE WHEN  Recibos.`periodo` = 6 AND Recibos.`compensatorio` = 1 THEN RecibosDetalle.`remunerativo` + RecibosDetalle.`exento` - RecibosDetalle.`descuento` ELSE 0 END) AS variosPrimerQuincenaN,
+		     SUM(CASE WHEN  Recibos.`periodo` = 7 AND Recibos.`compensatorio` = 0 THEN RecibosDetalle.`remunerativo` + RecibosDetalle.`exento` - RecibosDetalle.`descuento` ELSE 0 END) AS variosSegundaQuincenaB,
+		     SUM(CASE WHEN  Recibos.`periodo` = 7 AND Recibos.`compensatorio` = 1 THEN RecibosDetalle.`remunerativo` + RecibosDetalle.`exento` - RecibosDetalle.`descuento` ELSE 0 END) AS variosSegundaQuincenaN
+			FROM
+			     `Recibos` Recibos INNER JOIN `recibo_detallesRecibos` recibo_detallesRecibos ON Recibos.`id` = recibo_detallesRecibos.`recibo_id`
+			     INNER JOIN `RecibosPersonal` RecibosPersonal ON Recibos.`id` = RecibosPersonal.`recibos_id`
+			     INNER JOIN `Personal` Personal ON RecibosPersonal.`personal_id` = Personal.`idP`
+			     INNER JOIN `RecibosDetalle` RecibosDetalle ON recibo_detallesRecibos.`recibosdetalle_id` = RecibosDetalle.`id`
+			WHERE Recibos.`mes` = $mes
+			AND Recibos.`anio` = $anio
+			GROUP BY Personal.`idP`
+		";
+
+		$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
+
+		return new Response(json_encode(array(
+				'success' => true
+			))
+		);
+	}
+
+	/**
+     * @Route("/resumenLiquidacionesPdf", name="mbp_personal_resumenLiquidacionesPdf", options={"expose"=true})
+     */ 
+	public function resumenLiquidacionesPdfAction()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpPersonalBundle/Resources/public/pdf/').'ResumenDepositos.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'ResumenDepositos.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+
+        return $response;
+	}
 }
 
 

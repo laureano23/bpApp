@@ -6,7 +6,8 @@ Ext.define('MetApp.controller.RRHH.RecibosController', {
 		'MetApp.view.RRHH.ConceptosWinSearch',
 		'MetApp.view.RRHH.Reportes.ReporteLibroSueldos',
 		'MetApp.view.RRHH.Reportes.ReporteResumenAguinaldo',
-		'MetApp.view.RRHH.TablaReliquidacion'
+		'MetApp.view.RRHH.TablaReliquidacion',
+		'RRHH.Reportes.ReporteResumenLiquidaciones'
 	],
 	
 	refs: [
@@ -72,6 +73,12 @@ Ext.define('MetApp.controller.RRHH.RecibosController', {
 			'ReporteResumenAguinaldo button[itemId=imprimir]': {
 				click: this.ImprimeResumenAguinaldo
 			},
+			'#reporteResumenLiquidaciones': {
+				click: this.WinReporteResumenLiquidaciones
+			},	
+			'ReporteResumenLiquidaciones button[itemId=imprimir]': {
+				click: this.ImprimeResumenLiquidaciones
+			},		
 			'#tablaReliquidarPeriodo': {
 				click: this.WinReliquidarPeriodo
 			},
@@ -592,6 +599,44 @@ Ext.define('MetApp.controller.RRHH.RecibosController', {
 	
 	WinReporteResumenAguinaldo: function(btn){
 		Ext.widget('ReporteResumenAguinaldo');
+	},
+
+	WinReporteResumenLiquidaciones: function(btn){
+		Ext.widget('ReporteResumenLiquidaciones');
+	},
+
+	ImprimeResumenLiquidaciones: function(btn){
+		var win = btn.up('window');
+		var form = win.down('form');
+		var values = form.getValues();
+		
+		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
+		myMask.show();
+		
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_personal_crearResumenLiquidaciones'),
+			
+			params: values,
+			
+			success: function(resp){
+				var ruta = Routing.generate('mbp_personal_resumenLiquidacionesPdf');
+		        var WinReporte=Ext.create('Ext.Window', {
+					  title: 'Libro de sueldos',
+					  width: 900,
+					  height: 600,
+					  layout: 'fit',
+					  modal:true,										
+					  html: '<iframe src='+ruta+' width="100%" height="100%"></iframe>'						  
+				 });
+				
+				WinReporte.show();
+				myMask.hide();
+			},
+
+			failure: function(resp){
+				myMask.hide();
+			}
+		});
 	},
 	
 	WinReliquidarPeriodo: function(btn){

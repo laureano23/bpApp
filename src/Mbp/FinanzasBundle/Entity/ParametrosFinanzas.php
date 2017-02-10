@@ -49,6 +49,13 @@ class ParametrosFinanzas
     private $provincia;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="remitoNum", type="integer")
+     */
+    private $remitoNum;
+
+    /**
      * Get id
      *
      * @return integer
@@ -152,5 +159,29 @@ class ParametrosFinanzas
     public function getProvincia()
     {
         return $this->provincia;
+    }
+
+    /**
+     * Set remitoNum
+     *
+     * @param string $remitoNum
+     *
+     * @return ParametrosFinanzas
+     */
+    public function setRemitoNum($remitoNum)
+    {
+        $this->remitoNum = $remitoNum;
+
+        return $this;
+    }
+
+    /**
+     * Get remitoNum
+     *
+     * @return string
+     */
+    public function getRemitoNum()
+    {
+        return $this->remitoNum;
     }
 }

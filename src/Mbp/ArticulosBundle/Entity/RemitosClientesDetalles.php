@@ -43,7 +43,7 @@ class RemitosClientesDetalles
     /**
      * @var string
      *
-     * @ORM\Column(name="unidad", type="string", length=50)
+     * @ORM\Column(name="unidad", type="string", length=50) 
      */
     private $unidad;
 
@@ -61,6 +61,14 @@ class RemitosClientesDetalles
      * @ORM\JoinColumn(name="articuloId", referencedColumnName="idArticulos", nullable=true)    
      */
     private $articuloId;
+
+    /**
+     * @var \Mbp\ProduccionBundle\Entity\PedidoClientes
+     *
+     * @ORM\ManyToOne(targetEntity="Mbp\ProduccionBundle\Entity\PedidoClientes")
+     * @ORM\JoinColumn(name="pedidoId", referencedColumnName="id", nullable=true)    
+     */
+    private $pedidoId;
 
 
     /**
@@ -191,5 +199,29 @@ class RemitosClientesDetalles
     public function getArticuloId()
     {
         return $this->articuloId;
+    }
+
+    /**
+     * Set pedidoId
+     *
+     * @param \Mbp\ProduccionBundle\Entity\PedidoClientes $pedidoId
+     *
+     * @return RemitosClientesDetalles
+     */
+    public function setPedidoId(\Mbp\ProduccionBundle\Entity\PedidoClientes $pedidoId = null)
+    {
+        $this->pedidoId = $pedidoId;
+
+        return $this;
+    }
+
+    /**
+     * Get pedidoId
+     *
+     * @return \Mbp\ProduccionBundle\Entity\PedidoClientes
+     */
+    public function getPedidoId()
+    {
+        return $this->pedidoId;
     }
 }

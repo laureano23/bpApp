@@ -267,7 +267,11 @@ Ext.define('MetApp.view.Principal.MyViewport', {
     				{
     					text: 'Resumen aguinaldo',
     					itemId: 'reporteResumenAguinaldo'
-    				}
+    				},
+                    {
+                        text: 'Resumen liquidaciones',
+                        itemId: 'reporteResumenLiquidaciones'
+                    }
     			]
     		},
     	]

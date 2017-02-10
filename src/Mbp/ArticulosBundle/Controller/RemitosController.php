@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Mbp\ArticulosBundle\Entity\RemitosClientes;
 use Mbp\ArticulosBundle\Entity\RemitosClientesDetalles;
+use Mbp\FinanzasBundle\Entity\ParametrosFinanzas;
+use Mbp\ProduccionBundle\Entity\PedidoClientes;
 
 class RemitosController extends Controller
 {
@@ -21,6 +23,8 @@ class RemitosController extends Controller
         $repo = $em->getRepository('MbpArticulosBundle:RemitosClientes');
         $repoClientes = $em->getRepository('MbpClientesBundle:Cliente');
         $repoArticulos = $em->getRepository('MbpArticulosBundle:Articulos');
+        $repoParametros = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
+        $repoPedidos = $em->getRepository('MbpProduccionBundle:PedidoClientes');
         $validador = $this->get('validator');	//VALIDADOR DE ENTIDADES SERVICIO
         $response = new Response;        
 
@@ -30,11 +34,12 @@ class RemitosController extends Controller
 			$errors = array();
 			
 			$cliente = $repoClientes->findById($idCliente);
+			$param = $repoParametros->find(1);
 
 
 			$remito = new RemitosClientes;
 			$remito->setFecha(new \DateTime);
-			$remito->setRemitoNum(1);
+			$remito->setRemitoNum($param->getRemitoNum());
 			$remito->setClienteId($cliente[0]);
 
 			
@@ -45,6 +50,11 @@ class RemitosController extends Controller
 				$remitoDetalle->setCantidad($item->cantidad);
 				$remitoDetalle->setUnidad($item->unidad);
 				$remitoDetalle->setOc($item->oc);
+
+				if($item->pedidoNum != ""){
+					$remitoDetalle->setPedidoId($repoPedidos->find($item->pedidoNum);
+				}
+				
 
 				$articulo = $repoArticulos->findByCodigo($item->codigo);
 				$remitoDetalle->setArticuloId($articulo[0]);
@@ -70,10 +80,14 @@ class RemitosController extends Controller
 				}
 			
 				$em->persist($remito);
-				$em->flush();				
-				$response->setContent(json_encode(array('success' => true)));
-				return $response;				
-			}//EOF FOREACH ITEM
+				//SE EJECUTA UN LISTENER PARA DESCONTAR STOCK DE CADA ITEM				
+			}//EOF FOREACH ITEM				
+
+			$em->flush();
+
+			$response->setContent(json_encode(array('success' => true)));
+			return $response;				
+			
         }catch(\Exception $e){
         	$response->setContent(json_encode(array('success' => false, 'msg' => $e->getMessage())));
         	$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);

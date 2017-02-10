@@ -5,3 +5,7 @@ services:
   articulos_class_formulas:
         class: Mbp\ArticulosBundle\Clases\FormulasClass
         arguments: [idNodoFormula, idNodoFormulado, idArt, cantidad, @doctrine.orm.entity_manager]
+  remitoClientes.listener:
+        class: Mbp\ArticulosBundle\Listener\RemitoClientesListener
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }

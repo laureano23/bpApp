@@ -58,6 +58,13 @@ class PedidoClientes
      */
     private $oc;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="inactivo", type="boolean")
+     */ 
+    private $inactivo=0;
+
 
     /**
      * Get id
@@ -186,5 +193,28 @@ class PedidoClientes
     {
         return $this->oc;
     }
-}
 
+    /**
+     * Set inactivo
+     *
+     * @param boolean $inactivo
+     *
+     * @return PedidoClientes
+     */
+    public function setInactivo($inactivo)
+    {
+        $this->inactivo = $inactivo;
+
+        return $this;
+    }
+
+    /**
+     * Get inactivo
+     *
+     * @return boolean
+     */
+    public function getInactivo()
+    {
+        return $this->inactivo;
+    }
+}
