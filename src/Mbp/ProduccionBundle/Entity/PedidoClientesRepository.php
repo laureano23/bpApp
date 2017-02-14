@@ -1,9 +1,6 @@
 <?php
 namespace Mbp\ProduccionBundle\Entity;
 
-use Mbp\ProduccionBundle\Entity\PedidoClientes;
-
-
 /**
  * PedidoClientesRepository
  *
@@ -12,56 +9,13 @@ use Mbp\ProduccionBundle\Entity\PedidoClientes;
  */
 class PedidoClientesRepository extends \Doctrine\ORM\EntityRepository
 {
-	//CARGA UN ARRAY DE ARTICULOS
-	public function cargaPedidos($values)
-	{
-		try{
-			$em = $this->getEntityManager();
-						
-			//BUSCO EL CLIENTE
-			$clienteRepo = $em->getRepository('MbpClientesBundle:Cliente');
-			$idCliente = $clienteRepo->findOneById($values[0]->cliente);
-			
-			foreach ($values as $val) {
-				$pedido = new PedidoClientes();
-								
-				//BUSCO EL CODIGO
-				$articulosRepo = $em->getRepository('MbpArticulosBundle:Articulos');
-				$codigoArticulo = $articulosRepo->findOneByCodigo($val->codigo);				
-				
-				//OBJETO FECHA				
-				$date = new \DateTime;
-				$date = $date->createFromFormat('d/m/Y', $val->fechaProgramacion); //FECHA TIPO 01/02/2015
-				
-				$pedido->setCodigo($codigoArticulo);
-				$pedido->setCantidad($val->cantidad);
-				$pedido->setFechaProg($date);
-				$pedido->setOc($val->oc);
-				$pedido->setCliente($idCliente);
-				
-				$em->persist($pedido);
-				$em->flush();
-			}
-			echo json_encode(array(
-					'success' => true,
-					'msg' => 'El pedido se cargó exitosamente'
-				));
-			
-		}catch(\Doctrine\ORM\ORMException $e){
-			$this->get('logger')->error($e->getMessage());
-			echo json_encode(array(
-				'success' => false,
-				'msg' => $e->getMessage()
-			));
-		}
-	}
 	
 	public function listarPedidos()
 	{
 		try{
 			$em = $this->getEntityManager();
 			$repo = $em->getRepository('MbpProduccionBundle:PedidoClientes');
-			$res = $repo->findAll();
+			$res = $repo->findByInactivo(0);
 			$info = array();
 			
 			for($i=0; $i<count($res); $i++){				
@@ -89,10 +43,12 @@ class PedidoClientesRepository extends \Doctrine\ORM\EntityRepository
 		$repo = $em->getRepository('MbpProduccionBundle:PedidoClientes');
 
 		$qb = $repo->createQueryBuilder('p')
-			->select('p.oc, p.id as pedidoNum, art.codigo')
-			->join('p.codigo', 'art')
+			->select('p.oc, p.id as pedidoNum, art.codigo, det.entregado, det.cantidad, (det.cantidad - det.entregado) AS pendiente')
+			->join('p.detalleId', 'det')
+			->join('det.codigo', 'art')
 			->where('art.codigo = :cod')
 			->andWhere('p.cliente = :cliente')
+			->andWhere('det.inactivo = 0')
 			->setParameter('cliente' , $idCliente)
 			->setParameter('cod' , $codigo)
 			->getQuery()

@@ -29,9 +29,15 @@ Ext.define('MetApp.view.Articulos.Stock.Remitos.ArticulosOrdenCompraView' ,{
 					            root: 'data'
 					        }
 					    },
-					    fields: ['codigo', 'oc', 'pedidoNum']
+					    fields: ['codigo', 'oc', 'pedidoNum', 'cantidad', 'entregado', 'pendiente']
 					},					
 					columns: [
+						{
+				            text:'Pedido',
+				            dataIndex:'pedidoNum',				            
+				            text: 'pedido N°',
+				            flex: true,
+				        },
 						{ 
 							text: 'Codigo',
 							dataIndex: 'codigo',
@@ -42,12 +48,21 @@ Ext.define('MetApp.view.Articulos.Stock.Remitos.ArticulosOrdenCompraView' ,{
 							dataIndex: 'oc',
 							flex: true,
 						},
-				        {
-				            text:'Pedido',
-				            dataIndex:'pedidoNum',				            
-				            text: 'pedido N°',
-				            flex: true,
-				        }
+				        { 
+							text: 'Cant.',
+							dataIndex: 'cantidad',
+							flex: true,
+						},
+						{ 
+							text: 'Entregado',
+							dataIndex: 'entregado',
+							flex: true,
+						},
+						{ 
+							text: 'Pendiente',
+							dataIndex: 'pendiente',
+							flex: true,
+						},
 					]
 				},
 				{

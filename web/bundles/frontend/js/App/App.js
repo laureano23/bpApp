@@ -45,7 +45,8 @@ Ext.application({
 		'Articulos.SubFamiliaController',
 		'Compras.OrdenDeCompraController',
 		'Articulos.ListaDePreciosController',
-		'Articulos.RemitosController'
+		'Articulos.RemitosController',
+		'Security.UserParamsController'
 	],
 	name: 'MetApp',
 	appFolder: '../bundles/frontend/js/App',

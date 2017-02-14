@@ -52,7 +52,7 @@ class RemitosController extends Controller
 				$remitoDetalle->setOc($item->oc);
 
 				if($item->pedidoNum != ""){
-					$remitoDetalle->setPedidoId($repoPedidos->find($item->pedidoNum);
+					$remitoDetalle->setPedidoId($repoPedidos->find($item->pedidoNum));
 				}
 				
 

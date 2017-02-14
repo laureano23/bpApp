@@ -13,6 +13,7 @@ Ext.define('MetApp.view.Articulos.Stock.Remitos.RemitoClienteView' ,{
 		var line1 = [
 			{
 				xtype: 'numberfield',
+				margins: '5 5 5 5',
 				name: 'cliente',
 				itemId: 'idCliente',				
 				readOnly: true,
@@ -23,6 +24,7 @@ Ext.define('MetApp.view.Articulos.Stock.Remitos.RemitoClienteView' ,{
 			},
 			{
 				xtype: 'textfield',
+				margins: '5 5 5 5',
 				name: 'rsocial',
 				itemId: 'cliente',				
 				readOnly: true,

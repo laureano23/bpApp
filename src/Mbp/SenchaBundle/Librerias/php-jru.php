@@ -164,8 +164,7 @@ class JRU  {
 		} catch (JavaException $ex) {
   			$trace = new Java('java.io.ByteArrayOutputStream');
 			$ex->printStackTrace(new Java('java.io.PrintStream', $trace));
-			print nl2br("java stack trace : $trace\n");
-			return false;
+			throw $ex;	
 		}
 	}
 	
@@ -195,8 +194,7 @@ class JRU  {
 		} catch (JavaException $ex) {
   			$trace = new Java('java.io.ByteArrayOutputStream');
 			$ex->printStackTrace(new Java('java.io.PrintStream', $trace));
-			print nl2br("java stack trace : $trace\n");
-			return false;
+			throw $ex;	
 		}
 	}
 	
@@ -249,8 +247,7 @@ class JRU  {
 		} catch (JavaException $ex) {
   			$trace = new Java('java.io.ByteArrayOutputStream');
 			$ex->printStackTrace(new Java('java.io.PrintStream', $trace));
-			print nl2br("java stack trace: $trace\n");
-			return false;
+			throw $ex;			
 		}		
 	}
 	
@@ -290,8 +287,7 @@ class JRU  {
 		} catch (JavaException $ex) {
   			$trace = new Java('java.io.ByteArrayOutputStream');
 			$ex->printStackTrace(new Java('java.io.PrintStream', $trace));
-			print nl2br("java stack trace: $trace\n");
-			return false;
+			throw $ex;	
 		}
 	}
 
@@ -349,8 +345,7 @@ class JRU  {
 		} catch (JavaException $ex) {
   			$trace = new Java('java.io.ByteArrayOutputStream');
 			$ex->printStackTrace(new Java('java.io.PrintStream', $trace));
-			print nl2br("java stack trace: $trace\n");
-			return false;
+			throw $ex;	
 		}		
 	}  
 	
@@ -393,8 +388,7 @@ class JRU  {
 		} catch (JavaException $ex) {
   			$trace = new Java('java.io.ByteArrayOutputStream');
 			$ex->printStackTrace(new Java('java.io.PrintStream', $trace));
-			print nl2br("java stack trace: $trace\n");
-			return false;
+			throw $ex;	
 		}
 	}
 	
@@ -461,8 +455,7 @@ class JRU  {
 		} catch (JavaException $ex) {
   			$trace = new Java('java.io.ByteArrayOutputStream');
 			$ex->printStackTrace(new Java('java.io.PrintStream', $trace));
-			print nl2br("java stack trace: $trace\n");
-			return false;
+			throw $ex;	
 		}		
 	}
 	
@@ -519,8 +512,7 @@ class JRU  {
 		} catch (JavaException $ex) {
   			$trace = new Java('java.io.ByteArrayOutputStream');
 			$ex->printStackTrace(new Java('java.io.PrintStream', $trace));
-			print nl2br("java stack trace: $trace\n");
-			return false;
+			throw $ex;	
 		}		
 	}  
 
@@ -568,8 +560,7 @@ class JRU  {
 		} catch (JavaException $ex) {
   			$trace = new Java('java.io.ByteArrayOutputStream');
 			$ex->printStackTrace(new Java('java.io.PrintStream', $trace));
-			print nl2br("java stack trace: $trace\n");
-			return false;
+			throw $ex;	
 		}
 	}	
 }

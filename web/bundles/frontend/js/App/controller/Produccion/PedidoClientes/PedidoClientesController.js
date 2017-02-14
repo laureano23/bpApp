@@ -66,6 +66,7 @@ Ext.define('MetApp.controller.Produccion.PedidoClientes.PedidoClientesController
 		 
 		
 		store.clearFilter(true);
+		store.load();
 		var input = win.down('textfield');
 		input.focus('', 10); // Le damos un tiempo al metodo focus para que el form termine de renderizar
 		var button = win.down('button');
@@ -168,6 +169,7 @@ Ext.define('MetApp.controller.Produccion.PedidoClientes.PedidoClientesController
 	},
 	
 	GuardarPedido: function(btn){
+		var win = btn.up('window');
 		var form = btn.up('form');
 		var grid1 = form.down('grid');
 		var store = grid1.getStore();
@@ -192,7 +194,9 @@ Ext.define('MetApp.controller.Produccion.PedidoClientes.PedidoClientesController
 				url: Routing.generate('mbp_produccion_nuevo_pedido'),
 				
 				params: {
-					data: values
+					data: values,
+					cliente: win.queryById('idCliente').getValue(),
+					oc: win.queryById('oc').getValue()
 				},
 				
 				success: function(resp, opt){
@@ -255,6 +259,7 @@ Ext.define('MetApp.controller.Produccion.PedidoClientes.PedidoClientesController
 		btnAceptar = clientes.queryById('insertCliente');
 		
 		store.clearFilter(true);
+		store.load();
 		btnAceptar.on('click', function(){
 			var grid = btnAceptar.up('grid');
 			var selection = grid.getSelectionModel().getSelection()[0];	

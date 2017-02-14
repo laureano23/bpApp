@@ -55,6 +55,8 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 			winRemito.queryById('idCliente').setValue(selection.data.id);
 			winRemito.queryById('cliente').setValue(selection.data.rsocial);
 
+			winRemito.queryById('buscaArt').focus('', 20);
+
 			winClientes.close();
 		});
 	},

@@ -20,17 +20,9 @@ class PedidoClientes
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
-     * @var \Mbp\ArticulosBundle\Entity\Articulos
-     *
-     * @ORM\ManyToOne(targetEntity="Mbp\ArticulosBundle\Entity\Articulos")
-     * @ORM\JoinColumn(name="codigo", referencedColumnName="idArticulos")
-     */
-    private $codigo;
-	
+    	
 	/**
-     * @var \Mbp\ClientesBundle\Entity\Cliente
+     * @var \Mbp\ClientesBundle\Entity\Cliente 
      *
      * @ORM\ManyToOne(targetEntity="Mbp\ClientesBundle\Entity\Cliente")
      * @ORM\JoinColumn(name="cliente", referencedColumnName="idCliente")
@@ -38,18 +30,11 @@ class PedidoClientes
     private $cliente;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="cantidad", type="decimal")
-     */
-    private $cantidad;
-
-    /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fechaProg", type="date")
+     * @ORM\Column(name="fechaPedido", type="date")
      */
-    private $fechaProg;
+    private $fechaPedido;
 
     /**
      * @var string
@@ -65,6 +50,22 @@ class PedidoClientes
      */ 
     private $inactivo=0;
 
+    /**
+     * @var \Mbp\SecurityBundle\Entity\Users 
+     *
+     * @ORM\ManyToOne(targetEntity="Mbp\SecurityBundle\Entity\Users") 
+     * @ORM\JoinColumn(name="usuarioId", referencedColumnName="id", nullable=false)
+     */
+    private $usuarioId;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Mbp\ProduccionBundle\Entity\PedidoClientesDetalle", cascade={"persist"})
+     * @ORM\JoinTable(name="pedidoId_detalleId",
+     *      joinColumns={@ORM\JoinColumn(name="pedidoId", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="detalleId", referencedColumnName="id")}
+     * )
+     */
+    private $detalleId; 
 
     /**
      * Get id
@@ -73,101 +74,31 @@ class PedidoClientes
      */
     public function getId()
     {
-        return $this->id;
+        return $this->id; 
     }
 
     /**
-     * Set codigo
+     * Set fechaPedido
      *
-     * @param \Mbp\ArticulosBundle\Entity\Articulos $codigo
-     * @return PedidosClientes
-     */
-    public function setCodigo($codigo)
-    {
-        $this->codigo = $codigo;
-
-        return $this;
-    }
-
-    /**
-     * Get codigo
-     *
-     * @return \Mbp\ArticulosBundle\Entity\Articulos
-     */
-    public function getCodigo()
-    {
-        return $this->codigo;
-    }
-    
-    /**
-     * Set cliente
-     *
-     * @param \Mbp\ClientesBundle\Entity\Cliente $cliente
-     * @return PedidosClientes
-     */
-    public function setCliente($cliente)
-    {
-        $this->cliente = $cliente;
-
-        return $this;
-    }
-
-    /**
-     * Get cliente
-     *
-     * @return \Mbp\ClientesBundle\Entity\Cliente
-     */
-    public function getCliente()
-    {
-        return $this->cliente;
-    }
-
-    /**
-     * Set cantidad
-     *
-     * @param string $cantidad
+     * @param \DateTime $fechaPedido
      *
      * @return PedidoClientes
      */
-    public function setCantidad($cantidad)
+    public function setFechaPedido($fechaPedido)
     {
-        $this->cantidad = $cantidad;
+        $this->fechaPedido = $fechaPedido;
 
         return $this;
     }
 
     /**
-     * Get cantidad
-     *
-     * @return string
-     */
-    public function getCantidad()
-    {
-        return $this->cantidad;
-    }
-
-    /**
-     * Set fechaProg
-     *
-     * @param \DateTime $fechaProg
-     *
-     * @return PedidoClientes
-     */
-    public function setFechaProg($fechaProg)
-    {
-        $this->fechaProg = $fechaProg;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaProg
+     * Get fechaPedido
      *
      * @return \DateTime
      */
-    public function getFechaProg()
+    public function getFechaPedido()
     {
-        return $this->fechaProg;
+        return $this->fechaPedido;
     }
 
     /**
@@ -216,5 +147,94 @@ class PedidoClientes
     public function getInactivo()
     {
         return $this->inactivo;
+    }
+
+    /**
+     * Set cliente
+     *
+     * @param \Mbp\ClientesBundle\Entity\Cliente $cliente
+     *
+     * @return PedidoClientes
+     */
+    public function setCliente(\Mbp\ClientesBundle\Entity\Cliente $cliente = null)
+    {
+        $this->cliente = $cliente;
+
+        return $this;
+    }
+
+    /**
+     * Get cliente
+     *
+     * @return \Mbp\ClientesBundle\Entity\Cliente
+     */
+    public function getCliente()
+    {
+        return $this->cliente;
+    }
+
+    /**
+     * Set usuarioId
+     *
+     * @param \Mbp\SecurityBundle\Entity\Users $usuarioId
+     *
+     * @return PedidoClientes
+     */
+    public function setUsuarioId(\Mbp\SecurityBundle\Entity\Users $usuarioId)
+    {
+        $this->usuarioId = $usuarioId;
+
+        return $this;
+    }
+
+    /**
+     * Get usuarioId
+     *
+     * @return \Mbp\SecurityBundle\Entity\Users
+     */
+    public function getUsuarioId()
+    {
+        return $this->usuarioId;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->detalleId = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add detalleId
+     *
+     * @param \Mbp\ProduccionBundle\Entity\PedidoClientesDetalle $detalleId
+     *
+     * @return PedidoClientes
+     */
+    public function addDetalleId(\Mbp\ProduccionBundle\Entity\PedidoClientesDetalle $detalleId)
+    {
+        $this->detalleId[] = $detalleId;
+
+        return $this;
+    }
+
+    /**
+     * Remove detalleId
+     *
+     * @param \Mbp\ProduccionBundle\Entity\PedidoClientesDetalle $detalleId
+     */
+    public function removeDetalleId(\Mbp\ProduccionBundle\Entity\PedidoClientesDetalle $detalleId)
+    {
+        $this->detalleId->removeElement($detalleId);
+    }
+
+    /**
+     * Get detalleId
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDetalleId()
+    {
+        return $this->detalleId;
     }
 }

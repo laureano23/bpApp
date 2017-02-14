@@ -8,27 +8,83 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
+use Mbp\ProduccionBundle\Entity\PedidoClientes;
+use Mbp\ProduccionBundle\Entity\PedidoClientesDetalle;
+
 class PedidoClientesController extends Controller
 {
 	public function nuevoPedidoAction()
 	{
 		$req = $this->getRequest();
+		$response = new Response;
 		
 		$values = $req->request->get('data');
+		$clienteId = $req->request->get('cliente');
+		$oc = $req->request->get('oc');
 		
 		$em = $this->getDoctrine()->getManager();
 		$repo = $em->getRepository('MbpProduccionBundle:PedidoClientes');
 				
 		$json = json_decode($values);
 		
-		//CARGA EL ARRAY DE ARTICULOS A LA BD
-		$repo->cargaPedidos($json);
+		$usuario = $this->get('security.context')->getToken()->getUser();
 		
-		
-		return new Response();
+		try{
+			$em = $this->getDoctrine()->getEntityManager();
+						
+			//BUSCO EL CLIENTE
+			$clienteRepo = $em->getRepository('MbpClientesBundle:Cliente');
+			$idCliente = $clienteRepo->findOneById($clienteId);
+
+			$pedido = new PedidoClientes;
+			$pedido->setOc($oc);
+			$pedido->setCliente($idCliente);
+			$pedido->setUsuarioId($usuario);
+			$pedido->setFechaPedido(new \DateTime);
+			
+			foreach ($json as $val) {
+				$pedidoDetalle = new PedidoClientesDetalle;
+								
+				//BUSCO EL CODIGO
+				$articulosRepo = $em->getRepository('MbpArticulosBundle:Articulos');
+				$codigoArticulo = $articulosRepo->findOneByCodigo($val->codigo);				
+				
+				//OBJETO FECHA				
+				$date = new \DateTime;
+				$date = $date->createFromFormat('d/m/Y', $val->fechaProgramacion); //FECHA TIPO 01/02/2015
+				
+				$pedidoDetalle->setCodigo($codigoArticulo);
+				$pedidoDetalle->setCantidad($val->cantidad);
+				$pedidoDetalle->setFechaProg($date);
+				$pedido->AddDetalleId($pedidoDetalle);
+				
+				$em->persist($pedido);
+				$em->flush();
+			}
+			
+
+			$response->setContent(
+				json_encode(array(
+					'success' => true,
+					'msg' => 'El pedido se cargó exitosamente'
+				))
+			);
+
+			return $response;
+			
+		}catch(\Exception $e){
+			$response->setContent(
+				json_encode(array(
+					'success' => false,
+					'msg' => $e->getMessage()
+				))
+			);
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response;
+		}		
 	}
 	
-	public function listarPedidosAction()
+	public function listarPedidosAction() 
 	{	
 		$em = $this->getDoctrine()->getManager();
 		$repo = $em->getRepository('MbpProduccionBundle:PedidoClientes');
@@ -44,6 +100,7 @@ class PedidoClientesController extends Controller
 	public function reportePedidoAction()
 	{
 		$req = $this->getRequest();
+		$response = new Response;
 		
 		$values = $req->request->get('data');
 		$values = json_decode($values);
@@ -88,49 +145,75 @@ class PedidoClientesController extends Controller
 			 */		
 			$fechaDesdeSql = $fechaDesde->format('Y-m-d');
 			$fechaHastaSql = $fechaHasta->format('Y-m-d');
+
+			//var_dump($fechaDesdeSql);
+			//var_dump($fechaHastaSql);
 			
 			//CONSULTA SQL
 			$sql = "SELECT
-			     PedidoClientes.`codigo` AS PedidoClientes_codigo,
-			     PedidoClientes.`cantidad` AS PedidoClientes_cantidad,
-			     PedidoClientes.`fechaProg` AS PedidoClientes_fechaProg,
-			     PedidoClientes.`oc` AS PedidoClientes_oc,
-			     articulos.`codigo` AS articulos_codigo,
-			     articulos.`descripcion` AS articulos_descripcion,
-			     articulos.`idArticulos` AS articulos_idArticulos,
-			     articulos.`unidad` AS articulos_unidad,
 			     PedidoClientes.`id` AS PedidoClientes_id,
+			     PedidoClientes.`fechaPedido` AS PedidoClientes_fechaPedido,
+			     PedidoClientes.`oc` AS PedidoClientes_oc,
 			     PedidoClientes.`cliente` AS PedidoClientes_cliente,
+			     PedidoClientes.`inactivo` AS PedidoClientes_inactivo,
+			     PedidoClientes.`usuarioId` AS PedidoClientes_usuarioId,
+			     PedidoClientesDetalle.`id` AS PedidoClientesDetalle_id,
+			     PedidoClientesDetalle.`codigo` AS PedidoClientesDetalle_codigo,
+			     PedidoClientesDetalle.`cantidad` AS PedidoClientesDetalle_cantidad,
+			     PedidoClientesDetalle.`fechaProg` AS PedidoClientesDetalle_fechaProg,
+			     PedidoClientesDetalle.`entregado` AS PedidoClientesDetalle_entregado,
+			     PedidoClientesDetalle.`inactivo` AS PedidoClientesDetalle_inactivo,
+			     pedidoId_detalleId.`pedidoId` AS pedidoId_detalleId_pedidoId,
+			     pedidoId_detalleId.`detalleId` AS pedidoId_detalleId_detalleId,
 			     cliente.`idCliente` AS cliente_idCliente,
 			     cliente.`rsocial` AS cliente_rsocial,
-			     articulos.`costo` AS articulos_costo
+			     cliente.`denominacion` AS cliente_denominacion,
+			     articulos.`idArticulos` AS articulos_idArticulos,
+			     articulos.`codigo` AS articulos_codigo,
+			     articulos.`descripcion` AS articulos_descripcion,
+			     articulos.`unidad` AS articulos_unidad,
+			     articulos.`costo` AS articulos_costo,
+			     articulos.`precio` AS articulos_precio,
+			     articulos.`moneda` AS articulos_moneda
 			FROM
-			     `articulos` articulos INNER JOIN `PedidoClientes` PedidoClientes ON articulos.`idArticulos` = PedidoClientes.`codigo`
+			     `PedidoClientesDetalle` PedidoClientesDetalle INNER JOIN `pedidoId_detalleId` pedidoId_detalleId ON PedidoClientesDetalle.`id` = pedidoId_detalleId.`detalleId`
+			     INNER JOIN `PedidoClientes` PedidoClientes ON pedidoId_detalleId.`pedidoId` = PedidoClientes.`id`
 			     INNER JOIN `cliente` cliente ON PedidoClientes.`cliente` = cliente.`idCliente`
+			     INNER JOIN `articulos` articulos ON PedidoClientesDetalle.`codigo` = articulos.`idArticulos`
 			WHERE
 			     PedidoClientes.`cliente` BETWEEN $clienteDesde AND $clienteHasta
- 				 AND articulos.`codigo` BETWEEN '$codigoDesde' AND '$codigoHasta' 				 
- 				 AND PedidoClientes.`fechaProg` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql'";
+			 AND articulos.`codigo` BETWEEN $codigoDesde AND $codigoHasta
+			 AND PedidoClientes.`fechaPedido` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql'";
 			
-			
+						
 			//Exportamos el reporte
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 			
-		
-			echo json_encode(
+			$response->setContent(
+				json_encode(
 					array(
 						'success'=> true,
 						'reporte' => $destino,		
 					)
-				);
+				)
+			);
+		
+			return $response;
 			
-			return new Response();
-			
-		}catch(JavaException $ex){
-			$trace = new Java('java.io.ByteArrayOutputStream');
-			$ex->printStackTrace(new Java('java.io.PrintStream', $trace));
-			print nl2br("java stack trace: $trace\n");
-			return false;
+		}catch(\JavaException $ex){
+			$trace = new \Java('java.io.ByteArrayOutputStream');
+			$ex->printStackTrace(new \Java('java.io.PrintStream', $trace));
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			$response->setContent(
+				json_encode(array('success' => false, 'msg' => nl2br("java stack trace: Error al generar el reporte")))
+			);
+			return $response;
+		}catch(\Exception $e){
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			$response->setContent(
+				json_encode(array('success' => false, 'msg' => $e->getMessage()))
+			);
+			return $response;
 		}		
 	}
 	

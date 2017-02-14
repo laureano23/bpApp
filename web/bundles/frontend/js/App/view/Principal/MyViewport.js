@@ -1,5 +1,6 @@
 Ext.define('MetApp.view.Principal.MyViewport', {
 	extend: 'Ext.container.Viewport',
+    id: 'MyViewport',
 	alias: 'widget.mainViewport',
 	layout: 'border',
     renderTo: Ext.getBody(),
@@ -7,8 +8,6 @@ Ext.define('MetApp.view.Principal.MyViewport', {
 		'Ext.util.Point'
 	],
     initComponent: function(){
-    
-    
     	/*
     	 * Defino el objeto que manejara la seguridad de las vistas
     	 */  		
@@ -24,27 +23,9 @@ Ext.define('MetApp.view.Principal.MyViewport', {
 				menu: [
 					{
 						text: 'Formulas',
+                        cls: 'button-draggable',
 						itemId: 'btnFormulas',
-						listeners: {
-							render: function(v){
-								v.dragZone = dragZone = Ext.create("Ext.dd.DragZone",v.getEl(),{
-									getDragData : function(e){								
-                                       var sourceEl = e.getTarget();
-                                       var clonedSourceEl = sourceEl.cloneNode(true);
-                                       clonedSourceEl.obj = v;
-                                       return v.dragData = {
-                                               ddel: clonedSourceEl,//mandatory
-                                               sourceEl: sourceEl,
-                                               btn: Ext.create('Ext.Button',{
-                                               		text: 'hola',
-                                               		itemId: 'btnFormulas'
-                                               })        
-                                       }
-                                    }
-								});
-							}
-						}						
-					},
+                    },
 					{
 						text: 'Familia',
 						itemId: 'tabFamilia'
@@ -307,27 +288,12 @@ Ext.define('MetApp.view.Principal.MyViewport', {
 	    		xtype: 'panel',
 	    		title: 'Favoritos',
 	    		itemId: 'panelFavoritos',
+                id: 'panelFavoritos',
 		        region: 'center',        
 		        autoHeight: true,
 		        border: true,
 		        margins: '0 0 5 0',
-		        listeners: {
-		        	render: function(v){
-	        			v.dropZone = Ext.create("Ext.dd.DropZone",v.getEl(),{
-                        	getTargetFromEvent: function(e) {
-                            return e.getTarget();
-                        },
-                        onNodeDrop : function(target,dd,e,data){
-                            targetEl = Ext.get(target);
-                            console.log(targetEl);  
-                            console.log(data); 
-                            //targetEl.add(data.btn);
-                            v.add(data.btn);
-                            
-                   			}
-                    	});
-		        	}
-		    	}
+                items: me.params,
 	    	},
 	    	{
 	    		id:'PnlNorte',
