@@ -46,76 +46,42 @@ Ext.define('MetApp.controller.Security.SecurityController',{
 			},
 			callback: function(){
 				var store = Ext.create('MetApp.store.Parametros.UserParamsStore');
-				//store.add({id: 1, nombre: 'lalo'});
-				//store.add({id: 2, nombre: 'juan'});
-
 				var items=[];
 				store.load({
 					callback: function(){
 						for (var i = 0; i < store.getCount(); i++) {
-							console.log("entramos");
 							items[i] = {
 								xtype: 'button',
+								idrecord: store.data.items[i].data.id,
 								text: store.data.items[i].data.nombre,
 								margin: '5 5 5 5',
-								width: 100,
+								width: 200,
 								height: 50,
-								iconCls: 'favoritos'
+								iconCls: 'favoritos',
+								itemId: store.data.items[i].data.itemId,
+								listeners: {
+									afterrender: function(e){
+										var me = this;
+										var el = this.getEl();
+										el.on('contextmenu', function(ev){
+											ev.preventDefault();
+											var rec = store.findRecord('itemId', me.itemId);
+											store.remove(rec);
+											store.sync();
+											this.destroy();
+										});
+									}
+								}
+									
 							}
 						}
+
+						//PARA BORRAR TODOS LOS FAVORITOS
+						//store.getProxy().clear();
+
+						var viewport = Ext.create('MetApp.view.Principal.MyViewport', {params: items});
 					}
-				})
-					
-				var viewport = Ext.create('MetApp.view.Principal.MyViewport', {params: items});
-
-				/*CONFIGURACION DRAG AND DROP*/
-
-				
-							
-
-				var overrides = {
-				     startDrag: function(e) {
-				         console.log('startDrag');
-				     },
-				     onDrag: function() {
-				         console.log('onDrag');
-				     },
-				     onDragEnter: function(e, id) {
-				         console.log('onDragEnter');
-				     },
-				     onDragOver: function(e, id) {
-				         console.log('onDragOver');
-				     },
-				     onDragOut: function(e, id) {
-				         console.log('onDragOut');
-				     },
-				     onDragDrop: function(e, id) {
-				         console.log('onDragDrop');
-				     },
-				     onInvalidDrop: function() {
-				         console.log('onInvalidDrop');
-				     },
-				     endDrag: function(e, id) {
-				       console.log('endDrag');
-				     }
-				};
-
-				var buttons = viewport.query('.button');
-
-				Ext.each(buttons, function(el){
-					var dd = Ext.create('Ext.dd.DD', el, 'tablesDDGroup', {
-		                isTarget: false
-		            });
-		            Ext.apply(dd, overrides);
-				});
-
-				//var target = viewport.queryById('panelFavoritos');
-
-				var mainTarget = Ext.create('Ext.dd.DDTarget', 'panelFavoritos', 'tablesDDGroup', {
-				     ignoreSelf: false
-				 });
-
-				/*//CONFIGURACION DRAG AND DROP*/				
+				})			
 				
 			}			
 		});		

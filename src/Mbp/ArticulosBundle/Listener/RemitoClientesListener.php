@@ -27,10 +27,10 @@ class RemitoClientesListener
         		$pedido = $detalle->getPedidoId()->getDetalleId();
 
                 foreach ($pedido as $item) {
-                    $item->setEntregado($item->getEntregado() + $item->getCantidad());
+                    $item->setEntregado($item->getEntregado() + $detalle->getCantidad());
 
                     //SI SE COMPLETO LA CANTIDAD PEDIDA, DAMOS LA BAJA LOGICA
-                    if($item->getCantidad() == $item->getEntregado()){
+                    if($item->getCantidad() <= $item->getEntregado()){
                         $item->setInactivo(true);
                     }
                     $entityManager->persist($item);

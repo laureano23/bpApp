@@ -4,6 +4,7 @@ Ext.define('MetApp.model.Parametros.UserParamsModel',{
 	fields: [
 		{ name: 'id', type: 'int' },
 		{ name: 'nombre', type: 'string'},		
+		{ name: 'itemId', type: 'string'},
 	],
 	proxy: {
         type: 'localstorage',

@@ -10,8 +10,8 @@ Ext.define('MetApp.controller.Security.UserParamsController',{
 	init: function(){
 		var me = this;
 		me.control({
-			'#MyViewport panel[itemId=panelFavoritos]': {
-				onDrag: this.ConfigPanel
+			'#MyViewport button[itemId=tbArticulos]': {
+				contextmenu: this.ConfigPanel
 			},
 		});		
 	},

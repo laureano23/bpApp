@@ -14,42 +14,79 @@ Ext.define('MetApp.view.Principal.MyViewport', {
     	var autz = Ext.create('MetApp.controller.Security.Autorizaciones');    	
     	autz.authorization(MetApp.User);
     	
-    	
+        var dragZone = function(v){
+            this.dragZone = Ext.create("Ext.dd.DragZone",v.getEl(),{
+                getDragData : function(e){
+                   var sourceEl = e.getTarget();
+                   var clonedSourceEl = sourceEl.cloneNode(true);
+                   return this.dragData = {
+                           ddel: clonedSourceEl,//mandatory
+                           sourceEl: sourceEl,
+                           el: v
+                   }
+                }
+            });
+        };
+
     	var menuTablas =  [
 			{
 				text: 'Articulos',
+                listeners : {
+                    render : dragZone,
+                },    
 				itemId: 'tbArticulos',
 				require: {role2: true},
 				menu: [
 					{
 						text: 'Formulas',
+                        listeners: {
+                            render: dragZone
+                        },
                         cls: 'button-draggable',
 						itemId: 'btnFormulas',
+                        listeners : {
+                            render : dragZone
+                        },
                     },
 					{
 						text: 'Familia',
-						itemId: 'tabFamilia'
+						itemId: 'tabFamilia',
+                        listeners : {
+                            render : dragZone
+                        },
 					},
 					{
 						text: 'Sub Familia',
-						itemId: 'tabSubFamilia'
+						itemId: 'tabSubFamilia',
+                        listeners : {
+                            render : dragZone
+                        },
 					}
 				]
 			},
 			{                						
 				text: 'Clientes',
 				itemId: 'tbClientes', 
-				require: {role1: true}               						
+				require: {role1: true},
+                listeners : {
+                    render : dragZone
+                },               						
 			},
 			{
 				text: 'Proveedores',
 				itemId: 'tbProveedores', 
-				require: {role1: true}
+				require: {role1: true},
+                listeners : {
+                    render : dragZone
+                },
 			},
 			{
 				text: 'Centro de Costos',
 				itemId: 'tbCentroCostos', 
-				require: {role1: true}
+				require: {role1: true},
+                listeners : {
+                    render : dragZone
+                },
 			},
 			{
 				text: 'Lista de precios',				 
@@ -57,7 +94,10 @@ Ext.define('MetApp.view.Principal.MyViewport', {
 				menu: [
 					{
 						text: 'Lista Maestra',
-						itemId: 'tbListaMaestra'
+						itemId: 'tbListaMaestra',
+                        listeners : {
+                            render : dragZone
+                        },
 					}
 				]
 			}
@@ -66,33 +106,51 @@ Ext.define('MetApp.view.Principal.MyViewport', {
         var menuCalidad = [
 			{
 				text: 'Num. Correlativa',
-				itemId: 'numCorrelativa'
+				itemId: 'numCorrelativa',
+                listeners : {
+                    render : dragZone
+                },
 			},
 			{
 				text: 'RG-010 Estanqueidad',
 				menu: [
 					{
 						text: 'RG-010',
-						itemId: 'rg010Estanqueidad'						
+						itemId: 'rg010Estanqueidad',
+                        listeners : {
+                            render : dragZone
+                        },					
 					},
 					{
 						text: 'Formulario',
-						itemId: 'controlEstanqueidad'
+						itemId: 'controlEstanqueidad',
+                        listeners : {
+                            render : dragZone
+                        },
 					},
 					{
 						text: 'Reporte',
 						menu: [
 							{
 								text: 'Estanqueidad entre fechas y por OT',
-								itemId: 'repo1RG010'
+								itemId: 'repo1RG010',
+                                listeners : {
+                                    render : dragZone
+                                },
 							},
 							{
 								text: 'Fallas de soldadura',
-								itemId: 'RG010FallasSoldadura'
+								itemId: 'RG010FallasSoldadura',
+                                listeners : {
+                                    render : dragZone
+                                },
 							},
 							{
 								text: 'Estanqueidad Grafico 3D',
-								itemId: 'repo2RG010'
+								itemId: 'repo2RG010',
+                                listeners : {
+                                    render : dragZone
+                                },
 							},
 						]												
 					},
@@ -107,16 +165,25 @@ Ext.define('MetApp.view.Principal.MyViewport', {
         		menu: [
 	        		{					
 		    			text: 'Calculo de Radiadores',
-		    			itemId: 'calculoRad' 
+		    			itemId: 'calculoRad',
+                        listeners : {
+                            render : dragZone,
+                        }, 
 					},
 					{
 						text: 'O.T Paneles',
-						itemId: 'otPaneles'
+						itemId: 'otPaneles',
+                        listeners : {
+                            render : dragZone,
+                        }, 
 					},
 					{
 						text: 'Parametros Brazing',
 						itemId: 'parametrosBrazing',
-						require: {role1: true}
+						require: {role1: true},
+                        listeners : {
+                            render : dragZone,
+                        }, 
 					}
         		]
         	},
@@ -126,7 +193,10 @@ Ext.define('MetApp.view.Principal.MyViewport', {
         		menu: [
         			{
         				text: 'Calculo y Seleccion',
-        				itemId: 'calculoSeleccionAgua'
+        				itemId: 'calculoSeleccionAgua',
+                        listeners : {
+                            render : dragZone,
+                        }, 
         			}
         		]
         	}
@@ -136,14 +206,20 @@ Ext.define('MetApp.view.Principal.MyViewport', {
         var subMenuPedidos = [
         	{
         		text: 'Nuevo pedido',
-        		itemId: 'nuevoPedido'
+        		itemId: 'nuevoPedido',
+                listeners : {
+                    render : dragZone,
+                }, 
         	},
         	{
         		text: 'Reportes',
         		menu: [
         			{
         				text: 'Art. pedido por cliente y periodo',
-        				itemId: 'articulosPedidos'
+        				itemId: 'articulosPedidos',
+                        listeners : {
+                            render : dragZone,
+                        }, 
         			}
         		]
         	}
@@ -152,22 +228,34 @@ Ext.define('MetApp.view.Principal.MyViewport', {
         var subMenuProgramacion = [        	
         	{
         		text: 'Maquinas',
-        		itemId: 'maquinas'
+        		itemId: 'maquinas',
+                listeners : {
+                    render : dragZone,
+                }, 
         	},
         	{
         		text: 'Operaciones',
-        		itemId: 'operaciones'
+        		itemId: 'operaciones',
+                listeners : {
+                    render : dragZone,
+                }, 
         	},
         	{
         		text: 'Formulas M.O.',
-        		itemId: 'formulasMo'
+        		itemId: 'formulasMo',
+                listeners : {
+                    render : dragZone,
+                }, 
         	},
         	{
         		text: 'Procesos',
         		menu:[
 	        		{
 	        			text:'Programar pedidos',
-	        			itemId: 'programarPedidos'	
+	        			itemId: 'programarPedidos',
+                        listeners : {
+                            render : dragZone,
+                        }, 	
 	        		}
         		]        		
         	}
@@ -199,59 +287,95 @@ Ext.define('MetApp.view.Principal.MyViewport', {
     	var menuRRHH = [
     		{
     			text: 'Personal',
-    			itemId: 'tablaPersonal'
+    			itemId: 'tablaPersonal',
+                listeners : {
+                    render : dragZone,
+                }, 
     		},
     		{
     			text: 'Sindicatos',
-    			itemId: 'tablaSindicatos'
+    			itemId: 'tablaSindicatos',
+                listeners : {
+                    render : dragZone,
+                }, 
     		},
     		{
     			text: 'Categorias',
-    			itemId: 'tablaCategorias'
+    			itemId: 'tablaCategorias',
+                listeners : {
+                    render : dragZone,
+                }, 
     		},
     		{
     			text: 'Conceptos',
-    			itemId: 'tablaConceptos'
+    			itemId: 'tablaConceptos',
+                listeners : {
+                    render : dragZone,
+                }, 
     		},
     		{
     			text: 'Liquidaciones',
     			menu: [
     				{	
     					text: 'Nuevo pago',
-    					itemId: 'tablaNuevoPago'	
+    					itemId: 'tablaNuevoPago',
+                        listeners : {
+                            render : dragZone,
+                        }, 	
     				},
     				{	
     					text: 'Reliquidar periodo',
-    					itemId: 'tablaReliquidarPeriodo'	
+    					itemId: 'tablaReliquidarPeriodo',
+                        listeners : {
+                            render : dragZone,
+                        }, 
     				},
     				{	
     					text: 'Imprimir',
-    					itemId: 'winImprimeRecibos'	
+    					itemId: 'winImprimeRecibos'	,
+                        listeners : {
+                            render : dragZone,
+                        }, 
     				}
     			]   			
     		},
     		{
     			text: 'Cuentas',
-    			itemId: 'tablaCuentaEmpleados'
+    			itemId: 'tablaCuentaEmpleados',
+                listeners : {
+                    render : dragZone,
+                }, 
     		},
     		{
     			text: 'Transferencias',
-    			itemId: 'tablaTransferencias'
+    			itemId: 'tablaTransferencias',
+                listeners : {
+                    render : dragZone,
+                }, 
     		},
     		{
     			text: 'Reportes',
     			menu: [
     				{
     					text: 'Libro Sueldos',
-    					itemId: 'reporteLibroSueldos'
+    					itemId: 'reporteLibroSueldos',
+                        listeners : {
+                            render : dragZone,
+                        }, 
     				},
     				{
     					text: 'Resumen aguinaldo',
-    					itemId: 'reporteResumenAguinaldo'
+    					itemId: 'reporteResumenAguinaldo',
+                        listeners : {
+                            render : dragZone,
+                        }, 
     				},
                     {
                         text: 'Resumen liquidaciones',
-                        itemId: 'reporteResumenLiquidaciones'
+                        itemId: 'reporteResumenLiquidaciones',
+                        listeners : {
+                            render : dragZone,
+                        }, 
                     }
     			]
     		},
@@ -260,32 +384,84 @@ Ext.define('MetApp.view.Principal.MyViewport', {
     	var menuMantenimiento = [
     		{
         		text: 'Sector',
-        		itemId: 'sector'
+        		itemId: 'sector',
+                listeners : {
+                    render : dragZone,
+                }, 
         	},
     	]
     	
     	var menuCompras = [
     		{
     			text: 'Orden de compra',
-    			itemId: 'ordenDeCompra'
+    			itemId: 'ordenDeCompra',
+                listeners : {
+                    render : dragZone,
+                }, 
     		}
     	]
 
         var menuRemitos = [
             {
                 text: 'Cliente',
-                itemId: 'remitoCliente'
+                itemId: 'remitoCliente',
+                listeners : {
+                    render : dragZone,
+                }, 
             },
             {
                 text: 'Proveedor',
-                itemId: 'remitoProveedor'
+                itemId: 'remitoProveedor',
+                listeners : {
+                    render : dragZone,
+                }, 
             },
         ]
     		    	
     	var me = this;    	
+
+        var dropZone = function(v){
+            this.dropZone = Ext.create("Ext.dd.DropZone",v.getEl(),{
+                getTargetFromEvent: function(e) {
+                    return e.getTarget();
+                },
+                onNodeDrop : function(target,dd,e,data){
+                    var store = Ext.getStore('UserParamsStore');   
+                    var favsNumer = store.getCount();
+                    if(favsNumer >= 10){
+                        return Ext.Msg.show({
+                             title:'Atencion',
+                             msg: 'No se pueden agregar mas de 10 favoritos',
+                             buttons: Ext.Msg.OK,
+                             icon: Ext.Msg.INFO
+                        });
+                    }
+                    var btn = Ext.create('Ext.Button', {
+                        text: data.el.text,
+                        itemId: data.el.itemId,
+                        margin: '5 5 5 5',
+                        width: 200,
+                        height: 50,
+                        iconCls: 'favoritos'
+                    });
+                    var panelFav = me.queryById('panelFavoritos');
+                    targetEl = Ext.get(target);
+                    panelFav.insert(0, btn);
+
+                                     
+                    var idRec = favsNumer + 1;
+                    store.add({nombre: data.el.text, itemId: data.el.itemId});
+                    store.sync();
+                },
+            });
+        };
+
     	me.items = [
 	    	{
 	    		xtype: 'panel',
+                listeners : {
+                    render : dropZone,
+                },
 	    		title: 'Favoritos',
 	    		itemId: 'panelFavoritos',
                 id: 'panelFavoritos',

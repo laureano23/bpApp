@@ -3,6 +3,6 @@ Ext.define('MetApp.store.Parametros.UserParamsStore',{
 	model: 'MetApp.model.Parametros.UserParamsModel',
 	alias: 'store.CentroCostosStore',
     storeId: 'UserParamsStore',
-    autoLoad: true
+    autoLoad: true,
 	
 });
