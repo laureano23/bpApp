@@ -272,6 +272,9 @@ Ext.define('MetApp.view.Compras.OrdenCompraView' ,{
 								dataIndex: 'entrega',
 								xtype: 'datecolumn',
 								dateFormat: 'd/m/Y',
+								renderer: function(val){
+									return val;
+								},
 								editor: {
 					                xtype: 'datefield',
 					                format: 'd/m/Y'

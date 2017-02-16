@@ -29,8 +29,8 @@ Ext.define('MetApp.view.Articulos.ArticuloSearchGrd', {
 				keyup : function(field, e){	
 						var strSearch = Ext.ComponentQuery.query('#searchField')[0].getValue();//Obtenemos el valor del campo de busqueda
 						var grid = Ext.ComponentQuery.query('#articulosearchgrd')[0];
-						var storeArt = grid.getStore();	//Obtenemos el store				
-						var radio = Ext.getCmp('paramArtSearch').getChecked()[0];
+						var storeArt = grid.getStore();	//Obtenemos el store		
+						var radio = this.up('window').queryById('paramArtSearch').getChecked()[0];
 												
 						if(radio.inputValue == 'codigo'){
 							storeArt.clearFilter(true);
@@ -54,7 +54,7 @@ Ext.define('MetApp.view.Articulos.ArticuloSearchGrd', {
 				 */
 				keydown: function (field, k){								
 								if(k.button == 39){									
-									var grid = Ext.ComponentQuery.query('#articulosearchgrd')[0];
+									var grid = field.up('window').queryById('articulosearchgrd')[0];
 									grid.getSelectionModel().select(0);
 									grid.getView().focus();									
 								}				                
@@ -66,6 +66,7 @@ Ext.define('MetApp.view.Articulos.ArticuloSearchGrd', {
 			width: 200,
 			columns: 2,
 			id: 'paramArtSearch',
+			itemId: 'paramArtSearch',
 			items:[
 				{
 					xtype: 'radiofield', 

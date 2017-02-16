@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OrdenDeCompra" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="b20991a6-8da8-4cf2-8ac6-123176886f03">
-	<property name="ireport.zoom" value="2.143588810000009"/>
-	<property name="ireport.x" value="253"/>
-	<property name="ireport.y" value="26"/>
+	<property name="ireport.zoom" value="1.6105100000000068"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="logo" class="java.lang.String"/>
 	<parameter name="ordenId" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -146,7 +146,7 @@ Tel: 4484-2416]]></text>
 				<textElement textAlignment="Right">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Fecha:]]></text>
+				<text><![CDATA[Emision:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="515" y="0" width="61" height="20" uuid="42227515-21eb-45d0-9ed6-a18a7a8dd3ee"/>
@@ -187,11 +187,6 @@ Tel: 4484-2416]]></text>
 				<reportElement x="515" y="60" width="60" height="20" uuid="4a3bc058-c385-4eee-a140-8a1e34a555c6"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{OrdenCompra_monedaOC} == true ? $F{OrdenCompra_tc} : ""]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="186" y="72" width="81" height="20" uuid="4aa68287-6bab-4b8d-9d3e-b65c7181df00"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{OrdenCompraDetalle_moneda}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
@@ -381,6 +376,14 @@ $F{OrdenCompraDetalle_precio} * $F{OrdenCompraDetalle_cant}]]></textFieldExpress
 				<reportElement x="0" y="73" width="381" height="80" uuid="31ffbb83-6689-4e89-9f2b-1be93962ee7e"/>
 				<textFieldExpression><![CDATA[$F{OrdenCompra_observaciones}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="0" y="53" width="122" height="20" uuid="c84bd3c5-d0d7-44b1-98a0-6d4948390388"/>
+				<box leftPadding="2"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Observaciones:]]></text>
+			</staticText>
 		</band>
 	</columnFooter>
 	<pageFooter>

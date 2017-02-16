@@ -70,7 +70,8 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 		var store = win.down('grid').getStore();
 		var desc = win.queryById('desc');
 		
-		//HOT KEY DE LA TABLA LIQUIDACION
+		win.queryById('buscaProveedor').focus('', 20);
+		//HOT KEY DE LA TABLA ORDEN DE COMPRA
 		var map = new Ext.util.KeyMap({
 		    target: win.getId(),	
 		   	binding: [
@@ -128,8 +129,9 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 		var btnInsert = win.queryById('insertProveedor');
 		btnInsert.on('click', function(){
 			var record = grid.getSelectionModel().getSelection()[0];
-			form.loadRecord(record);
 			win.close();
+			form.loadRecord(record);	
+			winOrdenDeCompra.queryById('buscarArt').focus('', 20);		
 		});
 	},
 	
@@ -142,7 +144,6 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 		btnAceptar.on('click', function(){
 			var grid = winArticulos.down('grid');
 			var selection = grid.getSelectionModel().getSelection()[0];
-			console.log(selection);
 			
 			formArt.loadRecord(selection);
 			winArticulos.close();
