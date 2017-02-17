@@ -80,6 +80,10 @@ class CalculosConceptos extends Controller
 			case '7':
 				return $this->formula7($this->cant, $this->empleadoSueldo, $this->compensatorio, $this->valorComp);
 				break;
+
+			case '8':
+				return $this->formula8($this->cant, $this->empleadoSueldo, $this->compensatorio, $this->valorComp);
+				break;
 				
 			default:
 				
@@ -187,6 +191,23 @@ class CalculosConceptos extends Controller
 			$valorHs = $valorHs + $valorComp;
 		}
 		$res = $cant * $valorHs * 2;
+		return $res;
+	}
+
+	/*
+	 * CODIGO CALCULO: 8
+	 * DESCRIPCION: Vacaciones mensualizados
+	 * @cant		| float
+	 * @$valorHs	| float
+	 */
+	private function formula8($cant, $valorMes, $compensatorio, $valorComp)
+	{
+		$res;
+		if($compensatorio == "true"){
+			$res = $cant * $valorComp / 25;
+		}else{
+			$res = $cant * $valorMes / 25;
+		}		
 		return $res;
 	}
 	

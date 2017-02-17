@@ -173,6 +173,7 @@ Ext.define('MetApp.view.Compras.OrdenCompraView' ,{
 				{
 					xtype: 'grid',
 					margin: '5 0 0 0',
+					itemId: 'detallesStore',
 					store: 'MetApp.store.Compras.OrdenCompraStore',
 					region: 'center',
 					selType: 'cellmodel',

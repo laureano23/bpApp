@@ -151,7 +151,8 @@ class CodigoSueldosRepository extends \Doctrine\ORM\EntityRepository
 			$em->flush();
 											
 			echo json_encode(array(
-				'success' => true
+				'success' => true,
+				'idConcepto' => $obj->getId()
 			));
 		}catch(\Exception $e){
 			echo json_encode(array(

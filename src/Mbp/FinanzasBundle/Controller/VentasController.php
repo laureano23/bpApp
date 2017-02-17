@@ -210,8 +210,12 @@ class VentasController extends Controller
 			
 			$repoFinanzas = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
 			$parametrosFinanzas = $repoFinanzas->find(1);
+
+			//\Doctrine\Common\Util\Debug::dump($cliente);
+
+			//exit();
 			
-			if($cliente->getProvincia()->getId() == $repoFinanzas->getProvincia()->getId() && $alicuotaPercepcion > 0){
+			if($cliente->getLocalidad()->getDepartamentoId()->getProvinciaId()->getId() == $parametrosFinanzas->getProvincia()->getId() && $alicuotaPercepcion > 0){
 				$percepcionIIBB = $netoGrabado * $alicuotaPercepcion; 
 			}	
 

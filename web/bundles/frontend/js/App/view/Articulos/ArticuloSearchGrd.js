@@ -54,7 +54,7 @@ Ext.define('MetApp.view.Articulos.ArticuloSearchGrd', {
 				 */
 				keydown: function (field, k){								
 								if(k.button == 39){									
-									var grid = field.up('window').queryById('articulosearchgrd')[0];
+									var grid = field.up('window').queryById('articulosearchgrd');
 									grid.getSelectionModel().select(0);
 									grid.getView().focus();									
 								}				                

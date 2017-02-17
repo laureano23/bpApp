@@ -20,7 +20,17 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 		
 		var store = Ext.getStore('MetApp.store.Compras.OrdenCompraStore');
 		store.on({
-			'datachanged': me.callbackOrdenCompraStore
+			'datachanged':function(st, opts){
+				var total=0;
+				st.each(function(rec){
+					var data = rec.getData();
+					total += data.cant * data.costo;			
+				});		
+				var view = me.getOrdenCompraView();
+				var desc = view.queryById('desc').getValue();
+				total = total - desc * total / 100;
+				view.queryById('total').setValue(total);
+			}
 		});
 		
 		me.control({
@@ -47,17 +57,18 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 				},	
 				'OrdenCompraView combobox[itemId=monedaOC]': {
 					change: this.ListenChangeTc
-				},			
+				}		
 		});		
 	},
 	
 	callbackOrdenCompraStore: function(st, opts){
+		console.log(this.getOrdenCompraView());
 		var total=0;
 		st.each(function(rec){
 			var data = rec.getData();
 			total += data.cant * data.costo;			
 		});		
-		var view = MetApp.getApplication().getController('MetApp.controller.Compras.OrdenDeCompraController').getOrdenCompraView();
+		//var view = MetApp.getApplication().getController('MetApp.controller.Compras.OrdenDeCompraController').getOrdenCompraView();
 		var desc = view.queryById('desc').getValue();
 		total = total - desc * total / 100;
 		view.queryById('total').setValue(total);
@@ -203,6 +214,8 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 		var jsonOrdenData = Ext.JSON.encode(formValues);
 		
 		if(formProv.isValid() && store.getCount() != 0){
+			var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
+			myMask.show();
 			Ext.Ajax.request({
 				url: Routing.generate('mbp_compras_nuevaOrden'),
 				params: {
@@ -210,10 +223,42 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 					orden: jsonOrdenData
 				},
 				success: function(resp){
-					console.log(resp);
-					formProv.getForm().reset();
-					store.loadRawData([]);
-					descuentoGral.setValue(0);
+					var msg = Ext.JSON.decode(resp.responseText);
+					if(msg.success == true){
+						//DEPLEGAMOS LA OC
+						Ext.Ajax.request({
+							url: Routing.generate('mbp_compras_reporteOrden'),
+							
+							params: {
+								idOC: msg.idOC
+							},
+							
+							success: function(resp){								
+								var ruta = Routing.generate('mbp_personal_verOC');
+						    	var WinReporte=Ext.create('Ext.Window', {
+									  title: 'Orden de compra',
+									  width: 900,
+									  height: 600,
+									  layout: 'fit',
+									  modal:true,										
+									  html: '<iframe src='+ruta+' width="100%" height="100%"></iframe>'						  
+								 }).show();
+								 myMask.hide();	
+							},
+
+							failure: function(){
+								myMask.hide();
+							}
+						});
+
+						formProv.getForm().reset();
+						store.removeAll();
+						descuentoGral.setValue(0);
+					}					
+				},
+
+				failure: function(){
+					myMask.hide();
 				}
 			})
 		}

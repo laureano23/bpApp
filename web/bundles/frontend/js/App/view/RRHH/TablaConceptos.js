@@ -41,10 +41,6 @@ Ext.define('MetApp.view.RRHH.TablaConceptos', {
 									frame: false,
 									margins: '5 5 5 5',
 									flex: 1,
-									defaults: {
-										disabled: true,
-										disabledCls: 'myDisabledClass',
-									},
 									items: [
 										{
 											xtype: 'numberfield',
@@ -52,7 +48,8 @@ Ext.define('MetApp.view.RRHH.TablaConceptos', {
 											itemId: 'id',
 											fieldLabel: 'Id',
 											width: 200,
-											hidden: true										
+											hidden: true,
+											readOnly: true										
 										},											
 									]	
 								},
@@ -60,10 +57,12 @@ Ext.define('MetApp.view.RRHH.TablaConceptos', {
 									xtype: 'container',
 									layout: 'hbox',
 									margin: '0 0 5 0',
+									defaults: {
+										readOnly: true
+									},
 									items: [
 										{
 											xtype: 'textfield',
-											disabled: true,
 											disabledCls: 'myDisabledClass',
 											width: 350,
 											name: 'descripcion',
@@ -82,7 +81,6 @@ Ext.define('MetApp.view.RRHH.TablaConceptos', {
 										},
 										{
 											xtype: 'textfield',
-											disabled: true,
 											disabledCls: 'myDisabledClass',
 											width: 150,
 											labelWidth: 50,
@@ -94,8 +92,7 @@ Ext.define('MetApp.view.RRHH.TablaConceptos', {
 								},
 								{
 						            xtype: 'fieldset',
-						            disabled: true,
-									disabledCls: 'myDisabledClass',
+						            readOnly: true,
 						            fieldLabel: 'Tipo de concepto',
 						            defaultType: 'radiofield',
 						            width: 400,
@@ -143,8 +140,7 @@ Ext.define('MetApp.view.RRHH.TablaConceptos', {
 						       },
 						       {
 						       		xtype: 'fieldset',
-						       		//disabled: true,
-									//disabledCls: 'myDisabledClass',
+						       		readOnly: true,
 						       		width: 350,
 									margin: '5 5 5 5',
 									layout: 'anchor',
@@ -170,8 +166,7 @@ Ext.define('MetApp.view.RRHH.TablaConceptos', {
 						       },
 						       {
 									xtype: 'combobox',
-									disabled: true,
-									disabledCls: 'myDisabledClass',
+									readOnly: true,
 									name: 'codigoCalculo',
 									allowBlank: false,
 									labelWidth: 50,
@@ -187,6 +182,8 @@ Ext.define('MetApp.view.RRHH.TablaConceptos', {
 									        {'codigo': 4, 'calculo': 'Mensualizado'},
 									        {'codigo': 5, 'calculo': 'Horas extras 50% mensualizados'},
 									        {'codigo': 6, 'calculo': 'SAC'},
+									        {'codigo': 7, 'calculo': 'Extras al 100%'},
+									        {'codigo': 8, 'calculo': 'Vacaciones mensualizados'},
 									    ]
 									}),
 									queryMode: 'local',
@@ -197,8 +194,7 @@ Ext.define('MetApp.view.RRHH.TablaConceptos', {
 								{
 									xtype: 'numberfield',
 									decimalSeparator: '.',
-									disabled: true,
-									disabledCls: 'myDisabledClass',
+									readOnly: true,
 									margin: '5 0 0 0',
 									labelWidth: 50,
 									fieldLabel: 'Importe',
@@ -207,8 +203,7 @@ Ext.define('MetApp.view.RRHH.TablaConceptos', {
 								},
 								{
 									xtype: 'checkbox',
-									disabled: true,
-									disabledCls: 'myDisabledClass',
+									readOnly: true,
 									margin: '5 0 0 0',
 									labelWidth: 70,
 									boxLabel: 'Porcentaje',

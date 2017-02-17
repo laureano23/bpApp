@@ -11,6 +11,14 @@
     border: 1px solid #979CA5;
 }
 
+.x-form-item input:read-only {
+    background-color: #C7D1D9;
+    opacity: .7;
+    -moz-opacity: .3;
+    filter: alpha(opacity=30);
+    border: 1px solid #979CA5;
+}
+
 .panelBtn {	
 	border-radius: 3px;
     -webkit-box-shadow: 0 0 200px rgba(255, 255, 255, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3);

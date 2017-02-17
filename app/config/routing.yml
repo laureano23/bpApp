@@ -12,6 +12,11 @@ mbp_compras:
     type:     annotation
     prefix:   /compras
 
+mbp_compras_reportes:
+    resource: "@MbpComprasBundle/Controller/ReportesController.php"
+    type:     annotation
+    prefix:   /compras/reportes
+
 mbp_articulos_subFamilia:
     resource: "@MbpArticulosBundle/Controller/SubFamiliaController.php"
     type:     annotation

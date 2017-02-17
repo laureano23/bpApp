@@ -106,7 +106,7 @@ Ext.define('MetApp.controller.RRHH.ConceptosController', {
 		form.getForm().reset();
 		
 		form.query('field').forEach(function(field){
-			field.setDisabled(false);
+			field.setReadOnly(false);
 		});
 				
 		form.queryById('descripcion').focus();
@@ -118,18 +118,20 @@ Ext.define('MetApp.controller.RRHH.ConceptosController', {
 		var win = btn.up('window');
 		var form = win.down('form');
 		var botonera = win.queryById('botonera');
-		var values = form.getValues();
+		var values = form.getForm().getValues();
 		var store = Ext.getStore('MetApp.store.Personal.ConceptosStore');
 		
 		var codigoCalc = win.queryById('codigoCalculo');
 		
 		//ESCUCHA EVENTOS DE ESCRITURA
 		store.on('write', function(store, operation){
+			var response = Ext.JSON.decode(operation.response.responseText);
 			if(operation.success == true){
 				form.loadRecord(operation.records[0]);
 				form.query('field').forEach(function(field){
-					field.setDisabled(true);
+					field.setReadOnly(true);
 				});
+				form.queryById('id').setValue(response.idConcepto);
 				form.queryById('buscaConcepto').setDisabled(false);
 				botonera.busquedaItem(botonera);
 			}
@@ -140,7 +142,7 @@ Ext.define('MetApp.controller.RRHH.ConceptosController', {
 			if(operation.success == true){
 				form.loadRecord(operation.records[0]);
 				form.query('field').forEach(function(field){
-					field.setDisabled(true);
+					field.setReadOnly(true);
 				});
 				form.queryById('buscaConcepto').setDisabled(false);
 				botonera.busquedaItem(botonera);
@@ -169,7 +171,7 @@ Ext.define('MetApp.controller.RRHH.ConceptosController', {
 		var botonera = win.queryById('botonera');
 		
 		form.query('field').forEach(function(field){
-			field.setDisabled(false);
+			field.setReadOnly(false);
 		});
 		
 		botonera.editarItem(botonera);
@@ -208,7 +210,7 @@ Ext.define('MetApp.controller.RRHH.ConceptosController', {
 		var botonera = win.queryById('botonera');
 		
 		form.query('field').forEach(function(field){
-			field.setDisabled(true);
+			field.setReadOnly(true);
 		});
 		
 		win.queryById('buscaConcepto').setDisabled(false);
