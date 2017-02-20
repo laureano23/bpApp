@@ -239,7 +239,10 @@ class CalculosConceptos extends Controller
 				return 'Otros';
 				break;
 			case 7:
-				return 'Premios';
+				return 'Premios 1° quinc.';
+				break;
+			case 8:
+				return 'Premios 2° quinc.';
 				break;
 			default:
 				

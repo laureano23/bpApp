@@ -40,7 +40,8 @@ Ext.define('MetApp.view.RRHH.Reportes.ReporteRecibos', {
 										{ boxLabel: 'Vacaciones', name: 'pagoTipo', inputValue: 4 },										
 										{ boxLabel: 'SAC', name: 'pagoTipo', inputValue: 5 },
 										{ boxLabel: 'Otros', name: 'pagoTipo', inputValue: 6 },	
-										{ boxLabel: 'Premios', name: 'pagoTipo', inputValue: 7 },											
+										{ boxLabel: 'Premios 1°', name: 'pagoTipo', inputValue: 7 },
+										{ boxLabel: 'Premios 2°', name: 'pagoTipo', inputValue: 8 },
 									]
 								}
 							]
