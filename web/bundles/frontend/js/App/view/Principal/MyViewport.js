@@ -398,7 +398,14 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                 listeners : {
                     render : dragZone,
                 }, 
-    		}
+    		},
+            {
+                text: 'Ver orden de compra',
+                itemId: 'verOrdenDeCompra',
+                listeners : {
+                    render : dragZone,
+                }, 
+            }
     	]
 
         var menuRemitos = [

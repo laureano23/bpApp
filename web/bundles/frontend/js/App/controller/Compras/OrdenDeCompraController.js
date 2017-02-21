@@ -2,6 +2,7 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 	extend: 'Ext.app.Controller',	
 	views: [
 		'MetApp.view.Compras.OrdenCompraView',
+		'MetApp.view.Compras.ListaOcView'
 		],
 	stores: [
 		'Articulos.Articulos',
@@ -21,12 +22,13 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 		var store = Ext.getStore('MetApp.store.Compras.OrdenCompraStore');
 		store.on({
 			'datachanged':function(st, opts){
+				var view = me.getOrdenCompraView();
+				if(!view){return;}
 				var total=0;
 				st.each(function(rec){
 					var data = rec.getData();
 					total += data.cant * data.costo;			
-				});		
-				var view = me.getOrdenCompraView();
+				});						
 				var desc = view.queryById('desc').getValue();
 				total = total - desc * total / 100;
 				view.queryById('total').setValue(total);
@@ -57,7 +59,19 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 				},	
 				'OrdenCompraView combobox[itemId=monedaOC]': {
 					change: this.ListenChangeTc
-				}		
+				},
+				'#verOrdenDeCompra': {
+					click: this.VerOrdenDeCompra
+				},	
+				'ListaOcView actioncolumn[itemId=eliminar]': {
+					click: this.EliminarOc
+				},	
+				'ListaOcView actioncolumn[itemId=detalle]': {
+					click: this.VerOrdenDetalle
+				},
+				'ListaOcView textfield[itemId=filtroProveedor]': {
+					keyup: this.FiltrarLista
+				},
 		});		
 	},
 	
@@ -80,6 +94,8 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 		var win = Ext.widget('OrdenCompraView');
 		var store = win.down('grid').getStore();
 		var desc = win.queryById('desc');
+
+		store.removeAll();
 		
 		win.queryById('buscaProveedor').focus('', 20);
 		//HOT KEY DE LA TABLA ORDEN DE COMPRA
@@ -173,6 +189,7 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 		
 		store.loadRawData(values, true);
 		form.getForm().reset();
+		win.focus();
 	},
 	
 	EliminarItem: function(btn){
@@ -274,6 +291,127 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 		}else{
 			tc.setValue("");
 		}
+	},
+
+	VerOrdenDeCompra: function(btn){
+		var win = Ext.widget('ListaOcView');
+		var grid = win.down('grid');
+		var store = grid.getStore();
+		var model = grid.getView();
+		var selectionModel = model.getSelectionModel();
+
+		store.clearFilter(true);
+		//EVENTO PARA SELECCIONAR UN ITEM AL POSIONAR EL MOUSE
+		model.on('highlightitem', function(view, node){
+			var domEl = new Ext.dom.Element(node);
+			selectionModel.deselectAll();
+			selectionModel.select(domEl.dom.rowIndex);			
+		});
+
+		//EVENTO PARA SACAR LA SELECCION DE LA GRILLA
+		model.on('itemmouseleave', function(view, node){
+			selectionModel.deselectAll();	
+		});
+
+		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
+		myMask.show();
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_compras_listarOrdenes'),
+			
+			success: function(resp){
+				myMask.hide();
+				var jsonResp = Ext.JSON.decode(resp.responseText);
+				store.loadRawData(jsonResp.data);		
+				win.queryById('filtroProveedor').focus('', 20);		
+			},
+
+			failure: function(resp){
+				myMask.hide();
+			}
+		});
+	},
+
+	EliminarOc: function(btn){
+		Ext.Msg.show({
+		     title:'Atención',
+		     msg: 'Desea eliminar la orden de compra?',
+		     buttons: Ext.Msg.YESNOCANCEL,
+		     icon: Ext.Msg.QUESTION,
+		     fn:function(opt){
+				if(opt == 'yes'){					
+					var win = btn.up('window');
+					var myMask = new Ext.LoadMask(win, {msg:"Aguarde..."});
+					var grid = win.down('grid');
+					var store = grid.getStore();
+					var selection = grid.getSelectionModel().getSelection()[0];
+					console.log(selection);
+					Ext.Ajax.request({
+						url: Routing.generate('mbp_compras_eliminarOrden'),
+						params: {
+							idOc: selection.data.idOc
+						},
+						success: function(resp){
+							myMask.hide();
+							store.remove(selection);
+						},
+						failure: function(resp){
+							myMask.hide();
+						}
+					});
+				}
+			}
+		});
+	},
+
+	VerOrdenDetalle: function(btn){
+		var win = btn.up('window');
+		var selection = win.down('grid').getSelectionModel().getSelection()[0];
+
+		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
+		myMask.show();
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_compras_reporteOrden'),
+
+			params: {
+				idOC: selection.data.idOc
+			},
+
+			success: function(resp){
+				console.log(resp);
+				myMask.hide();	
+				var jsonResp = Ext.JSON.decode(resp.responseText);
+				var ruta = Routing.generate('mbp_personal_verOC');
+				if(jsonResp.success == true){
+					var WinReporte=Ext.create('Ext.Window', {
+						  title: 'Orden de compra',
+						  width: 900,
+						  height: 600,
+						  layout: 'fit',
+						  modal:true,										
+						  html: '<iframe src='+ruta+' width="100%" height="100%"></iframe>'						  
+					 }).show();					 
+				}
+			},
+
+			failure: function(resp){
+				myMask.hide();
+			}
+		});
+	},
+
+	FiltrarLista: function(field, ev){
+		var store = field.up('window').down('grid').getStore();
+		var val = field.getValue();
+		//store.filter('proveedor', val);
+		store.clearFilter(true);
+		store.filter(
+			{property: 'proveedor',
+			value: val,
+			anyMatch: true}
+		);
+		//field.setValue(val);
+		console.log(store);
+		console.log(val);
 	}
 });
 

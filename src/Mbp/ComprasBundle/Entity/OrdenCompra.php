@@ -1,6 +1,7 @@
 <?php
 
 namespace Mbp\ComprasBundle\Entity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -49,6 +50,7 @@ class OrdenCompra
      * @var \DateTime
      *
      * @ORM\Column(name="fechaEmision", type="date")
+     * @Assert\DateTime()
      */
     private $fechaEmision;
 
@@ -82,7 +84,7 @@ class OrdenCompra
 
     /**
      * @var decimal
-     *
+     * 
      * @ORM\Column(name="descuentoGral", type="decimal", precision=5, scale=2)
      */
     private $descuentoGral;

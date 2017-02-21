@@ -84,7 +84,22 @@ class ComprasController extends Controller
 			$orden->setObservaciones($ordenData->observaciones);
 			$orden->setDescuentoGral($ordenData->descuentoGral);
 			
-			
+			//VALIDO LA ORDEN
+			$validador = $this->get('validator');
+			$errors = $validador->validate($orden); 
+			$arrayError = array();
+			foreach ($errors as $error) {
+				array_push($arrayError, $error->getMessage());
+			}
+
+
+			if(count($errors) > 0){
+				$response->setContent(
+					json_encode(array('success' => false, 'msg' => $arrayError))
+				);
+				$response->setStatusCode($response::HTTP_BAD_REQUEST);
+				return $response;				
+			}
 			
 			$em->persist($orden);
 			$em->flush();
@@ -106,5 +121,59 @@ class ComprasController extends Controller
 		}	
     }
 
+    /**
+     * @Route("/ordenCompra/listarOrdenes", name="mbp_compras_listarOrdenes", options={"expose"=true})
+     */
+    public function listarOrdenesaAction()
+    {
+    	$em = $this->getDoctrine()->getEntityManager();
+    	$response = new Response;
+		$repo = $em->getRepository('MbpComprasBundle:OrdenCompra');
+
+		try{
+			$data = $repo->createQueryBuilder('oc')
+				->select("oc.id idOc, p.rsocial proveedor, DATE_FORMAT(oc.fechaEmision, '%d/%m/%Y') fecha")
+				->join('oc.proveedorId', 'p')
+				->orderBy('fecha', 'DESC')
+				->getQuery()
+				->getResult();
+
+			return $response->setContent(
+				json_encode(array('success' => true, 'data'=>$data)) 
+			);
+		}catch(\Exception $e){
+			$response->setContent(
+				json_encode(array('success' => false, 'msg'=>$e->getMessage())) 
+			);
+			return $response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+    	}
+	}
     
+    /**
+     * @Route("/ordenCompra/eliminarOrden", name="mbp_compras_eliminarOrden", options={"expose"=true})
+     */
+    public function eliminarOrdenAction()
+    {
+    	$em = $this->getDoctrine()->getEntityManager();
+    	$response = new Response;
+    	$req = $this->getRequest();
+		$repo = $em->getRepository('MbpComprasBundle:OrdenCompra');
+
+		try{
+			$ocId = $req->request->get('idOc');
+			$orden = $repo->find($ocId);
+
+			$em->remove($orden);
+			$em->flush();			
+
+			return $response->setContent(
+				json_encode(array('success' => true)) 
+			);
+		}catch(\Exception $e){
+			$response->setContent(
+				json_encode(array('success' => false, 'msg'=>$e->getMessage())) 
+			);
+			return $response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+    	}
+	}
 }

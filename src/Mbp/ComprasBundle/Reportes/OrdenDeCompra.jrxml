@@ -3,7 +3,7 @@
 	<property name="ireport.zoom" value="1.6105100000000068"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="logo" class="java.lang.String"/>
+	<parameter name="rutaLogo" class="java.lang.String"/>
 	<parameter name="ordenId" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -114,8 +114,8 @@ $F{OrdenCompraDetalle_precio}: 0]]></variableExpression>
 	<pageHeader>
 		<band height="103">
 			<image onErrorType="Blank">
-				<reportElement x="0" y="0" width="122" height="72" uuid="499dc7ad-d1c3-4e56-89fe-62f346701eb1"/>
-				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+				<reportElement x="0" y="0" width="115" height="72" uuid="499dc7ad-d1c3-4e56-89fe-62f346701eb1"/>
+				<imageExpression><![CDATA[$P{rutaLogo}]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="124" y="0" width="143" height="20" uuid="6b62ef83-4fc2-4c84-b137-9017a666f84e"/>
