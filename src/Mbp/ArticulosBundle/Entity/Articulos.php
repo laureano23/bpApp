@@ -39,13 +39,23 @@ class Articulos
 	/**
      * @var string
      *
-     * @ORM\Column(name="unidad", type="string", length=25, nullable=false)
+     * @ORM\Column(name="unidad", type="string", length=25, nullable=true)
 	 * @Assert\NotNull()
 	 * @Assert\Length(
      *      max = 25
 	 * )
      */
     private $unidad;
+
+    /**
+     * @var string 
+     *
+     * @ORM\Column(name="presentacion", type="string", length=50, nullable=true)
+     * @Assert\Length(
+     *      max = 50
+     * )
+     */
+    private $presentacion;
 	
 	/**
      * @var decimal
@@ -82,7 +92,7 @@ class Articulos
 	/**
      * @var boolean
      *
-     * @ORM\Column(name="monedaPrecio", type="boolean")
+     * @ORM\Column(name="monedaPrecio", type="boolean", nullable=true)
 	 * @Assert\Range(
      *      min = 0,
      *      max = 1
@@ -93,13 +103,28 @@ class Articulos
 	/**
      * @var decimal
      *
-     * @ORM\Column(name="precio", type="decimal", precision=11, scale=4, nullable=false)
+     * @ORM\Column(name="precio", type="decimal", precision=11, scale=4, nullable=true)
 	 * @Assert\Range(
      *      min = 0,
 	 * )
      */
     private $precio=0;
 
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="utilidadPretendida", type="decimal", precision=6, scale=2, nullable=true)
+     */
+    private $utilidadPretendida=0;
+
+    /**
+     * @var date
+     *
+     * @ORM\Column(name="fechaPrecio", type="date", nullable=true)
+     * @Assert\DateTime()
+     */
+    private $fechaPrecio; 
+ 
     /** 
      * @var integer
      *
@@ -109,11 +134,11 @@ class Articulos
      */
     private $id;
 	
-	/**
+	/** 
      * @var \Mbp\ArticulosBundle\Entity\Familia
      *
      * @ORM\ManyToOne(targetEntity="Mbp\ArticulosBundle\Entity\Familia")
-     * @ORM\JoinColumn(name="familiaId", referencedColumnName="id", unique=false)	 
+     * @ORM\JoinColumn(name="familiaId", referencedColumnName="id", unique=false, nullable=true)	 
      */
     private $familiaId;
 	
@@ -121,7 +146,7 @@ class Articulos
      * @var \Mbp\ArticulosBundle\Entity\SubFamilia
      *
      * @ORM\ManyToOne(targetEntity="Mbp\ArticulosBundle\Entity\SubFamilia")
-     * @ORM\JoinColumn(name="subFamiliaId", referencedColumnName="id", unique=false)	 
+     * @ORM\JoinColumn(name="subFamiliaId", referencedColumnName="id", unique=false, nullable=true)	 
      */
     private $subFamiliaId;
 
@@ -401,5 +426,77 @@ class Articulos
     public function getStock()
     {
         return $this->stock;
+    }
+
+    /**
+     * Set fechaPrecio
+     *
+     * @param \DateTime $fechaPrecio
+     *
+     * @return Articulos
+     */
+    public function setFechaPrecio($fechaPrecio)
+    {
+        $this->fechaPrecio = $fechaPrecio;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaPrecio
+     *
+     * @return \DateTime
+     */
+    public function getFechaPrecio()
+    {
+        return $this->fechaPrecio;
+    }
+
+    /**
+     * Set presentacion
+     *
+     * @param string $presentacion
+     *
+     * @return Articulos
+     */
+    public function setPresentacion($presentacion)
+    {
+        $this->presentacion = $presentacion;
+
+        return $this;
+    }
+
+    /**
+     * Get presentacion
+     *
+     * @return string
+     */
+    public function getPresentacion()
+    {
+        return $this->presentacion;
+    }
+
+    /**
+     * Set utilidadPretendida
+     *
+     * @param string $utilidadPretendida
+     *
+     * @return Articulos
+     */
+    public function setUtilidadPretendida($utilidadPretendida)
+    {
+        $this->utilidadPretendida = $utilidadPretendida;
+
+        return $this;
+    }
+
+    /**
+     * Get utilidadPretendida
+     *
+     * @return string
+     */
+    public function getUtilidadPretendida()
+    {
+        return $this->utilidadPretendida;
     }
 }

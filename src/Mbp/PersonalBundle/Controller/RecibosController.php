@@ -189,7 +189,7 @@ class RecibosController extends Controller
 		$empleado = $repoEmpleado->find($this->idP);
 		
 		//CUANDO LIQUIDO PREMIOS NO CALCULO ANTIGUEDAD
-		if($this->periodo == 7){
+		if($this->periodo == 7 || $this->periodo == 8){
 			return null;
 		}
 		

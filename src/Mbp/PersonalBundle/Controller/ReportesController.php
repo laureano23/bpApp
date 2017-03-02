@@ -563,16 +563,18 @@ class ReportesController extends Controller
 		     SUM(CASE WHEN  Recibos.`periodo` = 5 AND Recibos.`compensatorio` = 1 THEN RecibosDetalle.`remunerativo` + RecibosDetalle.`exento` - RecibosDetalle.`descuento` ELSE 0 END) AS SAC_N,
 		     SUM(CASE WHEN  Recibos.`periodo` = 6 AND Recibos.`compensatorio` = 0 THEN RecibosDetalle.`remunerativo` + RecibosDetalle.`exento` - RecibosDetalle.`descuento` ELSE 0 END) AS variosPrimerQuincenaB,
 		     SUM(CASE WHEN  Recibos.`periodo` = 6 AND Recibos.`compensatorio` = 1 THEN RecibosDetalle.`remunerativo` + RecibosDetalle.`exento` - RecibosDetalle.`descuento` ELSE 0 END) AS variosPrimerQuincenaN,
-		     SUM(CASE WHEN  Recibos.`periodo` = 7 AND Recibos.`compensatorio` = 0 THEN RecibosDetalle.`remunerativo` + RecibosDetalle.`exento` - RecibosDetalle.`descuento` ELSE 0 END) AS variosSegundaQuincenaB,
-		     SUM(CASE WHEN  Recibos.`periodo` = 7 AND Recibos.`compensatorio` = 1 THEN RecibosDetalle.`remunerativo` + RecibosDetalle.`exento` - RecibosDetalle.`descuento` ELSE 0 END) AS variosSegundaQuincenaN
-			FROM
-			     `Recibos` Recibos INNER JOIN `recibo_detallesRecibos` recibo_detallesRecibos ON Recibos.`id` = recibo_detallesRecibos.`recibo_id`
-			     INNER JOIN `RecibosPersonal` RecibosPersonal ON Recibos.`id` = RecibosPersonal.`recibos_id`
-			     INNER JOIN `Personal` Personal ON RecibosPersonal.`personal_id` = Personal.`idP`
-			     INNER JOIN `RecibosDetalle` RecibosDetalle ON recibo_detallesRecibos.`recibosdetalle_id` = RecibosDetalle.`id`
-			WHERE Recibos.`mes` = $mes
-			AND Recibos.`anio` = $anio
-			GROUP BY Personal.`idP`
+		     SUM(CASE WHEN  Recibos.`periodo` = 7 AND Recibos.`compensatorio` = 0 THEN RecibosDetalle.`remunerativo` + RecibosDetalle.`exento` - RecibosDetalle.`descuento` ELSE 0 END) AS premiosPrimerQuincenaB,
+		     SUM(CASE WHEN  Recibos.`periodo` = 7 AND Recibos.`compensatorio` = 1 THEN RecibosDetalle.`remunerativo` + RecibosDetalle.`exento` - RecibosDetalle.`descuento` ELSE 0 END) AS premiosPrimerQuincenaN,
+		     SUM(CASE WHEN  Recibos.`periodo` = 8 AND Recibos.`compensatorio` = 0 THEN RecibosDetalle.`remunerativo` + RecibosDetalle.`exento` - RecibosDetalle.`descuento` ELSE 0 END) AS premiosSegundaQuincenaB,
+		     SUM(CASE WHEN  Recibos.`periodo` = 8 AND Recibos.`compensatorio` = 1 THEN RecibosDetalle.`remunerativo` + RecibosDetalle.`exento` - RecibosDetalle.`descuento` ELSE 0 END) AS premiosSegundaQuincenaN
+		FROM
+		     `Recibos` Recibos INNER JOIN `recibo_detallesRecibos` recibo_detallesRecibos ON Recibos.`id` = recibo_detallesRecibos.`recibo_id`
+		     INNER JOIN `RecibosPersonal` RecibosPersonal ON Recibos.`id` = RecibosPersonal.`recibos_id`
+		     INNER JOIN `Personal` Personal ON RecibosPersonal.`personal_id` = Personal.`idP`
+		     INNER JOIN `RecibosDetalle` RecibosDetalle ON recibo_detallesRecibos.`recibosdetalle_id` = RecibosDetalle.`id`
+		WHERE Recibos.`mes` = $mes
+		AND Recibos.`anio` = $anio
+		GROUP BY Personal.`idP`
 		";
 
 		$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());

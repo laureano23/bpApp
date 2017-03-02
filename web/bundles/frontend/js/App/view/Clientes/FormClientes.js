@@ -360,11 +360,6 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 									},
 									items: [
 										{
-											xtype: 'checkbox',
-											name: 'aplicaPercepcion',
-											fieldLabel: 'Aplica:'
-										},
-										{
 											xtype: 'numberfield',
 											name: 'netoPercepcion',
 											fieldLabel: 'Neto mayor a:'

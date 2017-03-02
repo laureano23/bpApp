@@ -16,7 +16,7 @@ class ClienteRepository extends  EntityRepository
 							c.email,
 							c.cuit,
 							c.cPostal,
-							c.iva,
+							i.id as iva,
 							c.telefono1,
 							c.contacto1,
 							c.telefono2,
@@ -27,7 +27,6 @@ class ClienteRepository extends  EntityRepository
 							c.vencimientoFc,
 							c.netoPercepcion,
 							c.porcentajePercepcion,
-							c.aplicaPercepcion,
 							c.cuentaCerrada,
 							prov.id as provincia,
 							loc.id as localidad')
@@ -35,6 +34,7 @@ class ClienteRepository extends  EntityRepository
 		    ->where($qb->expr()->like('c.rsocial', $qb->expr()->literal($q.'%')))
 			->leftjoin('c.provincia', 'prov')
 			->leftjoin('c.localidad', 'loc')
+			->leftjoin('c.iva', 'i')
 		    ->getQuery()
 		    ->getArrayResult();
 		echo json_encode($res);

@@ -79,9 +79,9 @@ class Cliente
     private $cPostal;
     
     /**
-     * @var string
-     *
-     * @ORM\Column(name="iva", type="string", length=250, nullable=true)
+     * @var \Mbp\FinanzasBundle\Entity\PosicionIVA
+     * @ORM\ManyToOne(targetEntity="Mbp\FinanzasBundle\Entity\PosicionIVA")
+     * @ORM\JoinColumn(name="iva", referencedColumnName="id", nullable=true)
      */
     private $iva;
     
@@ -140,13 +140,6 @@ class Cliente
      * @ORM\Column(name="vencimientoFc", type="integer", nullable=true)
      */
     private $vencimientoFc;
-	
-	/**
-     * @var boolean
-     *
-     * @ORM\Column(name="aplicaPercepcion", type="boolean", nullable=true)
-     */
-    private $aplicaPercepcion;
     
     /**
      * @var integer
@@ -615,30 +608,6 @@ class Cliente
     public function getPorcentajePercepcion()
     {
         return $this->porcentajePercepcion;
-    }
-
-    /**
-     * Set aplicaPercepcion
-     *
-     * @param boolean $aplicaPercepcion
-     *
-     * @return Cliente
-     */
-    public function setAplicaPercepcion($aplicaPercepcion)
-    {
-        $this->aplicaPercepcion = $aplicaPercepcion;
-
-        return $this;
-    }
-
-    /**
-     * Get aplicaPercepcion
-     *
-     * @return boolean
-     */
-    public function getAplicaPercepcion()
-    {
-        return $this->aplicaPercepcion;
     }
 
     /**

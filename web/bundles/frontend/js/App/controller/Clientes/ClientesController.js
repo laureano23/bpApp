@@ -97,9 +97,7 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 			var store = grid.getStore();
 			var selection = grid.getSelectionModel().getSelection()[0];
 			
-			
 			var rec = store.findRecord('id', selection.data.id);
-			console.log(selection);
 			var form = Ext.ComponentQuery.query('#clientesTb')[0].down('form');
 			form.loadRecord(rec);
 			win.close();
@@ -132,6 +130,7 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 	},
 	
 	SaveCliente: function(btn){
+		var botonera = btn.up('window').queryById('botonera');
 		form = btn.up('form');
 		values = form.getForm().getValues();
 		
@@ -145,6 +144,7 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 						form.query('.field').forEach(function(c){c.setDisabled(true);});
 						form.queryById('id').setValue(jsonResp.id);
 					}
+					botonera.guardarItem(botonera);
 				},
 				
 				failure: ''
