@@ -108,6 +108,8 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			selectionModel.deselectAll();
 			selectionModel.select(domEl.dom.rowIndex);			
 		});
+
+		win.queryById('buscaCliente').focus('', 20);
 	},
 	
 	AddTablaClientes: function(btn){
@@ -141,35 +143,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 	AddNuevoFactura: function(btn){
 		var me = this;
 		var winFact = Ext.create('MetApp.view.CCClientes.Facturacion');
-		var store = winFact.down('grid').getStore();		
-		
-		//HOT KEY DE LA TABLA FACTURACION
-		var map = new Ext.util.KeyMap({
-		    target: winFact.getId(),	
-		   	binding: [
-		   		{
-		   			key: Ext.EventObject.F1,
-		   			defaultEventAction: 'preventDefault',
-		   			fn: function(){ 
-		   				me.EditaArticulo(winFact.queryById('btnEdit'));
-		   			}
-		   		},
-		   		{
-		   			key: Ext.EventObject.F3,
-		   			defaultEventAction: 'preventDefault',
-		   			fn: function(){
-		   				me.InsertaArticulo(winFact.queryById('btnNew'));
-		   			}
-		   		},
-		   		{
-		   			key: Ext.EventObject.F8,
-		   			defaultEventAction: 'preventDefault',
-		   			fn: function(){ 
-		   				me.BorraArticulo(winFact.queryById('btnDelete'));
-		   			}
-		   		},
-		   	]
-		});	
+		var store = winFact.down('grid').getStore();	
 		
 		var subTotal=0;
 		
@@ -199,6 +173,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			}
 		});	
 		
+		winFact.queryById('buscarArt').focus('', 20);
 	},
 	
 	DetalleComprobante: function(btn){				
@@ -425,6 +400,15 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var grid = win.down('grid');
 		var store = grid.getStore();
 		var selection = grid.getSelectionModel().getSelection()[0];
+		if(!selection){
+			Ext.Msg.show({
+			     title:'Atencion',
+			     msg: 'Debe seleccionar un elemento de la grilla',
+			     buttons: Ext.Msg.OK,
+			     icon: Ext.Msg.WARNING
+			});
+			return;
+		}
 		var form = win.down('form');
 		store.remove(selection);
 		form.loadRecord(selection);
@@ -440,6 +424,15 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var grid = win.down('grid');
 		var store = grid.getStore();
 		var selection = grid.getSelectionModel().getSelection()[0];
+		if(!selection){
+			Ext.Msg.show({
+			     title:'Atencion',
+			     msg: 'Debe seleccionar un elemento de la grilla',
+			     buttons: Ext.Msg.OK,
+			     icon: Ext.Msg.WARNING
+			});
+			return;
+		}
 		store.remove(selection);
 	},
 	

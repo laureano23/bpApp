@@ -23,7 +23,7 @@ class AuxiliarFinanzas extends Controller
 				$pagado = $data[$j][$debe] + $pagado;
 				$neto = $data[$j][$haber] + $neto;
 			}
-			$data[$i]['saldo'] = $neto - $pagado;
+			$data[$i]['saldo'] = number_format($neto - $pagado, 2);
 			$pagado = 0;
 			$neto = 0;
 		}

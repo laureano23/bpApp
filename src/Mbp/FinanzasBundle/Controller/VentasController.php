@@ -210,15 +210,19 @@ class VentasController extends Controller
 			
 			$repoFinanzas = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
 			$parametrosFinanzas = $repoFinanzas->find(1);
-
-			//\Doctrine\Common\Util\Debug::dump($cliente);
-
-			//exit();
+			
+			if($cliente->getLocalidad() == NULL || $cliente->getLocalidad()->getDepartamentoId()->getProvinciaId() == NULL){
+				throw new \Exception("El cliente debe tener cargados localidad y provincia para calcular IIBB", 1);				
+			}
 			
 			if($cliente->getLocalidad()->getDepartamentoId()->getProvinciaId()->getId() == $parametrosFinanzas->getProvincia()->getId() && $alicuotaPercepcion > 0){
 				$percepcionIIBB = $netoGrabado * $alicuotaPercepcion; 
 			}	
 
+
+			//REDONDEO IMPORTES A 2 DECIMALES
+			$netoGrabado = number_format($netoGrabado, 2);
+			$ivaLiquidado = number_format($ivaLiquidado, 2);
 
 			$regfe['CbteTipo']=$decodefcData->tipo;
 			$regfe['Concepto']=1;//ESTE DATO DEBE VENIR DEL CLIENTE 1=PRODUCTOS, 2=SERVICIOS, 3=PRODUCTOS Y SERVICIOS
@@ -273,7 +277,7 @@ class VentasController extends Controller
 			$factura->setDomicilio($cliente->getDireccion());
 			$factura->setLocalidad($cliente->getLocalidad()->getNombre());
 			$factura->setCuit($cliente->getCuit());
-			$factura->setIvaCond($cliente->getIva());
+			$factura->setIvaCond($cliente->getIva()->getPosicion());
 			$factura->setCondVta($cliente->getCondVenta()); 
 			$factura->setFcNro($ultimoComp['nro'] + 1);
 			//$factura->setRtoNro(); COMPLETAR LOGICA PARA VINCULAR REMITO

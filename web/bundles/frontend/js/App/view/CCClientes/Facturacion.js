@@ -8,6 +8,49 @@ Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 	itemId: 'facturacion',
 	title: 'Facturacion',
 	layout: 'border',
+	listeners: {
+		afterrender: {
+			fn: function(win){				
+				var map = new Ext.util.KeyMap({
+				    target: win.getId(),	
+				   	binding: [
+				   		{
+				   			key: Ext.EventObject.F1,
+				   			defaultEventAction: 'preventDefault',
+				   			fn: function(){ 
+				   				var btnEdit = win.queryById('btnEdit');
+				   				btnEdit.fireEvent('click', btnEdit);
+				   			}
+				   		},
+				   		{
+				   			key: Ext.EventObject.F3,
+				   			defaultEventAction: 'preventDefault',
+				   			fn: function(){
+				   				var btnNew = win.queryById('btnNew');
+				   				btnNew.fireEvent('click', btnNew);
+				   			}
+				   		},
+				   		{
+				   			key: Ext.EventObject.F8,
+				   			defaultEventAction: 'preventDefault',
+				   			fn: function(){ 
+				   				var btnDelete = win.queryById('btnDelete');
+				   				btnDelete.fireEvent('click', btnDelete);
+				   			}
+				   		},
+				   		{
+				   			key: Ext.EventObject.F5,
+				   			defaultEventAction: 'preventDefault',
+				   			fn: function(){ 
+				   				var btnSave = win.queryById('btnSave');
+				   				btnSave.fireEvent('click', btnSave);
+				   			}
+				   		},
+				   	]
+				});	
+			}
+		}
+	},
 		
 	initComponent: function(){
 		var me = this;
@@ -226,8 +269,8 @@ Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 						{
 							xtype: 'button',
 							itemId: 'btnSave',
-							text: 'Guardar',
-							width: 80,
+							text: 'Guardar (F5)',
+							width: 90,
 							height: 50,
 							margins: '5 5 5 5'
 						}						

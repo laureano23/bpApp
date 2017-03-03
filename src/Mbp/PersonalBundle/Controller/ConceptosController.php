@@ -9,36 +9,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class ConceptosController extends Controller
 {
-
-	/**
-     * @Route("/borrarAntiguedad", name="mbp_personal_borrarAntiguedad", options={"expose"=true})
-     */
-    public function borrarAntiguedadAction()
-	{
-		$em = $this->getDoctrine()->getManager(); 
-		$req = $this->getRequest();
-		$repo = $em->getRepository('MbpPersonalBundle:Recibos');
-		$repoDetalle = $em->getRepository('MbpPersonalBundle:RecibosDetalle');
-		
-		$res = $repo->createQueryBuilder('r')
-			->select('rd')
-			->join('r.reciboDetalleId', 'd')
-			->join('d.codigoSueldos', 'cod')
-			->where('cod.id = :cod')
-			->andWhere('r.periodo = :per')
-			->setParameter('cod', 5)
-			->setParameter('per', 8)
-			->getQuery()
-			->getResult();
-
-			//var_dump($res);
-
-		\Doctrine\Common\Util\Debug::dump($user);
-
-		
-		return new Response();
-	}
-
 	/**
      * @Route("/conceptosRead", name="mbp_personal_conceptosRead", options={"expose"=true})
      */

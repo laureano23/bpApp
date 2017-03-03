@@ -94,18 +94,15 @@ class wsfev1 {
 	//asigna error a variable
 	if ($method == 'FECAESolicitar' && property_exists($results->$XXX->FeDetResp->FECAEDetResponse, 'Observaciones')) {
 		
-		foreach ($results->$XXX->FeDetResp->FECAEDetResponse->Observaciones as $obs) {
-			array_push($this->Code, $obs->Code);
-			array_push($this->Msg, $obs->Msg);
+		if(is_array($results->$XXX->FeDetResp->FECAEDetResponse->Observaciones->Obs)){
+			foreach ($results->$XXX->FeDetResp->FECAEDetResponse->Observaciones->Obs as $obs) {
+				array_push($this->Code, $obs->Code);
+				array_push($this->Msg, $obs->Msg);
+			}	
+		}else{
+			array_push($this->Code, $results->$XXX->FeDetResp->FECAEDetResponse->Observaciones->Obs->Code);
+			array_push($this->Msg, $results->$XXX->FeDetResp->FECAEDetResponse->Observaciones->Obs->Msg);
 		}
-	/*	if ($results->$XXX->FeDetResp->FECAEDetResponse->Observaciones->Obs->Code){	
-			
-		}*/
-		
-		//if ($results->$XXX->FeDetResp->FECAEDetResponse->Observaciones->Obs[0]->Code){	
-		//	$this->ObsCode = $results->$XXX->FeDetResp->FECAEDetResponse->Observaciones->Obs[0]->Code;
-		//	$this->ObsMsg = $results->$XXX->FeDetResp->FECAEDetResponse->Observaciones->Obs[0]->Msg;
-		//}		
 	}
 	
 	

@@ -8,9 +8,44 @@ Ext.define('MetApp.view.CCClientes.CCClientes' ,{
 	itemId: 'CCClientes',
 	title: 'Cuenta corriente clientes',
 	layout: 'border',
+	listeners: {
+		afterrender: {
+			fn: function(win){				
+				var map = new Ext.util.KeyMap({
+				    target: this.getId(),	
+				   	binding: [
+				   		{
+				   			key: Ext.EventObject.F3,
+				   			defaultEventAction: 'preventDefault',
+				   			fn: function(){ 
+				   				win.queryById('nuevaFc').fireEvent('click');
+				   			}
+				   		},
+				   		{
+				   			key: Ext.EventObject.F4,
+				   			defaultEventAction: 'preventDefault',
+				   			fn: function(){ 
+				   				win.queryById('nuevoCobro').fireEvent('click');
+				   			}
+				   		},
+				   		{
+				   			key: Ext.EventObject.F5,
+				   			defaultEventAction: 'preventDefault',
+				   			fn: function(){ 
+				   				win.queryById('notas').fireEvent('click');
+				   			}
+				   		},
+				   	]
+				});	
+			}
+		}
+	},
 	
 	initComponent: function(){
 		var me = this;
+		
+		
+
 		Ext.applyIf(me,{
 			items: [
 				{
@@ -123,9 +158,13 @@ Ext.define('MetApp.view.CCClientes.CCClientes' ,{
 								header: 'Eliminar',
 								itemId: 'eliminar',
 								xtype: 'actioncolumn',
-								items: [
-									{ iconCls: 'delete' }										
-								] 
+								renderer: function(val, met, rec){
+									if(rec.data.concepto != "FA"){
+										this.items[0].iconCls = 'delete';
+									}else{
+										this.disabledAction(rec.index);
+									}
+								}
 							},
 							{ text: 'tipo', dataIndex: 'tipo', hidden: true }
 						]
@@ -139,28 +178,25 @@ Ext.define('MetApp.view.CCClientes.CCClientes' ,{
 					region: 'south',
 					layout: 'hbox',
 					defaults: {
-						margins: '5 0 5 5'
+						margins: '5 0 5 5',
+						width: 80,
+						height: 80
 					},
 					items: [
 						{
 							xtype: 'button',
 							itemId: 'nuevaFc',
-							height: 80,
-							width: 60,
-							text: 'Comp.',
+							text: 'Comp. (F3)',
 						},
 						{
 							xtype: 'button',
 							itemId: 'nuevoCobro',
-							height: 80,
-							width: 60,
-							text: 'Cobro',
+							text: 'Cobro (F4)',
 						},
 						{
 							xtype: 'button',
-							height: 80,
-							width: 60,
-							text: 'Notas',
+							itemId: 'notas',
+							text: 'Notas (F5)',
 						}
 					]
 				}

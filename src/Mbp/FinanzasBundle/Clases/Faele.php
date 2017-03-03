@@ -78,10 +78,9 @@ class Faele
 	{
 		$nro = $this->wsfev1->FECompUltimoAutorizado($this->ptoVta, $tipoCbte);
 		
-		if($nro === FALSE){ return array(
-			'success' => false,
-			'msg'=> $this->wsfev1->Msg
-			);
+		if($nro == false){ 
+			$msg = $this->wsfev1->Msg;
+			throw new \Exception($msg[0], 1);			
 		}
 		else{
 			return array(
