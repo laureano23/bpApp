@@ -43,6 +43,10 @@
 	background-color : #F2F2F2;
 }
 
+.x-panel-body-default-framed {
+	background-color: #F2F2F2;
+}
+
 .x-grid-row .custom-column { 
     background-color: #bcfcd8; 
     color: black; 
