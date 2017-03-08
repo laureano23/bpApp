@@ -3,22 +3,20 @@ namespace Mbp\FinanzasBundle\Clases;
 use Mbp\FinanzasBundle\Clases\wsaa;
 use Mbp\FinanzasBundle\Clases\wsfev1;
 
-class Faele
+class Faele extends wsfev1
 {
 	private $wsaa;
-	protected $wsfev1;
 	public $docTipo;
 	public $ptoVta;
 	
 	public function __construct($ptoVta, $docTipo){
+		parent::__construct();
 		$this->docTipo = $docTipo;
 		$this->ptoVta = $ptoVta;	
-		$this->wsaa = new wsaa(); 
-		$this->wsfev1 = new wsfev1();
-		
+		$this->wsaa = new wsaa(); 		
 
 		// Carga el archivo TA.xml
-		if($this->wsfev1->openTA() == false) return array(
+		if($this->openTA() == false) return array(
 			'success' => false,
 			'msg' => 'Error al abrir el ticket xml TA'
 		);
@@ -55,7 +53,7 @@ class Faele
 		$nro = $nro['nro'];
 		$nro++;
 				
-		$cae = $this->wsfev1->FECAESolicitar($nro, // ultimo numero de comprobante autorizado mas uno 
+		$cae = $this->FECAESolicitar($nro, // ultimo numero de comprobante autorizado mas uno 
                 $this->ptoVta,  // el punto de venta
                 $regfe, // los datos a facturar
 				$regfeasoc,
@@ -76,10 +74,10 @@ class Faele
 	//OBTIENE EL ULTIMO NUMERO DE COMPROBANTE AUTOIRIZADO, POR ERROR DEVUELVE FALSE
 	public function ultimoNroComp($tipoCbte)
 	{
-		$nro = $this->wsfev1->FECompUltimoAutorizado($this->ptoVta, $tipoCbte);
+		$nro = $this->FECompUltimoAutorizado($this->ptoVta, $tipoCbte);
 		
 		if($nro == false){ 
-			$msg = $this->wsfev1->Msg;
+			$msg = $this->Msg;
 			throw new \Exception($msg[0], 1);			
 		}
 		else{
@@ -88,11 +86,5 @@ class Faele
 				'nro' => $nro
 			);
 		}
-	}
-
-	//OBTIENE LOS TIPOS DE COMPROBANTE
-	public function getTiposCbte()
-	{
-		return $this->wsfev1->FEParamGetTiposCbte();
-	}
+	}	
 }

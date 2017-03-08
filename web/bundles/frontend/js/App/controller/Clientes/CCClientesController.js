@@ -6,7 +6,8 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 	stores: [
 		'MetApp.store.Finanzas.CCClientesStore',
 		'MetApp.store.Finanzas.GrillaFacturacionStore',
-		'MetApp.store.Finanzas.TiposPagoStore'
+		'MetApp.store.Finanzas.TiposPagoStore',
+		'Finanzas.GridImputaFcStore'
 	],
 	views: [
 		'CCClientes.CCClientes',
@@ -76,12 +77,15 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			'cobranza button[itemId=btnDelete]': {
 				click: this.EliminaItemCob
 			},
-			'cobranza button[itemId=guardar]': {
+			'cobranza button[itemId=btnSave]': {
 				click: this.GuardarCobranza
 			},
 			'cobranza numberfield[itemId=reciboNum]': {
 				blur: this.ValidarRecibo
 			},
+			'cobranza button[itemId=imputar]': {
+				click: this.ImputarFacturas
+			}
 		});
 	},
 	
@@ -437,6 +441,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 	},
 	
 	GuardarFactura: function(btn){
+		var me = this;
 		var win = btn.up('window');
 		var grid = win.down('grid');
 		var store = grid.getStore();
@@ -444,6 +449,9 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var formDatosFc = win.down('form[itemId=datosFc]')
 		var valuesDatosFc = formDatosFc.getValues();
 		var ccView = this.getCCClientes();
+
+		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
+		myMask.show();
 		
 		if(store.data.items.length == 0){
 			Ext.Msg.show({
@@ -486,18 +494,22 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 					store.removeAll();
 					var storeCC = ccView.down('grid').getStore();
 					storeCC.load();
+					win.close();
+					var btnCC = ccView.queryById('nuevaFc');
+					me.DetalleComprobante(btnCC);
 				}
+				myMask.hide();
 			},
 			
 			failure: function(resp){
 				var decodeResp = Ext.JSON.decode(resp.responseText);
+				myMask.hide();
 				Ext.Msg.show({
 				    title:'Atencion',
 				    msg: 'Codigo: '+decodeResp.msg.code+'<br/>Error: '+decodeResp.msg.msg,
 				    buttons: Ext.Msg.OK,
 				    icon: Ext.Msg.INFO
 				});
-				console.log(resp);
 			}
 		});
 	},
@@ -507,9 +519,11 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var grid = winCobranza.down('grid');
 		var store = grid.getStore();
 		var me = this;
+		var total = winCobranza.queryById('totalImputado');
+		//total.setValue(12);
 		
 		
-		store.loadData([], false);
+		//store.loadData([], false);
 		//HOT KEY DE LA TABLA FACTURACION
 		var map = new Ext.util.KeyMap({
 		    target: winCobranza.getId(),	
@@ -535,8 +549,26 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		   				me.EliminaItemCob(winCobranza.queryById('btnDelete'));
 		   			}
 		   		},
+		   		{
+		   			key: Ext.EventObject.F5,
+		   			defaultEventAction: 'preventDefault',
+		   			fn: function(){ 
+		   				me.GuardarCobranza(winCobranza.queryById('guardar'));
+		   			}
+		   		},
 		   	]
 		});	
+
+		//LISTENER PARA CALCULAR EL IMPORTE TOTAL A COBRAR
+		store.on('datachanged', function(st, opts){
+			total.setValue(0);
+			var totalAPagar = total.getValue();
+			store.each(function(rec){
+				total = total + rec.data.importe;
+			});	
+			total.setValue(total);
+		});
+		
 	},
 	
 	NuevoItemCob: function(btn){
@@ -649,6 +681,30 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			}
 		});
 		
+	},
+
+	ImputarFacturas: function(btn){
+		var winCobranza = btn.up('window');
+		var grillaImputacion = winCobranza.queryById('gridImputaFc');
+		var winCC = this.getCCClientes();
+
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_CCClientes_ListarFcParaImputar'),
+
+			params: {
+				idCliente: winCC.queryById('id').getValue()
+			},
+
+			success: function(resp){
+				var jsonResp = Ext.JSON.decode(resp.responseText);
+				grillaImputacion.getStore().loadData(jsonResp.items);
+				console.log(resp);
+			},
+
+			failure: function(resp){
+
+			}
+		});
 	}
 })
 

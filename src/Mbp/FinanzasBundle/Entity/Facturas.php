@@ -16,7 +16,7 @@ class Facturas
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="integer") 
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -26,7 +26,7 @@ class Facturas
      * @var \DateTime
      *
      * @ORM\Column(name="fecha", type="datetime")
-	 * @Assert\NotNull()
+	 * @Assert\NotNull() 
      */
     private $fecha;
 	
@@ -120,6 +120,13 @@ class Facturas
      * @ORM\Column(name="iva21", type="decimal", precision=9, scale=2)
      */
     private $iva21=0;
+
+    /**
+     * @var \Decimal
+     *
+     * @ORM\Column(name="total", type="decimal", precision=11, scale=2)
+     */
+    private $total=0;
 
     /**
      * @ORM\Column(name="rSocial", type="string", length=250)
@@ -668,5 +675,29 @@ class Facturas
     public function getFcNro()
     {
         return $this->fcNro;
+    }
+
+    /**
+     * Set total
+     *
+     * @param string $total
+     *
+     * @return Facturas
+     */
+    public function setTotal($total)
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
+    /**
+     * Get total
+     *
+     * @return string
+     */
+    public function getTotal()
+    {
+        return $this->total;
     }
 }

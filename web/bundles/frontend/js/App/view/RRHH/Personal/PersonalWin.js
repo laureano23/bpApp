@@ -67,7 +67,9 @@ Ext.define('MetApp.view.RRHH.Personal.PersonalWin',{
 									xtype: 'container',
 									border: false,
 									itemId: 'btnDatosFijos',
-									//padding: '0 5 0 5',
+									defaults: {
+										margins: '0 0 0 5',	
+									},									
 									layout: 'vbox',		
 									items: [btnDatosFijos]
 								}		

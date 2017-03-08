@@ -1,5 +1,4 @@
 <?php
-
 namespace Mbp\FinanzasBundle\Entity;
 
 /**
@@ -61,9 +60,60 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 			print_r($resulFacturas);
 			
 		}catch(\Exception $e){
-			\Doctrine\Common\Util\Debug::dump($e);
-			return false;
 			$this->get('logger')->error($e->getMessage());
+			return false;			
 		}	
+	}
+
+	public function ListarFcParaImputar($idCliente)
+	{
+		$em = $this->getEntityManager();
+		$repoFacturas = $em->getRepository('MbpFinanzasBundle:Facturas');
+		$repoTrans = $em->getRepository('MbpFinanzasBundle:TransaccionCobranzaFactura');
+
+		try{
+			$qbFacturas = $repoFacturas->createQueryBuilder('f')
+				->select('')
+				->where('f.clienteId = :idCliente')
+				->setParameter('idCliente', $idCliente)
+				->getQuery();
+			$res = $qbFacturas->getResult();
+
+			$qb2 = $repoTrans->createQueryBuilder('t');			
+			$query2 = $qb2->select('fc.id, SUM(t.aplicado) AS aplicado')
+					->join('t.facturaImputada', 'fc')
+					->where('fc.clienteId = :idCliente')
+					->groupBy('t.facturaImputada')
+					->setParameter('idCliente',$idCliente)
+					->getQuery();
+			$res2 = $query2->getResult();
+
+			$i=0;
+			$resp = array();
+			foreach ($res as $rec) {
+				$resp[$i]['id'] = $rec->getId();				
+				$resp[$i]['fechaEmision'] = $rec->getFecha()->format('d-m-Y H:i:s');
+				$resp[$i]['concepto'] = "FACTURA N° ".$rec->getfcNro();
+				$resp[$i]['numFc'] = $rec->getfcNro();
+				$resp[$i]['vencimiento'] = $rec->getvencimiento()->format('d/m/Y');
+				$resp[$i]['haber'] = $rec->getTotal();								
+				$resp[$i]['pendiente'] = 0;
+				$i++;
+			}
+
+			for($i=0; $i<count($res2); $i++){
+				for ($j=0; $j < count($res); $j++) { 
+					if(array_key_exists($i, $res2) && $res2[$i]['id'] == $res[$j]->getId()){					
+						$resp[$j]['valorAplicado'] = $res2[$i]['aplicado'];									
+					}
+				}
+			}
+
+			return $resp;
+
+
+		}catch(\Exception $e){
+			throw $e;			
+		}
 	}
 }

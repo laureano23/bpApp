@@ -32,7 +32,7 @@ Ext.define('MetApp.view.Proveedores.SearchGridProveedores', {
 				    	cellkeydown: function(cell, td, cellIndex, record, tr, rowIndex, e, eOpts ){
 					    	if(e.button == 12){
 								var button = Ext.ComponentQuery.query('#insertProveedor')[0];
-								button.fireEvent('click');
+								button.fireEvent('click', button);
 							}
 						}
 				    },

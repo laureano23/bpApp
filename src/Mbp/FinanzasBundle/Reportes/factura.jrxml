@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b7fbe4cc-9642-4a30-b319-1f1509ec7bd0">
 	<property name="ireport.zoom" value="1.7715610000000044"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="369"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="rutaLogo" class="java.lang.String"/>
 	<parameter name="facturaId" class="java.lang.String">
@@ -533,19 +533,6 @@ $F{Facturas_tipo} == 3 ? "A" : ""]]></textFieldExpression>
 				<text><![CDATA[NETO SUBTOTAL]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="279" y="0" width="75" height="20" uuid="076d2307-0446-4ea7-a6e2-29a7b2438e7f"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[II.BB %]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="354" y="0" width="75" height="20" uuid="5ebd57af-9a1a-46e8-87fe-3928905130f3"/>
 				<box>
 					<topPen lineWidth="1.0"/>
@@ -610,7 +597,8 @@ $F{Facturas_tipo} == 3 ? "A" : ""]]></textFieldExpression>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Facturas_perIIBB}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="354" y="20" width="75" height="20" uuid="495df883-17dd-4852-968e-251c8630c573"/>
@@ -665,6 +653,30 @@ $F{Facturas_tipo} == 3 ? "A" : ""]]></textFieldExpression>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[ORIGINAL]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="320" y="0" width="34" height="20" uuid="258f01f9-9cd0-4958-8f53-9475ab221b39"/>
+				<box leftPadding="3">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Facturas_perIIBB}*100/$V{subTotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="279" y="0" width="41" height="20" uuid="0c0558b4-cdc2-4b88-989c-c66e50330bad"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[IIBB]]></text>
 			</staticText>
 		</band>
 	</columnFooter>

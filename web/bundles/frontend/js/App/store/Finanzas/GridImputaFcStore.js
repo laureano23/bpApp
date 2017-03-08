@@ -1,10 +1,10 @@
-Ext.define('MetApp.store.Finanzas.GrillaPagosStore',{
+Ext.define('MetApp.store.Finanzas.GridImputaFcStore',{
 	extend: 'Ext.data.Store',
-	model: 'MetApp.model.Finanzas.GrillaPagosModel',
-	alias: 'store.GrillaPagosStore',
+	model: 'MetApp.model.Finanzas.GridImputaFcModel',
+	alias: 'store.GridImputaFcStore',
 	autoSync: true,
 	autoLoad: false,
-	storeId: 'GrillaPagosStore',
+	storeId: 'GridImputaFcStore',
 	remoteFilter: false,	  
     pageSize: 10,
 	

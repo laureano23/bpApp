@@ -1,6 +1,6 @@
 Ext.define('MetApp.view.CCClientes.Cobranza' ,{
 	extend: 'Ext.window.Window',
-	height: 450,
+	height: 550,
 	width: 900,
 	modal: true,
 	autoShow: true,
@@ -18,7 +18,7 @@ Ext.define('MetApp.view.CCClientes.Cobranza' ,{
 		var me = this;
 		var botonera = Ext.create('MetApp.resources.ux.BtnABMC');
 		botonera.queryById('btnNew').setText('Insertar (F3)');
-		botonera.queryById('btnSave').hide();
+		botonera.queryById('btnSave').setDisabled(false);
 		botonera.queryById('btnReset').hide();
 		
 		Ext.applyIf(me,{
@@ -28,73 +28,83 @@ Ext.define('MetApp.view.CCClientes.Cobranza' ,{
 					border: false,
 					itemId: 'formDatosCob',
 					region: 'north',
-					layout: 'hbox',
+					layout: 'vbox',
 					margins: '5 0 5 5',
 					items: [
 						{
-							xtype: 'label',
-							text: 'N° recibo',
-							margins: '5 5 0 0',
-						},
+							xtype: 'container',
+							layout: 'hbox',
+							items: [
+								{
+									xtype: 'label',
+									text: 'N° recibo',
+									margins: '5 5 0 0',
+								},
+								{
+									xtype: 'numberfield',
+									allowBlank: false,
+									name: 'ptoVta',
+									itemId: 'ptoVta',
+									width: 60,
+									value: 1	
+								},
+								{
+									xtype: 'numberfield',
+									allowBlank: false,
+									itemId: 'reciboNum',
+									name: 'reciboNum',
+									margins: '0 5 0 0',							
+								},
+								{
+									xtype: 'datefield',
+									allowBlank: false,
+									fieldWidth: 60,
+									fieldLabel: 'Emision',
+									itemId: 'emisionFecha',
+									name: 'emisionFecha',
+									value: new Date()
+								}
+							]	
+						},						
 						{
-							xtype: 'numberfield',
-							allowBlank: false,
-							name: 'ptoVta',
-							itemId: 'ptoVta',
-							width: 60,
-							value: 1	
-						},
-						{
-							xtype: 'numberfield',
-							allowBlank: false,
-							itemId: 'reciboNum',
-							name: 'reciboNum',
-							margins: '0 5 0 0',							
-						},
-						{
-							xtype: 'datefield',
-							allowBlank: false,
-							fieldWidth: 60,
-							fieldLabel: 'Emision',
-							itemId: 'emisionFecha',
-							name: 'emisionFecha',
-							value: new Date()
-						}
+							xtype: 'grid',
+							height: 200,
+							width: 900,
+							border: false,
+							frame: false,
+							plugins: [
+						        Ext.create('Ext.grid.plugin.CellEditing', {
+						            clicksToEdit: 1
+						        })
+						    ],
+							columns: [
+								{ 
+									text: 'Forma de pago',
+									dataIndex: 'formaPago',
+									flex: 1
+								},
+								{ text: 'Numero', dataIndex: 'numero', flex: 1 },
+								{ text: 'Banco', dataIndex: 'banco', flex: 1 },
+								{ 
+									text: 'Importe',
+									dataIndex: 'importe',
+									flex: 1,							
+								},
+								{ 
+									text: 'Diferido',
+									dataIndex: 'diferido',
+									flex: 1,
+								}
+							]
+						},		
 					]
 				},
-				{
-					xtype: 'grid',
-					region: 'center',
-					plugins: [
-				        Ext.create('Ext.grid.plugin.CellEditing', {
-				            clicksToEdit: 1
-				        })
-				    ],
-					columns: [
-						{ 
-							text: 'Forma de pago',
-							dataIndex: 'formaPago',
-							flex: 1
-						},
-						{ text: 'Numero', dataIndex: 'numero', flex: 1 },
-						{ text: 'Banco', dataIndex: 'banco', flex: 1 },
-						{ 
-							text: 'Importe',
-							dataIndex: 'importe',
-							flex: 1,							
-						},
-						{ 
-							text: 'Diferido',
-							dataIndex: 'diferido',
-							flex: 1,
-						}
-					]
-				},
+						
 				{
 					xtype: 'form',
 					itemId: 'formItemCob',
 					store: 'MetApp.store.Finanzas.GrillaPagosStore',
-					region: 'south',
+					region: 'center',
 					padding: '5 5 5 5',
 					border: false,
 					items: [
@@ -155,16 +165,80 @@ Ext.define('MetApp.view.CCClientes.Cobranza' ,{
 									itemId: 'diferido',
 									margins: '5 5 5 5'
 								},
-								botonera
+								{
+									xtype: 'button',
+									margins: '0 5 0 0',
+									text: 'Imputar fcs.',
+									itemId: 'imputar',
+									width: 80,
+									height: 30
+								},
+								botonera								
 							]
 						},
 						{
-							xtype: 'button',
-							text: 'Guardar',
-							itemId: 'guardar',
-							height: 80,
-							width: 60,
-						}
+							xtype: 'container',
+							region: 'south',
+							items: [
+								{
+									xtype: 'grid',
+									height: 150,
+									itemId: 'gridImputaFc',
+									store: 'MetApp.store.Proveedores.GridImputaFcStore',
+									plugins: [
+								        Ext.create('Ext.grid.plugin.CellEditing', {
+								            clicksToEdit: 1,
+								            
+								        })
+								    ],
+									columns: [
+										{ text: 'Id', dataIndex: 'id' },
+										{ text: 'Factura N°', dataIndex: 'numFc' },
+										{ text: 'Importe', dataIndex: 'haber' },
+										{ text: 'Vencimiento', dataIndex: 'vencimiento' },
+										{ text: 'Aplicado', dataIndex: 'valorAplicado' },
+										{ 
+											text: 'Pendiente',
+											dataIndex: 'pendiente',
+											renderer: function(value, metaData, record, row, col, store, gridView){
+												return record.data.haber - record.data.valorAplicado; 
+											}
+										},
+										{ 
+											text: 'Aplicar',
+										  	editor: 'textfield',
+										  	dataIndex:'aplicar',
+										},
+									]
+								},
+								{
+									xtype: 'container',
+									layout: 'hbox',
+									margin: '5 0 5 5',
+									items: [
+										{
+											xtype: 'numberfield',
+											fieldLabel: 'Total a pagar',
+											itemId: 'totalCobrar',
+											//readOnly: true,
+											value: 0,
+											fieldStyle: {
+												'font-weight'   : 'bold',										
+											}
+										},
+										{
+											xtype: 'textfield',
+											fieldLabel: 'Total imputado',
+											itemId: 'totalImputado',
+											readOnly: true,
+											fieldStyle: {
+												'font-weight'   : 'bold',										
+											}
+										}
+									]
+								}
+							]
+						}								
 					]
 				}	
 			]

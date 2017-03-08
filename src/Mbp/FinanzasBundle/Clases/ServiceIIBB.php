@@ -72,18 +72,21 @@ XML;
 
 		$respuesta=$objCurlFileUploader->UploadFile();
 
-
-
 		$this->response = json_decode(json_encode((array)simplexml_load_string($respuesta)),1);
+
+		//UNA VEZ DEVUELTA LA RESPUESTA BORRAMOS EL ARCHIVO
+		unlink($this->file);
 	}
 
 	public function getAlicuotaPercepcion()
 	{
-		return $this->response['contribuyentes']['contribuyente']['alicuotaPercepcion'];
+		$alicuota = $this->response['contribuyentes']['contribuyente']['alicuotaPercepcion'];
+		return str_replace(',', '.', $alicuota);
 	}
 
 	public function getAlicuotaRetencion()
 	{
-		return $this->response['contribuyentes']['contribuyente']['alicuotaRetencion'];	
+		$alicuota = $this->response['contribuyentes']['contribuyente']['alicuotaRetencion'];	
+		return number_format($alicuota, 2, ',');
 	}
 }

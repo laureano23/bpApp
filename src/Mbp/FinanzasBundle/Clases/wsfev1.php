@@ -46,23 +46,23 @@ class wsfev1 {
 	public function __construct()
 	{
     
-    // seteos en php
-    ini_set("soap.wsdl_cache_enabled", "0");    
-    
-    // validar archivos necesarios
-    if (!file_exists($this->path.self::WSDL)) $this->error .= " Failed to open ".self::WSDL;
-    
-    if(!empty($this->error)) {
-    	echo $this->error."</br>";
-		throw new \Exception('WSFE class. Faltan archivos necesarios para el funcionamiento');
-    }        
-	
-    $this->client = new \SoapClient($this->path.self::WSDL, array( 
-				'soap_version' => SOAP_1_2,
-				'location'     => self::WSFEURL,
-				'exceptions'   => 0,
-				'trace'        => 1)
-    ); 
+	    // seteos en php
+	    ini_set("soap.wsdl_cache_enabled", "0");    
+	    
+	    // validar archivos necesarios
+	    if (!file_exists($this->path.self::WSDL)) $this->error .= " Failed to open ".self::WSDL;
+	    
+	    if(!empty($this->error)) {
+	    	echo $this->error."</br>";
+			throw new \Exception('WSFE class. Faltan archivos necesarios para el funcionamiento');
+	    }        
+		
+	    $this->client = new \SoapClient($this->path.self::WSDL, array( 
+					'soap_version' => SOAP_1_2,
+					'location'     => self::WSFEURL,
+					'exceptions'   => 0,
+					'trace'        => 1)
+	    ); 
 	}
   
 	/*
@@ -234,6 +234,14 @@ class wsfev1 {
 	public function FEParamGetTiposCbte()
 	{
 		return $this->client->FEParamGetTiposCbte(
+		array('Auth'=>array('Token' => $this->TA->credentials->token,
+							'Sign' => $this->TA->credentials->sign,
+							'Cuit' => self::CUIT)));
+	}
+
+	public function FEParamGetTiposTributos()
+	{
+		return $this->client->FEParamGetTiposTributos(
 		array('Auth'=>array('Token' => $this->TA->credentials->token,
 							'Sign' => $this->TA->credentials->sign,
 							'Cuit' => self::CUIT)));

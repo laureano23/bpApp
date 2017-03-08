@@ -216,7 +216,8 @@ class VentasController extends Controller
 			}
 			
 			if($cliente->getLocalidad()->getDepartamentoId()->getProvinciaId()->getId() == $parametrosFinanzas->getProvincia()->getId() && $alicuotaPercepcion > 0){
-				$percepcionIIBB = $netoGrabado * $alicuotaPercepcion; 
+				$percepcionIIBB = $netoGrabado * $alicuotaPercepcion / 100; 
+				$percepcionIIBB = number_format($percepcionIIBB, 2);
 			}	
 
 
@@ -234,9 +235,9 @@ class VentasController extends Controller
 			$regfe['ImpNeto']=$netoGrabado;			// neto gravado
 			$regfe['ImpTotConc']=0;			// no gravado
 			$regfe['ImpIVA']=$ivaLiquidado;			// IVA liquidado
-			$regfe['ImpTrib']=0;			// otros tributos
+			$regfe['ImpTrib']=$percepcionIIBB;			// otros tributos
 			$regfe['ImpOpEx']=0;			// operacion exentas
-			$regfe['ImpTotal']=$netoGrabado + $ivaLiquidado;			// total de la factura. ImpNeto + ImpTotConc + ImpIVA + ImpTrib + ImpOpEx
+			$regfe['ImpTotal']=$netoGrabado + $ivaLiquidado + $percepcionIIBB;			// total de la factura. ImpNeto + ImpTotConc + ImpIVA + ImpTrib + ImpOpEx
 			$regfe['FchServDesde']=null;	// solo concepto 2 o 3
 			$regfe['FchServHasta']=null;	// solo concepto 2 o 3
 			$regfe['FchVtoPago']=null;		// solo concepto 2 o 3
@@ -249,11 +250,11 @@ class VentasController extends Controller
 			$regfeasoc['Nro'] = 0;
 			
 			// Detalle de otros tributos
-			$regfetrib['Id'] = 1; 			
-			$regfetrib['Desc'] = 'impuesto';
-			$regfetrib['BaseImp'] = 0;
-			$regfetrib['Alic'] = 0; 
-			$regfetrib['Importe'] = 0;
+			$regfetrib['Id'] = 2; 	//1: impuesto nacional, 2: imp. provincial, etc...		
+			$regfetrib['Desc'] = 'impuesto IIBB';
+			$regfetrib['BaseImp'] = $netoGrabado;
+			$regfetrib['Alic'] = $alicuotaPercepcion; 
+			$regfetrib['Importe'] = $percepcionIIBB;
 			 
 			// Detalle de iva
 			$regfeiva['Id'] = 5; 
@@ -280,6 +281,8 @@ class VentasController extends Controller
 			$factura->setIvaCond($cliente->getIva()->getPosicion());
 			$factura->setCondVta($cliente->getCondVenta()); 
 			$factura->setFcNro($ultimoComp['nro'] + 1);
+			$factura->setPerIIBB($percepcionIIBB);
+			$factura->setTotal($regfe['ImpTotal']);
 			//$factura->setRtoNro(); COMPLETAR LOGICA PARA VINCULAR REMITO
 
 			
@@ -445,6 +448,32 @@ class VentasController extends Controller
 			'msg' => 'Este recibo pertenece al cliente '.$resu[0]->getClienteId()->getRsocial()
 		));
 		return new Response();
+	}
+
+	/**
+     * @Route("/Cobranza/ListarFcParaImputar", name="mbp_CCClientes_ListarFcParaImputar", options={"expose"=true})
+     */	
+    public function ListarFcParaImputarAction()
+	{
+		$req = $this->getRequest();
+		$em = $this->getDoctrine()->getManager();
+		$repo = $em->getRepository('MbpFinanzasBundle:Facturas');
+		$response = new Response;
+
+		try{
+			$idCliente = $req->request->get('idCliente');
+			
+			$data = $repo->ListarFcParaImputar($idCliente);
+
+			$response->setContent(json_encode(array('success' => true, 'items' => $data)));
+			return $response;
+		}catch(\Exception $e){
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			$response->setContent(json_encode(array('success' => false, 'msg' => $e->getMessage())));
+			return $response;
+		}
+
+		
 	}
 }
 

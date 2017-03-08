@@ -1,5 +1,4 @@
 <?php
-
 namespace Mbp\FinanzasBundle\Entity;
 
 /**

@@ -1,7 +1,7 @@
 <?php
 
 namespace Mbp\FinanzasBundle\Entity;
-
+ 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
