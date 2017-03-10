@@ -10,4 +10,18 @@ namespace Mbp\FinanzasBundle\Entity;
  */
 class TransaccionCobranzaFacturaRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function getTotalAplicadoFactura($idFactura)
+	{
+		$em = $this->getEntityManager();
+		$repo = $em->getRepository('MbpFinanzasBundle:TransaccionCobranzaFactura');
+		
+		$qb = $repo->createQueryBuilder('tr')
+			->select('SUM(tr.aplicado) as aplicado')
+			->where('tr.facturaImputada = :idFc')
+			->setParameter('idFc', $idFactura)
+			->getQuery()
+			->getArrayResult();
+		
+		return $qb[0]['aplicado'];
+	}
 }

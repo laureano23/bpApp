@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReciboCobranzas" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c33ce8c6-1a4c-46bd-9270-7b87efd587d4">
-	<property name="ireport.zoom" value="1.4641000000000013"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="1.6105100000000014"/>
+	<property name="ireport.x" value="7"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="cobranzaId" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="rutaLogo" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["\\\\192.168.0.123\\proyectos\\Metbp\\src\\Mbp\\FinanzasBundle\\Reportes\\"]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
      Cobranzas.`id` AS Cobranzas_id,
@@ -176,6 +179,16 @@ WHERE
 			</textField>
 		</band>
 	</detail>
+	<columnFooter>
+		<band height="125">
+			<subreport>
+				<reportElement x="14" y="25" width="200" height="100" uuid="0ec84f40-460c-4103-81c3-5f2a43113325"/>
+				<parametersMapExpression><![CDATA[$P{cobranzaId}]]></parametersMapExpression>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ReciboCobranzas_subreport1.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</columnFooter>
 	<summary>
 		<band height="42" splitType="Stretch">
 			<staticText>

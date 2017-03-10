@@ -62,6 +62,7 @@ Ext.define('MetApp.view.CCClientes.Cobranza' ,{
 									fieldLabel: 'Emision',
 									itemId: 'emisionFecha',
 									name: 'emisionFecha',
+									readOnly: true,
 									value: new Date()
 								}
 							]	
@@ -176,71 +177,72 @@ Ext.define('MetApp.view.CCClientes.Cobranza' ,{
 								botonera								
 							]
 						},
+					]
+				},
+				{
+					xtype: 'container',
+					region: 'south',
+					items: [
+						{
+							xtype: 'grid',
+							height: 150,
+							itemId: 'gridImputaFc',
+							store: 'MetApp.store.Proveedores.GridImputaFcStore',
+							plugins: [
+						        Ext.create('Ext.grid.plugin.CellEditing', {
+						            clicksToEdit: 1,
+						            
+						        })
+						    ],
+							columns: [
+								{ text: 'Id', dataIndex: 'id' },
+								{ text: 'Factura N°', dataIndex: 'numFc' },
+								{ text: 'Importe', dataIndex: 'haber' },
+								{ text: 'Vencimiento', dataIndex: 'vencimiento' },
+								{ text: 'Aplicado', dataIndex: 'valorAplicado' },
+								{ 
+									text: 'Pendiente',
+									dataIndex: 'pendiente',
+									renderer: function(value, metaData, record, row, col, store, gridView){
+										return record.data.haber - record.data.valorAplicado; 
+									}
+								},
+								{ 
+									text: 'Aplicar',
+								  	editor: 'textfield',
+								  	dataIndex:'aplicar',
+								},
+							]
+						},
 						{
 							xtype: 'container',
-							region: 'south',
+							layout: 'hbox',
+							margin: '5 0 5 5',
 							items: [
 								{
-									xtype: 'grid',
-									height: 150,
-									itemId: 'gridImputaFc',
-									store: 'MetApp.store.Proveedores.GridImputaFcStore',
-									plugins: [
-								        Ext.create('Ext.grid.plugin.CellEditing', {
-								            clicksToEdit: 1,
-								            
-								        })
-								    ],
-									columns: [
-										{ text: 'Id', dataIndex: 'id' },
-										{ text: 'Factura N°', dataIndex: 'numFc' },
-										{ text: 'Importe', dataIndex: 'haber' },
-										{ text: 'Vencimiento', dataIndex: 'vencimiento' },
-										{ text: 'Aplicado', dataIndex: 'valorAplicado' },
-										{ 
-											text: 'Pendiente',
-											dataIndex: 'pendiente',
-											renderer: function(value, metaData, record, row, col, store, gridView){
-												return record.data.haber - record.data.valorAplicado; 
-											}
-										},
-										{ 
-											text: 'Aplicar',
-										  	editor: 'textfield',
-										  	dataIndex:'aplicar',
-										},
-									]
+									xtype: 'numberfield',
+									fieldLabel: 'Total a pagar',
+									itemId: 'totalCobrar',
+									readOnly: true,
+									value: 0,
+									fieldStyle: {
+										'font-weight'   : 'bold',										
+									}
 								},
 								{
-									xtype: 'container',
-									layout: 'hbox',
-									margin: '5 0 5 5',
-									items: [
-										{
-											xtype: 'numberfield',
-											fieldLabel: 'Total a pagar',
-											itemId: 'totalCobrar',
-											//readOnly: true,
-											value: 0,
-											fieldStyle: {
-												'font-weight'   : 'bold',										
-											}
-										},
-										{
-											xtype: 'textfield',
-											fieldLabel: 'Total imputado',
-											itemId: 'totalImputado',
-											readOnly: true,
-											fieldStyle: {
-												'font-weight'   : 'bold',										
-											}
-										}
-									]
+									xtype: 'textfield',
+									fieldLabel: 'Total imputado',
+									itemId: 'totalImputado',
+									readOnly: true,
+									fieldStyle: {
+										'font-weight'   : 'bold',										
+									}
 								}
 							]
-						}								
+						}
 					]
 				}	
+					
 			]
 		});
 		this.callParent();

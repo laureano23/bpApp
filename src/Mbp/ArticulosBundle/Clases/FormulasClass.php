@@ -1,5 +1,5 @@
 <?php
-namespace Mbp\ArticulosBundle\Clases;
+namespace Mbp\ArticulosBundle\Clases; 
 
 use Mbp\ArticulosBundle\Entity\FormulasRepository;
 use Mbp\ArticulosBundle\Entity\Formulas;

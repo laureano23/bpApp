@@ -8,8 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Mbp\FinanzasBundle\Entity\Facturas;
 use Mbp\FinanzasBundle\Entity\FacturaDetalle;
-use Mbp\FinanzasBundle\Entity\Cobranzas;
-use Mbp\FinanzasBundle\Entity\CobranzasDetalle;
 
 class VentasController extends Controller
 {
@@ -331,51 +329,8 @@ class VentasController extends Controller
 		$this->get('mailer')->send($mensaje);
 		
 		return new Response();
-	}
+	}	
 	
-	/**
-     * @Route("/Cobranza/NuevaCobranza", name="mbp_Cobranza_NuevaCobranza", options={"expose"=true})
-     */	
-    public function NuevaCobranzaAction()
-	{
-		$req = $this->getRequest();
-		$em = $this->getDoctrine()->getManager();
-		$data = $req->request->get('data');
-		$repoCliente = $em->getRepository('MbpClientesBundle:Cliente');
-		$repoTipoPago = $em->getRepository('MbpFinanzasBundle:FormasPago');
-		
-		$decodeData = json_decode($data);
-		$size = count($decodeData);
-		
-		$cobranza = new Cobranzas();		
-		$cobranza->setEmision(\DateTime::createFromFormat('d/m/Y', $decodeData[$size-1]->emisionFecha));
-		$cliente = $repoCliente->find($decodeData[$size-1]->idCliente);
-		$cobranza->setClienteId($cliente);
-		$cobranza->setPtoVenta((int)$decodeData[$size-1]->ptoVta);
-		$cobranza->setNumRecibo((int)$decodeData[$size-1]->reciboNum);
-		
-		for($i=0; $i < $size - 1; $i++){
-			$detalleCob = new CobranzasDetalle();
-			$formaPago = $repoTipoPago->findByDescripcion($decodeData[$i]->formaPago);
-			
-			$detalleCob->setImporte($decodeData[$i]->importe);
-			$detalleCob->setNumero($decodeData[$i]->numero);
-			$detalleCob->setBanco($decodeData[$i]->banco);
-			$detalleCob->setImporte($decodeData[$i]->importe);
-			$detalleCob->setVencimiento(\DateTime::createFromFormat('d/m/Y', $decodeData[$i]->diferido));
-			$detalleCob->setFormaPagoId($formaPago[0]);
-			
-			$cobranza->addCobranzaDetalleId($detalleCob);
-		}
-		$em->persist($cobranza);		
-		$em->flush();
-		
-		echo json_encode(array(
-			'success'=>true
-		));
-		
-		return new Response();
-	}
 
 	/**
      * @Route("/adm/CCClientes/EliminarComprobante", name="mbp_CCClientes_EliminarComprobante", options={"expose"=true})
@@ -396,21 +351,18 @@ class VentasController extends Controller
 			if(empty($record)){
 				throw new \Exception("No se encontró el registro", 1);			
 			}	
+			
+			$em->remove($record);
+			$em->flush();
+			
+			$response->setContent(json_encode(array("success" => true)));
+			return $response;
+			
 		}catch(\Exception $e){
 			$response->setContent(json_encode(array("success" => false, "msg" => $e->getMessage())));
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response;
 		}
-		
-		try{
-			$em->remove($record);
-			$em->flush();	
-		}catch(\Exception $e){
-			$response->setContent(json_encode(array("success" => false, "msg" => "Error al eliminar el comprobante")));
-			return $response;	
-		}
-		
-		$response->setContent(json_encode(array("success" => true)));
-		return $response;
 	}
 	
 	/**

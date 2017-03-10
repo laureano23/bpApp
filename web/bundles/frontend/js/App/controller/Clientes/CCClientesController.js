@@ -88,11 +88,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			}
 		});
 	},
-	
-	UpdateParcial: function(a){
-		console.log(a);
-	},
-	
+		
 	AddCCClientesTb: function(btn){
 		var win = Ext.widget('CCClientes');
 		var grid = win.down('grid');
@@ -519,11 +515,11 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var grid = winCobranza.down('grid');
 		var store = grid.getStore();
 		var me = this;
-		var total = winCobranza.queryById('totalImputado');
-		//total.setValue(12);
+		var total = winCobranza.queryById('totalCobrar');
+		var totalImput = winCobranza.queryById('totalImputado');
 		
+		winCobranza.queryById('reciboNum').focus('', 20);
 		
-		//store.loadData([], false);
 		//HOT KEY DE LA TABLA FACTURACION
 		var map = new Ext.util.KeyMap({
 		    target: winCobranza.getId(),	
@@ -561,12 +557,24 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 
 		//LISTENER PARA CALCULAR EL IMPORTE TOTAL A COBRAR
 		store.on('datachanged', function(st, opts){
-			total.setValue(0);
-			var totalAPagar = total.getValue();
+			var totalAPagar = 0;
+
 			store.each(function(rec){
-				total = total + rec.data.importe;
+				totalAPagar = totalAPagar + rec.data.importe;
 			});	
-			total.setValue(total);
+			total.setValue(totalAPagar);
+		});
+
+		var gridImputaFc = winCobranza.queryById('gridImputaFc');
+		var storeImputaFc = gridImputaFc.getStore();
+
+		storeImputaFc.on('update', function(st, opts){ 
+			var totalAImputar = 0;
+
+			storeImputaFc.each(function(rec){
+				totalAImputar = totalAImputar + rec.data.aplicar;
+			});	
+			totalImput.setValue(totalAImputar);
 		});
 		
 	},
@@ -610,16 +618,22 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var grid = win.down('grid');
 		var store = grid.getStore();
 		var formDatosCob = win.down('form[itemId=formDatosCob]');
+		var storeAplicados = win.queryById('gridImputaFc').getStore();
 		
 		var valDatosCob = formDatosCob.getValues();
 		var arrayData = [];
+		var aplicados = [];
 		var viewCC = this.getCCClientes();
+		
+		
 		
 		store.each(function(rec){
 			arrayData.push(rec.getData());
 		});
-		valDatosCob.idCliente = viewCC.queryById('id').getValue();
-		arrayData.push(valDatosCob);
+		
+		storeAplicados.each(function(rec){
+			aplicados.push(rec.getData());
+		});
 		
 		var countRec = store.getCount();
 		
@@ -632,24 +646,72 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			});
 		}
 		
+		
 		if(formDatosCob.isValid() == true && countRec > 0){
-			Ext.Ajax.request({
-				url: Routing.generate('mbp_Cobranza_NuevaCobranza'),
+			
+			
+			if(win.queryById('totalCobrar').getValue() != win.queryById('totalImputado').getValue()){
 				
-				params: {
-					data: Ext.JSON.encode(arrayData)
-				},
-				
-				success: function(resp){
-					var decodeResp = Ext.JSON.decode(resp.responseText);
-					if(decodeResp.success == true){
-						store.removeAll();					
-						var storeCC = viewCC.down('grid').getStore();
-						storeCC.load();
-						formDatosCob.getForm().reset();
+				Ext.Msg.show({
+				     title:'Atencion',
+				     msg: 'El total a cobrar no es igual al imputado, desea continuar? ',
+				     buttons: Ext.Msg.YESNO,
+				     icon: Ext.Msg.INFO,
+				     fn: function(btn){
+				     	if(btn == 'yes'){
+				     		 Ext.Ajax.request({
+								url: Routing.generate('mbp_Cobranza_NuevaCobranza'),
+								
+								params: {
+									data: Ext.JSON.encode(arrayData),
+									aplicados: Ext.JSON.encode(aplicados),
+									cliente: viewCC.queryById('id').getValue(),
+									datosRecibo: Ext.JSON.encode(valDatosCob)
+								},
+								
+								success: function(resp){
+									var decodeResp = Ext.JSON.decode(resp.responseText);
+									if(decodeResp.success == true){
+										store.removeAll();		
+										storeAplicados.removeAll();			
+										var storeCC = viewCC.down('grid').getStore();
+										storeCC.load();
+										formDatosCob.getForm().reset();
+										win.queryById('totalCobrar').setValue(0);
+										win.queryById('totalImputado').setValue(0);										
+									}
+								}
+							});
+		
+				     	}else{}
+				     }
+				});
+			}else{
+				 Ext.Ajax.request({
+					url: Routing.generate('mbp_Cobranza_NuevaCobranza'),
+					
+					params: {
+						data: Ext.JSON.encode(arrayData),
+						aplicados: Ext.JSON.encode(aplicados),
+						cliente: viewCC.queryById('id').getValue(),
+						datosRecibo: Ext.JSON.encode(valDatosCob)
+					},
+					
+					success: function(resp){
+						var decodeResp = Ext.JSON.decode(resp.responseText);
+						if(decodeResp.success == true){
+							store.removeAll();		
+							storeAplicados.removeAll();			
+							var storeCC = viewCC.down('grid').getStore();
+							storeCC.load();
+							formDatosCob.getForm().reset();
+							win.queryById('totalCobrar').setValue(0);
+							win.queryById('totalImputado').setValue(0);
+							
+						}
 					}
-				}
-			});
+				});
+			}
 		}
 	},
 	
@@ -698,7 +760,6 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			success: function(resp){
 				var jsonResp = Ext.JSON.decode(resp.responseText);
 				grillaImputacion.getStore().loadData(jsonResp.items);
-				console.log(resp);
 			},
 
 			failure: function(resp){

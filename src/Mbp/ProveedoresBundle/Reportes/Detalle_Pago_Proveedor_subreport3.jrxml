@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Detalle_Pago_Proveedor_subreport3" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="be8623b4-7f48-4aa7-8dd3-f0fa455b8495">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     TransaccionCobranzaFactura.`id` AS TransaccionCobranzaFactura_id,
+     TransaccionCobranzaFactura.`aplicado` AS TransaccionCobranzaFactura_aplicado,
+     TransaccionCobranzaFactura.`facturaId` AS TransaccionCobranzaFactura_facturaId,
+     TransaccionCobranzaFactura.`cobranzaId` AS TransaccionCobranzaFactura_cobranzaId,
+     Facturas.`id` AS Facturas_id,
+     Facturas.`fecha` AS Facturas_fecha,
+     Facturas.`vencimiento` AS Facturas_vencimiento,
+     Facturas.`total` AS Facturas_total,
+     Facturas.`fcNro` AS Facturas_fcNro
+FROM
+     `Facturas` Facturas INNER JOIN `TransaccionCobranzaFactura` TransaccionCobranzaFactura ON Facturas.`id` = TransaccionCobranzaFactura.`facturaId`]]>
+	</queryString>
+	<field name="TransaccionCobranzaFactura_id" class="java.lang.Integer"/>
+	<field name="TransaccionCobranzaFactura_aplicado" class="java.math.BigDecimal"/>
+	<field name="TransaccionCobranzaFactura_facturaId" class="java.lang.Integer"/>
+	<field name="TransaccionCobranzaFactura_cobranzaId" class="java.lang.Integer"/>
+	<field name="Facturas_id" class="java.lang.Integer"/>
+	<field name="Facturas_fecha" class="java.sql.Timestamp"/>
+	<field name="Facturas_vencimiento" class="java.sql.Date"/>
+	<field name="Facturas_total" class="java.math.BigDecimal"/>
+	<field name="Facturas_fcNro" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
