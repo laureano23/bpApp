@@ -401,32 +401,6 @@ class VentasController extends Controller
 		));
 		return new Response();
 	}
-
-	/**
-     * @Route("/Cobranza/ListarFcParaImputar", name="mbp_CCClientes_ListarFcParaImputar", options={"expose"=true})
-     */	
-    public function ListarFcParaImputarAction()
-	{
-		$req = $this->getRequest();
-		$em = $this->getDoctrine()->getManager();
-		$repo = $em->getRepository('MbpFinanzasBundle:Facturas');
-		$response = new Response;
-
-		try{
-			$idCliente = $req->request->get('idCliente');
-			
-			$data = $repo->ListarFcParaImputar($idCliente);
-
-			$response->setContent(json_encode(array('success' => true, 'items' => $data)));
-			return $response;
-		}catch(\Exception $e){
-			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
-			$response->setContent(json_encode(array('success' => false, 'msg' => $e->getMessage())));
-			return $response;
-		}
-
-		
-	}
 }
 
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReciboCobranzas" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c33ce8c6-1a4c-46bd-9270-7b87efd587d4">
 	<property name="ireport.zoom" value="1.6105100000000014"/>
-	<property name="ireport.x" value="7"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="cobranzaId" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -23,7 +23,8 @@
      cliente.`idCliente` AS cliente_idCliente,
      cliente.`rsocial` AS cliente_rsocial,
      FormasPago.`id` AS FormasPago_id,
-     FormasPago.`descripcion` AS FormasPago_descripcion
+     FormasPago.`descripcion` AS FormasPago_descripcion,
+     Cobranzas.`numRecibo` AS Cobranzas_numRecibo
 FROM
      `Cobranzas` Cobranzas INNER JOIN `cobranza_detallesCobranzas` cobranza_detallesCobranzas ON Cobranzas.`id` = cobranza_detallesCobranzas.`cobranza_id`
      INNER JOIN `cliente` cliente ON Cobranzas.`clienteId` = cliente.`idCliente`
@@ -44,6 +45,7 @@ WHERE
 	<field name="cliente_rsocial" class="java.lang.String"/>
 	<field name="FormasPago_id" class="java.lang.Integer"/>
 	<field name="FormasPago_descripcion" class="java.lang.String"/>
+	<field name="Cobranzas_numRecibo" class="java.lang.Integer"/>
 	<variable name="total" class="java.lang.Float" calculation="Sum">
 		<variableExpression><![CDATA[$F{CobranzasDetalle_importe}]]></variableExpression>
 	</variable>
@@ -56,7 +58,7 @@ WHERE
 				<reportElement mode="Transparent" x="0" y="0" width="555" height="70" uuid="c55e94d1-4bf4-458d-b8d6-a407142b3a59"/>
 			</rectangle>
 			<image scaleImage="FillFrame" onErrorType="Blank">
-				<reportElement x="10" y="2" width="106" height="48" uuid="9054135e-b813-4266-9936-55fc43ae82d3"/>
+				<reportElement x="10" y="10" width="106" height="48" uuid="9054135e-b813-4266-9936-55fc43ae82d3"/>
 				<imageExpression><![CDATA[$P{rutaLogo}]]></imageExpression>
 			</image>
 			<staticText>
@@ -82,9 +84,10 @@ WHERE
 			</staticText>
 			<textField>
 				<reportElement x="206" y="4" width="140" height="20" uuid="c6dee4ca-8aed-425a-96d8-8a2c147dc3c3"/>
-				<textElement>
+				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
+				<textFieldExpression><![CDATA[$F{Cobranzas_numRecibo}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="190" y="46" width="215" height="20" uuid="14eaa254-4d27-43fb-ba94-f5c0569c8bc6"/>
@@ -182,8 +185,16 @@ WHERE
 	<columnFooter>
 		<band height="125">
 			<subreport>
-				<reportElement x="14" y="25" width="200" height="100" uuid="0ec84f40-460c-4103-81c3-5f2a43113325"/>
-				<parametersMapExpression><![CDATA[$P{cobranzaId}]]></parametersMapExpression>
+				<reportElement x="0" y="25" width="200" height="100" uuid="ee9b83f6-db1d-4222-9240-cd27c1bd14d9"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="rutaLogo">
+					<subreportParameterExpression><![CDATA[$P{rutaLogo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cobranzaId">
+					<subreportParameterExpression><![CDATA[$P{cobranzaId}]]></subreportParameterExpression>
+				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ReciboCobranzas_subreport1.jasper"]]></subreportExpression>
 			</subreport>

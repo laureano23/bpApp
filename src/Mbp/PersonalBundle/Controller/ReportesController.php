@@ -112,7 +112,8 @@ class ReportesController extends Controller
 		     Sindicatos.`id` AS Sindicatos_id,
 		     Sindicatos.`sindicato` AS Sindicatos_sindicato,
 		     Personal.`tipoContratacion` AS Personal_tipoContratacion,
-		     Personal.`estado` AS Personal_estado
+		     Personal.`estado` AS Personal_estado,
+     		 Recibos.`obraSocial` AS Recibos_obraSocial
 		FROM
 		     `RecibosDetalle` RecibosDetalle INNER JOIN `RecibosDetalles_CodigoSueldos` RecibosDetalles_CodigoSueldos ON RecibosDetalle.`id` = RecibosDetalles_CodigoSueldos.`recibosDetalles_id`
 		     INNER JOIN `recibo_detallesRecibos` recibo_detallesRecibos ON RecibosDetalle.`id` = recibo_detallesRecibos.`recibosdetalle_id`
@@ -184,7 +185,8 @@ class ReportesController extends Controller
 		     Categorias.`idSindicato` AS Categorias_idSindicato,
 		     Sindicatos.`id` AS Sindicatos_id,
 		     Sindicatos.`sindicato` AS Sindicatos_sindicato,
-		     Personal.`tipoContratacion` AS Personal_tipoContratacion
+		     Personal.`tipoContratacion` AS Personal_tipoContratacion,
+     		 Recibos.`obraSocial` AS Recibos_obraSocial
 		FROM
 		     `RecibosDetalle` RecibosDetalle INNER JOIN `RecibosDetalles_CodigoSueldos` RecibosDetalles_CodigoSueldos ON RecibosDetalle.`id` = RecibosDetalles_CodigoSueldos.`recibosDetalles_id`
 		     INNER JOIN `recibo_detallesRecibos` recibo_detallesRecibos ON RecibosDetalle.`id` = recibo_detallesRecibos.`recibosdetalle_id`

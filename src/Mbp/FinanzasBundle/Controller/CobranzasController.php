@@ -121,6 +121,14 @@ class CobranzasController extends Controller
 			))
 		);
 	}
+
+	/**
+     * @Route("/Cobranza/VerCobranza", name="mbp_Cobranza_VerCobranza", options={"expose"=true})
+     */	
+    public function VerCobranzaAction()
+	{
+		
+	}
 }
 
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="recibos" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="807" leftMargin="15" rightMargin="20" topMargin="20" bottomMargin="20" uuid="faabb94c-b32d-4f38-913c-e824ee7dd96c">
-	<property name="ireport.zoom" value="1.1000000000000372"/>
-	<property name="ireport.x" value="154"/>
+	<property name="ireport.zoom" value="1.610510000000055"/>
+	<property name="ireport.x" value="619"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
@@ -94,7 +94,8 @@
      Recibos.`categoriaHist` AS Recibos_categoriaHist,
      Recibos.`sindicatoHist` AS Recibos_sindicatoHist,
      Recibos.`tarea` AS Recibos_tarea,
-     Recibos.`antiguedad` AS Recibos_antiguedad
+     Recibos.`antiguedad` AS Recibos_antiguedad,
+     Recibos.`obraSocial` AS Recibos_obraSocial
 FROM
      `RecibosDetalle` RecibosDetalle INNER JOIN `RecibosDetalles_CodigoSueldos` RecibosDetalles_CodigoSueldos ON RecibosDetalle.`id` = RecibosDetalles_CodigoSueldos.`recibosDetalles_id`
      INNER JOIN `recibo_detallesRecibos` recibo_detallesRecibos ON RecibosDetalle.`id` = recibo_detallesRecibos.`recibosdetalle_id`
@@ -165,6 +166,7 @@ ORDER BY
 	<field name="Recibos_sindicatoHist" class="java.lang.String"/>
 	<field name="Recibos_tarea" class="java.lang.String"/>
 	<field name="Recibos_antiguedad" class="java.lang.Integer"/>
+	<field name="Recibos_obraSocial" class="java.lang.String"/>
 	<variable name="sumRem" class="java.lang.Float" resetType="Group" resetGroup="empleado" calculation="Sum">
 		<variableExpression><![CDATA[$F{CodigoSueldos_remunerativo} ? $F{RecibosDetalle_remunerativo} + $F{RecibosDetalle_exento} : $F{RecibosDetalle_exento}]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
@@ -333,7 +335,7 @@ ORDER BY
 					<textFieldExpression><![CDATA[$F{Recibos_tarea}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="12" y="129" width="213" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="1df0e85e-aa52-481d-824d-cc0e46cb226d"/>
+					<reportElement mode="Opaque" x="12" y="129" width="160" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="1df0e85e-aa52-481d-824d-cc0e46cb226d"/>
 					<box>
 						<topPen lineWidth="1.0"/>
 						<leftPen lineWidth="1.0"/>
@@ -476,7 +478,7 @@ ORDER BY
 					<text><![CDATA[Descuentos]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="12" y="144" width="213" height="15" uuid="7f5357ac-b5f1-4d61-bdc6-486b8985b2af"/>
+					<reportElement x="12" y="144" width="160" height="15" uuid="7f5357ac-b5f1-4d61-bdc6-486b8985b2af"/>
 					<box>
 						<topPen lineWidth="1.0"/>
 						<leftPen lineWidth="1.0"/>
@@ -796,7 +798,7 @@ ORDER BY
 					<textFieldExpression><![CDATA[$F{Recibos_antiguedad}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="443" y="129" width="213" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="5397cfee-47da-4b78-81e1-bb5e8caa0b83"/>
+					<reportElement mode="Opaque" x="443" y="129" width="160" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="5397cfee-47da-4b78-81e1-bb5e8caa0b83"/>
 					<box>
 						<topPen lineWidth="1.0"/>
 						<leftPen lineWidth="1.0"/>
@@ -822,7 +824,7 @@ ORDER BY
 					<text><![CDATA[Fecha Ingreso]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="443" y="144" width="213" height="15" uuid="7e1f8f05-a24f-462a-9979-75bcd436391b"/>
+					<reportElement x="443" y="144" width="160" height="15" uuid="7e1f8f05-a24f-462a-9979-75bcd436391b"/>
 					<box>
 						<topPen lineWidth="1.0"/>
 						<leftPen lineWidth="1.0"/>
@@ -977,6 +979,58 @@ ORDER BY
 						<font size="8" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Recibo N°:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="172" y="129" width="53" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="4a61b0b8-b2ba-4525-9178-2ae00d0f5c78"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[O.S.]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement x="172" y="144" width="53" height="15" uuid="47c0f353-3703-49b5-93ea-b8c762ece982"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Recibos_obraSocial}]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement x="603" y="144" width="53" height="15" uuid="80cdb408-4250-420d-b01a-3c733ea3a9b7"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Recibos_obraSocial}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="603" y="129" width="53" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="22a332c3-b27e-4b44-91b3-89c0c75d44e9"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[O.S.]]></text>
 				</staticText>
 			</band>
 		</groupHeader>

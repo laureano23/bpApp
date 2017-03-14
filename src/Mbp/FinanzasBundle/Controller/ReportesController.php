@@ -158,73 +158,76 @@ class ReportesController extends Controller
 		//RECIBO PARAMETROS
 		$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
+		$response = new Response;
 		
-		/*
-		 * PARAMETROS
-		 */
-		$idCliente = $req->request->get('idCliente');		
-		$idCobranza = $req->request->get('idCobranza');
-						
-		$reporteador = $this->get('reporteador');
-		$kernel = $this->get('kernel');
+		try{
+			/*
+			 * PARAMETROS
+			 */
+			$idCobranza = $req->request->get('idCobranza');
+							
+			$reporteador = $this->get('reporteador');
+			$kernel = $this->get('kernel');
+			
+			/*
+			 * Configuro reporte
+			 */
+			$jru = $reporteador->jru();
+			
+			/*
+			 * Ruta archivo Jasper
+			 */				
+					
+			$ruta = $kernel->locateResource('@MbpFinanzasBundle/Reportes/ReciboCobranzas.jrxml');
+			
+			/*
+			 * Ruta de destino del PDF
+			 */
+			$destino = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'ReciboCobranzas.pdf';		
+			
+			//Parametros HashMap
+			$param = $reporteador->getJava('java.util.HashMap');
+			$rutaLogo = $reporteador->getRutaLogo($kernel);
+			
+			$param->put('rutaLogo', $rutaLogo);
+			$param->put('cobranzaId', $idCobranza);
+			$param->put('SUBREPORT_DIR', $kernel->locateResource('@MbpFinanzasBundle/Reportes/'));
+			
+			$conn = $reporteador->getJdbc();
+			
+			$sql = "SELECT
+			     Cobranzas.`id` AS Cobranzas_id,
+			     Cobranzas.`emision` AS Cobranzas_emision,
+			     Cobranzas.`clienteId` AS Cobranzas_clienteId,
+			     CobranzasDetalle.`id` AS CobranzasDetalle_id,
+			     CobranzasDetalle.`importe` AS CobranzasDetalle_importe,
+			     CobranzasDetalle.`vencimiento` AS CobranzasDetalle_vencimiento,
+			     cobranza_detallesCobranzas.`cobranza_id` AS cobranza_detallesCobranzas_cobranza_id,
+			     cobranza_detallesCobranzas.`cobranzasdetalle_id` AS cobranza_detallesCobranzas_cobranzasdetalle_id,
+			     cliente.`idCliente` AS cliente_idCliente,
+			     cliente.`rsocial` AS cliente_rsocial,
+			     FormasPago.`id` AS FormasPago_id,
+			     FormasPago.`descripcion` AS FormasPago_descripcion,
+			     Cobranzas.`numRecibo` AS Cobranzas_numRecibo
+			FROM
+			     `Cobranzas` Cobranzas INNER JOIN `cobranza_detallesCobranzas` cobranza_detallesCobranzas ON Cobranzas.`id` = cobranza_detallesCobranzas.`cobranza_id`
+			     INNER JOIN `cliente` cliente ON Cobranzas.`clienteId` = cliente.`idCliente`
+			     INNER JOIN `CobranzasDetalle` CobranzasDetalle ON cobranza_detallesCobranzas.`cobranzasdetalle_id` = CobranzasDetalle.`id`
+			     INNER JOIN `FormasPago` FormasPago ON CobranzasDetalle.`formaPagoId` = FormasPago.`id`
+			WHERE
+			     Cobranzas.`id` = $idCobranza";
+			
+			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	
+		}catch(\Exception $e){
+			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(
+				json_encode(array('success' => false, 'msg' => $e->getMessage()))
+				);
+		}
 		
-		/*
-		 * Configuro reporte
-		 */
-		$jru = $reporteador->jru();
-		
-		/*
-		 * Ruta archivo Jasper
-		 */				
-				
-		$ruta = $kernel->locateResource('@MbpFinanzasBundle/Reportes/ReciboCobranzas.jrxml');
-		
-		/*
-		 * Ruta de destino del PDF
-		 */
-		$destino = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'ReciboCobranzas.pdf';		
-		
-		//Parametros HashMap
-		$param = $reporteador->getJava('java.util.HashMap');
-		$rutaLogo = $reporteador->getRutaLogo($kernel);
-		
-		$param->put('rutaLogo', $rutaLogo);
-		$param->put('idCliente', $idCliente);
-		$param->put('cobranzaId', $idCobranza);
-		
-		$conn = $reporteador->getJdbc();
-		
-		$sql = "SELECT
-		     Cobranzas.`id` AS Cobranzas_id,
-		     Cobranzas.`emision` AS Cobranzas_emision,
-		     Cobranzas.`clienteId` AS Cobranzas_clienteId,
-		     CobranzasDetalle.`id` AS CobranzasDetalle_id,
-		     CobranzasDetalle.`importe` AS CobranzasDetalle_importe,
-		     CobranzasDetalle.`vencimiento` AS CobranzasDetalle_vencimiento,
-		     cobranza_detallesCobranzas.`cobranza_id` AS cobranza_detallesCobranzas_cobranza_id,
-		     cobranza_detallesCobranzas.`cobranzasdetalle_id` AS cobranza_detallesCobranzas_cobranzasdetalle_id,
-		     cliente.`idCliente` AS cliente_idCliente,
-		     cliente.`rsocial` AS cliente_rsocial,
-		     FormasPago.`id` AS FormasPago_id,
-		     FormasPago.`descripcion` AS FormasPago_descripcion
-		FROM
-		     `Cobranzas` Cobranzas INNER JOIN `cobranza_detallesCobranzas` cobranza_detallesCobranzas ON Cobranzas.`id` = cobranza_detallesCobranzas.`cobranza_id`
-		     INNER JOIN `cliente` cliente ON Cobranzas.`clienteId` = cliente.`idCliente`
-		     INNER JOIN `CobranzasDetalle` CobranzasDetalle ON cobranza_detallesCobranzas.`cobranzasdetalle_id` = CobranzasDetalle.`id`
-		     INNER JOIN `FormasPago` FormasPago ON CobranzasDetalle.`formaPagoId` = FormasPago.`id`
-		WHERE
-		     Cobranzas.`id` = $idCobranza
-		 AND cliente.`idCliente` = $idCliente";
-		
-		$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
-		
-		echo json_encode(
-			array(
-				'success'=> true,	
-			)
-		);
-		
-		return new Response();
+		return $response->setContent(
+			json_encode(array('success' => true))
+			);
 	}	
 	
 	/**
