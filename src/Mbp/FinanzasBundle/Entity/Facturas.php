@@ -110,6 +110,13 @@ class Facturas
 	/**
      * @var \Decimal
      *
+     * @ORM\Column(name="porcentajeIIBB", type="decimal", precision=4, scale=2)
+     */
+    private $porcentajeIIBB=0;
+	
+	/**
+     * @var \Decimal
+     *
      * @ORM\Column(name="perIIBB", type="decimal", precision=9, scale=2)
      */
     private $perIIBB=0;
@@ -699,5 +706,29 @@ class Facturas
     public function getTotal()
     {
         return $this->total;
+    }
+
+    /**
+     * Set porcentajeIIBB
+     *
+     * @param string $porcentajeIIBB
+     *
+     * @return Facturas
+     */
+    public function setPorcentajeIIBB($porcentajeIIBB)
+    {
+        $this->porcentajeIIBB = $porcentajeIIBB;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentajeIIBB
+     *
+     * @return string
+     */
+    public function getPorcentajeIIBB()
+    {
+        return $this->porcentajeIIBB;
     }
 }

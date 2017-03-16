@@ -224,15 +224,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 				},
 				
 				success: function(resp){					
-					var WinReporte=Ext.create('Ext.Window', {
-						  title: 'Factura',
-						  width: 900,
-						  height: 600,
-						  layout: 'fit',
-						  modal:true,										
-						  html: '<iframe src='+ruta+' width="100%" height="100%"></iframe>'						  
-					 });				
-					WinReporte.show();
+					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 					myMask.hide();	
 				},
 				failure: function(resp){
@@ -251,15 +243,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 				},
 				
 				success: function(resp){
-					var WinReporte=Ext.create('Ext.Window', {
-						  title: 'Cobranza',
-						  width: 900,
-						  height: 600,
-						  layout: 'fit',
-						  modal:true,										
-						  html: '<iframe src='+ruta+' width="100%" height="100%"></iframe>'						  
-					 });				
-					WinReporte.show();
+					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 					myMask.hide();	
 				},
 				failure: function(resp){

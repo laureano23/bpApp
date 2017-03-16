@@ -49,7 +49,7 @@ Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 				   	]
 				});	
 			}
-		}
+		}		
 	},
 		
 	initComponent: function(){
@@ -169,7 +169,19 @@ Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 											fieldLabel: 'Codigo',
 											itemId: 'codigo',
 											name: 'codigo',
-											margins: '0 0 0 5'
+											margins: '0 0 0 5',
+											listeners: {
+												change: function(field, win){
+													if(field.getValue() == "ZZZ"){
+														var desc = me.queryById('descripcion') 
+														desc.setReadOnly(false);
+														desc.focus('', 20);
+													}
+													console.log(field);
+													console.log(me);
+													
+												}
+											}
 										},
 										{
 											xtype: 'button',

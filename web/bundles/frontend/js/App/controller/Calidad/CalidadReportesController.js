@@ -82,15 +82,7 @@ Ext.define('MetApp.controller.Calidad.CalidadReportesController',{
 				
 				var ruta = Routing.generate('mbp_calidad_showReporteRg010');
 								
-				var WinReporte=Ext.create('Ext.Window', {
-										  title: 'Reporte Calculo de panel',
-										  width: 900,
-										  height: 700,
-										  layout: 'fit',
-										  modal:true,										
-										  html: '<iframe src='+ruta+' width="100%" height="100%"></iframe>'						  
-									  });
-									  WinReporte.show();
+				window.open(ruta, '_blank', 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 				}	
 				
 			});
@@ -101,8 +93,10 @@ Ext.define('MetApp.controller.Calidad.CalidadReportesController',{
 		form = btn.up('form');
 		fechaDesde = form.queryById('desde').getValue();
 		fechaHasta = form.queryById('hasta').getValue();
+		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
 		
 		if(form.isValid() == true){
+			myMask.show();
 			Ext.Ajax.request({
 				url: Routing.generate('mbp_calidad_generateReporteRg010Fechas'),
 				
@@ -112,20 +106,13 @@ Ext.define('MetApp.controller.Calidad.CalidadReportesController',{
 				},
 				
 				success: function(resp, opt){
-				var jsonReporte = Ext.JSON.decode(resp.responseText);
-				Reporte=jsonReporte.reporte;
-				
-				var ruta = Routing.generate('mbp_calidad_showReporteRg010Fechas');
-								
-				var WinReporte=Ext.create('Ext.Window', {
-										  title: 'Reporte Calculo de panel',
-										  width: 900,
-										  height: 700,
-										  layout: 'fit',
-										  modal:true,										
-										  html: '<iframe src='+ruta+' width="100%" height="100%"></iframe>'						  
-									  });
-									  WinReporte.show();
+					myMask.hide();
+					var jsonReporte = Ext.JSON.decode(resp.responseText);
+					Reporte=jsonReporte.reporte;
+					
+					var ruta = Routing.generate('mbp_calidad_showReporteRg010Fechas');
+									
+					window.open(ruta, '_blank', 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 				}	
 			});
 		}

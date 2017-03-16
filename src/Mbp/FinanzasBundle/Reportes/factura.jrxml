@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b7fbe4cc-9642-4a30-b319-1f1509ec7bd0">
-	<property name="ireport.zoom" value="1.7715610000000044"/>
-	<property name="ireport.x" value="369"/>
+	<property name="ireport.zoom" value="1.4641000000000037"/>
+	<property name="ireport.x" value="70"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="rutaLogo" class="java.lang.String"/>
 	<parameter name="facturaId" class="java.lang.String">
@@ -474,7 +474,7 @@ $F{Facturas_tipo} == 3 ? "A" : ""]]></textFieldExpression>
 			<textField>
 				<reportElement x="150" y="0" width="259" height="20" uuid="049c181d-1756-443b-b6a8-96555eb8d1a0"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{articulos_descripcion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{FacturaDetalle_descripcion}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="409" y="0" width="74" height="20" uuid="5ce21c8c-900c-4f0d-bdb8-7b9a1a837e63"/>

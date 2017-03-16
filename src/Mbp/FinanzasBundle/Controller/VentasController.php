@@ -10,19 +10,7 @@ use Mbp\FinanzasBundle\Entity\Facturas;
 use Mbp\FinanzasBundle\Entity\FacturaDetalle;
 
 class VentasController extends Controller
-{
-	/**
-     * @Route("/cc/listar", name="mbp_cc_listar", options={"expose"=true})
-     */
-    public function listarccAction()
-    {
-    	$em = $this->getDoctrine()->getManager();
-		$repo = $em->getRepository('MbpFinanzasBundle:Facturas');
-		$res = $repo->listarFcCC(945);
-				
-        return new Response();
-    }
-		
+{		
     /**
      * @Route("/bancos/listar", name="mbp_finanzas_listaBancos", options={"expose"=true})
      */
@@ -93,8 +81,8 @@ class VentasController extends Controller
 				$resp[$i]['emision'] = $factura->getFecha()->format('d-m-Y');
 				$resp[$i]['concepto'] = $factura->getConcepto();
 				$resp[$i]['vencimiento'] = $factura->getVencimiento()->format('d-m-Y'); 
-				$resp[$i]['debe'] = $subTotal[$i];
-				$resp[$i]['haber'] = '';
+				$resp[$i]['debe'] = $factura->getTipo() == 1 ? $subTotal[$i] : "";
+				$resp[$i]['haber'] = $factura->getTipo() != 1 ? $subTotal[$i] : "";
 				$resp[$i]['tipo'] = $factura->getTipo();
 				$i++;
 			}	
@@ -133,7 +121,7 @@ class VentasController extends Controller
     }
 	
 	function ordenar($a, $b) {
-	    return ($b['emisionCalc'] < $a['emisionCalc']) ? -1 : 1;
+	    return ($b['emisionCalc'] > $a['emisionCalc']) ? -1 : 1;
 	}
 	
 	/**
@@ -159,7 +147,9 @@ class VentasController extends Controller
 		
 			//CREO OBJETO FACTURA
 			$factura = new Facturas();
-			$fechaFc = \DateTime::createFromFormat('d/m/Y', $decodefcData->fecha);
+			$fechaFc = new \DateTime;
+			$vencimiento = new \DateTime;
+			
 			
 			//CLIENTE
 			$repoCliente = $em->getRepository('MbpClientesBundle:Cliente');
@@ -177,7 +167,7 @@ class VentasController extends Controller
 			$factura->setPtoVta($faele->ptoVta);
 			$factura->setFecha($fechaFc);
 			$factura->setConcepto($auxFinanzas->TipoDeComprobante($decodefcData->tipo));
-			$factura->setVencimiento($fechaFc->add(new \DateInterval('P'.$cliente->getVencimientoFc().'D'))); //ES LA FECHA DE FC + LA CONDICION DE VENTA DEL CLIENTE
+			$factura->setVencimiento($vencimiento->add(new \DateInterval('P'.$cliente->getVencimientoFc().'D'))); //ES LA FECHA DE FC + LA CONDICION DE VENTA DEL CLIENTE
 			$factura->setClienteId($cliente);
 			$factura->setTipo($decodefcData->tipo);
 			
@@ -281,6 +271,8 @@ class VentasController extends Controller
 			$factura->setFcNro($ultimoComp['nro'] + 1);
 			$factura->setPerIIBB($percepcionIIBB);
 			$factura->setTotal($regfe['ImpTotal']);
+			$factura->setIva21($ivaLiquidado);
+			$factura->setporcentajeIIBB($alicuotaPercepcion);
 			//$factura->setRtoNro(); COMPLETAR LOGICA PARA VINCULAR REMITO
 
 			

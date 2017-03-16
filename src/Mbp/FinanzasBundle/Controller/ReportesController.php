@@ -249,6 +249,117 @@ class ReportesController extends Controller
 		
 		return $response;
 	}
+	
+	/**
+     * @Route("/CCClientes/Reportes/LibroIVAVentas", name="mbp_CCClientes_LibroIVAVentas", options={"expose"=true})
+     */	
+    public function LibroIVAVentasAction()
+	{
+		$response = new Response;
+				
+		try{
+			/*
+			 * PARAMETROS
+			 */
+			$desde = $this->get('request')->get('desde');
+			$hasta = $this->get('request')->get('hasta');
+							
+			$reporteador = $this->get('reporteador');
+			$kernel = $this->get('kernel');
+			
+			/*
+			 * Configuro reporte
+			 */
+			$jru = $reporteador->jru();
+			
+			/*
+			 * Ruta archivo Jasper
+			 */				
+					
+			$ruta = $kernel->locateResource('@MbpFinanzasBundle/Reportes/LibroIVAVentas.jrxml');
+			
+			/*
+			 * Ruta de destino del PDF
+			 */
+			$destino = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'LibroIVAVentas.pdf';		
+			
+			//Parametros HashMap
+			$param = $reporteador->getJava('java.util.HashMap');
+			$rutaLogo = $reporteador->getRutaLogo($kernel);
+			
+			$param->put('fechaDesde', $desde);
+			$param->put('fechaHasta', $hasta); 
+			
+			$conn = $reporteador->getJdbc();
+			
+			$desde = \DateTime::createFromFormat('d/m/Y', $desde);
+			$hasta = \DateTime::createFromFormat('d/m/Y', $hasta);
+			
+			$desde = $desde->format('Y-m-d');
+			$hasta = $hasta->format('Y-m-d');
+							
+			
+			$sql = "SELECT
+			     Facturas.`id` AS Facturas_id,
+			     Facturas.`fecha` AS Facturas_fecha,
+			     Facturas.`concepto` AS Facturas_concepto,
+			     Facturas.`vencimiento` AS Facturas_vencimiento,
+			     Facturas.`clienteId` AS Facturas_clienteId,
+			     Facturas.`tipo` AS Facturas_tipo,
+			     Facturas.`cae` AS Facturas_cae,
+			     Facturas.`vtoCae` AS Facturas_vtoCae,
+			     Facturas.`ptoVta` AS Facturas_ptoVta,
+			     Facturas.`dtoTotal` AS Facturas_dtoTotal,
+			     Facturas.`perIIBB` AS Facturas_perIIBB,
+			     Facturas.`iva21` AS Facturas_iva21,
+			     Facturas.`rSocial` AS Facturas_rSocial,
+			     Facturas.`domicilio` AS Facturas_domicilio,
+			     Facturas.`localidad` AS Facturas_localidad,
+			     Facturas.`cuit` AS Facturas_cuit,
+			     Facturas.`condVta` AS Facturas_condVta,
+			     Facturas.`rtoNro` AS Facturas_rtoNro,
+			     Facturas.`ivaCond` AS Facturas_ivaCond,
+			     Facturas.`fcNro` AS Facturas_fcNro,
+			     Facturas.`total` AS Facturas_total,
+			     cliente.`idCliente` AS cliente_idCliente,
+			     cliente.`rsocial` AS cliente_rsocial,
+			     Facturas.`porcentajeIIBB` AS Facturas_porcentajeIIBB
+			FROM
+			     `cliente` cliente INNER JOIN `Facturas` Facturas ON cliente.`idCliente` = Facturas.`clienteId`
+			WHERE Facturas.`fecha` BETWEEN '$desde' AND '$hasta'";
+			
+			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	
+		}catch(\Exception $e){
+			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(
+				json_encode(array('success' => false, 'msg' => $e->getMessage()))
+				);
+		}
+		
+		return $response->setContent(
+			json_encode(array('success' => true))
+			);
+	}
+	
+	/**
+     * @Route("/CCClientes/Reportes/VerLibroIVAVentas", name="mbp_CCClientes_VerLibroIVAVentas", options={"expose"=true})
+     */	
+    public function VerLibroIVAVentasAction()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'LibroIVAVentas.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'ReciboCobranzas.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+		
+		return $response;
+	}
 }
 
 

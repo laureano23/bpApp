@@ -424,6 +424,24 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                 }, 
             },
         ]
+        
+        var menuReportes = [
+        	{
+        		text: 'Ventas',
+        		itemId: 'reportesVentas',
+        		menu: [
+        			{
+        				text: 'Libro IVA ventas',
+        				itemId: 'reporteIVAVentas',
+        				listeners : {
+		                    render : dragZone,
+		                }, 
+        			}
+        		]        		
+        	}
+        	
+        ]
+        
     		    	
     	var me = this;    	
 
@@ -529,6 +547,10 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                     {
                         text: 'Remitos',
                         menu: autz.getAuthorizedElements(menuRemitos)
+                    },
+                    {
+                        text: 'Reportes',
+                        menu: autz.getAuthorizedElements(menuReportes)
                     },
         			'->',   
         			{

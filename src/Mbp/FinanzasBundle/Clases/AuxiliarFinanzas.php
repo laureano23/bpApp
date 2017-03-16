@@ -18,10 +18,16 @@ class AuxiliarFinanzas extends Controller
 		$saldo = array();
 		$pagado = 0;
 		$neto = 0;
+		
 		for ($i=0; $i < count($data); $i++) { 
-			for ($j=0; $j <= $i; $j++) { 
-				$pagado = $data[$j][$debe] + $pagado;
-				$neto = $data[$j][$haber] + $neto;
+			for ($j=0; $j <= $i; $j++) {
+				if($data[$j]['concepto'] != "NC A"){
+					$pagado = $data[$j][$debe] + $pagado;
+					$neto = $data[$j][$haber] + $neto;	
+				}else{
+					$neto = $neto - $data[$j][$debe];	
+				}
+				
 			}
 			$data[$i]['saldo'] = number_format($neto - $pagado, 2);
 			$pagado = 0;

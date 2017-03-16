@@ -141,7 +141,14 @@ class PersonalRepository extends EntityRepository
 				));
 				return;
 			}
-				
+			
+			$compensatorio=0;
+			if(property_exists($data, 'compensatorio')){
+				$compensatorio = $data->compensatorio;
+			}else{
+				$compensatorio = $empleado->getCompensatorio();
+			}
+									
 			$empleado->setNombre($data->nombre);
 			$empleado->setSector($sector);
 			$empleado->setLocalidad($localidad);
@@ -156,7 +163,7 @@ class PersonalRepository extends EntityRepository
 			$data->fechaEgreso ? $empleado->setfechaEgreso(\DateTime::createFromFormat('d/m/Y', $data->fechaEgreso)) : '';			
 			$empleado->setTarea($data->tarea);
 			$empleado->setPeriodo($data->periodo);
-			$empleado->setCompensatorio((float)$data->compensatorio);
+			$empleado->setCompensatorio((float)$compensatorio);
 			$empleado->setCuil((int)$data->cuil);
 			$empleado->setTipoContratacion($data->tipoContratacion);
 			if($data->antiguedad === 0){
@@ -207,7 +214,7 @@ class PersonalRepository extends EntityRepository
 					'categoria' => $data->categoria,
 					'sindicato' => $data->sindicato,
 					'salario' => $categoria->getSalario(),
-					'compensatorio' => $data->compensatorio,
+					'compensatorio' => $compensatorio,
 					'departamento' => $data->departamento,
 					'direccion' => $data->direccion,
 					'documentoNum' => $data->documentoNum,

@@ -515,16 +515,7 @@ Ext.define('MetApp.controller.RRHH.RecibosController', {
 			
 			success: function(resp){
 				var ruta = Routing.generate('mbp_personal_resumenAguinaldoPdf');
-		    	var WinReporte=Ext.create('Ext.Window', {
-					  title: 'Recibos de sueldo',
-					  width: 900,
-					  height: 600,
-					  layout: 'fit',
-					  modal:true,										
-					  html: '<iframe src='+ruta+' width="100%" height="100%"></iframe>'						  
-				 });
-				 WinReporte.show();		        
-				 myMask.hide();	
+		    	window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 			}
 		})
 		
@@ -551,15 +542,7 @@ Ext.define('MetApp.controller.RRHH.RecibosController', {
 			callback: function(records, operation, success) {
 		        var ruta = Routing.generate('mbp_personal_recibosPdf');
 		        if(success == true){
-		        	var WinReporte=Ext.create('Ext.Window', {
-						  title: 'Recibos de sueldo',
-						  width: 900,
-						  height: 600,
-						  layout: 'fit',
-						  modal:true,										
-						  html: '<iframe src='+ruta+' width="100%" height="100%"></iframe>'						  
-					 });
-					 WinReporte.show();	
+		        	window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 		        }		        
 				 myMask.hide();
 		    }
@@ -585,16 +568,7 @@ Ext.define('MetApp.controller.RRHH.RecibosController', {
 			
 			success: function(resp){
 				var ruta = Routing.generate('mbp_personal_libroSueldosPdf');
-		        var WinReporte=Ext.create('Ext.Window', {
-					  title: 'Libro de sueldos',
-					  width: 900,
-					  height: 600,
-					  layout: 'fit',
-					  modal:true,										
-					  html: '<iframe src='+ruta+' width="100%" height="100%"></iframe>'						  
-				 });
-				
-				WinReporte.show();
+		        window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 				myMask.hide();
 			}
 		});
@@ -623,16 +597,7 @@ Ext.define('MetApp.controller.RRHH.RecibosController', {
 			
 			success: function(resp){
 				var ruta = Routing.generate('mbp_personal_resumenLiquidacionesPdf');
-		        var WinReporte=Ext.create('Ext.Window', {
-					  title: 'Libro de sueldos',
-					  width: 900,
-					  height: 600,
-					  layout: 'fit',
-					  modal:true,										
-					  html: '<iframe src='+ruta+' width="100%" height="100%"></iframe>'						  
-				 });
-				
-				WinReporte.show();
+		        window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 				myMask.hide();
 			},
 
