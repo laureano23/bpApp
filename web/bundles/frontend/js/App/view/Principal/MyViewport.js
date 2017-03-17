@@ -270,7 +270,11 @@ Ext.define('MetApp.view.Principal.MyViewport', {
     			text: 'Ordenes de Trabajo',
     			menu: [
     				{
-    					text: 'Nueva OT'
+    					text: 'Nueva OT',
+    					itemId: 'nuevaOt',
+    					listeners : {
+                            render : dragZone,
+                        }
     				}
     			]
     		},

@@ -159,7 +159,7 @@ Ext.define('MetApp.view.CCClientes.CCClientes' ,{
 								itemId: 'eliminar',
 								xtype: 'actioncolumn',
 								renderer: function(val, met, rec){
-									if(rec.data.concepto == "PAGO"){
+									if(!rec.data.tipo){
 										this.items[0].iconCls = 'delete';
 									}else{
 										this.disabledAction(rec.index);

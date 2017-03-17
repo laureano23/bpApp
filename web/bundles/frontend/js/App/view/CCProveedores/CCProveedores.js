@@ -36,9 +36,7 @@ Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 				   			}
 				   		},
 				   	]
-				});	
-				
-				win.queryById('buscaProveedor').focus('', 20);
+				});
 			}
 		}
 	},

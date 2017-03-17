@@ -79,7 +79,7 @@ class VentasController extends Controller
 				$resp[$i]['id'] = $factura->getId();
 				$resp[$i]['emisionCalc'] = $factura->getFecha();//SOLO PARA ORDENAMIENTO POSTERIOR
 				$resp[$i]['emision'] = $factura->getFecha()->format('d-m-Y');
-				$resp[$i]['concepto'] = $factura->getConcepto();
+				$resp[$i]['concepto'] = $factura->getConcepto()." N° ".$factura->getfcNro();
 				$resp[$i]['vencimiento'] = $factura->getVencimiento()->format('d-m-Y'); 
 				$resp[$i]['debe'] = $factura->getTipo() == 1 ? $subTotal[$i] : "";
 				$resp[$i]['haber'] = $factura->getTipo() != 1 ? $subTotal[$i] : "";
@@ -96,7 +96,7 @@ class VentasController extends Controller
 				$respPagos['id'] = $pagos->getId(); 
 				$respPagos['emisionCalc'] = $pagos->getEmision();//SOLO PARA ORDENAMIENTO POSTERIOR
 				$respPagos['emision'] = $pagos->getEmision()->format('d-m-Y');
-				$respPagos['concepto'] = 'PAGO';
+				$respPagos['concepto'] = 'PAGO N° '.$pagos->getId();
 				$respPagos['vencimiento'] = $pagos->getEmision()->format('d-m-Y'); 
 				$respPagos['debe'] = '';
 				$respPagos['haber'] = $subTotalCobranza[$i];

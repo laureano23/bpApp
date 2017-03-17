@@ -85,6 +85,8 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 			selectionModel.deselectAll();
 			selectionModel.select(domEl.dom.rowIndex);			
 		});
+		
+		win.queryById('buscaProveedor').focus('', 20);
 	},
 	
 	BuscaProveedor: function(btn){
@@ -137,6 +139,8 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 		var store = grid.getStore();
 		var txtTotalAPagar = win.queryById('totalAPagar');
 		
+		store.removeAll();
+		
 		store.on('datachanged', function(st){			
 			txtTotalAPagar.setValue(0);
 			var totalAPagar = txtTotalAPagar.getValue();
@@ -169,15 +173,7 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 				var jsonResp = Ext.JSON.decode(resp.responseText);
 				var ruta = Routing.generate('mbp_proveedores_verReporteDetallePago');
 				if(jsonResp.success == true){
-					var WinReporte=Ext.create('Ext.Window', {
-						  title: 'Pago',
-						  width: 900,
-						  height: 600,
-						  layout: 'fit',
-						  modal:true,										
-						  html: '<iframe src='+ruta+' width="100%" height="100%"></iframe>'						  
-					 });				
-					WinReporte.show();
+					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 					myMask.hide();	
 				}
 			}
@@ -223,15 +219,7 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 				var jsonResp = Ext.JSON.decode(resp.responseText);
 				var ruta = Routing.generate('mbp_proveedores_verReporteImputacionFc');
 				if(jsonResp.success == true){
-					var WinReporte=Ext.create('Ext.Window', {
-						  title: 'Imputacion a factura',
-						  width: 900,
-						  height: 600,
-						  layout: 'fit',
-						  modal:true,										
-						  html: '<iframe src='+ruta+' width="100%" height="100%"></iframe>'						  
-					 });				
-					WinReporte.show();
+					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 					myMask.hide();	
 				}
 			}

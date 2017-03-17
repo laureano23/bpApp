@@ -208,7 +208,9 @@ class ReportesController extends Controller
 			     cliente.`rsocial` AS cliente_rsocial,
 			     FormasPago.`id` AS FormasPago_id,
 			     FormasPago.`descripcion` AS FormasPago_descripcion,
-			     Cobranzas.`numRecibo` AS Cobranzas_numRecibo
+			     Cobranzas.`numRecibo` AS Cobranzas_numRecibo,
+			     CobranzasDetalle.`numero` AS CobranzasDetalle_numero,
+			     CobranzasDetalle.`banco` AS CobranzasDetalle_banco
 			FROM
 			     `Cobranzas` Cobranzas INNER JOIN `cobranza_detallesCobranzas` cobranza_detallesCobranzas ON Cobranzas.`id` = cobranza_detallesCobranzas.`cobranza_id`
 			     INNER JOIN `cliente` cliente ON Cobranzas.`clienteId` = cliente.`idCliente`

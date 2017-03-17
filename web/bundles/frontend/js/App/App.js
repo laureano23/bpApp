@@ -30,6 +30,7 @@ Ext.application({
 		'Produccion.Programacion.OperacionesController',
 		'Produccion.Programacion.FormulasMoController',
 		'Produccion.Maquinas.MaquinasController',
+		'Produccion.OrdenesTrabajo.OTController',
 		'RRHH.PersonalController',
 		'RRHH.SindicatosController',
 		'RRHH.CategoriasController',
