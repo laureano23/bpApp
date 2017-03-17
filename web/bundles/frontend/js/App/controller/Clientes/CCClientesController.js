@@ -99,7 +99,8 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		store.loadData([], false);
 		store.on('load', function(st, rec, succ){
 			if(succ == true){
-				row = selectionModel.select(0);					
+				row = selectionModel.select(0);
+				grid.getView().scrollBy(0, 999999, true);				
 			}
 		});
 		
@@ -108,7 +109,9 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			selectionModel.deselectAll();
 			selectionModel.select(domEl.dom.rowIndex);			
 		});
-
+		
+		
+		
 		win.queryById('buscaCliente').focus('', 20);
 	},
 	

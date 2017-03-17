@@ -1,6 +1,5 @@
 Ext.define('MetApp.view.RRHH.Reportes.ReporteLibroSueldos', {
 	extend: 'Ext.window.Window',
-	height: 315,
 	width: 500,
 	modal: true,
 	autoShow: true,
@@ -39,8 +38,9 @@ Ext.define('MetApp.view.RRHH.Reportes.ReporteLibroSueldos', {
 										{ boxLabel: 'Mes', name: 'pagoTipo', inputValue: 3 },
 										{ boxLabel: 'Vacaciones', name: 'pagoTipo', inputValue: 4 },
 										{ boxLabel: 'SAC', name: 'pagoTipo', inputValue: 5 },
-										{ boxLabel: 'Otro tipo de pagos', name: 'pagoTipo', inputValue: 6 },
-										{ boxLabel: 'Premios', name: 'pagoTipo', inputValue: 7 },
+										{ boxLabel: 'Otros', name: 'pagoTipo', inputValue: 6 },
+										{ boxLabel: 'Premios 1°', name: 'pagoTipo', inputValue: 7 },
+										{ boxLabel: 'Premios 2°', name: 'pagoTipo', inputValue: 8 },
 										{ boxLabel: 'Todos', name: 'pagoTipo', inputValue: 99 },
 									]
 								}

@@ -8,6 +8,40 @@ Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 	itemId: 'CCProveedores',
 	title: 'Cuenta corriente proveedores',
 	layout: 'border',
+	listeners: {
+		afterrender: {
+			fn: function(win){				
+				var map = new Ext.util.KeyMap({
+				    target: this.getId(),	
+				   	binding: [
+				   		{
+				   			key: Ext.EventObject.F3,
+				   			defaultEventAction: 'preventDefault',
+				   			fn: function(){ 
+				   				win.queryById('nuevaFc').fireEvent('click');
+				   			}
+				   		},
+				   		{
+				   			key: Ext.EventObject.F4,
+				   			defaultEventAction: 'preventDefault',
+				   			fn: function(){ 
+				   				win.queryById('nuevoCobro').fireEvent('click');
+				   			}
+				   		},
+				   		{
+				   			key: Ext.EventObject.F5,
+				   			defaultEventAction: 'preventDefault',
+				   			fn: function(){ 
+				   				win.queryById('notas').fireEvent('click');
+				   			}
+				   		},
+				   	]
+				});	
+				
+				win.queryById('buscaProveedor').focus('', 20);
+			}
+		}
+	},
 	
 	initComponent: function(){
 		var me = this;
@@ -15,7 +49,6 @@ Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 			items: [
 				{
 					xtype: 'form',
-					//store: 'MetApp.store.Finanzas.CCClientesStore',
 					border: false,
 					region: 'north',
 					items: [
@@ -221,28 +254,25 @@ Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 					region: 'south',
 					layout: 'hbox',
 					defaults: {
-						margins: '5 0 5 5'
+						margins: '5 0 5 5',
+						height: 80,
+						width: 80,
 					},
 					items: [
 						{
 							xtype: 'button',
 							itemId: 'nuevaFc',
-							height: 80,
-							width: 60,
-							text: 'Fact.',
+							text: 'Fact. (F3)',
 						},
 						{
 							xtype: 'button',
 							itemId: 'nuevoPago',
-							height: 80,
-							width: 60,
-							text: 'Pago',
+							text: 'Pago (F4)',
 						},
 						{
 							xtype: 'button',
-							height: 80,
-							width: 60,
-							text: 'Notas',
+							text: 'Notas (F5)',
+							itemId: 'notas'
 						}
 					]
 				}
