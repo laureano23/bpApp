@@ -33,24 +33,9 @@ mbp_produccion_savecalculo:
     defaults: { _controller: MbpProduccionBundle:Calculo:saveCalculo }
     options:
       expose: true
-mbp_produccion_readOtPaneles:
-    path: /readotpaneles
-    defaults: { _controller: MbpProduccionBundle:Ot:readOtPaneles }
-    options:
-      expose: true
-mbp_produccion_nuevaotpanel:
-    path: /nuevaotpanel
-    defaults: { _controller: MbpProduccionBundle:Ot:nuevaOtPanel }
-    options:
-      expose: true
 mbp_produccion_verificaot:
     path: /verificaOt
     defaults: { _controller: MbpProduccionBundle:Ot:verificaOt }
-    options:
-      expose: true
-mbp_produccion_verificapanelcalculado:
-    path: /verificaPanelCalculado
-    defaults: { _controller: MbpProduccionBundle:Ot:verificaPanelCalculado }
     options:
       expose: true
 mbp_produccion_readbrazingparams:

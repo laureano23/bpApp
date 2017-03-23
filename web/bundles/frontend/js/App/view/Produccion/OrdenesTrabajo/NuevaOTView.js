@@ -19,7 +19,8 @@ Ext.define('MetApp.view.Produccion.OrdenesTrabajo.NuevaOTView', {
 					frame: false,				
 					fieldDefaults: {
 						margins: '5 5 5 5',	
-						allowBlank: false
+						allowBlank: false,
+						readOnly: true
 					},
 					defaults: {
 						margin: '0 5 0 0'
@@ -33,8 +34,11 @@ Ext.define('MetApp.view.Produccion.OrdenesTrabajo.NuevaOTView', {
 								{
 									xtype: 'datefield',
 									fieldLabel: 'Emisión',
+									itemId: 'emision',
+									name: 'fechaEmision',
 									width: 165,
-									labelWidth: 55
+									labelWidth: 55,
+									value: new Date
 								},
 								{
 									xtype: 'textfield',
@@ -90,6 +94,8 @@ Ext.define('MetApp.view.Produccion.OrdenesTrabajo.NuevaOTView', {
 								{
 									xtype: 'numberfield',
 									fieldLabel: 'Cantidad',
+									name: 'cantidad',
+									itemId: 'cantidad',
 									width: 200,
 									labelWidth: 55
 									
@@ -97,19 +103,57 @@ Ext.define('MetApp.view.Produccion.OrdenesTrabajo.NuevaOTView', {
 								{
 									xtype: 'datefield',
 									labelWidth: 150,
+									itemId: 'fechaProg',
+									name: 'fechaProg',
 									fieldLabel: 'Fecha de programación',
 									width: 270
 								}
 							]
 						},
 						{
-							xtype     : 'textareafield',
-        					fieldLabel: 'Observaciones',
-        					width: 500,
-        					allowBlank: true
-						}
+							xtype: 'container',
+							layout: 'hbox',
+							items: [
+								{
+									xtype     : 'textareafield',
+									name: 'observaciones',
+		        					fieldLabel: 'Observaciones',
+		        					width: 500,
+		        					allowBlank: true
+								},
+								{
+									xtype: 'fieldset',
+									itemId: 'fieldSetDir',
+									title: 'Tipo',
+									collapsible: false,
+									collapsed: false,
+									items: [
+										{
+											xtype: 'radiogroup',
+									        //fieldLabel: 'Tipo',
+									        labelWidth: 40,
+									        width: 350,
+									        columns: 2,
+									        vertical: true,
+									        items: [
+									            { boxLabel: 'Mecanizado', name: 'tipo', inputValue: '1', checked: true },
+									            { boxLabel: 'Panel', name: 'tipo', inputValue: '2'},
+									            { boxLabel: 'Fundicion', name: 'tipo', inputValue: '3' },
+									            { boxLabel: 'General', name: 'tipo', inputValue: '4' }
+									        ]
+										}
+									]
+								}								
+							]
+						}		
 					],
 					buttons: [
+						{
+							text: 'Nueva',
+							itemId: 'nueva',
+							iconCls: 'add',
+							height: 30
+						},
 						{
 							text: 'Guardar',
 							itemId: 'guardar',
@@ -122,6 +166,9 @@ Ext.define('MetApp.view.Produccion.OrdenesTrabajo.NuevaOTView', {
 							height: 30,							
 							handler: function(){
 								this.up('form').getForm().reset();
+								this.up('form').query('field').forEach(function(field){
+									field.setReadOnly(true);		
+								});
 							}
 						},						
 					]

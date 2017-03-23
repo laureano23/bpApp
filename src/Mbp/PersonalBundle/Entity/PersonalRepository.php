@@ -47,6 +47,7 @@ class PersonalRepository extends EntityRepository
 								p.estado,
 								p.nacionalidad,
 								p.obraSocial,
+								p.observaciones,
 								DATE_FORMAT(p.fechaIngreso, '%d/%m/%Y') as fechaIngreso,
 								DATE_FORMAT(p.fechaEgreso, '%d/%m/%Y') as fechaEgreso,
 								DATE_FORMAT(p.fechaNacimiento, '%d/%m/%Y') as fechaNacimiento,
@@ -175,6 +176,7 @@ class PersonalRepository extends EntityRepository
 			$empleado->setFechaNacimiento(\DateTime::createFromFormat('d/m/Y', $data->fechaNacimiento));
 			$empleado->setObraSocial($data->obraSocial);
 			$empleado->setNacionalidad($data->nacionalidad);
+			$empleado->setObservaciones($data->observaciones);
 			$data->tallePantalon == 0 ? $empleado->setTallePantalon(null) : $empleado->setTallePantalon($data->tallePantalon);
 			$data->talleCamisa == 0 ? $empleado->setTalleCamisa(null) : $empleado->setTalleCamisa($data->talleCamisa);
 			$data->talleCalzado == 0 ? $empleado->setTalleCalzado(null) : $empleado->setTalleCalzado($data->talleCalzado);
@@ -230,6 +232,7 @@ class PersonalRepository extends EntityRepository
 					'telefonos' => $data->telefonos,
 					'cuil' => $data->cuil,
 					'tipoContratacion' => $data->tipoContratacion,
+					'observaciones' => $data->observaciones
 				)
 			);			
 		}catch(\Exception $e){

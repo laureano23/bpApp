@@ -246,6 +246,13 @@ class Personal
      * )
      */
     private $talleCalzado;
+	
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="observaciones", type="string", length=250, nullable=false)
+     */
+    private $observaciones;
     
     public function __construct()
     {
@@ -927,5 +934,29 @@ class Personal
     public function getTalleCalzado()
     {
         return $this->talleCalzado;
+    }
+
+    /**
+     * Set observaciones
+     *
+     * @param string $observaciones
+     *
+     * @return Personal
+     */
+    public function setObservaciones($observaciones)
+    {
+        $this->observaciones = $observaciones;
+
+        return $this;
+    }
+
+    /**
+     * Get observaciones
+     *
+     * @return string
+     */
+    public function getObservaciones()
+    {
+        return $this->observaciones;
     }
 }

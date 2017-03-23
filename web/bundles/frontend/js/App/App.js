@@ -22,7 +22,6 @@ Ext.application({
 		'Articulos.ArticulosController',
 		'Articulos.FormulasController',
 		'Produccion.CalculoRadiadores.CalculoController',
-		'Produccion.CalculoRadiadores.OtPanelesController',
 		'Produccion.CalculoRadiadores.ParametrosBrazingController',		
 		'Produccion.CalculoRadiadores.CalculoSeleccionController',
 		'Produccion.PedidoClientes.PedidoClientesController',

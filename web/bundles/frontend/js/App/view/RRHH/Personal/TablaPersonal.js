@@ -29,8 +29,8 @@ Ext.define('MetApp.view.RRHH.Personal.TablaPersonal', {
 				displayField: 'sindicato',
 				valueField: 'idSindicato',
 				fieldLabel: 'Sindicato',
-				disabledCls: 'myDisabledClass',
-				disabled: true
+				readOnlyCls: 'myDisabledClass',
+				readOnly: true
 			},
 			{
 				xtype: 'combobox',
@@ -43,8 +43,8 @@ Ext.define('MetApp.view.RRHH.Personal.TablaPersonal', {
 				displayField: 'categoria',
 				valueField: 'idCategoria',
 				fieldLabel: 'Categoria',
-				disabledCls: 'myDisabledClass',
-				disabled: true
+				readOnlyCls: 'myDisabledClass',
+				readOnly: true
 			},
 			{
 				xtype: 'datefield',
@@ -52,24 +52,24 @@ Ext.define('MetApp.view.RRHH.Personal.TablaPersonal', {
 				name: 'fechaIngreso',
 				allowBlank: false,
 				fieldLabel: 'Fecha ingreso',
-				disabledCls: 'myDisabledClass',
-				disabled: true
+				readOnlyCls: 'myDisabledClass',
+				readOnly: true
 			},
 			{
 				xtype: 'datefield',
 				format: 'd/m/Y',
 				name: 'fechaEgreso',
 				fieldLabel: 'Fecha egreso',
-				disabledCls: 'myDisabledClass',
-				disabled: true
+				readOnlyCls: 'myDisabledClass',
+				readOnly: true
 			},
 			{
 				xtype: 'datefield',
 				format: 'd/m/Y',
 				name: 'fechaNacimiento',
 				fieldLabel: 'Fecha nacimiento',
-				disabledCls: 'myDisabledClass',
-				disabled: true,
+				readOnlyCls: 'myDisabledClass',
+				readOnly: true,
 				allowBlank: false
 			},
 			{
@@ -77,8 +77,8 @@ Ext.define('MetApp.view.RRHH.Personal.TablaPersonal', {
 				name: 'tarea',
 				labelWidth: 150,
 				fieldLabel: 'Tarea desempeñada',
-				disabledCls: 'myDisabledClass',
-				disabled: true
+				readOnlyCls: 'myDisabledClass',
+				readOnly: true
 			},
 			{
 				xtype: 'combobox',
@@ -89,13 +89,13 @@ Ext.define('MetApp.view.RRHH.Personal.TablaPersonal', {
 				displayField: 'descripcion',
 				valueField: 'id',
 				fieldLabel: 'Sector',
-				disabledCls: 'myDisabledClass',
-				disabled: true
+				readOnlyCls: 'myDisabledClass',
+				readOnly: true
 			},
 			{
 	            xtype: 'radiogroup',
-	            disabledCls: 'myDisabledClass',
-				disabled: true,
+	            readOnlyCls: 'myDisabledClass',
+				readOnly: true,
 	            fieldLabel: 'Periodo',
 	            defaultType: 'radiofield',
 	            layout: 'hbox',
@@ -122,8 +122,8 @@ Ext.define('MetApp.view.RRHH.Personal.TablaPersonal', {
 				name: 'salario',
 				itemId: 'oficial',								
 				fieldLabel: 'Oficial',
-				disabledCls: 'myDisabledClass',
-				disabled: true,
+				readOnlyCls: 'myDisabledClass',
+				readOnly: true,
 			},
 			{
 				xtype: 'numberfield',
@@ -131,8 +131,8 @@ Ext.define('MetApp.view.RRHH.Personal.TablaPersonal', {
 				require: {role1:true},
 				itemId: 'compensatorio',
 				fieldLabel: 'Compensatorio',
-				disabledCls: 'myDisabledClass',
-				disabled: true,
+				readOnlyCls: 'myDisabledClass',
+				readOnly: true,
 				decimalSeparator: '.'
 			},	
 			{
@@ -140,8 +140,8 @@ Ext.define('MetApp.view.RRHH.Personal.TablaPersonal', {
 				name: 'cuil',
 				itemId: 'cuil',
 				fieldLabel: 'CUIL N°',
-				disabledCls: 'myDisabledClass',
-				disabled: true,
+				readOnlyCls: 'myDisabledClass',
+				readOnly: true,
 				allowBlank: false
 			},
 			{
@@ -150,8 +150,8 @@ Ext.define('MetApp.view.RRHH.Personal.TablaPersonal', {
 				name: 'tipoContratacion',
 				itemId: 'tipoContratacion',
 				fieldLabel: 'Tipo de contratacion',
-				disabledCls: 'myDisabledClass',
-				disabled: true,
+				readOnlyCls: 'myDisabledClass',
+				readOnly: true,
 			},
 			{
 				xtype: 'container',
@@ -163,8 +163,8 @@ Ext.define('MetApp.view.RRHH.Personal.TablaPersonal', {
 						name: 'antiguedad',
 						itemId: 'antiguedad',
 						fieldLabel: 'Antiguedad',
-						disabledCls: 'myDisabledClass',
-						disabled: true,
+						readOnlyCls: 'myDisabledClass',
+						readOnly: true,
 						checked: true,
 						uncheckedValue: 0,
 						value: 1
@@ -175,8 +175,8 @@ Ext.define('MetApp.view.RRHH.Personal.TablaPersonal', {
 						fieldLabel: 'Porcentaje',
 						name: 'antPorcentaje',
 						itemId: 'antPorcentaje',
-						disabledCls: 'myDisabledClass',
-						disabled: true,
+						readOnlyCls: 'myDisabledClass',
+						readOnly: true,
 					}
 				]
 			}
@@ -202,7 +202,7 @@ Ext.define('MetApp.view.RRHH.Personal.TablaPersonal', {
 							xtype: 'container',
 							layout: 'hbox',
 							defaults: {
-								disabledCls: 'myDisabledClass',
+								readOnlyCls: 'myDisabledClass',
 							},
 							items: [
 								{
@@ -215,7 +215,7 @@ Ext.define('MetApp.view.RRHH.Personal.TablaPersonal', {
 									xtype: 'textfield',	
 									name: 'nombre',	
 									itemId: 'nombre',									
-									disabled: true,
+									readOnly: true,
 									fieldLabel: 'Nombre',
 									name: 'nombre',
 									allowBlank: false,
@@ -235,8 +235,8 @@ Ext.define('MetApp.view.RRHH.Personal.TablaPersonal', {
 						{
 							xtype: 'fieldset',
 							defaults: {
-								disabledCls: 'myDisabledClass',
-								disabled: true
+								readOnlyCls: 'myDisabledClass',
+								readOnly: true
 							},
 							itemId: 'fieldSetDir',
 							title: 'Domicilio',
@@ -298,8 +298,8 @@ Ext.define('MetApp.view.RRHH.Personal.TablaPersonal', {
 							xtype: 'textfield',
 							name: 'telefonos',
 							fieldLabel: 'Telefonos',
-							disabledCls: 'myDisabledClass',
-							disabled: true,
+							readOnlyCls: 'myDisabledClass',
+							readOnly: true,
 							allowBlank: false
 							
 						},
@@ -307,15 +307,15 @@ Ext.define('MetApp.view.RRHH.Personal.TablaPersonal', {
 							xtype: 'textfield',
 							name: 'cPostal',
 							fieldLabel: 'Cod. Postal',
-							disabledCls: 'myDisabledClass',
-							disabled: true
+							readOnlyCls: 'myDisabledClass',
+							readOnly: true
 						},
 						{
 							xtype: 'container',
 							layout: 'hbox',
 							defaults: {
-								disabledCls: 'myDisabledClass',
-								disabled: true
+								readOnlyCls: 'myDisabledClass',
+								readOnly: true
 							},
 							items: [
 								{
@@ -361,8 +361,8 @@ Ext.define('MetApp.view.RRHH.Personal.TablaPersonal', {
 							}),
 							queryMode: 'local',
 							displayField: 'estado',
-							disabledCls: 'myDisabledClass',
-							disabled: true
+							readOnlyCls: 'myDisabledClass',
+							readOnly: true
 						},
 						{
 							xtype: 'textfield',
@@ -370,8 +370,8 @@ Ext.define('MetApp.view.RRHH.Personal.TablaPersonal', {
 							name: 'nacionalidad',
 							itemId: 'nacionalidad',
 							fieldLabel: 'Nacionalidad',
-							disabledCls: 'myDisabledClass',
-							disabled: true,
+							readOnlyCls: 'myDisabledClass',
+							readOnly: true,
 							allowBlank: false
 						},
 						{
@@ -381,10 +381,21 @@ Ext.define('MetApp.view.RRHH.Personal.TablaPersonal', {
 							name: 'obraSocial',
 							itemId: 'obraSocial',
 							fieldLabel: 'Obra Social',
-							disabledCls: 'myDisabledClass',
-							disabled: true,
+							readOnlyCls: 'myDisabledClass',
+							readOnly: true,
 							msgTarget: 'qtip',
 							emptyText: 'Complete segun registro nacional de OS'
+						},
+						{
+							xtype: 'textareafield',
+							width: 400,
+							margin: '5 0 0 0',
+							name: 'observaciones',
+							itemId: 'observaciones',
+							fieldLabel: 'Observaciones',
+							readOnlyCls: 'myDisabledClass',
+							readOnly: true,
+							msgTarget: 'qtip'
 						}							
 					]
 				}, //EOF CONTAINER DATOS PERSONALAS

@@ -3,7 +3,7 @@
 	color: red !important;
 }
 
-.myDisabledClass input{
+.myDisabledClass input textarea{
 	background-color: #C7D1D9;
     opacity: .7;
     -moz-opacity: .3;
@@ -18,6 +18,15 @@
     filter: alpha(opacity=30);
     border: 1px solid #979CA5;
 }
+
+.x-form-item textarea:read-only {
+    background-color: #C7D1D9;
+    opacity: .7;
+    -moz-opacity: .3;
+    filter: alpha(opacity=30);
+    border: 1px solid #979CA5;
+}
+
 
 .panelBtn {	
 	border-radius: 3px;

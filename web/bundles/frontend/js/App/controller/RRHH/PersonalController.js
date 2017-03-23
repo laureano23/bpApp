@@ -230,10 +230,10 @@ Ext.define('MetApp.controller.RRHH.PersonalController', {
 		var form = win.down('form');
 		
 		form.query('field').forEach(function(field){
-			field.setDisabled(false);		
+			field.setReadOnly(false);		
 		});
 		form.queryById('fieldSetDir').expand();
-		form.queryById('oficial').setDisabled(true);
+		form.queryById('oficial').setReadOnly(true);
 		form.queryById('buscaEmp').setDisabled(true);
 						
 		form.getForm().reset();
@@ -249,10 +249,10 @@ Ext.define('MetApp.controller.RRHH.PersonalController', {
 		var form = win.down('form');
 		var botonera = win.queryById('botonera');
 		form.query('field').forEach(function(field){
-			field.setDisabled(false);		
+			field.setReadOnly(false);		
 		});
 		
-		form.queryById('oficial').setDisabled(true);
+		form.queryById('oficial').setReadOnly(true);
 		
 		botonera.editarItem(botonera);
 	},
@@ -263,7 +263,7 @@ Ext.define('MetApp.controller.RRHH.PersonalController', {
 		var storeFijos = Ext.getStore('MetApp.store.Personal.PersonalDatosFijosStore');
 		
 		form.query('field').forEach(function(field){
-			field.setDisabled(true);		
+			field.setReadOnly(true);		
 		});
 		
 		storeFijos.loadData([]);
@@ -280,11 +280,11 @@ Ext.define('MetApp.controller.RRHH.PersonalController', {
 		var botonera = win.queryById('botonera');
 		var formOtrosDatos = win.down('form [itemId=formOtrosDatos]'); 
 		formOtrosDatos.query('field').forEach(function(field){
-			field.setDisabled(false);		
+			field.setReadOnly(false);		
 		});	
 		var valuesOtrosDatos = formOtrosDatos.getForm().getValues();
 		formOtrosDatos.query('field').forEach(function(field){
-			field.setDisabled(true);		
+			field.setReadOnly(true);		
 		});	
 		
 		if(form.isValid()){
@@ -305,7 +305,7 @@ Ext.define('MetApp.controller.RRHH.PersonalController', {
 				if(request.action == 'create' & success == true){			
 					form.queryById('idP').setValue(request.records[0].data.idP);
 					form.query('field').forEach(function(field){
-						field.setDisabled(true);		
+						field.setReadOnly(true);		
 					});									 
 					botonera.busquedaItem(botonera);
 					win.queryById('buscaEmp').setDisabled(false);
@@ -325,7 +325,7 @@ Ext.define('MetApp.controller.RRHH.PersonalController', {
 						respText = Ext.decode(resp.responseText);
 						if(respText.success == true){
 							form.query('field').forEach(function(field){
-								field.setDisabled(true);		
+								field.setReadOnly(true);		
 							});
 							botonera.busquedaItem(botonera);
 							win.queryById('buscaEmp').setDisabled(false);
@@ -438,7 +438,7 @@ Ext.define('MetApp.controller.RRHH.PersonalController', {
 		var botonera = panel.queryById('botonera');
 		botonera.queryById('btnSave').setDisabled(false);
 		form.query('field').forEach(function(field){
-			field.setDisabled(false);		
+			field.setReadOnly(false);		
 		});
 	},
 	
@@ -451,12 +451,12 @@ Ext.define('MetApp.controller.RRHH.PersonalController', {
 		var formPersonal = win.down('form [itemId=formPersonal]');
 		//HABILITAMOS CAMPOS DEL FORM PARA PODER TRAER SUS VALORES TEMPORALMENTE
 		formPersonal.query('field').forEach(function(field){
-			field.setDisabled(false);		
+			field.setReadOnly(false);		
 		});		
 		var valuesPersonal = formPersonal.getForm().getValues();
 		//DESHABILITAMOS NUEVAMENTE CAMPOS DEL FORM
 		formPersonal.query('field').forEach(function(field){
-			field.setDisabled(true);		
+			field.setReadOnly(true);		
 		});
 		var store = me.getStore('personalStore');
 		var proxy = store.getProxy();
@@ -476,7 +476,7 @@ Ext.define('MetApp.controller.RRHH.PersonalController', {
 		proxy.afterRequest = function(request, success){
 			if(request.action == 'create' ||  request.action == 'update' & success == true){			
 				form.query('field').forEach(function(field){
-					field.setDisabled(true);		
+					field.setReadOnly(true);		
 				});								
 			}
 			if(request.action == 'create' & success == false){

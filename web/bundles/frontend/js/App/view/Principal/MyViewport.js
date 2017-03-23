@@ -171,13 +171,6 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                         }, 
 					},
 					{
-						text: 'O.T Paneles',
-						itemId: 'otPaneles',
-                        listeners : {
-                            render : dragZone,
-                        }, 
-					},
-					{
 						text: 'Parametros Brazing',
 						itemId: 'parametrosBrazing',
 						require: {role1: true},

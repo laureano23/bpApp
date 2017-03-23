@@ -22,7 +22,7 @@ Ext.define('MetApp.view.RRHH.Personal.TabOtrosDatos', {
 			border: false,
 			layout: 'vbox',
 			defaults: {
-				disabled: true,
+				readOnly: true,
 				disabledCls: 'myDisabledClass',
 			},
 			items: [

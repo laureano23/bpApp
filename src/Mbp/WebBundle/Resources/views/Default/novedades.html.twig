@@ -15,6 +15,25 @@
 				<article class="post clearfix jumbotron">					
 					<div class="col-md-7">
 						<h3 class="post-title">
+						<a href="#">{{"Visita a Metalfor"|trans}}</a>
+						</h3>
+						<p class="lead">
+							<small>
+								{{"Una excelente jornada en la provincia de Córdoba, donde visitamos a Metalfor, uno de nuestros principales clientes, participando del ensayo de nuevos paquetes de enfriamiento integrales (radiador de aceite + radiador de agua + intercooler)."|trans}}
+							</small>
+							
+						</p>
+					</div>
+					<div class="col-md-5">
+						<a href="#" class="thumb pull-left">
+							<img class="img-responsive" src="{{ asset('bundles/mbpweb/images/metalfor_novedades.jpg') }}" alt="radiador_pauny">
+						</a>
+					</div>	
+				</article>
+
+				<article class="post clearfix jumbotron">					
+					<div class="col-md-7">
+						<h3 class="post-title">
 						<a href="#">{{"Radiador de agua Pauny"|trans}}</a>
 						</h3>
 						<p class="lead">
@@ -28,8 +47,7 @@
 						<a href="#" class="thumb pull-left">
 							<img class="img-responsive" src="{{ asset('bundles/mbpweb/images/radiador pauny2.jpg') }}" alt="radiador_pauny">
 						</a>
-					</div>					
-					
+					</div>	
 				</article>
 
 				<article class="post clearfix jumbotron">					
@@ -75,6 +93,32 @@
 
 			</section>
 		</div>
+
+		<!-- VENTANA MODAL PARA MOSTRAR IMAGENES AMPLIADAS -->
+		<div class="modal fade col-md-10 col-md-offset-1" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-admin" id="modalImg">
+		    	<div class="modal-content">
+		        	<div class="modal-header">
+		          		<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		          		<h4 class="modal-title" id="myModalLabel">Vista previa</h4>
+		        	</div>
+		        	<div class="modal-body">
+		          		<img src="" id="imagepreview" class="img-responsive">
+		        	</div>
+		        	<div class="modal-footer">
+		          		<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+		        	</div>
+		      	</div>
+		    </div>
+		</div>		
+
 	</section>
 {% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script src="{{ asset('bundles/mbpweb/js/novedades.js') }}"></script>
+
+
+{% endblock %}	
 

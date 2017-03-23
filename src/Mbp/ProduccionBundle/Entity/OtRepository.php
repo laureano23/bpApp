@@ -54,7 +54,6 @@ class OtRepository extends EntityRepository
 	        			 
 	        $ot = new Ot();
 	        
-	        $ot->setOt($data->ot);
 	        $ot->setidCodigo($art);
 			$ot->setidCliente($cliente);
 	        $ot->setcantidad($data->{'cantidad'});
