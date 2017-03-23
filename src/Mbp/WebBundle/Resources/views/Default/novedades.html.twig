@@ -1,8 +1,14 @@
 {% extends 'baseWeb.html.twig' %}
 
+
 {% block head %}
 	{{ parent() }}
 	<title>Novedades | Metalurgica BP SRL</title>	
+
+	{% block stylesheets %}
+		{{ parent() }}
+		<link rel="stylesheet" href="{{ asset('bundles/mbpweb/css/novedades.css') }}">
+	{% endblock %}
 {% endblock %}
 
 
@@ -11,8 +17,7 @@
 	<section class="main container">
 		<div class="row">
 			<section class="posts col-md-12">
-
-				<article class="post clearfix jumbotron">					
+				<article class="post clearfix jumbotron jumboNovedades">					
 					<div class="col-md-7">
 						<h3 class="post-title">
 						<a href="#">{{"Visita a Metalfor"|trans}}</a>
@@ -31,7 +36,7 @@
 					</div>	
 				</article>
 
-				<article class="post clearfix jumbotron">					
+				<article class="post clearfix jumbotron jumboNovedades">					
 					<div class="col-md-7">
 						<h3 class="post-title">
 						<a href="#">{{"Radiador de agua Pauny"|trans}}</a>
@@ -50,7 +55,7 @@
 					</div>	
 				</article>
 
-				<article class="post clearfix jumbotron">					
+				<article class="post clearfix jumbotron jumboNovedades">					
 					<div class="col-md-7">
 						<h3 class="post-title">
 						<a href="#">{{"Modernización de maquinaria"|trans}}</a>
@@ -72,7 +77,7 @@
 
 				<hr>
 
-				<article class="post clearfix jumbotron">					
+				<article class="post clearfix jumbotron jumboNovedades">					
 					<div class="col-md-7">
 						<h2 class="post-title">
 						<a href="#">{{"Automec 2015 Brasil"|trans}}</a>

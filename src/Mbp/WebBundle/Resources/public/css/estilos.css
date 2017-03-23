@@ -88,6 +88,9 @@ html {
 body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #696969;
+  background-color: #ffffff;
 }
 footer {
   position: absolute;
@@ -155,3 +158,4 @@ footer {
   text-align: left;
   vertical-align: middle;
 }
+
