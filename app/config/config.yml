@@ -4,6 +4,7 @@ imports:
     - { resource: doctrine_extensions.yml }
     - { resource: "@MbpArticulosBundle/Resources/config/services.yml" }
     - { resource: "@MbpFinanzasBundle/Resources/config/services.yml" }
+    - { resource: "@MbpProduccionBundle/Resources/config/services.yml" }
 
 framework:
     #esi:             ~

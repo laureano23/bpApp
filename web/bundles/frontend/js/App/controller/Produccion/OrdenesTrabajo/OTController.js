@@ -4,10 +4,12 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 	views: [
 		'MetApp.view.Produccion.OrdenesTrabajo.NuevaOTView',
 		'MetApp.view.Clientes.SearchGridClientes',
-		'MetApp.view.Articulos.WinArticuloSearch'
+		'MetApp.view.Articulos.WinArticuloSearch',
+		'MetApp.view.Produccion.OrdenesTrabajo.CierreOTView'
 	],
 	
 	stores: [
+		'Produccion.OrdenesTrabajo.CierreOTGridStore'
 	],
 	
 	
@@ -31,6 +33,12 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 			},
 			'NuevaOTView button[itemId=btnCodigo]': {
 				click: this.BuscarCodigo
+			},
+			'#cierreOt': {
+				click: this.CerrarOT
+			},
+			'CierreOTView button[itemId=guardar]': {
+				click: this.GuardarCierreOt
 			},
 		});
 	},
@@ -114,6 +122,57 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 			});
 		}
 		
+	},
+	
+	CerrarOT: function(btn){
+		var view = Ext.widget('CierreOTView');
+		var grid = view.down('grid');
+		var store = grid.getStore();
+		
+		
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_produccion_CerrarOtListado'),
+			
+			success: function(resp){
+				jsonData = Ext.JSON.decode(resp.responseText);
+				store.loadRawData(jsonData.items);
+			},
+			
+			failure: function(resp){
+				
+			}
+		})
+	},
+	
+	GuardarCierreOt: function(btn){
+		var win = btn.up('window');
+		var grid = win.down('grid');
+		var store = grid.getStore();
+		var modifiedRecords = store.getModifiedRecords();
+		var arrayParam = [];
+		
+		for(var i=0; i<modifiedRecords.length; i++){
+			arrayParam.push(modifiedRecords[i].getData());
+		}
+		
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_produccion_ActualizarCerradoOt'),
+			
+			params: {
+				items: Ext.JSON.encode(arrayParam)
+			},
+			
+			success: function(resp){
+				jsonResp = Ext.JSON.decode(resp.responseText);
+				if(jsonResp.success == true){
+					store.sync();
+				}
+			},
+			
+			failure: function(resp){
+				
+			}
+		})
 	}
 });
 

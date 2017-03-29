@@ -252,15 +252,8 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 							
 							success: function(resp){								
 								var ruta = Routing.generate('mbp_personal_verOC');
-						    	var WinReporte=Ext.create('Ext.Window', {
-									  title: 'Orden de compra',
-									  width: 900,
-									  height: 600,
-									  layout: 'fit',
-									  modal:true,										
-									  html: '<iframe src='+ruta+' width="100%" height="100%"></iframe>'						  
-								 }).show();
-								 myMask.hide();	
+						    	window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+								myMask.hide();	
 							},
 
 							failure: function(){

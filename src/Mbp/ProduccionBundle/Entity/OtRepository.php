@@ -120,4 +120,21 @@ class OtRepository extends EntityRepository
 			$this->get('logger')->error($e->getMessage());	
 		}	
 	}
+
+	public function listadoOtParaCerrar()
+	{
+		$em = $this->getEntityManager();
+		$repo = $em->getRepository('MbpProduccionBundle:Ot');
+		
+		$query = $repo->createQueryBuilder('o')
+			->select("o.ot as otNum, DATE_FORMAT(o.fechaEmision, '%d/%m/%Y') as otEmision, c.rsocial as cliente, codigo.codigo, codigo.descripcion, o.cantidad as totalOt, DATE_FORMAT(o.fechaProg, '%d/%m/%Y') as programado, o.cantidad - o.aprobado - o.rechazado as pendiente, o.aprobado, o.rechazado")
+			->join('o.idCodigo', 'codigo')
+			->join('o.idCliente', 'c')
+			->where('(o.cantidad - o.aprobado - o.rechazado) > 0')
+			->orderBy('otNum', 'DESC')
+			->getQuery()
+			->getArrayResult();
+			
+		return $query;
+	}
 }

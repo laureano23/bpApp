@@ -25,7 +25,7 @@ Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 				   			key: Ext.EventObject.F4,
 				   			defaultEventAction: 'preventDefault',
 				   			fn: function(){ 
-				   				win.queryById('nuevoCobro').fireEvent('click');
+				   				win.queryById('nuevoPago').fireEvent('click');
 				   			}
 				   		},
 				   		{

@@ -62,6 +62,12 @@
     font-weight: bold; 
 }
 
+.x-grid-row .custom-column-red { 
+    background-color: #d65f4a; 
+    color: black; 
+    font-weight: bold; 
+}
+
 .x-btn-button:hover { 
   background: #FF9900;
 }

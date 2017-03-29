@@ -268,6 +268,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
     					listeners : {
                             render : dragZone,
                         }
+    				},
+    				{
+    					text: 'Cierre OT',
+    					itemId: 'cierreOt',
+    					listeners : {
+                            render : dragZone,
+                        }
     				}
     			]
     		},
