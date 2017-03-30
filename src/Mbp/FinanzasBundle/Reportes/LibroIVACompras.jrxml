@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LibroIVAVentas" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="c4b105ad-c9d2-4e6e-aab2-f046571798ae">
+	<property name="ireport.zoom" value="1.4641000000000124"/>
+	<property name="ireport.x" value="714"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="fechaDesde" class="java.lang.String">
+		<defaultValueExpression><![CDATA[01/01/2001]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaHasta" class="java.lang.String">
+		<defaultValueExpression><![CDATA[31/12/2020]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     FacturaProveedor.`id` AS FacturaProveedor_id,
+     FacturaProveedor.`fechaCarga` AS FacturaProveedor_fechaCarga,
+     FacturaProveedor.`fechaEmision` AS FacturaProveedor_fechaEmision,
+     FacturaProveedor.`tipo` AS FacturaProveedor_tipo,
+     FacturaProveedor.`sucursal` AS FacturaProveedor_sucursal,
+     FacturaProveedor.`numFc` AS FacturaProveedor_numFc,
+     FacturaProveedor.`neto` AS FacturaProveedor_neto,
+     FacturaProveedor.`netoNoGrabado` AS FacturaProveedor_netoNoGrabado,
+     FacturaProveedor.`iva21` AS FacturaProveedor_iva21,
+     FacturaProveedor.`iva27` AS FacturaProveedor_iva27,
+     FacturaProveedor.`iva10_5` AS FacturaProveedor_iva10_5,
+     FacturaProveedor.`perIva5` AS FacturaProveedor_perIva5,
+     FacturaProveedor.`perIva3` AS FacturaProveedor_perIva3,
+     FacturaProveedor.`iibbCf` AS FacturaProveedor_iibbCf,
+     FacturaProveedor.`vencimiento` AS FacturaProveedor_vencimiento,
+     FacturaProveedor.`concepto` AS FacturaProveedor_concepto,
+     FacturaProveedor.`totalFc` AS FacturaProveedor_totalFc,
+     FacturaProveedor.`imputado` AS FacturaProveedor_imputado,
+     FacturaProveedor.`proveedorId` AS FacturaProveedor_proveedorId,
+     FacturaProveedor.`gastoId` AS FacturaProveedor_gastoId,
+     Proveedor.`id` AS Proveedor_id,
+     Proveedor.`localidad` AS Proveedor_localidad,
+     Proveedor.`provincia` AS Proveedor_provincia,
+     Proveedor.`rsocial` AS Proveedor_rsocial,
+     Proveedor.`denominacion` AS Proveedor_denominacion,
+     Proveedor.`direccion` AS Proveedor_direccion,
+     Proveedor.`cuit` AS Proveedor_cuit,
+     Proveedor.`vencimientoFc` AS Proveedor_vencimientoFc,
+     Proveedor.`imputacionGastos` AS Proveedor_imputacionGastos,
+     FacturaProveedor.`comprobante` AS FacturaProveedor_comprobante
+FROM
+     `Proveedor` Proveedor INNER JOIN `FacturaProveedor` FacturaProveedor ON Proveedor.`id` = FacturaProveedor.`proveedorId`
+WHERE
+     FacturaProveedor.`fechaEmision` BETWEEN $P{fechaDesde} AND $P{fechaHasta}]]>
+	</queryString>
+	<field name="FacturaProveedor_id" class="java.lang.Integer"/>
+	<field name="FacturaProveedor_fechaCarga" class="java.sql.Timestamp"/>
+	<field name="FacturaProveedor_fechaEmision" class="java.sql.Timestamp"/>
+	<field name="FacturaProveedor_tipo" class="java.lang.String"/>
+	<field name="FacturaProveedor_sucursal" class="java.lang.Integer"/>
+	<field name="FacturaProveedor_numFc" class="java.lang.Integer"/>
+	<field name="FacturaProveedor_neto" class="java.math.BigDecimal"/>
+	<field name="FacturaProveedor_netoNoGrabado" class="java.math.BigDecimal"/>
+	<field name="FacturaProveedor_iva21" class="java.math.BigDecimal"/>
+	<field name="FacturaProveedor_iva27" class="java.math.BigDecimal"/>
+	<field name="FacturaProveedor_iva10_5" class="java.math.BigDecimal"/>
+	<field name="FacturaProveedor_perIva5" class="java.math.BigDecimal"/>
+	<field name="FacturaProveedor_perIva3" class="java.math.BigDecimal"/>
+	<field name="FacturaProveedor_iibbCf" class="java.math.BigDecimal"/>
+	<field name="FacturaProveedor_vencimiento" class="java.sql.Date"/>
+	<field name="FacturaProveedor_concepto" class="java.lang.String"/>
+	<field name="FacturaProveedor_totalFc" class="java.math.BigDecimal"/>
+	<field name="FacturaProveedor_imputado" class="java.math.BigDecimal"/>
+	<field name="FacturaProveedor_proveedorId" class="java.lang.Integer"/>
+	<field name="FacturaProveedor_gastoId" class="java.lang.Integer"/>
+	<field name="Proveedor_id" class="java.lang.Integer"/>
+	<field name="Proveedor_localidad" class="java.lang.Integer"/>
+	<field name="Proveedor_provincia" class="java.lang.Integer"/>
+	<field name="Proveedor_rsocial" class="java.lang.String"/>
+	<field name="Proveedor_denominacion" class="java.lang.String"/>
+	<field name="Proveedor_direccion" class="java.lang.String"/>
+	<field name="Proveedor_cuit" class="java.lang.String"/>
+	<field name="Proveedor_vencimientoFc" class="java.lang.Integer"/>
+	<field name="Proveedor_imputacionGastos" class="java.lang.Integer"/>
+	<field name="FacturaProveedor_comprobante" class="java.lang.String"/>
+	<variable name="total" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{FacturaProveedor_comprobante} == "NC" ? -1 * $F{FacturaProveedor_totalFc} : $F{FacturaProveedor_totalFc}]]></variableExpression>
+	</variable>
+	<variable name="sumaIVA" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{FacturaProveedor_iva21}+$F{FacturaProveedor_iva27}+$F{FacturaProveedor_iva10_5}]]></variableExpression>
+	</variable>
+	<variable name="sumaNeto" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{FacturaProveedor_neto}]]></variableExpression>
+	</variable>
+	<variable name="sumaPer" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{FacturaProveedor_perIva5}+$F{FacturaProveedor_perIva3}+$F{FacturaProveedor_iibbCf}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="802" height="20" uuid="45beed22-b622-4c09-9006-055be46f95ef"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Libro IVA Ventas]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="36" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="8" width="45" height="20" uuid="00d73d64-36a7-4119-bf22-a50cfe398947"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Periodo:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="45" y="8" width="58" height="20" uuid="29d1b21c-09da-4fbb-b3a4-6262140db01c"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaDesde}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="103" y="8" width="14" height="20" uuid="3dddbf42-7d70-465c-a120-837f36effb5d"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[al]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="117" y="8" width="77" height="20" uuid="7492d30d-3506-464b-b15a-50f20ac9a9c5"/>
+				<box leftPadding="4"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaHasta}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="643" y="16" width="109" height="20" uuid="24378ca0-9f75-405a-bdcb-3a624408ca75"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Percepciones]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="56" height="20" uuid="525bf9ba-bde6-4a38-8d1c-2411097bd261"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Emisión]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="56" y="0" width="31" height="20" uuid="f7cb7ab2-d6b6-4ea8-b66b-c6f8bef74193"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cbte.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="87" y="0" width="96" height="20" uuid="519e543c-b254-4149-b564-6a09a8dce89d"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Número]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="183" y="0" width="134" height="20" uuid="2db14615-0db5-4e7f-8606-715784436c5c"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Razón social]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="317" y="0" width="74" height="20" uuid="144fe643-2cd3-4b89-977b-733fcfb33dbd"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CUIT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="391" y="0" width="68" height="20" uuid="8bf8704c-86e4-4cc7-8efb-909caff29661"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Neto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="459" y="0" width="47" height="20" uuid="5b8730a7-093e-41ce-a3df-473d89bda073"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[No Grav.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="506" y="0" width="46" height="20" uuid="2154dabc-45b4-4fd9-9c43-08f013e60d3a"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[IVA 21]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="552" y="0" width="41" height="20" uuid="8e322a4b-fb96-45d4-b9f8-f89d952e95ef"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[IVA 27]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="752" y="0" width="70" height="20" uuid="764031f7-4b5e-4909-8878-1fd5d22c7633"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="593" y="0" width="50" height="20" uuid="3092ac8f-8d38-410b-855f-f2dc6fab89ab"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[IVA 10,5]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="713" y="0" width="39" height="20" uuid="529a20d7-3072-44ba-8f22-e9ae856672e5"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[IIBB]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="677" y="0" width="36" height="20" uuid="ab0d0b97-6571-4912-b6df-7311ef300188"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[IVA 5]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="643" y="0" width="34" height="20" uuid="69f17ef6-bc71-4c29-943e-fbdcfbf9db68"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[IVA 3]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="56" height="20" uuid="d6d036b0-3265-4e36-a153-ec6672cc7379"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{FacturaProveedor_fechaEmision}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="56" y="0" width="31" height="20" uuid="ace9bdee-0f62-4627-a281-7f6b5911eeb1"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{FacturaProveedor_tipo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#00000000" isBlankWhenNull="true">
+				<reportElement x="130" y="0" width="53" height="20" uuid="01eb0648-1bd8-4519-b0bf-be9a310629d8"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{FacturaProveedor_numFc}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#0000" isBlankWhenNull="true">
+				<reportElement x="87" y="0" width="35" height="20" uuid="072ab758-fb99-4ee3-be15-74e6a9cedc14"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{FacturaProveedor_sucursal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="122" y="0" width="8" height="20" uuid="280f4bcf-a248-402f-96f7-304a61509779"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="183" y="0" width="134" height="20" uuid="878e0f2d-965c-4026-aaab-8aaf4cb8a905"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Proveedor_rsocial}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="317" y="0" width="74" height="20" uuid="3ae47855-31ba-4921-8a99-a2ad1db601c1"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Proveedor_cuit}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="391" y="0" width="68" height="20" uuid="7870462e-fbe8-4d4d-9cc2-bf3e9e021a25"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{FacturaProveedor_neto}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="459" y="0" width="47" height="20" uuid="4e650972-1270-41a3-91d0-ff9c9c222559"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{FacturaProveedor_netoNoGrabado}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="506" y="0" width="46" height="20" uuid="354ab5c2-3085-44a7-abf7-1890d8dfc38d"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{FacturaProveedor_iva21}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="713" y="0" width="39" height="20" uuid="5e8a1e23-f3bf-45a5-aec3-9ce3f02098d2"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{FacturaProveedor_iibbCf}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="752" y="0" width="70" height="20" uuid="292efa0a-1a1f-453b-871b-7cda0d71ae96"/>
+				<box leftPadding="0" rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{FacturaProveedor_totalFc}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="552" y="0" width="41" height="20" uuid="2c4e9fb7-bae7-4024-bc1b-dc5e0a4c1657"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{FacturaProveedor_iva27}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="593" y="0" width="50" height="20" uuid="c721eab8-85ee-42b4-b3c1-4d5b8d13d494"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{FacturaProveedor_iva10_5}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="643" y="0" width="34" height="20" uuid="77a50b01-ed4f-4916-b865-abee67133200"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{FacturaProveedor_perIva3}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="677" y="0" width="36" height="20" uuid="b7186e0c-e4c2-4f26-8beb-e3ad9ea9f8d9"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{FacturaProveedor_perIva5}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement x="750" y="34" width="36" height="20" uuid="f076bc0e-4a1a-444e-a42a-5562f7bc88e7"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}+" de "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="786" y="34" width="36" height="20" uuid="85a1e3bd-182e-4511-9411-9252a9855ed5"/>
+				<box leftPadding="1"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="716" y="34" width="34" height="20" uuid="1e774a96-ae77-4d83-bcfc-ec1eb07570e3"/>
+				<box rightPadding="2"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Pág.]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="822" height="20" uuid="0cce14cf-89c6-4661-bd37-57bb3ddf6480"/>
+				<box leftPadding="2">
+					<pen lineWidth="2.0"/>
+					<topPen lineWidth="2.0"/>
+					<leftPen lineWidth="2.0"/>
+					<bottomPen lineWidth="2.0"/>
+					<rightPen lineWidth="2.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Parciales]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="722" y="20" width="100" height="20" uuid="083d3250-c53a-4fa9-95ee-b7f22fd40aae"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="560" y="20" width="162" height="20" uuid="4b242795-f0af-45ed-80b8-76a4996ea760"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total general:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="459" y="0" width="47" height="20" uuid="2ad39750-5a66-4e96-a592-8e7a3a95791b"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumaNeto}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="506" y="0" width="137" height="20" uuid="24f1b63d-e31f-4a48-9c2a-49b36a70e4e2"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumaIVA}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="643" y="0" width="107" height="20" uuid="58c197db-4c70-431e-8d1e-ba5af9e76e2a"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumaPer}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
