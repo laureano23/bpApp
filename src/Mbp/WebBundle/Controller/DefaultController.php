@@ -31,7 +31,7 @@ class DefaultController extends Controller
                 $message = \Swift_Message::newInstance();
                 $message->setSubject("Nuevo usuario:");
                 $message->setFrom($email);
-                $message->setTo("info@metalurgicabp.com.ar");
+                $message->setTo("laureano@metalurgicabp.com.ar");
                 $message->setBody("
                     <strong>Nombre y Apellido: </strong>".$nombre."<br>
                     <strong>Email: </strong>".$email."<br>
@@ -113,7 +113,7 @@ class DefaultController extends Controller
             try{
                 $message = \Swift_Message::newInstance();
                 $message->setSubject("Consulta web: ".$asunto);
-                $message->setFrom($email);
+                $message->setFrom('info@metalurgicabp.com.ar');
                 $message->setTo("info@metalurgicabp.com.ar");
                 $message->setBody("
                     <strong>Nombre y Apellido: </strong>".$nombre." ".$apellido."<br>
