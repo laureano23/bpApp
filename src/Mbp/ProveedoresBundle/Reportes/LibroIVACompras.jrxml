@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LibroIVAVentas" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="c4b105ad-c9d2-4e6e-aab2-f046571798ae">
-	<property name="ireport.zoom" value="1.4641000000000124"/>
-	<property name="ireport.x" value="714"/>
+	<property name="ireport.zoom" value="2.1435888100000193"/>
+	<property name="ireport.x" value="69"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="fechaDesde" class="java.lang.String">
 		<defaultValueExpression><![CDATA[01/01/2001]]></defaultValueExpression>
@@ -111,25 +111,31 @@ WHERE
 				<text><![CDATA[Periodo:]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="45" y="8" width="58" height="20" uuid="29d1b21c-09da-4fbb-b3a4-6262140db01c"/>
+				<reportElement x="44" y="8" width="77" height="20" uuid="29d1b21c-09da-4fbb-b3a4-6262140db01c"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{fechaDesde}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="103" y="8" width="14" height="20" uuid="3dddbf42-7d70-465c-a120-837f36effb5d"/>
+				<reportElement x="121" y="8" width="14" height="20" uuid="3dddbf42-7d70-465c-a120-837f36effb5d"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[al]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="117" y="8" width="77" height="20" uuid="7492d30d-3506-464b-b15a-50f20ac9a9c5"/>
+				<reportElement x="135" y="8" width="77" height="20" uuid="7492d30d-3506-464b-b15a-50f20ac9a9c5"/>
 				<box leftPadding="4"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{fechaHasta}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="643" y="16" width="109" height="20" uuid="24378ca0-9f75-405a-bdcb-3a624408ca75"/>
-				<box leftPadding="2"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -141,7 +147,13 @@ WHERE
 		<band height="20" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="0" width="56" height="20" uuid="525bf9ba-bde6-4a38-8d1c-2411097bd261"/>
-				<box leftPadding="2"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
 				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -149,7 +161,13 @@ WHERE
 			</staticText>
 			<staticText>
 				<reportElement x="56" y="0" width="31" height="20" uuid="f7cb7ab2-d6b6-4ea8-b66b-c6f8bef74193"/>
-				<box leftPadding="2"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -157,7 +175,13 @@ WHERE
 			</staticText>
 			<staticText>
 				<reportElement x="87" y="0" width="96" height="20" uuid="519e543c-b254-4149-b564-6a09a8dce89d"/>
-				<box leftPadding="2"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -165,7 +189,13 @@ WHERE
 			</staticText>
 			<staticText>
 				<reportElement x="183" y="0" width="134" height="20" uuid="2db14615-0db5-4e7f-8606-715784436c5c"/>
-				<box leftPadding="2"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -173,7 +203,13 @@ WHERE
 			</staticText>
 			<staticText>
 				<reportElement x="317" y="0" width="74" height="20" uuid="144fe643-2cd3-4b89-977b-733fcfb33dbd"/>
-				<box leftPadding="2"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -181,7 +217,13 @@ WHERE
 			</staticText>
 			<staticText>
 				<reportElement x="391" y="0" width="68" height="20" uuid="8bf8704c-86e4-4cc7-8efb-909caff29661"/>
-				<box leftPadding="2"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -189,7 +231,13 @@ WHERE
 			</staticText>
 			<staticText>
 				<reportElement x="459" y="0" width="47" height="20" uuid="5b8730a7-093e-41ce-a3df-473d89bda073"/>
-				<box leftPadding="2"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -197,7 +245,13 @@ WHERE
 			</staticText>
 			<staticText>
 				<reportElement x="506" y="0" width="46" height="20" uuid="2154dabc-45b4-4fd9-9c43-08f013e60d3a"/>
-				<box leftPadding="2"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -205,7 +259,13 @@ WHERE
 			</staticText>
 			<staticText>
 				<reportElement x="552" y="0" width="41" height="20" uuid="8e322a4b-fb96-45d4-b9f8-f89d952e95ef"/>
-				<box leftPadding="2"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -213,7 +273,13 @@ WHERE
 			</staticText>
 			<staticText>
 				<reportElement x="752" y="0" width="70" height="20" uuid="764031f7-4b5e-4909-8878-1fd5d22c7633"/>
-				<box leftPadding="2"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -221,7 +287,13 @@ WHERE
 			</staticText>
 			<staticText>
 				<reportElement x="593" y="0" width="50" height="20" uuid="3092ac8f-8d38-410b-855f-f2dc6fab89ab"/>
-				<box leftPadding="2"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -229,7 +301,13 @@ WHERE
 			</staticText>
 			<staticText>
 				<reportElement x="713" y="0" width="39" height="20" uuid="529a20d7-3072-44ba-8f22-e9ae856672e5"/>
-				<box leftPadding="2"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -237,7 +315,13 @@ WHERE
 			</staticText>
 			<staticText>
 				<reportElement x="677" y="0" width="36" height="20" uuid="ab0d0b97-6571-4912-b6df-7311ef300188"/>
-				<box leftPadding="2"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -245,7 +329,13 @@ WHERE
 			</staticText>
 			<staticText>
 				<reportElement x="643" y="0" width="34" height="20" uuid="69f17ef6-bc71-4c29-943e-fbdcfbf9db68"/>
-				<box leftPadding="2"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>

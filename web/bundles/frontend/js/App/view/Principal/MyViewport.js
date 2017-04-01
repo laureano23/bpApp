@@ -440,6 +440,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
         				listeners : {
 		                    render : dragZone,
 		                }, 
+        			},
+        			{
+        				text: 'Libro IVA compras',
+        				itemId: 'reporteIVACompras',
+        				listeners : {
+		                    render : dragZone,
+		                }, 
         			}
         		]        		
         	}
