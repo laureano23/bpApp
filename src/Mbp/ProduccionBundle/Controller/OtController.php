@@ -83,4 +83,82 @@ class OtController extends Controller
 				);
 		}		
     }	
+
+	/**
+     * @Route("/CerrarOtListado", name="mbp_produccion_CerrarOtListado", options={"expose"=true})
+     */
+    public function CerrarOtListadoAction()
+	{
+		$em = $this->getDoctrine()->getManager();
+		$response = new Response;
+		$repo = $em->getRepository('MbpProduccionBundle:Ot');
+		
+		try{
+			$response->setContent(
+				json_encode(array(
+					'success' => true,
+					'items' => $repo->listadoOtParaCerrar() 
+				))
+			);
+			
+			return $response;
+		}catch(\Exception $e){
+			$response->setContent(
+				json_encode(array(
+					'success' => false,
+					'msg' => $e->getMessage()
+				))
+			);
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	/**
+     * @Route("/ActualizarCerradoOt", name="mbp_produccion_ActualizarCerradoOt", options={"expose"=true})
+     */
+    public function ActualizarCerradoOtAction()
+	{
+		$em = $this->getDoctrine()->getManager();
+		$response = new Response;
+		$repo = $em->getRepository('MbpProduccionBundle:Ot');
+		$request = $this->getRequest();
+		
+		$items = $request->request->get('items');
+		$decodeItem = json_decode($items);
+		
+		try{
+			foreach ($decodeItem as $item) {				
+				$ot = $repo->find($item->otNum);
+				$oldValue= $ot->getAprobado();
+				$ot->setAprobado($item->aprobado);
+				$ot->setRechazado($item->rechazado);
+				
+				$em->persist($ot);
+				
+				/*ACTUALIZO EL STOCK DEL ARTICULO*/
+				$repoArt = $em->getRepository('MbpArticulosBundle:Articulos');
+				$articulo = $repoArt->findByCodigo($item->codigo);
+				
+				$stock = $articulo[0]->getStock() + $item->aprobado - $oldValue;
+				//var_dump($stock);
+				$articulo[0]->setStock($stock);
+				$em->persist($articulo[0]);
+			}
+			
+			$em->flush();
+			
+			$response->setContent(json_encode(array(
+				'success' => true,
+			)));
+			
+			return $response;
+		}catch(\Exception $e){
+			$response->setContent(json_encode(array(
+				'success' => false,
+				'msg' => $e->getMessage())
+			));
+			
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+	}
 }

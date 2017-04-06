@@ -268,6 +268,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
     					listeners : {
                             render : dragZone,
                         }
+    				},
+    				{
+    					text: 'Cierre OT',
+    					itemId: 'cierreOt',
+    					listeners : {
+                            render : dragZone,
+                        }
     				}
     			]
     		},
@@ -430,6 +437,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
         			{
         				text: 'Libro IVA ventas',
         				itemId: 'reporteIVAVentas',
+        				listeners : {
+		                    render : dragZone,
+		                }, 
+        			},
+        			{
+        				text: 'Libro IVA compras',
+        				itemId: 'reporteIVACompras',
         				listeners : {
 		                    render : dragZone,
 		                }, 

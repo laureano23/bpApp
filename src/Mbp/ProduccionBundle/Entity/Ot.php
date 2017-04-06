@@ -40,7 +40,7 @@ class Ot
     private $idCliente;
 
     /**
-     * @var integer
+     * @var decimal
      * @Assert\Range(
      *      min = 0.001,
      *      max = 999999,
@@ -97,6 +97,30 @@ class Ot
      * )
      */
     private $tipo;
+	
+	/**
+     * @var decimal
+     * @Assert\Range(
+     *      min = 0.000,
+     *      max = 999999,
+     *      minMessage = "La cantidad mínima es {{ limit }}",
+     *      maxMessage = "La cantidad máxima es {{ limit }}"
+     * )
+     * @ORM\Column(name="aprobado", type="decimal", precision=10, scale=3)
+     */
+    private $aprobado=0;
+	
+	/**
+     * @var decimal
+     * @Assert\Range(
+     *      min = 0.000,
+     *      max = 999999,
+     *      minMessage = "La cantidad mínima es {{ limit }}",
+     *      maxMessage = "La cantidad máxima es {{ limit }}"
+     * )
+     * @ORM\Column(name="rechazado", type="decimal", precision=10, scale=3)
+     */
+    private $rechazado=0;
 
     /**
      * Get id
@@ -342,5 +366,53 @@ class Ot
     public function getTipo()
     {
         return $this->tipo;
+    }
+
+    /**
+     * Set aprobado
+     *
+     * @param string $aprobado
+     *
+     * @return Ot
+     */
+    public function setAprobado($aprobado)
+    {
+        $this->aprobado = $aprobado;
+
+        return $this;
+    }
+
+    /**
+     * Get aprobado
+     *
+     * @return string
+     */
+    public function getAprobado()
+    {
+        return $this->aprobado;
+    }
+
+    /**
+     * Set rechazado
+     *
+     * @param string $rechazado
+     *
+     * @return Ot
+     */
+    public function setRechazado($rechazado)
+    {
+        $this->rechazado = $rechazado;
+
+        return $this;
+    }
+
+    /**
+     * Get rechazado
+     *
+     * @return string
+     */
+    public function getRechazado()
+    {
+        return $this->rechazado;
     }
 }

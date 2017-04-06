@@ -232,7 +232,126 @@ class ReportesController extends Controller
 		$response->headers->set('Content-type', 'application/pdf');
 
         return $response;
-	}    
+	}   
+	
+	/**
+     * @Route("/proveedores/ReporteLibroIVACompras", name="mbp_proveedores_ReporteLibroIVACompras", options={"expose"=true})
+     */
+    public function ReporteLibroIVACompras(){
+    	//RECIBO PARAMETROS
+		$em = $this->getDoctrine()->getManager();
+		$req = $this->getRequest();
+		$response = new Response;
+		
+		
+		try{
+			/*
+			 * PARAMETROS
+			 */
+			$desde = \DateTime::createFromFormat('d/m/Y', $req->request->get('desde'));		
+			$hasta = \DateTime::createFromFormat('d/m/Y', $req->request->get('hasta'));	
+			
+			$desde = $desde->format('Y-m-d');
+			$hasta = $hasta->format('Y-m-d');
+			
+			$reporteador = $this->get('reporteador');
+			$kernel = $this->get('kernel');
+			
+			/*
+			 * Configuro reporte
+			 */
+			$jru = $reporteador->jru();
+			
+			/*
+			 * Ruta archivo Jasper
+			 */				
+					
+			$ruta = $kernel->locateResource('@MbpProveedoresBundle/Reportes/LibroIVACompras.jrxml');
+			
+			/*
+			 * Ruta de destino del PDF
+			 */
+			$destino = $kernel->locateResource('@MbpProveedoresBundle/Resources/public/pdf/').'LibroIVACompras.pdf';		
+			
+			//Parametros HashMap
+			$param = $reporteador->getJava('java.util.HashMap');
+			$rutaLogo = $reporteador->getRutaLogo($kernel);
+			
+			$param->put('fechaDesde', $desde);
+			$param->put('fechaHasta', $hasta);
+			
+			
+			$conn = $reporteador->getJdbc();
+						
+			$sql = "SELECT
+			     FacturaProveedor.`id` AS FacturaProveedor_id,
+			     FacturaProveedor.`fechaCarga` AS FacturaProveedor_fechaCarga,
+			     FacturaProveedor.`fechaEmision` AS FacturaProveedor_fechaEmision,
+			     FacturaProveedor.`tipo` AS FacturaProveedor_tipo,
+			     FacturaProveedor.`sucursal` AS FacturaProveedor_sucursal,
+			     FacturaProveedor.`numFc` AS FacturaProveedor_numFc,
+			     FacturaProveedor.`neto` AS FacturaProveedor_neto,
+			     FacturaProveedor.`netoNoGrabado` AS FacturaProveedor_netoNoGrabado,
+			     FacturaProveedor.`iva21` AS FacturaProveedor_iva21,
+			     FacturaProveedor.`iva27` AS FacturaProveedor_iva27,
+			     FacturaProveedor.`iva10_5` AS FacturaProveedor_iva10_5,
+			     FacturaProveedor.`perIva5` AS FacturaProveedor_perIva5,
+			     FacturaProveedor.`perIva3` AS FacturaProveedor_perIva3,
+			     FacturaProveedor.`iibbCf` AS FacturaProveedor_iibbCf,
+			     FacturaProveedor.`vencimiento` AS FacturaProveedor_vencimiento,
+			     FacturaProveedor.`concepto` AS FacturaProveedor_concepto,
+			     FacturaProveedor.`totalFc` AS FacturaProveedor_totalFc,
+			     FacturaProveedor.`imputado` AS FacturaProveedor_imputado,
+			     FacturaProveedor.`proveedorId` AS FacturaProveedor_proveedorId,
+			     FacturaProveedor.`gastoId` AS FacturaProveedor_gastoId,
+			     Proveedor.`id` AS Proveedor_id,
+			     Proveedor.`localidad` AS Proveedor_localidad,
+			     Proveedor.`provincia` AS Proveedor_provincia,
+			     Proveedor.`rsocial` AS Proveedor_rsocial,
+			     Proveedor.`denominacion` AS Proveedor_denominacion,
+			     Proveedor.`direccion` AS Proveedor_direccion,
+			     Proveedor.`cuit` AS Proveedor_cuit,
+			     Proveedor.`vencimientoFc` AS Proveedor_vencimientoFc,
+			     Proveedor.`imputacionGastos` AS Proveedor_imputacionGastos,
+			     FacturaProveedor.`comprobante` AS FacturaProveedor_comprobante
+			FROM
+			     `Proveedor` Proveedor INNER JOIN `FacturaProveedor` FacturaProveedor ON Proveedor.`id` = FacturaProveedor.`proveedorId`
+			WHERE
+			     FacturaProveedor.`fechaEmision` BETWEEN '$desde' AND '$hasta'";		     
+			
+			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
+				
+		}catch(\Exception $e){
+			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(
+				json_encode(array('success' => false, 'msg' => $e->getMessage()))
+				);
+		}	
+		
+		return $response->setContent(
+			json_encode(array('success' => true))
+			);	
+    } 
+    
+    /**
+     * @Route("/proveedores/VerReporteLibroIVACompras", name="mbp_proveedores_VerReporteLibroIVACompras", options={"expose"=true})
+     */	    
+    public function VerReporteLibroIVACompras()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpProveedoresBundle/Resources/public/pdf/').'LibroIVACompras.pdf';	
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'LibroIVACompras.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+
+        return $response;
+	}   
 }
 
 
