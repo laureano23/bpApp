@@ -94,35 +94,39 @@ class ReportesController extends Controller
 		 * SQL
 		 * 
 		 */
-		$sql = 'SELECT
-		     Estanqueidad.`fechaPrueba` AS Estanqueidad_fechaPrueba,
-		     Estanqueidad.`ot` AS Estanqueidad_ot,
-		     Estanqueidad.`pruebaNum` AS Estanqueidad_pruebaNum,
-		     Estanqueidad.`estado` AS Estanqueidad_estado,
-		     Estanqueidad.`mChapa` AS Estanqueidad_mChapa,
-		     Estanqueidad.`mBagueta` AS Estanqueidad_mBagueta,
-		     Estanqueidad.`mPerfil` AS Estanqueidad_mPerfil,
-		     Estanqueidad.`mPisoDesp` AS Estanqueidad_mPisoDesp,
-		     Estanqueidad.`tRosca` AS Estanqueidad_tRosca,
-		     Estanqueidad.`tPoros` AS Estanqueidad_tPoros,
-		     Estanqueidad.`sConector` AS Estanqueidad_sConector,
-		     Estanqueidad.`sTapaPanel` AS Estanqueidad_sTapaPanel,
-		     Estanqueidad.`sPlanchuelas` AS Estanqueidad_sPlanchuelas,
-		     Estanqueidad.`soldador` AS Estanqueidad_soldador,
-		     Estanqueidad.`probador` AS Estanqueidad_probador,
-		     Estanqueidad.`presion` AS Estanqueidad_presion,
-		     Personal.`idP` AS Personal_idP,
-		     Personal.`nombre` AS Personal_nombre,
-		     Personal_A.`idP` AS Personal_A_idP,
-		     Personal_A.`nombre` AS Personal_A_nombre,
-		     Estanqueidad.`mAnulado` AS Estanqueidad_mAnulado,
-		     Estanqueidad.`mCiba` AS Estanqueidad_mCiba,
-		     Estanqueidad.`tFijacion` AS Estanqueidad_tFijacion
-				FROM
-				     `Personal` Personal RIGHT JOIN `Estanqueidad` Estanqueidad ON Personal.`idP` = Estanqueidad.`soldador`
-				     INNER JOIN `Personal` Personal_A ON Estanqueidad.`probador` = Personal_A.`idP`
-				WHERE
-				     ot = $P{ot}';
+		$sql = "
+			SELECT
+			     Estanqueidad.`fechaPrueba` AS Estanqueidad_fechaPrueba,
+			     Estanqueidad.`ot` AS Estanqueidad_ot,
+			     Estanqueidad.`pruebaNum` AS Estanqueidad_pruebaNum,
+			     Estanqueidad.`estado` AS Estanqueidad_estado,
+			     Estanqueidad.`mChapa` AS Estanqueidad_mChapa,
+			     Estanqueidad.`mBagueta` AS Estanqueidad_mBagueta,
+			     Estanqueidad.`mPerfil` AS Estanqueidad_mPerfil,
+			     Estanqueidad.`mPisoDesp` AS Estanqueidad_mPisoDesp,
+			     Estanqueidad.`tRosca` AS Estanqueidad_tRosca,
+			     Estanqueidad.`tPoros` AS Estanqueidad_tPoros,
+			     Estanqueidad.`sConector` AS Estanqueidad_sConector,
+			     Estanqueidad.`sTapaPanel` AS Estanqueidad_sTapaPanel,
+			     Estanqueidad.`sPlanchuelas` AS Estanqueidad_sPlanchuelas,
+			     Estanqueidad.`soldador` AS Estanqueidad_soldador,
+			     Estanqueidad.`probador` AS Estanqueidad_probador,
+			     Estanqueidad.`presion` AS Estanqueidad_presion,
+			     Personal.`idP` AS Personal_idP,
+			     Personal.`nombre` AS Personal_nombre,
+			     Personal_A.`idP` AS Personal_A_idP,
+			     Personal_A.`nombre` AS Personal_A_nombre,
+			     Estanqueidad.`mAnulado` AS Estanqueidad_mAnulado,
+			     Estanqueidad.`mCiba` AS Estanqueidad_mCiba,
+			     Estanqueidad.`tFijacion` AS Estanqueidad_tFijacion,
+			     Estanqueidad.`mChapaColectora` AS Estanqueidad_mChapaColectora,
+			     Estanqueidad.`sPuntera` AS Estanqueidad_sPuntera
+			FROM
+			     `Personal` Personal INNER JOIN `Estanqueidad` Estanqueidad ON Personal.`idP` = Estanqueidad.`soldador`
+			     INNER JOIN `Personal` Personal_A ON Estanqueidad.`probador` = Personal_A.`idP`
+			WHERE
+			     Estanqueidad.`ot` = $ot
+		";
 		 /*
 		  * FIN SQL
 		  */
@@ -312,6 +316,7 @@ class ReportesController extends Controller
 			     SUM(Estanqueidad.`sConector`) AS Estanqueidad_sConector,
 			     SUM(Estanqueidad.`sTapaPanel`) AS Estanqueidad_sTapaPanel,
 			     SUM(Estanqueidad.`sPlanchuelas`) AS Estanqueidad_sPlanchuelas,
+			     SUM(Estanqueidad.`sPuntera`) AS Estanqueidad_sPuntera,
 			     Estanqueidad.`fechaPrueba` AS Estanqueidad_fechaPrueba,
 			     Estanqueidad.`id` AS Estanqueidad_id,
 			     Estanqueidad.`soldador` AS Estanqueidad_soldador,

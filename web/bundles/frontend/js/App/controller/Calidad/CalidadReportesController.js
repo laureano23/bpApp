@@ -82,7 +82,7 @@ Ext.define('MetApp.controller.Calidad.CalidadReportesController',{
 				
 				var ruta = Routing.generate('mbp_calidad_showReporteRg010');
 								
-				window.open(ruta, '_blank', 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+				window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 				}	
 				
 			});
@@ -90,9 +90,10 @@ Ext.define('MetApp.controller.Calidad.CalidadReportesController',{
 	},
 	
 	PrintDateRepoRG010: function(btn){
-		form = btn.up('form');
-		fechaDesde = form.queryById('desde').getValue();
-		fechaHasta = form.queryById('hasta').getValue();
+		var win = btn.up('window');
+		var form = btn.up('form');
+		var fechaDesde = form.queryById('desde').getValue();
+		var fechaHasta = form.queryById('hasta').getValue();
 		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
 		
 		if(form.isValid() == true){
@@ -112,7 +113,7 @@ Ext.define('MetApp.controller.Calidad.CalidadReportesController',{
 					
 					var ruta = Routing.generate('mbp_calidad_showReporteRg010Fechas');
 									
-					window.open(ruta, '_blank', 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 				}	
 			});
 		}
@@ -142,15 +143,8 @@ Ext.define('MetApp.controller.Calidad.CalidadReportesController',{
 					
 					var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
 					myMask.show();			
-					var WinReporte=Ext.create('Ext.Window', {
-						  title: 'Reporte fallas de soldadura',
-						  width: 900,
-						  height: 700,
-						  layout: 'fit',
-						  modal:true,										
-						  html: '<iframe src='+ruta+' width="100%" height="100%"></iframe>'						  
-					 });
-					 WinReporte.show();					
+					
+					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');				
 				}
 				myMask.hide();	
 			}
@@ -181,15 +175,8 @@ Ext.define('MetApp.controller.Calidad.CalidadReportesController',{
 					
 					var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
 					myMask.show();			
-					var WinReporte=Ext.create('Ext.Window', {
-						  title: 'Reporte fallas de soldadura',
-						  width: 900,
-						  height: 700,
-						  layout: 'fit',
-						  modal:true,										
-						  html: '<iframe src='+ruta+' width="100%" height="100%"></iframe>'						  
-					 });
-					 WinReporte.show();					
+					
+					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');			
 				}
 				myMask.hide();	
 			}

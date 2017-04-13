@@ -48,7 +48,8 @@ Ext.application({
 		'Articulos.RemitosController',
 		'Security.UserParamsController',
 		'Compras.ReportesCompraController',
-		'Reportes.ReportesController'
+		'Reportes.ReportesController',
+		'MetApp.controller.Bancos.BancosController'
 	],
 	name: 'MetApp',
 	appFolder: '../bundles/frontend/js/App',

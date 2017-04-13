@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LibroIVAVentas" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="c4b105ad-c9d2-4e6e-aab2-f046571798ae">
-	<property name="ireport.zoom" value="2.1435888100000193"/>
-	<property name="ireport.x" value="69"/>
+	<property name="ireport.zoom" value="1.948717100000018"/>
+	<property name="ireport.x" value="685"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="fechaDesde" class="java.lang.String">
 		<defaultValueExpression><![CDATA[01/01/2001]]></defaultValueExpression>
@@ -98,7 +98,7 @@ WHERE
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true" isUnderline="true"/>
 				</textElement>
-				<text><![CDATA[Libro IVA Ventas]]></text>
+				<text><![CDATA[Libro IVA Compras]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -216,7 +216,7 @@ WHERE
 				<text><![CDATA[CUIT]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="391" y="0" width="68" height="20" uuid="8bf8704c-86e4-4cc7-8efb-909caff29661"/>
+				<reportElement x="391" y="0" width="63" height="20" uuid="8bf8704c-86e4-4cc7-8efb-909caff29661"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -230,7 +230,7 @@ WHERE
 				<text><![CDATA[Neto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="459" y="0" width="47" height="20" uuid="5b8730a7-093e-41ce-a3df-473d89bda073"/>
+				<reportElement x="454" y="0" width="52" height="20" uuid="5b8730a7-093e-41ce-a3df-473d89bda073"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -387,13 +387,13 @@ WHERE
 				<textFieldExpression><![CDATA[$F{Proveedor_cuit}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="391" y="0" width="68" height="20" uuid="7870462e-fbe8-4d4d-9cc2-bf3e9e021a25"/>
+				<reportElement x="391" y="0" width="63" height="20" uuid="7870462e-fbe8-4d4d-9cc2-bf3e9e021a25"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{FacturaProveedor_neto}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="459" y="0" width="47" height="20" uuid="4e650972-1270-41a3-91d0-ff9c9c222559"/>
+				<reportElement x="454" y="0" width="52" height="20" uuid="4e650972-1270-41a3-91d0-ff9c9c222559"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{FacturaProveedor_netoNoGrabado}]]></textFieldExpression>

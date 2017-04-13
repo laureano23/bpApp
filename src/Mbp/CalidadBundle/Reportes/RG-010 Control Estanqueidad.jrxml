@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RG-010 Control Estanqueidad" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="faabb94c-b32d-4f38-913c-e824ee7dd96c">
-	<property name="ireport.zoom" value="1.1000000000000232"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="2.143588810000046"/>
+	<property name="ireport.x" value="612"/>
+	<property name="ireport.y" value="122"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#1E90FF">
 		<box>
@@ -326,7 +326,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Operario]]></text>
+				<text><![CDATA[Puntera]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="422" y="0" width="106" height="22" uuid="645c2876-a610-477b-a5e9-b68cc3cf0397"/>
@@ -457,7 +457,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Puntera]]></text>
+				<text><![CDATA[Operario]]></text>
 			</staticText>
 			<rectangle>
 				<reportElement x="240" y="70" width="20" height="20" uuid="3593a81d-fdb3-4724-8986-ca35cfbd8c4b">

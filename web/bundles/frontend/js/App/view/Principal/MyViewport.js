@@ -81,6 +81,14 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                 },
 			},
 			{
+				text: 'Bancos',
+				itemId: 'tbBancos', 
+				require: {role1: true},
+                listeners : {
+                    render : dragZone
+                },
+			},
+			{
 				text: 'Centro de Costos',
 				itemId: 'tbCentroCostos', 
 				require: {role1: true},
@@ -441,6 +449,12 @@ Ext.define('MetApp.view.Principal.MyViewport', {
 		                    render : dragZone,
 		                }, 
         			},
+        			
+        		]        		
+        	},
+        	{
+        		text: 'Proveedores',
+        		menu: [
         			{
         				text: 'Libro IVA compras',
         				itemId: 'reporteIVACompras',
@@ -448,11 +462,17 @@ Ext.define('MetApp.view.Principal.MyViewport', {
 		                    render : dragZone,
 		                }, 
         			}
-        		]        		
+        		]
         	}
         	
         ]
         
+        var menuBancos = [
+        	{        		
+				text: 'Movimientos de bancos',
+				itemId: 'movBancos'        		
+        	}
+        ]
     		    	
     	var me = this;    	
 
@@ -546,6 +566,10 @@ Ext.define('MetApp.view.Principal.MyViewport', {
         			{
         				text: 'Proveedores',
         				itemId: 'tbCCProveedores'
+        			},
+        			{
+        				text: 'Bancos',
+        				menu: autz.getAuthorizedElements(menuBancos)
         			},
         			{
         				text: 'Mantenimiento',

@@ -108,10 +108,10 @@ WHERE
 	<variable name="contarFijacion" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[IF(EQUALS($F{Estanqueidad_tFijacion}, true),1,null)]]></variableExpression>
 	</variable>
-	<variable name="contarChapaColectora" class="java.lang.String">
+	<variable name="contarChapaColectora" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[IF(EQUALS($F{Estanqueidad_mChapaColectora}, true),1,null)]]></variableExpression>
 	</variable>
-	<variable name="contarPuntera" class="java.lang.String">
+	<variable name="contarPuntera" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[IF(EQUALS($F{Estanqueidad_sPuntera}, true),1,null)]]></variableExpression>
 	</variable>
 	<background>

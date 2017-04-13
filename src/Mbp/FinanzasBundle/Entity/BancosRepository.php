@@ -10,4 +10,37 @@ namespace Mbp\FinanzasBundle\Entity;
  */
 class BancosRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function listarDatosBanco($idBanco)
+	{
+		$em = $this->getEntityManager();
+		$repo = $em->getRepository('MbpFinanzasBundle:Bancos');
+		
+		$res = $repo->createQueryBuilder('b')
+			->select('
+				b.id idBanco,
+				b.nombre,
+				b.direccion,
+				b.cp,
+				b.localidad,
+				b.telefono,
+				b.email,
+				b.cuit,
+				b.contacto,
+				b.cargo,
+				b.telContacto,
+				b.emailContacto,
+				b.inactivo,				
+				c.tipo cuentaTipo,
+				c.id idCuenta,
+				c.numero cuentaNro,
+				c.cbu')
+			->leftJoin('b.cuentasBancarias', 'c')
+			->where('b.id = :idBanco')
+			->setParameter('idBanco', $idBanco)
+			->getQuery()
+			->getArrayResult();
+			
+		return $res;
+				
+	}
 }

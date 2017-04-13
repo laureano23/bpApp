@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fallasSoldadura" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="23ad7f51-55da-4bf5-8b0d-cb9d3db330de">
-	<property name="ireport.zoom" value="1.0000000000000004"/>
-	<property name="ireport.x" value="14"/>
+	<property name="ireport.zoom" value="1.4641000000000015"/>
+	<property name="ireport.x" value="461"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="desde" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -15,6 +15,7 @@
      SUM(Estanqueidad.`sConector`) AS Estanqueidad_sConector,
      SUM(Estanqueidad.`sTapaPanel`) AS Estanqueidad_sTapaPanel,
      SUM(Estanqueidad.`sPlanchuelas`) AS Estanqueidad_sPlanchuelas,
+     SUM(Estanqueidad.`sPuntera`) AS Estanqueidad_sPuntera,
      Estanqueidad.`fechaPrueba` AS Estanqueidad_fechaPrueba,
      Estanqueidad.`id` AS Estanqueidad_id,
      Estanqueidad.`soldador` AS Estanqueidad_soldador,
@@ -31,7 +32,8 @@ GROUP BY
 	<field name="Estanqueidad_sConector" class="java.math.BigDecimal"/>
 	<field name="Estanqueidad_sTapaPanel" class="java.math.BigDecimal"/>
 	<field name="Estanqueidad_sPlanchuelas" class="java.math.BigDecimal"/>
-	<field name="Estanqueidad_fechaPrueba" class="java.util.Date"/>
+	<field name="Estanqueidad_sPuntera" class="java.math.BigDecimal"/>
+	<field name="Estanqueidad_fechaPrueba" class="java.sql.Date"/>
 	<field name="Estanqueidad_id" class="java.lang.Integer"/>
 	<field name="Estanqueidad_soldador" class="java.lang.Integer"/>
 	<field name="Estanqueidad_estado" class="java.lang.Integer"/>
@@ -45,6 +47,9 @@ GROUP BY
 	</variable>
 	<variable name="SUM_PLANCHUELA" class="java.lang.Integer" calculation="Sum">
 		<variableExpression><![CDATA[$F{Estanqueidad_sPlanchuelas}]]></variableExpression>
+	</variable>
+	<variable name="SUM_PUNTERAS" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{Estanqueidad_sPuntera}]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -99,7 +104,7 @@ GROUP BY
 	<columnHeader>
 		<band height="47" splitType="Stretch">
 			<staticText>
-				<reportElement x="293" y="0" width="446" height="19" uuid="00a65078-0d89-4f7d-8f1b-91ea98169361"/>
+				<reportElement x="293" y="0" width="509" height="19" uuid="00a65078-0d89-4f7d-8f1b-91ea98169361"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -125,7 +130,7 @@ GROUP BY
 				<text><![CDATA[TAPAS A PANEL]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="493" y="19" width="124" height="28" uuid="261d7952-e84e-4460-b0bd-1f4d9e58bebf"/>
+				<reportElement x="493" y="19" width="98" height="28" uuid="261d7952-e84e-4460-b0bd-1f4d9e58bebf"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -138,7 +143,7 @@ GROUP BY
 				<text><![CDATA[CONECTORES]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="617" y="19" width="122" height="28" uuid="9640609c-800b-4e4c-94c2-e0de538b913c"/>
+				<reportElement x="591" y="19" width="95" height="28" uuid="9640609c-800b-4e4c-94c2-e0de538b913c"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -163,6 +168,19 @@ GROUP BY
 				</textElement>
 				<text><![CDATA[SOLDADOR]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="686" y="19" width="116" height="28" uuid="0f0f7022-c25a-4897-9cb0-45cb88229348"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[PUNTERAS]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
@@ -175,7 +193,7 @@ GROUP BY
 				<textFieldExpression><![CDATA[$F{Estanqueidad_sTapaPanel}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="493" y="0" width="124" height="20" uuid="7a6e319f-49ef-41f5-892c-fa439a32d046"/>
+				<reportElement x="493" y="0" width="98" height="20" uuid="7a6e319f-49ef-41f5-892c-fa439a32d046"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
@@ -189,11 +207,18 @@ GROUP BY
 				<textFieldExpression><![CDATA[$F{Personal_nombre}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="617" y="0" width="122" height="20" uuid="ab5a4dbd-547b-46a0-a157-288fad909885"/>
+				<reportElement x="591" y="0" width="95" height="20" uuid="ab5a4dbd-547b-46a0-a157-288fad909885"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{Estanqueidad_sPlanchuelas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="686" y="0" width="116" height="20" uuid="dcaa2f3a-3b38-491e-bb19-d561cbeb9e3c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Estanqueidad_sPuntera}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -210,14 +235,14 @@ GROUP BY
 				<textFieldExpression><![CDATA[$V{SUM_TAPA_PANEL}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement x="493" y="22" width="124" height="20" uuid="e14a113d-9a62-4fb9-b7be-2f4ff9c9fccd"/>
+				<reportElement x="493" y="22" width="98" height="20" uuid="e14a113d-9a62-4fb9-b7be-2f4ff9c9fccd"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true" isUnderline="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_CONECTOR}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement x="617" y="22" width="122" height="20" uuid="da9f274f-9d08-4c48-84eb-38a7f63c0ed3"/>
+				<reportElement x="591" y="22" width="95" height="20" uuid="da9f274f-9d08-4c48-84eb-38a7f63c0ed3"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true" isUnderline="true"/>
 				</textElement>
@@ -230,6 +255,13 @@ GROUP BY
 				</textElement>
 				<text><![CDATA[Total:]]></text>
 			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="686" y="22" width="116" height="20" uuid="34b0ec36-e6b2-4933-8a9d-f987b6a3760f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{SUM_PUNTERAS}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>
