@@ -262,6 +262,7 @@ class DefaultController extends Controller
 		$repoFc = $em->getRepository('MbpProveedoresBundle:Factura');
 		$repoOP = $em->getRepository('MbpProveedoresBundle:OrdenPago');
 		$repoTrans = $em->getRepository('MbpProveedoresBundle:TransaccionOPFC');
+		$response = new Response;
 		
 		try{
 			$proveedor = $repoProv->find($idProv); //PROVEEDOR ASOCIADO
@@ -323,17 +324,24 @@ class DefaultController extends Controller
 			}		
 			
 			
-			echo json_encode(array(
-				'success' => true,
-			));
+			$response->setContent(
+				json_encode(array(
+					'success' => true,
+					'idOrdenPago' => $ordenPago->getId()
+				))
+			);
+			
+			return $response;
 		}catch(\Exception $e){
-			echo json_encode(array(
-				'success' => false,
-				'msg' => $e->getMessage()
-			));
+			$response->setContent(
+				json_encode(array(
+					'success' => false,
+					'msg' => $e->getMessage()
+				))
+			);
+			
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 		}
-
-		return new Response();
     }
 
 	

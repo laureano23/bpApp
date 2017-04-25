@@ -105,9 +105,7 @@ class ReportesController extends Controller
 			);
 
 			return $response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
-		}
-		
-			
+		}	
     }
 
     /**

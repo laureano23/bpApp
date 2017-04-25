@@ -45,7 +45,8 @@ Ext.define('MetApp.view.Produccion.OrdenesTrabajo.NuevaOTView', {
 									fieldLabel: 'Id',
 									width: 450,
 									labelWidth: 55,		
-									name: 'id',
+									name: 'idCliente',
+									itemId: 'idCliente',
 									hidden: true		
 								},
 								{

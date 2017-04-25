@@ -50,6 +50,10 @@ mbp_produccion_ot:
     resource: "@MbpProduccionBundle/Controller/OtController.php"
     type:     annotation
 
+mbp_produccion_reportes:
+    resource: "@MbpProduccionBundle/Controller/ReportesController.php"
+    type:     annotation
+
 mbp_security:
     resource: "@MbpSecurityBundle/Resources/config/routing.yml"
     prefix:   /

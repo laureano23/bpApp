@@ -76,7 +76,6 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 	},
 	
 	callbackOrdenCompraStore: function(st, opts){
-		console.log(this.getOrdenCompraView());
 		var total=0;
 		st.each(function(rec){
 			var data = rec.getData();
@@ -395,14 +394,12 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 	FiltrarLista: function(field, ev){
 		var store = field.up('window').down('grid').getStore();
 		var val = field.getValue();
-		//store.filter('proveedor', val);
 		store.clearFilter(true);
 		store.filter(
 			{property: 'proveedor',
 			value: val,
 			anyMatch: true}
 		);
-		//field.setValue(val);
 		console.log(store);
 		console.log(val);
 	}

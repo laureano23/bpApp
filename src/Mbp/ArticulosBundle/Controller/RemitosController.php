@@ -10,6 +10,9 @@ use Mbp\ArticulosBundle\Entity\RemitosClientes;
 use Mbp\ArticulosBundle\Entity\RemitosClientesDetalles;
 use Mbp\FinanzasBundle\Entity\ParametrosFinanzas;
 use Mbp\ProduccionBundle\Entity\PedidoClientes;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+
 
 class RemitosController extends Controller
 {
@@ -85,7 +88,7 @@ class RemitosController extends Controller
 
 			$em->flush();
 
-			$response->setContent(json_encode(array('success' => true)));
+			$response->setContent(json_encode(array('success' => true, 'idRemito' => $remito->getId())));
 			return $response;				
 			
         }catch(\Exception $e){
@@ -94,6 +97,115 @@ class RemitosController extends Controller
         	return $response;        
         }
     }
+
+	/**
+     * @Route("/imprimirRemitoCliente", name="mbp_articulos_imprimirRemitoCliente", options={"expose"=true})
+     */
+    public function imprimirRemitoCliente()
+    {
+    	$em = $this->getDoctrine()->getManager();
+        $req = $this->getRequest();
+		$response = new Response;
+        
+		try{
+			$idRemito = $req->request->get('idRemito');
+			
+			$reporteador = $this->get('reporteador');
+			$kernel = $this->get('kernel');
+			
+			
+			/*
+			 * Configuro reporte
+			 */
+			$jru = $reporteador->jru();
+			
+			/*
+			 * Ruta archivo Jasper
+			 */				
+					
+			$ruta = $kernel->locateResource('@MbpArticulosBundle/Reportes/RemitoClientes.jrxml');
+			$rutaLogo = $reporteador->getRutaLogo($kernel);
+			
+			/*
+			 * Ruta de destino del PDF
+			 */
+			$destino = $kernel->locateResource('@MbpArticulosBundle/Resources/public/pdf/').'RemitoCliente.pdf';
+			
+			
+			//Parametros HashMap
+			$param = $reporteador->getJava('java.util.HashMap');
+			$param->put('remitoId', $idRemito);
+			$param->put('rutaLogo', $rutaLogo);
+			
+			$conn = $reporteador->getJdbc();
+			
+			$sql = "SELECT
+			     RemitosClientes.`id` AS RemitosClientes_id,
+			     RemitosClientes.`fecha` AS RemitosClientes_fecha,
+			     RemitosClientes.`remitoNum` AS RemitosClientes_remitoNum,
+			     RemitosClientes.`clienteId` AS RemitosClientes_clienteId,
+			     RemitosClientesDetalles.`id` AS RemitosClientesDetalles_id,
+			     RemitosClientesDetalles.`descripcion` AS RemitosClientesDetalles_descripcion,
+			     RemitosClientesDetalles.`cantidad` AS RemitosClientesDetalles_cantidad,
+			     RemitosClientesDetalles.`unidad` AS RemitosClientesDetalles_unidad,
+			     RemitosClientesDetalles.`oc` AS RemitosClientesDetalles_oc,
+			     RemitosClientesDetalles.`articuloId` AS RemitosClientesDetalles_articuloId,
+			     RemitoClientes_detalle.`remitosclientes_id` AS RemitoClientes_detalle_remitosclientes_id,
+			     RemitoClientes_detalle.`remitosclientesdetalles_id` AS RemitoClientes_detalle_remitosclientesdetalles_id,
+			     cliente.`rsocial` AS cliente_rsocial,
+			     cliente.`idCliente` AS cliente_idCliente,
+			     cliente.`denominacion` AS cliente_denominacion,
+			     cliente.`direccion` AS cliente_direccion,
+			     cliente.`cuit` AS cliente_cuit,
+			     cliente.`localidad` AS cliente_localidad,
+			     cliente.`iva` AS cliente_iva,
+			     localidades.`id` AS localidades_id,
+			     localidades.`nombre` AS localidades_nombre
+			FROM
+			     `RemitosClientesDetalles` RemitosClientesDetalles INNER JOIN `RemitoClientes_detalle` RemitoClientes_detalle ON RemitosClientesDetalles.`id` = RemitoClientes_detalle.`remitosclientesdetalles_id`
+			     INNER JOIN `RemitosClientes` RemitosClientes ON RemitoClientes_detalle.`remitosclientes_id` = RemitosClientes.`id`
+			     INNER JOIN `cliente` cliente ON RemitosClientes.`clienteId` = cliente.`idCliente`
+			     LEFT JOIN `localidades` localidades ON cliente.`localidad` = localidades.`id`
+			WHERE
+			     RemitosClientes.`id` = $idRemito";
+			
+			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
+
+			
+			return $response->setContent(
+					json_encode(
+						array(
+							'success'=> true,	
+						)
+					)
+				);				
+			
+        }catch(\Exception $e){
+        	$response->setContent(json_encode(array('success' => false, 'msg' => $e->getMessage())));
+        	$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+        	return $response;        
+        }
+    }
+    
+    /**
+     * @Route("/verRemitoCliente", name="mbp_articulos_verRemitoCliente", options={"expose"=true})
+     */
+	public function verRemitoCliente()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpArticulosBundle/Resources/public/pdf/').'RemitoCliente.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'RemitoCliente.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-Type', 'application/pdf');
+
+        return $response;
+	}
 }
 
 

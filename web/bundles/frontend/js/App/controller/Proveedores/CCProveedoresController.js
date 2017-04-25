@@ -258,10 +258,8 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 					var jsonResp = Ext.JSON.decode(resp.responseText);
 					var form = win.down('form');
 					var model = Ext.create('MetApp.model.Proveedores.FacturaProveedoresModel');
-					console.log(jsonResp);
 					model.set(jsonResp.data[0]);
 					form.loadRecord(model);
-					//win.queryById('')
 				}
 			});
 			

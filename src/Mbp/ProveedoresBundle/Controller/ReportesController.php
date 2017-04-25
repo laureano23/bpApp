@@ -23,8 +23,7 @@ class ReportesController extends Controller
 		try{
 			/*
 			 * PARAMETROS
-			 */
-			$idProv = $req->request->get('idProv');		
+			 */	
 			$idOp = (int)$req->request->get('idOp');	
 							
 			$reporteador = $this->get('reporteador');
@@ -50,7 +49,6 @@ class ReportesController extends Controller
 			$param = $reporteador->getJava('java.util.HashMap');
 			$rutaLogo = $reporteador->getRutaLogo($kernel);
 			
-			$param->put('proveedorId', $idProv);
 			$param->put('ordenPagoId', $idOp);
 			
 			$conn = $reporteador->getJdbc();

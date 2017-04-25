@@ -158,6 +158,28 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 					storeFcImputar.load();
 					win.queryById('totalImputado').reset();
 					win.queryById('totalAPagar').reset();
+					Ext.Msg.show({
+						title: 'Atencion',
+						msg: 'La orden de pago se generó con éxito',
+						buttons: Ext.Msg.OK,
+					});
+					
+					//MOSTRAMOS LA OP
+					Ext.Ajax.request({
+						url: Routing.generate('mbp_proveedores_reporteDetallePago'),
+						
+						params: {
+							idOp: status.idOrdenPago
+						},
+						
+						success: function(resp){
+							var status = Ext.JSON.decode(resp.responseText);
+							if(status.success == true){
+								var ruta = Routing.generate('mbp_proveedores_verReporteDetallePago');
+								window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+							}
+						}
+					});
 				}
 			}
 		});
@@ -207,7 +229,7 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 				i++;	
 			}			 
 		});		
-		storePagoProv.loadData(record, false);
+		storePagoProv.add(record, false);
 		winCheques.close();
 	},
 	

@@ -137,4 +137,20 @@ class OtRepository extends EntityRepository
 			
 		return $query;
 	}
+	
+	public function listarOrdenes()
+	{
+		$em = $this->getEntityManager();
+		$repo = $em->getRepository('MbpProduccionBundle:Ot');
+		
+		$query = $repo->createQueryBuilder('o')
+			->select("o.ot as otNum, DATE_FORMAT(o.fechaEmision, '%d/%m/%Y') as otEmision, c.rsocial as cliente, codigo.codigo, codigo.descripcion, o.cantidad as totalOt")
+			->join('o.idCodigo', 'codigo')
+			->join('o.idCliente', 'c')
+			->orderBy('otNum', 'DESC')
+			->getQuery()
+			->getArrayResult();
+			
+		return $query;
+	}
 }

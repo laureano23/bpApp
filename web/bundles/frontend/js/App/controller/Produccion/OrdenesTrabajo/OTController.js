@@ -5,11 +5,13 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 		'MetApp.view.Produccion.OrdenesTrabajo.NuevaOTView',
 		'MetApp.view.Clientes.SearchGridClientes',
 		'MetApp.view.Articulos.WinArticuloSearch',
-		'MetApp.view.Produccion.OrdenesTrabajo.CierreOTView'
+		'MetApp.view.Produccion.OrdenesTrabajo.CierreOTView',
+		'MetApp.view.Produccion.OrdenesTrabajo.VerOTView'
 	],
 	
 	stores: [
-		'Produccion.OrdenesTrabajo.CierreOTGridStore'
+		'Produccion.OrdenesTrabajo.CierreOTGridStore',
+		'MetApp.store.Produccion.OrdenesTrabajo.OTStore'
 	],
 	
 	
@@ -39,6 +41,15 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 			},
 			'CierreOTView button[itemId=guardar]': {
 				click: this.GuardarCierreOt
+			},
+			'CierreOTView textfield[itemId=filtroCliente]': {
+				keyup: this.FiltrarCliente
+			},
+			'#verOt': {
+				click: this.VerOT
+			},
+			'VerOTView button[itemId=verOT]': {
+				click: this.ReporteOT
 			},
 		});
 	},
@@ -70,8 +81,10 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 		
 		var btnInsert = viewClientes.queryById('insertCliente');
 		btnInsert.on('click', function(){
-			var selection = viewClientes.down('grid').getSelectionModel().getSelection()[0];
+			
+			var selection = viewClientes.down('grid').getSelectionModel().getSelection()[0];			
 			form.loadRecord(selection);
+			form.queryById('idCliente').setValue(selection.data.id);
 			viewClientes.close();
 			win.queryById('btnCodigo').focus('', 20);
 		});
@@ -96,6 +109,8 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 		var form = win.down('form');
 		
 		if(form.isValid()){
+			var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
+			myMask.show();
 			var values = form.getValues();
 			
 			Ext.Ajax.request({
@@ -112,12 +127,34 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 						form.query('field').forEach(function(field){
 							field.setReadOnly(true);		
 						});
+						
+						Ext.Ajax.request({
+							url: Routing.generate('mbp_produccion_generarOt'),
+							
+							params: {
+								ot: jsonResp.ot
+							},
+							
+							success: function(resp){
+								var jResp = Ext.JSON.decode(resp.responseText);
+								if(jResp.success == true){
+									var ruta = Routing.generate('mbp_produccion_verOt');
+		    						window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');		
+								}
+								myMask.hide();
+							},
+							
+							failure: function(resp){
+								myMask.hide();
+							}
+						})
 					}
 				},
 				
 				failure: function(resp){
 					var jsonResp = Ext.JSON.decode(resp.responseText);
 					form.getForm().markInvalid(jsonResp.errors);
+					myMask.hide();
 				}
 			});
 		}
@@ -129,17 +166,19 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 		var grid = view.down('grid');
 		var store = grid.getStore();
 		
-		
+		var myMask = new Ext.LoadMask(view, {msg:"Cargando..."});
+		myMask.show();
 		Ext.Ajax.request({
 			url: Routing.generate('mbp_produccion_CerrarOtListado'),
 			
 			success: function(resp){
+				myMask.hide();
 				jsonData = Ext.JSON.decode(resp.responseText);
 				store.loadRawData(jsonData.items);
 			},
 			
 			failure: function(resp){
-				
+				myMask.hide();
 			}
 		})
 	},
@@ -150,6 +189,8 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 		var store = grid.getStore();
 		var modifiedRecords = store.getModifiedRecords();
 		var arrayParam = [];
+		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
+		myMask.show();
 		
 		for(var i=0; i<modifiedRecords.length; i++){
 			arrayParam.push(modifiedRecords[i].getData());
@@ -163,14 +204,82 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 			},
 			
 			success: function(resp){
+				myMask.hide();
 				jsonResp = Ext.JSON.decode(resp.responseText);
 				if(jsonResp.success == true){
-					store.sync();
+					store.sync();					
 				}
 			},
 			
 			failure: function(resp){
-				
+				myMask.hide();
+			}
+		})
+	},
+	
+	FiltrarCliente: function(txt){
+		var win = txt.up('window');
+		var grid = win.down('grid');
+		var store = grid.getStore();
+		
+		store.clearFilter(true);
+		store.filter(
+			{property: 'cliente',
+			value: txt.getValue(),
+			anyMatch: true}
+		);
+	},
+	
+	VerOT: function(btn){
+		var view = Ext.widget('VerOTView');
+		var grid = view.down('grid');
+		var store = grid.getStore();
+		var myMask = new Ext.LoadMask(view, {msg:"Cargando..."});
+		myMask.show();
+		
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_produccion_ListarOrdenes'),
+			
+						
+			success: function(resp){
+				myMask.hide();
+				var jsonResp = Ext.JSON.decode(resp.responseText);
+				if(jsonResp.success == true){
+					store.loadData(jsonResp.data);	
+				}						
+			},
+			
+			failure: function(resp){
+				myMask.hide();
+			}
+		});
+	},
+	
+	ReporteOT: function(btn){
+		var win = btn.up('window');
+		var grid = win.down('grid');
+		var selection = grid.getSelectionModel().getSelection()[0];
+		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
+		myMask.show();
+		
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_produccion_generarOt'),
+			
+			params: {
+				ot: selection.data.otNum
+			},
+			
+			success: function(resp){
+				myMask.hide();
+				var jResp = Ext.JSON.decode(resp.responseText);
+				if(jResp.success == true){
+					var ruta = Routing.generate('mbp_produccion_verOt');
+					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');		
+				}
+			},
+			
+			failure: function(resp){
+				myMask.hide();
 			}
 		})
 	}

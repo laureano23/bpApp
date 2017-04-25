@@ -68,8 +68,15 @@ Ext.define('MetApp.view.Produccion.OrdenesTrabajo.CierreOTView', {
 							width: 900,
 							height: 300
 							
+						},
+						{
+							xtype: 'textfield',
+							fieldLabel: 'Cliente',
+							itemId: 'filtroCliente',
+							enableKeyEvents: true,
 						}		
 					],
+					
 					buttons: [
 						{
 							text: 'Guardar',

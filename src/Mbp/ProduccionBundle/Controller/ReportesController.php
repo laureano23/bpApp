@@ -5,6 +5,7 @@ namespace Mbp\ProduccionBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -14,6 +15,9 @@ use Mbp\ProduccionBundle\Clases\Calculo;
 
 class ReportesController extends Controller
 {
+	 /**
+     * @Route("/produccion/reporteCalculo", name="mbp_produccion_reportecalculo", options={"expose"=true})
+     */
 	public function reporteCalculoAction()
 	{
 		$repo = $this->get('reporteador');
@@ -169,13 +173,12 @@ class ReportesController extends Controller
 		}catch(\Doctrine\ORM\ORMException $e){
 				$this->get('logger')->error($e->getMessage());
 		}
-		
-				
-		
-		
-		
 	}
-	
+
+
+	/**
+     * @Route("/produccion/reporteCalculoPdf", name="mbp_produccion_reporteArmadoPanelPDF", options={"expose"=true})
+     */	
 	public function reporteCalculoPdfAction()
 	{
 		$kernel = $this->get('kernel');	
@@ -193,6 +196,9 @@ class ReportesController extends Controller
         return $response;
 	}
 	
+	/**
+     * @Route("/produccion/reporteArmado", name="mbp_produccion_reporteArmadoPanel", options={"expose"=true})
+     */	
 	public function reporteArmadoAction()
 	{
 		//Llamada a los servicios
@@ -386,6 +392,9 @@ class ReportesController extends Controller
 		}		
 	}
 	
+	/**
+     * @Route("/produccion/reporteArmadoPdf", name="mbp_produccion_reporteArmadoPanelPDF", options={"expose"=true})
+     */	
 	public function reporteArmadoPdfAction()
 	{
 		$kernel = $this->get('kernel');	
@@ -401,6 +410,120 @@ class ReportesController extends Controller
         );
 		
 		return $response;
+	}
+	
+	/**
+     * @Route("/produccion/generarOt", name="mbp_produccion_generarOt", options={"expose"=true})
+     */
+    public function generarOt()
+    {
+        /*
+		 * PARAMETROS
+		 */
+		$ot = $this->getRequest()->request->get('ot');
+		$response = new Response;
+
+		try {
+			$reporteador = $this->get('reporteador');
+			$kernel = $this->get('kernel');
+			
+			
+			/*
+			 * Configuro reporte
+			 */
+			$jru = $reporteador->jru();
+			
+			/*
+			 * Ruta archivo Jasper
+			 */				
+					
+			$ruta = $kernel->locateResource('@MbpProduccionBundle/Reportes/OT.jrxml');
+			$rutaLogo = $reporteador->getRutaLogo($kernel);
+			
+			/*
+			 * Ruta de destino del PDF
+			 */
+			$destino = $kernel->locateResource('@MbpProduccionBundle/Resources/public/pdf/').'OT.pdf';
+			
+			
+			//Parametros HashMap
+			$param = $reporteador->getJava('java.util.HashMap');
+			$param->put('ot', $ot);
+			$param->put('rutaLogo', $rutaLogo);
+			
+			$conn = $reporteador->getJdbc();
+			
+			$sql = "
+				SELECT
+			     Ot.`ot` AS Ot_ot,
+			     Ot.`cantidad` AS Ot_cantidad,
+			     Ot.`fechaProg` AS Ot_fechaProg,
+			     Ot.`observaciones` AS Ot_observaciones,
+			     Ot.`anulada` AS Ot_anulada,
+			     Ot.`idCodigo` AS Ot_idCodigo,
+			     Ot.`idCliente` AS Ot_idCliente,
+			     Ot.`idUsuario` AS Ot_idUsuario,
+			     Ot.`fechaEmision` AS Ot_fechaEmision,
+			     Ot.`tipo` AS Ot_tipo,
+			     Ot.`aprobado` AS Ot_aprobado,
+			     Ot.`rechazado` AS Ot_rechazado,
+			     articulos.`codigo` AS articulos_codigo,
+			     articulos.`descripcion` AS articulos_descripcion,
+			     articulos.`unidad` AS articulos_unidad,
+			     articulos.`presentacion` AS articulos_presentacion,
+			     articulos.`idArticulos` AS articulos_idArticulos,
+			     articulos.`stock` AS articulos_stock,
+			     cliente.`idCliente` AS cliente_idCliente,
+			     cliente.`rsocial` AS cliente_rsocial,
+			     cliente.`denominacion` AS cliente_denominacion
+			FROM
+			     `articulos` articulos INNER JOIN `Ot` Ot ON articulos.`idArticulos` = Ot.`idCodigo`
+			     INNER JOIN `cliente` cliente ON Ot.`idCliente` = cliente.`idCliente`
+			WHERE Ot.`ot` = $ot
+			";
+			
+			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
+
+			
+			return $response->setContent(
+					json_encode(
+						array(
+							'success'=> true,	
+						)
+					)
+				);
+		} catch (\Exception $e) {
+			$response->setContent(
+				json_encode(
+					array(
+						'success'=> false,	
+						'msg' => $e->getMessage()
+					)
+				)
+			);
+
+			return $response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+    }
+    
+    /**
+     * @Route("/produccion/verOt", name="mbp_produccion_verOt", options={"expose"=true})
+     */
+	public function verOt()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpProduccionBundle/Resources/public/pdf/').'OT.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'OT.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-Type', 'application/pdf');
+
+        return $response;
 	}
 }
 

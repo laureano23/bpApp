@@ -283,6 +283,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
     					listeners : {
                             render : dragZone,
                         }
+    				},
+    				{
+    					text: 'Ver OT',
+    					itemId: 'verOt',
+    					listeners : {
+                            render : dragZone,
+                        }
     				}
     			]
     		},

@@ -32,7 +32,7 @@ class OtController extends Controller
 			$articulo = $repoArticulos->findByCodigo($stdObj->codigo);
 			
 			//BUSCO CLIENTE
-			$cliente = $repoClientes->find($stdObj->id);
+			$cliente = $repoClientes->find($stdObj->idCliente);
 			
 			//BUSCO USUARIO
 			$usuario = $this->get('security.context')->getToken()->getUser();
@@ -74,7 +74,7 @@ class OtController extends Controller
 			$em->flush();
 				        
 	        return $response->setContent(
-				json_encode(array('success' => true))
+				json_encode(array('success' => true, 'ot' => $ot->getOt()))
 			);
 		}catch(\Exception $e){
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR); 
@@ -148,6 +148,35 @@ class OtController extends Controller
 			$em->flush();
 			
 			$response->setContent(json_encode(array(
+				'success' => true,
+			)));
+			
+			return $response;
+		}catch(\Exception $e){
+			$response->setContent(json_encode(array(
+				'success' => false,
+				'msg' => $e->getMessage())
+			));
+			
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	/**
+     * @Route("/listarOrdenes", name="mbp_produccion_ListarOrdenes", options={"expose"=true})
+     */
+    public function listarOrdenes()
+	{
+		$em = $this->getDoctrine()->getManager();
+		$response = new Response;
+		$repo = $em->getRepository('MbpProduccionBundle:Ot');
+		$request = $this->getRequest();
+		
+		try{
+			$listado = $repo->listarOrdenes();
+			
+			$response->setContent(json_encode(array(
+				'data' => $listado,
 				'success' => true,
 			)));
 			

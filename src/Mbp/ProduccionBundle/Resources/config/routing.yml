@@ -3,26 +3,6 @@ mbp_produccion_calculoaireaceite:
     defaults: { _controller: MbpProduccionBundle:Calculo:radiadoresAceiteAire }
     options:
       expose: true
-mbp_produccion_reportecalculo:
-    path: /reporteHR
-    defaults: { _controller: MbpProduccionBundle:Reportes:reporteCalculo }
-    options:
-      expose: true
-mbp_produccion_reportecalculopdf:
-    path: /reporteHRpdf
-    defaults: { _controller: MbpProduccionBundle:Reportes:reporteCalculoPdf }
-    options:
-      expose: true
-mbp_produccion_reporteArmadoPanel:
-    path: /reporteArmadoPanel
-    defaults: { _controller: MbpProduccionBundle:Reportes:reporteArmado }
-    options:
-      expose: true
-mbp_produccion_reporteArmadoPanelPDF:
-    path: /reporteArmadoPanelPDF
-    defaults: { _controller: MbpProduccionBundle:Reportes:reporteArmadoPdf }
-    options:
-      expose: true
 mbp_produccion_verificacalculo:
     path: /verificaCalculo
     defaults: { _controller: MbpProduccionBundle:Calculo:verificaCalc }

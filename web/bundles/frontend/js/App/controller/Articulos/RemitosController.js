@@ -153,11 +153,13 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 		var grid = winRemito.down('grid');
 		var store = grid.getStore();
 		var data = [];
+		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
 
 		store.each(function(rec){
 			data.push(rec.data);
 		});
-
+		
+		myMask.show();
 		Ext.Ajax.request({
 			url: Routing.generate('mbp_articulos_generarRemitoCliente'),
 
@@ -166,12 +168,38 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 				clienteId: winRemito.queryById('idCliente').getValue()
 			},
 
-			success: function(resp){			
-				store.removeAll();
+			success: function(resp){
+				var jsonResp = Ext.JSON.decode(resp.responseText);
+				myMask.hide();
+				if(jsonResp.success == true){
+					store.removeAll();
+					myMask.show();
+					Ext.Ajax.request({
+						url: Routing.generate('mbp_articulos_imprimirRemitoCliente'),
+						
+						params: {
+							idRemito: jsonResp.idRemito
+						},
+						
+						success: function(resp){
+							var jsonResp = Ext.JSON.decode(resp.responseText);
+							myMask.hide();
+							if(jsonResp.success == true){
+								var ruta = Routing.generate('mbp_articulos_verRemitoCliente');
+			    				window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');	
+							}								
+						},
+						
+						failure: function(resp){
+							myMask.hide();
+						}
+					});						
+				}	
 			},
 
 			failure: function(resp){				
 				var response = Ext.JSON.decode(resp.responseText);
+				myMask.hide();
 				if(!response.tipo) return;
 				var errors='';
 				for(var key in response.errors){
