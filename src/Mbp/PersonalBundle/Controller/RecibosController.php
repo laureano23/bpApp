@@ -56,12 +56,19 @@ class RecibosController extends Controller
 		$detalles = json_decode($req->request->get('data'));
 		$banco = $repoBancos->find($this->banco);		
 		$empleado = $repoEmpleado->find($this->idP);
+		
+		
+		
 		$antiguedad = $empleado->getFechaIngreso()->diff(new \DateTime("now"));
 		$this->antiguedadAnios = $antiguedad->format("%Y");
 		$localidad = $empleado->getLocalidad()->getNombre();
 		$prov = $empleado->getLocalidad()->getDepartamentoId()->getProvinciaId()->getNombre();
 		
 		try{
+			/* SE VALIDA SI EL EMPLEADO ESTA ACTIVO */
+			if($empleado->getInactivo() == 1){
+				throw new \Exception("El empleado se encuentra inactivo, contacte al administrador");				
+			}
 			//DATOS DEL RECIBO
 			$recibo->setCompensatorio($this->compensatorio);
 			$recibo->setBanco($banco);
@@ -162,10 +169,10 @@ class RecibosController extends Controller
 		$empleado = $repoEmpleado->find($this->idP);
 		$datosFijos = $this->datosFijos(); //DATOS FIJOS QUE TIENE EL EMPLEADO SEGUN EL PERIODO DE LIQUIDACION
 		$antiguedad = $empleado->getAntPorcentaje();
-		$detalleFijos=[];
+		$detalleFijos=array();
 		
 		foreach ($datosFijos as $dat) {			
-			if(!$dat->getCodigoId()->getDescuento() && $dat->getCodigoId()->getDescripcion() != "ANTIGUEDAD"){
+			if(!$dat->getCodigoId()->getDescuento() && $dat->getCodigoId()->getDescripcion() != "ANTIGUEDAD" && $this->compensatorio != 1){
 				$detalle = new RecibosDetalle();
 				$detalle->setCantConceptoVar(1);
 				$detalle->setValorConceptoHist($dat->getCodigoId()->getImporte());
@@ -221,7 +228,7 @@ class RecibosController extends Controller
 		$empleado = $repoEmpleado->find($this->idP);
 		$datosFijos = $this->datosFijos(); //DATOS FIJOS QUE TIENE EL EMPLEADO SEGUN EL PERIODO DE LIQUIDACION
 		
-		$arrayDescuentos=[];
+		$arrayDescuentos=array();
 		
 		foreach ($datosFijos as $datos) {
 			if($datos->getCodigoId()->getDescuento()){

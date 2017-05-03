@@ -2,10 +2,12 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 	extend: 'Ext.app.Controller',	
 	views: [
 		'MetApp.view.Bancos.FormBancosView',
+		'MetApp.view.Bancos.ConceptosBancoView'
 		
 	],
 	stores: [
-		'MetApp.store.Personal.BancosStore'
+		'MetApp.store.Personal.BancosStore',
+		'MetApp.store.Bancos.ConceptosBancoStore'
 	],
 	
 	refs:[
@@ -33,6 +35,21 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 				},
 				'#movBancos': {
 					click: this.NewMovBancos
+				},
+				'#conceptoBancos': {
+					click: this.FormConceptoBancos
+				},
+				'ConceptosBancoView button[itemId=btnNew]': {
+					click: this.NuevoConcepto
+				},
+				'ConceptosBancoView button[itemId=btnSave]': {
+					click: this.GuardarConcepto
+				},
+				'ConceptosBancoView button[itemId=btnEdit]': {
+					click: this.EditarConcepto
+				},
+				'ConceptosBancoView button[itemId=btnDelete]': {
+					click: this.EliminarConcepto
 				},
 		});		
 	},
@@ -131,6 +148,101 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 		form.query('field').forEach(function(field){
 			field.setReadOnly(false);
 		});
+	},
+	
+	NewMovBancos: function(btn){
+		console.log(btn);
+	},
+	
+	FormConceptoBancos: function(btn){
+		var view = Ext.widget('ConceptosBancoView');
+		var grid = view.down('grid');
+		var store = grid.getStore();
+		
+		store.load();
+	},
+	
+	NuevoConcepto: function(btn){
+		var win = btn.up('window');
+		var botonera = win.queryById('botonera');
+		win.queryById('concepto').setReadOnly(false);
+		win.queryById('concepto').focus('', 20);
+		
+		botonera.nuevoItem(botonera);
+		
+	},
+	
+	GuardarConcepto: function(btn){
+		var win = btn.up('window');
+		var form = win.down('form');
+		var botonera = win.queryById('botonera');
+		var store = win.down('grid').getStore();
+		
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_bancos_nuevoConceptoBanco'),
+			
+			params: {
+				id: win.queryById('id').getValue(),
+				concepto: win.queryById('concepto').getValue()
+			},
+			
+			success: function(resp){
+				var jsonResp = Ext.JSON.decode(resp.responseText);
+				if(jsonResp.success == true){
+					botonera.guardarItem(botonera);
+					store.load();
+					form.getForm().reset();
+					win.queryById('concepto').setReadOnly(true);	
+				}				
+			}
+		})
+	},
+	
+	EditarConcepto: function(btn){
+		var win = btn.up('window');
+		var form = win.down('form');
+		var selection = form.down('grid').getSelectionModel().getSelection()[0];
+		var botonera = win.queryById('botonera');
+		
+		form.queryById('concepto').setReadOnly(false);
+		form.loadRecord(selection);
+		botonera.editarItem(botonera);
+	},
+	
+	EliminarConcepto: function(btn){
+		var win = btn.up('window');
+		var form = win.down('form');
+		var selection = form.down('grid').getSelectionModel().getSelection()[0];
+		var botonera = win.queryById('botonera');
+		var store = win.down('grid').getStore();
+		
+		Ext.Msg.show({
+		     title:'Atencion',
+		     msg: 'Desea borrar el registro?',
+		     buttons: Ext.Msg.YESNO,
+		     icon: Ext.Msg.QUESTION,
+		     fn: function(btn){
+		     	if(btn == 'yes'){
+		     		Ext.Ajax.request({
+						url: Routing.generate('mbp_bancos_eliminarConceptoBanco'),
+						
+						params: {
+							id: selection.data.id
+						},
+						
+						success: function(resp){
+							var jsonResp = Ext.JSON.decode(resp.responseText);
+							if(jsonResp.success == true){
+								botonera.guardarItem(botonera);
+								store.load();
+								form.getForm().reset();
+								win.queryById('concepto').setReadOnly(true);	
+							}
+						}
+					})	
+		     	}
+		     }
+		});			
 	}
 });
 

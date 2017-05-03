@@ -16,8 +16,7 @@ class PersonalRepository extends EntityRepository
 	public function listarPersonal()
 	{
 		$em = $this->getEntityManager();
-		$dql = 'SELECT p.idP, p.nombre FROM MbpPersonalBundle:Personal p
-				WHERE p.inactivo != 1';
+		$dql = 'SELECT p.idP, p.nombre FROM MbpPersonalBundle:Personal p';
 		
 		try{
 			$reg = $em->createQuery($dql);
@@ -116,6 +115,11 @@ class PersonalRepository extends EntityRepository
 		try{
 			if($data->idP > 0){
 				$empleado = $repoPersonal->find($data->idP); 
+				
+				/*SE VALIDA SI EL EMPLEADO ESTA INACTIVO*/
+				if($empleado->getInactivo() == true){
+					throw new \Exception('El empleado se encuentra inactivo, contacte al administrador');					
+				}
 			}else{
 				$empleado = new Personal();	
 			}
@@ -238,7 +242,7 @@ class PersonalRepository extends EntityRepository
 		}catch(\Exception $e){
 			return array(
 				'success' => false,	
-				'error' => $e->getMessage()	
+				'msg' => $e->getMessage()	
 			);	
 		}
 	}

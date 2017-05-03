@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Mbp\FinanzasBundle\Entity\Bancos;
+use Mbp\FinanzasBundle\Entity\ConceptosBanco;
 use Mbp\FinanzasBundle\Entity\CuentasBancarias;
 
 class BancosController extends Controller
@@ -142,6 +143,128 @@ class BancosController extends Controller
 				json_encode(array(
 					'success' => true,
 					'idBanco' => $banco->getId()
+				))
+			);
+			
+			return $response;
+		}catch(\Exception $e){
+			$response->setContent(
+				json_encode(array(
+					'success' => false,
+					'msg' => $e->getMessage()
+				))
+			);
+			
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+	} 
+
+	/**
+     * @Route("/bancos/listarConceptosBanco", name="mbp_bancos_listarConceptosBanco", options={"expose"=true})
+     */
+    public function listarConceptosBanco()
+	{
+		$response = new Response;
+		$em = $this->getDoctrine()->getEntityManager();	
+		$repo = $em->getRepository('MbpFinanzasBundle:ConceptosBanco');	
+		
+		try{
+			$qb = $repo->createQueryBuilder('c')
+				->select('')
+				->where('c.inactivo = 0')
+				->getQuery()
+				->getArrayResult();
+			
+			
+			
+			$response->setContent(
+				json_encode(array(
+					'success' => true,
+					'data' => $qb
+				))
+			);
+			
+			return $response;
+		}catch(\Exception $e){
+			$response->setContent(
+				json_encode(array(
+					'success' => false,
+					'msg' => $e->getMessage()
+				))
+			);
+			
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+	} 
+	
+	/**
+     * @Route("/bancos/nuevoConceptoBanco", name="mbp_bancos_nuevoConceptoBanco", options={"expose"=true})
+     */
+    public function nuevoConceptoBanco()
+	{
+		$response = new Response;
+		$em = $this->getDoctrine()->getEntityManager();	
+		
+		try{			
+			$data = $this->getRequest()->request->get('concepto');
+			$id = $this->getRequest()->request->get('id');
+			$concepto;
+			
+			if(!empty($id)){
+				$repo = $em->getRepository('MbpFinanzasBundle:ConceptosBanco'); 
+				$concepto = $repo->find($id);
+			}else{
+				$concepto = new ConceptosBanco;
+			}
+			
+			$concepto->setConcepto($data);
+			
+			$em->persist($concepto);
+			$em->flush();
+			
+			
+			$response->setContent(
+				json_encode(array(
+					'success' => true,
+				))
+			);
+			
+			return $response;
+		}catch(\Exception $e){
+			$response->setContent(
+				json_encode(array(
+					'success' => false,
+					'msg' => $e->getMessage()
+				))
+			);
+			
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+	} 
+	
+	/**
+     * @Route("/bancos/eliminarConceptoBanco", name="mbp_bancos_eliminarConceptoBanco", options={"expose"=true})
+     */
+    public function eliminarConceptoBanco()
+	{
+		$response = new Response;
+		$em = $this->getDoctrine()->getEntityManager();	
+		
+		try{			
+			$id = $this->getRequest()->request->get('id');
+			
+			$repo = $em->getRepository('MbpFinanzasBundle:ConceptosBanco'); 
+			$concepto = $repo->find($id);
+			
+			$concepto->setInactivo(true);
+			
+			$em->persist($concepto);
+			$em->flush();
+			
+			
+			$response->setContent(
+				json_encode(array(
+					'success' => true,
 				))
 			);
 			

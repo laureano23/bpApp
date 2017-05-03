@@ -70,7 +70,7 @@ class PersonalController extends Controller
 		return $response;
 	}
 	
-	public function editAction()
+	/*public function editAction()
 	{
 		$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
@@ -81,7 +81,7 @@ class PersonalController extends Controller
 		$repo->editaEmpleado($jsonData);
 				
 		return new Response();
-	}
+	}*/
 	
 	/**
      * @Route("/delete", name="mbp_personal_delete", options={"expose"=true})

@@ -477,7 +477,17 @@ Ext.define('MetApp.view.Principal.MyViewport', {
         var menuBancos = [
         	{        		
 				text: 'Movimientos de bancos',
-				itemId: 'movBancos'        		
+				itemId: 'movBancos',
+				listeners : {
+                    render : dragZone,
+                },         		
+        	},
+        	{        		
+				text: 'Conceptos de bancos',
+				itemId: 'conceptoBancos',
+				listeners : {
+                    render : dragZone,
+                },       		
         	}
         ]
     		    	
