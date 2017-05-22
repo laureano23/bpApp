@@ -29,6 +29,13 @@ class ConceptosBanco
     private $concepto;
 	
 	/**
+     * @var string
+     *
+     * @ORM\Column(name="contabiliza", type="string", length=6, nullable=false)
+     */
+    private $contabiliza;
+	
+	/**
      * @var boolean
      *
      * @ORM\Column(name="inactivo", type="boolean")
@@ -92,5 +99,29 @@ class ConceptosBanco
     public function getInactivo()
     {
         return $this->inactivo;
+    }
+
+    /**
+     * Set contabiliza
+     *
+     * @param string $contabiliza
+     *
+     * @return ConceptosBanco
+     */
+    public function setContabiliza($contabiliza)
+    {
+        $this->contabiliza = strtoupper($contabiliza);
+
+        return $this;
+    }
+
+    /**
+     * Get contabiliza
+     *
+     * @return string
+     */
+    public function getContabiliza()
+    {
+        return $this->contabiliza;
     }
 }

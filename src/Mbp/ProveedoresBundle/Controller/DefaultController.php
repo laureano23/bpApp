@@ -11,6 +11,10 @@ use Mbp\ProveedoresBundle\Entity\Factura;
 use Mbp\ProveedoresBundle\Entity\Pago;
 use Mbp\ProveedoresBundle\Entity\OrdenPago;
 use Mbp\ProveedoresBundle\Entity\TransaccionOPFC;
+use Mbp\FinanzasBundle\Entity\MovimientosBancos;
+use Mbp\FinanzasBundle\Entity\DetalleMovimientosBancos;
+use Mbp\FinanzasBundle\Entity\FormasPago;
+use Mbp\FinanzasBundle\Entity\ConceptosBanco;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
@@ -258,6 +262,7 @@ class DefaultController extends Controller
 		$decData = json_decode($data);
 		$fcImputarDec = json_decode($fcImputar);
 		$repoTipoPago = $em->getRepository('MbpFinanzasBundle:FormasPago');
+		$repoBancos = $em->getRepository('MbpFinanzasBundle:Bancos');
 		$repoProv = $em->getRepository('MbpProveedoresBundle:Proveedor');
 		$repoFc = $em->getRepository('MbpProveedoresBundle:Factura');
 		$repoOP = $em->getRepository('MbpProveedoresBundle:OrdenPago');
@@ -282,8 +287,17 @@ class DefaultController extends Controller
 					$pago->setBanco($rec->banco);
 					empty($tipoPago) ? "" : $pago->setIdFormaPago($tipoPago[0]);
 					
+					//SI ES UN CHEQUE PROPIO DEBO REGISTRAR LA OPERACION COMO MOVIMIENTO BANCARIO
+					if($rec->conceptoBancario == true){
+						$banco = $repoBancos->findByNombre($rec->banco);
+						$pago->setBancoChequePropioId($banco[0]);
+						
+						$this->NuevoChequePropio($rec, $proveedor);
+					}
+					
+											
 					$ordenPago->addPagoDetalleId($pago);	
-				}	
+				}
 			}else{
 				$ordenPago = $repoOP->find($idOP);
 			}
@@ -343,6 +357,35 @@ class DefaultController extends Controller
 			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 		}
     }
+
+	private function NuevoChequePropio($data, $proveedor)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$repoBancos = $em->getRepository('MbpFinanzasBundle:Bancos');
+		$repoConceptos = $em->getRepository('MbpFinanzasBundle:ConceptosBanco');
+		
+		$banco = $repoBancos->findByNombre($data->banco);
+		$conceptoMov = $repoConceptos->find($data->conceptoBancario);
+		
+		$movBancario = new MovimientosBancos;
+		$movBancario->setFechaMovimiento(new \DateTime);
+		$movBancario->setBanco($banco[0]);
+		$movBancario->setConceptoMovimiento($conceptoMov);
+		
+		$detalleMov = new DetalleMovimientosBancos;
+		$detalleMov->setNumComprobante($data->numero);
+		$detalleMov->setFechaDiferida(\DateTime::createFromFormat('d/m/Y', $data->diferido));
+		$detalleMov->setImporte($data->importe);
+		$detalleMov->setProveedorId($proveedor);
+		
+		
+		$movBancario->addDetallesMovimiento($detalleMov);
+		
+		$em->persist($movBancario);
+		$em->flush();
+		
+		return;
+	}
 
 	
 	
@@ -531,6 +574,99 @@ class DefaultController extends Controller
 				
 		
 		return new Response();
+	}
+	
+	/**
+     * @Route("/proveedores/NuevaFormaPago", name="mbp_proveedores_nuevaFormaPago", options={"expose"=true})
+     */
+    public function NuevaFormaPago()
+    {
+    	$em = $this->getDoctrine()->getManager();
+		$repoConceptosBanco = $em->getRepository('MbpFinanzasBundle:ConceptosBanco');
+		$repoFormaPago = $em->getRepository('MbpFinanzasBundle:FormasPago');
+		$response = new Response;
+		$req = $this->getRequest();
+		$data = json_decode($req->request->get('data'));
+		
+		try{
+			$formaPago = 0;
+			
+			if($data->id != ""){
+				$formaPago = $repoFormaPago->find($data->id);
+			}else{
+				$formaPago = new FormasPago;
+			}
+			
+			$formaPago->setDescripcion($data->formaPago);
+			
+			if($data->conceptoBancario != ""){
+				$conceptoBanco = $repoConceptosBanco->find($data->conceptoBancario);
+				$formaPago->setConceptoBancario($conceptoBanco);
+			}
+			
+			$em->persist($formaPago);
+			$em->flush();
+			
+			$response->setContent(
+			json_encode(
+				array(
+					'success' => true
+				)
+			));	
+			
+			return $response;
+		}catch(\Exception $e){
+			$response->setContent(
+				json_encode(
+					array(
+						'success' => false,
+						'msg' => $e->getMessage()
+					)
+				));	
+			
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}		
+	}
+
+	/**
+     * @Route("/proveedores/EliminarFormaPago", name="mbp_proveedores_EliminarFormaPago", options={"expose"=true})
+     */
+    public function EliminarFormaPago()
+    {
+    	$em = $this->getDoctrine()->getManager();
+		$repoFormaPago = $em->getRepository('MbpFinanzasBundle:FormasPago');
+		$response = new Response;
+		$req = $this->getRequest();
+		$data = json_decode($req->request->get('data'));
+		
+		try{
+			$formaPago = $repoFormaPago->find($data->id);
+			
+			$formaPago->setInactivo(true);
+						
+			$em->persist($formaPago);
+			$em->flush();
+			
+			$response->setContent(
+			json_encode(
+				array(
+					'success' => true
+				)
+			));	
+			
+			return $response;
+		}catch(\Exception $e){
+			$response->setContent(
+				json_encode(
+					array(
+						'success' => false,
+						'msg' => $e->getMessage()
+					)
+				));	
+			
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+		
 	}
 }
 

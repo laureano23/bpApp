@@ -490,6 +490,17 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                 },       		
         	}
         ]
+        
+        var menuProveedores = [
+        	{
+        		text: 'CC Proveedores',
+        		itemId: 'tbCCProveedores'
+        	},
+        	{
+        		text: 'Formas de Pago',
+        		itemId: 'tbFormasPago'
+        	}
+        ]
     		    	
     	var me = this;    	
 
@@ -582,7 +593,7 @@ Ext.define('MetApp.view.Principal.MyViewport', {
         			},
         			{
         				text: 'Proveedores',
-        				itemId: 'tbCCProveedores'
+        				menu: autz.getAuthorizedElements(menuProveedores)        				
         			},
         			{
         				text: 'Bancos',

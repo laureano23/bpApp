@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Mbp\FinanzasBundle\Entity\Bancos;
 use Mbp\FinanzasBundle\Entity\ConceptosBanco;
 use Mbp\FinanzasBundle\Entity\CuentasBancarias;
+use Mbp\FinanzasBundle\Entity\MovimientosBancos;
+use Mbp\FinanzasBundle\Entity\DetalleMovimientosBancos;
 
 class BancosController extends Controller
 {
@@ -207,6 +209,7 @@ class BancosController extends Controller
 		
 		try{			
 			$data = $this->getRequest()->request->get('concepto');
+			$contabiliza = $this->getRequest()->request->get('contabiliza');
 			$id = $this->getRequest()->request->get('id');
 			$concepto;
 			
@@ -218,6 +221,7 @@ class BancosController extends Controller
 			}
 			
 			$concepto->setConcepto($data);
+			$concepto->setContabiliza($contabiliza);
 			
 			$em->persist($concepto);
 			$em->flush();
@@ -261,6 +265,77 @@ class BancosController extends Controller
 			$em->persist($concepto);
 			$em->flush();
 			
+			
+			$response->setContent(
+				json_encode(array(
+					'success' => true,
+				))
+			);
+			
+			return $response;
+		}catch(\Exception $e){
+			$response->setContent(
+				json_encode(array(
+					'success' => false,
+					'msg' => $e->getMessage()
+				))
+			);
+			
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+	} 
+
+	/**
+     * @Route("/bancos/guardarMovimientoBanco", name="mbp_bancos_guardarMovimientoBanco", options={"expose"=true})
+     */
+    public function guardarMovimientoBanco()
+	{
+		$response = new Response;
+		$em = $this->getDoctrine()->getEntityManager();	
+		
+		try{			
+			$operacion = json_decode($this->getRequest()->request->get('operacion'));
+			$comprobantes = json_decode($this->getRequest()->request->get('comprobantes'));
+			
+			//REPOSITORIOS
+			$repoBancos = $em->getRepository('MbpFinanzasBundle:Bancos');
+			$repoConceptoMov = $em->getRepository('MbpFinanzasBundle:ConceptosBanco');
+			$repoChequeTerceros = $em->getRepository('MbpFinanzasBundle:CobranzasDetalle');
+			
+			$banco = $repoConceptoMov->find($operacion->idBanco);
+			$conceptoMov = $repoConceptoMov->find($operacion->conceptoMov);
+			
+									
+			$movimiento = new MovimientosBancos;	
+			$movimiento->setFechaMovimiento(new \DateTime); //CAMBIAR A FECHA DEL CLIENTE
+			
+			//DETALLES DEL MOVIMIENTO
+			foreach ($comprobantes as $comp) {
+				$detalleMov = new DetalleMovimientosBancos;
+				//SI EL COMPROBANTE QUE SE ENVIA CORRESPONDE A UN CHEQUE DE TERCEROS SE REGISTRA
+				if($comp->idChequeTerceros){
+					$chequeTerceros = $repoChequeTerceros->find($comp->idChequeTerceros);
+					//SETEAMOS ESTADO DE CHEQUE DE TERCEROS COMO DEPOSITADO
+					$chequeTerceros->setEstado(2);
+					$em->persist($chequeTerceros);
+					$detalleMov->setChequeTerceros($chequeTerceros);
+					$detalleMov->setNumComprobante($chequeTerceros->getNumero());
+					$detalleMov->setFechaDiferida($chequeTerceros->getVencimiento());
+					$detalleMov->setImporte($chequeTerceros->getImporte());					
+				}else{
+					$detalleMov->setNumComprobante($comp->numCbte);
+					$detalleMov->setFechaDiferida(new \DateTime);
+					$detalleMov->setImporte($comp->importe);
+					$detalleMov->setObservaciones($comp->obsCbte);
+				}
+				$movimiento->addDetallesMovimiento($detalleMov);
+			}
+			
+			$movimiento->setBanco($banco);
+			$movimiento->setConceptoMovimiento($conceptoMov);
+			
+			$em->persist($movimiento);			
+			$em->flush();				
 			
 			$response->setContent(
 				json_encode(array(

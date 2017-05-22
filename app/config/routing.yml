@@ -41,7 +41,7 @@ mbp_personal:
     resource: "@MbpPersonalBundle/Controller/"
     type:     annotation
     prefix:   /personal
-
+    
 mbp_produccion:
     resource: "@MbpProduccionBundle/Resources/config/routing.yml"
     prefix:   /produccion/

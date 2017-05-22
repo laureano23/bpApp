@@ -3,7 +3,8 @@ Ext.define('MetApp.model.Bancos.ConceptosBancoModel',{
 	idProperty: 'id',
 	fields: [
 		{name: 'id', type: 'int'},
-		{name: 'concepto', type: 'string'},	
+		{name: 'concepto', type: 'string'},
+		{name: 'conceptoBancarioId', type: 'string'},		
 	]
 });
 

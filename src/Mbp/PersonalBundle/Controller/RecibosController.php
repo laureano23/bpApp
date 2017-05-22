@@ -50,7 +50,7 @@ class RecibosController extends Controller
 		$this->periodo = $req->request->get('periodo');
 		$this->banco = $req->request->get('banco');
 		$this->descripcion = $req->request->get('descripcion');
-		$this->fechaPago = \DateTime::createFromFormat('d/m/Y', $req->request->get('fechaPago'));
+		$this->fechaPago = \DateTime::createFromFormat('Y-m-d', $req->request->get('fechaPago'));
 		
 		
 		$detalles = json_decode($req->request->get('data'));

@@ -40,6 +40,22 @@ Ext.define('MetApp.view.Bancos.ConceptosBancoView',{
 							width: 450
 						},
 						{
+							xtype: 'combobox',
+							name: 'condicion',
+							itemId: 'condicion',
+							fieldLabel: 'Contabiliza',
+							store: Ext.create('Ext.data.Store', {
+								fields: ['descripcion'],
+								data: [
+									{ 'descripcion': 'Debe' },
+									{ 'descripcion': 'Haber' }
+								]
+							}),
+							queryMode: 'local',
+							displayField: 'descripcion',
+							width: 450
+						},
+						{
 							xtype: 'grid',
 							height: 200,
 							margin: '0 0 5 0',

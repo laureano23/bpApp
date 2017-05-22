@@ -63,6 +63,12 @@ class Pago
      * @ORM\Column(name="diferido", type="datetime")
      */
     private $diferido;
+	
+	/**
+	 * @ORM\ManyToOne(targetEntity="Mbp\FinanzasBundle\Entity\Bancos")
+	 * @ORM\JoinColumn(name="Banco_chequePropio_id", referencedColumnName="id")
+	 * */
+	private $bancoChequePropioId;
 
 
     /**
@@ -217,5 +223,29 @@ class Pago
     public function getBanco()
     {
         return $this->banco;
+    }
+
+    /**
+     * Set bancoChequePropioId
+     *
+     * @param \Mbp\FinanzasBundle\Entity\Bancos $bancoChequePropioId
+     *
+     * @return Pago
+     */
+    public function setBancoChequePropioId(\Mbp\FinanzasBundle\Entity\Bancos $bancoChequePropioId = null)
+    {
+        $this->bancoChequePropioId = $bancoChequePropioId;
+
+        return $this;
+    }
+
+    /**
+     * Get bancoChequePropioId
+     *
+     * @return \Mbp\FinanzasBundle\Entity\Bancos
+     */
+    public function getBancoChequePropioId()
+    {
+        return $this->bancoChequePropioId;
     }
 }

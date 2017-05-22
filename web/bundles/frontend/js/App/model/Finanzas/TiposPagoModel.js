@@ -3,6 +3,7 @@ Ext.define('MetApp.model.Finanzas.TiposPagoModel',{
 	idProperty: 'idTiposPagoModel',
 	fields: [
 		{ name: 'id', type: 'int' },
-		{ name: 'descripcion', type: 'string'},		
+		{ name: 'descripcion', type: 'string'},
+		{ name: 'conceptoBancario', type: 'string'},			
 	]
 });

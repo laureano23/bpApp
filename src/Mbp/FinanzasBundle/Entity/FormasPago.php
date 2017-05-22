@@ -27,13 +27,19 @@ class FormasPago
      * @ORM\Column(name="descripcion", type="string", length=35)
      */
     private $descripcion;
+	
+	/**
+	 * @ORM\ManyToOne(targetEntity="ConceptosBanco")
+	 * @ORM\JoinColumn(name="ConceptoBanco_id", referencedColumnName="id", nullable=true)
+	 */
+	private $conceptoBancario;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="inactivo", type="boolean")
      */
-    private $inactivo; 
+    private $inactivo=0; 
 
 
     /**
@@ -92,5 +98,53 @@ class FormasPago
     public function getInactivo()
     {
         return $this->inactivo;
+    }
+
+    /**
+     * Set conceptoBancario
+     *
+     * @param boolean $conceptoBancario
+     *
+     * @return FormasPago
+     */
+    public function setConceptoBancario($conceptoBancario)
+    {
+        $this->conceptoBancario = $conceptoBancario;
+
+        return $this;
+    }
+
+    /**
+     * Get conceptoBancario
+     *
+     * @return boolean
+     */
+    public function getConceptoBancario()
+    {
+        return $this->conceptoBancario;
+    }
+
+    /**
+     * Set conceptoBancoId
+     *
+     * @param \Mbp\FinanzasBundle\Entity\ConceptosBanco $conceptoBancoId
+     *
+     * @return FormasPago
+     */
+    public function setConceptoBancoId(\Mbp\FinanzasBundle\Entity\ConceptosBanco $conceptoBancoId = null)
+    {
+        $this->conceptoBancoId = $conceptoBancoId;
+
+        return $this;
+    }
+
+    /**
+     * Get conceptoBancoId
+     *
+     * @return \Mbp\FinanzasBundle\Entity\ConceptosBanco
+     */
+    public function getConceptoBancoId()
+    {
+        return $this->conceptoBancoId;
     }
 }

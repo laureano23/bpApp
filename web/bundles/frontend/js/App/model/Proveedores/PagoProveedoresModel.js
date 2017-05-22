@@ -8,5 +8,6 @@ Ext.define('MetApp.model.Proveedores.PagoProveedoresModel',{
 		{name: 'banco', type: 'string'},
 		{name: 'importe', type: 'float'},
 		{name: 'diferido', type: 'datetime'},
+		{name: 'conceptoBancario', type: 'string'},
 	]
 });

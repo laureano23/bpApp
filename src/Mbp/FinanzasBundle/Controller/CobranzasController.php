@@ -30,6 +30,12 @@ class CobranzasController extends Controller
 		foreach ($resu as $res) {
 			$resp[$i]['id'] = $res->getId();
 			$resp[$i]['descripcion'] = $res->getDescripcion();
+			if($res->getConceptoBancario()){
+				$resp[$i]['conceptoBancario'] = $res->getConceptoBancario()->getId();	
+			}else{
+				$resp[$i]['conceptoBancario'] = null;
+			}
+			
 			$i++;
 		}
 		echo json_encode(array(

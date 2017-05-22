@@ -211,7 +211,7 @@ Ext.define('MetApp.controller.RRHH.RecibosController', {
 			periodo.setText(textPeriodo);
 			fechaFin.setValue(values.fechaHasta);
 			values.compensatorio == 'on' ? compensatorio.setValue(values.compensatorio) : '';
-			fechaPago.setValue(values.fechaPago);
+			fechaPago.setValue(values.fechaPago);			
 			descripcion.setValue(values.descripcion);
 			var dateParsed = Ext.Date.parse(values.fechaPago, 'd/m/Y');
 			anioLiquidacion.setValue(Ext.Date.format(dateParsed, 'Y'));

@@ -2,12 +2,16 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 	extend: 'Ext.app.Controller',	
 	views: [
 		'MetApp.view.Bancos.FormBancosView',
-		'MetApp.view.Bancos.ConceptosBancoView'
+		'MetApp.view.Bancos.ConceptosBancoView',
+		'MetApp.view.Bancos.MovimientosBancoView',
+		'MetApp.view.CCProveedores.ChequeTerceros'
 		
 	],
 	stores: [
 		'MetApp.store.Personal.BancosStore',
-		'MetApp.store.Bancos.ConceptosBancoStore'
+		'MetApp.store.Bancos.ConceptosBancoStore',
+		'MetApp.store.Bancos.MovimientosBancoStore',
+		'MetApp.store.Proveedores.GridChequeTercerosStore'
 	],
 	
 	refs:[
@@ -33,9 +37,6 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 				'FormBancosView button[itemId=btnEdit]': {
 					click: this.EditarBanco
 				},
-				'#movBancos': {
-					click: this.NewMovBancos
-				},
 				'#conceptoBancos': {
 					click: this.FormConceptoBancos
 				},
@@ -50,6 +51,27 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 				},
 				'ConceptosBancoView button[itemId=btnDelete]': {
 					click: this.EliminarConcepto
+				},				
+				'#movBancos': {
+					click: this.NewMovBancos
+				},
+				'MovimientosBancoView button[itemId=btnNew]': {
+					click: this.NuevoMovimientoBancario
+				},
+				'MovimientosBancoView button[itemId=insertarCbte]': {
+					click: this.InsertarComprobante
+				},
+				'MovimientosBancoView button[itemId=btnSave]': {
+					click: this.GuardarMovimiento
+				},
+				'MovimientosBancoView button[itemId=chequeTerceros]': {
+					click: this.GrillaChequeTerceros
+				},
+				'MovimientosBancoView button[itemId=btnDelete]': {
+					click: this.QuitarElementoDeGrilla
+				},
+				'MovimientosBancoView button[itemId=btnEdit]': {
+					click: this.EditarElementoGrilla
 				},
 		});		
 	},
@@ -150,10 +172,6 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 		});
 	},
 	
-	NewMovBancos: function(btn){
-		console.log(btn);
-	},
-	
 	FormConceptoBancos: function(btn){
 		var view = Ext.widget('ConceptosBancoView');
 		var grid = view.down('grid');
@@ -165,7 +183,9 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 	NuevoConcepto: function(btn){
 		var win = btn.up('window');
 		var botonera = win.queryById('botonera');
-		win.queryById('concepto').setReadOnly(false);
+		win.query('field').forEach(function(field){
+			field.setReadOnly(false);
+		});
 		win.queryById('concepto').focus('', 20);
 		
 		botonera.nuevoItem(botonera);
@@ -183,7 +203,8 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 			
 			params: {
 				id: win.queryById('id').getValue(),
-				concepto: win.queryById('concepto').getValue()
+				concepto: win.queryById('concepto').getValue(),
+				contabiliza: win.queryById('condicion').getValue(),
 			},
 			
 			success: function(resp){
@@ -192,7 +213,9 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 					botonera.guardarItem(botonera);
 					store.load();
 					form.getForm().reset();
-					win.queryById('concepto').setReadOnly(true);	
+					win.query('field').forEach(function(field){
+						field.setReadOnly(true);
+					});
 				}				
 			}
 		})
@@ -243,6 +266,205 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 		     	}
 		     }
 		});			
+	},
+	
+	NewMovBancos: function(btn){
+		var win = Ext.widget('MovimientosBancoView');
+		var me = this;
+		
+		//HOT KEY DE LA TABLA ORDEN DE MOVIMIENTO DE BANCOS
+		var map = new Ext.util.KeyMap({
+		    target: win.getId(),	
+		   	binding: [
+		   		{
+		   			key: Ext.EventObject.F5,
+		   			defaultEventAction: 'preventDefault',
+		   			fn: function(){ 
+		   				me.GuardarMovimiento(win.queryById('btnSave'));
+		   			}
+		   		},
+		   		{
+		   			key: Ext.EventObject.F1,
+		   			defaultEventAction: 'preventDefault',
+		   			fn: function(){ 
+		   				me.EditarElementoGrilla(win.queryById('btnEdit'));
+		   			}
+		   		},
+		   		{
+		   			key: Ext.EventObject.F3,
+		   			defaultEventAction: 'preventDefault',
+		   			fn: function(){
+		   				me.NuevoMovimientoBancario(win.queryById('btnNew'));
+		   			}
+		   		},
+		   		{
+		   			key: Ext.EventObject.F8,
+		   			defaultEventAction: 'preventDefault',
+		   			fn: function(){ 
+		   				me.QuitarElementoDeGrilla(win.queryById('btnDelete'));
+		   			}
+		   		},
+		   	]
+		});	
+	},
+	
+	NuevoMovimientoBancario: function(btn){
+		var win = btn.up('window');
+		var form = win.down('form');
+		var botonera = win.queryById('botonera');
+		botonera.queryById('btnSave').setDisabled(false);
+		
+		form.query('.field').forEach(function(c){c.setReadOnly(false);}); //HABILITO TODOS LOS CAMPOS	
+		
+		win.queryById('banco').focus('', 20);	
+	},
+	
+	InsertarComprobante: function(btn){
+		var win = btn.up('window');
+		var form = win.down('form');
+		var values = form.getForm().getValues();
+		var grid = win.down('grid');
+		var store = grid.getStore();		
+		var contCbte = win.queryById('contCbte');
+		
+		store.add(values);
+		
+		contCbte.query('.field').forEach(function(c){c.reset()})
+		win.queryById('obsCbte').reset();
+	},
+	
+	GuardarMovimiento: function(btn){
+		var win = btn.up('window');
+		var form = win.down('form');
+		var values = form.getForm().getValues();
+		var grid = win.down('grid');
+		var store = grid.getStore();
+		var comprobantes = [];		
+		
+		store.each(function(rec){
+			comprobantes.push(rec.getData());
+		});
+		
+		if(form.isValid()){
+			Ext.Ajax.request({
+				url: Routing.generate('mbp_bancos_guardarMovimientoBanco'),
+				
+				params: {
+					operacion: Ext.JSON.encode(values),
+					comprobantes: Ext.JSON.encode(comprobantes)
+				},
+				
+				success: function(resp){
+					var jsonResp = Ext.JSON.decode(resp.responseText);
+					if(jsonResp.success == true){
+						form.getForm().reset();
+						form.query('.field').forEach(function(field){
+							field.setReadOnly(true);
+						});
+						grid.removeAll();
+						Ext.Msg.show({
+						    title:'Atencion',
+						    msg: 'La operacion se realizo correctamente',
+						    buttons: Ext.Msg.OK,
+						    icon: Ext.Msg.INFO
+					   });
+					}
+				},
+				
+				failure: function(resp){
+					
+				}
+			});	
+		}		
+		
+	},
+	
+	GrillaChequeTerceros: function(btn){
+		var winMovimientos = btn.up('window');
+		var gridMovimientos = winMovimientos.down('grid');
+		var storeMovimientos = gridMovimientos.getStore();
+		var win = Ext.widget('ChequeTerceros');
+		var gridCheques = win.down('grid');
+		var storeCheques = gridCheques.getStore();
+		
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_proveedores_listaChequeTerceros'),
+			
+			success: function(resp){
+				var jsonResp = Ext.JSON.decode(resp.responseText);
+				var models = [];
+				var i=0;
+				for(i; i<jsonResp.data.length; i++){
+					models[i] = (jsonResp.data[i]);
+				}
+				storeCheques.loadRawData(models);
+				storeCheques.suspendEvent('update');
+			}
+		});
+		
+		var btnAceptar = win.queryById('aceptar');
+		
+		btnAceptar.on('click', function(){
+			var record = [];
+			var i = 0;
+			storeCheques.each(function(rec){			
+				if(rec.get('marca') == true){
+					var data = rec.getData();
+					console.log(data);
+					record[i] = {
+						idChequeTerceros: data.id,
+						numCbte: data.numero,
+						banco: data.banco,
+						importe: data.importe,
+						fechaDiferida: data.diferido
+					}				
+					i++;	
+				}			 
+			});	
+			
+			storeMovimientos.add(record);
+			win.close();
+		});		
+	},
+	
+	QuitarElementoDeGrilla: function(btn){
+		var win = btn.up('window');
+		var grid = win.down('grid');
+		var store = grid.getStore();
+		var selection = grid.getSelectionModel().getSelection()[0];
+		
+		store.remove(selection);
+	},
+	
+	EditarElementoGrilla: function(btn){
+		var win = btn.up('window');
+		var grid = win.down('grid');
+		var store = grid.getStore();
+		var selection = grid.getSelectionModel().getSelection()[0];
+		
+		if(!selection){
+			Ext.Msg.show({
+			    title:'Atencion',
+			    msg: 'Debe seleccionar primero un elemento de la grilla',
+			    buttons: Ext.Msg.OK,
+			    icon: Ext.Msg.ALERT
+		   });
+		   return;
+		}
+		
+		if(selection.data.idChequeTerceros!=""){
+			Ext.Msg.show({
+			    title:'Atencion',
+			    msg: 'No se puede editar un cheque de terceros',
+			    buttons: Ext.Msg.OK,
+			    icon: Ext.Msg.ALERT
+		   });
+		   return;
+		}
+		
+		var form = win.down('form');
+		form.loadRecord(selection);
+		store.remove(selection);
 	}
 });
 

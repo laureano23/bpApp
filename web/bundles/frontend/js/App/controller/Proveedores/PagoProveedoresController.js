@@ -14,6 +14,7 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 		'MetApp.view.CCProveedores.FacturaProveedor',
 		'MetApp.view.CCProveedores.PagoProveedores',
 		'MetApp.view.CCProveedores.ChequeTerceros',
+		'MetApp.view.Proveedores.FormasPagoView'
 	],
 	refs:[
 		{
@@ -50,9 +51,24 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 			'PagoProveedores grid[itemId=gridImputaFc]': {
 				edit: this.ImputaFacturas
 			},
-			'ChequeTerceros button[itemId=aceptar]': {
-				click: this.InsertaChequeTerceros
-			},			
+			'PagoProveedores combobox[itemId=formaPago]': {
+				change: this.EvaluarConceptoBancario
+			},		
+			'#tbFormasPago': {
+				click: this.AddFormasPagoView
+			},
+			'FormasPagoView button[itemId=btnNew]': {
+				click: this.NuevaFormaPago
+			},
+			'FormasPagoView button[itemId=btnSave]': {
+				click: this.GuardarFormaPago
+			},
+			'FormasPagoView button[itemId=btnEdit]': {
+				click: this.EditarFormaPago
+			},
+			'FormasPagoView button[itemId=btnDelete]': {
+				click: this.EliminarFormaPago
+			},
 		});
 	},
 	
@@ -65,6 +81,21 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 				
 		if(form.isValid() == true){
 			var model = Ext.create('MetApp.model.Proveedores.PagoProveedoresModel');
+			
+			//VALIDAMOS SI ES UN CHEQUE PROPIO O TRANSFERENCIA DEBE ASOCIARSE UN BANCO
+			console.log(values);
+			if(values.conceptoBancario == true){
+				if(values.banco==""){
+					Ext.Msg.show({
+					     title:'Atencion',
+					     msg: 'Debe seleccionar un banco para este concepto',
+					     buttons: Ext.Msg.OK,
+					     icon: Ext.Msg.ALERT
+					});
+					return;
+				}
+			}
+			
 			model.set(values);
 			store.add(model);
 			form.getForm().reset();	
@@ -186,6 +217,7 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 	},
 	
 	ChequeTerceros: function(btn){
+		var me = this;
 		var win = Ext.widget('ChequeTerceros');		
 		var grid = win.down('grid');		
 		var store = grid.getStore();
@@ -204,33 +236,32 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 				store.suspendEvent('update');
 			}
 		});
-	},
-	
-	InsertaChequeTerceros: function(btn){		
-		var me = this;
-		var winPagoProv = me.getPagoProveedores();
-		var storePagoProv = winPagoProv.down('grid').getStore();
-		var winCheques = btn.up('window');
-		var storeCheques = winCheques.down('grid').getStore();
-		var record = [];
-		var i = 0;
 		
-		storeCheques.each(function(rec){			
-			if(rec.get('marca') == true){
-				var data = rec.getData();
-				record[i] = {
-					idCheque: data.id,
-					formaPago: 'CHEQUE DE TERCEROS',
-					numero: data.numero,
-					banco: data.banco,
-					importe: data.importe,
-					diferido: data.diferido
-				}				
-				i++;	
-			}			 
-		});		
-		storePagoProv.add(record, false);
-		winCheques.close();
+		var btnAceptar = win.queryById('aceptar');
+		btnAceptar.on('click', function(){			
+			var winPagoProv = me.getPagoProveedores();
+			var storePagoProv = winPagoProv.down('grid').getStore();
+			var storeCheques = win.down('grid').getStore();
+			var record = [];
+			var i = 0;
+			
+			storeCheques.each(function(rec){			
+				if(rec.get('marca') == true){
+					var data = rec.getData();
+					record[i] = {
+						idCheque: data.id,
+						formaPago: 'CHEQUE DE TERCEROS',
+						numero: data.numero,
+						banco: data.banco,
+						importe: data.importe,
+						diferido: data.diferido
+					}				
+					i++;	
+				}			 
+			});		
+			storePagoProv.add(record, false);
+			win.close();
+		})
 	},
 	
 	GridImputarFacturas: function(btn)
@@ -264,6 +295,117 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 			totalImputado = totalImputado + rec.data.aplicar;
 		});
 		txtTotal.setValue(totalImputado);
+	},
+	
+	EvaluarConceptoBancario: function(field){
+		var win = field.up('window');
+		var store = field.getStore();
+		var rec = store.findRecord('descripcion', field.getValue());
+		console.log(rec);
+		
+		if(rec== null){
+			return;
+		}
+		
+		win.queryById('conceptoBancario').setValue(rec.data.conceptoBancario);
+	},
+	
+	AddFormasPagoView: function(btn){
+		var win = Ext.widget('FormasPagoView');
+		win.queryById('conceptoBancario').getStore().load();
+		win.down('grid').getStore().load();
+	},
+	
+	NuevaFormaPago: function(btn){
+		var win = btn.up('window');
+		var form = win.down('form');
+		
+		form.getForm().reset();
+		
+		form.query('.field').forEach(function(field){
+			field.setReadOnly(false);
+		});
+		
+		form.queryById('conceptoBancario').getStore().load();
+		win.queryById('btnSave').setDisabled(false);
+	},
+	
+	GuardarFormaPago: function(btn){
+		var win = btn.up('window');
+		var form = win.down('form');
+		var grid = win.down('grid');
+		var store = grid.getStore();
+		var values = form.getValues();
+		var botonera = win.queryById('botonera');
+		
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_proveedores_nuevaFormaPago'),
+			
+			params: {
+				data: Ext.JSON.encode(values)
+			},
+			
+			success: function(resp){
+				var jsonResp = Ext.JSON.decode(resp.responseText);
+				if(jsonResp.success == true){
+					store.load();
+					botonera.guardarItem(botonera);
+				}
+			},
+			
+			failure: function(btn){
+				
+			}
+		});
+	},
+	
+	EditarFormaPago: function(btn){
+		var win = btn.up('window');
+		var form = win.down('form');
+		var grid = win.down('grid');
+		var selection = grid.getSelectionModel().getSelection()[0];
+		var data = selection.getData();
+		var botonera = win.queryById('botonera');
+		
+		botonera.editarItem(botonera);
+		form.query('.field').forEach(function(field){
+			field.setReadOnly(false);
+		});
+		
+		form.queryById('id').setValue(data.id);
+		form.queryById('formaPago').setValue(data.descripcion);
+		
+		var combo = form.queryById('conceptoBancario');
+		var concepto = combo.getStore().findRecord('id', data.conceptoBancario);
+		combo.select(concepto);
+	},
+	
+	EliminarFormaPago: function(btn){
+		var win = btn.up('window');
+		var form = win.down('form');
+		var grid = win.down('grid');
+		var store = grid.getStore();
+		var selection = grid.getSelectionModel().getSelection()[0];
+		var values = selection.getData();
+		
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_proveedores_EliminarFormaPago'),
+			
+			params: {
+				data: Ext.JSON.encode(values)
+			},
+			
+			success: function(resp){
+				var jsonResp = Ext.JSON.decode(resp.responseText);
+				if(jsonResp.success == true){
+					store.load();
+				}
+			},
+			
+			failure: function(btn){
+				
+			}
+		});
 	}
 })
 

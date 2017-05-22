@@ -53,7 +53,8 @@ Ext.define('MetApp.view.CCProveedores.PagoProveedores' ,{
 									{ text: 'Numero', dataIndex: 'numero', flex: 1 },
 									{ text: 'Banco', dataIndex: 'banco', flex: 1 },
 									{ text: 'Importe', dataIndex: 'importe', flex: 1 },
-									{ text: 'Diferido', dataIndex: 'diferido', flex: 1 },									
+									{ text: 'Diferido', dataIndex: 'diferido', flex: 1 },
+									{ text: 'Bancario', dataIndex: 'conceptoBancario', flex: 1, hidden: false,},									
 								]
 							},
 						},						
@@ -81,6 +82,14 @@ Ext.define('MetApp.view.CCProveedores.PagoProveedores' ,{
 									itemId: 'formaPago',
 									name: 'formaPago',
 									fieldLabel: 'Forma de pago',									
+								},
+								{
+									xtype: 'textfield',
+									fieldLabel: 'Concepto bancario',
+									name: 'conceptoBancario',
+									itemId: 'conceptoBancario',
+									//inputValue: true,
+									hidden: false,
 								},
 								{
 									xtype: 'textfield',
