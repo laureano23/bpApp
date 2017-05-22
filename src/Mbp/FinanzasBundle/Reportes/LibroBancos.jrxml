@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LibroBancos" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c9797cbc-4256-4d93-bcc9-8506db212405">
+	<property name="ireport.zoom" value="2.853116706110004"/>
+	<property name="ireport.x" value="971"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     MovimientosBancos.`id` AS MovimientosBancos_id,
+     MovimientosBancos.`fechaMovimiento` AS MovimientosBancos_fechaMovimiento,
+     MovimientosBancos.`Banco_id` AS MovimientosBancos_Banco_id,
+     MovimientosBancos.`Concepto_id` AS MovimientosBancos_Concepto_id,
+     MovimientoBanco_Detalle.`detallemovimientosbancos_id` AS MovimientoBanco_Detalle_detallemovimientosbancos_id,
+     MovimientoBanco_Detalle.`Movimiento_id` AS MovimientoBanco_Detalle_Movimiento_id,
+     DetalleMovimientosBancos.`id` AS DetalleMovimientosBancos_id,
+     DetalleMovimientosBancos.`numComprobante` AS DetalleMovimientosBancos_numComprobante,
+     DetalleMovimientosBancos.`fechaDiferida` AS DetalleMovimientosBancos_fechaDiferida,
+     DetalleMovimientosBancos.`importe` AS DetalleMovimientosBancos_importe,
+     DetalleMovimientosBancos.`observaciones` AS DetalleMovimientosBancos_observaciones,
+     DetalleMovimientosBancos.`ChequeTerceros_id` AS DetalleMovimientosBancos_ChequeTerceros_id,
+     Bancos.`id` AS Bancos_id,
+     Bancos.`nombre` AS Bancos_nombre,
+     ConceptosBanco.`id` AS ConceptosBanco_id,
+     ConceptosBanco.`concepto` AS ConceptosBanco_concepto,
+     ConceptosBanco.`inactivo` AS ConceptosBanco_inactivo,
+     DetalleMovimientosBancos.`Proveedor_id` AS DetalleMovimientosBancos_Proveedor_id,
+     Proveedor.`id` AS Proveedor_id,
+     Proveedor.`denominacion` AS Proveedor_denominacion,
+     Proveedor.`rsocial` AS Proveedor_rsocial,
+     ConceptosBanco.`contabiliza` AS ConceptosBanco_contabiliza
+FROM
+     `MovimientosBancos` MovimientosBancos INNER JOIN `MovimientoBanco_Detalle` MovimientoBanco_Detalle ON MovimientosBancos.`id` = MovimientoBanco_Detalle.`Movimiento_id`
+     INNER JOIN `DetalleMovimientosBancos` DetalleMovimientosBancos ON MovimientoBanco_Detalle.`detallemovimientosbancos_id` = DetalleMovimientosBancos.`id`
+     LEFT JOIN Proveedor ON DetalleMovimientosBancos.`Proveedor_id` = Proveedor.`id`
+     INNER JOIN `Bancos` Bancos ON MovimientosBancos.`Banco_id` = Bancos.`id`
+     INNER JOIN `ConceptosBanco` ConceptosBanco ON MovimientosBancos.`Concepto_id` = ConceptosBanco.`id`]]>
+	</queryString>
+	<field name="MovimientosBancos_id" class="java.lang.Integer"/>
+	<field name="MovimientosBancos_fechaMovimiento" class="java.sql.Timestamp"/>
+	<field name="MovimientosBancos_Banco_id" class="java.lang.Integer"/>
+	<field name="MovimientosBancos_Concepto_id" class="java.lang.Integer"/>
+	<field name="MovimientoBanco_Detalle_detallemovimientosbancos_id" class="java.lang.Integer"/>
+	<field name="MovimientoBanco_Detalle_Movimiento_id" class="java.lang.Integer"/>
+	<field name="DetalleMovimientosBancos_id" class="java.lang.Integer"/>
+	<field name="DetalleMovimientosBancos_numComprobante" class="java.lang.String"/>
+	<field name="DetalleMovimientosBancos_fechaDiferida" class="java.sql.Date"/>
+	<field name="DetalleMovimientosBancos_importe" class="java.math.BigDecimal"/>
+	<field name="DetalleMovimientosBancos_observaciones" class="java.lang.String"/>
+	<field name="DetalleMovimientosBancos_ChequeTerceros_id" class="java.lang.Integer"/>
+	<field name="Bancos_id" class="java.lang.Integer"/>
+	<field name="Bancos_nombre" class="java.lang.String"/>
+	<field name="ConceptosBanco_id" class="java.lang.Integer"/>
+	<field name="ConceptosBanco_concepto" class="java.lang.String"/>
+	<field name="ConceptosBanco_inactivo" class="java.lang.Boolean"/>
+	<field name="DetalleMovimientosBancos_Proveedor_id" class="java.lang.Integer"/>
+	<field name="Proveedor_id" class="java.lang.Integer"/>
+	<field name="Proveedor_denominacion" class="java.lang.String"/>
+	<field name="Proveedor_rsocial" class="java.lang.String"/>
+	<field name="ConceptosBanco_contabiliza" class="java.lang.String"/>
+	<variable name="TOTAL_DEBE" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{ConceptosBanco_contabiliza} == "DEBE" ? $F{DetalleMovimientosBancos_importe} : 0]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_HABER" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{ConceptosBanco_contabiliza} == "HABER" ? $F{DetalleMovimientosBancos_importe} : 0]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="31" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="20" uuid="572fd02c-60b6-442f-8271-6f045f1c579c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Libro Bancos]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="13" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="19" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="59" height="19" uuid="1f0279f1-6b14-4c61-8bd6-f2b3fd83c5c9"/>
+				<box leftPadding="3"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Emision]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="59" y="0" width="125" height="19" uuid="acc0a806-9d9b-434d-b2bb-38478d6c79b7"/>
+				<box leftPadding="3"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Concepto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="184" y="0" width="76" height="19" uuid="0f727f48-ad30-47ca-9907-3500ba7a6d26"/>
+				<box leftPadding="3"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[N° comprobante]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="0" width="68" height="19" uuid="c80575be-a3f8-46e2-97a0-f8439e490635"/>
+				<box leftPadding="3"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Acreditacion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="328" y="0" width="104" height="19" uuid="bc44c4c9-c48a-4ab2-95fc-47383cb9bf1d"/>
+				<box leftPadding="3"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Proveedor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="432" y="0" width="55" height="19" uuid="16580d54-d6af-45b3-b050-27463e4123cb"/>
+				<box leftPadding="3"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Debe]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="487" y="0" width="68" height="19" uuid="75fd60c6-5acb-4f4a-b6c3-2c79f9a6a7a0"/>
+				<box leftPadding="3"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Haber]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="0" y="0" width="59" height="20" uuid="e5102db8-71ed-4a1b-a582-9575b0f05923"/>
+				<textFieldExpression><![CDATA[$F{MovimientosBancos_fechaMovimiento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="59" y="0" width="125" height="20" uuid="a54dfa73-b7bc-40db-8c7b-9940ebc09605"/>
+				<textFieldExpression><![CDATA[$F{ConceptosBanco_concepto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="184" y="0" width="76" height="20" uuid="4ce84637-4aab-4728-ab8d-1ad1684be166"/>
+				<textFieldExpression><![CDATA[$F{DetalleMovimientosBancos_numComprobante}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="260" y="0" width="68" height="20" uuid="7e8cc15d-a5cf-47b7-8738-6a19d59353c0"/>
+				<textFieldExpression><![CDATA[$F{DetalleMovimientosBancos_fechaDiferida}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="487" y="0" width="68" height="20" uuid="73328890-f3c8-4d88-936c-3934502d4c28"/>
+				<textFieldExpression><![CDATA[$F{ConceptosBanco_contabiliza} == "HABER" ? $F{DetalleMovimientosBancos_importe} : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="432" y="0" width="55" height="20" uuid="14662245-013e-4ec3-87c7-279c95d88f0d"/>
+				<textFieldExpression><![CDATA[$F{ConceptosBanco_contabiliza} == "DEBE" ? $F{DetalleMovimientosBancos_importe} : ""]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="328" y="0" width="104" height="20" uuid="86d665a3-29ca-4144-9567-cce084d5a35b"/>
+				<textFieldExpression><![CDATA[$F{Proveedor_rsocial}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="432" y="0" width="55" height="20" uuid="c99270c5-8626-4a0a-9041-adf4e179ba2d"/>
+				<textFieldExpression><![CDATA[$V{TOTAL_DEBE}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="487" y="0" width="68" height="20" uuid="43097cf2-cc5c-459f-9615-929cb3431185"/>
+				<textFieldExpression><![CDATA[$V{TOTAL_HABER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
