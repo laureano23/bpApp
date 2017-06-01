@@ -15,13 +15,23 @@ class LiquidacionEnLote
 	private $columnas;
 	private $errores = array(); //COLECCION DE ERRORES DE VALIDACION DE LA PLANILLA
 	private $periodo;
+	private $horasNormales;
+	private $diasMensuales; //CANTIDAD DE DIAS HABILES DEL MES PARA LIQUIDACION DE EMPLEADOS MENSUALES
+	private $mes;
+	private $anio;
 	
-	public function __construct($filePath, $phpExcelService, $periodo)
+	public function __construct($filePath, $phpExcelService, $periodo, $mes, $anio)
 	{
 		$this->filePath = $filePath;
 		$this->phpExcelService = $phpExcelService;
 		$this->periodo = $periodo;
 		$this->empleadosCollection = new EmpleadosCollection($filePath, $phpExcelService);
+		$this->mes = $mes;
+		$this->anio = $anio;
+		
+		$this->ValidarPeriodo();
+		$this->CalcularHorasNormales();
+		$this->CalcularHorasTrabajadas();
 	}
 	
 	/*
@@ -133,6 +143,86 @@ class LiquidacionEnLote
 	private function addError($strError)
 	{
 		array_push($this->errores, $strError);
+	}
+	
+	/*
+	 * FUNCION QUE DE ACUERDO AL PERIODO A LIQUIDAR Y AL MES CALCULA LAS HORAS NORMALES
+	 * */
+	private function CalcularHorasNormales()
+	{
+		$empleados = $this->getEmpleadosCollection()->getEmpleado();
+		
+		$dias=0;
+		$diasMes = cal_days_in_month(CAL_GREGORIAN, $this->mes, $this->anio);
+		
+		if($this->periodo == 1){
+			foreach ($empleados[0]->getFecha() as $fechaEntrada) {
+				if($fechaEntrada->format('D') != 'Sat' && $fechaEntrada->format('D') != 'Sun'){
+					$dias++;
+				}				
+			}
+			$this->horasNormales = $dias*9;	
+		}
+		
+		if($this->periodo == 2){
+			foreach ($empleados[0]->getFecha() as $fechaEntrada) {
+				if($fechaEntrada->format('D') != 'Sat' && $fechaEntrada->format('D') != 'Sun'){
+					$dias++;	
+				}				
+			}
+			$this->horasNormales = ($diasMes - 15) * 9;	
+		}
+		
+		if($this->periodo == 3){
+			foreach ($empleados[0]->getFecha() as $fechaEntrada) {
+				if($fechaEntrada->format('D') != 'Sat' && $fechaEntrada->format('D') != 'Sun'){
+					$dias++;	
+				}				
+			}
+			$this->diasMensuales = $dias;	
+		}
+	}
+	
+	/*
+	 * FUNCION PARA CALCULAR LAS HORAS TRABAJADAS DE LA COLECCION DE EMPLEADOS
+	 * */
+	private function CalcularHorasTrabajadas()
+	{
+		foreach ($this->getEmpleadosCollection()->getEmpleado() as $empleado) {
+			$contadorSalida=0;
+			$entradas = $empleado->getFichadaEntrada();
+			$salidas = $empleado->getFichadaSalida();
+			$horas = 0;
+			$minutos = 0;
+			foreach ($entradas as $entrada) {
+				if(!empty($entrada)){
+					$horas = $horas + ($salidas[$contadorSalida]->format('H') - $entrada->format('H'));
+					$minutos = $minutos + ($salidas[$contadorSalida]->format('i'));
+					
+				}	
+				$contadorSalida++;									
+			}
+			
+			//AJUSTE POR MINUTOS EXCEDIDOS
+			if($minutos >= 30){
+				$ajuste = $minutos/60;
+				$horas = $horas + $ajuste;
+			}
+			
+			$hsNormales = 0;
+			$hsExtras = 0;
+			if($horas <= $this->horasNormales){
+				$hsNormales = $horas;
+				$hsExtras = 0;
+			}else{
+				$hsNormales = $this->horasNormales;
+				$hsExtras = $horas - $this->horasNormales;
+			}
+						
+			
+			$empleado->setHsNormalesTrabajadas($hsNormales);
+			$empleado->setHsExtrasTrabajadas($hsExtras);
+		}
 	}
 }
 

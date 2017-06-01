@@ -161,7 +161,7 @@ class RecibosController extends Controller
 		);
 	}
 
-	private function insertaDatosFijos()
+	protected function insertaDatosFijos()
 	{
 		$em = $this->getDoctrine()->getManager();
 		$repoEmpleado = $em->getRepository('MbpPersonalBundle:Personal');
@@ -187,7 +187,7 @@ class RecibosController extends Controller
 		return $detalleFijos;
 	}	
 	
-	private function calculaAntiguedad($remunerativo)
+	protected function calculaAntiguedad($remunerativo)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$repoEmpleado = $em->getRepository('MbpPersonalBundle:Personal');
@@ -219,7 +219,7 @@ class RecibosController extends Controller
 		return $antiguedadDetalle;
 	}
 
-	private function liquidarDescuentos($totalRemunerativo)
+	protected function liquidarDescuentos($totalRemunerativo)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$repoConceptos = $em->getRepository('MbpPersonalBundle:CodigoSueldos');
@@ -295,7 +295,7 @@ class RecibosController extends Controller
 			return $detalle;
 		}
 		if($concepto->getDescuento()){
-			$detalle->setRemunerativo($data->subTotal);
+			$detalle->setDescuento($data->subTotal);
 			return $detalle;	
 		}
 		if($concepto->getNoRemunerativo()){

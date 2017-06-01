@@ -2,6 +2,7 @@
 namespace Mbp\PersonalBundle\Clases\LiquidacionEnLote;
 
 use Mbp\PersonalBundle\Clases\LiquidacionEnLote\Empleado;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /*
  * ESTA CLASE AGRUPA UNA COLLECCION DE OBJETOS EMPLEADO Y VALIDA LOS DATOS OBTENIDOS DE
@@ -11,6 +12,13 @@ use Mbp\PersonalBundle\Clases\LiquidacionEnLote\Empleado;
 class EmpleadosCollection
 {
 	private $empleados = array();
+	/**
+     * @Assert\File(
+     *     maxSize = "1024k",
+     *     mimeTypes = {"application/vnd.ms-excel"},
+     *     mimeTypesMessage = "Debe subir un archivo Excel"
+     * )
+     */
 	public $filePath;
 	public $phpExcelService;
 	private $columnas;
@@ -37,7 +45,10 @@ class EmpleadosCollection
 		}
 		
 		$this->CargarArrayEmpleados();
-		$this->ValidarColeccionEmpleados(); 
+		$this->ValidarColeccionEmpleados();
+		
+				/*$emp=$this->getEmpleado();
+				print_r($emp[0]);*/		 
 	}
 	
 	
@@ -57,7 +68,7 @@ class EmpleadosCollection
 		
 		$fila = 2;	//LA FILA 1 TIENE LOS ENCABEZADOS, SE COMIENZA POR LA FILA 2 LA CARGA DE DATOS
 		$filaAnterior = 0;
-		
+				
 		if($activeSheet->getCell($this->columnas[self::$columnLegajo].$fila)->getValue() == ""){
 			throw new \Exception("No hay registros para cargar", 1);
 			
@@ -99,7 +110,7 @@ class EmpleadosCollection
 		
 	}	
 
-	public function ValidarColeccionEmpleados()
+	private function ValidarColeccionEmpleados()
 	{
 		$this->ValidarFaltaDeIngreso();
 		$this->ValidarIngresosEgresos();
@@ -180,7 +191,7 @@ class EmpleadosCollection
 	public function getError()
 	{
 		return $this->errores;
-	}
+	}	
 }
 
 

@@ -36,6 +36,7 @@ Ext.application({
 		'RRHH.ConceptosController',
 		'RRHH.RecibosController',
 		'RRHH.CuentaEmpleadosController',
+		'RRHH.LiquidacionEnLoteController',
 		'Clientes.CCClientesController',
 		'Proveedores.CCProveedoresController',
 		'Proveedores.FacturaProveedoresController',
@@ -69,7 +70,7 @@ Ext.application({
 	    	},
 	    	requestcomplete: function(conn, response, options, eOpts){
 	    		var jsonResp = Ext.JSON.decode(response.responseText);
-	    		if(jsonResp.msg){
+	    		if(jsonResp.msg && !jsonResp.tipo){
 	    			Ext.Msg.show({		 			
 		    			title: 'Atencion',
 		    			msg: jsonResp.msg,

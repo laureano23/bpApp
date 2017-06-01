@@ -343,6 +343,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                         }, 	
     				},
     				{	
+    					text: 'En Lote',
+    					itemId: 'tablaNuevoPagoEnLote',
+                        listeners : {
+                            render : dragZone,
+                        }, 	
+    				},
+    				{	
     					text: 'Reliquidar periodo',
     					itemId: 'tablaReliquidarPeriodo',
                         listeners : {

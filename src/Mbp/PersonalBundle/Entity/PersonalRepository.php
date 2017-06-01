@@ -111,7 +111,14 @@ class PersonalRepository extends EntityRepository
 		$em = $this->getEntityManager();
 		$repoPersonal = $em->getRepository('MbpPersonalBundle:Personal');
 		$empleado = 0;
-			
+		
+		/*hack
+		 * */
+		 if(!isset($data->observaciones)){
+		 	$data->{'observaciones'} = "";
+		 }
+		 /**/
+		
 		try{
 			if($data->idP > 0){
 				$empleado = $repoPersonal->find($data->idP); 
