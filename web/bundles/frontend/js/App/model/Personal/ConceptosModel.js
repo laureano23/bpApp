@@ -38,5 +38,6 @@ Ext.define('MetApp.model.Personal.ConceptosModel',{
 		{ name: 'empleadoSueldo', type: 'float'},
 		{ name: 'codigoCalculo', type: 'int'},
 		{ name: 'unidad', type: 'string'},
+		{ name: 'codigoObservacion', type: 'string'},		
 	]
 });

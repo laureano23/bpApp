@@ -38,8 +38,17 @@ Ext.define('MetApp.controller.RRHH.LiquidacionEnLoteController', {
 			form.submit({
 				url: Routing.generate('mbp_personal_LiquidarEnLote'),
 				
-				success: function(resp){
-					
+				success: function(formR, action){
+					var jsonResp = Ext.JSON.decode(action.response.responseText);
+					if(jsonResp.success == true){
+						Ext.Msg.show({
+							title:'Atención',
+						    msg: 'El proceso se realizó con éxito',
+						    buttons: Ext.Msg.OK,
+						    icon: Ext.Msg.INFO
+						});
+					}
+					//form.getForm().reset();
 				},
 				
 				failure: function(form, resp){

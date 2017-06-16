@@ -80,17 +80,6 @@ Ext.application({
 	    		}
 	    	}
 	    });
-	    
-	    /* CARGO DESDE UNA CLASE SINGLETON AUXILIAR LOS PARAMETROS DE FACTURACION */
-	    Ext.Ajax.request({
-			url: Routing.generate('mbp_finanzas_initParams'),
-			
-			success: function(resp){
-				jsonResp = Ext.JSON.decode(resp.responseText)
-				MetApp.resources.ux.ParametersSingleton.setIva(jsonResp.data.iva);
-				MetApp.resources.ux.ParametersSingleton.setDolarOficial(jsonResp.data.dolarOficial);
-			}
-		});
 	},
 	
 	globals: {

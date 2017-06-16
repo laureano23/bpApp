@@ -19,6 +19,8 @@ class LiquidacionEnLoteController extends RecibosController
 {
 	private $objLote;
 	private $remunerativo=0;
+	private $tipoLiquidacion;
+	public static $hsNormalesDiarias = 9;
 	
 		
 	/**
@@ -27,13 +29,8 @@ class LiquidacionEnLoteController extends RecibosController
 	public function LiquidarEnLote()
 	{
 		//DATOS DEL REQUEST
-		$request = $this->getRequest();
-		$periodo = $request->request->get('pagoTipo');
+		$request = $this->getRequest();	
 		$file = $request->files->get('archivoLote');
-		$mes=5;
-		$anio=2017;
-		$compensatorio=0;		
-		$banco=1;
 		//DATOS DEL REQUEST
 		$request = $this->getRequest();
 		$this->periodo = $request->request->get('pagoTipo');
@@ -43,9 +40,13 @@ class LiquidacionEnLoteController extends RecibosController
 		$this->fechaPago = \DateTime::createFromFormat('d/m/Y', $request->request->get('fechaPago'));
 		$this->banco = $request->request->get('banco');
 		$this->descripcion = $request->request->get('descripcion');
+		$this->tipoLiquidacion = $request->request->get('tipoLiquidacion');
+		$this->compensatorio = $request->request->get('compensatorio') == "on" ? 1 : 0;
+		
 		
 		$response = new Response;
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager(); 
+		
 			
 		$basePath = realpath($this->getParameter('directorio_liquidaciones'));
 		$fileTarget = $basePath.'/fichadas.xlsx';
@@ -61,7 +62,8 @@ class LiquidacionEnLoteController extends RecibosController
 				'fichadas.xlsx'
 			);					
 			
-			$liquidacion = new LiquidacionEnLote($fileTarget, $phpExcelService, $periodo, $mes, $anio, $banco);			
+						
+			$liquidacion = new LiquidacionEnLote($fileTarget, $phpExcelService, $this->periodo, $this->mesNum, $this->anio, $em);			
 						
 			//ERRORES EN LA COLECCION DE EMPLEADOS
 			$errores = json_encode($liquidacion->getEmpleadosCollection()->getError());
@@ -84,7 +86,13 @@ class LiquidacionEnLoteController extends RecibosController
 			}
 			
 			$this->setObjLote($liquidacion);
-			$this->CrearRecibosLote();
+			
+			if($this->periodo == 7 || $this->periodo == 8){
+				$this->LiquidarPremiosLote();
+			}else{
+				$this->CrearRecibosLote();
+			}
+			
 			
 			$resp = new Response;
 			return $resp->setContent(
@@ -93,7 +101,7 @@ class LiquidacionEnLoteController extends RecibosController
 				)));
 			
 		}catch(\Exception $e){
-			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			/*$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(
 				json_encode(
 					array(
@@ -101,7 +109,8 @@ class LiquidacionEnLoteController extends RecibosController
 						'msg' => $e->getMessage()
 					)
 				)
-			);		
+			);*/
+			throw $e;
 		}
 	}
  
@@ -114,16 +123,13 @@ class LiquidacionEnLoteController extends RecibosController
 		$repoRecibos = $em->getRepository('MbpPersonalBundle:Recibos');
 		
 		//VALIDAMOS SI EN EL PERIODO YA EXISTE ALGUNA LIQUIDACION
-		$liquidacion = $repoRecibos->findBy(
-			array('periodo' => $this->periodo, 'mes' => $this->mesNum, 'anio' => $this->anio)
-		);
+		$this->ValidarPeriodoLiquidado();
 		
-		if(!empty($liquidacion)){
-			throw new \Exception("Ya existe una liquidación en este periodo, debe borrarla para poder liquidar en lote", 1);			
-		}
 		
 		//BUSCAMOS LOS EMPLEADOS QUE ADHERIDOS A LIQUIDACION POR LOTE
-		$empleados = $repoEmpleados->findByLiquidaPorLote(true);
+		$empleados = $repoEmpleados->findBy(
+			array('liquidaPorLote' => true, 'periodo' => $this->tipoLiquidacion)
+		);
 		$banco = $repoBancos->find($this->banco);
 		
 		
@@ -158,19 +164,34 @@ class LiquidacionEnLoteController extends RecibosController
 			$recibo->addPersonal($empleado);
 						
 			$detalleVariable = $this->LiquidarConceptosVariables($empleado, $recibo);
+			
 			$datosFijos = $this->insertaDatosFijos();
+			
 			//DATOS FIJOS
 			foreach ($datosFijos as $detalleFijo) {
-				\Doctrine\Common\Util\Debug::dump($detalleFijo);
 				$recibo->addReciboDetalleId($detalleFijo);
 				$this->remunerativo += $detalleFijo->getRemunerativo();
 			}
+		
+			
+			//LIQUIDAR NOVEDADES DEL LOTE
+			$this->LiquidarNovedadesLote($empleado, $recibo);
+			
+			
+						
+			//HS EXTRAS SE LIQUIDAN EN NEGRO
+			if($this->compensatorio == TRUE){
+				$detalleExtras = $this->LiquidarHsExtras($empleado, $recibo);
+			}
+			
 			//ANTIGUEDAD
 			$detalleAntiguedad = $this->calculaAntiguedad($this->remunerativo);
 			if($detalleAntiguedad != null){
 				$recibo->addReciboDetalleId($detalleAntiguedad);
 				$this->remunerativo += $detalleAntiguedad->getRemunerativo();
 			}
+						
+			
 			//DESCUENTOS SI EL RECIBO ES EN BLANCO
 			if($this->compensatorio != TRUE){
 				$descuentosDetalle = $this->liquidarDescuentos($this->remunerativo);
@@ -179,12 +200,87 @@ class LiquidacionEnLoteController extends RecibosController
 				}	
 			}
 			
+			
+			
 			$em->persist($recibo);
 			$em->flush();
+			
+			$this->remunerativo = 0; //REINICIAMOS LA VARIABLE DE ACUMULACION DE REMUNERATIVOS
 		}				
 	}
 
+	public function LiquidarPremiosLote()
+	{
+		$this->ValidarPeriodoLiquidado();
+		
+		//BUSCAMOS LOS EMPLEADOS QUE ADHERIDOS A LIQUIDACION POR LOTE
+		$empleados = $repoEmpleados->findBy(
+			array('liquidaPorLote' => true, 'periodo' => $this->tipoLiquidacion)
+		);
+		$banco = $repoBancos->find($this->banco);
+		
+		
+		if(empty($empleados)){
+			throw new \Exception("No hay empleados para liquidar por lote", 1);				
+		}
+		
+		foreach ($empleados as $empleado) {
+			$this->idP = $empleado->getIdP();
+			$antiguedad = $empleado->getFechaIngreso()->diff(new \DateTime("now"));
+			$this->antiguedadAnios = $antiguedad->format('%Y');
+			$recibo = new Recibos;
+			
+			$recibo->setCompensatorio($this->compensatorio);
+			$recibo->setFechaPago($this->fechaPago);
+			$recibo->setBanco($banco);
+			$recibo->setPeriodo($this->periodo);
+			$recibo->setMes($this->mesNum);
+			$recibo->setAnio($this->anio);
+			$recibo->setTipoPago($this->descripcion);
+			$recibo->setBasicoHist($empleado->getCategoria()->getSalario());
+			$recibo->setCategoriaHist($empleado->getCategoria()->getCategoria());
+			$recibo->setSindicatoHist($empleado->getCategoria()->getIdSindicato()->getSindicato());
+			$recibo->setTarea($empleado->getTarea());			
+			$recibo->setAntiguedad($antiguedad->format("%Y"));
+			$localidad = $empleado->getLocalidad()->getNombre();
+			$prov = $empleado->getLocalidad()->getDepartamentoId()->getProvinciaId()->getNombre();
+			$recibo->setDomicilio($empleado->getDireccion()." ".$localidad." ".$prov);
+			$recibo->setEcivil($empleado->getEstado());
+			$recibo->setObraSocial($empleado->getObraSocial());
+			$recibo->addPersonal($empleado);
+						
+			$detalleVariable = $this->LiquidarConceptosVariables($empleado, $recibo);
+			$datosFijos = $this->insertaDatosFijos();
+			
+			
+			
+			$em->persist($recibo);
+			$em->flush();
+			
+			$this->remunerativo = 0; //REINICIAMOS LA VARIABLE DE ACUMULACION DE REMUNERATIVOS
+		}				
+	}
 
+	private function ValidarPeriodoLiquidado()
+	{
+		$em = $this->getDoctrine()->getManager();
+		$repoEmpleados = $em->getRepository('MbpPersonalBundle:Personal');
+		$repoBancos = $em->getRepository('MbpFinanzasBundle:Bancos');
+		$repoRecibos = $em->getRepository('MbpPersonalBundle:Recibos');
+		
+		//VALIDAMOS SI EN EL PERIODO YA EXISTE ALGUNA LIQUIDACION
+		$liquidacion = $repoRecibos->findBy(
+			array('periodo' => $this->periodo, 'mes' => $this->mesNum, 'anio' => $this->anio, 'compensatorio' => $this->compensatorio)
+		);
+		
+		if(!empty($liquidacion)){
+			throw new \Exception("Ya existe una liquidación en este periodo, debe borrarla para poder liquidar en lote", 1);			
+		}
+		
+		
+	}
+
+	
 	private function LiquidarConceptosVariables($empleado, $recibo)
 	{
 		$em = $this->getDoctrine()->getManager();
@@ -200,18 +296,114 @@ class LiquidacionEnLoteController extends RecibosController
 					}
 					
 					$hsNormalesTrabajadas = $objEmpleado->getHsNormalesTrabajadas();
-					//print_r($hsNormalesTrabajadas);
-					//exit;
-					$sueldoBlanco = $empleado->getSueldoBlanco();
+					if($hsNormalesTrabajadas == 0) continue;	//PUEDE SUCEDER QUE EL EMPLEADO NO TENGA HORAS NORMALES TRABAJADAS
+					$sueldoBlanco = $empleado->getSueldoBlanco();					
 					$detalleRecibo->setCantConceptoVar($hsNormalesTrabajadas);
 					$detalleRecibo->setValorConceptoHist($sueldoBlanco);
-					$detalleRecibo->setRemunerativo($hsNormalesTrabajadas * $sueldoBlanco);
-					$this->remunerativo += $hsNormalesTrabajadas * $sueldoBlanco;
+					
+					//SI ESTAMOS LIQUIDANDO EN NEGRO TOMAMOS EL VALOR HORA COMPENSATORIO
+					if($this->compensatorio == true){
+						$sueldoComp = $empleado->getCompensatorio();
+						$detalleRecibo->setRemunerativo($hsNormalesTrabajadas * $sueldoComp);
+						$this->remunerativo += $hsNormalesTrabajadas * $sueldoComp;
+					}else{
+						$detalleRecibo->setRemunerativo($hsNormalesTrabajadas * $sueldoBlanco);
+						$this->remunerativo += $hsNormalesTrabajadas * $sueldoBlanco;	
+					}					
+					
+					
 					$detalleRecibo->setValorCompensatorioHist($empleado->getCompensatorio());
 					$detalleRecibo->addCodigoSueldo($concepto[0]);
 					$recibo->addReciboDetalleId($detalleRecibo);
+				}else{
+					
 				}
 			}
+		}
+	}
+
+	public function LiquidarNovedadesLote($empleado, $recibo)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$repoConceptos = $em->getRepository('MbpPersonalBundle:CodigoSueldos');
+		
+		foreach ($this->objLote->getEmpleadosCollection()->getEmpleado() as $objEmpleado) {
+			foreach ($objEmpleado->getNovedades() as $novedad) {
+				if($objEmpleado->getLegajo() == $empleado->getLegajo()){
+					$nuevaNovedad = $repoConceptos->find($novedad);
+					$sueldoBlanco = $empleado->getSueldoBlanco();
+					$detalles = $recibo->getReciboDetalleId();
+					$sueldoComp = $empleado->getCompensatorio();
+					
+					$novedadFlag=0;
+					foreach ($detalles as $detalle) {
+						$codigosSueldos = $detalle->getCodigoSueldos();
+						foreach ($codigosSueldos as $idCodigo) {
+							if($idCodigo->getId() == $novedad){
+								//print_r("entro aca con: ".$objEmpleado->getNombre());
+								
+								$detalle->setCantConceptoVar($detalle->getCantConceptoVar() + self::$hsNormalesDiarias);
+								if($this->compensatorio == true){
+									$detalleRecibo->setRemunerativo($detalle->getCantConceptoVar() * $sueldoComp);
+									$this->remunerativo += self::$hsNormalesDiarias * $sueldoComp;										
+								}else{
+									$detalleRecibo->setRemunerativo($detalle->getCantConceptoVar() * $sueldoBlanco);
+									$this->remunerativo += self::$hsNormalesDiarias * $sueldoBlanco;
+								}									
+								$novedadFlag++;		
+							}	
+						} 
+						
+					}	
+					
+					if($novedadFlag == 0){
+						//print_r("entro aca 2 con: ".$objEmpleado->getNombre());
+						//exit;
+						$detalleRecibo = new RecibosDetalle;
+						
+						$detalleRecibo->setCantConceptoVar(self::$hsNormalesDiarias);
+						$detalleRecibo->setValorConceptoHist($sueldoBlanco);
+						//SI ESTAMOS LIQUIDANDO EN NEGRO TOMAMOS EL VALOR HORA COMPENSATORIO
+						if($this->compensatorio == true){							
+							$detalleRecibo->setRemunerativo(self::$hsNormalesDiarias * $sueldoComp);
+							$this->remunerativo += self::$hsNormalesDiarias * $sueldoComp;
+						}else{
+							$detalleRecibo->setRemunerativo(self::$hsNormalesDiarias * $sueldoBlanco);
+							$this->remunerativo += self::$hsNormalesDiarias * $sueldoBlanco;	
+						}	
+						$detalleRecibo->setRemunerativo(self::$hsNormalesDiarias * $sueldoBlanco);						
+						$detalleRecibo->setValorCompensatorioHist($empleado->getCompensatorio());
+						$detalleRecibo->addCodigoSueldo($nuevaNovedad);
+						$recibo->addReciboDetalleId($detalleRecibo);		
+					}					
+				}				
+			}
+		}	
+	}
+
+	public function LiquidarHsExtras($empleado, $recibo)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$repoConceptos = $em->getRepository('MbpPersonalBundle:CodigoSueldos');
+		
+		foreach ($this->objLote->getEmpleadosCollection()->getEmpleado() as $objEmpleado) { 
+			if($objEmpleado->getHsExtrasTrabajadas() != "" && $empleado->getLegajo() == $objEmpleado->getLegajo()){
+				$detalleExtras = new RecibosDetalle;
+				$codigoHsExtra = $repoConceptos->findOneByDescripcion('HORAS EXTRAS 50%');
+				if($codigoHsExtra == ''){
+					throw new \Exception("No existe el concepto de HORAS EXTRAS", 1);					
+				}
+				
+				$valorHsExtra = ($empleado->getSueldoBlanco() + $empleado->getCompensatorio()) * 1.5;
+				
+				$detalleExtras->setCantConceptoVar($objEmpleado->getHsExtrasTrabajadas());
+				$detalleExtras->setValorConceptoHist($empleado->getSueldoBlanco());
+				$detalleExtras->setRemunerativo($objEmpleado->getHsExtrasTrabajadas() * $valorHsExtra);
+				$this->remunerativo += $objEmpleado->getHsExtrasTrabajadas() * $valorHsExtra;
+				$detalleExtras->setValorCompensatorioHist($empleado->getCompensatorio());
+				$detalleExtras->addCodigoSueldo($codigoHsExtra);
+				$recibo->addReciboDetalleId($detalleExtras);
+			}			
 		}
 	}
 	

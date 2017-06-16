@@ -3,6 +3,7 @@ Ext.define('MetApp.resources.ux.ParametersSingleton',{
 	config: {
 		iva: 0,
 		dolarOficial: 0,	
+		env: '' //ENTORNO DE EJECUCION
 	},	
 	initParams: function(){		
 		/*Ext.Ajax.request({

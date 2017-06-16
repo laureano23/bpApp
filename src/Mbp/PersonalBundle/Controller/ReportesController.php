@@ -131,7 +131,7 @@ class ReportesController extends Controller
 		 AND Recibos.`compensatorio` = 0
 		ORDER BY
 		     Personal.`nombre` ASC,
-		     CodigoSueldos.`remunerativo` DESC";
+		     RecibosDetalle.`remunerativo` DESC";
 		
 		$sqlCompensatorio = "SELECT
 		     Recibos.`id` AS Recibos_id,
@@ -204,7 +204,7 @@ class ReportesController extends Controller
 		 AND Recibos.`compensatorio` = 1
 		ORDER BY
 		     Personal.`nombre` ASC,
-		     CodigoSueldos.`remunerativo` DESC";
+		     RecibosDetalle.`remunerativo` DESC";
 		     
 		//Exportamos el reporte
 		$sql = '';

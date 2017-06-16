@@ -2,7 +2,7 @@ Ext.define('MetApp.view.RRHH.TablaConceptos', {
 	extend: 'Ext.window.Window',
 	modal: true,	
 	width: 580,
-	height: 500,
+	height: 540,
 	layout: 'border',
 	border: false,
 	itemId: 'conceptosTabla',
@@ -211,6 +211,15 @@ Ext.define('MetApp.view.RRHH.TablaConceptos', {
 									itemId: 'porcentaje',
 									inputValue: 1,
 									uncheckedValue: 0
+								},
+								{
+									xtype: 'numberfield',
+									readOnly: true,
+									fieldLabel: 'Código de observación',
+									labelWidth: 150,
+									name: 'codigoObservacion',
+									itemId: 'codigoObservacion',
+									
 								}
 							]
 						}						

@@ -179,6 +179,32 @@ Ext.define('MetApp.view.RRHH.Personal.TablaPersonal', {
 						readOnly: true,
 					}
 				]
+			},
+			{
+				xtype: 'container',
+				margins: '5 0 0 0',
+				defaults: {
+					readOnly: true,
+				},
+				layout: 'hbox',
+				items: [
+					{
+						xtype: 'checkbox',
+						uncheckedValue: 0,
+						value: 1,
+						name: 'liquidaPorLote',
+						itemId: 'liquidaPorLote',
+						fieldLabel: 'Liquida por lote',
+						margin: '0 5 0 0'
+					},
+					{
+						xtype: 'numberfield',
+						labelWidth: 60,
+						name: 'legajo',
+						itemId: 'legajo',
+						fieldLabel: 'Legajo',						
+					}
+				]
 			}
 		]
 		

@@ -66,7 +66,9 @@ class PersonalRepository extends EntityRepository
 								cat.id as categoria,
 								cat.salario as salario,
 								sind.id as sindicato,
-								sec.id as sector
+								sec.id as sector,
+								p.liquidaPorLote,
+								p.legajo
 								")
 					->leftJoin('p.localidad', 'loc')
 					->leftJoin('loc.departamentoId', 'depto')
@@ -184,6 +186,8 @@ class PersonalRepository extends EntityRepository
 				$empleado->setAntiguedad(true);
 			} 
 			$empleado->setantPorcentaje($data->antPorcentaje);
+			$data->liquidaPorLote === 0 ? $empleado->setLiquidaPorLote(false) : $empleado->setLiquidaPorLote(true);
+			$empleado->setLegajo($data->legajo);
 			$empleado->setFechaNacimiento(\DateTime::createFromFormat('d/m/Y', $data->fechaNacimiento));
 			$empleado->setObraSocial($data->obraSocial);
 			$empleado->setNacionalidad($data->nacionalidad);

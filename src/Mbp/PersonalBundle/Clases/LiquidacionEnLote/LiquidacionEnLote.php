@@ -14,13 +14,39 @@ class LiquidacionEnLote
 	public $phpExcelService;
 	private $columnas;
 	private $errores = array(); //COLECCION DE ERRORES DE VALIDACION DE LA PLANILLA
-	private $periodo;
+	private $periodo;	
 	private $horasNormales;
 	private $diasMensuales; //CANTIDAD DE DIAS HABILES DEL MES PARA LIQUIDACION DE EMPLEADOS MENSUALES
 	private $mes;
 	private $anio;
+	private $trimestre;	//DETERMINA EL TRIMESTRE QUE ESTOY LIQUIDANDO, SOLO PARA PREMIOS
+	private $posicionMesTrimestre; //VARIABLE DE CALCULO PARA PREMIOS
+	private $trimestresAll = array(
+			1 => array(
+				0 => 1,
+				1 => 2,
+				2 => 3
+			),
+			2 => array(
+				0 => 4,
+				1 => 5,
+				2 => 6
+			),
+			3 => array(
+				0 => 7,
+				1 => 8,
+				2 => 9
+			),
+			4 => array(
+				0 => 10,
+				1 => 11,
+				2 => 12
+			),
+		);
 	
-	public function __construct($filePath, $phpExcelService, $periodo, $mes, $anio)
+	private $em;
+	
+	public function __construct($filePath, $phpExcelService, $periodo, $mes, $anio, $em)
 	{
 		$this->filePath = $filePath;
 		$this->phpExcelService = $phpExcelService;
@@ -28,10 +54,17 @@ class LiquidacionEnLote
 		$this->empleadosCollection = new EmpleadosCollection($filePath, $phpExcelService);
 		$this->mes = $mes;
 		$this->anio = $anio;
+		$this->em = $em;
+		
+		$empleados = $this->empleadosCollection->getEmpleado();
+		
 		
 		$this->ValidarPeriodo();
 		$this->CalcularHorasNormales();
 		$this->CalcularHorasTrabajadas();
+		
+		$this->CalcularNovedades();		
+		
 	}
 	
 	/*
@@ -55,10 +88,115 @@ class LiquidacionEnLote
 				$this->ValidarMes();
 				break;
 			
+			case 7:
+				$this->ValidarPremioQuincena1();
+				break;
 			default:
 				
 				break;
 		}
+	}
+	
+	//FUNCION AUXILIAR PARA VALIDAR LA PLANILLA DE PREMIOS
+	private function setTrimestre()
+	{
+		$empleados = $this->getEmpleadosCollection()->getEmpleado();
+		$fechas = $empleados[0]->getFecha(); 
+		
+		$posFechas = count($fechas);
+		
+		$primerFecha = $fechas[0];
+		$ultimaFecha = $fechas[$posFechas-1];
+		
+		$mes = $ultimaFecha->format('n');
+		
+		if($mes >=1 && $mes <= 3) $this->trimestre = 1;
+		if($mes >=4 && $mes <= 6) $this->trimestre = 2;
+		if($mes >=7 && $mes <= 9) $this->trimestre = 3;
+		if($mes >=10 && $mes <= 12) $this->trimestre = 4;
+	}
+	
+	//FUNCION AUXILIAR PARA VALIDAR LA PLANILLA DE PREMIOS
+	private function PosicionMesTrimestre()
+	{
+		$empleados = $this->getEmpleadosCollection()->getEmpleado();
+		$fechas = $empleados[0]->getFecha(); 
+		$posFechas = count($fechas);
+		$ultimaFecha = $fechas[$posFechas-1];
+		
+		$trimestres = array(
+			0 => 1,
+			1 => 2,
+			2 => 3,
+			3 => 4,
+		);
+		
+		$existe=false;
+		$contadorMeses = 0;
+		$posicionMes = null;
+		$contadorTrimestres = 0;
+		
+		foreach ($this->trimestresAll as $trim) {
+			if($trimestres[$contadorTrimestres] == $this->trimestre){				
+				while ($contadorMeses < 3) {
+					if($ultimaFecha->format('n') == $trim[$contadorMeses]){						
+						$this->posicionMesTrimestre = $contadorMeses;	
+						return;					
+					}	
+					$contadorMeses++;
+				}
+				$contadorMeses == 0;		
+			}
+			$contadorTrimestres++;
+		}
+	}
+	
+	private function ValidarPremioQuincena1()
+	{
+		$this->setTrimestre();
+		$this->PosicionMesTrimestre();
+		$contadorMeses = 0;
+		
+		if($this->posicionMesTrimestre == 0) $contadorMeses=0;
+		if($this->posicionMesTrimestre == 1) $contadorMeses=1;
+		if($this->posicionMesTrimestre == 3) $contadorMeses=2;
+		
+		
+		
+		$empleados = $this->getEmpleadosCollection()->getEmpleado();
+		$fechas = $empleados[0]->getFecha();
+		
+		$i=0;
+		$existe = false;
+		
+		foreach ($this->trimestresAll[$this->trimestre] as $meses) {
+			while ($meses != $this->trimestresAll[$this->trimestre][$this->posicionMesTrimestre]) {
+				foreach ($fechas as $fecha) {
+					if($fecha->format('n') == $meses){
+						$existe = true;
+					}				
+					
+				}
+				
+				if($existe == FALSE){
+					$this->addError("La planilla no tiene el trimeste correcto para liquidar el premio");
+					return;	
+				}
+				
+				if($this->posicionMesTrimestre == $i){
+					return;
+				}
+				$i++;	
+			}
+			
+		} 
+		
+		
+		
+		print_r("TRIMESTRE: ".$this->trimestre."pos: ".$this->posicionMesTrimestre);
+		exit;
+		
+		
 	}
 	
 	private function ValidarPrimerQuincena()
@@ -152,6 +290,7 @@ class LiquidacionEnLote
 	{
 		$empleados = $this->getEmpleadosCollection()->getEmpleado();
 		
+				
 		$dias=0;
 		$diasMes = cal_days_in_month(CAL_GREGORIAN, $this->mes, $this->anio);
 		
@@ -165,12 +304,14 @@ class LiquidacionEnLote
 		}
 		
 		if($this->periodo == 2){
+			
 			foreach ($empleados[0]->getFecha() as $fechaEntrada) {
-				if($fechaEntrada->format('D') != 'Sat' && $fechaEntrada->format('D') != 'Sun'){
+				if($fechaEntrada->format('D') == 'Sat' || $fechaEntrada->format('D') == 'Sun'){
 					$dias++;	
 				}				
 			}
-			$this->horasNormales = ($diasMes - 15) * 9;	
+			
+			$this->horasNormales = ($diasMes - 15 - $dias) * 9;	
 		}
 		
 		if($this->periodo == 3){
@@ -181,6 +322,7 @@ class LiquidacionEnLote
 			}
 			$this->diasMensuales = $dias;	
 		}
+		
 	}
 	
 	/*
@@ -188,40 +330,75 @@ class LiquidacionEnLote
 	 * */
 	private function CalcularHorasTrabajadas()
 	{
-		foreach ($this->getEmpleadosCollection()->getEmpleado() as $empleado) {
-			$contadorSalida=0;
-			$entradas = $empleado->getFichadaEntrada();
-			$salidas = $empleado->getFichadaSalida();
+		foreach ($this->getEmpleadosCollection()->getEmpleado() as $empleado) {			
+			$entradas = $empleado->getEntradas();
+			$salidas = $empleado->getSalidas();
+			$dias = $empleado->getDia();
 			$horas = 0;
 			$minutos = 0;
-			foreach ($entradas as $entrada) {
-				if(!empty($entrada)){
-					$horas = $horas + ($salidas[$contadorSalida]->format('H') - $entrada->format('H'));
-					$minutos = $minutos + ($salidas[$contadorSalida]->format('i'));
-					
-				}	
-				$contadorSalida++;									
+						
+			
+			$dia=0;
+			foreach ($entradas as $entrada) {				
+				foreach ($entrada as $fichada) {
+					$contadorSalida=0;
+					$horas = $horas + ($salidas[$dia][$contadorSalida]->format('H') - $fichada->format('H'));
+					$minutos = $minutos + ($salidas[$dia][$contadorSalida]->format('i'));
+					$contadorSalida++;			
+				}
+				$dia++;											
 			}
+			
 			
 			//AJUSTE POR MINUTOS EXCEDIDOS
 			if($minutos >= 30){
 				$ajuste = $minutos/60;
 				$horas = $horas + $ajuste;
-			}
+			}			
+					
 			
 			$hsNormales = 0;
 			$hsExtras = 0;
+			
+			
+			
 			if($horas <= $this->horasNormales){
 				$hsNormales = $horas;
 				$hsExtras = 0;
 			}else{
 				$hsNormales = $this->horasNormales;
 				$hsExtras = $horas - $this->horasNormales;
-			}
-						
+			}	
 			
 			$empleado->setHsNormalesTrabajadas($hsNormales);
 			$empleado->setHsExtrasTrabajadas($hsExtras);
+		}
+	}
+
+	private function CalcularNovedades()
+	{
+		//SUMA DE NOVEDADES
+		$repoConceptos = $this->em->getRepository('MbpPersonalBundle:CodigoSueldos');
+		foreach ($this->getEmpleadosCollection()->getEmpleado() as $empleado) {			
+			foreach ($empleado->getObservaciones() as $observacion) {
+				$novedad = $repoConceptos->findOneByCodigoObservacion($observacion);
+				if(!empty($novedad)){
+					$empleado->addNovedad($novedad->getId());
+				}
+			}
+		}
+	}
+	
+	//FUNCION PARA DEFINIR LA PUNTUALIDAD A COBRAR DE CADA EMPLEADO SEGUN POLITICAS DE PREMIO DE LA EMPRESA
+	private function LiquidarPuntualidad()
+	{
+		$empleados = $this->getEmpleadosCollection()->getEmpleado();
+		
+		foreach ($empleados as $empleado) {
+			foreach ($empleado->getEntradas() as $entrada) {
+				if($entrada->format('H') > 6 || $entrada->format('i') > 5) $empleado->setHsPuntualidad(0);
+				if($entrada->format('H') == 6 && $entrada->format('i') <= 5) $empleado->setHsPuntualidad($this->getHsPuntualidad() - 2);
+			}
 		}
 	}
 }

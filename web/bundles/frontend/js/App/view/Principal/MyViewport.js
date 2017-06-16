@@ -5,7 +5,7 @@ Ext.define('MetApp.view.Principal.MyViewport', {
 	layout: 'border',
     renderTo: Ext.getBody(),
 	requires: [
-		'Ext.util.Point'
+		'Ext.util.Point',		
 	],
     initComponent: function(){
     	/*
@@ -27,7 +27,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                 }
             });
         };
-
+        
+        var env = MetApp.resources.ux.ParametersSingleton.env;
+        var html='';
+        if(env == 'dev'){
+        	html = '<h1 style="color: red; font-size: 100px; text-align: center;">DEV</h1>'
+        }
+        
     	var menuTablas =  [
 			{
 				text: 'Articulos',
@@ -561,6 +567,7 @@ Ext.define('MetApp.view.Principal.MyViewport', {
 		        border: true,
 		        margins: '0 0 5 0',
                 items: me.params,
+                html: html
 	    	},
 	    	{
 	    		id:'PnlNorte',

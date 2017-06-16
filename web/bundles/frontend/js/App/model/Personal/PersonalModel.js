@@ -35,5 +35,7 @@ Ext.define('MetApp.model.Personal.PersonalModel',{
 		{ name: 'talleCamisa', type: 'int' },
 		{ name: 'tallePantalon', type: 'int' },
 		{ name: 'talleCalzado', type: 'int' },
+		{ name: 'liquidaPorLote', type: 'bool' },
+		{ name: 'legajo', type: 'int' },
 	]
 });

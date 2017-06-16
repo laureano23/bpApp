@@ -206,7 +206,9 @@ class RecibosController extends Controller
 			->setParameter('desc', "ANTIGUEDAD")
 			->getQuery()
 			->getResult();
+		
 		$calculoAnt = $remunerativo * $empleado->getAntPorcentaje() / 100 * $this->antiguedadAnios;
+		
 		
 		if($empleado->getAntiguedad() == 0){return NULL;}
 		

@@ -75,11 +75,25 @@ Ext.define('MetApp.controller.Security.SecurityController',{
 									
 							}
 						}
-
-						//PARA BORRAR TODOS LOS FAVORITOS
-						//store.getProxy().clear();
-
-						var viewport = Ext.create('MetApp.view.Principal.MyViewport', {params: items});
+						
+						 /* CARGO DESDE UNA CLASE SINGLETON AUXILIAR LOS PARAMETROS DE FACTURACION */
+					    Ext.Ajax.request({
+							url: Routing.generate('mbp_finanzas_initParams'),
+							
+							success: function(resp){
+								jsonResp = Ext.JSON.decode(resp.responseText)
+								MetApp.resources.ux.ParametersSingleton.setIva(jsonResp.data.iva);
+								MetApp.resources.ux.ParametersSingleton.setDolarOficial(jsonResp.data.dolarOficial);
+								MetApp.resources.ux.ParametersSingleton.setEnv(jsonResp.data.env);
+							},
+							
+							callback: function(){
+								//PARA BORRAR TODOS LOS FAVORITOS
+								//store.getProxy().clear();
+		
+								var viewport = Ext.create('MetApp.view.Principal.MyViewport', {params: items});	
+							}
+						});						
 					}
 				})			
 				

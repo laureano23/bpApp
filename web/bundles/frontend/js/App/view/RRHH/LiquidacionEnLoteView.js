@@ -2,7 +2,7 @@ Ext.define('MetApp.view.RRHH.LiquidacionEnLoteView', {
 	extend: 'Ext.window.Window',
 	modal: true,	
 	width: 600,
-	height: 260,
+	height: 280,
 	layout: 'fit',
 	border: false,
 	itemId: 'LiquidacionEnLoteView',
@@ -12,6 +12,14 @@ Ext.define('MetApp.view.RRHH.LiquidacionEnLoteView', {
 		
 	initComponent: function(){
 		var me = this;		
+		
+		var storePeriodo = Ext.create('Ext.data.Store', {
+		    fields: ['id', 'periodo'],
+		    data : [
+		        {"id":"0", "periodo":"Quincenal"},
+		        {"id":"1", "periodo":"Mensual"},
+		    ]
+		});
 		
 		Ext.applyIf(me,{
 			items: [
@@ -34,7 +42,8 @@ Ext.define('MetApp.view.RRHH.LiquidacionEnLoteView', {
 							labelWidth: 50,
 					        msgTarget: 'side',					        
 					        width: 500,
-					        buttonText: 'Seleccion archivo...'
+					        buttonText: 'Seleccion archivo...',
+					        
 						},
 						{
 							xtype: 'fieldset',
@@ -52,7 +61,8 @@ Ext.define('MetApp.view.RRHH.LiquidacionEnLoteView', {
 									items: [
 										{ boxLabel: '1° quincena', name: 'pagoTipo', inputValue: 1, checked: true },
 										{ boxLabel: '2° quincena', name: 'pagoTipo', inputValue: 2 },
-										{ boxLabel: 'Mes', name: 'pagoTipo', inputValue: 3 },
+										{ boxLabel: 'Premios 1° quincena', name: 'pagoTipo', inputValue: 7 },
+										{ boxLabel: 'Premios 2° quincena', name: 'pagoTipo', inputValue: 8 },
 									]
 								},
 							]
@@ -134,11 +144,35 @@ Ext.define('MetApp.view.RRHH.LiquidacionEnLoteView', {
 									store: 'MetApp.store.Finanzas.BancosStore' 
 								},
 							]
-						},																
+						},
+						{
+							xtype: 'container',
+							layout: 'hbox',
+							defaults: {
+								margins: '5 5 0 0',
+							},
+							items: [
+								{
+									xtype: 'combobox',									
+									forceSelection: true,
+									name: 'tipoLiquidacion',
+									fieldLabel: 'Tipo liquidación',
+									store: storePeriodo,
+									valueField: 'id',
+									displayField: 'periodo'
+								},
+								{
+									xtype: 'checkbox',
+									name: 'compensatorio',
+									itemId: 'compensatorio',
+									fieldLabel: 'Compensatorio'
+								}	
+							]
+						},																						
 						{
 							xtype: 'button',
 							itemId: 'liquidarLote',
-							text: 'Liquidar'
+							text: 'Liquidar',							
 						},								
 					]
 				}

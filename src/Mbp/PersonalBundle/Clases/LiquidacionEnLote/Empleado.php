@@ -14,10 +14,15 @@ class Empleado
 	private $fecha = array();
 	private $dia = array();
 	private $fichadaEntrada = array();
+	private $entradas = array(); //ES UN ARRAY DE FICHADA ENTRADAS	
 	private $fichadaSalida = array();
+	private $salidas = array(); //ES UN ARRAY DE FICHADA SALIDAS
 	private $hsNormalesTrabajadas = 0;
 	private $hsExtrasTrabajadas = 0;
 	private $phpExcelService;
+	private $novedades = array(); //SON LAS OBSERVACIONES QUE CORRESPONDEN A NOVEDADES DE RECIBO DE SUELDO
+	private $hsPuntualidad = 5;
+	private $hsAsistencia = 10;
 	
 		 
 	public function __construct()
@@ -59,7 +64,7 @@ class Empleado
 	}
 	
 	public function addDia($dia){
-		array_push($this->dia, $dia);
+		array_push($this->dia, $dia);		
 	}
 	
 	public function getFichadaEntrada(){
@@ -69,6 +74,8 @@ class Empleado
 	// CONVIERTE LAS HORAS DE LA PLANILLA EN FORMAT H:i A OBJETOS DATETIME
 	public function addFichadaEntrada($strHora){
 		$fichadaEntrada = \DateTime::CreateFromFormat('H:i', $strHora);
+		
+		if($fichadaEntrada == false || $fichadaEntrada == ""){return;}
 		
 		//VALIDACION DE ENTRADAS SEGUN POLITICA DE LA EMPRESA
 		if($fichadaEntrada && $fichadaEntrada->format('i') > 0 && $fichadaEntrada->format('i') <= 5){
@@ -88,6 +95,18 @@ class Empleado
 		}
 		array_push($this->fichadaEntrada, $fichadaEntrada);
 	}
+
+	public function vaciarArrayEntradas(){
+		$this->fichadaEntrada = array();
+	}
+
+	public function addEntradas($fichadasEntrada){
+		array_push($this->entradas, $fichadasEntrada);
+	}
+	
+	public function getEntradas(){
+		return $this->entradas;
+	}
 	
 	public function getFichadaSalida(){
 		return $this->fichadaSalida;
@@ -95,6 +114,8 @@ class Empleado
 	
 	public function addFichadaSalida($strHora){		
 		$fichadaSalida = \DateTime::CreateFromFormat('H:i', $strHora);
+		
+		if($fichadaSalida == false || $fichadaSalida == ""){return;}
 		
 		//VALIDACION DE SALIDAS SEGUN POLITICA DE LA EMPRESA
 		if($fichadaSalida && $fichadaSalida->format('i') > 0 && $fichadaSalida->format('i') < 30){
@@ -107,12 +128,28 @@ class Empleado
 		array_push($this->fichadaSalida, $fichadaSalida);
 	}
 	
+	public function addSalidas($fichadasSalida){
+		array_push($this->salidas, $fichadasSalida);
+	}
+	
+	public function getSalidas(){
+		return $this->salidas;
+	}
+	
+	public function vaciarArraySalidas(){
+		$this->fichadaSalida = array();
+	}
+	
 	/*
 	 * GUARDAMOS SOLO EL CODIGO DE LA OBSERVACION PARA LUEGO COMPARAR CONTRA LA BD
 	 * */
 	public function addObservacion($observacion){
 		$obs = str_split($observacion, 2);
-		array_push($this->observaciones, (int)$obs[0]);
+		if($obs[0]==""){
+			array_push($this->observaciones, -1);
+		}else{
+			array_push($this->observaciones, (int)$obs[0]);	
+		}
 	}
 	
 	public function getObservaciones(){
@@ -128,11 +165,35 @@ class Empleado
 	}
 	
 	public function getHsExtrasTrabajadas(){
-		return $this->hsNormalesTrabajadas;
+		return $this->hsExtrasTrabajadas;
 	}
 	
 	public function setHsExtrasTrabajadas($hsExtras){
 		$this->hsExtrasTrabajadas = $hsExtras;
+	}
+	
+	public function addNovedad($novedad){
+		array_push($this->novedades, $novedad);
+	}
+	
+	public function getNovedades(){
+		return $this->novedades;
+	}
+	
+	public function setHsPuntualidad($hs){
+		$this->hsPuntualidad = $hs;
+	}
+	
+	public function getHsPuntualidad(){
+		return $this->hsPuntualidad;
+	}
+	
+	public function setHsAsistencia($hs){
+		$this->hsAsistencia = $hs;
+	}
+	
+	public function getHsAsistencia(){
+		return $this->hsAsistencia;
 	}
 }
 

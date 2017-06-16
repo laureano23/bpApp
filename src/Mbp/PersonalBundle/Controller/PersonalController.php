@@ -61,14 +61,14 @@ class PersonalController extends Controller
 		$response->setContent(json_encode($res));
 		if(array_key_exists('tipo', $res)){
 			$response->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);	
-			/*$res->setContent(
+			$res->setContent(
 				json_encode(
 					array(
 						'success' => false,
 						'msg' => $res['errors']
 					)
 				)				
-			);*/
+			);
 		}elseif($res['success'] == false){
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 		}else{

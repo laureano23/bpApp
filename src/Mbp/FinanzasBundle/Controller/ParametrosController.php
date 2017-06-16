@@ -18,12 +18,14 @@ class ParametrosController extends Controller
     	$em = $this->getDoctrine()->getManager();
 		$repo = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
 		$params = $repo->findAll();
+		$env = $this->container->get('kernel')->getEnvironment();
 			
 		return new Response(json_encode(
 			array(
 				'data' => array(
 					'iva' => (float) $params[0]->getIva(),
-					'dolarOficial' => (float) $params[0]->getDolarOficial()
+					'dolarOficial' => (float) $params[0]->getDolarOficial(),
+					'env' => $env
 				),
 				'success' => true
 			)

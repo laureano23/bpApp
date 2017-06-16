@@ -45,10 +45,7 @@ class EmpleadosCollection
 		}
 		
 		$this->CargarArrayEmpleados();
-		$this->ValidarColeccionEmpleados();
-		
-				/*$emp=$this->getEmpleado();
-				print_r($emp[0]);*/		 
+		$this->ValidarColeccionEmpleados();		
 	}
 	
 	
@@ -83,12 +80,24 @@ class EmpleadosCollection
 			$empleado->setLegajo($activeSheet->getCell($this->columnas[self::$columnLegajo].$fila)->getValue());
 			$empleado->setNombre($activeSheet->getCell($this->columnas[self::$columnNombre].$fila)->getValue());		
 					
-			
-			do{//CARGO LOS ARRAYS DE FECHA, DIA Y HORARIOS
+			do{//CARGO LOS ARRAYS DE FECHA, DIA Y HORARIOS							
 				$empleado->addFecha($activeSheet->getCell($this->columnas[self::$columnFecha].$fila)->getValue());
 				$empleado->addDia($activeSheet->getCell($this->columnas[self::$columnDia].$fila)->getValue());
-				$empleado->addFichadaEntrada($activeSheet->getCell($this->columnas[self::$columnaEntradas].$fila)->getValue());
-				$empleado->addFichadaSalida($activeSheet->getCell($this->columnas[self::$columnaSalidas].$fila)->getValue());
+								
+				$contFichadas = 0; //PARA AVANZAR POR LAS COLUMNAS DE FICHADAS (ENTRADAS Y SALIDAS)
+				//BUCLE PARA CARGAR TODAS LAS ENTRADAS Y SALIDAS
+				do{
+					$empleado->addFichadaEntrada($activeSheet->getCell($this->columnas[self::$columnaEntradas + $contFichadas].$fila)->getValue());					
+					$empleado->addFichadaSalida($activeSheet->getCell($this->columnas[self::$columnaSalidas + $contFichadas].$fila)->getValue());
+					$contFichadas += 2;
+						
+				}while($contFichadas < 10);
+				$empleado->addEntradas($empleado->getFichadaEntrada());
+				$empleado->addSalidas($empleado->getFichadaSalida());
+				$empleado->vaciarArrayEntradas();
+				$empleado->vaciarArraySalidas();
+				
+				
 				$empleado->addObservacion($activeSheet->getCell($this->columnas[self::$columnaObservacion].$fila)->getValue());
 			
 				$fila++; //AVANZO 1 FILA
@@ -97,8 +106,7 @@ class EmpleadosCollection
 				//PARA EVITAR ENTRAR EN UN LOOP CUANDO CARGO EL ULTIMO REGISTRO
 				if($activeSheet->getCell($this->columnas[self::$columnLegajo].$fila)->getValue() == ""){
 					break;
-				}
-				
+				}				
 				
 			}while($activeSheet->getCell($this->columnas[self::$columnLegajo].$fila)->getValue() == $activeSheet->getCell($this->columnas[self::$columnLegajo].$filaAnterior)->getValue());
 			

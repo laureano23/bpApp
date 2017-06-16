@@ -81,6 +81,7 @@ class CodigoSueldosRepository extends \Doctrine\ORM\EntityRepository
 				$rep[$i]['empleadoSueldo'] = $empleadoSueldo;
 				$rep[$i]['porcentaje'] = $resu['porcentaje'];
 				$rep[$i]['codigoCalculo'] = $resu['codigoCalculo'];
+				$rep[$i]['codigoObservacion'] = $resu['codigoObservacion'];
 				$i++;
 			}
 			
@@ -113,6 +114,7 @@ class CodigoSueldosRepository extends \Doctrine\ORM\EntityRepository
 			$obj->setImporte($jsonData->importe);
 			$obj->setcodigoCalculo($jsonData->codigoCalculo);
 			$obj->setUnidad($jsonData->unidad);
+			$obj->setCodigoObservacion($jsonData->codigoObservacion);
 						
 			$jsonData->porcentaje > 0 ? $obj->setPorcentaje(true) : $obj->setPorcentaje(false);		
 			$jsonData->remunerativo == 1 ? $obj->setRemunerativo(true) : $obj->setRemunerativo(false);
