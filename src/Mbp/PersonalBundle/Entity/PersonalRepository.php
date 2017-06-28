@@ -195,6 +195,7 @@ class PersonalRepository extends EntityRepository
 			$data->tallePantalon == 0 ? $empleado->setTallePantalon(null) : $empleado->setTallePantalon($data->tallePantalon);
 			$data->talleCamisa == 0 ? $empleado->setTalleCamisa(null) : $empleado->setTalleCamisa($data->talleCamisa);
 			$data->talleCalzado == 0 ? $empleado->setTalleCalzado(null) : $empleado->setTalleCalzado($data->talleCalzado);
+			$data->liquidaCalorias === 0 ? $empleado->setLiquidaCalorias(false) : $empleado->setLiquidaCalorias(true);
 			
 			//VALIDO LOS DATOS DEL RECIBO
 			

@@ -65,6 +65,11 @@ class PersonalConceptosSueldoRepository extends \Doctrine\ORM\EntityRepository
 			
 			$res = $query->getResult();
 			
+			if(empty($res)){
+				throw new \Exception("No se encontró el registro", 1);
+				
+			}
+			
 			$em->remove($res[0]);
 			$em->flush();
 			

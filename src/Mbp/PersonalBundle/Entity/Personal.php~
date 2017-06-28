@@ -266,12 +266,22 @@ class Personal
 	/**
      * @var boolean
      *
-     * @ORM\Column(name="liquidaPorLote", type="boolean")
+     * @ORM\Column(name="liquidaPorLote", type="boolean", nullable=true)
 	 * @Assert\Type(
      *     type="bool"
      * )
      */
-    private $liquidaPorLote = 0;
+    private $liquidaPorLote = false;
+	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="liquidaCalorias", type="boolean", nullable=false)
+	 * @Assert\Type(
+     *     type="bool"
+     * )
+     */
+    private $liquidaCalorias = false;
 	
     
     public function __construct()
@@ -1002,5 +1012,29 @@ class Personal
     public function getLegajo()
     {
         return $this->legajo;
+    }
+
+    /**
+     * Set liquidaPorLote
+     *
+     * @param boolean $liquidaPorLote
+     *
+     * @return Personal
+     */
+    public function setLiquidaPorLote($liquidaPorLote)
+    {
+        $this->liquidaPorLote = $liquidaPorLote;
+
+        return $this;
+    }
+
+    /**
+     * Get liquidaPorLote
+     *
+     * @return boolean
+     */
+    public function getLiquidaPorLote()
+    {
+        return $this->liquidaPorLote;
     }
 }

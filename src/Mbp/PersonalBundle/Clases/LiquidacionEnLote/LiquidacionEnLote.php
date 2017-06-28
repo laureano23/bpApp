@@ -10,6 +10,7 @@ use Mbp\PersonalBundle\Clases\LiquidacionEnLote\EmpleadosCollection;
 class LiquidacionEnLote
 {
 	private $empleadosCollection;
+	public static $hsNormales = 9;
 	public $filePath;
 	public $phpExcelService;
 	private $columnas;
@@ -58,8 +59,14 @@ class LiquidacionEnLote
 		
 		$empleados = $this->empleadosCollection->getEmpleado();
 		
+		$err = $this->empleadosCollection->getError();
+		if(!empty($err)){
+			return;
+		}
+		
 		
 		$this->ValidarPeriodo();
+		$this->CalcularHorasJustificadas();
 		$this->CalcularHorasNormales();
 		$this->CalcularHorasTrabajadas();
 		
@@ -193,8 +200,6 @@ class LiquidacionEnLote
 		
 		
 		
-		print_r("TRIMESTRE: ".$this->trimestre."pos: ".$this->posicionMesTrimestre);
-		exit;
 		
 		
 	}
@@ -300,7 +305,7 @@ class LiquidacionEnLote
 					$dias++;
 				}				
 			}
-			$this->horasNormales = $dias*9;	
+			$this->horasNormales = $dias*self::$hsNormales;	
 		}
 		
 		if($this->periodo == 2){
@@ -311,7 +316,7 @@ class LiquidacionEnLote
 				}				
 			}
 			
-			$this->horasNormales = ($diasMes - 15 - $dias) * 9;	
+			$this->horasNormales = ($diasMes - 15 - $dias) * self::$hsNormales;	
 		}
 		
 		if($this->periodo == 3){
@@ -336,11 +341,12 @@ class LiquidacionEnLote
 			$dias = $empleado->getDia();
 			$horas = 0;
 			$minutos = 0;
+			
 						
 			
 			$dia=0;
 			foreach ($entradas as $entrada) {				
-				foreach ($entrada as $fichada) {
+				foreach ($entrada as $fichada) {					
 					$contadorSalida=0;
 					$horas = $horas + ($salidas[$dia][$contadorSalida]->format('H') - $fichada->format('H'));
 					$minutos = $minutos + ($salidas[$dia][$contadorSalida]->format('i'));
@@ -355,23 +361,43 @@ class LiquidacionEnLote
 				$ajuste = $minutos/60;
 				$horas = $horas + $ajuste;
 			}			
+			
+			//SE AGREGAN HORAS JUSTIFICADAS POR LICENCIAS
+			$hsJustificadas = $empleado->getHsJustificadas();
+			if($empleado->getHsJustificadas() > 0){
+				$horas += $hsJustificadas;
+			}
+			
 					
 			
 			$hsNormales = 0;
 			$hsExtras = 0;
 			
 			
-			
 			if($horas <= $this->horasNormales){
 				$hsNormales = $horas;
 				$hsExtras = 0;
+				
 			}else{
-				$hsNormales = $this->horasNormales;
+				$hsNormales = $this->horasNormales - $hsJustificadas;
 				$hsExtras = $horas - $this->horasNormales;
+				
 			}	
-			
 			$empleado->setHsNormalesTrabajadas($hsNormales);
 			$empleado->setHsExtrasTrabajadas($hsExtras);
+		}
+	}
+
+	private function CalcularHorasJustificadas()
+	{
+		$repoConceptos = $this->em->getRepository('MbpPersonalBundle:CodigoSueldos');
+		foreach ($this->getEmpleadosCollection()->getEmpleado() as $empleado) {
+			foreach ($empleado->getObservaciones() as $observacion) {
+				$novedad = $repoConceptos->findOneByCodigoObservacion($observacion);
+				if(!empty($novedad)){
+					$empleado->setHsJustificadas($empleado->getHsJustificadas()+self::$hsNormales);
+				}
+			}	
 		}
 	}
 

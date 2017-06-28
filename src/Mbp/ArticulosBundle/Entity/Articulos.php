@@ -10,6 +10,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="articulos")
  * @ORM\Entity
  * @ORM\Entity(repositoryClass="Mbp\ArticulosBundle\Entity\ArticulosRepository")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="type", type="string")
+ * @ORM\DiscriminatorMap( {"posenfriadores" = "PosEnfriadores", "articulos" = "Articulos"})
  */
 class Articulos
 {

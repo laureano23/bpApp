@@ -408,13 +408,16 @@ Ext.define('MetApp.controller.RRHH.PersonalController', {
 			var store = Ext.getStore('MetApp.store.Personal.PersonalDatosFijosStore');
 			var proxy = store.getProxy;
 			
+						
 			store.on('write', function(store, operation){
 				if(operation.action == 'create' && operation.success == true){
-					botonera.busquedaItem(botonera);
+					botonera.guardarItem(botonera);
+					form.getForm().reset();
 				}
 			});
 			store.add(model);
 		}
+		form.getForm().markInvalid();
 	},
 	
 	EliminarDatoFijo: function(btn){

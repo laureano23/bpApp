@@ -20,11 +20,15 @@ Ext.define('MetApp.view.RRHH.Personal.TabDatosFijos', {
 			margins: '5 5 5 5',
 			frame: false,
 			border: false,
-			layout: 'vbox',
+			layout: 'vbox',			
 			items: [
 				{
 					xtype: 'container',
 					frame: false,
+					defaults: {
+						allowBlank: false,
+						readOnlyCls: 'myDisabledClass',
+					},
 					layout: 'hbox',
 					items: [
 						{
@@ -36,8 +40,7 @@ Ext.define('MetApp.view.RRHH.Personal.TabDatosFijos', {
 						},
 						{
 							xtype: 'textfield',
-							disabled: true,
-							disabledCls: 'myDisabledClass',
+							readOnly: true,
 							name: 'descripcionConcepto',
 							itemId: 'descripcionConcepto',
 							fieldLabel: 'Concepto',
@@ -47,7 +50,6 @@ Ext.define('MetApp.view.RRHH.Personal.TabDatosFijos', {
 							xtype: 'button',
 							itemId: 'btnSearchConcepto',
 							iconCls: 'search',
-							disabled: true,
 							margins: '0 0 5 5'
 						}	
 					]
@@ -57,8 +59,8 @@ Ext.define('MetApp.view.RRHH.Personal.TabDatosFijos', {
 					name: 'cantDatosFijos',
 					itemId: 'cantDatosFijos',
 					fieldLabel: 'Importe/Cant',
-					disabled: true,
-					disabledCls: 'myDisabledClass'
+					readOnly: true,
+					readOnlyCls: 'myDisabledClass'
 				},
 				{
 					xtype: 'grid',
@@ -96,7 +98,7 @@ Ext.define('MetApp.view.RRHH.Personal.TabDatosFijos', {
 							}
 						}
 					]
-				}								
+				},							
 			]
 		}	
 	]

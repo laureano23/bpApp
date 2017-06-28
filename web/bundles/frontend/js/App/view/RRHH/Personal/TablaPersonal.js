@@ -2,7 +2,7 @@ Ext.define('MetApp.view.RRHH.Personal.TablaPersonal', {
 	extend: 'Ext.form.Panel',
 	modal: true,	
 	width: 900,
-	height: 420,
+	height: 450,
 	layout: 'border',
 	border: false,
 	itemId: 'personalTabla',
@@ -205,7 +205,15 @@ Ext.define('MetApp.view.RRHH.Personal.TablaPersonal', {
 						fieldLabel: 'Legajo',						
 					}
 				]
-			}
+			},			
+			{
+				xtype: 'checkbox',
+				uncheckedValue: 0,
+				fieldLabel: 'Liquida calorias',
+				name: 'liquidaCalorias',
+				itemId: 'liquidaCalorias',
+				readOnly: true
+			}	
 		]
 		
 	

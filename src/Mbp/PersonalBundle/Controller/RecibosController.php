@@ -27,8 +27,7 @@ class RecibosController extends Controller
 	public static $mes = 30;
 	public static $horas_mensualizados = 180;
 	
-
-	
+		
 	/**
      * @Route("/recibosLiquida", name="mbp_personal_recibosLiquida", options={"expose"=true})
      */    
@@ -206,11 +205,12 @@ class RecibosController extends Controller
 			->setParameter('desc', "ANTIGUEDAD")
 			->getQuery()
 			->getResult();
+			
+				
+				
+		if($empleado->getAntiguedad() == 0 || $remunerativo == 0){return NULL;}
 		
 		$calculoAnt = $remunerativo * $empleado->getAntPorcentaje() / 100 * $this->antiguedadAnios;
-		
-		
-		if($empleado->getAntiguedad() == 0){return NULL;}
 		
 		$antiguedadDetalle = new RecibosDetalle();
 		$antiguedadDetalle->setCantConceptoVar($this->antiguedadAnios);
@@ -223,6 +223,7 @@ class RecibosController extends Controller
 
 	protected function liquidarDescuentos($totalRemunerativo)
 	{
+		if($totalRemunerativo == 0) return;
 		$em = $this->getDoctrine()->getManager();
 		$repoConceptos = $em->getRepository('MbpPersonalBundle:CodigoSueldos');
 		$repoEmpleado = $em->getRepository('MbpPersonalBundle:Personal');

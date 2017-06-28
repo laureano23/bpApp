@@ -46,6 +46,11 @@ mbp_produccion:
     resource: "@MbpProduccionBundle/Resources/config/routing.yml"
     prefix:   /produccion/
 
+mbp_produccion_calculo:
+    resource: "@MbpProduccionBundle/Controller/"
+    type:     annotation
+    prefix:   /produccion/calculo/
+
 mbp_produccion_ot:
     resource: "@MbpProduccionBundle/Controller/OtController.php"
     type:     annotation

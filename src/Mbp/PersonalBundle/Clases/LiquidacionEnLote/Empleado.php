@@ -23,11 +23,22 @@ class Empleado
 	private $novedades = array(); //SON LAS OBSERVACIONES QUE CORRESPONDEN A NOVEDADES DE RECIBO DE SUELDO
 	private $hsPuntualidad = 5;
 	private $hsAsistencia = 10;
+	private $hsJustificadas=0;	//REPRESENTA LAS HORAS JUSTIFICADAS POR CONCEPTOS COMO POR EJ: LICENCIA POR ENFERMEDAD, ETC
 	
 		 
 	public function __construct()
 	{
 		
+	}
+	
+	public function getHsJustificadas()
+	{
+		return $this->hsJustificadas;
+	}
+	
+	public function setHsJustificadas($hs)
+	{
+		$this->hsJustificadas = $hs;
 	}
 	
 	public function getLegajo(){

@@ -39,7 +39,7 @@ Ext.define('MetApp.controller.Produccion.CalculoRadiadores.CalculoSeleccionContr
 				width: 350,
 				wait: true,
 				waitConfig: {
-					text: 'Esta operacion puede demorar mas de 1 minuto'
+					text: 'Esta operacion puede demorar mas de 3 minutos'
 				}
 				
 			});
@@ -51,10 +51,17 @@ Ext.define('MetApp.controller.Produccion.CalculoRadiadores.CalculoSeleccionContr
 				
 				params: values,
 				
+				failure: function(resp){
+					console.log(resp);
+					wait.hide();
+				},
+							
 				success: function(response, options){
 					//SACAMOS LA MASCARA
 					wait.hide();
+					var respJson = Ext.JSON.decode(response.responseText);
 					
+										
 					//MOSTRAMOS LOS RESULTADOS
 					console.log(response);
 					data = Ext.JSON.decode(response.responseText);
@@ -65,6 +72,8 @@ Ext.define('MetApp.controller.Produccion.CalculoRadiadores.CalculoSeleccionContr
 					win.queryById('tReservaPotencia').setValue(data.tReservaPotencia);
 					win.queryById('perdidaCarga').setValue(data.perdidaCarga);
 				},
+				
+				
 			});
 			
 			console.log(values);

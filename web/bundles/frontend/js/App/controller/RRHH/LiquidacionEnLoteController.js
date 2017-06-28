@@ -55,21 +55,24 @@ Ext.define('MetApp.controller.RRHH.LiquidacionEnLoteController', {
 					var errores=[];
 					var jsonResp = Ext.JSON.decode(resp.response.responseText);
 					
-					var errorColeccion = JSON.stringify(Ext.JSON.decode(jsonResp.msg.errorColeccion));
+					console.log(jsonResp);
+					
+					
+					/*var errorColeccion = JSON.stringify(Ext.JSON.decode(jsonResp.msg.errorColeccion));
 					errorColeccion = errorColeccion.replace(/,/g, "<br />");	
 					var errorLote = JSON.stringify(Ext.JSON.decode(jsonResp.msg.errorLote));
 					errorLote = errorLote.replace(/,/g, "<br />");
 					
 					errores[0] = errorColeccion;
 					errores[1] = errorLote;
-					
+					*/
 					var msg = Ext.create('Ext.window.MessageBox', {
 				        autoScroll: true
 				    });
 					
 					msg.show({
 						title:'Errores de validación',
-					    msg: errores,
+					    msg: jsonResp.msg.errorColeccion,
 					    buttons: Ext.Msg.OK,
 					});
 				}

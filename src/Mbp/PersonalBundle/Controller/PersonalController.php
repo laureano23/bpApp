@@ -304,13 +304,29 @@ class PersonalController extends Controller
 		$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
 		$repoPersonalConcepto = $em->getRepository('MbpPersonalBundle:PersonalConceptosSueldo');
-				
-		$idP = $req->request->get('idP');
-		$idConcepto = $req->request->get('idDatoFijo');
+		$response = new Response;
 		
-		$repoPersonalConcepto->eliminarConcepto($idP, $idConcepto);
-		
-		return new Response();
+		try{
+			$idP = $req->request->get('idP');
+			$idConcepto = $req->request->get('idDatoFijo');
+			
+			$repoPersonalConcepto->eliminarConcepto($idP, $idConcepto);
+			
+			return $response->setContent(
+				json_encode(array(
+					'success' => true
+				))
+			);	
+		}catch(\Exception $e){
+			$response->setContent(
+				json_encode(array(
+					'success' => false,
+					'msg' => $e->getMessage()
+				))
+			);
+			
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
 	}
 }
 

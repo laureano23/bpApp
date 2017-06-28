@@ -21,6 +21,7 @@ class LiquidacionEnLoteController extends RecibosController
 	private $remunerativo=0;
 	private $tipoLiquidacion;
 	public static $hsNormalesDiarias = 9;
+	public static $coeficienteCalorias = 0.04;
 	
 		
 	/**
@@ -71,13 +72,14 @@ class LiquidacionEnLoteController extends RecibosController
 			$erroresLote = json_encode($liquidacion->getErrores());
 			if($errores!="[]" || $erroresLote!="[]"){
 				$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+				$errColec = $liquidacion->getEmpleadosCollection()->getError();
 				return $response->setContent(
 					json_encode(
 						array(
 							'success' => false,
 							'tipo' => 'validacion',
 							'msg' => array(
-								'errorColeccion' => $errores,
+								'errorColeccion' => $errColec,
 								'errorLote' => $erroresLote							
 							)
 						)
@@ -101,7 +103,7 @@ class LiquidacionEnLoteController extends RecibosController
 				)));
 			
 		}catch(\Exception $e){
-			/*$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(
 				json_encode(
 					array(
@@ -109,8 +111,7 @@ class LiquidacionEnLoteController extends RecibosController
 						'msg' => $e->getMessage()
 					)
 				)
-			);*/
-			throw $e;
+			);
 		}
 	}
  
@@ -195,12 +196,12 @@ class LiquidacionEnLoteController extends RecibosController
 			//DESCUENTOS SI EL RECIBO ES EN BLANCO
 			if($this->compensatorio != TRUE){
 				$descuentosDetalle = $this->liquidarDescuentos($this->remunerativo);
-				foreach ($descuentosDetalle as $descuento) {
-					$recibo->addReciboDetalleId($descuento);	
-				}	
+				if(is_array($descuentosDetalle)){
+					foreach ($descuentosDetalle as $descuento) {
+						$recibo->addReciboDetalleId($descuento);	
+					}		
+				}				
 			}
-			
-			
 			
 			$em->persist($recibo);
 			$em->flush();
@@ -252,8 +253,6 @@ class LiquidacionEnLoteController extends RecibosController
 			$detalleVariable = $this->LiquidarConceptosVariables($empleado, $recibo);
 			$datosFijos = $this->insertaDatosFijos();
 			
-			
-			
 			$em->persist($recibo);
 			$em->flush();
 			
@@ -302,24 +301,84 @@ class LiquidacionEnLoteController extends RecibosController
 					$detalleRecibo->setValorConceptoHist($sueldoBlanco);
 					
 					//SI ESTAMOS LIQUIDANDO EN NEGRO TOMAMOS EL VALOR HORA COMPENSATORIO
-					if($this->compensatorio == true){
-						$sueldoComp = $empleado->getCompensatorio();
-						$detalleRecibo->setRemunerativo($hsNormalesTrabajadas * $sueldoComp);
-						$this->remunerativo += $hsNormalesTrabajadas * $sueldoComp;
-					}else{
-						$detalleRecibo->setRemunerativo($hsNormalesTrabajadas * $sueldoBlanco);
-						$this->remunerativo += $hsNormalesTrabajadas * $sueldoBlanco;	
-					}					
+					$res = $this->DetalleReciboStrategy($empleado, $detalleRecibo, $objEmpleado);
+					
+					if($res != false){
+						$detalleRecibo->setValorCompensatorioHist($empleado->getCompensatorio());
+						$detalleRecibo->addCodigoSueldo($concepto[0]);
+						$recibo->addReciboDetalleId($detalleRecibo);	
+					}
 					
 					
-					$detalleRecibo->setValorCompensatorioHist($empleado->getCompensatorio());
-					$detalleRecibo->addCodigoSueldo($concepto[0]);
-					$recibo->addReciboDetalleId($detalleRecibo);
+					//SI EL EMPLEADO TIENE REGIMEN DE CALORIAS
+					if($empleado->getLiquidaCalorias() == true){
+						$this->LiquidarCalorias($empleado, $recibo, $objEmpleado);
+					}
 				}else{
 					
 				}
 			}
 		}
+	}
+
+	private function LiquidarCalorias($empleado, $recibo, $objEmpleado)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$repoConceptos = $em->getRepository('MbpPersonalBundle:CodigoSueldos');
+		$hsNormalesTrabajadas = $objEmpleado->getHsNormalesTrabajadas();
+		
+		$calorias;
+		if($this->compensatorio != true){
+			$calorias = $repoConceptos->findOneByDescripcion('CALORIAS HORAS NORMALES');	
+		}else{
+			$calorias = $repoConceptos->findOneByDescripcion('CALORIAS HS. EXTRAS 50%');
+		}
+		
+		
+		if(empty($calorias)){
+			throw new \Exception("No existe el concepto CALORIAS", 1);			
+		}
+		
+		$detalleRecibo = new RecibosDetalle;		
+		$detalleRecibo->setValorConceptoHist($empleado->getSueldoBlanco());
+		$detalleRecibo->setValorCompensatorioHist($empleado->getCompensatorio());
+		$detalleRecibo->addCodigoSueldo($calorias);
+				
+		$hsNormalesTrabajadas = $objEmpleado->getHsNormalesTrabajadas();
+		
+		if($this->compensatorio == true){
+			$sueldoComp = $empleado->getCompensatorio();
+			$sueldoBlanco = $empleado->getSueldoBlanco();
+			$hsExtrasTrabajadas = $objEmpleado->getHsExtrasTrabajadas();
+			$detalleRecibo->setCantConceptoVar($hsExtrasTrabajadas * self::$coeficienteCalorias);
+			$importeCalorias = $hsExtrasTrabajadas * ($sueldoComp + $sueldoBlanco) * self::$coeficienteCalorias * 1.5;			
+			$detalleRecibo->setRemunerativo($importeCalorias);
+			$this->remunerativo += $importeCalorias;
+		}else{
+			$sueldoBlanco = $empleado->getSueldoBlanco();
+			$detalleRecibo->setCantConceptoVar($hsNormalesTrabajadas * self::$coeficienteCalorias);
+			$detalleRecibo->setRemunerativo($hsNormalesTrabajadas * $sueldoBlanco * self::$coeficienteCalorias);
+			$this->remunerativo += $hsNormalesTrabajadas * $sueldoBlanco * self::$coeficienteCalorias;	
+		}
+		
+		$recibo->addReciboDetalleId($detalleRecibo);
+	}
+	
+	//DETERMINA SEGUN EL ENTORNO DE LIQUIDACION QUE VALOR HS APLICARÁ
+	private function DetalleReciboStrategy($empleado, $detalleRecibo, $objEmpleado, $coef=1)
+	{
+		$hsNormalesTrabajadas = $objEmpleado->getHsNormalesTrabajadas();
+		if($this->compensatorio == true){
+			$sueldoComp = $empleado->getCompensatorio();
+			if($sueldoComp == 0) return false;
+			$detalleRecibo->setRemunerativo($hsNormalesTrabajadas * $sueldoComp * $coef);
+			$this->remunerativo += $hsNormalesTrabajadas * $sueldoComp * $coef;
+		}else{
+			$sueldoBlanco = $empleado->getSueldoBlanco();
+			$detalleRecibo->setRemunerativo($hsNormalesTrabajadas * $sueldoBlanco * $coef);
+			$this->remunerativo += $hsNormalesTrabajadas * $sueldoBlanco * $coef;	
+		}	
+		return $detalleRecibo;	
 	}
 
 	public function LiquidarNovedadesLote($empleado, $recibo)
@@ -339,16 +398,15 @@ class LiquidacionEnLoteController extends RecibosController
 					foreach ($detalles as $detalle) {
 						$codigosSueldos = $detalle->getCodigoSueldos();
 						foreach ($codigosSueldos as $idCodigo) {
-							if($idCodigo->getId() == $novedad){
-								//print_r("entro aca con: ".$objEmpleado->getNombre());
-								
+							if($idCodigo->getId() == $novedad){								
 								$detalle->setCantConceptoVar($detalle->getCantConceptoVar() + self::$hsNormalesDiarias);
-								if($this->compensatorio == true){
-									$detalleRecibo->setRemunerativo($detalle->getCantConceptoVar() * $sueldoComp);
-									$this->remunerativo += self::$hsNormalesDiarias * $sueldoComp;										
-								}else{
+								if($this->compensatorio != true){
 									$detalleRecibo->setRemunerativo($detalle->getCantConceptoVar() * $sueldoBlanco);
-									$this->remunerativo += self::$hsNormalesDiarias * $sueldoBlanco;
+									$this->remunerativo += self::$hsNormalesDiarias * $sueldoBlanco;																		
+								}else{
+									if($sueldoComp == 0) return;
+									$detalleRecibo->setRemunerativo($detalle->getCantConceptoVar() * $sueldoComp);
+									$this->remunerativo += self::$hsNormalesDiarias * $sueldoComp;	
 								}									
 								$novedadFlag++;		
 							}	
@@ -357,21 +415,20 @@ class LiquidacionEnLoteController extends RecibosController
 					}	
 					
 					if($novedadFlag == 0){
-						//print_r("entro aca 2 con: ".$objEmpleado->getNombre());
-						//exit;
 						$detalleRecibo = new RecibosDetalle;
 						
 						$detalleRecibo->setCantConceptoVar(self::$hsNormalesDiarias);
 						$detalleRecibo->setValorConceptoHist($sueldoBlanco);
 						//SI ESTAMOS LIQUIDANDO EN NEGRO TOMAMOS EL VALOR HORA COMPENSATORIO
-						if($this->compensatorio == true){							
-							$detalleRecibo->setRemunerativo(self::$hsNormalesDiarias * $sueldoComp);
-							$this->remunerativo += self::$hsNormalesDiarias * $sueldoComp;
-						}else{
+						if($this->compensatorio != true){							
 							$detalleRecibo->setRemunerativo(self::$hsNormalesDiarias * $sueldoBlanco);
-							$this->remunerativo += self::$hsNormalesDiarias * $sueldoBlanco;	
+							$this->remunerativo += self::$hsNormalesDiarias * $sueldoBlanco;
+						}else{
+							if($sueldoComp == 0) return;
+							$detalleRecibo->setRemunerativo(self::$hsNormalesDiarias * $sueldoComp);
+							$this->remunerativo += self::$hsNormalesDiarias * $sueldoComp;								
 						}	
-						$detalleRecibo->setRemunerativo(self::$hsNormalesDiarias * $sueldoBlanco);						
+						//$detalleRecibo->setRemunerativo(self::$hsNormalesDiarias * $sueldoBlanco);						
 						$detalleRecibo->setValorCompensatorioHist($empleado->getCompensatorio());
 						$detalleRecibo->addCodigoSueldo($nuevaNovedad);
 						$recibo->addReciboDetalleId($detalleRecibo);		

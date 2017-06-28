@@ -3,7 +3,7 @@ Ext.define('MetApp.view.RRHH.Personal.PersonalWin',{
 	alias: 'widget.personalWin',
 	itemId: 'personalWin',
 	title: 'Tabla de Personal',
-	height: 550,
+	height: 580,
 	width: 900,
 	modal: true,
 	autoShow: true,	

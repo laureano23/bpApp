@@ -4,6 +4,7 @@
 namespace Mbp\ProduccionBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -13,11 +14,13 @@ use Mbp\ProduccionBundle\Clases\Calculo;
 
 class CalculoAguaController extends Controller
 {
-	/*
-	 * RECIBE LOS PARAMETROS DE ENTRADA DE CALCULO, LOS PASA A LA PLANILLA EXCEL Y DEVUELVE LOS RESULTADOS
-	 */
+	/**
+     * @Route("/calculoagua", name="mbp_produccion_calculoagua", options={"expose"=true})
+     */
 	public function calculoAguaAction()
 	{
+		//MODIFICA EL TIEMPO MAXIMO PARA EJECUCION
+		ini_set('max_execution_time', 3000);
 		//RECIBO PARAMETROS
 		$request = $this->get('request');
 		$tipoFluido = $request->get('tipoFluido');
@@ -25,30 +28,34 @@ class CalculoAguaController extends Controller
 		$tSalida = $request->get('tSalida');
 		$tAmbiente = $request->get('tAmbiente');
 		$caudal = $request->get('caudal');
+		$response = new Response;
 		
-				
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpProduccionBundle/Resources/doc/').'Intercambiador Placa Barra Aceite-Aire y Agua-Aire.xlsx';
-		
-		//CONFIGURA CACHE DE LA LIBRERIA
-		$cache = $this->get('phpexcel')->phpExcelCache();
-		$cacheMethod = $cache::cache_to_phpTemp;
-		$cacheSettings = array( 
-		    'memoryCacheSize' => '16MB'
-		);
-		
-		$settings = $this->get('phpexcel')->phpExcelSettings();
-		$settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
-				
-		$phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
-		$reader = $this->get('phpexcel')->createReader('Excel2007');
-		
-		try{
-			//MODIFICA EL TIEMPO MAXIMO PARA EJECUCION
-			ini_set('max_execution_time', 300);
+		try{		
+			$kernel = $this->get('kernel');	
+			$basePath = $kernel->locateResource('@MbpProduccionBundle/Resources/doc/').'RG-111 Intercambiador Placa Barra Aceite-Aire y Agua - Aire  Rev  05.xlsm';
+								
+			$reader = $this->get('phpexcel')->createReader('Excel2007');
+			$reader->setLoadSheetsOnly(array(
+				'Selección',
+				'Selección por dimensión',
+				'Selección depósito',
+				'Matriz de equipos',
+				'Cálculo x dimensión',
+				'Cálculo depósito',				
+				'Parametros globales',
+				'Cálculo Ft',
+				'Tabla j (Re)',
+				'Caracteristicas Dimensionales',
+				'Propiedades-Aire',
+				'Propiedades-A-AG',
+				'Placa Barra'
+				));
 			
-			$reader->setReadDataOnly(true);
+			
+			
+			$reader->setReadDataOnly(true);			
 			$obj = $reader->load($basePath);
+			
 			
 			//CARGA DE DATOS DE ENTRADA
 			$obj->setActiveSheetIndex(0);
@@ -58,15 +65,16 @@ class CalculoAguaController extends Controller
 			$obj->getActiveSheet()->setCellValue('F24', $caudal);		
 			$obj->getActiveSheet()->setCellValue('K7', $tipoFluido);
 			
+			
 			//DATOS DE SALIDA
-			$potenciaSolicitada = $obj->getActiveSheet()->getCell('N13')->getCalculatedValue();
+			$potenciaSolicitada = $obj->getActiveSheet()->getCell('N13')->getFormattedValue();
 			$equipo =  $obj->getActiveSheet()->getCell('K16')->getCalculatedValue();
-			$potenciaDisipada =  $obj->getActiveSheet()->getCell('N18')->getCalculatedValue();
+			$potenciaDisipada =  $obj->getActiveSheet()->getCell('N18')->getFormattedValue();
 			$tSalidaRtdo =  $obj->getActiveSheet()->getCell('N20')->getCalculatedValue();
 			$tReservaPotencia =  $obj->getActiveSheet()->getCell('N22')->getCalculatedValue();
 			$perdidaCarga =  $obj->getActiveSheet()->getCell('N24')->getCalculatedValue();
 			
-			echo json_encode(array(
+			/*echo json_encode(array(
 				'potenciaSolicitada' => $potenciaSolicitada,
 				'equipo' => $equipo,
 				'potenciaDisipada' => $potenciaDisipada,
@@ -74,13 +82,21 @@ class CalculoAguaController extends Controller
 				'tReservaPotencia' => $tReservaPotencia,
 				'perdidaCarga' => $perdidaCarga
 			));
+			*/
+			return $response->setContent(json_encode(array(
+				'success' => true, 
+			)));
 		}catch(Exception $e){
-			$e->getMessage();
-		}
-        
-        return new Response();        
+			$response->setContent(json_encode(array(
+				'success' => false,
+				'msg' => $e->getMessage() 
+			)));
+			
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}    
 	}
-
+	
+	
 }
 
 

@@ -273,6 +273,16 @@ class Personal
      */
     private $liquidaPorLote = false;
 	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="liquidaCalorias", type="boolean", nullable=false)
+	 * @Assert\Type(
+     *     type="bool"
+     * )
+     */
+    private $liquidaCalorias = false;
+	
     
     public function __construct()
     {
@@ -1026,5 +1036,29 @@ class Personal
     public function getLiquidaPorLote()
     {
         return $this->liquidaPorLote;
+    }
+
+    /**
+     * Set liquidaCalorias
+     *
+     * @param boolean $liquidaCalorias
+     *
+     * @return Personal
+     */
+    public function setLiquidaCalorias($liquidaCalorias)
+    {
+        $this->liquidaCalorias = $liquidaCalorias;
+
+        return $this;
+    }
+
+    /**
+     * Get liquidaCalorias
+     *
+     * @return boolean
+     */
+    public function getLiquidaCalorias()
+    {
+        return $this->liquidaCalorias;
     }
 }
