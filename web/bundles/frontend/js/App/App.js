@@ -10,7 +10,7 @@ Ext.application({
 	requires: [
 		'MetApp.resources.overrides.menu', //REQUIERE OVERRIDE DE ESTA CLASE PARA ARREGLAR UN BUG DE CHROME DONDE DESAPARECEN LOS SUB MENUES
 		'Ext.grid.plugin.DragDrop',
-		'MetApp.resources.ux.ParametersSingleton'
+		'MetApp.resources.ux.ParametersSingleton',
 	], 
 	
 	controllers: [
@@ -50,7 +50,8 @@ Ext.application({
 		'Security.UserParamsController',
 		'Compras.ReportesCompraController',
 		'Reportes.ReportesController',
-		'MetApp.controller.Bancos.BancosController'
+		'MetApp.controller.Bancos.BancosController',
+		'MetApp.controller.Articulos.PosEnfriadoresController'
 	],
 	name: 'MetApp',
 	appFolder: '../bundles/frontend/js/App',

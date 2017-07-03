@@ -67,6 +67,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                         listeners : {
                             render : dragZone
                         },
+					},
+					{
+						text: 'PosEnfriadores',
+						itemId: 'tabPosEnfriadores',
+                        listeners : {
+                            render : dragZone
+                        },
 					}
 				]
 			},

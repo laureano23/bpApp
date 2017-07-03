@@ -121,7 +121,7 @@ class EmpleadosCollection
 
 	private function ValidarColeccionEmpleados()
 	{
-		$this->ValidarFaltaDeIngreso();
+		//$this->ValidarFaltaDeIngreso();
 		$this->ValidarIngresosEgresos();
 	}
 

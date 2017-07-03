@@ -32,7 +32,7 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 			{
 				xtype: 'textfield',				
 				name: 'codigo',
-				disabled: true,
+				readOnly: true,
 				itemId: 'codigo',
 				fieldLabel: 'Codigo',				
 				width: 250,
@@ -52,14 +52,14 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 			{
 				xtype: 'textfield',
 				name: 'descripcion',
-				disabled: true,
+				readOnly: true,
 				fieldLabel: 'Descripcion',
 				width: 550
 			},
 			{
 				xtype: 'textfield',
 				name: 'unidad',
-				disabled: true,
+				readOnly: true,
 				fieldLabel: 'Unidad',
 				width: 200,
 				allowBlank: true
@@ -72,7 +72,7 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 				decimalSeparator: '.',
 				decimalPrecision: 4,
 				name: 'costo',
-				disabled: true,
+				readOnly: true,
 				fieldLabel: 'Costo',
 				width: 200,
 				allowBlank: true
@@ -104,7 +104,7 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 			},
 			{
 				xtype: 'numberfield',
-				disabled: true,
+				readOnly: true,
 				width: 110,
 				labelWidth: 40,
 				margin: '0 0 0 15',
@@ -145,7 +145,7 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 				decimalSeparator: '.',
 				decimalPrecision: 4,
 				name: 'precio',
-				disabled: true,
+				readOnly: true,
 				fieldLabel: 'Precio',
 				width: 200,
 				allowBlank: true
@@ -215,7 +215,7 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 							xtype: 'container',
 							defaults: {
 								disabledCls: 'myDisabledClass',
-								disabled: true,
+								readOnly: true,
 								allowBlank: true
 							},
 							layout: 'hbox',							
