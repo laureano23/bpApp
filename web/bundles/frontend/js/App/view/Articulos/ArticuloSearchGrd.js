@@ -1,8 +1,11 @@
 Ext.define('MetApp.view.Articulos.ArticuloSearchGrd', {
+	config:{
+		store: 'Articulos.Articulos'
+	},
 	extend: 'Ext.grid.Panel',
 	alias: 'widget.articulosearchgrd',
 	itemId: 'articulosearchgrd',
-	store: 'Articulos.Articulos',
+	//store: 'Articulos.Articulos',
 	requires: ['Ext.grid.plugin.BufferedRenderer'],
 	idProperty: 'id',
 	loadMask: true,
@@ -91,7 +94,8 @@ Ext.define('MetApp.view.Articulos.ArticuloSearchGrd', {
 		}		
 	],
 	
-	initComponent: function(){				
+	initComponent: function(){		
+		console.log(this.store);
 		this.columns = [
 			{xtype: 'rownumberer', width: 50, sortable: false},
 			{header: 'Id', dataIndex: 'id', flex: 1, hidden: true},

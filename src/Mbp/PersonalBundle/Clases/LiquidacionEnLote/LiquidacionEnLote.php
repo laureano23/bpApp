@@ -328,6 +328,16 @@ class LiquidacionEnLote
 			$this->diasMensuales = $dias;	
 		}
 		
+		/* SI TENEMOS UN FERIADO SABADO O DOMINGO DEBEMOS AUMENTAR LAS HS NORMALES */
+		$i=0;
+		$fechaEntrada = $empleados[0]->getFecha();	
+		foreach ($empleados[0]->getObservaciones() as $obs) {					
+			if($obs == 6 && $fechaEntrada[$i]->format('D') == 'Sat' || $obs == 6 && $fechaEntrada[$i]->format('D') == 'Sun'){
+				$this->horasNormales += 9;
+			}
+			$i++;
+		}
+		
 	}
 	
 	/*
@@ -368,18 +378,19 @@ class LiquidacionEnLote
 				$horas += $hsJustificadas;
 			}
 			
-					
+			//SON LAS HORAS QUE EL EMPLEADO DEBERIA HABER TRABAJO
+			$hsATrabajar = $this->horasNormales - $hsJustificadas;		
 			
 			$hsNormales = 0;
 			$hsExtras = 0;
 			
 			
-			if($horas <= $this->horasNormales){
+			if($horas <= $hsATrabajar){
 				$hsNormales = $horas;
 				$hsExtras = 0;
 				
 			}else{
-				$hsNormales = $this->horasNormales - $hsJustificadas;
+				$hsNormales = $hsATrabajar;
 				$hsExtras = $horas - $this->horasNormales;
 				
 			}	

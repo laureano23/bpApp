@@ -73,3 +73,7 @@ mbp_formulas_muestraReporte:
 mbp_articulos_remitoClientes:
     resource: "@MbpArticulosBundle/Controller/RemitosController.php"
     type:     annotation
+
+mbp_articulos_enfriadores:
+    resource: "@MbpArticulosBundle/Controller/EnfriadoresController.php"
+    type:     annotation

@@ -10,10 +10,24 @@ Ext.define('MetApp.view.Articulos.WinArticuloSearch',{
 	autoShow: true,
 	modal: true,
 	
+	config: {
+		store: null
+	},
 	
-	initComponent: function(){
+	
+	initComponent: function(cfg){
+		var store;
+		if(this.store == null){
+			store = 'Articulos.Articulos';
+		}else{
+			store = this.store;
+		}
+		
+		console.log(store);
 		this.items = [
-			Ext.create('MetApp.view.Articulos.ArticuloSearchGrd'),			
+			Ext.create('MetApp.view.Articulos.ArticuloSearchGrd', {
+				store: store
+			}),			
 		]		
 		this.callParent();
 	}

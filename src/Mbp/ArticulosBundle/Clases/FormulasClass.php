@@ -365,41 +365,45 @@ class FormulasClass
 				$this->padreFormula_hijoFormula();
 			}*/
 			
-			foreach ($nodos_art_padre as $nodo) {
-				//DIFERENCIA NODOS LFT
-				$dif = $formula_hijo[0]->getLft() - ($nodo->getLft() + 1);
-				
-				$flag=0;	//FLAG PARA AL PRIMER NODO PONERLE LA CANTIDAD CORRECTA
-				$auxNodo;
-				foreach ($formula_hijo as $hijo) {
-					$nuevo_nodo = new Formulas();
-					$nuevo_nodo->setIdArt($hijo->getIdArt());
-					$nuevo_nodo->setLft($hijo->getLft() - $dif);				
-					$nuevo_nodo->setRgt($hijo->getRgt() - $dif);
+			if($nodos_art_padre != null){
+				foreach ($nodos_art_padre as $nodo) {
+					//DIFERENCIA NODOS LFT
+					$dif = $formula_hijo[0]->getLft() - ($nodo->getLft() + 1);
 					
-					//LA CANTIDAD DEL PRIMER NODO ES CERO PORQUE VIENE DE UNA FORMULA PADRE, ESTO LO EVITAMOS CON EL FLAG
-					$flag == 0 ? $nuevo_nodo->setCant($this->cantidad) : $nuevo_nodo->setCant($hijo->getCant());				
-					$flag = 1;
-					
-					
-					$this->em->persist($nuevo_nodo);
-					$this->em->persist($nodo);
-					
-					$auxNodo = $nuevo_nodo;
-					
-					$this->em->flush();
-									
-					$this->orden_nodo_lft_abajo($nuevo_nodo->getLft(), $nuevo_nodo->getRgt(), $nodo->getLft(), $nuevo_nodo->getId());
-					
-					/*
-					 * UNA VEZ QUE ORDENO CORRO 2 POSICIONES LOS NODOS ENTONCES DEBO COMPENSAR LA DIFERENCIA SI LA
-					 * FORMULA A INSERTAR ESTA DELANTE DEL ARTICULO FORMULADO
-					 * */
-					if($hijo->getLft() > $nodo->getLft()){
-						$dif = $dif + 2;	
-					}				
-				}
-			}				
+					$flag=0;	//FLAG PARA AL PRIMER NODO PONERLE LA CANTIDAD CORRECTA
+					$auxNodo;
+					foreach ($formula_hijo as $hijo) {
+						$nuevo_nodo = new Formulas();
+						$nuevo_nodo->setIdArt($hijo->getIdArt());
+						$nuevo_nodo->setLft($hijo->getLft() - $dif);				
+						$nuevo_nodo->setRgt($hijo->getRgt() - $dif);
+						
+						//LA CANTIDAD DEL PRIMER NODO ES CERO PORQUE VIENE DE UNA FORMULA PADRE, ESTO LO EVITAMOS CON EL FLAG
+						$flag == 0 ? $nuevo_nodo->setCant($this->cantidad) : $nuevo_nodo->setCant($hijo->getCant());				
+						$flag = 1;
+						
+						
+						$this->em->persist($nuevo_nodo);
+						$this->em->persist($nodo);
+						
+						$auxNodo = $nuevo_nodo;
+						
+						$this->em->flush();
+										
+						$this->orden_nodo_lft_abajo($nuevo_nodo->getLft(), $nuevo_nodo->getRgt(), $nodo->getLft(), $nuevo_nodo->getId());
+						
+						/*
+						 * UNA VEZ QUE ORDENO CORRO 2 POSICIONES LOS NODOS ENTONCES DEBO COMPENSAR LA DIFERENCIA SI LA
+						 * FORMULA A INSERTAR ESTA DELANTE DEL ARTICULO FORMULADO
+						 * */
+						if($hijo->getLft() > $nodo->getLft()){
+							$dif = $dif + 2;	
+						}				
+					}
+				}		
+			}
+			
+						
 			
 				
 			$this->em->getConnection()->commit();	

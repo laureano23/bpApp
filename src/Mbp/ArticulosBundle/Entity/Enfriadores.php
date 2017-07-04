@@ -5,12 +5,12 @@ namespace Mbp\ArticulosBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * PosEnfriadores
+ * Enfriadores
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Mbp\ArticulosBundle\Entity\PosEnfriadoresRepository")
+ * @ORM\Entity(repositoryClass="Mbp\ArticulosBundle\Entity\EnfriadoresRepository")
  */
-class PosEnfriadores extends Articulos 
+class Enfriadores extends Articulos 
 {
     /**
      * @var integer
