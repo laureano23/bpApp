@@ -7,6 +7,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Mbp\ArticulosBundle\Entity\ArticulosRepository;
 use Mbp\ArticulosBundle\Entity\Articulos;
+use Mbp\ArticulosBundle\Clases\FileUploader;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class ArticulosController extends Controller
 {
@@ -71,6 +74,8 @@ class ArticulosController extends Controller
         $request = $this->getRequest();
 		
 		$data = $request->request->get('data');
+		
+		
 				
 		$rep = $em->getRepository('MbpArticulosBundle:Articulos');
 		$validator = $this->get('validator');
@@ -115,6 +120,84 @@ class ArticulosController extends Controller
 		$res = $rep->validArt($cod);
 		
 		return new Response();
+	}
+	
+	public function cargarImagenAction()
+	{
+		$em = $this->getDoctrine()->getManager();
+		$response = new Response;
+		$rep = $em->getRepository('MbpArticulosBundle:Articulos');
+		
+		try{
+			$request = $this->getRequest();
+			$uploaderService = $this->get('uploader');
+			
+			$file = $request->files->get('rutaPlano');
+			$idArt = $data = $request->request->get('idArt');
+			
+			$uploadedFile = $uploaderService->upload($file);
+			
+			$articulo = $rep->find($idArt);
+			$articulo->setNombreImagen($uploadedFile);
+			
+			$em->persist($articulo);
+			$em->flush();			
+			
+			
+			return $response->setContent(
+				json_encode(array(
+					'success' => true
+				))
+			);
+		}catch(\Exception $e){
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(
+				json_encode(array(
+					'success' => false,
+					'msg' => $e->getMessage()
+				))
+			);
+		}	
+	}
+	
+	public function servirImagenArticuloAction($id)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$rep = $em->getRepository('MbpArticulosBundle:Articulos');
+		
+		try{
+			$request = $this->getRequest();
+			$uploaderService = $this->get('uploader');
+			
+						
+			$fileName = $rep->findOneById($id)->getNombreImagen();
+			if($fileName == null){
+				throw new \Exception("No existe imagen para este articulo", 1);				
+			}
+			
+			$file = $uploaderService->getTargetDir()."/".$fileName;
+			
+			$response = new BinaryFileResponse($file);
+	        $response->trustXSendfileTypeHeader();
+	        $response->setContentDisposition(
+	            ResponseHeaderBag::DISPOSITION_INLINE,
+	            $fileName,
+	            iconv('UTF-8', 'ASCII//TRANSLIT', $fileName)
+	        );
+			$response->headers->set('Content-type', 'application/pdf');
+	
+	        return $response;
+			
+		}catch(\Exception $e){
+			$response = new Response;
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(
+				json_encode(array(
+					'success' => false,
+					'msg' => $e->getMessage()
+				))
+			);
+		}
 	}
 }
 

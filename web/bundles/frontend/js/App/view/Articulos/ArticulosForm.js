@@ -4,6 +4,7 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 	id: 'articulosForm',
 	itemId: 'articulosForm',
 	width: 800,
+	height: 370,
 	layout: 'fit',
 	autoShow: true,
 	title: 'Tabla de Articulos',
@@ -27,7 +28,16 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 				fieldLabel: 'Id',				
 				width: 250,
 				text: 'id',
-				hidden: true				
+				hidden: true,
+				listeners: {//PARA SETEAR EL ID EN LA TAB DE IMAGENES
+					change: {
+						fn: function(){
+							var btn = this;
+							var form = btn.up('window');
+							form.queryById('idArt').setValue(btn.getValue());
+						}
+					}
+				}				
 			},
 			{
 				xtype: 'textfield',				
@@ -49,13 +59,7 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 		]
 		
 		var itemsBox2 = [
-			{
-				xtype: 'textfield',
-				name: 'descripcion',
-				readOnly: true,
-				fieldLabel: 'Descripcion',
-				width: 550
-			},
+			
 			{
 				xtype: 'textfield',
 				name: 'unidad',
@@ -181,83 +185,144 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 		Ext.applyIf(me,{
 			items: [
 				{
-					xtype: 'form',
-					store: 'Articulos.Articulos',
-					itemId: 'artForm',	
-					border: false,						
-					fieldDefaults: {						
-						msgTarget: 'side',
-						blankText: 'Debe completar este campo',
-						allowBlank: false,							
-					},
-					items: [
+					xtype: 'tabpanel',
+					region: 'center',
+					tabBarHeaderPosition: 1,
+					layout: 'fit',
+	                tabBar: {
+	                    flex: 1
+	                },
+					items:[
 						{
-							xtype: 'container',
-							border: false,
-							defaults: {
-								disabledCls: 'myDisabledClass'	
-							},
-							layout: 'hbox',							
-							width: 600,
-							padding: '5 5 5 5',
-							items: autz.getAuthorizedElements(itemsBox1)
-						},
+							title: 'Datos generales',
+							iconCls: 'contact',
+							items: [
+								{
+									xtype: 'form',
+									store: 'Articulos.Articulos',
+									itemId: 'artForm',	
+									border: false,						
+									fieldDefaults: {						
+										msgTarget: 'side',
+										blankText: 'Debe completar este campo',
+										allowBlank: false,							
+									},
+									items: [
+										{
+											xtype: 'container',
+											border: false,
+											defaults: {
+												disabledCls: 'myDisabledClass'	
+											},
+											layout: 'hbox',							
+											width: 600,
+											padding: '5 5 5 5',
+											items: autz.getAuthorizedElements(itemsBox1)
+										},
+										{
+											xtype: 'textfield',
+											name: 'descripcion',
+											margin: '5 5 5 5',
+											readOnly: true,
+											fieldLabel: 'Descripcion',
+											width: 550
+										},
+										{
+											xtype: 'container',
+											defaults: {
+												disabledCls: 'myDisabledClass'	
+											},
+											layout: 'hbox',
+											padding: '5 5 5 5',
+											items: autz.getAuthorizedElements(itemsBox2)
+										},
+										{
+											xtype: 'container',
+											defaults: {
+												disabledCls: 'myDisabledClass',
+												readOnly: true,
+												allowBlank: true
+											},
+											layout: 'hbox',							
+											width: 800,
+											padding: '0 5 5 5',
+											items: autz.getAuthorizedElements(familias)
+										},
+										{
+											xtype: 'fieldset',
+											collapsible: true,
+											collapsed: false,
+											itemId: 'fieldSetCosto',
+											layout: 'hbox',
+											defaults: {
+												disabledCls: 'myDisabledClass'	
+											},
+											title: 'Costos',
+											items: autz.getAuthorizedElements(costos)
+										},
+										{
+											xtype: 'fieldset',
+											collapsible: true,
+											collapsed: false,
+											itemId: 'fieldSetPrecio',
+											layout: 'hbox',
+											defaults: {
+												disabledCls: 'myDisabledClass'	
+											},
+											title: 'Precio',
+											items: autz.getAuthorizedElements(precio)
+										},
+										{
+											xtype: 'container',	
+											height: 55,
+											padding: '1 0 0 1',
+											layout: 'hbox',
+											cls: 'panelBtn',
+											width: 600,
+											items: botonera
+										}
+									]
+								}		
+							]
+						},						
 						{
-							xtype: 'container',
-							defaults: {
-								disabledCls: 'myDisabledClass'	
-							},
-							layout: 'vbox',
-							padding: '5 5 5 5',
-							items: autz.getAuthorizedElements(itemsBox2)
-						},
-						{
-							xtype: 'container',
-							defaults: {
-								disabledCls: 'myDisabledClass',
-								readOnly: true,
-								allowBlank: true
-							},
-							layout: 'hbox',							
-							width: 800,
-							padding: '0 5 5 5',
-							items: autz.getAuthorizedElements(familias)
-						},
-						{
-							xtype: 'fieldset',
-							collapsible: true,
-							collapsed: false,
-							itemId: 'fieldSetCosto',
-							layout: 'hbox',
-							defaults: {
-								disabledCls: 'myDisabledClass'	
-							},
-							title: 'Costos',
-							items: autz.getAuthorizedElements(costos)
-						},
-						{
-							xtype: 'fieldset',
-							collapsible: true,
-							collapsed: false,
-							itemId: 'fieldSetPrecio',
-							layout: 'hbox',
-							defaults: {
-								disabledCls: 'myDisabledClass'	
-							},
-							title: 'Precio',
-							items: autz.getAuthorizedElements(precio)
-						},
-						{
-							xtype: 'container',	
-							height: 55,
-							padding: '1 0 0 1',
-							layout: 'hbox',
-							cls: 'panelBtn',
-							width: 600,
-							items: botonera
+							title: 'Imagenes',
+							iconCls: 'contact',
+							items: [
+								{
+									xtype: 'form',
+									border: false,
+									width: 600,									
+									items: [
+										{
+											xtype: 'textfield',
+											name: 'idArt',
+											itemId: 'idArt',
+											fieldLabel: 'id'
+										},						
+										{
+											xtype: 'filefield',
+											width: 600,
+											fieldLabel: 'Plano',
+											margin: '0 0 0 5',
+											labelWidth: 35,
+											name: 'rutaPlano',
+											itemId: 'rutaPlano',
+											buttonText: 'Seleccion archivo...',
+										},
+										{
+											xtype: 'button',
+											margin: '5 5 5 5',
+											itemId: 'cargarImagen',
+											text: 'Guardar'
+										}
+									]
+								}
+							]
 						}
 					]
-				}
+				},
+								
 			]
 		});
 		this.callParent();

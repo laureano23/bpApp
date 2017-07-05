@@ -159,4 +159,6 @@ services:
    calculoConceptos:
      class: Mbp\PersonalBundle\Clases\CalculosConceptos
      arguments: [ @doctrine.orm.entity_manager ]  
-   
+   uploader:
+      class: Mbp\ArticulosBundle\Clases\FileUploader
+      arguments: [ '%image_directory%' ]

@@ -58,7 +58,16 @@ Ext.define('MetApp.view.Articulos.EnfriadoresFormView', {
 								{header: 'Id', dataIndex: 'id', flex: 1, hidden: false},
 								{header: 'Codigo', dataIndex: 'codigo', flex: 1},
 								{header: 'Descripcion', dataIndex: 'descripcion', flex: 1},
-								{header: 'Plano', dataIndex: 'plano', flex: 1},								
+								{ 
+									header: 'Imagen',
+									itemId: 'nombreImagen',
+									dataIndex: 'nombreImagen',
+									xtype: 'actioncolumn',
+									items: [
+										{ iconCls: 'search' }										
+									],
+									flex: 1
+								},								
 							]
 						}								
 					]

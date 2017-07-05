@@ -509,28 +509,4 @@ class Articulos
     {
         return $this->utilidadPretendida;
     }
-
-    /**
-     * Set nombreImagen
-     *
-     * @param string $nombreImagen
-     *
-     * @return Articulos
-     */
-    public function setNombreImagen($nombreImagen)
-    {
-        $this->nombreImagen = $nombreImagen;
-
-        return $this;
-    }
-
-    /**
-     * Get nombreImagen
-     *
-     * @return string
-     */
-    public function getNombreImagen()
-    {
-        return $this->nombreImagen;
-    }
 }

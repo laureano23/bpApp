@@ -28,6 +28,18 @@ mbp_articulos_validate:
     options:
       expose: true
 
+mbp_articulos_cargarImagen:
+    path:     /cargarImagen
+    defaults: { _controller: MbpArticulosBundle:Articulos:cargarImagen }
+    options:
+      expose: true
+
+mbp_articulos_servirImagen:
+    path:     /servirImagen/{id}
+    defaults: { _controller: MbpArticulosBundle:Articulos:servirImagenArticulo }
+    options:
+      expose: true
+
 mbp_formulas_read:
     path:     /formulaslist
     defaults: { _controller: MbpArticulosBundle:Formulas:formulaslist }
@@ -77,3 +89,4 @@ mbp_articulos_remitoClientes:
 mbp_articulos_enfriadores:
     resource: "@MbpArticulosBundle/Controller/EnfriadoresController.php"
     type:     annotation
+    

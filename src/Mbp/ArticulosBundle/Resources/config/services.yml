@@ -9,3 +9,4 @@ services:
         class: Mbp\ArticulosBundle\Listener\RemitoClientesListener
         tags:
             - { name: doctrine.event_listener, event: postPersist }
+   

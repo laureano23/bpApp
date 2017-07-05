@@ -14,6 +14,9 @@ Ext.define('MetApp.controller.Articulos.EnfriadoresController',{
 				'EnfriadoresFormView button[itemId=buscaArt]': {
 					click: this.SearchArt
 				},
+				'EnfriadoresFormView actioncolumn[itemId=nombreImagen]': {
+					click: this.VerImagen
+				},
 		});		
 	},
 	
@@ -45,15 +48,32 @@ Ext.define('MetApp.controller.Articulos.EnfriadoresController',{
 				success: function(resp){
 					var grid = win.down('grid');
 					var res = Ext.JSON.decode(resp.responseText);
-					console.log(res);
+					
 					grid.getStore().loadData(res);
+					gridEnfriadores.close();
 				}
 			});
 		});
 	},
 	
-	
+	VerImagen: function(btn){
+		var win = btn.up('window');
+		var selection = win.down('grid').getSelectionModel().getSelection()[0];
+		console.log(selection);
 		
+		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
+		//myMask.show();
+		var file = Routing.generate('mbp_articulos_servirImagen', {id: selection.data.id});	
+		console.log(file);			
+		var WinReporte=Ext.create('Ext.Window', {
+			  title: 'Orden de compra',
+			  width: 900,
+			  height: 600,
+			  layout: 'fit',
+			  modal:true,										
+			  html: '<iframe src='+file+' width="100%" height="100%"></iframe>'						  
+		 }).show();	
+	}	
 });
 
 

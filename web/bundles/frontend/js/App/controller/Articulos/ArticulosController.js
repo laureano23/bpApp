@@ -34,6 +34,9 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 				},
 				'articulosform textfield[itemId=codigo]': {
 					blur: this.OutOfFocus
+				},
+				'articulosform button[itemId=cargarImagen]': {
+					click: this.CargarImagen
 				}
 		});		
 	},
@@ -119,11 +122,11 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 		form.getForm().reset();
 
 		form.query('field').forEach(function(field){
-			field.setDisabled(true);
+			field.setReadOnly(true);
 		});
 		
 		var fldCodigo = form.queryById('codigo');
-		fldCodigo.setDisabled(false);
+		fldCodigo.setReadOnly(false);
 		fldCodigo.focus();
 		
 		form.query('button').forEach(function(button){
@@ -154,7 +157,7 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 		btnResetForm.setDisabled(true);
 		
 		form.query('.field').forEach(function(field){
-			field.setDisabled(true);
+			field.setReadOnly(true);
 		});		
 	},
 	
@@ -191,7 +194,7 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 		    		});
 		    	}if(validResp.success == true){
 		    		form.query('field').forEach(function(fields){
-						fields.setDisabled(false);
+						fields.setReadOnly(false);
 					});
 		    	}
 		    	}
@@ -224,10 +227,11 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 		
 		if(values.id > 0){
 			var rec = store.findRecord('id', values.id);
+			console.log(values);
 			rec.set(values);			
 		}
 		else{
-			record = Ext.create('MetApp.model.Articulos.Articulos');
+			record = Ext.create('MetApp.model.Articulos.Articulos');			
 			record.set(values);			
 			store.add(record);				
 		}
@@ -239,9 +243,9 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 		var store = this.getArticulosArticulosStore();
 		
 		form.query('field').forEach(function(field){
-			field.setDisabled(false);		
+			field.setReadOnly(false);		
 		});
-		form.queryById('codigo').setDisabled('true');
+		form.queryById('codigo').setReadOnly('true');
 		form.query('button').forEach(function(btn){
 			btn.setDisabled(true);
 		});
@@ -289,6 +293,23 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 		if(record.get('moneda') == "U$D"){
 			form.queryById('pesos').setValue('d');
 		}
+	},
+	
+	CargarImagen: function(btn){
+		var form = btn.up('form');
+		form.submit({
+			url: Routing.generate('mbp_articulos_cargarImagen'),
+			
+			//waitMsg: 'Cargando foto...',
+			
+			success: function(resp){
+				console.log(resp);
+			},
+			
+			failure: function(resp){
+				console.log(resp);
+			}
+		});
 	}	
 });
 
