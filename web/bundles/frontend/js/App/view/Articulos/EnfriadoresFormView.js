@@ -22,6 +22,7 @@ Ext.define('MetApp.view.Articulos.EnfriadoresFormView', {
 						{
 							xtype: 'container',
 							layout: 'hbox',
+							margin: '0 0 5 0',
 							items: [
 								{
 									xtype: 'numberfield',
@@ -29,8 +30,15 @@ Ext.define('MetApp.view.Articulos.EnfriadoresFormView', {
 									itemId: 'idCodigo',
 									fieldLabel: 'Id',				
 									width: 250,
-									text: 'id',
 									hidden: true				
+								},
+								{
+									xtype: 'numberfield',
+									name: 'idFormula',
+									itemId: 'idFormula',
+									fieldLabel: 'Id formula',				
+									width: 250,
+									hidden: false				
 								},
 								{
 									xtype: 'textfield',				
@@ -48,6 +56,13 @@ Ext.define('MetApp.view.Articulos.EnfriadoresFormView', {
 									width: 30,
 									iconCls: 'search',
 									itemId: 'buscaArt'
+								},
+								{
+									xtype: 'button',	
+									margins: '0 0 0 5',			
+									height: 25,
+									itemId: 'estructura',
+									text: 'Estructura'
 								}
 							]
 						},
@@ -55,16 +70,27 @@ Ext.define('MetApp.view.Articulos.EnfriadoresFormView', {
 							xtype: 'grid',
 							store: 'MetApp.store.Articulos.FormulaEnfriadoresStore',
 							columns: [
-								{header: 'Id', dataIndex: 'id', flex: 1, hidden: false},
-								{header: 'Codigo', dataIndex: 'codigo', flex: 1},
-								{header: 'Descripcion', dataIndex: 'descripcion', flex: 1},
+								{header: 'Id', dataIndex: 'idArt', flex: 1, hidden: false},
+								{header: 'Codigo', dataIndex: 'codigo', width: 250},
+								{header: 'Descripcion', dataIndex: 'descripcion', width: 450},
 								{ 
 									header: 'Imagen',
 									itemId: 'nombreImagen',
 									dataIndex: 'nombreImagen',
 									xtype: 'actioncolumn',
 									items: [
-										{ iconCls: 'search' }										
+										{ 
+											iconCls: 'search',
+											getClass: function(value,metadata,record){
+												var nombre = record.get('nombreImagen');
+												console.log(nombreImagen);
+												if (nombre == "" ) {
+												    return 'x-hide-display'; 
+												} else {
+												    return 'search';               
+												}
+											},
+										}										
 									],
 									flex: 1
 								},								

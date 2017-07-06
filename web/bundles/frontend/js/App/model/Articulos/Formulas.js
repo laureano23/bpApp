@@ -2,6 +2,7 @@ Ext.define('MetApp.model.Articulos.Formulas',{
 	extend: 'Ext.data.Model',
 	fields: [
 		{name: 'idFormula', type: 'int'},
+		{name: 'idArt', type: 'int'},
 		{name: 'id', type: 'int'},
 		{name: 'depth', type: 'int'},
 		{name: 'codigo', type: 'string'},
@@ -21,5 +22,6 @@ Ext.define('MetApp.model.Articulos.Formulas',{
 				}
 			}
 		},
+		{name: 'nombreImagen', type: 'string'},	
 	]
 });

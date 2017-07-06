@@ -23,7 +23,6 @@ Ext.define('MetApp.view.Articulos.WinArticuloSearch',{
 			store = this.store;
 		}
 		
-		console.log(store);
 		this.items = [
 			Ext.create('MetApp.view.Articulos.ArticuloSearchGrd', {
 				store: store

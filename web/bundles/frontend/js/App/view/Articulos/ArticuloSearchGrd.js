@@ -94,8 +94,7 @@ Ext.define('MetApp.view.Articulos.ArticuloSearchGrd', {
 		}		
 	],
 	
-	initComponent: function(){		
-		console.log(this.store);
+	initComponent: function(){	
 		this.columns = [
 			{xtype: 'rownumberer', width: 50, sortable: false},
 			{header: 'Id', dataIndex: 'id', flex: 1, hidden: true},

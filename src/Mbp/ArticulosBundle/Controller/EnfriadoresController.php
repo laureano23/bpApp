@@ -21,7 +21,7 @@ class EnfriadoresController extends ArticulosController
         $rep = $em->getRepository('MbpArticulosBundle:Enfriadores');
 		
 		$enf = $rep->createQueryBuilder('e')
-			->select('e.codigo, e.descripcion, e.nombreImagen')
+			->select('e.id, e.codigo, e.descripcion, e.nombreImagen')
 			->getQuery()
 			->getArrayResult();
 			
@@ -47,8 +47,11 @@ class EnfriadoresController extends ArticulosController
     {
     	$em = $this->getDoctrine()->getManager();
         $rep = $em->getRepository('MbpArticulosBundle:Formulas');
+		$req = $this->getRequest();
 		
-		$res = $rep->formulasList(7, 17.1);
+		$idNodo = $req->request->get('idNodo');
+		
+		$res = $rep->estructuraCompleta($idNodo, 17.1);
 		
 		//print_r($res);
 		echo json_encode($res);

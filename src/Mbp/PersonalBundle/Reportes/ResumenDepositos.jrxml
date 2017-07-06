@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ResumenDepositos" language="groovy" pageWidth="990" pageHeight="612" orientation="Landscape" columnWidth="980" leftMargin="10" rightMargin="0" topMargin="10" bottomMargin="10" uuid="b32b41c4-242f-4dd0-b426-61e2b0b3700e">
-	<property name="ireport.zoom" value="1.464100000000009"/>
-	<property name="ireport.x" value="893"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ResumenDepositos" language="groovy" pageWidth="1008" pageHeight="612" orientation="Landscape" columnWidth="998" leftMargin="10" rightMargin="0" topMargin="10" bottomMargin="10" uuid="b32b41c4-242f-4dd0-b426-61e2b0b3700e">
+	<property name="ireport.zoom" value="2.357947691000017"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="mes" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -129,8 +129,7 @@ GROUP BY Personal.`idP`]]>
 		<variableExpression><![CDATA[$F{premiosPrimerQuincenaN}]]></variableExpression>
 	</variable>
 	<variable name="totalBlanco" class="java.lang.Float">
-		<variableExpression><![CDATA[$V{resumenPrimerQuinB}+$V{resumenQuin2B}+$V{resumenMesB}+$V{resumenVacacionesB}+$V{resumenSACB}+$V{resumenOtrosQuin1B}+$V{resumenPremioQuin1B}+$V{resumenPremioQuin2B}
-]]></variableExpression>
+		<variableExpression><![CDATA[$V{resumenPrimerQuinB}+$V{resumenQuin2B}+$V{resumenMesB}+$V{resumenVacacionesB}+$V{resumenSACB}+$V{resumenOtrosQuin1B}+$V{resumenPremioQuin1B}+$V{resumenPremioQuin2B}]]></variableExpression>
 	</variable>
 	<variable name="totalNegro" class="java.lang.Float">
 		<variableExpression><![CDATA[$V{resumenPrimerQuinN}+$V{resumenQuin2N}+$V{resumenMesN}+$V{resumenVacacionesN}+$V{resumenSACN}+$V{resumenOtrosQuin1N}+$V{resumenPremioQuin1N}+$V{resumenPremioQuin2N}]]></variableExpression>
@@ -192,7 +191,7 @@ GROUP BY Personal.`idP`]]>
 	<columnHeader>
 		<band height="40" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="84" height="40" uuid="6b64c165-92a9-467b-ad84-6e8d885888e8"/>
+				<reportElement x="0" y="0" width="102" height="40" uuid="6b64c165-92a9-467b-ad84-6e8d885888e8"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -204,7 +203,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[Empleado]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="84" y="0" width="100" height="20" uuid="fd6ce8b4-466e-4a3e-9046-5f0f6e488019"/>
+				<reportElement x="102" y="0" width="100" height="20" uuid="fd6ce8b4-466e-4a3e-9046-5f0f6e488019"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -216,7 +215,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[1° quincena]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="184" y="0" width="100" height="20" uuid="73609ab3-83bc-4a23-9d0a-4a2f1e93dbb1"/>
+				<reportElement x="202" y="0" width="100" height="20" uuid="73609ab3-83bc-4a23-9d0a-4a2f1e93dbb1"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -228,7 +227,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[2° quincena]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="84" y="20" width="50" height="20" uuid="47037dd7-45c6-4c22-9998-10096af541e8"/>
+				<reportElement x="102" y="20" width="50" height="20" uuid="47037dd7-45c6-4c22-9998-10096af541e8"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -240,7 +239,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[B]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="134" y="20" width="50" height="20" uuid="60dc969f-0f4e-4790-86f0-2502e24be876"/>
+				<reportElement x="152" y="20" width="50" height="20" uuid="60dc969f-0f4e-4790-86f0-2502e24be876"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -252,7 +251,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[N]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="234" y="20" width="50" height="20" uuid="a30dfaf7-a343-4e04-b243-26523e7d39de"/>
+				<reportElement x="252" y="20" width="50" height="20" uuid="a30dfaf7-a343-4e04-b243-26523e7d39de"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -264,7 +263,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[N]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="184" y="20" width="50" height="20" uuid="5a89b61f-b485-4436-8609-a87c2917fab0"/>
+				<reportElement x="202" y="20" width="50" height="20" uuid="5a89b61f-b485-4436-8609-a87c2917fab0"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -276,7 +275,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[B]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="284" y="0" width="100" height="20" uuid="6f0e6a80-87ac-45f5-a88b-eb6abe4b925e"/>
+				<reportElement x="302" y="0" width="100" height="20" uuid="6f0e6a80-87ac-45f5-a88b-eb6abe4b925e"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -288,7 +287,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[Mensuales]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="334" y="20" width="50" height="20" uuid="85cc10d3-f2dc-4f3e-a9ba-417c450622cd"/>
+				<reportElement x="352" y="20" width="50" height="20" uuid="85cc10d3-f2dc-4f3e-a9ba-417c450622cd"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -300,7 +299,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[N]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="284" y="20" width="50" height="20" uuid="9451e5cd-ad0a-4f2e-929d-2bf05bd85149"/>
+				<reportElement x="302" y="20" width="50" height="20" uuid="9451e5cd-ad0a-4f2e-929d-2bf05bd85149"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -312,7 +311,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[B]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="584" y="0" width="100" height="20" uuid="12345a61-5f04-4fcb-acce-ae22d45dfac2"/>
+				<reportElement x="602" y="0" width="100" height="20" uuid="12345a61-5f04-4fcb-acce-ae22d45dfac2"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -324,7 +323,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[Premios 1° quincena]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="584" y="20" width="50" height="20" uuid="eb3552d8-e41d-4b40-b877-bb416efdd2b4"/>
+				<reportElement x="602" y="20" width="50" height="20" uuid="eb3552d8-e41d-4b40-b877-bb416efdd2b4"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -336,7 +335,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[B]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="634" y="20" width="50" height="20" uuid="8b46a21e-0d73-4eda-bc09-26b6fd2f36e5"/>
+				<reportElement x="652" y="20" width="50" height="20" uuid="8b46a21e-0d73-4eda-bc09-26b6fd2f36e5"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -348,7 +347,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[N]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="384" y="0" width="100" height="20" uuid="a6799794-0b3a-4ea6-8533-45f3a73449ae"/>
+				<reportElement x="402" y="0" width="100" height="20" uuid="a6799794-0b3a-4ea6-8533-45f3a73449ae"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -360,7 +359,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[Vacaciones]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="384" y="20" width="50" height="20" uuid="9bed50f6-012c-4a0b-bf35-cce4cab88ecd"/>
+				<reportElement x="402" y="20" width="50" height="20" uuid="9bed50f6-012c-4a0b-bf35-cce4cab88ecd"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -372,7 +371,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[B]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="434" y="20" width="50" height="20" uuid="4caa24df-0704-40d9-a1d8-497a74fd4480"/>
+				<reportElement x="452" y="20" width="50" height="20" uuid="4caa24df-0704-40d9-a1d8-497a74fd4480"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -384,7 +383,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[N]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="484" y="20" width="50" height="20" uuid="384daa88-63d5-4470-a804-b3402b7ced93"/>
+				<reportElement x="502" y="20" width="50" height="20" uuid="384daa88-63d5-4470-a804-b3402b7ced93"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -396,7 +395,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[B]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="534" y="20" width="50" height="20" uuid="6e8137bf-34c0-41a4-b01a-6421acd407c8"/>
+				<reportElement x="552" y="20" width="50" height="20" uuid="6e8137bf-34c0-41a4-b01a-6421acd407c8"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -408,7 +407,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[N]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="484" y="0" width="100" height="20" uuid="0d1d9d17-b700-481e-9f74-75b1faf8ad78"/>
+				<reportElement x="502" y="0" width="100" height="20" uuid="0d1d9d17-b700-481e-9f74-75b1faf8ad78"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -420,7 +419,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[SAC]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="734" y="20" width="50" height="20" uuid="7d63c830-0a58-4339-855d-e3cb96d82e70"/>
+				<reportElement x="752" y="20" width="50" height="20" uuid="7d63c830-0a58-4339-855d-e3cb96d82e70"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -432,7 +431,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[N]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="684" y="0" width="100" height="20" uuid="7bbaec99-931a-46af-961b-1023c7f2f47a"/>
+				<reportElement x="702" y="0" width="100" height="20" uuid="7bbaec99-931a-46af-961b-1023c7f2f47a"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -444,7 +443,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[Premios 2° quincena]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="684" y="20" width="50" height="20" uuid="d5df3562-b121-4951-926f-e76505d73012"/>
+				<reportElement x="702" y="20" width="50" height="20" uuid="d5df3562-b121-4951-926f-e76505d73012"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -456,7 +455,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[B]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="784" y="0" width="100" height="20" uuid="dd2a9658-5148-4e3e-91d8-45b6c03a8948"/>
+				<reportElement x="802" y="0" width="100" height="20" uuid="dd2a9658-5148-4e3e-91d8-45b6c03a8948"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -468,7 +467,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[Otros]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="834" y="20" width="50" height="20" uuid="9e8e5f4a-c1d0-4719-bc3c-c6541164ff7c"/>
+				<reportElement x="852" y="20" width="50" height="20" uuid="9e8e5f4a-c1d0-4719-bc3c-c6541164ff7c"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -480,7 +479,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[N]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="784" y="20" width="50" height="20" uuid="1e6cf736-7b1f-4079-a689-66de89743020"/>
+				<reportElement x="802" y="20" width="50" height="20" uuid="1e6cf736-7b1f-4079-a689-66de89743020"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -492,7 +491,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[B]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="884" y="0" width="96" height="20" uuid="a2059c3a-5c18-4bea-8712-2a8910ab45f9"/>
+				<reportElement x="902" y="0" width="96" height="20" uuid="a2059c3a-5c18-4bea-8712-2a8910ab45f9"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -504,7 +503,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[Total]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="884" y="20" width="48" height="20" uuid="e2aea991-d3c8-43a0-b4f1-f40eed9916d6"/>
+				<reportElement x="902" y="20" width="48" height="20" uuid="e2aea991-d3c8-43a0-b4f1-f40eed9916d6"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -516,7 +515,7 @@ GROUP BY Personal.`idP`]]>
 				<text><![CDATA[B]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="932" y="20" width="48" height="20" uuid="287f86b9-f975-4026-823f-e1163e5e8b28"/>
+				<reportElement x="950" y="20" width="48" height="20" uuid="287f86b9-f975-4026-823f-e1163e5e8b28"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -531,8 +530,8 @@ GROUP BY Personal.`idP`]]>
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
-			<textField>
-				<reportElement x="0" y="0" width="84" height="20" uuid="0a060ba1-6e30-4748-8671-b2ae296e2894"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="0" width="102" height="20" uuid="0a060ba1-6e30-4748-8671-b2ae296e2894"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="0.0"/>
@@ -542,8 +541,8 @@ GROUP BY Personal.`idP`]]>
 				</box>
 				<textFieldExpression><![CDATA[$F{Personal_nombre}]]></textFieldExpression>
 			</textField>
-			<textField pattern="¤ #,##0.00">
-				<reportElement x="84" y="0" width="50" height="20" uuid="24b843a4-0ae5-4f78-a5ac-775864915aea"/>
+			<textField isStretchWithOverflow="true" pattern="¤ #,##0.00">
+				<reportElement x="102" y="0" width="50" height="20" uuid="24b843a4-0ae5-4f78-a5ac-775864915aea"/>
 				<box leftPadding="0" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="0.0"/>
@@ -557,7 +556,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$F{totalQuincena1B}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="134" y="0" width="50" height="20" uuid="061d1b38-dbae-4b9c-9823-4c1971f30579"/>
+				<reportElement x="152" y="0" width="50" height="20" uuid="061d1b38-dbae-4b9c-9823-4c1971f30579"/>
 				<box leftPadding="0" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="0.0"/>
@@ -571,7 +570,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$F{totalQuincena1N}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="184" y="0" width="50" height="20" uuid="b2bac87b-52f5-4bbb-9ef1-9d5182fdcdad"/>
+				<reportElement x="202" y="0" width="50" height="20" uuid="b2bac87b-52f5-4bbb-9ef1-9d5182fdcdad"/>
 				<box leftPadding="0" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="0.0"/>
@@ -585,7 +584,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$F{totalquincena2B}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="234" y="0" width="50" height="20" uuid="b15dedb3-0fe2-4c60-b1b5-48ca1b46ef7b"/>
+				<reportElement x="252" y="0" width="50" height="20" uuid="b15dedb3-0fe2-4c60-b1b5-48ca1b46ef7b"/>
 				<box leftPadding="0" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="0.0"/>
@@ -599,7 +598,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$F{totalQuincena2N}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="284" y="0" width="50" height="20" uuid="c7994bc3-d7c0-4173-95fc-594400474f9d"/>
+				<reportElement x="302" y="0" width="50" height="20" uuid="c7994bc3-d7c0-4173-95fc-594400474f9d"/>
 				<box leftPadding="0" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="0.0"/>
@@ -613,7 +612,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$F{mensualesB}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="334" y="0" width="50" height="20" uuid="d50a4f18-6b30-4f6a-adc5-272b0a8b02a9"/>
+				<reportElement x="352" y="0" width="50" height="20" uuid="d50a4f18-6b30-4f6a-adc5-272b0a8b02a9"/>
 				<box leftPadding="0" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="0.0"/>
@@ -627,7 +626,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$F{mensualesN}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="384" y="0" width="50" height="20" uuid="c6df17f4-530b-41a4-911f-d3483cdd2eb1"/>
+				<reportElement x="402" y="0" width="50" height="20" uuid="c6df17f4-530b-41a4-911f-d3483cdd2eb1"/>
 				<box leftPadding="0" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="0.0"/>
@@ -641,7 +640,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$F{vacacionesB}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="434" y="0" width="50" height="20" uuid="791b7e38-59ba-40e6-8a1c-17c8b651635b"/>
+				<reportElement x="452" y="0" width="50" height="20" uuid="791b7e38-59ba-40e6-8a1c-17c8b651635b"/>
 				<box leftPadding="0" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="0.0"/>
@@ -655,7 +654,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$F{vacacionesN}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="484" y="0" width="50" height="20" uuid="e80dacd7-903c-46b9-9761-d3d2034ef300"/>
+				<reportElement x="502" y="0" width="50" height="20" uuid="e80dacd7-903c-46b9-9761-d3d2034ef300"/>
 				<box leftPadding="0" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="0.0"/>
@@ -669,7 +668,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$F{SAC_B}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="534" y="0" width="50" height="20" uuid="b3d705ac-ef6e-4359-94a8-981f417e0f62"/>
+				<reportElement x="552" y="0" width="50" height="20" uuid="b3d705ac-ef6e-4359-94a8-981f417e0f62"/>
 				<box leftPadding="0" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="0.0"/>
@@ -683,7 +682,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$F{SAC_N}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="584" y="0" width="50" height="20" uuid="f84e3f78-c1c9-438b-b837-f611ab57d2fa"/>
+				<reportElement x="602" y="0" width="50" height="20" uuid="f84e3f78-c1c9-438b-b837-f611ab57d2fa"/>
 				<box leftPadding="0" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="0.0"/>
@@ -697,7 +696,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$F{premiosPrimerQuincenaB}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="634" y="0" width="50" height="20" uuid="8caa6dbf-08af-4e36-a361-5399beca227c"/>
+				<reportElement x="652" y="0" width="50" height="20" uuid="8caa6dbf-08af-4e36-a361-5399beca227c"/>
 				<box leftPadding="0" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="0.0"/>
@@ -711,7 +710,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$F{premiosPrimerQuincenaN}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="684" y="0" width="50" height="20" uuid="159bd826-8944-4890-bc33-a6f57db2147b"/>
+				<reportElement x="702" y="0" width="50" height="20" uuid="159bd826-8944-4890-bc33-a6f57db2147b"/>
 				<box leftPadding="0" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="0.0"/>
@@ -725,7 +724,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$F{premiosSegundaQuincenaB}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="734" y="0" width="50" height="20" uuid="4ba6fc07-a6e8-4af6-851e-3892e5db944c"/>
+				<reportElement x="752" y="0" width="50" height="20" uuid="4ba6fc07-a6e8-4af6-851e-3892e5db944c"/>
 				<box leftPadding="0" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="0.0"/>
@@ -739,7 +738,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$F{premiosSegundaQuincenaN}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="784" y="0" width="50" height="20" uuid="3989cff2-5062-4945-8fbf-66f7659815df"/>
+				<reportElement x="802" y="0" width="50" height="20" uuid="3989cff2-5062-4945-8fbf-66f7659815df"/>
 				<box leftPadding="0" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="0.0"/>
@@ -753,7 +752,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$F{variosPrimerQuincenaB}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="834" y="0" width="50" height="20" uuid="dc1d9d18-87aa-47a3-a449-f57dc3f39077"/>
+				<reportElement x="852" y="0" width="50" height="20" uuid="dc1d9d18-87aa-47a3-a449-f57dc3f39077"/>
 				<box leftPadding="0" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="0.0"/>
@@ -767,7 +766,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$F{variosPrimerQuincenaN}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="884" y="0" width="48" height="20" uuid="08ed28a9-2620-44ce-92c8-eaed72972691"/>
+				<reportElement x="902" y="0" width="48" height="20" uuid="08ed28a9-2620-44ce-92c8-eaed72972691"/>
 				<box leftPadding="0" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="0.0"/>
@@ -781,7 +780,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$F{totalQuincena1B}+$F{totalquincena2B}+$F{mensualesB}+$F{vacacionesB}+$F{SAC_B}+$F{variosPrimerQuincenaB}+$F{premiosPrimerQuincenaB}+$F{premiosSegundaQuincenaB}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="932" y="0" width="48" height="20" uuid="9218d89c-4e24-46cc-b2f8-25512def55e3"/>
+				<reportElement x="950" y="0" width="48" height="20" uuid="9218d89c-4e24-46cc-b2f8-25512def55e3"/>
 				<box leftPadding="0" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="0.0"/>
@@ -802,12 +801,12 @@ GROUP BY Personal.`idP`]]>
 	<pageFooter>
 		<band height="54" splitType="Stretch">
 			<textField>
-				<reportElement x="680" y="34" width="250" height="20" uuid="0d8759ad-cf37-49b6-bfda-442649e20354"/>
+				<reportElement x="698" y="34" width="250" height="20" uuid="0d8759ad-cf37-49b6-bfda-442649e20354"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement x="930" y="34" width="50" height="20" uuid="1623e409-a646-4a22-a141-1e5e8dd7f632"/>
+				<reportElement x="948" y="34" width="50" height="20" uuid="1623e409-a646-4a22-a141-1e5e8dd7f632"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
@@ -816,7 +815,7 @@ GROUP BY Personal.`idP`]]>
 	<summary>
 		<band height="110" splitType="Stretch">
 			<textField evaluationTime="Auto" pattern="¤ #,##0.00" isBlankWhenNull="true">
-				<reportElement x="84" y="0" width="50" height="20" uuid="ca3ff5bb-e429-43d3-acac-e2f526450ae9"/>
+				<reportElement x="102" y="0" width="50" height="20" uuid="ca3ff5bb-e429-43d3-acac-e2f526450ae9"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -830,7 +829,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$V{resumenPrimerQuinB}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="¤ #,##0.00" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="134" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="f4d0254e-d300-4302-ae56-4834b704bdfa"/>
+				<reportElement mode="Transparent" x="152" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="f4d0254e-d300-4302-ae56-4834b704bdfa"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -845,7 +844,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$V{resumenPrimerQuinN}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="¤ #,##0.00" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="184" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="fa9b784c-3399-46a0-8b3f-d29201457654"/>
+				<reportElement mode="Transparent" x="202" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="fa9b784c-3399-46a0-8b3f-d29201457654"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -860,7 +859,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$V{resumenQuin2B}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="¤ #,##0.00" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="234" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="9e1e16ac-2d7f-40d0-ae03-762839143c5b"/>
+				<reportElement mode="Transparent" x="252" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="9e1e16ac-2d7f-40d0-ae03-762839143c5b"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -875,7 +874,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$V{resumenQuin2N}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="¤ #,##0.00" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="284" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="4af5eeb5-2ae4-4798-a09f-b5b545435866"/>
+				<reportElement mode="Transparent" x="302" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="4af5eeb5-2ae4-4798-a09f-b5b545435866"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -890,7 +889,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$V{resumenMesB}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="¤ #,##0.00" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="384" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="ae73cc14-40cf-4640-b957-60fd2cb162b1"/>
+				<reportElement mode="Transparent" x="402" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="ae73cc14-40cf-4640-b957-60fd2cb162b1"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -905,7 +904,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$V{resumenVacacionesB}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="¤ #,##0.00" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="334" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="2d3159eb-61bb-44b2-815a-b760407ee549"/>
+				<reportElement mode="Transparent" x="352" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="2d3159eb-61bb-44b2-815a-b760407ee549"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -920,7 +919,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$V{resumenMesN}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="¤ #,##0.00" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="484" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="b128477a-7520-4b78-b968-1a6e97ea7b60"/>
+				<reportElement mode="Transparent" x="502" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="b128477a-7520-4b78-b968-1a6e97ea7b60"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -935,7 +934,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$V{resumenSACB}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="¤ #,##0.00" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="434" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="091bc145-9b26-4c6b-a045-01fbf34aea2e"/>
+				<reportElement mode="Transparent" x="452" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="091bc145-9b26-4c6b-a045-01fbf34aea2e"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -950,7 +949,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$V{resumenVacacionesN}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="¤ #,##0.00" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="584" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="78ef215a-e3dd-4e8e-8409-8fef7498f4c7"/>
+				<reportElement mode="Transparent" x="602" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="78ef215a-e3dd-4e8e-8409-8fef7498f4c7"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -965,7 +964,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$V{resumenPremioQuin1B}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="¤ #,##0.00" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="534" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="b906edcf-750b-4495-bd06-bcde0c3fee25"/>
+				<reportElement mode="Transparent" x="552" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="b906edcf-750b-4495-bd06-bcde0c3fee25"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -980,7 +979,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$V{resumenSACN}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="¤ #,##0.00" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="684" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="79d0ecd6-07bd-4247-96e0-505772b33878"/>
+				<reportElement mode="Transparent" x="702" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="79d0ecd6-07bd-4247-96e0-505772b33878"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -995,7 +994,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$V{resumenPremioQuin2B}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="¤ #,##0.00" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="634" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="ba7210a4-9478-427d-84f4-5334737aaf74"/>
+				<reportElement mode="Transparent" x="652" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="ba7210a4-9478-427d-84f4-5334737aaf74"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -1010,7 +1009,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$V{resumenPremioQuin1N}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="¤ #,##0.00" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="734" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="16732142-3baf-4a38-ae7c-37a30a36b3c8"/>
+				<reportElement mode="Transparent" x="752" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="16732142-3baf-4a38-ae7c-37a30a36b3c8"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -1025,7 +1024,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$V{resumenPremioQuin2N}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="0" width="84" height="20" uuid="64e6ef2c-21a7-44c8-b80c-f7aa477e1634"/>
+				<reportElement x="0" y="0" width="102" height="20" uuid="64e6ef2c-21a7-44c8-b80c-f7aa477e1634"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -1115,7 +1114,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$V{totalGral}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="¤ #,##0.00" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="834" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="38571bbe-9983-4a37-af85-f3b7b9adb62c"/>
+				<reportElement mode="Transparent" x="852" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="38571bbe-9983-4a37-af85-f3b7b9adb62c"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -1130,7 +1129,7 @@ GROUP BY Personal.`idP`]]>
 				<textFieldExpression><![CDATA[$V{resumenOtrosQuin1N}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="¤ #,##0.00" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="784" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="f91d9367-e96d-4ec2-8cc3-1d58fab925bd"/>
+				<reportElement mode="Transparent" x="802" y="0" width="50" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="f91d9367-e96d-4ec2-8cc3-1d58fab925bd"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>

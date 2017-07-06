@@ -128,6 +128,7 @@ class FormulasRepository extends \Doctrine\ORM\EntityRepository
 				articulos.codigo,
 				articulos.unidad,
 				articulos.moneda,
+				articulos.nombreImagen,
 				articulos.costo as costo
 				FROM `articulos` articulos INNER JOIN `Formulas` node ON articulos.`idArticulos` = node.`idArt`,
 			        Formulas AS parent,
@@ -260,4 +261,87 @@ class FormulasRepository extends \Doctrine\ORM\EntityRepository
 		
 		return $qb[0];
 	}
+	
+	/*
+	 * SEGUN ID DE ARTICULO BUSCA Y RETORNA SU ESTRUCTURA COMPLETA
+	 * */
+	public function estructuraCompleta($idNodo, $tc)
+	{
+		$em = $this->getEntityManager();
+		$repoArt = $em->getRepository('MbpArticulosBundle:Articulos');		
+				
+		$sql = "
+			SELECT *
+			FROM
+			(SELECT 	node.id,
+				node.lft,
+				node.rgt,
+				node.cant,
+				node.idArt,
+				(COUNT(parent.id) - (sub_tree.depth + 1)) AS depth,
+				articulos.descripcion,
+				articulos.codigo,
+				articulos.moneda,
+				articulos.nombreImagen,
+				articulos.costo as costo
+				FROM `articulos` articulos INNER JOIN `Formulas` node ON articulos.`idArticulos` = node.`idArt`,
+			        Formulas AS parent,
+			        Formulas AS sub_parent,
+			        (
+						SELECT node.id, (COUNT(parent.id) - 1) AS depth
+						FROM Formulas AS node,
+						Formulas AS parent
+						WHERE node.lft BETWEEN parent.lft AND parent.rgt
+						AND node.id = $idNodo
+						GROUP BY node.id
+						ORDER BY node.lft
+			        )AS sub_tree
+			WHERE node.lft BETWEEN parent.lft AND parent.rgt
+			        AND node.lft BETWEEN sub_parent.lft AND sub_parent.rgt
+			        AND sub_parent.id = sub_tree.id
+			GROUP BY node.id
+			ORDER BY node.lft) AS x
+			
+			INNER JOIN
+			
+			(SELECT 	node.id,
+				SUM(
+					CASE
+						WHEN articulos.moneda = 0
+							THEN articulos.costo * node.cant
+						ELSE articulos.costo * node.cant * $tc
+						END) AS sumCosto,
+				SUM(
+					CASE
+						WHEN articulos.moneda = 0
+							THEN articulos.costo * node.cant
+						ELSE articulos.costo * node.cant * $tc
+						END) * parent.cant AS sumCostoPadre
+				FROM `articulos` articulos INNER JOIN `Formulas` node ON articulos.`idArticulos` = node.`idArt`,
+			        Formulas AS parent,
+			        Formulas AS sub_parent,
+			        (
+						SELECT node.id, (COUNT(parent.id) - 1) AS depth
+						FROM Formulas AS node,
+						Formulas AS parent
+						WHERE node.lft BETWEEN parent.lft AND parent.rgt
+						AND node.id = $idNodo
+						GROUP BY node.id
+						ORDER BY node.lft
+			        )AS sub_tree
+			WHERE node.lft BETWEEN parent.lft AND parent.rgt
+			        AND node.lft BETWEEN sub_parent.lft AND sub_parent.rgt
+			        AND sub_parent.id = sub_tree.id
+			GROUP BY parent.id
+			ORDER BY node.lft) AS y ON x.id = y.id
+		";
+		
+		
+		$stmt = $em->getConnection()->prepare($sql);
+    	$stmt->execute();
+		$res = $stmt->fetchAll();
+					
+		return $res;
+	} 
+	
 }

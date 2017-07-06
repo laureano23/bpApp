@@ -123,13 +123,16 @@ class FormulasClass
 				$item = $repo->findByIdArt($art);
 				foreach ($item as $rec) {
 					$nodos = $repo->formulasEstrucutraMateriales($rec->getId());
-					foreach ($nodos as $nodo) {
-						if($nodo->getIdArt()->getId() == $nodo_a_eliminar->getIdArt()->getId()){
-							$this->em->remove($nodo);
-							$this->em->flush();
-							$this->orden_nodo_chld_abajo_delete($nodo->getLft(), $nodo->getRgt());	
-						}						
-					}			
+					if($nodos != null){
+						foreach ($nodos as $nodo) {
+							if($nodo->getIdArt()->getId() == $nodo_a_eliminar->getIdArt()->getId()){
+								$this->em->remove($nodo);
+								$this->em->flush();
+								$this->orden_nodo_chld_abajo_delete($nodo->getLft(), $nodo->getRgt());	
+							}						
+						}	
+					}
+								
 				}
 				//COMPRUEBA SI EL PADRE QUEDO HUERFANO (SIN HIJOS)
 				$formula = $repo->formulaslist($padre_nod_eliminar->getIdArt()->getId(), $this->tc);

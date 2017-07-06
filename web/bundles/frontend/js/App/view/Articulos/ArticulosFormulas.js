@@ -51,7 +51,7 @@ Ext.define('MetApp.view.Articulos.ArticulosFormulas', {
 									width: 300,				
 									readOnly: true,
 									allowBlank: true,
-									hidden: true
+									hidden: false
 								},
 								{
 									xtype: 'textfield',

@@ -23,7 +23,7 @@ Ext.define('MetApp.model.Articulos.Articulos',{
 		},
 		{name: 'familia', type: 'string'},
 		{name: 'subFamilia', type: 'string'},
-		{name: 'rutaPlano', type: 'auto'},	
+		{name: 'nombreImagen', type: 'string'},	
 	]
 });
 
