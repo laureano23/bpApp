@@ -328,7 +328,7 @@ class RecibosController extends Controller
 	}
 	
 	
-	private function liquidarConceptosVariables($data)
+	private function liquidarConceptosVariables($data, $aux=null)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$repoConceptos = $em->getRepository('MbpPersonalBundle:CodigoSueldos');

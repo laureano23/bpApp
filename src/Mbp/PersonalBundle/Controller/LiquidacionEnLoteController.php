@@ -168,7 +168,7 @@ class LiquidacionEnLoteController extends RecibosController
 			$recibo->setObraSocial($empleado->getObraSocial());
 			$recibo->addPersonal($empleado);
 						
-			$detalleVariable = $this->LiquidarConceptosVariables($empleado, $recibo);
+			$detalleVariable = $this->liquidarConceptosVariables($empleado, $recibo);
 			
 			$datosFijos = $this->insertaDatosFijos();
 			
@@ -254,7 +254,7 @@ class LiquidacionEnLoteController extends RecibosController
 			$recibo->setObraSocial($empleado->getObraSocial());
 			$recibo->addPersonal($empleado);
 						
-			$detalleVariable = $this->LiquidarConceptosVariables($empleado, $recibo);
+			$detalleVariable = $this->liquidarConceptosVariables($empleado, $recibo);
 			$datosFijos = $this->insertaDatosFijos();
 			
 			$em->persist($recibo);
@@ -284,7 +284,7 @@ class LiquidacionEnLoteController extends RecibosController
 	}
 
 	
-	private function LiquidarConceptosVariables($empleado, $recibo)
+	private function liquidarConceptosVariables($empleado, $recibo)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$repoConceptos = $em->getRepository('MbpPersonalBundle:CodigoSueldos');
