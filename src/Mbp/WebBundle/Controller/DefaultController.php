@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Mbp\WebBundle\Entity\SubCategoria;
+use Mbp\WebBundle\Clases\ReCaptcha;
 
 
 
@@ -100,17 +101,38 @@ class DefaultController extends Controller
      */
     public function contactoAction()
     {
-        $req = $this->getRequest();
-        $nombre = $req->request->get('nombre');
-        $apellido = $req->request->get('apellido');
-        $email = $req->request->get('email');
-        $telefono = $req->request->get('telefono');
-        $empresa = $req->request->get('empresa');        
-        $asunto = $req->request->get('asunto');
-        $consulta = $req->request->get('consulta');
-
-        if($nombre){
-            try{
+    	$req = $this->getRequest();
+		
+		
+    	/*CAPTCHA*/
+    	$secret = "6Ld-NSoUAAAAACPvwHWgUIgiBam6-_FJzkmFQAMD";
+    	$response = null;
+ 
+		try{// check secret key
+		$reCaptcha = new ReCaptcha($secret);
+			if ($req->request->get("g-recaptcha-response")) {
+			    $response = $reCaptcha->verifyResponse(
+			        $req->getClientIp(),
+			        $req->request->get("g-recaptcha-response")
+			    );
+			}
+			
+			
+	    	if($req->request->get("g-recaptcha-response") != "" && !$response->success){
+	    		throw new \Exception('Error Captcha', 99);
+				
+	    	}
+	        
+	        $nombre = $req->request->get('nombre');
+	        $apellido = $req->request->get('apellido');
+	        $email = $req->request->get('email');
+	        $telefono = $req->request->get('telefono');
+	        $empresa = $req->request->get('empresa');        
+	        $asunto = $req->request->get('asunto');
+	        $consulta = $req->request->get('consulta');
+	
+	        if($nombre){
+            
                 $message = \Swift_Message::newInstance();
                 $message->setSubject("Consulta web: ".$asunto);
                 $message->setFrom('info@metalurgicabp.com.ar');
@@ -135,21 +157,27 @@ class DefaultController extends Controller
                     ->getFlashBag()
                     ->add('statusOk', '');
                 
-                
+               } 
             }catch(\Exception $e){
-                $req->getSession()
+            	$req->getSession()
                     ->getFlashBag()
                     ->add('statusFail', '');
+                    
+					
+            	if($e->getCode() == 99){
+            		$req->getSession()
+	                    ->getFlashBag()
+	                    ->add('fail', 'Error al validar el Captcha!'); 
+            	}                
 
                 $req->getSession()
-                    ->getFlashBag()
-                    ->add('fail', 'Error en el envío, intente más tarde!'); 
-            }
-           
-        }
-
+	                    ->getFlashBag()
+	                    ->add('fail', 'Error, por favor intente nuevamente en unos minutos'); 
+        
+			}
          return $this->render('MbpWebBundle:Default:contacto.html.twig');
         
+    	
     }
 
 
