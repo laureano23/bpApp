@@ -271,16 +271,7 @@ Ext.define('MetApp.controller.Articulos.FormulasController',{
 				var jsonReporte = Ext.JSON.decode(resp.responseText);
 							
 				var ruta = Routing.generate('mbp_formulas_muestraReporte');
-								
-				var WinReporte=Ext.create('Ext.Window', {
-						  title: 'Reporte Estructura de materiales',
-						  width: 900,
-						  height: 700,
-						  layout: 'fit',
-						  modal:true,										
-						  html: '<iframe src='+ruta+' width="100%" height="100%"></iframe>'						  
-					  });
-					  WinReporte.show();
+				window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');	
 			}
 		});
 	}

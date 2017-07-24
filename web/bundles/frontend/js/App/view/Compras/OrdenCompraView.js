@@ -379,6 +379,14 @@ Ext.define('MetApp.view.Compras.OrdenCompraView' ,{
 											itemId: 'descripcion',
 											name: 'descripcion',
 										},
+										{
+											xtype: 'button',
+											disabled: false,
+											name: 'historicoArt',
+											itemId: 'historicoArt',
+											text: 'Histórico',
+											margins: '0 0 0 5'
+										},
 									]
 								},
 								{

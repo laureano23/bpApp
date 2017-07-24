@@ -22,7 +22,7 @@ class PersonalRepository extends EntityRepository
 			$reg = $em->createQuery($dql);
 			$rs = $reg->getArrayResult();
 			
-			echo json_encode($rs);
+			return $rs;
 			
 		}catch(\Doctrine\ORM\ORMException $e){
 			$this->get('logger')->error($e->getMessage());

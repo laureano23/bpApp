@@ -1,3 +1,8 @@
+mbp_test:
+    resource: "@MbpTestBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 mbp_web:
     resource: "@MbpWebBundle/Controller/"
     type:     annotation

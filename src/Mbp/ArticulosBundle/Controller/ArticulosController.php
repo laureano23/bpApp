@@ -10,6 +10,7 @@ use Mbp\ArticulosBundle\Entity\Articulos;
 use Mbp\ArticulosBundle\Clases\FileUploader;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ArticulosController extends Controller
 {
@@ -17,9 +18,14 @@ class ArticulosController extends Controller
     {    	
     	$em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
-				
-		$rep = $em->getRepository('MbpArticulosBundle:Articulos');
-		$res = $rep->listarArticulos();
+		
+		try{
+			$rep = $em->getRepository('MbpArticulosBundle:Articulos');
+			$res = $rep->listarArticulos();	
+		}catch(\Exception $e){
+			throw $e;
+		}	
+		
 		
 		return new Response();
     }
@@ -135,9 +141,29 @@ class ArticulosController extends Controller
 			$file = $request->files->get('rutaPlano');
 			$idArt = $data = $request->request->get('idArt');
 			
+									
+			$uploaderService->setFile($file);
+			
+			$validator = $this->get('validator');
+			$violations = $validator->validate($uploaderService);
+			
+			$errStr="";
+			if(count($violations) > 0){
+				foreach ($violations as $v) {
+					$errStr = $errStr.$v->getMessage()."</br>";
+				}				
+				throw new \Exception($errStr, 1);
+				
+			}			
+			
 			$uploadedFile = $uploaderService->upload($file);
 			
 			$articulo = $rep->find($idArt);
+			//SI EL ARTICULO TENIA IMAGEN CARGADA LA BORRA PARA REEMPLAZARLA CON LA NUEVA
+			if($articulo->getNombreImagen() != null){
+				$fileAnt = $uploaderService->getTargetDir()."/".$articulo->getNombreImagen();
+				unlink($fileAnt);
+			}
 			$articulo->setNombreImagen($uploadedFile);
 			
 			$em->persist($articulo);
@@ -177,6 +203,10 @@ class ArticulosController extends Controller
 			
 			$file = $uploaderService->getTargetDir()."/".$fileName;
 			
+			$realPath = realpath($this->get('kernel')->getRootDir()."/../web/bundles/mbparticulos/planos");
+			
+			$mime = mime_content_type($file);
+			
 			$response = new BinaryFileResponse($file);
 	        $response->trustXSendfileTypeHeader();
 	        $response->setContentDisposition(
@@ -184,7 +214,7 @@ class ArticulosController extends Controller
 	            $fileName,
 	            iconv('UTF-8', 'ASCII//TRANSLIT', $fileName)
 	        );
-			$response->headers->set('Content-type', 'application/pdf');
+			$response->headers->set('Content-type', $mime);
 	
 	        return $response;
 			

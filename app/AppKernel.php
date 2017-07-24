@@ -28,7 +28,8 @@ class AppKernel extends Kernel
             new Mbp\ProveedoresBundle\MbpProveedoresBundle(),
             new Mbp\ComprasBundle\MbpComprasBundle(),
             new Mbp\WebBundle\MbpWebBundle(),
-            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle()
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new Mbp\TestBundle\MbpTestBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

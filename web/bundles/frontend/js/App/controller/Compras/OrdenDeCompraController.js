@@ -2,11 +2,13 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 	extend: 'Ext.app.Controller',	
 	views: [
 		'MetApp.view.Compras.OrdenCompraView',
-		'MetApp.view.Compras.ListaOcView'
+		'MetApp.view.Compras.ListaOcView',
+		'MetApp.view.Compras.HistoricoArticuloCompras',
 		],
 	stores: [
 		'Articulos.Articulos',
-		'MetApp.store.Compras.OrdenCompraStore'
+		'MetApp.store.Compras.OrdenCompraStore',
+		'MetApp.store.Compras.HistoricoCompraStore'
 	],
 	
 	refs:[
@@ -60,6 +62,9 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 				'OrdenCompraView combobox[itemId=monedaOC]': {
 					change: this.ListenChangeTc
 				},
+				'OrdenCompraView button[itemId=historicoArt]': {
+					click: this.HistoricoArticulo
+				},	
 				'#verOrdenDeCompra': {
 					click: this.VerOrdenDeCompra
 				},	
@@ -283,6 +288,30 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 		}else{
 			tc.setValue("");
 		}
+	},
+	
+	HistoricoArticulo: function(btn){
+		var winOc = btn.up('window');
+		var codigo = winOc.queryById('codigo').getValue();
+		
+		var winHist = Ext.widget('HistoricoArticuloCompras');
+		
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_compras_historicoCompra'),
+			
+			params: {
+				codigo: codigo
+			},
+			
+			success: function(resp){
+				console.log(resp);
+				var jsonResp = Ext.JSON.decode(resp.responseText);
+				console.log(jsonResp);
+				var store = winHist.down('grid').getStore();
+				store.loadRawData(jsonResp.data);
+				
+			}
+		});
 	},
 
 	VerOrdenDeCompra: function(btn){

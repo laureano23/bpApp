@@ -111,11 +111,12 @@ class FormulasRepository extends \Doctrine\ORM\EntityRepository
 	/*
 	 * RECIBE ID DE ARTICULO Y TRAE LE FORMULA DEL MISMO SOLO EN NIVEL DE PROFUNDIDAD 1
 	 * */
-	public function formulasList($idArt, $tc)
+	public function formulasList($idArt, $tc=1)
 	{
 		$em = $this->getEntityManager();
 		$repoArt = $em->getRepository('MbpArticulosBundle:Articulos');		
-				
+		
+			
 		$sql = "
 			SELECT *
 			FROM
@@ -265,11 +266,13 @@ class FormulasRepository extends \Doctrine\ORM\EntityRepository
 	/*
 	 * SEGUN ID DE ARTICULO BUSCA Y RETORNA SU ESTRUCTURA COMPLETA
 	 * */
-	public function estructuraCompleta($idNodo, $tc)
+	public function estructuraCompleta($idNodo=null, $tc)
 	{
 		$em = $this->getEntityManager();
 		$repoArt = $em->getRepository('MbpArticulosBundle:Articulos');		
-				
+		
+		if($idNodo == null){return "";}
+		
 		$sql = "
 			SELECT *
 			FROM
@@ -333,7 +336,9 @@ class FormulasRepository extends \Doctrine\ORM\EntityRepository
 			        AND node.lft BETWEEN sub_parent.lft AND sub_parent.rgt
 			        AND sub_parent.id = sub_tree.id
 			GROUP BY parent.id
-			ORDER BY node.lft) AS y ON x.id = y.id
+			ORDER BY node.lft ASC
+			LIMIT 1, 1000 /* PARA SACAR DEL RESULTADO EL NODO PADRE */
+			) AS y ON x.id = y.id
 		";
 		
 		

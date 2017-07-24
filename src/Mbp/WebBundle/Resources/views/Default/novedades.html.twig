@@ -17,103 +17,27 @@
 	<section class="main container">
 		<div class="row">
 			<section class="posts col-md-12">
-				<article class="post clearfix jumbotron jumboNovedades">					
-					<div class="col-md-7">
-						<h3 class="post-title">
-						<a>{{"Visita de la Universidad de Luján"|trans}}</a>
-						</h3>
-						<p class="lead">
-							<small>
-								{{"Alumnos de la Universidad de Luján cursando la carrera Ingenieria Industrial junto con el docente Ing. Hector Mazzeo realizaron una visita a nuestra empresa, con motivo de observar diferentes procesos industriales. Desde Metalurgica BP apoyamos todas las iniciativas educativas relacionadas a la proyeccion y desarrollo industrial y agradecemos a los alumnos de la UNLU su visita."|trans}}
-							</small>
-							
-						</p>
-					</div>
-					<div class="col-md-5">
-						<a href="#" class="thumb pull-left">
-							<img class="img-responsive" src="{{ asset('bundles/mbpweb/images/visita_uni_lujan.jpg') }}" alt="radiador_pauny">
-						</a>
-					</div>	
-				</article>
-
-				<article class="post clearfix jumbotron jumboNovedades">					
-					<div class="col-md-7">
-						<h3 class="post-title">
-						<a>{{"Visita a Metalfor"|trans}}</a>
-						</h3>
-						<p class="lead">
-							<small>
-								{{"Una excelente jornada en la provincia de Córdoba, donde visitamos a Metalfor, uno de nuestros principales clientes, participando del ensayo de nuevos paquetes de enfriamiento integrales (radiador de aceite + radiador de agua + intercooler)."|trans}}
-							</small>
-							
-						</p>
-					</div>
-					<div class="col-md-5">
-						<a href="#" class="thumb pull-left">
-							<img class="img-responsive" src="{{ asset('bundles/mbpweb/images/metalfor_novedades.jpg') }}" alt="radiador_pauny">
-						</a>
-					</div>	
-				</article>
-
-				<article class="post clearfix jumbotron jumboNovedades">					
-					<div class="col-md-7">
-						<h3 class="post-title">
-						<a>{{"Radiador de agua Pauny"|trans}}</a>
-						</h3>
-						<p class="lead">
-							<small>
-								{{"En conjunto con la empresa Pauny desarrollamos un radiador de agua para el Tractor S210, entre las novedades diseñamos una caja encausadora plástica termoformada lo cual reduce el peso y costo del equipo y la fabricacion es con aletas trapezoidales ideales para las condiciones de trabajo en el campo."|trans}}
-							</small>
-							
-						</p>
-					</div>
-					<div class="col-md-5">
-						<a href="#" class="thumb pull-left">
-							<img class="img-responsive" src="{{ asset('bundles/mbpweb/images/radiador pauny2.jpg') }}" alt="radiador_pauny">
-						</a>
-					</div>	
-				</article>
-
-				<article class="post clearfix jumbotron jumboNovedades">					
-					<div class="col-md-7">
-						<h3 class="post-title">
-						<a>{{"Modernización de maquinaria"|trans}}</a>
-						</h3>
-						<p class="lead">
-							<small>
-								{{"Con vistas de ampliar el mercado local hacia la fabricacion de enfriadores de agua, Metalurgica BP ha incorporado una serie de máquinas para la conformacion y corte de aletas de aluminio de forma automática."|trans}}
-							</small>
-							
-						</p>
-					</div>
-					<div class="col-md-5">
-						<a href="#" class="thumb pull-left">
-							<img class="img-responsive" src="{{ asset('bundles/mbpweb/images/maquinaria1.jpg') }}" alt="maquinaria">
-						</a>
-					</div>					
-					
-				</article>
-
-				<hr>
-
-				<article class="post clearfix jumbotron jumboNovedades">					
-					<div class="col-md-7">
-						<h2 class="post-title">
-						<a>{{"Automec 2015 Brasil"|trans}}</a>
-						</h2>
-						<p class="lead">
-							<small>
-								{{"El equipo comercial de Metalurgica BP viajó a Brasil junto con la colaboración dela fundación Exportar para promocionar sus productos en la región."|trans}}	
-							</small>
-							
-						</p>
-					</div>
-					<div class="col-md-5">
-						<a href="#" class="thumb pull-left">
-							<img class="img-responsive" src="{{ asset('bundles/mbpweb/images/automec1.jpg') }}" alt="automec">
-						</a>
-					</div>										
-				</article>		
+				{% for item in items %}
+					<article class="post clearfix jumbotron jumboNovedades">					
+						<div class="col-md-7">
+							<h3 class="post-title">
+							<a>{{item.titulo|trans}}</a>
+							</h3>
+							<p class="lead">
+								<small>
+									{{item.descripcion|trans}}
+								</small>
+								
+							</p>
+						</div>
+						<div class="col-md-5">
+							<a href="#" class="thumb pull-left">
+								<img class="img-responsive" src="{{ asset('bundles/mbpweb/images/news/'~item.nombreImagen~'') }}" alt="radiador_pauny">
+							</a>
+						</div>	
+					</article>
+				{% endfor %}
+				
 
 			</section>
 		</div>
@@ -137,6 +61,22 @@
 		</div>		
 
 	</section>
+
+	<div class="row">
+		<div class="col-md-10 col-md-offset-1">
+			<section class="paginator">
+				<div class="">
+					<nav aria-label="...">
+					  <ul class="pager">
+					    <li class="{{ previous }}"><a href="{{ path('novedades', {'page': page - 1 }) }}">Anterior</a></li>
+					    <li class="{{ next }}"><a href="{{ path('novedades', {'page': page + 1 }) }}">Siguiente</a></li>
+					  </ul>
+					</nav>
+				</div>
+			</section>	
+		</div>
+	</div>
+			
 {% endblock %}
 
 {% block javascripts %}

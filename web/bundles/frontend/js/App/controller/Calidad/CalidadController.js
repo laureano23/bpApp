@@ -197,16 +197,8 @@ Ext.define('MetApp.controller.Calidad.CalidadController',{
 				var jsonReporte = Ext.JSON.decode(response.responseText);
 				Reporte=jsonReporte.reporte;
 				var ruta = Routing.generate('mbp_calidad_showFormRg010');
-			
-				var WinReporte=Ext.create('Ext.Window', {
-										  title: 'RG-010',
-										  width: 900,
-										  height: 700,
-										  layout: 'fit',
-										  modal:true,										
-										  html: '<iframe src='+ruta+' width="100%" height="100%"></iframe>'										
-									  });
-									  WinReporte.show();				
+												
+				window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');								
 			}
 		});
 		

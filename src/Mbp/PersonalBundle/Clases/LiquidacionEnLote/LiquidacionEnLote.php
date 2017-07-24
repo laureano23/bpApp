@@ -65,12 +65,15 @@ class LiquidacionEnLote
 		}
 		
 		
+		
 		$this->ValidarPeriodo();
 		$this->CalcularHorasJustificadas();
 		$this->CalcularHorasNormales();
 		$this->CalcularHorasTrabajadas();
 		
 		$this->CalcularNovedades();		
+		
+		
 		
 	}
 	
@@ -350,7 +353,8 @@ class LiquidacionEnLote
 			$salidas = $empleado->getSalidas();
 			$dias = $empleado->getDia();
 			$horas = 0;
-			$minutos = 0;
+			$minutosSalida = 0;
+			$minutosEntrada = 0;
 			
 						
 			
@@ -359,16 +363,17 @@ class LiquidacionEnLote
 				foreach ($entrada as $fichada) {					
 					$contadorSalida=0;
 					$horas = $horas + ($salidas[$dia][$contadorSalida]->format('H') - $fichada->format('H'));
-					$minutos = $minutos + ($salidas[$dia][$contadorSalida]->format('i'));
+					$minutosSalida = $minutosSalida + ($salidas[$dia][$contadorSalida]->format('i'));
+					$minutosEntrada = $minutosEntrada + ($entradas[$dia][$contadorSalida]->format('i'));
 					$contadorSalida++;			
 				}
 				$dia++;											
 			}
 			
-			
+						
 			//AJUSTE POR MINUTOS EXCEDIDOS
-			if($minutos >= 30){
-				$ajuste = $minutos/60;
+			if($minutosSalida >= 30 || $minutosEntrada >= 30){
+				$ajuste = $minutosSalida/60 - $minutosEntrada/60;
 				$horas = $horas + $ajuste;
 			}			
 			
@@ -392,7 +397,7 @@ class LiquidacionEnLote
 			}else{
 				$hsNormales = $hsATrabajar;
 				$hsExtras = $horas - $this->horasNormales;
-				
+				$hsExtras <= 0 ? $hsExtras = 0 : $hsExtras;
 			}	
 			$empleado->setHsNormalesTrabajadas($hsNormales);
 			$empleado->setHsExtrasTrabajadas($hsExtras);

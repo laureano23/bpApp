@@ -195,7 +195,6 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 					items:[
 						{
 							title: 'Datos generales',
-							iconCls: 'contact',
 							items: [
 								{
 									xtype: 'form',
@@ -287,18 +286,19 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 						},						
 						{
 							title: 'Imagenes',
-							iconCls: 'contact',
 							items: [
 								{
 									xtype: 'form',
 									border: false,
+									margin: '5 0 0 0',
 									width: 600,									
 									items: [
 										{
 											xtype: 'textfield',
 											name: 'idArt',
 											itemId: 'idArt',
-											fieldLabel: 'id'
+											fieldLabel: 'id',
+											hidden: true
 										},						
 										{
 											xtype: 'filefield',
@@ -307,7 +307,7 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 											margin: '0 0 0 5',
 											labelWidth: 35,
 											name: 'rutaPlano',
-											itemId: 'rutaPlano',
+											itemId: 'nombreImagen',
 											buttonText: 'Seleccion archivo...',
 										},
 										{
@@ -317,6 +317,19 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 											text: 'Guardar'
 										}
 									]
+								},
+								{
+								    xtype: 'component',
+								    hidden: true,
+								    margin: '0 0 0 5',
+								    itemId: 'imagen',
+								    autoEl: {
+								        tag: 'a',
+								        name: 'imagen',								        
+								        href: '#',
+								        html: 'Ver imágen',
+								        target: '_blank'
+								    }
 								}
 							]
 						}

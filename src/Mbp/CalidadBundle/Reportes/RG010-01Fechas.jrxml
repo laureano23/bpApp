@@ -33,8 +33,8 @@
      Estanqueidad.`mChapaColectora` AS Estanqueidad_mChapaColectora,
      Estanqueidad.`sPuntera` AS Estanqueidad_sPuntera
 FROM
-     `Personal` Personal INNER JOIN `Estanqueidad` Estanqueidad ON Personal.`idP` = Estanqueidad.`soldador`
-     INNER JOIN `Personal` Personal_A ON Estanqueidad.`probador` = Personal_A.`idP`
+     `Personal` Personal RIGHT JOIN `Estanqueidad` Estanqueidad ON Personal.`idP` = Estanqueidad.`soldador`
+     LEFT JOIN `Personal` Personal_A ON Estanqueidad.`probador` = Personal_A.`idP`
 WHERE
      fechaPrueba BETWEEN $P{fechaDesde} AND $P{fechaHasta}]]>
 	</queryString>

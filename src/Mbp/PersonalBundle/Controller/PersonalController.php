@@ -17,8 +17,20 @@ class PersonalController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 		$repo = $em->getRepository('MbpPersonalBundle:Personal');
+		$response = new Response;
 		
-		$repo->listarPersonal();
+		try{
+			$data = $repo->listarPersonal();
+			return $response->setContent(
+				json_encode(array('success' => true, 'items' => $data))
+			);	
+		}catch(\Exception $e){
+			return $response->setContent(
+				json_encode(array('success' => true, 'msg' => $e->getMessage()))
+			);
+		}
+		
+		
 		
 		return new Response();
     }

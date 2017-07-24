@@ -150,23 +150,7 @@ Ext.define('MetApp.view.Calidad.FormEstanqueidadRG010', {
 												{ boxLabel: 'Planchuelas', name: 'sPlanchuelas', inputValue: '1', uncheckedValue: '0' },
 												{ boxLabel: 'Punteras', name: 'sPuntera', inputValue: '1', uncheckedValue: '0' },																
 											]
-										},
-										{
-											xtype: 'combobox',											
-											allowBlank: true,
-											value: 0,
-											store: 'Personal.PersonalStore',
-											queryMode: 'local',
-											displayField: 'nombre',
-											triggerAction: 'query',
-											valueField: 'idP',
-											typeAhead: true,											
-											minChars: 1,
-											fieldLabel: 'Soldador',
-											width: 600,
-											name: 'idSoldador',
-											itemId: 'soldador'
-										},
+										},										
 									],
 								},
 								{
@@ -188,6 +172,22 @@ Ext.define('MetApp.view.Calidad.FormEstanqueidadRG010', {
 												var store = e.store.clearFilter();
 											}
 									}
+								},
+								{
+									xtype: 'combobox',											
+									allowBlank: false,
+									value: "",
+									store: 'Personal.PersonalStore',
+									queryMode: 'local',
+									displayField: 'nombre',
+									triggerAction: 'query',
+									valueField: 'idP',
+									typeAhead: true,											
+									minChars: 1,
+									fieldLabel: 'Soldador',
+									width: 600,
+									name: 'idSoldador',
+									itemId: 'soldador'
 								},botonera
 							]
 						},

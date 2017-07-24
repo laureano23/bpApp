@@ -2,7 +2,7 @@ Ext.define('MetApp.view.Articulos.EnfriadoresFormView', {
 	extend: 'Ext.window.Window',
 	alias: 'widget.EnfriadoresFormView',
 	itemId: 'EnfriadoresFormView',
-	width: 800,
+	width: 900,
 	layout: 'fit',
 	autoShow: true,
 	title: 'Tabla de enfriadores',
@@ -38,7 +38,7 @@ Ext.define('MetApp.view.Articulos.EnfriadoresFormView', {
 									itemId: 'idFormula',
 									fieldLabel: 'Id formula',				
 									width: 250,
-									hidden: false				
+									hidden: true				
 								},
 								{
 									xtype: 'textfield',				
@@ -69,8 +69,9 @@ Ext.define('MetApp.view.Articulos.EnfriadoresFormView', {
 						{
 							xtype: 'grid',
 							store: 'MetApp.store.Articulos.FormulaEnfriadoresStore',
+							height: 500,
 							columns: [
-								{header: 'Id', dataIndex: 'idArt', flex: 1, hidden: false},
+								{header: 'Id', dataIndex: 'idArt', flex: 1, hidden: true},
 								{header: 'Codigo', dataIndex: 'codigo', width: 250},
 								{header: 'Descripcion', dataIndex: 'descripcion', width: 450},
 								{ 
@@ -83,16 +84,15 @@ Ext.define('MetApp.view.Articulos.EnfriadoresFormView', {
 											iconCls: 'search',
 											getClass: function(value,metadata,record){
 												var nombre = record.get('nombreImagen');
-												console.log(nombreImagen);
 												if (nombre == "" ) {
 												    return 'x-hide-display'; 
 												} else {
-												    return 'search';               
+												    return 'reportes';               
 												}
 											},
 										}										
 									],
-									flex: 1
+									flex:1
 								},								
 							]
 						}								

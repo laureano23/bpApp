@@ -122,8 +122,8 @@ class ReportesController extends Controller
 			     Estanqueidad.`mChapaColectora` AS Estanqueidad_mChapaColectora,
 			     Estanqueidad.`sPuntera` AS Estanqueidad_sPuntera
 			FROM
-			     `Personal` Personal INNER JOIN `Estanqueidad` Estanqueidad ON Personal.`idP` = Estanqueidad.`soldador`
-			     INNER JOIN `Personal` Personal_A ON Estanqueidad.`probador` = Personal_A.`idP`
+			     `Personal` Personal RIGHT JOIN `Estanqueidad` Estanqueidad ON Personal.`idP` = Estanqueidad.`soldador`
+			     LEFT JOIN `Personal` Personal_A ON Estanqueidad.`probador` = Personal_A.`idP`
 			WHERE
 			     Estanqueidad.`ot` = $ot
 		";
@@ -227,7 +227,7 @@ class ReportesController extends Controller
      			 Estanqueidad.`sPuntera` AS Estanqueidad_sPuntera
 				FROM
 				     `Personal` Personal RIGHT JOIN `Estanqueidad` Estanqueidad ON Personal.`idP` = Estanqueidad.`soldador`
-				     INNER JOIN `Personal` Personal_A ON Estanqueidad.`probador` = Personal_A.`idP`
+				     LEFT JOIN `Personal` Personal_A ON Estanqueidad.`probador` = Personal_A.`idP`
 				WHERE
     		 		fechaPrueba BETWEEN '$fechaDesde[0]' AND '$fechaHasta[0]'";
 		 /*

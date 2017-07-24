@@ -7,20 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Enfriadores
  *
- * @ORM\Table()
  * @ORM\Entity(repositoryClass="Mbp\ArticulosBundle\Entity\EnfriadoresRepository")
  */
 class Enfriadores extends Articulos 
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
     /**
      * @var string
      *
@@ -64,15 +54,6 @@ class Enfriadores extends Articulos
     private $presion;
 
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * Set caudal

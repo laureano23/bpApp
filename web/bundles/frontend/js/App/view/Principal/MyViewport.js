@@ -68,14 +68,14 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                             render : dragZone
                         },
 					},
-					{
-						text: 'PosEnfriadores',
-						itemId: 'tabPosEnfriadores',
-                        listeners : {
-                            render : dragZone
-                        },
-					}
 				]
+			},			
+			{
+				text: 'PosEnfriadores',
+				itemId: 'tabPosEnfriadores',
+                listeners : {
+                    render : dragZone
+                },
 			},
 			{                						
 				text: 'Clientes',
@@ -128,6 +128,7 @@ Ext.define('MetApp.view.Principal.MyViewport', {
 			{
 				text: 'Num. Correlativa',
 				itemId: 'numCorrelativa',
+				require: {role2: true},
                 listeners : {
                     render : dragZone
                 },
@@ -278,10 +279,12 @@ Ext.define('MetApp.view.Principal.MyViewport', {
     	var menuProduccion = [
     		{
     			text: 'Radiadores',
+    			require: {role2: true},
     			menu: autz.getAuthorizedElements(subMenuRadiadores)
     		},
     		{
     			text: 'Ordenes de Trabajo',
+    			require: {role2: true},
     			menu: [
     				{
     					text: 'Nueva OT',
@@ -308,10 +311,12 @@ Ext.define('MetApp.view.Principal.MyViewport', {
     		},
     		{
     			text: 'Pedidos',
+    			require: {role2: true},
     			menu: autz.getAuthorizedElements(subMenuPedidos)
     		},
     		{
     			text: 'Programacion',
+    			require: {role2: true},
     			menu: autz.getAuthorizedElements(subMenuProgramacion)
     		}
     	]
@@ -559,6 +564,78 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                 },
             });
         };
+        
+        var panelLateral = [
+        	{
+				text: 'Tabla',
+				menu: autz.getAuthorizedElements(menuTablas) //Analizo los elementos a desplegar segun el rol
+			},
+			{
+				text: 'Calidad',
+				require: {role2: true},
+				menu: autz.getAuthorizedElements(menuCalidad)
+			},
+			{
+				text: 'Produccion',
+				require: {role2: true},
+				menu: autz.getAuthorizedElements(menuProduccion)
+			},
+			{
+				text: 'RRHH',
+				require: {role2: true},
+				menu: autz.getAuthorizedElements(menuRRHH)
+			},
+			{
+				text: 'Ventas',  
+				require: {role2: true},
+				itemId: 'tbCCClientes'
+			},
+			{
+				text: 'Proveedores',
+				require: {role2: true},
+				menu: autz.getAuthorizedElements(menuProveedores)        				
+			},
+			{
+				text: 'Bancos',
+				require: {role2: true},
+				menu: autz.getAuthorizedElements(menuBancos)
+			},
+			{
+				text: 'Mantenimiento',
+				require: {role2: true},
+				menu: autz.getAuthorizedElements(menuMantenimiento)
+			},
+			{
+				text: 'Compras',
+				require: {role2: true},
+				menu: autz.getAuthorizedElements(menuCompras)
+			},
+            {
+                text: 'Remitos',
+                require: {role2: true},
+                menu: autz.getAuthorizedElements(menuRemitos)
+            },
+            {
+                text: 'Reportes',
+                require: {role2: true},
+                menu: autz.getAuthorizedElements(menuReportes)
+            },
+            '->',   
+			{
+				xtype: 'button',
+				text: 'Ayuda',                				
+				handler: function(){
+					location.href = Routing.generate('mbp_manual_index')
+				}
+			},        				
+			{
+				xtype: 'button',
+				text: 'Cerrar Sesion',                				
+				handler: function(){
+					location.href = Routing.generate('logout')
+				}
+			}
+        ]
 
     	me.items = [
 	    	{
@@ -590,68 +667,7 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                 activeItem: 0,                
                 shadowOffset: 10,
                           
-              	items: [
-                	
-        			{
-        				text: 'Tabla',
-        				menu: autz.getAuthorizedElements(menuTablas) //Analizo los elementos a desplegar segun el rol
-        			},
-        			{
-        				text: 'Calidad',
-        				menu: autz.getAuthorizedElements(menuCalidad)
-        			},
-        			{
-        				text: 'Produccion',
-        				menu: autz.getAuthorizedElements(menuProduccion)
-        			},
-        			{
-        				text: 'RRHH',
-        				menu: autz.getAuthorizedElements(menuRRHH)
-        			},
-        			{
-        				text: 'Ventas',  
-        				itemId: 'tbCCClientes'
-        			},
-        			{
-        				text: 'Proveedores',
-        				menu: autz.getAuthorizedElements(menuProveedores)        				
-        			},
-        			{
-        				text: 'Bancos',
-        				menu: autz.getAuthorizedElements(menuBancos)
-        			},
-        			{
-        				text: 'Mantenimiento',
-        				menu: autz.getAuthorizedElements(menuMantenimiento)
-        			},
-        			{
-        				text: 'Compras',
-        				menu: autz.getAuthorizedElements(menuCompras)
-        			},
-                    {
-                        text: 'Remitos',
-                        menu: autz.getAuthorizedElements(menuRemitos)
-                    },
-                    {
-                        text: 'Reportes',
-                        menu: autz.getAuthorizedElements(menuReportes)
-                    },
-        			'->',   
-        			{
-        				xtype: 'button',
-        				text: 'Ayuda',                				
-        				handler: function(){
-        					location.href = Routing.generate('mbp_manual_index')
-        				}
-        			},        				
-        			{
-        				xtype: 'button',
-        				text: 'Cerrar Sesion',                				
-        				handler: function(){
-        					location.href = Routing.generate('logout')
-        				}
-        			}
-        		]
+              	items: autz.getAuthorizedElements(panelLateral)
         	}   
 	    	   	
     	];

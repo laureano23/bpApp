@@ -1,11 +1,11 @@
 mbp_articulos_read:
-    path:     /articuloslist
+    path:     /extranet/articuloslist
     defaults: { _controller: MbpArticulosBundle:Articulos:articuloslist }
     options:
       expose: true
 
 mbp_articulos_conCosto:
-    path:     /articuloConCosto
+    path:     /extranet/articuloConCosto
     defaults: { _controller: MbpArticulosBundle:Articulos:articuloConCosto }
     options:
       expose: true
@@ -23,7 +23,7 @@ mbp_articulos_destroy:
       expose: true
 
 mbp_articulos_validate:
-    path:     /articulosvalidate
+    path:     /extranet/articulosvalidate
     defaults: { _controller: MbpArticulosBundle:Articulos:validart }
     options:
       expose: true
@@ -35,13 +35,13 @@ mbp_articulos_cargarImagen:
       expose: true
 
 mbp_articulos_servirImagen:
-    path:     /servirImagen/{id}
+    path:     /extranet/servirImagen/{id}
     defaults: { _controller: MbpArticulosBundle:Articulos:servirImagenArticulo }
     options:
       expose: true
 
 mbp_formulas_read:
-    path:     /formulaslist
+    path:     /extranet/formulaslist
     defaults: { _controller: MbpArticulosBundle:Formulas:formulaslist }
     options:
       expose: true
@@ -65,19 +65,19 @@ mbp_formulas_updateNodo:
       expose: true
 
 mbp_formulas_idNodo:
-    path:     /formulasIdNodo
+    path:     /extranet/formulasIdNodo
     defaults: { _controller: MbpArticulosBundle:Formulas:formulasIdNodo }
     options:
       expose: true
 
 mbp_formulas_generaReporte:
-    path:     /generaReporteEstructura
+    path:     /extranet/generaReporteEstructura
     defaults: { _controller: MbpArticulosBundle:Reportes:generaReporteEstructura }
     options:
       expose: true
 
 mbp_formulas_muestraReporte:
-    path:     /muestraReporteEstructura
+    path:     /extranet/muestraReporteEstructura
     defaults: { _controller: MbpArticulosBundle:Reportes:muestraReporteEstructura }
     options:
       expose: true
@@ -85,8 +85,10 @@ mbp_formulas_muestraReporte:
 mbp_articulos_remitoClientes:
     resource: "@MbpArticulosBundle/Controller/RemitosController.php"
     type:     annotation
+    prefix:   /articulos
 
 mbp_articulos_enfriadores:
     resource: "@MbpArticulosBundle/Controller/EnfriadoresController.php"
     type:     annotation
+    prefix:   /extranet
     

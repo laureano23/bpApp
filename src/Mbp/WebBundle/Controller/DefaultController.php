@@ -232,13 +232,52 @@ class DefaultController extends Controller
 
 
     /**
-     * @Route("/novedades", name="novedades")
+     * @Route("/novedades/{page}", name="novedades", defaults={"page": 1})
      * @Cache(smaxage="604800")
      * @Template()
      */
-    public function novedadesAction()
+    public function novedadesAction($page)
     {
-        return $this->render('MbpWebBundle:Default:novedades.html.twig');
+    	$em = $this->getDoctrine()->getManager('web');
+        $repo = $em->getRepository('MbpWebBundle:Novedades');
+		$maxResult = 3;
+		
+		$firstResult=0;
+		
+		if(isset($page) && $page == 2){
+			$firstResult = $maxResult;
+		}
+		
+		if(isset($page) && $page > 2){
+			$firstResult = $maxResult * $page;
+		}
+		
+		$query = $repo->createQueryBuilder('n')
+			->select('')
+			->setFirstResult($firstResult)
+			->setMaxResults($maxResult)			
+			->orderBy('n.id', 'DESC')
+			->getQuery()
+			->getResult();
+			
+			
+		$statusNext = "next";
+		$statusPrevious = "previous";
+		if(count($query) < 3){
+			$statusNext = "next disabled";
+		}
+		
+		if($page <= 1){
+			$statusPrevious = "previous disabled";
+		}
+		
+		
+        return $this->render('MbpWebBundle:Default:novedades.html.twig', array(
+        	'page' => $page,
+        	'items' => $query,
+			'next' => $statusNext,
+			'previous' => $statusPrevious
+			));
     }
 	
 }

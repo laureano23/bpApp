@@ -1,8 +1,10 @@
 
 # app/config/security.yml
 security:
-    firewalls:
+    access_denied_url: /foo/error403
+    firewalls:        
         secured_area:
+            access_denied_handler: app.security.access_denied_handler
             pattern:    ^/
             anonymous: ~
             form_login:
@@ -14,13 +16,15 @@ security:
                 target: login                    
             remember_me:
                 key: prueba123
+            
 
     access_control:
         - { path: ^/index, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         #- { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/web/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/articulos/*, roles: ROLE_ADMINISTRACION }
+        - { path: ^/articulos/extranet/*, roles: ROLE_EXTRANET }
+        - { path: ^/articulos/*, roles: ROLE_ADMINISTRACION }        
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/calidad, roles: ROLE_CALIDAD }
         - { path: ^/personal, roles: ROLE_USER }
@@ -29,9 +33,9 @@ security:
         #- { path: ^/, roles: ROLE_USER }
         
     role_hierarchy:
-        ROLE_ADMIN: ROLE_USER, ROLE_CALIDAD, ROLE_ADMINISTRACION, ROLE_CLIENTE
-        ROLE_CALIDAD: ROLE_USER, ROLE_ADMINISTRACION
-        ROLE_ADMINISTRACION: ROLE_USER
+        ROLE_ADMIN: ROLE_USER, ROLE_CALIDAD, ROLE_ADMINISTRACION, ROLE_CLIENTE, ROLE_EXTRANET
+        ROLE_CALIDAD: ROLE_USER, ROLE_ADMINISTRACION, ROLE_EXTRANET
+        ROLE_ADMINISTRACION: ROLE_USER, ROLE_EXTRANET
         #ROLE_CLIENTE: ROLE_USER
       
     providers: 
@@ -57,3 +61,5 @@ security:
 
     acl:
         connection: default
+    
+        

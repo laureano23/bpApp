@@ -176,4 +176,31 @@ class ComprasController extends Controller
 			return $response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
     	}
 	}
+
+	/**
+     * @Route("/ordenCompra/historicoCompra", name="mbp_compras_historicoCompra", options={"expose"=true})
+     */
+    public function historicoCompra()
+    {
+    	$em = $this->getDoctrine()->getEntityManager();
+    	$response = new Response;
+    	$req = $this->getRequest();
+    	$codigo = $req->request->get('codigo');
+		$repo = $em->getRepository('MbpComprasBundle:OrdenCompra');
+		
+		$query = $repo->createQueryBuilder('c')
+			->select("DATE_FORMAT(c.fechaEmision, '%d/%m/%Y') fecha,	c.id idOc, a.codigo, a.descripcion, d.cant, d.precio, (CASE WHEN d.moneda=false THEN 'ARS' ELSE 'USD' END) moneda, p.rsocial as proveedor")
+			->join('c.proveedorId', 'p')
+			->join('c.ordenDetalleId', 'd')
+			->join('d.articuloId', 'a')
+			->where('a.codigo = :cod')
+			->setParameter('cod', $codigo)
+			->getQuery()
+			->getResult();
+			
+		return $response->setContent(
+				json_encode(array('success' => true, 'data' => $query)) 
+			);
+		
+    }
 }

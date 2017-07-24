@@ -34,7 +34,7 @@ class ArticulosRepository extends EntityRepository
 		$repoArt = $em->getRepository('MbpArticulosBundle:Articulos');
 		
 		$art = 	$repoArt->createQueryBuilder('a')
-						->select("a.id, a.descripcion, a.codigo, a.unidad, a.iva, f.id AS familia, sf.id AS subFamilia, a.precio,
+						->select("a.id, a.descripcion, a.codigo, a.unidad, a.iva, f.id AS familia, sf.id AS subFamilia, a.precio, a.nombreImagen,
 						CASE WHEN a.moneda = false THEN 'p' ELSE 'd' END AS moneda,
 						CASE WHEN a.monedaPrecio = false THEN 'p' ELSE 'd' END AS monedaPrecio")
 						->leftJoin('a.familiaId', 'f')
@@ -69,7 +69,7 @@ class ArticulosRepository extends EntityRepository
 		$costo = 0;
 		if(!empty($existeEnFormula)){
 			$qb = $repoFormula->createQueryBuilder('f')
-					->select('art.descripcion, art.codigo, art.costo AS costo, art.moneda, padre.cant AS cantidad')
+					->select('art.descripcion, art.codigo, art.costo AS costo, art.moneda, padre.cant AS cantidad, art.nombreImagen')
 					->from('MbpArticulosBundle:Formulas', 'padre')
 					->from('MbpArticulosBundle:Formulas', 'nodo')				
 					->leftJoin('padre.idArt', 'art')
@@ -120,7 +120,7 @@ class ArticulosRepository extends EntityRepository
 			if($data->id > 0){
 				$art = $repoArt->find($data->id);
 			}else{
-				$art = new Articulos();	
+				$art = new Enfriadores();	
 			}			
 			$art->setcodigo($data->codigo)
 			->setdescripcion($data->descripcion)

@@ -21,7 +21,7 @@ class Formulas
     /**
      * @var \Mbp\ArticulosBundle\Entity\Articulos
      *
-     * @ORM\ManyToOne(targetEntity="Mbp\ArticulosBundle\Entity\Articulos", fetch="EAGER", cascade={"refresh", "persist"})
+     * @ORM\ManyToOne(targetEntity="Mbp\ArticulosBundle\Entity\Articulos", fetch="EAGER", cascade={"refresh", "persist", "merge"})
      * @ORM\JoinColumn(name="idArt", referencedColumnName="idArticulos", unique=false)	 
      */
     private $idArt;

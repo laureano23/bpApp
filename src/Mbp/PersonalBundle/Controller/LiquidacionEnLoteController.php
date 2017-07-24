@@ -65,7 +65,11 @@ class LiquidacionEnLoteController extends RecibosController
 			
 						
 			$liquidacion = new LiquidacionEnLote($fileTarget, $phpExcelService, $this->periodo, $this->mesNum, $this->anio, $em);			
-						
+			
+			$empleados = $liquidacion->getEmpleadosCollection();
+			
+			
+			
 			//ERRORES EN LA COLECCION DE EMPLEADOS
 			$errores = json_encode($liquidacion->getEmpleadosCollection()->getError());
 			//ERRORES DEL LOTE DE LIQUIDACION

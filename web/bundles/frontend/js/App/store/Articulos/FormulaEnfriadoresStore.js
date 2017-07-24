@@ -12,7 +12,7 @@ Ext.define('MetApp.store.Articulos.FormulaEnfriadoresStore',{
         
         reader: {
             type: 'json',
-           // root: 'items'
+            root: 'items'
         },
         
         /*writer: {

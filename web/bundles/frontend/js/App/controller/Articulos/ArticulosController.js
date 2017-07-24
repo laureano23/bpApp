@@ -60,6 +60,7 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 	 * Grid para buscar articulos
 	 */
 	SearchArt: function(button){
+		var win = button.up('window');
 		var searchForm = Ext.widget('winarticulosearch');
 		var store = searchForm.down('grid').getStore();
 		store.sync();
@@ -82,6 +83,15 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 							
 					formArt = Ext.getCmp('articulosForm').down('form');	
 					formArt.getForm().setValues(jsonResp.data[0]);
+					var nombreImagen = win.queryById('imagen');
+					console.log(nombreImagen);
+					if(jsonResp.data[0].nombreImagen != null){
+						nombreImagen.show();
+						nombreImagen.initialConfig.autoEl.href = Routing.generate('mbp_articulos_servirImagen', {id: jsonResp.data[0].id});
+						console.log(nombreImagen);
+					}else{
+						nombreImagen.hide();
+					}					
 				}
 			});
 			
@@ -95,7 +105,7 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 	/*
 	 * Escuchamos el boton de busqueda para la formulacion de articulos
 	 */
-	SearhForm: function(){
+	SearhForm: function(btn){
 		var searchForm = Ext.widget('winarticulosearch');
 		searchForm.down('grid').getStore().clearFilter(true);
 		var button = Ext.ComponentQuery.query('#insertArt')[0];
@@ -300,14 +310,28 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 		form.submit({
 			url: Routing.generate('mbp_articulos_cargarImagen'),
 			
-			//waitMsg: 'Cargando foto...',
+			waitMsg: 'Cargando foto...',
 			
-			success: function(resp){
-				console.log(resp);
+			success: function(resp, action){
+				var jsonResp = Ext.JSON.decode(action.response.responseText);
+				
+				Ext.Msg.show({
+					title: 'Atencion',
+					msg: 'Imágen cargada con éxito',
+					buttons: Ext.Msg.OK,
+					icon: Ext.Msg.INFO,
+				});
 			},
 			
-			failure: function(resp){
-				console.log(resp);
+			failure: function(resp, action){
+				var jsonResp = Ext.JSON.decode(action.response.responseText);
+				
+				Ext.Msg.show({
+					title: 'Atencion',
+					msg: jsonResp.msg,
+					buttons: Ext.Msg.OK,
+					icon: Ext.Msg.WARNING,
+				});	
 			}
 		});
 	}	

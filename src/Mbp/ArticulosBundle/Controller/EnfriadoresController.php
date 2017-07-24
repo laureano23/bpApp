@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Mbp\ArticulosBundle\Entity\PosEnfriadores;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-//use Mbp\ArticulosBundle\Entity\FormulasRepository;
 
 class EnfriadoresController extends ArticulosController
 {
@@ -48,13 +47,29 @@ class EnfriadoresController extends ArticulosController
     	$em = $this->getDoctrine()->getManager();
         $rep = $em->getRepository('MbpArticulosBundle:Formulas');
 		$req = $this->getRequest();
+		$response = new Response;
 		
-		$idNodo = $req->request->get('idNodo');
+		try{
+			$idNodo = $req->request->get('idNodo');
 		
-		$res = $rep->estructuraCompleta($idNodo, 17.1);
+			$res = $rep->estructuraCompleta($idNodo, 17.1);
+			
+			//print_r($res);
+			//echo json_encode($res);
+			return	$response->setContent(
+					json_encode(
+						array('success' => true, 'items' => $res)
+					)
+				);
+		}catch(\Exception $e){
+			$response->setContent(Response::HTTP_INTERNAL_SERVER_ERROR);
+			return json_encode(
+				$response->setContent(
+					array('success' => false, 'msg' => $e->getMessage())
+				)
+			);	
+		}
 		
-		//print_r($res);
-		echo json_encode($res);
 		
 		return new Response;
     }

@@ -5,6 +5,7 @@ imports:
     - { resource: "@MbpArticulosBundle/Resources/config/services.yml" }
     - { resource: "@MbpFinanzasBundle/Resources/config/services.yml" }
     - { resource: "@MbpProduccionBundle/Resources/config/services.yml" }
+    - { resource: "@MbpSecurityBundle/Resources/config/services.yml" }
 
 framework:
     #esi:             ~

@@ -111,14 +111,13 @@ class FormulasClass
 		$nodo_a_eliminar = $repo->find($this->idNodoFormula);
 		$padre_nod_eliminar = $repo->busca_nodo_padre($nodo_a_eliminar->getId());
 		
-		//return;
 		$abuelo = $repo->busca_nodo_ascendentes($padre_nod_eliminar->getId());
 		
 		//TODO LO QUE SIGUE A CONTINUACION ES UNA TRANSACCION
 		$this->em->getConnection()->beginTransaction();
 		
 		try{
-			if($abuelo == 0 && $padre_nod_eliminar->getCant() == 0){
+			if($abuelo == 0 && $nodo_a_eliminar->getCant() == 0){
 				//SI ENTRA ACA ES PORQUE ESTAMOS EN LA FORMULA MADRE Y HAY QUE BORRAR EL ITEM DE TODAS LAS FORMULAS
 				$item = $repo->findByIdArt($art);
 				foreach ($item as $rec) {
@@ -142,7 +141,6 @@ class FormulasClass
 					$this->orden_nodo_chld_abajo_delete($padre_nod_eliminar->getLft(), $padre_nod_eliminar->getRgt());
 				}
 			}elseif($this->es_formula($art[0]->getId()) == TRUE){
-				
 				$nodos = $repo->formulasEstrucutraMateriales($this->idNodoFormula);
 				foreach ($nodos as $nodo) {
 					$this->em->remove($nodo);
@@ -151,19 +149,20 @@ class FormulasClass
 				}
 				
 				//COMPRUEBA SI EL PADRE QUEDO HUERFANO (SIN HIJOS)
-				$formula = $repo->formulaslist($padre_nod_eliminar->getIdArt()->getId());
+				$formula = $repo->formulaslist($padre_nod_eliminar->getIdArt()->getId(), $this->tc);
 				if(empty($formula)){
 					$this->em->remove($padre_nod_eliminar);
 					$this->em->flush();
 					$this->orden_nodo_chld_abajo_delete($padre_nod_eliminar->getLft(), $padre_nod_eliminar->getRgt());
 				}
 			}else{
+				
 				$this->em->remove($nodo_a_eliminar);
 				$this->em->flush();
 				$this->orden_nodo_chld_abajo_delete($nodo_a_eliminar->getLft(), $nodo_a_eliminar->getRgt());
 				
 				//COMPRUEBA SI EL PADRE QUEDO HUERFANO (SIN HIJOS)
-				$formula = $repo->formulaslist($padre_nod_eliminar->getIdArt()->getId());
+				$formula = $repo->formulaslist($padre_nod_eliminar->getIdArt()->getId(), $this->tc);
 				if(empty($formula)){
 					$this->em->remove($padre_nod_eliminar);
 					$this->em->flush();

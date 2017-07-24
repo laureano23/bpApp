@@ -56,7 +56,6 @@ Ext.define('MetApp.controller.Articulos.EnfriadoresController',{
 		
 		gridEnfriadores.queryById('insertArt').on('click', function(){
 			var selection = grid.getSelectionModel().getSelection()[0];
-			console.log(selection);
 			win.queryById('codigo').setValue(selection.data.codigo);
 			
 			//BUSCAMOS EL ID DE LA FORMULA SEGUN EL ARTICULO SELECCIONADO
@@ -78,14 +77,12 @@ Ext.define('MetApp.controller.Articulos.EnfriadoresController',{
 						},
 						
 						success: function(resp){
+							
 							var grid = win.down('grid');
 							var res = Ext.JSON.decode(resp.responseText);
-							
-							grid.getStore().loadData(res);
-							gridEnfriadores.close();
-							
-							//BUSCAMOS EL ARTICULO EN LA TABLA FORMULA Y TRAEMOS SU ID
-							
+							console.log(res);
+							grid.getStore().loadData(res.items);
+							gridEnfriadores.close();							
 						}
 					});
 				}
@@ -98,15 +95,8 @@ Ext.define('MetApp.controller.Articulos.EnfriadoresController',{
 		var win = btn.up('window');
 		var selection = win.down('grid').getSelectionModel().getSelection()[0];
 		
-		var file = Routing.generate('mbp_articulos_servirImagen', {id: selection.data.idArt});			
-		var WinReporte=Ext.create('Ext.Window', {
-			  title: 'Orden de compra',
-			  width: 900,
-			  height: 600,
-			  layout: 'fit',
-			  modal:true,										
-			  html: '<iframe src='+file+' width="100%" height="100%"></iframe>'						  
-		 }).show();	
+		var file = Routing.generate('mbp_articulos_servirImagen', {id: selection.data.idArt});
+		window.open(file, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 	},
 	
 	VerEstructura: function(btn){

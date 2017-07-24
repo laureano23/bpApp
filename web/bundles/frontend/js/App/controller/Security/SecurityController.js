@@ -33,7 +33,20 @@ Ext.define('MetApp.controller.Security.SecurityController',{
 						MetApp.User.name({
 							name: data.nombre,
 						});									
-					}else{
+					}
+				if(user.role == 'ROLE_EXTRANET'){
+						MetApp.User = Ext.create('MetApp.controller.Security.Autorizaciones');
+						MetApp.User.roles({
+							role1: false,
+							role2: false,
+							role3: true
+						});		
+						MetApp.User.name({
+							name: data.nombre,
+						});
+				}
+				
+				if(user.role != 'ROLE_EXTRANET' && user.role != 'ROLE_ADMIN'){
 						MetApp.User = Ext.create('MetApp.controller.Security.Autorizaciones');
 						MetApp.User.roles({
 							role1: false,
