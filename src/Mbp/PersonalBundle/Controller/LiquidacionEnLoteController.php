@@ -284,7 +284,7 @@ class LiquidacionEnLoteController extends RecibosController
 	}
 
 	
-	private function liquidarConceptosVariables($empleado, $recibo)
+	private function liquidarConceptosVariables($empleado, $recibo=null) 
 	{
 		$em = $this->getDoctrine()->getManager();
 		$repoConceptos = $em->getRepository('MbpPersonalBundle:CodigoSueldos');
