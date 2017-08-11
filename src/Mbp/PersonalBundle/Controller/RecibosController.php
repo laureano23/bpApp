@@ -28,53 +28,7 @@ class RecibosController extends Controller
 	public static $horas_mensualizados = 180;
 	
 	
-	/**
-     * @Route("/ajusteSegVida", name="mbp_personal_ajusteSegVida", options={"expose"=true})
-     */    
-	/*public function ajusteSegVida()
-	{
-		$em = $this->getDoctrine()->getManager();
-		$repoRecibos = $em->getRepository('MbpPersonalBundle:Recibos');
-		$repoCod = $em->getRepository('MbpPersonalBundle:CodigoSueldos');
-		
-		$recibos = $repoRecibos->createQueryBuilder('r')
-			->select('')
-			->where('r.mes = :mes')
-			->andWhere('r.anio = :anio')
-			->andWhere('r.periodo = :periodo')
-			->andWhere('r.compensatorio = :compensatorio')
-			->setParameter('anio', 2017)
-			->setParameter('periodo', 1)
-			->setParameter('mes', 7)
-			->setParameter('compensatorio', false)
-			->getQuery()
-			->getResult();
-		
-		$codAjuste = $repoCod->find(53);	
-		
-		
-		
-		//\Doctrine\Common\Util\Debug::dump($detalle);
-		
-		foreach ($recibos as $r) {
-			$detalle = new RecibosDetalle;
-			$detalle->setCantConceptoVar(1);
-			$detalle->setValorConceptoHist(34.68);
-			$detalle->setDescuento(34.68);
-			$detalle->setValorCompensatorioHist(0);
-			$detalle->addCodigoSueldo($codAjuste);
-			
-			$r->addReciboDetalleId($detalle);
-			
-			$em->persist($r);
-			$em->flush();
-		}
-			
-		
-		
-		return new Response;
-	}
-	*/
+	
 	
 		
 	/**

@@ -91,4 +91,9 @@ mbp_articulos_enfriadores:
     resource: "@MbpArticulosBundle/Controller/EnfriadoresController.php"
     type:     annotation
     prefix:   /extranet
+
+mbp_articulos_stock:
+    resource: "@MbpArticulosBundle/Controller/StockController.php"
+    type:     annotation
+    prefix:   /stock
     

@@ -13,7 +13,7 @@ Ext.define('MetApp.view.Principal.MyViewport', {
     	 */  		
     	var autz = Ext.create('MetApp.controller.Security.Autorizaciones');    	
     	autz.authorization(MetApp.User);
-    	
+    	    	
         var dragZone = function(v){
             this.dragZone = Ext.create("Ext.dd.DragZone",v.getEl(),{
                 getDragData : function(e){
@@ -175,9 +175,21 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                                 },
 							},
 						]												
-					},
+					}					
 				]				
-			}
+			},
+			{
+				text: 'Soldadura',
+				menu: [
+					{
+						text: 'Control de producción',
+						itemId: 'controlProduccionSoldado',
+                        listeners : {
+                            render : dragZone
+                        },
+					}
+				]				
+			},
         ]
         
         var subMenuRadiadores = [
@@ -451,6 +463,16 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                 }, 
             }
     	]
+    	
+    	var menuStock = [
+    		{
+    			text: 'Entrada/Salida',
+    			itemId: 'entradaSalidaStock',
+                listeners : {
+                    render : dragZone,
+                }, 
+    		}
+    	]
 
         var menuRemitos = [
             {
@@ -610,6 +632,11 @@ Ext.define('MetApp.view.Principal.MyViewport', {
 				require: {role2: true},
 				menu: autz.getAuthorizedElements(menuCompras)
 			},
+			{
+				text: 'Stock',
+				require: {role2: true},
+				menu: autz.getAuthorizedElements(menuStock)
+			},
             {
                 text: 'Remitos',
                 require: {role2: true},
@@ -643,7 +670,7 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                 listeners : {
                     render : dropZone,
                 },
-	    		title: 'Favoritos',
+	    		title: MetApp.User.name.name,
 	    		itemId: 'panelFavoritos',
                 id: 'panelFavoritos',
 		        region: 'center',        

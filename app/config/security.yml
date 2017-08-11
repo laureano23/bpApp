@@ -27,14 +27,15 @@ security:
         - { path: ^/articulos/*, roles: ROLE_ADMINISTRACION }        
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/calidad, roles: ROLE_CALIDAD }
-        - { path: ^/personal, roles: ROLE_USER }
+        - { path: ^/personal, roles: ROLE_CALIDAD }
+        - { path: ^/sueldos, roles: ROLE_ADMINISTRACION }
         - { path: ^/adm, roles: ROLE_ADMINISTRACION }
         - { path: ^/clientes/*, roles: ROLE_CLIENTE }
         #- { path: ^/, roles: ROLE_USER }
         
     role_hierarchy:
         ROLE_ADMIN: ROLE_USER, ROLE_CALIDAD, ROLE_ADMINISTRACION, ROLE_CLIENTE, ROLE_EXTRANET
-        ROLE_CALIDAD: ROLE_USER, ROLE_ADMINISTRACION, ROLE_EXTRANET
+        ROLE_CALIDAD: ROLE_EXTRANET
         ROLE_ADMINISTRACION: ROLE_USER, ROLE_EXTRANET
         #ROLE_CLIENTE: ROLE_USER
       

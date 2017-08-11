@@ -42,8 +42,13 @@ mbp_finanzas:
     type:     annotation
     prefix:   /
 
-mbp_personal:
+mbp_personal_sueldos:
     resource: "@MbpPersonalBundle/Controller/"
+    type:     annotation
+    prefix:   /sueldos
+
+mbp_personal:
+    resource: "@MbpPersonalBundle/Controller/PersonalController.php"
     type:     annotation
     prefix:   /personal
     
@@ -59,6 +64,11 @@ mbp_produccion_calculo:
 mbp_produccion_ot:
     resource: "@MbpProduccionBundle/Controller/OtController.php"
     type:     annotation
+
+mbp_produccion_operaciones:
+    resource: "@MbpProduccionBundle/Controller/OperacionesController.php"
+    type:     annotation
+    prefix:   /produccion/
 
 mbp_produccion_reportes:
     resource: "@MbpProduccionBundle/Controller/ReportesController.php"

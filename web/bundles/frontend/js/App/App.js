@@ -30,6 +30,7 @@ Ext.application({
 		'Produccion.Programacion.FormulasMoController',
 		'Produccion.Maquinas.MaquinasController',
 		'Produccion.OrdenesTrabajo.OTController',
+		'Produccion.SoldaduraController',
 		'RRHH.PersonalController',
 		'RRHH.SindicatosController',
 		'RRHH.CategoriasController',
@@ -51,7 +52,8 @@ Ext.application({
 		'Compras.ReportesCompraController',
 		'Reportes.ReportesController',
 		'MetApp.controller.Bancos.BancosController',
-		'MetApp.controller.Articulos.EnfriadoresController'
+		'MetApp.controller.Articulos.EnfriadoresController',
+		'MetApp.controller.Articulos.StockController'
 	],
 	name: 'MetApp',
 	appFolder: '../bundles/frontend/js/App',

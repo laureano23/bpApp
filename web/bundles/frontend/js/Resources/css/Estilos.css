@@ -76,3 +76,13 @@
   background: #FF9900;
 }
 
+/*ESTILO PARA GRILLAS*/
+.extra-alt .x-grid-row .x-grid-cell { 
+    background-color: #fff; 
+    color: #000; 
+} 
+ 
+.extra-alt .x-grid-row-alt .x-grid-cell { 
+    background-color: #000; 
+    color: #fff; 
+}

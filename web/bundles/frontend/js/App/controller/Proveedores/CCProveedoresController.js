@@ -40,9 +40,6 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 			'CCProveedores button[itemId=buscaProveedor]': {
 				click: this.BuscaProveedor
 			},
-			'ProveedoresSearchGrid button[itemId=insertProveedor]': {
-				click: this.InsertaProveedor
-			},
 			'CCProveedores button[itemId=nuevaFc]': {
 				click: this.NuevaFactura
 			},
@@ -90,31 +87,26 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 	},
 	
 	BuscaProveedor: function(btn){
+		var cc = btn.up('window');
 		var me = this;
 		var win = Ext.widget('ProveedoresSearchGrid');
 		var grid = win.down('grid');
 		
 		grid.getStore().load();
-	},
-	
-	InsertaProveedor: function(btn){
-		var me = this;
-		var win = this.getCCProveedores();
-		var winBusqueda = btn.up('window');
-		var grid = winBusqueda.down('grid');
-		var ccProveedor = me.getCCProveedores();
-		var form = ccProveedor.down('form');
-		var gridCC = win.down('grid');
-		var store = gridCC.getStore();
-		var selection = grid.getSelectionModel().getSelection()[0];
 		
-		form.loadRecord(selection);
-		winBusqueda.close();
-		ccProveedor.queryById('btnCnt').setDisabled(false);
-		
-		var proxy = store.getProxy();
-		proxy.setExtraParam('idProv', form.queryById('id').getValue());
-		store.load();
+		win.down('button').on('click', function(btn){
+			var selection = win.down('grid').getSelectionModel().getSelection()[0];
+			var form = cc.down('form');
+			form.loadRecord(selection);
+			win.close();
+			cc.queryById('btnCnt').setDisabled(false);
+			
+			var storeCC = cc.down('grid').getStore();
+			var proxy = storeCC.getProxy();
+			
+			proxy.setExtraParam('idProv', form.queryById('id').getValue());
+			storeCC.load();
+		});
 	},
 	
 	NuevaFactura: function(btn){

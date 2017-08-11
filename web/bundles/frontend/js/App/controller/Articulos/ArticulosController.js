@@ -84,7 +84,6 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 					formArt = Ext.getCmp('articulosForm').down('form');	
 					formArt.getForm().setValues(jsonResp.data[0]);
 					var nombreImagen = win.queryById('imagen');
-					console.log(nombreImagen);
 					if(jsonResp.data[0].nombreImagen != null){
 						nombreImagen.show();
 						nombreImagen.initialConfig.autoEl.href = Routing.generate('mbp_articulos_servirImagen', {id: jsonResp.data[0].id});

@@ -60,11 +60,14 @@ Ext.define('MetApp.controller.RRHH.LiquidacionEnLoteController', {
 				        autoScroll: true
 				    });
 					
-					msg.show({
-						title:'Errores de validación',
-					    msg: jsonResp.msg.errorColeccion,
-					    buttons: Ext.Msg.OK,
-					});
+					if(sonResp.msg.errorColeccion != ""){
+						msg.show({
+							title:'Errores de validación',
+						    msg: jsonResp.msg.errorColeccion,
+						    buttons: Ext.Msg.OK,
+						});
+					}
+						
 				}
 			});
 		}

@@ -78,6 +78,27 @@ class OperacionesRepository extends \Doctrine\ORM\EntityRepository
 			)
 		));
 	}
+
+	public function listarPorSector($sector)
+	{
+		$em = $this->getEntityManager();
+		//REPO OPERACIONES
+		$repoOpe = $em->getRepository('MbpProduccionBundle:Operaciones');
+		$repoCentros = $em->getRepository('MbpFinanzasBundle:CentroCostos');
+		
+		$centro = $repoCentros->findOneByNombre($sector);
+		
+		
+		$query = $repoOpe->createQueryBuilder('o')
+			->select("o.id as operacionId, CONCAT(o.codigo,' | ',o.descripcion) as descripcion")
+			->where('o.centroCosto = :centro')
+			->setParameter('centro', $centro)
+			->orderBy('o.codigo', 'ASC')
+			->getQuery()
+			->getArrayResult();
+		
+		return $query;
+	}
 }
 
 

@@ -10,5 +10,34 @@ namespace Mbp\ComprasBundle\Entity;
  */
 class OrdenCompraRepository extends \Doctrine\ORM\EntityRepository
 {
+	/* LISTA SEGUN UN CODIGO DE ARTICULO LAS ORDENES DE COMPRA PENDIENTES */
+	public function articulosPendientesIngreso($codigoArt)
+	{
+		$em = $this->getEntityManager();
+		$rep = $em->getRepository('MbpComprasBundle:OrdenCompra');
+		$repArt = $em->getRepository('MbpArticulosBundle:Articulos');
+		
+		$art = $repArt->findOneByCodigo($codigoArt);	
+		
+		if(empty($art)) throw new \Exception("Artículo no encontrado", 1);
+		
+		
+		$data = $rep->createQueryBuilder('oc')
+				->select("
+					CASE WHEN mov.tipoMovimiento = 0 THEN (detalleOc.cant - SUM(mov.cantidad)) ELSE detalleOc.cant END as pendiente,
+					oc.id as idOc,
+					DATE_FORMAT(detalleOc.fechaEntrega, '%d/%m/%Y') entrega")	
+				->join('oc.ordenDetalleId', 'detalleOc')
+				->join('detalleOc.articuloId', 'articulo')
+				->leftJoin('MbpArticulosBundle:MovimientosArticulos', 'mov', 'WITH', 'mov.ordenCompraId = oc.id')
+				->where('detalleOc.articuloId = :idArt')
+				->andWhere('mov.articuloId = :idArt')
+				->setParameter('idArt', $art->getId())
+				->groupBy('oc.id')
+				->getQuery()
+				->getArrayResult();	
+		
+		return $data;
+	}
 	
 }

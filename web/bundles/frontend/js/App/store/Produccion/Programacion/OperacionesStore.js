@@ -25,6 +25,10 @@ Ext.define('MetApp.store.Produccion.Programacion.OperacionesStore',{
 			root: 'data',
 			encode: true
 		},
+		
+		extraParams: {
+			sector: '' //CARGAR EL SECTOR SEGUN SECTORES DE BD
+		}
 	}
 	 
 });

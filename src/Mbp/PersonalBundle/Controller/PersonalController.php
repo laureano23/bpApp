@@ -17,10 +17,21 @@ class PersonalController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 		$repo = $em->getRepository('MbpPersonalBundle:Personal');
+		$req = $this->getRequest();
 		$response = new Response;
 		
 		try{
-			$data = $repo->listarPersonal();
+			$sector = $req->query->get('sector');
+			$data ="";
+			
+			if($sector != ""){
+				$data = $repo->listarPorSector($sector);
+			}else{
+				$data = $repo->listarPersonal();	
+			}
+			
+			
+			
 			return $response->setContent(
 				json_encode(array('success' => true, 'items' => $data))
 			);	

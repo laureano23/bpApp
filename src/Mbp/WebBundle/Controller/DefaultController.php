@@ -103,7 +103,7 @@ class DefaultController extends Controller
     {
     	$req = $this->getRequest();
 		
-		
+		mail($to, $subject, $message);
     	/*CAPTCHA*/
     	$secret = "6Ld-NSoUAAAAACPvwHWgUIgiBam6-_FJzkmFQAMD";
     	$response = null;

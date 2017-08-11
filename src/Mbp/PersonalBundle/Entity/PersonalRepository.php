@@ -333,6 +333,24 @@ class PersonalRepository extends EntityRepository
 			);
 		}
 	}
+
+	public function listarPorSector($sector)
+	{
+		$em = $this->getEntityManager();
+		$repoPersonal = $em->getRepository('MbpPersonalBundle:Personal');
+		$repoSec = $em->getRepository('MbpProduccionBundle:Sectores');
+		
+		$sector = $repoSec->findOneByDescripcion($sector);
+		
+		$query = $repoPersonal->createQueryBuilder('p')
+			->select('p.nombre, p.idP')
+			->where('p.sector = :sector')
+			->setParameter('sector', $sector)
+			->getQuery()
+			->getArrayResult();
+			
+		return $query;
+	}
 }
 
 

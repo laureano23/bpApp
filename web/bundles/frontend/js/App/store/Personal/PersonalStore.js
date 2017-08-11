@@ -19,8 +19,9 @@ Ext.define('MetApp.store.Personal.PersonalStore',{
 			destroy: Routing.generate('mbp_personal_delete')			
 		},
 		
-		params: {
-			isFull: 0
+		extraParams: {
+			isFull: 0,
+			sector: ''
 		},
 		
 		reader: {

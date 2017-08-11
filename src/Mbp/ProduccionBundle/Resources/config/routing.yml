@@ -75,19 +75,6 @@ mbp_produccion_personal_sector:
     options:
       expose: true
 
-#OPERACIONES DE MBP
-mbp_produccion_operaciones_list:
-    path: /operacionesList
-    defaults: { _controller: MbpProduccionBundle:Operaciones:operacionesList }
-    options:
-      expose: true
-
-mbp_produccion_operaciones_create:
-    path: /operacionesCreate
-    defaults: { _controller: MbpProduccionBundle:Operaciones:operacionesCreate }
-    options:
-      expose: true
-
 #MAQUINAS DE MBP
 mbp_produccion_maquinas_sector:
     path: /maquinassector
@@ -144,3 +131,9 @@ mbp_produccion_programacion_reporte:
     defaults: { _controller: MbpProduccionBundle:Programacion:programacionReporte }
     options:
       expose: true
+
+#PRODUCCIÓN DE SOLDADO
+mbp_produccion_soldado:
+    resource: "@MbpProduccionBundle/Controller/ProduccionSoldadoController.php"
+    type:     annotation
+    prefix:   /produccion/soldado/
