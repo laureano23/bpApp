@@ -122,11 +122,9 @@ Ext.define('MetApp.controller.Produccion.SoldaduraController',{
 		var grid = win.down('grid');
 		var selection = grid.getSelectionModel().getSelection()[0];
 		
-		console.log(selection);
-		
 		form.loadRecord(selection);
 		var combo = form.queryById('operaciones');
-		var operacion = combo.getStore().findRecord('operacionId', selection.data.operacionId); 
+		var operacion = combo.getStore().findRecord('operacionId', selection.data.operacionId, 0, false, false, true);
 		combo.select(operacion);
 	},
 	

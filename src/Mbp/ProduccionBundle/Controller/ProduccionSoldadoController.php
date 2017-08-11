@@ -31,6 +31,7 @@ class ProduccionSoldadoController extends Controller
 						DATE_FORMAT(p.hsFin, '%H:%i') as hsFin,
 						p.id,
 						p.ot,
+						p.cantidad,
 						p.observaciones,
 						personal.idP as idP,
 						personal.nombre,
