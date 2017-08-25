@@ -187,28 +187,4 @@ class RemitosClientes
     {
         return $this->detalleRemito;
     }
-
-    /**
-     * Set proveedorId
-     *
-     * @param \Mbp\ProveedoresBundle\Entity\Proveedor $proveedorId
-     *
-     * @return RemitosClientes
-     */
-    public function setProveedorId(\Mbp\ProveedoresBundle\Entity\Proveedor $proveedorId = null)
-    {
-        $this->proveedorId = $proveedorId;
-
-        return $this;
-    }
-
-    /**
-     * Get proveedorId
-     *
-     * @return \Mbp\ProveedoresBundle\Entity\Proveedor
-     */
-    public function getProveedorId()
-    {
-        return $this->proveedorId;
-    }
 }

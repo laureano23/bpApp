@@ -74,7 +74,11 @@ class LiquidacionEnLote
 		$this->CalcularNovedades();		
 		
 		
-		
+		//SI CALCULAMOS PREMIOS CALCULAMOS PUNTUALIDAD Y ASISTENCIA DE LA COLECCION
+		if($this->periodo == 7 || $this->periodo == 8){
+			$this->calcularPuntualidad($this->periodo, $this->mes);
+			$this->calcularAsistencia($this->mes);
+		}
 	}
 	
 	/*
@@ -431,15 +435,42 @@ class LiquidacionEnLote
 		}
 	}
 	
-	//FUNCION PARA DEFINIR LA PUNTUALIDAD A COBRAR DE CADA EMPLEADO SEGUN POLITICAS DE PREMIO DE LA EMPRESA
-	private function LiquidarPuntualidad()
+	/*
+	 * FUNCION PARA DETERMINAR SI EL EMPLEADO TUVO LLEGADAS TARDES EN LA QUINCENA Y CALCULAR LAS HORAS DE PUNTUALIDAD
+	 * PARA LIQUIDACIONES QUINCENALES
+	 * */
+	private function calcularPuntualidad($periodo, $mes)
 	{
 		$empleados = $this->getEmpleadosCollection()->getEmpleado();
 		
-		foreach ($empleados as $empleado) {
-			foreach ($empleado->getEntradas() as $entrada) {
-				if($entrada->format('H') > 6 || $entrada->format('i') > 5) $empleado->setHsPuntualidad(0);
-				if($entrada->format('H') == 6 && $entrada->format('i') <= 5) $empleado->setHsPuntualidad($this->getHsPuntualidad() - 2);
+		foreach ($empleados as $emp) {
+			$entradas = $emp->getFichadaEntrada();
+			foreach ($entradas as $ent) {
+				$dias;
+				$periodo == 7 ? $dias = 0 : $dias = 15; //7 ES PRIMER QUINCENA Y 8 2°
+				if($ent->format('m') == $mes && $ent->format('d') > $dias){ //LA PLANILLA CARGA EL TRIMESTRE PERO SOLO ANALIZAMOS LA QUINCENA EN CURSO
+					if($ent->format('H') > 6 || $ent->format('i') > 5){ //SI EL EMPLEADO LLEGO DESPUES DE 6:05 PIERDE LA PUNTUALIDAD
+						$emp->setHsPuntualidad(0);
+						break; //SI PERDIO LA PUNTUALIDAD PASAMO AL SIEGUIENTE EMPLEADO
+					}elseif($ent->format('H') == 6 && $ent->format('i') > 0 && $ent->format('i') <= 5){ //SI EL EMPLEADO INGRESA ENTRE 06:00 Y 06:05 PIERDE 2 HS DE PUNTUALIDAD
+						$emp->setHsPuntualidad($emp->getHsPuntualidad() - 2);
+					}	
+				}				
+			}
+		}
+	}
+	
+	/*
+	 * FUNCION PARA CALCULAR LAS HORAS DE PREMIO A COBRAR POR ASISTENCIA SEGUN POLITICAS  DE LA EMPRESA
+	 * */
+	private function calcularAsistencia($mes)
+	{
+		$empleados = $this->getEmpleadosCollection()->getEmpleado();
+		
+		foreach ($empleados as $emp) {
+			$entradas = $emp->getFichadaEntrada();
+			foreach ($entradas as $ent) {
+							
 			}
 		}
 	}

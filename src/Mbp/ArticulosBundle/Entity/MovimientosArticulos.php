@@ -3,6 +3,7 @@
 namespace Mbp\ArticulosBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * MovimientosArticulos
@@ -25,27 +26,22 @@ class MovimientosArticulos
      * @var \DateTime
      *
      * @ORM\Column(name="fechaMovimiento", type="date")
+	 * @Assert\NotNull()
      */
     private $fechaMovimiento;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="cantidad", type="decimal")
-     */
-    private $cantidad;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="tipoMovimiento", type="boolean")
+	 * @Assert\NotNull()
      */
     private $tipoMovimiento=0; //ENTRADA = 0, SALIDA = 1
 
     /**
      * @var string
      *
-     * @ORM\Column(name="observaciones", type="text")
+     * @ORM\Column(name="observaciones", type="text", nullable=true)
      */
     private $observaciones;
 
@@ -53,21 +49,17 @@ class MovimientosArticulos
      * @var string
      *
      * @ORM\Column(name="comprobanteNum", type="string", length=255)
+	 * @Assert\NotNull()
      */
     private $comprobanteNum;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="loteNumero", type="integer")
-     */
-    private $loteNumero;
-    
+        
 	/** 
      * @var \Mbp\ArticulosBundle\Entity\ConceptosStock
      *
      * @ORM\ManyToOne(targetEntity="Mbp\ArticulosBundle\Entity\ConceptosStock")
      * @ORM\JoinColumn(name="conceptoId", referencedColumnName="id", unique=false, nullable=false)	 
+	 * @Assert\NotNull()
      */
     private $conceptoId;
     
@@ -77,7 +69,7 @@ class MovimientosArticulos
      * @ORM\ManyToOne(targetEntity="Mbp\ProveedoresBundle\Entity\Proveedor")
      * @ORM\JoinColumn(name="proveedorId", referencedColumnName="id", unique=false, nullable=true)	 
      */
-    private $proveedorId;
+    private $proveedorId=null;
 	
 	/** 
      * @var \Mbp\ClientesBundle\Entity\Cliente
@@ -85,38 +77,23 @@ class MovimientosArticulos
      * @ORM\ManyToOne(targetEntity="Mbp\ClientesBundle\Entity\Cliente")
      * @ORM\JoinColumn(name="clienteId", referencedColumnName="idCliente", unique=false, nullable=true)	 
      */
-    private $clienteId;
+    private $clienteId=null;
+	
+	
+	/**
+     * @ORM\ManyToMany(targetEntity="DetalleMovArt", inversedBy="movimientoId", cascade={"persist", "remove"})
+     * @ORM\JoinTable(name="movimientos_detalles")
+	 */
+	private $movDetalleId;
 	
 	/** 
-     * @var \Mbp\ComprasBundle\Entity\OrdenCompra
-     *
-     * @ORM\ManyToOne(targetEntity="Mbp\ComprasBundle\Entity\OrdenCompra")
-     * @ORM\JoinColumn(name="ordenCompraId", referencedColumnName="id", unique=false, nullable=true)	 
-     */
-    private $ordenCompraId;
-    
-    /** 
      * @var \Mbp\ArticulosBundle\Entity\DepositoArticulos
      *
      * @ORM\ManyToOne(targetEntity="Mbp\ArticulosBundle\Entity\DepositoArticulos")
-     * @ORM\JoinColumn(name="depositoId", referencedColumnName="id", unique=false, nullable=false)	 
+     * @ORM\JoinColumn(name="depositoId", referencedColumnName="id", unique=false, nullable=false)
+	 * @Assert\NotNull()	 
      */
     private $depositoId;
-    
-    /** 
-     * @var \Mbp\ArticulosBundle\Entity\Articulos
-     *
-     * @ORM\ManyToOne(targetEntity="Mbp\ArticulosBundle\Entity\Articulos")
-     * @ORM\JoinColumn(name="articuloId", referencedColumnName="idArticulos", unique=false, nullable=false)	 
-     */
-    private $articuloId;
-	
-	/**
-     * @var string
-     *
-     * @ORM\Column(name="descripcion", type="string", length=255, nullable=false)
-     */
-    private $descripcion;
 
 
     /**
@@ -151,30 +128,6 @@ class MovimientosArticulos
     public function getFechaMovimiento()
     {
         return $this->fechaMovimiento;
-    }
-
-    /**
-     * Set cantidad
-     *
-     * @param string $cantidad
-     *
-     * @return MovimientosArticulos
-     */
-    public function setCantidad($cantidad)
-    {
-        $this->cantidad = $cantidad;
-
-        return $this;
-    }
-
-    /**
-     * Get cantidad
-     *
-     * @return string
-     */
-    public function getCantidad()
-    {
-        return $this->cantidad;
     }
 
     /**
@@ -252,30 +205,6 @@ class MovimientosArticulos
     }
 
     /**
-     * Set loteNumero
-     *
-     * @param integer $loteNumero
-     *
-     * @return MovimientosArticulos
-     */
-    public function setLoteNumero($loteNumero)
-    {
-        $this->loteNumero = $loteNumero;
-
-        return $this;
-    }
-
-    /**
-     * Get loteNumero
-     *
-     * @return integer
-     */
-    public function getLoteNumero()
-    {
-        return $this->loteNumero;
-    }
-
-    /**
      * Set conceptoId
      *
      * @param \Mbp\ArticulosBundle\Entity\ConceptosStock $conceptoId
@@ -346,29 +275,46 @@ class MovimientosArticulos
     {
         return $this->clienteId;
     }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->movDetalleId = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
-     * Set ordenCompraId
+     * Add movDetalleId
      *
-     * @param \Mbp\ComprasBundle\Entity\OrdenCompra $ordenCompraId
+     * @param \Mbp\ArticulosBundle\Entity\DetalleMovArt $movDetalleId
      *
      * @return MovimientosArticulos
      */
-    public function setOrdenCompraId(\Mbp\ComprasBundle\Entity\OrdenCompra $ordenCompraId = null)
+    public function addMovDetalleId(\Mbp\ArticulosBundle\Entity\DetalleMovArt $movDetalleId)
     {
-        $this->ordenCompraId = $ordenCompraId;
+        $this->movDetalleId[] = $movDetalleId;
 
         return $this;
     }
 
     /**
-     * Get ordenCompraId
+     * Remove movDetalleId
      *
-     * @return \Mbp\ComprasBundle\Entity\OrdenCompra
+     * @param \Mbp\ArticulosBundle\Entity\DetalleMovArt $movDetalleId
      */
-    public function getOrdenCompraId()
+    public function removeMovDetalleId(\Mbp\ArticulosBundle\Entity\DetalleMovArt $movDetalleId)
     {
-        return $this->ordenCompraId;
+        $this->movDetalleId->removeElement($movDetalleId);
+    }
+
+    /**
+     * Get movDetalleId
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMovDetalleId()
+    {
+        return $this->movDetalleId;
     }
 
     /**
@@ -393,53 +339,5 @@ class MovimientosArticulos
     public function getDepositoId()
     {
         return $this->depositoId;
-    }
-
-    /**
-     * Set articuloId
-     *
-     * @param \Mbp\ArticulosBundle\Entity\Articulos $articuloId
-     *
-     * @return MovimientosArticulos
-     */
-    public function setArticuloId(\Mbp\ArticulosBundle\Entity\Articulos $articuloId)
-    {
-        $this->articuloId = $articuloId;
-
-        return $this;
-    }
-
-    /**
-     * Get articuloId
-     *
-     * @return \Mbp\ArticulosBundle\Entity\Articulos
-     */
-    public function getArticuloId()
-    {
-        return $this->articuloId;
-    }
-
-    /**
-     * Set descripcion
-     *
-     * @param string $descripcion
-     *
-     * @return MovimientosArticulos
-     */
-    public function setDescripcion($descripcion)
-    {
-        $this->descripcion = $descripcion;
-
-        return $this;
-    }
-
-    /**
-     * Get descripcion
-     *
-     * @return string
-     */
-    public function getDescripcion()
-    {
-        return $this->descripcion;
     }
 }

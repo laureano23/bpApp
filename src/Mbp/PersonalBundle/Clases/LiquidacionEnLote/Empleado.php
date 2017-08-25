@@ -192,7 +192,7 @@ class Empleado
 	}
 	
 	public function setHsPuntualidad($hs){
-		$this->hsPuntualidad = $hs;
+		$hs < 0 ? $this->hsPuntualidad = 0 : $this->hsPuntualidad = $hs; //SI QUIERO SETEAR UNA HORA NEGATIVA SETEA 0;
 	}
 	
 	public function getHsPuntualidad(){

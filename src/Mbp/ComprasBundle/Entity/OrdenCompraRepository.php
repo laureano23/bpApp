@@ -21,21 +21,22 @@ class OrdenCompraRepository extends \Doctrine\ORM\EntityRepository
 		
 		if(empty($art)) throw new \Exception("Artículo no encontrado", 1);
 		
-		
 		$data = $rep->createQueryBuilder('oc')
 				->select("
-					CASE WHEN mov.tipoMovimiento = 0 THEN (detalleOc.cant - SUM(mov.cantidad)) ELSE detalleOc.cant END as pendiente,
+					CASE WHEN mov.tipoMovimiento = 0 THEN (detalleOc.cant - SUM(det.cantidad)) ELSE detalleOc.cant END as pendiente,
 					oc.id as idOc,
 					DATE_FORMAT(detalleOc.fechaEntrega, '%d/%m/%Y') entrega")	
 				->join('oc.ordenDetalleId', 'detalleOc')
-				->join('detalleOc.articuloId', 'articulo')
-				->leftJoin('MbpArticulosBundle:MovimientosArticulos', 'mov', 'WITH', 'mov.ordenCompraId = oc.id')
+				->join('detalleOc.articuloId', 'articulo')				
+				->leftJoin('MbpArticulosBundle:DetalleMovArt', 'det', 'WITH', 'det.ordenCompraId = oc.id')
+				->leftJoin('det.movimientoId', 'mov')			
 				->where('detalleOc.articuloId = :idArt')
-				->andWhere('mov.articuloId = :idArt')
+				->andWhere('det.articuloId = :idArt')
+				->having('pendiente > 0')				
 				->setParameter('idArt', $art->getId())
 				->groupBy('oc.id')
 				->getQuery()
-				->getArrayResult();	
+				->getArrayResult();
 		
 		return $data;
 	}

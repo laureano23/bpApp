@@ -67,14 +67,13 @@ class LiquidacionEnLoteController extends RecibosController
 			$liquidacion = new LiquidacionEnLote($fileTarget, $phpExcelService, $this->periodo, $this->mesNum, $this->anio, $em);			
 			
 			$empleados = $liquidacion->getEmpleadosCollection();
-			
-			
-			
+						
 			//ERRORES EN LA COLECCION DE EMPLEADOS
-			$errores = json_encode($liquidacion->getEmpleadosCollection()->getError());
+			$errores = $liquidacion->getEmpleadosCollection()->getError();
 			//ERRORES DEL LOTE DE LIQUIDACION
-			$erroresLote = json_encode($liquidacion->getErrores());
-			if($errores!="[]" || $erroresLote!="[]"){
+			$erroresLote = $liquidacion->getErrores();
+						
+			if(!empty($errores) || !empty($erroresLote)){
 				$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 				$errColec = $liquidacion->getEmpleadosCollection()->getError();
 				return $response->setContent(
@@ -215,8 +214,11 @@ class LiquidacionEnLoteController extends RecibosController
 	}
 
 	public function LiquidarPremiosLote()
-	{
+	{		
 		$this->ValidarPeriodoLiquidado();
+		$em = $this->getDoctrine()->getManager();
+		$repoEmpleados = $em->getRepository('MbpPersonalBundle:Personal');
+		$repoBancos = $em->getRepository('MbpFinanzasBundle:Bancos');
 		
 		//BUSCAMOS LOS EMPLEADOS QUE ADHERIDOS A LIQUIDACION POR LOTE
 		$empleados = $repoEmpleados->findBy(
@@ -254,7 +256,7 @@ class LiquidacionEnLoteController extends RecibosController
 			$recibo->setObraSocial($empleado->getObraSocial());
 			$recibo->addPersonal($empleado);
 						
-			$detalleVariable = $this->liquidarConceptosVariables($empleado, $recibo);
+			$detalleVariable = $this->liquidarPuntualidad(1, 2);
 			$datosFijos = $this->insertaDatosFijos();
 			
 			$em->persist($recibo);
@@ -262,6 +264,14 @@ class LiquidacionEnLoteController extends RecibosController
 			
 			$this->remunerativo = 0; //REINICIAMOS LA VARIABLE DE ACUMULACION DE REMUNERATIVOS
 		}				
+	}
+
+	private function liquidarPuntualidad(Mbp\PersonalBundle\Entity\Empleado $empleado, Mbp\PersonalBundle\Entity\Recibo $recibo)
+	{
+		$detalleRecibo = new Recibosdetalle;
+		$coleccion = $this->getObjLote()->getEmpleadosCollection();
+		
+		//$recibo->
 	}
 
 	private function ValidarPeriodoLiquidado()
@@ -279,8 +289,6 @@ class LiquidacionEnLoteController extends RecibosController
 		if(!empty($liquidacion)){
 			throw new \Exception("Ya existe una liquidación en este periodo, debe borrarla para poder liquidar en lote", 1);			
 		}
-		
-		
 	}
 
 	

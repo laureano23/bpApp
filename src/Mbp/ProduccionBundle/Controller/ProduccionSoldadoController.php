@@ -40,7 +40,7 @@ class ProduccionSoldadoController extends Controller
 						")
 				->join('p.personalId', 'personal')
 				->join('p.operacionId', 'op')
-				->orderBy('fecha', 'DESC')
+				->orderBy('p.id', 'ASC')
 				->getQuery()
 				->getArrayResult();
 				

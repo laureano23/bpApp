@@ -185,7 +185,7 @@ class EmpleadosCollection
 	}
 	
 	
-		
+	
 	
 	public function addEmpleado($empleado)
 	{

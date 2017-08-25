@@ -27,13 +27,19 @@
      cliente.`cuit` AS cliente_cuit,
      cliente.`localidad` AS cliente_localidad,
      cliente.`iva` AS cliente_iva,
-     localidades.`id` AS localidades_id,
-     localidades.`nombre` AS localidades_nombre
+     Proveedor.`id` AS Proveedor_id,
+     Proveedor.`localidad` AS Proveedor_localidad,
+     Proveedor.`provincia` AS Proveedor_provincia,
+     Proveedor.`rsocial` AS Proveedor_rsocial,
+     Proveedor.`denominacion` AS Proveedor_denominacion,
+     Proveedor.`direccion` AS Proveedor_direccion,
+     Proveedor.`cuit` AS Proveedor_cuit,
+     RemitosClientes.`proveedorId` AS RemitosClientes_proveedorId
 FROM
      `RemitosClientesDetalles` RemitosClientesDetalles INNER JOIN `RemitoClientes_detalle` RemitoClientes_detalle ON RemitosClientesDetalles.`id` = RemitoClientes_detalle.`remitosclientesdetalles_id`
      INNER JOIN `RemitosClientes` RemitosClientes ON RemitoClientes_detalle.`remitosclientes_id` = RemitosClientes.`id`
-     INNER JOIN `cliente` cliente ON RemitosClientes.`clienteId` = cliente.`idCliente`
-     LEFT JOIN `localidades` localidades ON cliente.`localidad` = localidades.`id`
+     LEFT JOIN `cliente` cliente ON RemitosClientes.`clienteId` = cliente.`idCliente`
+     RIGHT JOIN `Proveedor` Proveedor ON RemitosClientes.`proveedorId` = Proveedor.`id`
 WHERE
      RemitosClientes.`id` = $P{remitoId}]]>
 	</queryString>
@@ -56,8 +62,14 @@ WHERE
 	<field name="cliente_cuit" class="java.lang.String"/>
 	<field name="cliente_localidad" class="java.lang.Integer"/>
 	<field name="cliente_iva" class="java.lang.Integer"/>
-	<field name="localidades_id" class="java.lang.Integer"/>
-	<field name="localidades_nombre" class="java.lang.String"/>
+	<field name="Proveedor_id" class="java.lang.Integer"/>
+	<field name="Proveedor_localidad" class="java.lang.Integer"/>
+	<field name="Proveedor_provincia" class="java.lang.Integer"/>
+	<field name="Proveedor_rsocial" class="java.lang.String"/>
+	<field name="Proveedor_denominacion" class="java.lang.String"/>
+	<field name="Proveedor_direccion" class="java.lang.String"/>
+	<field name="Proveedor_cuit" class="java.lang.String"/>
+	<field name="RemitosClientes_proveedorId" class="java.lang.Integer"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -69,19 +81,15 @@ WHERE
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="85" y="167" width="100" height="20" uuid="3a9c0566-214c-4f69-8755-dc8b461b0d34"/>
-				<textFieldExpression><![CDATA[$F{cliente_rsocial}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{cliente_rsocial} == null ? $F{Proveedor_rsocial}: $F{cliente_rsocial}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="70" y="184" width="100" height="20" uuid="1565a06d-4507-4f0c-9622-363ba44abe5f"/>
-				<textFieldExpression><![CDATA[$F{cliente_direccion}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="423" y="184" width="100" height="20" uuid="8e2b6fbb-288b-4f33-b000-a3cab6c51bc5"/>
-				<textFieldExpression><![CDATA[$F{localidades_nombre}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{cliente_direccion} == null ? $F{Proveedor_direccion} : $F{cliente_direccion}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="340" y="210" width="100" height="20" uuid="31230d50-7007-4148-b4fb-117e061cbffd"/>
-				<textFieldExpression><![CDATA[$F{cliente_cuit}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{cliente_cuit} == null ? $F{Proveedor_cuit} : $F{cliente_cuit}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="127" y="213" width="30" height="20" uuid="0d9e45f5-939b-40ab-8cc7-8eef08abd8b4"/>

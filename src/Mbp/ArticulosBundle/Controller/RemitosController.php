@@ -25,6 +25,7 @@ class RemitosController extends Controller
         $req = $this->getRequest();
         $repo = $em->getRepository('MbpArticulosBundle:RemitosClientes');
         $repoClientes = $em->getRepository('MbpClientesBundle:Cliente');
+		$repoProveedores = $em->getRepository('MbpProveedoresBundle:Proveedor');
         $repoArticulos = $em->getRepository('MbpArticulosBundle:Articulos');
         $repoParametros = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
         $repoPedidos = $em->getRepository('MbpProduccionBundle:PedidoClientes');
@@ -36,14 +37,14 @@ class RemitosController extends Controller
 			$idCliente = json_decode($req->request->get('clienteId'));
 			$errors = array();
 			
-			$cliente = $repoClientes->findById($idCliente);
+			$origen = $req->get('origen') == "proveedor" ? $repoProveedores->find($idCliente) : $repoClientes->find($idCliente);
 			$param = $repoParametros->find(1);
 
 
 			$remito = new RemitosClientes;
 			$remito->setFecha(new \DateTime);
 			$remito->setRemitoNum($param->getRemitoNum());
-			$remito->setClienteId($cliente[0]);
+			$req->get('origen') == "proveedor" ? $remito->setProveedorId($origen) : $remito->setClienteId($origen);
 
 			
 
@@ -159,13 +160,19 @@ class RemitosController extends Controller
 			     cliente.`cuit` AS cliente_cuit,
 			     cliente.`localidad` AS cliente_localidad,
 			     cliente.`iva` AS cliente_iva,
-			     localidades.`id` AS localidades_id,
-			     localidades.`nombre` AS localidades_nombre
+			     Proveedor.`id` AS Proveedor_id,
+			     Proveedor.`localidad` AS Proveedor_localidad,
+			     Proveedor.`provincia` AS Proveedor_provincia,
+			     Proveedor.`rsocial` AS Proveedor_rsocial,
+			     Proveedor.`denominacion` AS Proveedor_denominacion,
+			     Proveedor.`direccion` AS Proveedor_direccion,
+			     Proveedor.`cuit` AS Proveedor_cuit,
+			     RemitosClientes.`proveedorId` AS RemitosClientes_proveedorId
 			FROM
 			     `RemitosClientesDetalles` RemitosClientesDetalles INNER JOIN `RemitoClientes_detalle` RemitoClientes_detalle ON RemitosClientesDetalles.`id` = RemitoClientes_detalle.`remitosclientesdetalles_id`
 			     INNER JOIN `RemitosClientes` RemitosClientes ON RemitoClientes_detalle.`remitosclientes_id` = RemitosClientes.`id`
-			     INNER JOIN `cliente` cliente ON RemitosClientes.`clienteId` = cliente.`idCliente`
-			     LEFT JOIN `localidades` localidades ON cliente.`localidad` = localidades.`id`
+			     LEFT JOIN `cliente` cliente ON RemitosClientes.`clienteId` = cliente.`idCliente`
+			     RIGHT JOIN `Proveedor` Proveedor ON RemitosClientes.`proveedorId` = Proveedor.`id`
 			WHERE
 			     RemitosClientes.`id` = $idRemito";
 			
