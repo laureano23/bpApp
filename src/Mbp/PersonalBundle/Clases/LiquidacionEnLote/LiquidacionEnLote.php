@@ -64,8 +64,6 @@ class LiquidacionEnLote
 			return;
 		}
 		
-		
-		
 		$this->ValidarPeriodo();
 		$this->CalcularHorasJustificadas();
 		$this->CalcularHorasNormales();
@@ -77,7 +75,7 @@ class LiquidacionEnLote
 		//SI CALCULAMOS PREMIOS CALCULAMOS PUNTUALIDAD Y ASISTENCIA DE LA COLECCION
 		if($this->periodo == 7 || $this->periodo == 8){
 			$this->calcularPuntualidad($this->periodo, $this->mes);
-			$this->calcularAsistencia($this->mes);
+			$this->calcularAsistencia($this->mes);			
 		}
 	}
 	
@@ -119,8 +117,7 @@ class LiquidacionEnLote
 		
 		$posFechas = count($fechas);
 		
-		$primerFecha = $fechas[0];
-		$ultimaFecha = $fechas[$posFechas-1];
+		$ultimaFecha = $fechas[0]['fecha'];
 		
 		$mes = $ultimaFecha->format('n');
 		
@@ -136,7 +133,7 @@ class LiquidacionEnLote
 		$empleados = $this->getEmpleadosCollection()->getEmpleado();
 		$fechas = $empleados[0]->getFecha(); 
 		$posFechas = count($fechas);
-		$ultimaFecha = $fechas[$posFechas-1];
+		$ultimaFecha = $fechas[0]['fecha'];
 		
 		$trimestres = array(
 			0 => 1,
@@ -186,7 +183,7 @@ class LiquidacionEnLote
 		foreach ($this->trimestresAll[$this->trimestre] as $meses) {
 			while ($meses != $this->trimestresAll[$this->trimestre][$this->posicionMesTrimestre]) {
 				foreach ($fechas as $fecha) {
-					if($fecha->format('n') == $meses){
+					if($fecha['fecha']->format('n') == $meses){
 						$existe = true;
 					}				
 					
@@ -204,25 +201,21 @@ class LiquidacionEnLote
 			}
 			
 		} 
-		
-		
-		
-		
-		
 	}
 	
 	private function ValidarPrimerQuincena()
 	{
 		//VALIDAR 1° QUINCENA
-		$i=1;
 		foreach ($this->empleadosCollection->getEmpleado() as $empleado) {
-			foreach ($empleado->getFecha() as $fecha) {	
-					
-				if($fecha->format('j') != $i){
-					$strError = $empleado->getNombre()." ".$fecha->format('d/m/Y').": Esta fecha no coincide con la 1° quincena";
+			$datos = $empleado->getFecha();
+			foreach ($datos as $fecha) {
+				if(array_key_exists('fecha', $fecha) == false) continue;
+				if($fecha['fecha']->format('j') >= 1 && $fecha['fecha']->format('j') <= 15){
+					continue;					
+				}else{
+					$strError = $empleado->getNombre()." ".$fecha['fecha']->format('d/m/Y').": Esta fecha no coincide con la 1° quincena";
 					$this->addError($strError);
 				}
-				$i++;
 			}
 			$i=1;
 		}
@@ -307,8 +300,11 @@ class LiquidacionEnLote
 		$diasMes = cal_days_in_month(CAL_GREGORIAN, $this->mes, $this->anio);
 		
 		if($this->periodo == 1){
-			foreach ($empleados[0]->getFecha() as $fechaEntrada) {
-				if($fechaEntrada->format('D') != 'Sat' && $fechaEntrada->format('D') != 'Sun'){
+			$fechas = $empleados[0]->getFecha();
+			
+			foreach ($fechas as $fechaEntrada) {
+				if(array_key_exists('fecha', $fechaEntrada) == false) continue;
+				if($fechaEntrada['fecha']->format('D') != 'Sat' && $fechaEntrada['fecha']->format('D') != 'Sun'){
 					$dias++;
 				}				
 			}
@@ -339,7 +335,7 @@ class LiquidacionEnLote
 		$i=0;
 		$fechaEntrada = $empleados[0]->getFecha();	
 		foreach ($empleados[0]->getObservaciones() as $obs) {					
-			if($obs == 6 && $fechaEntrada[$i]->format('D') == 'Sat' || $obs == 6 && $fechaEntrada[$i]->format('D') == 'Sun'){
+			if($obs == 6 && $fechaEntrada[$i]['fecha']->format('D') == 'Sat' || $obs == 6 && $fechaEntrada[$i]['fecha']->format('D') == 'Sun'){
 				$this->horasNormales += 9;
 			}
 			$i++;
@@ -353,8 +349,7 @@ class LiquidacionEnLote
 	private function CalcularHorasTrabajadas()
 	{
 		foreach ($this->getEmpleadosCollection()->getEmpleado() as $empleado) {			
-			$entradas = $empleado->getEntradas();
-			$salidas = $empleado->getSalidas();
+			$fechas = $empleado->getFecha();
 			$dias = $empleado->getDia();
 			$horas = 0;
 			$minutosSalida = 0;
@@ -363,12 +358,13 @@ class LiquidacionEnLote
 						
 			
 			$dia=0;
-			foreach ($entradas as $entrada) {				
-				foreach ($entrada as $fichada) {					
+			foreach ($fechas as $fecha) {
+				if(array_key_exists('fichadaE', $fecha) == FALSE) continue;				
+				foreach ($fecha['fichadaE'] as $fichada) {					
 					$contadorSalida=0;
-					$horas = $horas + ($salidas[$dia][$contadorSalida]->format('H') - $fichada->format('H'));
-					$minutosSalida = $minutosSalida + ($salidas[$dia][$contadorSalida]->format('i'));
-					$minutosEntrada = $minutosEntrada + ($entradas[$dia][$contadorSalida]->format('i'));
+					$horas = $horas + ($fecha['fichadaS'][$contadorSalida]->format('H') - $fichada->format('H'));
+					$minutosSalida = $minutosSalida + ($fecha['fichadaS'][$contadorSalida]->format('i'));
+					$minutosEntrada = $minutosEntrada + ($fecha['fichadaE'][$contadorSalida]->format('i'));
 					$contadorSalida++;			
 				}
 				$dia++;											
@@ -442,19 +438,25 @@ class LiquidacionEnLote
 	private function calcularPuntualidad($periodo, $mes)
 	{
 		$empleados = $this->getEmpleadosCollection()->getEmpleado();
-		
 		foreach ($empleados as $emp) {
-			$entradas = $emp->getFichadaEntrada();
+			$entradas = $emp->getFecha();
+			
 			foreach ($entradas as $ent) {
+				//if(array_key_exists('entradaSimple', $ent) == FALSE) continue;
+				if(empty($ent['entradaSimple'])) continue;
+				
 				$dias;
 				$periodo == 7 ? $dias = 0 : $dias = 15; //7 ES PRIMER QUINCENA Y 8 2°
-				if($ent->format('m') == $mes && $ent->format('d') > $dias){ //LA PLANILLA CARGA EL TRIMESTRE PERO SOLO ANALIZAMOS LA QUINCENA EN CURSO
-					if($ent->format('H') > 6 || $ent->format('i') > 5){ //SI EL EMPLEADO LLEGO DESPUES DE 6:05 PIERDE LA PUNTUALIDAD
+				//print_r($ent);
+				if($ent['entradaSimple'][0]->format('m') == $mes && $ent['entradaSimple'][0]->format('d') > $dias){ //LA PLANILLA CARGA EL TRIMESTRE PERO SOLO ANALIZAMOS LA QUINCENA EN CURSO
+					if($ent['entradaSimple'][0]->format('H') > 6){ //SI EL EMPLEADO LLEGO DESPUES DE 6:05 PIERDE LA PUNTUALIDAD
 						$emp->setHsPuntualidad(0);
 						break; //SI PERDIO LA PUNTUALIDAD PASAMO AL SIEGUIENTE EMPLEADO
-					}elseif($ent->format('H') == 6 && $ent->format('i') > 0 && $ent->format('i') <= 5){ //SI EL EMPLEADO INGRESA ENTRE 06:00 Y 06:05 PIERDE 2 HS DE PUNTUALIDAD
-						$emp->setHsPuntualidad($emp->getHsPuntualidad() - 2);
-					}	
+					}else{
+						if($ent['entradaSimple'][0]->format('H') == 6 && $ent['entradaSimple'][0]->format('i') > 0){ //SI EL EMPLEADO INGRESA ENTRE 06:00 Y 06:05 PIERDE 2 HS DE PUNTUALIDAD
+							$emp->setHsPuntualidad($emp->getHsPuntualidad() - 2);
+						}	
+					}
 				}				
 			}
 		}

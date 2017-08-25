@@ -94,6 +94,7 @@ class LiquidacionEnLoteController extends RecibosController
 			
 			if($this->periodo == 7 || $this->periodo == 8){
 				$this->LiquidarPremiosLote();
+				$empleado = $empleados->getEmpleado();
 			}else{
 				$this->CrearRecibosLote();
 			}
@@ -106,6 +107,7 @@ class LiquidacionEnLoteController extends RecibosController
 				)));
 			
 		}catch(\Exception $e){
+			throw $e;
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(
 				json_encode(
@@ -166,7 +168,8 @@ class LiquidacionEnLoteController extends RecibosController
 			$recibo->setEcivil($empleado->getEstado());
 			$recibo->setObraSocial($empleado->getObraSocial());
 			$recibo->addPersonal($empleado);
-						
+			
+									
 			$detalleVariable = $this->liquidarConceptosVariables($empleado, $recibo);
 			
 			$datosFijos = $this->insertaDatosFijos();
@@ -256,7 +259,7 @@ class LiquidacionEnLoteController extends RecibosController
 			$recibo->setObraSocial($empleado->getObraSocial());
 			$recibo->addPersonal($empleado);
 						
-			$detalleVariable = $this->liquidarPuntualidad(1, 2);
+			$detalleVariable = $this->liquidarPuntualidad($empleado, $recibo);
 			$datosFijos = $this->insertaDatosFijos();
 			
 			$em->persist($recibo);
@@ -266,12 +269,15 @@ class LiquidacionEnLoteController extends RecibosController
 		}				
 	}
 
-	private function liquidarPuntualidad(Mbp\PersonalBundle\Entity\Empleado $empleado, Mbp\PersonalBundle\Entity\Recibo $recibo)
+	private function liquidarPuntualidad($empleado, $recibo)
 	{
 		$detalleRecibo = new Recibosdetalle;
-		$coleccion = $this->getObjLote()->getEmpleadosCollection();
+		$lote = $this->getObjLote();
 		
-		//$recibo->
+		
+		
+		//$lote->calcularPuntualidad($this->periodo, $this->mesNum);
+		
 	}
 
 	private function ValidarPeriodoLiquidado()
@@ -297,6 +303,7 @@ class LiquidacionEnLoteController extends RecibosController
 		$em = $this->getDoctrine()->getManager();
 		$repoConceptos = $em->getRepository('MbpPersonalBundle:CodigoSueldos');
 		
+		
 		foreach ($this->objLote->getEmpleadosCollection()->getEmpleado() as $objEmpleado) {				
 			if($objEmpleado->getLegajo() == $empleado->getLegajo()){
 				$detalleRecibo = new RecibosDetalle;
@@ -317,10 +324,9 @@ class LiquidacionEnLoteController extends RecibosController
 					
 					if($res != false){
 						$detalleRecibo->setValorCompensatorioHist($empleado->getCompensatorio());
-						$detalleRecibo->addCodigoSueldo($concepto[0]);
+						$detalleRecibo->addCodigoSueldo($concepto[0]);						
 						$recibo->addReciboDetalleId($detalleRecibo);	
 					}
-					
 					
 					//SI EL EMPLEADO TIENE REGIMEN DE CALORIAS
 					if($empleado->getLiquidaCalorias() == true){
@@ -478,7 +484,7 @@ class LiquidacionEnLoteController extends RecibosController
 	
 	
 	public function getObjLote(){
-		return $this->objLote();
+		return $this->objLote;
 	}
 	
 	public function setObjLote($objLote){

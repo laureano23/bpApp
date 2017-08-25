@@ -67,7 +67,16 @@ class Empleado
 		if($fecha == false){
 			throw new \Exception("Fecha no Valida", 1);			
 		}
-		array_push($this->fecha, $fecha);
+		
+		$data = array(
+			'fecha' => $fecha,
+			'fichadaE' => array(),
+			'fichadaS' => array(),
+			'entradaSimple' => array(),
+			'salidaSimple' => array()
+		);
+		array_unshift($this->fecha, $data);
+		//$this->fecha['fecha']['fecha'] = $fecha;
 	}
 	
 	public function getDia(){
@@ -104,15 +113,20 @@ class Empleado
 		if($fichadaEntrada && $fichadaEntrada->format('H') < 6){
 			$fichadaEntrada->setTime(6, 0);
 		}
-		array_push($this->fichadaEntrada, $fichadaEntrada);
+		
+		
+		array_push($this->fecha[0]['fichadaE'], $fichadaEntrada);
 	}
 
 	public function vaciarArrayEntradas(){
 		$this->fichadaEntrada = array();
 	}
 
-	public function addEntradas($fichadasEntrada){
-		array_push($this->entradas, $fichadasEntrada);
+	public function addEntradas($strHora){
+		$fichadaEntrada = \DateTime::CreateFromFormat('H:i', $strHora);
+		if($fichadaEntrada == false || $fichadaEntrada == ""){return;}
+		
+		array_push($this->fecha[0]['entradaSimple'], $fichadaEntrada);
 	}
 	
 	public function getEntradas(){
@@ -136,11 +150,14 @@ class Empleado
 			$fichadaSalida->setTime($fichadaSalida->format('H'), 30);
 		}
 		
-		array_push($this->fichadaSalida, $fichadaSalida);
+		array_push($this->fecha[0]['fichadaS'], $fichadaSalida);
 	}
 	
-	public function addSalidas($fichadasSalida){
-		array_push($this->salidas, $fichadasSalida);
+	public function addSalidas($strHora){
+		$fichadaSalida = \DateTime::CreateFromFormat('H:i', $strHora);		
+		if($fichadaSalida == false || $fichadaSalida == ""){return;}
+		
+		array_push($this->fecha[0]['salidaSimple'], $fichadaSalida);
 	}
 	
 	public function getSalidas(){

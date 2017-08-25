@@ -47,6 +47,9 @@ class EmpleadosCollection
 		$this->CargarArrayEmpleados();
 		$this->ValidarColeccionEmpleados();	
 		
+		$empleados = $this->empleados;
+		//print_r($empleados[0]);
+		//exit;
 	}
 	
 	
@@ -88,15 +91,15 @@ class EmpleadosCollection
 				$contFichadas = 0; //PARA AVANZAR POR LAS COLUMNAS DE FICHADAS (ENTRADAS Y SALIDAS)
 				//BUCLE PARA CARGAR TODAS LAS ENTRADAS Y SALIDAS
 				do{
-					$empleado->addFichadaEntrada($activeSheet->getCell($this->columnas[self::$columnaEntradas + $contFichadas].$fila)->getValue());					
-					$empleado->addFichadaSalida($activeSheet->getCell($this->columnas[self::$columnaSalidas + $contFichadas].$fila)->getValue());
+					$entrada = $activeSheet->getCell($this->columnas[self::$columnaEntradas + $contFichadas].$fila)->getValue();
+					$salida = $activeSheet->getCell($this->columnas[self::$columnaSalidas + $contFichadas].$fila)->getValue();
+					$empleado->addEntradas($entrada);
+					$empleado->addSalidas($salida);
+					$empleado->addFichadaEntrada($entrada);					
+					$empleado->addFichadaSalida($salida);
 					$contFichadas += 2;
 						
 				}while($contFichadas < 10);
-				$empleado->addEntradas($empleado->getFichadaEntrada());
-				$empleado->addSalidas($empleado->getFichadaSalida());
-				$empleado->vaciarArrayEntradas();
-				$empleado->vaciarArraySalidas();
 				
 				
 				$empleado->addObservacion($activeSheet->getCell($this->columnas[self::$columnaObservacion].$fila)->getValue());
