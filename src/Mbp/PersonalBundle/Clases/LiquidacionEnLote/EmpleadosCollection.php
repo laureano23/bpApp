@@ -31,7 +31,7 @@ class EmpleadosCollection
 	static $columnaSalidas = 6;
 	static $columnaObservacion = 19;
 			 
-	public function __construct($filePath, $phpExcelService)
+	public function __construct($filePath, $phpExcelService, $legajosParaLiquidar)
 	{
 		$this->filePath = $filePath;
 		$this->phpExcelService = $phpExcelService;
@@ -44,17 +44,15 @@ class EmpleadosCollection
 			$pos++;
 		}
 		
-		$this->CargarArrayEmpleados();
+		$this->CargarArrayEmpleados($legajosParaLiquidar);
 		$this->ValidarColeccionEmpleados();	
 		
 		$empleados = $this->empleados;
-		//print_r($empleados[0]);
-		//exit;
 	}
 	
 	
 	
-	private function CargarArrayEmpleados()
+	private function CargarArrayEmpleados($legajosParaLiquidar)
 	{	
 		//ARROJA UNA EXCEPCION SI NO ENCUENTRA EL ARCHIVO
 		if(!file_exists($this->filePath)){
@@ -72,7 +70,6 @@ class EmpleadosCollection
 				
 		if($activeSheet->getCell($this->columnas[self::$columnLegajo].$fila)->getValue() == ""){
 			throw new \Exception("No hay registros para cargar", 1);
-			
 		}
 		
 		$empleado = new Empleado;
@@ -80,6 +77,25 @@ class EmpleadosCollection
 		$empleado->setNombre($activeSheet->getCell($this->columnas[self::$columnNombre].$fila)->getValue());
 				
 		do {//CREO OBJETOS EMPLEADOS
+			
+			
+			//print_r($legajosParaLiquidar);
+			$existeLegajo = false;
+			foreach ($legajosParaLiquidar as $legajo) {
+				if($legajo['legajo'] == $activeSheet->getCell($this->columnas[self::$columnLegajo].$fila)->getValue()){
+					$existeLegajo = true;
+					
+					break;
+				}
+			}
+			
+			if($existeLegajo == FALSE){
+				$fila++; //AVANZO 1 FILA
+				$filaAnterior = $fila - 1;
+				continue;
+			} 
+			
+			
 			$empleado = new Empleado;
 			$empleado->setLegajo($activeSheet->getCell($this->columnas[self::$columnLegajo].$fila)->getValue());
 			$empleado->setNombre($activeSheet->getCell($this->columnas[self::$columnNombre].$fila)->getValue());		

@@ -73,7 +73,8 @@ class Empleado
 			'fichadaE' => array(),
 			'fichadaS' => array(),
 			'entradaSimple' => array(),
-			'salidaSimple' => array()
+			'salidaSimple' => array(),
+			'novedades' => 0,
 		);
 		array_unshift($this->fecha, $data);
 		//$this->fecha['fecha']['fecha'] = $fecha;
@@ -174,8 +175,10 @@ class Empleado
 	public function addObservacion($observacion){
 		$obs = str_split($observacion, 2);
 		if($obs[0]==""){
+			$this->fecha[0]['novedades'] = -1;
 			array_push($this->observaciones, -1);
 		}else{
+			$this->fecha[0]['novedades'] = (int)$obs[0];
 			array_push($this->observaciones, (int)$obs[0]);	
 		}
 	}

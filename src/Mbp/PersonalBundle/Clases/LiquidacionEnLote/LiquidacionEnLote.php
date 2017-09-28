@@ -46,16 +46,20 @@ class LiquidacionEnLote
 		);
 	
 	private $em;
+	private $legajosParaLiquidar;
 	
 	public function __construct($filePath, $phpExcelService, $periodo, $mes, $anio, $em)
 	{
 		$this->filePath = $filePath;
 		$this->phpExcelService = $phpExcelService;
 		$this->periodo = $periodo;
-		$this->empleadosCollection = new EmpleadosCollection($filePath, $phpExcelService);
 		$this->mes = $mes;
 		$this->anio = $anio;
 		$this->em = $em;
+		
+		$this->legajosParaLiquidar();
+		$this->empleadosCollection = new EmpleadosCollection($filePath, $phpExcelService, $this->legajosParaLiquidar);
+		
 		
 		$empleados = $this->empleadosCollection->getEmpleado();
 		
@@ -75,7 +79,8 @@ class LiquidacionEnLote
 		//SI CALCULAMOS PREMIOS CALCULAMOS PUNTUALIDAD Y ASISTENCIA DE LA COLECCION
 		if($this->periodo == 7 || $this->periodo == 8){
 			$this->calcularPuntualidad($this->periodo, $this->mes);
-			$this->calcularAsistencia($this->mes);			
+			$this->calcularAsistencia($periodo, $mes);	
+					
 		}
 	}
 	
@@ -107,6 +112,18 @@ class LiquidacionEnLote
 				
 				break;
 		}
+	}
+	
+	//TRAER LOS NUMEROS DE LEGAJO QUE ESTAN DESIGNADOS PARA LIQUIDAR POR LOTE
+	public function legajosParaLiquidar()
+	{
+		$repo = $this->em->getRepository('MbpPersonalBundle:Personal');
+		$this->legajosParaLiquidar = $repo->createQueryBuilder('p')
+			->select('p.legajo')
+			->where('p.liquidaPorLote = true')
+			->andWhere('p.legajo > 0')
+			->getQuery()
+			->getArrayResult();
 	}
 	
 	//FUNCION AUXILIAR PARA VALIDAR LA PLANILLA DE PREMIOS
@@ -227,23 +244,23 @@ class LiquidacionEnLote
 		$i=16; //LA 2° QUINCENA COMIENZA EL DIA 16 DE CADA MES
 		$empleados = $this->empleadosCollection->getEmpleado();
 		$fechas = $empleados[0]->getFecha();
-		$mes = $fechas[0]->format('n');
-		$anio = $fechas[0]->format('Y');
+		$cantFechas = count($fechas);
+		$mes = $fechas[0]['fecha']->format('n');
+		$anio = $fechas[0]['fecha']->format('Y');
 		$diasDelMes = cal_days_in_month(CAL_GREGORIAN, $mes, $anio);
 		
 		foreach ($empleados as $empleado) {
-			foreach ($empleado->getFecha() as $fecha) {		
-					
-				if($fecha->format('j') != $i){
-					$strError = $empleado->getNombre()." ".$fecha->format('d/m/Y').": Esta fecha no coincide con la 2° quincena";
+			foreach ($empleado->getFecha() as $fecha) {
+				if($fecha['fecha']->format('j') != $diasDelMes){
+					$strError = $empleado->getNombre()." ".$fecha['fecha']->format('d/m/Y').": Esta fecha no coincide con la 2° quincena";
 					$this->addError($strError);
 				}
 				if($i == $diasDelMes){
 					return;	//CUANDO SE RECORRIÓ HASTA EL ULTIMO DIA DEL MES, SALIMOS DE LA FUNCION
 				}
-				$i++;				
+				$diasDelMes--;				
 			}
-			$i=1;
+			$diasDelMes = cal_days_in_month(CAL_GREGORIAN, $mes, $anio);;
 		}
 	}
 	
@@ -314,7 +331,7 @@ class LiquidacionEnLote
 		if($this->periodo == 2){
 			
 			foreach ($empleados[0]->getFecha() as $fechaEntrada) {
-				if($fechaEntrada->format('D') == 'Sat' || $fechaEntrada->format('D') == 'Sun'){
+				if($fechaEntrada['fecha']->format('D') == 'Sat' || $fechaEntrada['fecha']->format('D') == 'Sun'){
 					$dias++;	
 				}				
 			}
@@ -322,9 +339,11 @@ class LiquidacionEnLote
 			$this->horasNormales = ($diasMes - 15 - $dias) * self::$hsNormales;	
 		}
 		
+		
+		
 		if($this->periodo == 3){
 			foreach ($empleados[0]->getFecha() as $fechaEntrada) {
-				if($fechaEntrada->format('D') != 'Sat' && $fechaEntrada->format('D') != 'Sun'){
+				if($fechaEntrada['fecha']->format('D') != 'Sat' && $fechaEntrada['fecha']->format('D') != 'Sun'){
 					$dias++;	
 				}				
 			}
@@ -332,15 +351,15 @@ class LiquidacionEnLote
 		}
 		
 		/* SI TENEMOS UN FERIADO SABADO O DOMINGO DEBEMOS AUMENTAR LAS HS NORMALES */
-		$i=0;
-		$fechaEntrada = $empleados[0]->getFecha();	
-		foreach ($empleados[0]->getObservaciones() as $obs) {					
-			if($obs == 6 && $fechaEntrada[$i]['fecha']->format('D') == 'Sat' || $obs == 6 && $fechaEntrada[$i]['fecha']->format('D') == 'Sun'){
+		$fechaEntrada = $empleados[0]->getFecha();
+		$ultimaFecha=count($fechaEntrada) - 1;
+		foreach ($empleados[0]->getObservaciones() as $obs) {			
+			if($obs == 6 && $fechaEntrada[$ultimaFecha]['fecha']->format('D') == 'Sat' || $obs == 6 && $fechaEntrada[$ultimaFecha]['fecha']->format('D') == 'Sun'){
 				$this->horasNormales += 9;
+				
 			}
-			$i++;
+			$ultimaFecha--;
 		}
-		
 	}
 	
 	/*
@@ -348,6 +367,7 @@ class LiquidacionEnLote
 	 * */
 	private function CalcularHorasTrabajadas()
 	{
+		
 		foreach ($this->getEmpleadosCollection()->getEmpleado() as $empleado) {			
 			$fechas = $empleado->getFecha();
 			$dias = $empleado->getDia();
@@ -359,13 +379,13 @@ class LiquidacionEnLote
 			
 			$dia=0;
 			foreach ($fechas as $fecha) {
-				if(array_key_exists('fichadaE', $fecha) == FALSE) continue;				
-				foreach ($fecha['fichadaE'] as $fichada) {					
-					$contadorSalida=0;
+				if(array_key_exists('fichadaE', $fecha) == FALSE) continue;
+				$contadorSalida=0;				
+				foreach ($fecha['fichadaE'] as $fichada) {
 					$horas = $horas + ($fecha['fichadaS'][$contadorSalida]->format('H') - $fichada->format('H'));
 					$minutosSalida = $minutosSalida + ($fecha['fichadaS'][$contadorSalida]->format('i'));
 					$minutosEntrada = $minutosEntrada + ($fecha['fichadaE'][$contadorSalida]->format('i'));
-					$contadorSalida++;			
+					$contadorSalida++;
 				}
 				$dia++;											
 			}
@@ -394,7 +414,7 @@ class LiquidacionEnLote
 				$hsNormales = $horas;
 				$hsExtras = 0;
 				
-			}else{
+			}else{				
 				$hsNormales = $hsATrabajar;
 				$hsExtras = $horas - $this->horasNormales;
 				$hsExtras <= 0 ? $hsExtras = 0 : $hsExtras;
@@ -438,43 +458,252 @@ class LiquidacionEnLote
 	private function calcularPuntualidad($periodo, $mes)
 	{
 		$empleados = $this->getEmpleadosCollection()->getEmpleado();
+		$repoConceptos = $this->em->getRepository('MbpPersonalBundle:CodigoSueldos');
 		foreach ($empleados as $emp) {
 			$entradas = $emp->getFecha();
 			
 			foreach ($entradas as $ent) {
-				//if(array_key_exists('entradaSimple', $ent) == FALSE) continue;
-				if(empty($ent['entradaSimple'])) continue;
-				
+				$existeEntrada = false;
+				//NO HACEMOS ANALISIS SI NO HAY FICHADA O SI EL DIA A ANALIZAR ES SABADO O DOMINGO
+				if(
+					empty($ent['entradaSimple']) && $ent['novedades'] == -1 ||
+					$ent['fecha']->format('D') == "Sat"
+					|| $ent['fecha']->format('D') == "Sun")
+					{
+						continue;
+					} 
+								
 				$dias;
 				$periodo == 7 ? $dias = 0 : $dias = 15; //7 ES PRIMER QUINCENA Y 8 2°
-				//print_r($ent);
-				if($ent['entradaSimple'][0]->format('m') == $mes && $ent['entradaSimple'][0]->format('d') > $dias){ //LA PLANILLA CARGA EL TRIMESTRE PERO SOLO ANALIZAMOS LA QUINCENA EN CURSO
-					if($ent['entradaSimple'][0]->format('H') > 6){ //SI EL EMPLEADO LLEGO DESPUES DE 6:05 PIERDE LA PUNTUALIDAD
-						$emp->setHsPuntualidad(0);
-						break; //SI PERDIO LA PUNTUALIDAD PASAMO AL SIEGUIENTE EMPLEADO
-					}else{
-						if($ent['entradaSimple'][0]->format('H') == 6 && $ent['entradaSimple'][0]->format('i') > 0){ //SI EL EMPLEADO INGRESA ENTRE 06:00 Y 06:05 PIERDE 2 HS DE PUNTUALIDAD
-							$emp->setHsPuntualidad($emp->getHsPuntualidad() - 2);
-						}	
+				
+				if(!empty($ent['entradaSimple'])){
+					$existeEntrada = true;
+				}
+				
+				if($ent['fecha']->format('m') == $mes && $ent['fecha']->format('j') > $dias){ //LA PLANILLA CARGA EL TRIMESTRE PERO SOLO ANALIZAMOS LA QUINCENA EN CURSO		
+					
+					/*REVISAR SI EN EL DIA HAY ALGUNA NOVEDAD QUE ANULE EL PREMIO*/
+					foreach ($emp->getNovedades() as $novedad) {						
+						$novedad = $repoConceptos->find($novedad);
+						if($novedad->getCuentaAsistencia() == true){							
+							$emp->setHsPuntualidad(0);
+							break; //SI PERDIO LA PUNTUALIDAD PASAMOS AL SIGUIENTE EMPLEADO
+						}
 					}
-				}				
+					
+					//print_r($ent);
+					if($existeEntrada == true){
+						if($ent['entradaSimple'][0]->format('H') > 6){ //SI EL EMPLEADO LLEGO DESPUES DE 6:05 PIERDE LA PUNTUALIDAD	
+							
+							$emp->setHsPuntualidad(0);
+							break; //SI PERDIO LA PUNTUALIDAD PASAMOS AL SIGUIENTE EMPLEADO
+						}else{
+							if($ent['fecha']->format('m') == $mes && 
+								$ent['entradaSimple'][0]->format('H') == 6 &&
+								$ent['entradaSimple'][0]->format('i') > 0 &&
+								$ent['entradaSimple'][0]->format('i') <= 5){ //SI EL EMPLEADO INGRESA ENTRE 06:00 Y 06:05 PIERDE 2 HS DE PUNTUALIDAD
+								$emp->setHsPuntualidad($emp->getHsPuntualidad() - 2);
+							}else{ //SI INGRESA MAS ALLA DE LAS 6.05 PIERDE TODA LA PUNTUALIDAD							
+								if($ent['entradaSimple'][0]->format('H') == 6 && $ent['entradaSimple'][0]->format('i') > 5){
+									$emp->setHsPuntualidad(0);	
+								}
+							}	
+						}	
+					}	
+				}	
+				$existeEntrada = false;			
 			}
 		}
 	}
-	
-	/*
-	 * FUNCION PARA CALCULAR LAS HORAS DE PREMIO A COBRAR POR ASISTENCIA SEGUN POLITICAS  DE LA EMPRESA
-	 * */
-	private function calcularAsistencia($mes)
+
+	private function calcularAsistencia($periodo, $mes)
 	{
 		$empleados = $this->getEmpleadosCollection()->getEmpleado();
+		$contAsistencia=0; //SE PERMITE HASTA 6 HORAS TRIMESTRALES
+		
+				
 		
 		foreach ($empleados as $emp) {
-			$entradas = $emp->getFichadaEntrada();
-			foreach ($entradas as $ent) {
-							
+			$fechas = $emp->getFecha();
+			$ausenteTotal=0;
+			
+			$ausenteFueraPeriodo = $this->contarSalidasFueraDeJornada($periodo, $mes, $emp);
+			$ausenteEnPeriodo = $this->contarSalidasEnJornada($periodo, $mes, $emp);
+			
+			
+			
+			if($ausenteFueraPeriodo > 6){
+				$ausenteFueraPeriodo = 0;
+			}
+			
+			$ausenteTotal = $ausenteEnPeriodo + $ausenteFueraPeriodo;
+			
+			if($emp->getLegajo() == 50){
+			print_r($ausenteTotal);	
+			}
+			
+			if($ausenteTotal > 6){
+				$emp->setHsAsistencia(0);
+			}
+			
+			
+		}	
+	}
+
+	//CONTAR LAS HORAS NO TRABAJADAS EN LA JORNADA LABORAL FUERA DEL PERIODO QUE ESTAMOS LIQUIDANDO
+	private function contarSalidasFueraDeJornada($periodo, $mes, $emp)
+	{
+		$strFecha;
+		$contAsistencia=0; //SE PERMITE HASTA 6 HORAS TRIMESTRALES
+		
+		if($periodo == 7){
+			$strFecha = "01/".$mes."/".$this->anio;
+		}else{
+			$strFecha = "31/".$mes."/".$this->anio;
+		}
+		
+		$fechaLimite = \DateTime::createFromFormat('d/m/Y', $strFecha);
+		
+		$fechas = $emp->getFecha();
+		
+		foreach ($fechas as $fecha) {
+			if($fecha['fecha'] < $fechaLimite){
+				
+				//NO HACEMOS ANALISIS SI NO HAY FICHADA O SI EL DIA A ANALIZAR ES SABADO O DOMINGO
+				if(empty($fecha['fichadaE'][0]) || $fecha['fecha']->format('D') == "Sat" || $fecha['fecha']->format('D') == "Sun") continue;
+				
+				$primerFichadaDelDia=true;
+				$ultimaSalida;
+				foreach ($fecha['fichadaE'] as $ent) {
+					
+					//AJUSTAMOS LAS HORAS DE LA PRIMER ENTRADA
+					if($ent->format('G') > 6 && $primerFichadaDelDia){
+						//$primerFichadaDelDia = false; 
+						$contAsistencia += $ent->format('G') - 6;								
+					}
+					
+					//AJUSTAMOS LOS MINUTOS DE LA PRIMER ENTRADA
+					if($ent->format('i') > 0 && $primerFichadaDelDia){
+						//$primerFichadaDelDia = false; 
+						$contAsistencia += 0.5;						
+					}
+					
+					//SI HAY MAS DE UNA ENTRADA EL MISMO DIA ANALIZAR CUANTAS HORAS ESTUVO FUERA DE LA EMPRESA
+					$contSalida=0;
+					if($primerFichadaDelDia == false && $ent->format('G') > 6){
+						$minutos=0;
+						$horasTomadas = $ent->format('G') - $fecha['fichadaS'][$contSalida]->format('G');
+						if($ent->format('i') > 0){
+							$minutos += 0.5;
+						}
+						$contAsistencia += $horasTomadas;
+						$contSalida++;						
+					}
+					
+					$primerFichadaDelDia = false;
+					$ultimaSalida = $fecha['fichadaS'][$contSalida];
+				}
+				//ANTES DE PASAR A LA SIGUIENTE FECHA ANALIZAMOS SI LA ULTIMA SALIDA ES < A 15HS
+				if($ultimaSalida->format('G') < 15){
+					$contAsistencia += 15 - $ultimaSalida->format('G');
+				}
+				
+				//AJUSTAMOS LOS MINUTOS DE LA ULTIMA SALIDA
+				if($ultimaSalida->format('G') < 15 && $ultimaSalida->format('i') > 0){
+					$contAsistencia -= 0.5;
+				}	
 			}
 		}
+		return $contAsistencia;
+	}
+	
+	//CONTAR LAS HORAS NO TRABAJADAS EN LA JORNADA LABORAL FUERA DEL PERIODO QUE ESTAMOS LIQUIDANDO
+	private function contarSalidasEnJornada($periodo, $mes, $emp)
+	{
+		$strFecha;
+		$contAsistencia=0; //SE PERMITE HASTA 6 HORAS TRIMESTRALES
+		$repoConceptos = $this->em->getRepository('MbpPersonalBundle:CodigoSueldos');
+		
+		if($periodo == 7){
+			$strFecha = "01/".$mes."/".$this->anio;
+		}else{
+			$strFecha = "15/".$mes."/".$this->anio;
+		}
+		
+		$fechaInicio = \DateTime::createFromFormat('d/m/Y', $strFecha);
+		
+		$fechas = $emp->getFecha();
+		
+		foreach ($fechas as $fecha) {
+			if($fecha['fecha'] >= $fechaInicio){
+				
+				//NO HACEMOS ANALISIS SI NO HAY FICHADA O SI EL DIA A ANALIZAR ES SABADO O DOMINGO Y NO HAY OBSERVACIONES
+				if(empty($fecha['fichadaE'][0]) && $fecha['novedades'] == -1 ||
+					$fecha['fecha']->format('D') == "Sat" ||
+					$fecha['fecha']->format('D') == "Sun")
+					{
+						continue;	
+					} 
+				
+				$primerFichadaDelDia=true;
+				$ultimaSalida;
+				$existeSalida = false;
+				
+				foreach ($emp->getNovedades() as $novedad) {						
+					$novedad = $repoConceptos->find($novedad);
+					if($novedad->getCuentaAsistencia() == true){
+						
+						return 10; //RETORNAMOS UN VALOR MAYOR A 6 PARA MARCAR QUE PERDIO LA ASISTENCIA
+					}
+				}
+				
+				foreach ($fecha['fichadaE'] as $ent) {
+					
+					//AJUSTAMOS LAS HORAS DE LA PRIMER ENTRADA
+					if($ent->format('G') > 6 && $primerFichadaDelDia){
+						//$primerFichadaDelDia = false; 
+						$contAsistencia += $ent->format('G') - 6;								
+					}
+					
+					//AJUSTAMOS LOS MINUTOS DE LA PRIMER ENTRADA
+					if($ent->format('i') > 0 && $primerFichadaDelDia){
+						//$primerFichadaDelDia = false; 
+						$contAsistencia += 0.5;						
+					}
+					
+					//SI HAY MAS DE UNA ENTRADA EL MISMO DIA ANALIZAR CUANTAS HORAS ESTUVO FUERA DE LA EMPRESA
+					$contSalida=0;
+					if($primerFichadaDelDia == false && $ent->format('G') > 6){
+						$minutos=0;
+						$horasTomadas = $ent->format('G') - $fecha['fichadaS'][$contSalida]->format('G');
+						if($ent->format('i') > 0){
+							$minutos += 0.5;
+						}
+						$contAsistencia += $horasTomadas;
+						//$contSalida++;						
+					}
+					
+					
+					$primerFichadaDelDia = false;
+					$ultimaSalida = $fecha['fichadaS'][$contSalida];
+					$existeSalida = true;
+				}
+				
+				print_r($emp);
+				
+				//ANTES DE PASAR A LA SIGUIENTE FECHA ANALIZAMOS SI LA ULTIMA SALIDA ES < A 15HS				
+				if($existeSalida == true && $ultimaSalida->format('G') < 15){
+					
+					$contAsistencia += 15 - $ultimaSalida->format('G');
+				}
+				
+				//AJUSTAMOS LOS MINUTOS DE LA ULTIMA SALIDA
+				if($existeSalida == true && $ultimaSalida->format('G') < 15 && $ultimaSalida->format('i') > 0){
+					$contAsistencia -= 0.5;
+				}
+			}
+		}
+		return $contAsistencia;
 	}
 }
 

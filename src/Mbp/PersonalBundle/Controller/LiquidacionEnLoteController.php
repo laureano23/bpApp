@@ -122,7 +122,6 @@ class LiquidacionEnLoteController extends RecibosController
  
 	private function CrearRecibosLote()
 	{
-		
 		$em = $this->getDoctrine()->getManager();
 		$repoEmpleados = $em->getRepository('MbpPersonalBundle:Personal');
 		$repoBancos = $em->getRepository('MbpFinanzasBundle:Bancos');
@@ -168,7 +167,6 @@ class LiquidacionEnLoteController extends RecibosController
 			$recibo->setEcivil($empleado->getEstado());
 			$recibo->setObraSocial($empleado->getObraSocial());
 			$recibo->addPersonal($empleado);
-			
 									
 			$detalleVariable = $this->liquidarConceptosVariables($empleado, $recibo);
 			
@@ -229,7 +227,7 @@ class LiquidacionEnLoteController extends RecibosController
 		);
 		$banco = $repoBancos->find($this->banco);
 		
-		
+				
 		if(empty($empleados)){
 			throw new \Exception("No hay empleados para liquidar por lote", 1);				
 		}
@@ -259,7 +257,11 @@ class LiquidacionEnLoteController extends RecibosController
 			$recibo->setObraSocial($empleado->getObraSocial());
 			$recibo->addPersonal($empleado);
 						
-			$detalleVariable = $this->liquidarPuntualidad($empleado, $recibo);
+			$this->liquidarPuntualidad($empleado, $recibo);
+			$this->liquidarAsistencia($empleado, $recibo);
+			
+			//if(empty($puntualidad) && empty($asistencia)) return;
+			
 			$datosFijos = $this->insertaDatosFijos();
 			
 			$em->persist($recibo);
@@ -273,11 +275,69 @@ class LiquidacionEnLoteController extends RecibosController
 	{
 		$detalleRecibo = new Recibosdetalle;
 		$lote = $this->getObjLote();
+		$planillaEmpleado;
+		$em = $this->getDoctrine()->getManager();
+		$repoConceptos = $em->getRepository('MbpPersonalBundle:CodigoSueldos');
+		
+		foreach ($lote->getEmpleadosCollection()->getEmpleado() as $emp) {
+			if($emp->getLegajo() == $empleado->getLegajo()){
+				$planillaEmpleado = $emp;
+			}
+		}
+		
+		if (empty($planillaEmpleado)) return false;
+		
+		$conceptoPunt = $repoConceptos->findOneBy(array('descripcion' => 'PREMIO PUNTUALIDAD HORAS'));
+		$hsPuntualidad = $planillaEmpleado->getHsPuntualidad();
 		
 		
+		if($hsPuntualidad == 0) return false;
 		
-		//$lote->calcularPuntualidad($this->periodo, $this->mesNum);
+		$importe = ($empleado->getCategoria()->getSalario() + $empleado->getCompensatorio()) * 1.5;
 		
+				
+		$detalleRecibo->setCantConceptoVar($hsPuntualidad);
+		$detalleRecibo->setValorConceptoHist($importe);
+		$detalleRecibo->setRemunerativo($importe * $hsPuntualidad);
+		$detalleRecibo->setValorCompensatorioHist($empleado->getCompensatorio());
+		$detalleRecibo->addCodigoSueldo($conceptoPunt);
+		
+		
+		$recibo->addReciboDetalleId($detalleRecibo);
+	}
+
+	private function liquidarAsistencia($empleado, $recibo)
+	{
+		$detalleRecibo = new Recibosdetalle;
+		$lote = $this->getObjLote();
+		$planillaEmpleado;
+		$em = $this->getDoctrine()->getManager();
+		$repoConceptos = $em->getRepository('MbpPersonalBundle:CodigoSueldos');
+		
+		foreach ($lote->getEmpleadosCollection()->getEmpleado() as $emp) {
+			if($emp->getLegajo() == $empleado->getLegajo()){
+				$planillaEmpleado = $emp;
+			}
+		}
+				
+		if (empty($planillaEmpleado)) return false;
+		
+		$conceptoAsis = $repoConceptos->findOneBy(array('descripcion' => 'PREMIO ASISTENCIA HORAS'));
+		$hsAsistencia = $planillaEmpleado->getHsAsistencia();
+		
+		if($hsAsistencia == 0) return false;
+		
+		$importe = ($empleado->getCategoria()->getSalario() + $empleado->getCompensatorio()) * 1.5;
+		
+				
+		$detalleRecibo->setCantConceptoVar($hsAsistencia);
+		$detalleRecibo->setValorConceptoHist($importe);
+		$detalleRecibo->setRemunerativo($importe * $hsAsistencia);
+		$detalleRecibo->setValorCompensatorioHist($empleado->getCompensatorio());
+		$detalleRecibo->addCodigoSueldo($conceptoAsis);
+		
+		
+		$recibo->addReciboDetalleId($detalleRecibo);
 	}
 
 	private function ValidarPeriodoLiquidado()
@@ -314,7 +374,7 @@ class LiquidacionEnLoteController extends RecibosController
 					}
 					
 					$hsNormalesTrabajadas = $objEmpleado->getHsNormalesTrabajadas();
-					if($hsNormalesTrabajadas == 0) continue;	//PUEDE SUCEDER QUE EL EMPLEADO NO TENGA HORAS NORMALES TRABAJADAS
+					if($hsNormalesTrabajadas == 0) continue;	//PUEDE SUCEDER QUE EL EMPLEADO NO TENGA HORAS NORMALES TRABAJADAS					
 					$sueldoBlanco = $empleado->getSueldoBlanco();					
 					$detalleRecibo->setCantConceptoVar($hsNormalesTrabajadas);
 					$detalleRecibo->setValorConceptoHist($sueldoBlanco);
@@ -325,7 +385,8 @@ class LiquidacionEnLoteController extends RecibosController
 					if($res != false){
 						$detalleRecibo->setValorCompensatorioHist($empleado->getCompensatorio());
 						$detalleRecibo->addCodigoSueldo($concepto[0]);						
-						$recibo->addReciboDetalleId($detalleRecibo);	
+						$recibo->addReciboDetalleId($detalleRecibo);
+						
 					}
 					
 					//SI EL EMPLEADO TIENE REGIMEN DE CALORIAS

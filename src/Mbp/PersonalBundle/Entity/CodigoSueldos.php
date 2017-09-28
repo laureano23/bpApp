@@ -116,6 +116,13 @@ class CodigoSueldos
 	 * Para liquidar en lotes, es el codigo del reloj
      */
     private $codigoObservacion;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="cuentaAsistencia", type="boolean")
+     */	
+	private $cuentaAsistencia=0;
 	
 	public function __construct()
 	{
@@ -477,5 +484,29 @@ class CodigoSueldos
     public function getCodigoObservacion()
     {
         return $this->codigoObservacion;
+    }
+
+    /**
+     * Set cuentaAsistencia
+     *
+     * @param boolean $cuentaAsistencia
+     *
+     * @return CodigoSueldos
+     */
+    public function setCuentaAsistencia($cuentaAsistencia)
+    {
+        $this->cuentaAsistencia = $cuentaAsistencia;
+
+        return $this;
+    }
+
+    /**
+     * Get cuentaAsistencia
+     *
+     * @return boolean
+     */
+    public function getCuentaAsistencia()
+    {
+        return $this->cuentaAsistencia;
     }
 }

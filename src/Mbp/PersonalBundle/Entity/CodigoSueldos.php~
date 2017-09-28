@@ -111,9 +111,18 @@ class CodigoSueldos
 	/**
      * @var smallint
      *
-     * @ORM\Column(name="codigoObservacion", type="smallint")
+     * @ORM\Column(name="codigoObservacion", type="smallint", nullable=true)
+	 * 
+	 * Para liquidar en lotes, es el codigo del reloj
      */
     private $codigoObservacion;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="cuentaAsistencia", type="boolean")
+     */	
+	private $cuentaAsistencia=0;
 	
 	public function __construct()
 	{
@@ -451,5 +460,29 @@ class CodigoSueldos
     public function getUnidad()
     {
         return $this->unidad;
+    }
+
+    /**
+     * Set codigoObservacion
+     *
+     * @param integer $codigoObservacion
+     *
+     * @return CodigoSueldos
+     */
+    public function setCodigoObservacion($codigoObservacion)
+    {
+        $this->codigoObservacion = $codigoObservacion;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoObservacion
+     *
+     * @return integer
+     */
+    public function getCodigoObservacion()
+    {
+        return $this->codigoObservacion;
     }
 }
