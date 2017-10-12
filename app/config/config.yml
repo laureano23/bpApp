@@ -161,5 +161,8 @@ services:
      class: Mbp\PersonalBundle\Clases\CalculosConceptos
      arguments: [ @doctrine.orm.entity_manager ]  
    uploader:
-      class: Mbp\ArticulosBundle\Clases\FileUploader
-      arguments: [ '%image_directory%' ]
+     class: Mbp\ArticulosBundle\Clases\FileUploader
+     arguments: [ '%image_directory%' ]
+   DBF.class:
+     class: Mbp\SenchaBundle\Librerias\DBFclass 
+     arguments: ['%directorio_dbf%']

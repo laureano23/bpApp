@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OT" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="701769ed-d3de-4a78-92fe-e21c0125043d">
-	<property name="ireport.zoom" value="1.331000000000001"/>
+	<property name="ireport.zoom" value="1.4641000000000013"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="25"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -36,10 +36,8 @@
      Ot.`observaciones` AS Ot_observaciones,
      Ot.`anulada` AS Ot_anulada,
      Ot.`idCodigo` AS Ot_idCodigo,
-     Ot.`idCliente` AS Ot_idCliente,
      Ot.`idUsuario` AS Ot_idUsuario,
      Ot.`fechaEmision` AS Ot_fechaEmision,
-     Ot.`tipo` AS Ot_tipo,
      Ot.`aprobado` AS Ot_aprobado,
      Ot.`rechazado` AS Ot_rechazado,
      articulos.`codigo` AS articulos_codigo,
@@ -48,13 +46,18 @@
      articulos.`presentacion` AS articulos_presentacion,
      articulos.`idArticulos` AS articulos_idArticulos,
      articulos.`stock` AS articulos_stock,
-     cliente.`idCliente` AS cliente_idCliente,
-     cliente.`rsocial` AS cliente_rsocial,
-     cliente.`denominacion` AS cliente_denominacion
+     Sectores.`id` AS Sectores_id,
+     Sectores.`descripcion` AS Sectores_descripcion,
+     Ot.`sectorId` AS Ot_sectorId,
+     Ot.`sectorEmisor` AS Ot_sectorEmisor,
+     Sectores_A.`id` AS Sectores_A_id,
+     Sectores_A.`descripcion` AS Sectores_A_descripcion
 FROM
      `articulos` articulos INNER JOIN `Ot` Ot ON articulos.`idArticulos` = Ot.`idCodigo`
-     INNER JOIN `cliente` cliente ON Ot.`idCliente` = cliente.`idCliente`
-WHERE Ot.`ot` = $P{ot}]]>
+     INNER JOIN `Sectores` Sectores ON Ot.`sectorId` = Sectores.`id`
+     INNER JOIN `Sectores` Sectores_A ON Ot.`sectorEmisor` = Sectores_A.`id`
+WHERE
+     Ot.`ot` = $P{ot}]]>
 	</queryString>
 	<field name="Ot_ot" class="java.lang.Integer"/>
 	<field name="Ot_cantidad" class="java.math.BigDecimal"/>
@@ -62,10 +65,8 @@ WHERE Ot.`ot` = $P{ot}]]>
 	<field name="Ot_observaciones" class="java.lang.String"/>
 	<field name="Ot_anulada" class="java.lang.Boolean"/>
 	<field name="Ot_idCodigo" class="java.lang.Integer"/>
-	<field name="Ot_idCliente" class="java.lang.Integer"/>
 	<field name="Ot_idUsuario" class="java.lang.Integer"/>
 	<field name="Ot_fechaEmision" class="java.sql.Timestamp"/>
-	<field name="Ot_tipo" class="java.lang.Integer"/>
 	<field name="Ot_aprobado" class="java.math.BigDecimal"/>
 	<field name="Ot_rechazado" class="java.math.BigDecimal"/>
 	<field name="articulos_codigo" class="java.lang.String"/>
@@ -74,9 +75,12 @@ WHERE Ot.`ot` = $P{ot}]]>
 	<field name="articulos_presentacion" class="java.lang.String"/>
 	<field name="articulos_idArticulos" class="java.lang.Integer"/>
 	<field name="articulos_stock" class="java.math.BigDecimal"/>
-	<field name="cliente_idCliente" class="java.lang.Integer"/>
-	<field name="cliente_rsocial" class="java.lang.String"/>
-	<field name="cliente_denominacion" class="java.lang.String"/>
+	<field name="Sectores_id" class="java.lang.Integer"/>
+	<field name="Sectores_descripcion" class="java.lang.String"/>
+	<field name="Ot_sectorId" class="java.lang.Integer"/>
+	<field name="Ot_sectorEmisor" class="java.lang.Integer"/>
+	<field name="Sectores_A_id" class="java.lang.Integer"/>
+	<field name="Sectores_A_descripcion" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -95,6 +99,20 @@ WHERE Ot.`ot` = $P{ot}]]>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{Ot_ot}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="312" y="20" width="143" height="20" uuid="f278f234-2db7-4b14-bfe6-f6a5c3ce9e2a"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SECTOR EMISOR:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="455" y="20" width="100" height="20" uuid="0518d350-b270-458c-a500-9472ea020395"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Sectores_A_descripcion}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -119,7 +137,7 @@ WHERE Ot.`ot` = $P{ot}]]>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Cliente:]]></text>
+				<text><![CDATA[Cliente interno:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="408" y="0" width="57" height="20" uuid="101f865c-a79e-4f3f-aac5-229bb3978556"/>
@@ -154,7 +172,7 @@ WHERE Ot.`ot` = $P{ot}]]>
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{cliente_rsocial}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Sectores_descripcion}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

@@ -40,6 +40,12 @@ mbp_articulos_servirImagen:
     options:
       expose: true
 
+mbp_articulos_DBF_verEstructura:
+    path:     /DBF_verEstructura
+    defaults: { _controller: MbpArticulosBundle:Articulos:DBF_verEstructura }
+    options:
+      expose: true
+
 mbp_formulas_read:
     path:     /extranet/formulaslist
     defaults: { _controller: MbpArticulosBundle:Formulas:formulaslist }

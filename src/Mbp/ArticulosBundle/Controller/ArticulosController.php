@@ -229,6 +229,58 @@ class ArticulosController extends Controller
 			);
 		}
 	}
+
+	public function DBF_verEstructuraAction()
+	{
+		$dbfService = $this->get('DBF.class');
+		$dbfService->initLoad("formula.dbf", "");
+		
+		$request = $this->getRequest();
+		$codigo = $request->request->get('codigo');
+		
+		$record = $dbfService->GetNextRecord(true);
+		$formula = array();		
+		while(($record = $dbfService->GetNextRecord(true)) and !empty($record)) {
+	        if($record['COD_FOR'] === $codigo){
+	        	array_push($formula, $record);
+	        }
+	    }
+		
+		$dbfService->initLoad("ARTICULO.DBF");
+		
+		foreach ($formula as &$art) {
+			while(($record = $dbfService->GetNextRecord(true)) and !empty($record)){
+				if($art['COD_ART'] == $record['COD_ART']){
+					$art['DESC'] = $record['DES_ART'];
+				}
+			}
+			$dbfService->initLoad("ARTICULO.DBF");	
+		}
+		
+		$i=0;
+		
+		foreach ($formula as &$art) {
+			if(!array_key_exists('DESC', $art)){
+				
+				unset($formula[$i]);
+				
+			}			
+			$i++;
+		}
+		
+		$resp="";
+		foreach ($formula as $f) {
+			$resp = $resp."<tr><td>".$f['COD_ART']."</td><td>".$f['DESC']."</td></tr>";
+		}
+		
+		$table="<table>".$resp."</table";
+		
+		$response = new Response;
+		return $response->setContent(json_encode(array(
+			'success' => true,
+			'data' => $table
+		)));
+	}
 }
 
 

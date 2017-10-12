@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Mbp\ComprasBundle\Entity\OrdenCompra;
 use Mbp\ComprasBundle\Entity\OrdenCompraDetalle;
+use Mbp\ComprasBundle\Entity\PedidosInternos;
+use Mbp\ComprasBundle\Entity\PedidoInternoDetalle;
 
 class ComprasController extends Controller
 {
@@ -201,6 +203,52 @@ class ComprasController extends Controller
 		return $response->setContent(
 				json_encode(array('success' => true, 'data' => $query)) 
 			);
+		
+    }
+	
+	/**
+     * @Route("/pedidosInternos/nuevoPedido", name="mbp_pedidosInternos_nuevoPedido", options={"expose"=true})
+     */
+    public function nuevoPedido()
+    {
+    	$req = $this->getRequest();
+		$em = $this->getDoctrine()->getEntityManager();
+		$response = new Response;
+		
+		try{
+			$articulos = $req->request->get('articulos');
+			$articulos = json_decode($articulos);
+			
+					
+	    	$pedido = new PedidosInternos;
+			$pedido->setEmision(new \DateTime);
+			$pedido->setUsuarioId($this->getUser());
+			
+			//CARGAMOS LOS DETALLES
+			foreach ($articulos as $art) {
+				$detalle = new PedidoInternoDetalle;
+				$detalle->setDescripcion($art->descripcion);
+				$detalle->setCantidad($art->cant);
+				$detalle->setUnidad($art->unidad);
+				$detalle->setEntrega(\DateTime::createFromFormat("d/m/Y", $art->entrega));
+				
+				$pedido->addDetalleId($detalle);			
+			}
+			
+			
+			$em->persist($pedido);
+			$em->flush();
+				
+	    	return $response->setContent(
+				json_encode(array('success' => true))
+			);
+		}catch(\Exception $e){
+			$response->setContent(
+				json_encode(array('success' => false, 'msg'=>$e->getMessage())) 
+			);
+			return $response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+    	}
+		
 		
     }
 }

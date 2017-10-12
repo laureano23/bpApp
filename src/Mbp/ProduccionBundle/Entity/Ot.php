@@ -30,14 +30,6 @@ class Ot
      * @ORM\JoinColumn(name="idCodigo", referencedColumnName="idArticulos", nullable=false)	 
      */
     private $idCodigo;
-	
-	/**
-     * @var \Mbp\ClientesBundle\Entity\Cliente
-     *
-     * @ORM\ManyToOne(targetEntity="Mbp\ClientesBundle\Entity\Cliente")
-     * @ORM\JoinColumn(name="idCliente", referencedColumnName="idCliente", nullable=false)	 
-     */
-    private $idCliente;
 
     /**
      * @var decimal
@@ -86,17 +78,40 @@ class Ot
      * @ORM\JoinColumn(name="idUsuario", referencedColumnName="id", nullable=false)	 
      */
     private $idUsuario;
-
-	 /**
-     * @var smallint
+    
+    /**
+     * @var \Mbp\ProduccionBundle\Entity\Sectores
      *
-     * @ORM\Column(name="tipo", type="smallint")
-	 * @Assert\Range(
-     *      min = 1,
-     *      max = 4
-     * )
+     * @ORM\ManyToOne(targetEntity="Mbp\ProduccionBundle\Entity\Sectores")
+     * @ORM\JoinColumn(name="sectorId", referencedColumnName="id", nullable=false)	 
      */
-    private $tipo;
+    private $sectorId;
+	
+	/**
+     * @var \Mbp\ProduccionBundle\Entity\Sectores
+     *
+     * @ORM\ManyToOne(targetEntity="Mbp\ProduccionBundle\Entity\Sectores")
+     * @ORM\JoinColumn(name="sectorEmisor", referencedColumnName="id", nullable=false)	 
+     */
+    private $sectorEmisor;
+	
+	/**
+     * Ordenes referenciadas consigo mismas
+     * @ORM\ManyToMany(targetEntity="Ot", mappedBy="misOrdenes")
+     */
+    private $ordenesConmigo;
+	
+	/**
+     * Ordenes referenciadas consigo mismas
+     * @ORM\ManyToMany(targetEntity="Ot", inversedBy="ordenesConmigo", cascade={"merge"})
+     * @ORM\JoinTable(name="otRelacionadas",
+     *      joinColumns={@ORM\JoinColumn(name="otPadreId", referencedColumnName="ot")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="otHijaId", referencedColumnName="ot", unique=true, nullable=true)}
+     *      )
+     */
+    private $misOrdenes;
+
+	 
 	
 	/**
      * @var decimal
@@ -121,16 +136,13 @@ class Ot
      * @ORM\Column(name="rechazado", type="decimal", precision=10, scale=3)
      */
     private $rechazado=0;
-
-    /**
-     * Get id
+    
+	/**
+     * @var smallint
      *
-     * @return integer 
+     * @ORM\Column(name="estado", type="smallint")
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $estado=0;
 
     /**
      * Set ot
@@ -176,31 +188,8 @@ class Ot
     public function getIdCodigo()
     {
         return $this->idCodigo;
-    }
-    
-	/**
-     * Set idCliente
-     *
-     * @param \Mbp\ClientesBundle\Entity\Cliente $idCliente
-     * @return Ot
-     */
-    public function setIdCliente($idCliente)
-    {
-        $this->idCliente = $idCliente;
-
-        return $this;
-    }
-
-    /**
-     * Get idCliente
-     *
-     * @return \Mbp\ClientesBundle\Entity\Cliente
-     */
-    public function getIdCliente()
-    {
-        return $this->idCliente;
-    }
-
+    }    
+	
     /**
      * Set cantidad
      *
@@ -344,30 +333,7 @@ class Ot
         return $this->fechaProg;
     }
 
-    /**
-     * Set tipo
-     *
-     * @param integer $tipo
-     *
-     * @return Ot
-     */
-    public function setTipo($tipo)
-    {
-        $this->tipo = $tipo;
-
-        return $this;
-    }
-
-    /**
-     * Get tipo
-     *
-     * @return integer
-     */
-    public function getTipo()
-    {
-        return $this->tipo;
-    }
-
+    
     /**
      * Set aprobado
      *
@@ -414,5 +380,168 @@ class Ot
     public function getRechazado()
     {
         return $this->rechazado;
+    }
+
+    /**
+     * Set sectorId
+     *
+     * @param \Mbp\ProduccionBundle\Entity\Sectores $sectorId
+     *
+     * @return Ot
+     */
+    public function setSectorId(\Mbp\ProduccionBundle\Entity\Sectores $sectorId)
+    {
+        $this->sectorId = $sectorId;
+
+        return $this;
+    }
+
+    /**
+     * Get sectorId
+     *
+     * @return \Mbp\ProduccionBundle\Entity\Sectores
+     */
+    public function getSectorId()
+    {
+        return $this->sectorId;
+    }
+
+    /**
+     * Set sectorEmisor
+     *
+     * @param \Mbp\ProduccionBundle\Entity\Sectores $sectorEmisor
+     *
+     * @return Ot
+     */
+    public function setSectorEmisor(\Mbp\ProduccionBundle\Entity\Sectores $sectorEmisor)
+    {
+        $this->sectorEmisor = $sectorEmisor;
+
+        return $this;
+    }
+
+    /**
+     * Get sectorEmisor
+     *
+     * @return \Mbp\ProduccionBundle\Entity\Sectores
+     */
+    public function getSectorEmisor()
+    {
+        return $this->sectorEmisor;
+    }
+
+    /**
+     * Set estado
+     *
+     * @param integer $estado
+     *
+     * @return Ot
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return integer
+     */
+    public function getEstado()
+    {
+    	switch ($this->estado) {
+			case '0':
+				return "No comenzada";
+				break;
+			
+			case '1':
+				return "En proceso";
+				break;
+			
+			case '2':
+				return "Terminada";
+				break;
+			default:
+				return "No comenzada";
+				break;
+		}
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+    	$this->ordenesConmigo = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->misOrdenes = new \Doctrine\Common\Collections\ArrayCollection();
+    }    
+
+    /**
+     * Add ordenesConmigo
+     *
+     * @param \Mbp\ProduccionBundle\Entity\Ot $ordenesConmigo
+     *
+     * @return Ot
+     */
+    public function addOrdenesConmigo(\Mbp\ProduccionBundle\Entity\Ot $ordenesConmigo)
+    {
+        $this->ordenesConmigo[] = $ordenesConmigo;
+
+        return $this;
+    }
+
+    /**
+     * Remove ordenesConmigo
+     *
+     * @param \Mbp\ProduccionBundle\Entity\Ot $ordenesConmigo
+     */
+    public function removeOrdenesConmigo(\Mbp\ProduccionBundle\Entity\Ot $ordenesConmigo)
+    {
+        $this->ordenesConmigo->removeElement($ordenesConmigo);
+    }
+
+    /**
+     * Get ordenesConmigo
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOrdenesConmigo()
+    {
+        return $this->ordenesConmigo;
+    }
+
+    /**
+     * Add misOrdene
+     *
+     * @param \Mbp\ProduccionBundle\Entity\Ot $misOrdene
+     *
+     * @return Ot
+     */
+    public function addMisOrdenes(\Mbp\ProduccionBundle\Entity\Ot $misOrdene)
+    {
+        $this->misOrdenes[] = $misOrdene;
+
+        return $this;
+    }
+
+    /**
+     * Remove misOrdene
+     *
+     * @param \Mbp\ProduccionBundle\Entity\Ot $misOrdene
+     */
+    public function removeMisOrdenes(\Mbp\ProduccionBundle\Entity\Ot $misOrdene)
+    {
+        $this->misOrdenes->removeElement($misOrdene);
+    }
+
+    /**
+     * Get misOrdenes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMisOrdenes()
+    {
+        return $this->misOrdenes;
     }
 }

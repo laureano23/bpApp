@@ -23,30 +23,43 @@ class OtController extends Controller
 		
 		try{
 			$data = $request->request->get('data');		
+			$ordenesAsociadas = $request->request->get('otAsociada');
 			$stdObj = json_decode($data);
+			$ordenesAsociadas = json_decode($ordenesAsociadas);
+			
 			
 			$repoArticulos = $em->getRepository('MbpArticulosBundle:Articulos');
 			$repoClientes = $em->getRepository('MbpClientesBundle:Cliente');
+			$repoSectores = $em->getRepository('MbpProduccionBundle:Sectores');
+			$repoOt = $em->getRepository('MbpProduccionBundle:Ot');
 			
 			//BUSCO ARTICULO
 			$articulo = $repoArticulos->findByCodigo($stdObj->codigo);
-			
-			//BUSCO CLIENTE
-			$cliente = $repoClientes->find($stdObj->idCliente);
-			
+						
 			//BUSCO USUARIO
 			$usuario = $this->get('security.context')->getToken()->getUser();
+			
+			//BUSCO SECTOR
+			$sector = $repoSectores->find($stdObj->tipo);
+			
+			//BUSCO EL SECTOR DEL USUARIO QUE EMITE LA OT
+			$sectorEmisor = $repoSectores->find($usuario->getSectorId());
 			
 	        $ot = new Ot;
 			$ot->setFechaEmision(new \DateTime);
 			$ot->setIdCodigo($articulo[0]);
-			$ot->setIdCliente($cliente);
 			$ot->setCantidad($stdObj->cantidad);
 			$fechaProg = \DateTime::createFromFormat('d/m/Y', $stdObj->fechaProg);
 			$ot->setFechaProg($fechaProg);
 			$ot->setObservaciones($stdObj->observaciones);
 			$ot->setIdUsuario($usuario);
-			$ot->setTipo($stdObj->tipo);
+			$ot->setSectorId($sector);
+			$ot->setSectorEmisor($sectorEmisor);
+			
+			//SI EXISTEN ORDENES ASOCIADAS LAS AGREGO
+			foreach ($ordenesAsociadas as $otA) {				
+				$ot->addMisOrdenes($repoOt->find($otA->otNum));
+			}
 			
 			//VALIDACIONES
 			$validador = $this->get('validator');			
@@ -94,6 +107,8 @@ class OtController extends Controller
 		$repo = $em->getRepository('MbpProduccionBundle:Ot');
 		
 		try{
+			
+			
 			$response->setContent(
 				json_encode(array(
 					'success' => true,
@@ -189,5 +204,176 @@ class OtController extends Controller
 			
 			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 		}
+	}
+	
+	/**
+     * @Route("/listarOrdenesParaProgramacion", name="mbp_produccion_ListarOrdenesProg", options={"expose"=true})
+     */
+    public function listarOrdenesParaProgramacion()
+	{
+		$em = $this->getDoctrine()->getManager();
+		$response = new Response;
+		$repo = $em->getRepository('MbpProduccionBundle:Ot');
+		$request = $this->getRequest();
+		
+		try{
+			//BUSCO USUARIO PARA OBTENER SU SECTOR
+			$usuario = $this->get('security.context')->getToken()->getUser();
+			$sector = $usuario->getSectorId();
+			
+			/*if($sector->getDescripcion() == "PRODUCTO FINAL"){
+				$dbfService = $this->get('DBF.class');
+				
+				$dbfService->initLoad("OTRABAJO.DBF");
+				
+				while(($record = $dbfService->GetNextRecord(true)) and !empty($record)) {
+			        print_r($record);
+					//exit;
+			    }	
+			}*/
+			
+			
+			$listado = $repo->listarOrdenesParaProgramacion($sector);
+			
+			$response->setContent(json_encode(array(
+				'data' => $listado,
+				'success' => true,
+			)));
+			
+			return $response;
+		}catch(\Exception $e){
+			$response->setContent(json_encode(array(
+				'success' => false,
+				'msg' => $e->getMessage())
+			));
+			
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	/**
+     * @Route("/listarOrdenesParaProgramacionEmisor", name="mbp_produccion_ListarOrdenesProgEmisor", options={"expose"=true})
+     */
+    public function listarOrdenesParaProgramacionEmisor()
+	{
+		$em = $this->getDoctrine()->getManager();
+		$response = new Response;
+		$repo = $em->getRepository('MbpProduccionBundle:Ot');
+		$request = $this->getRequest();
+		
+		try{
+			//BUSCO USUARIO PARA OBTENER SU SECTOR
+			$usuario = $this->get('security.context')->getToken()->getUser();
+			$sector = $usuario->getSectorId();
+			
+			$listado = $repo->listarOrdenesParaProgramacionPorEmisor($sector);
+			
+			$response->setContent(json_encode(array(
+				'data' => $listado,
+				'success' => true,
+			)));
+			
+			return $response;
+		}catch(\Exception $e){
+			$response->setContent(json_encode(array(
+				'success' => false,
+				'msg' => $e->getMessage())
+			));
+			
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	/**
+     * @Route("/ActualizarEstadoOt", name="mbp_produccion_ActualizarEstadoOt", options={"expose"=true})
+     */
+    public function ActualizarEstadoOt()
+	{		
+		$em = $this->getDoctrine()->getManager();
+		$response = new Response;
+		$repo = $em->getRepository('MbpProduccionBundle:Ot');
+		$request = $this->getRequest();
+		
+		try{
+			$data = json_decode($request->request->get('data'));
+			
+			$ot = $repo->find($data->otNum);
+			$ot->setAprobado($data->aprobado);
+			$ot->setRechazado($data->rechazado);
+			
+			switch ($data->estado) {
+				case 'No comenzada':
+					$ot->setEstado(0);
+					break;
+				case 'En proceso':
+					$ot->setEstado(1);
+					break;
+				case 'Terminada':
+					$ot->setEstado(2);
+					break;
+				default:
+					$ot->setEstado(0);
+					break;
+			}
+			
+			$em->persist($ot);
+			$em->flush();
+			
+			$response->setContent(json_encode(array(				
+				'success' => true,
+			)));
+			
+			return $response;
+		}catch(\Exception $e){
+			$response->setContent(json_encode(array(
+				'success' => false,
+				'msg' => $e->getMessage())
+			));
+			
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	/**
+     * @Route("/seguimientoOT", name="mbp_produccion_seguimientoOT", options={"expose"=true})
+     */
+    public function seguimientoOT()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+		$response = new Response;
+		
+		try{
+			$ot = $request->request->get('ot');	
+			$repo = $em->getRepository('MbpProduccionBundle:Ot');
+			
+			$resp = $repo->findByOt(33);
+			
+			
+			
+			//$ordenes = $resp->getMisOrdenes();
+			//\Doctrine\Common\Util\Debug::dump($ordenes);
+			
+			$flag=0;
+			$this->otRecursiva($resp, $flag);
+			
+			
+		}catch(\Exception $e){
+			$response->setContent(json_encode(array(
+				'success' => false,
+				'msg' => $e->getMessage())
+			));
+			
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	private function otRecursiva($ot, &$flag){
+		
+		while($ot != null){
+			$this->otRecursiva($ot);
+			$ot=NULL;
+		}
+		
 	}
 }

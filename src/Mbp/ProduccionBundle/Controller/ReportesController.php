@@ -461,10 +461,8 @@ class ReportesController extends Controller
 			     Ot.`observaciones` AS Ot_observaciones,
 			     Ot.`anulada` AS Ot_anulada,
 			     Ot.`idCodigo` AS Ot_idCodigo,
-			     Ot.`idCliente` AS Ot_idCliente,
 			     Ot.`idUsuario` AS Ot_idUsuario,
 			     Ot.`fechaEmision` AS Ot_fechaEmision,
-			     Ot.`tipo` AS Ot_tipo,
 			     Ot.`aprobado` AS Ot_aprobado,
 			     Ot.`rechazado` AS Ot_rechazado,
 			     articulos.`codigo` AS articulos_codigo,
@@ -473,12 +471,16 @@ class ReportesController extends Controller
 			     articulos.`presentacion` AS articulos_presentacion,
 			     articulos.`idArticulos` AS articulos_idArticulos,
 			     articulos.`stock` AS articulos_stock,
-			     cliente.`idCliente` AS cliente_idCliente,
-			     cliente.`rsocial` AS cliente_rsocial,
-			     cliente.`denominacion` AS cliente_denominacion
+			     Sectores.`id` AS Sectores_id,
+			     Sectores.`descripcion` AS Sectores_descripcion,
+			     Ot.`sectorId` AS Ot_sectorId,
+			     Ot.`sectorEmisor` AS Ot_sectorEmisor,
+			     Sectores_A.`id` AS Sectores_A_id,
+			     Sectores_A.`descripcion` AS Sectores_A_descripcion
 			FROM
 			     `articulos` articulos INNER JOIN `Ot` Ot ON articulos.`idArticulos` = Ot.`idCodigo`
-			     INNER JOIN `cliente` cliente ON Ot.`idCliente` = cliente.`idCliente`
+			     INNER JOIN `Sectores` Sectores ON Ot.`sectorId` = Sectores.`id`
+			     INNER JOIN `Sectores` Sectores_A ON Ot.`sectorEmisor` = Sectores_A.`id`
 			WHERE Ot.`ot` = $ot
 			";
 			

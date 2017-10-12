@@ -64,6 +64,12 @@ class Users implements AdvancedUserInterface, \Serializable
      *
      */
     private $roles;    
+    
+    /**
+	 * @ORM\ManyToOne(targetEntity="Mbp\ProduccionBundle\Entity\Sectores")
+	 * @ORM\JoinColumn(name="sectorId", referencedColumnName="id")
+	 */
+	private $sectorId;
 
 
     public function __construct()
@@ -241,26 +247,52 @@ class Users implements AdvancedUserInterface, \Serializable
         return $this->isActive;        
     }
 
+
+    /**
+     * Add role
+     *
+     * @param \Mbp\SecurityBundle\Entity\Role $role
+     *
+     * @return Users
+     */
+    public function addRole(\Mbp\SecurityBundle\Entity\Role $role)
+    {
+        $this->roles[] = $role;
+
+        return $this;
+    }
+
+    /**
+     * Remove role
+     *
+     * @param \Mbp\SecurityBundle\Entity\Role $role
+     */
+    public function removeRole(\Mbp\SecurityBundle\Entity\Role $role)
+    {
+        $this->roles->removeElement($role);
+    }
+
+    /**
+     * Set sectorId
+     *
+     * @param \Mbp\ProduccionBundle\Entity\Sectores $sectorId
+     *
+     * @return Users
+     */
+    public function setSectorId(\Mbp\ProduccionBundle\Entity\Sectores $sectorId = null)
+    {
+        $this->sectorId = $sectorId;
+
+        return $this;
+    }
+
+    /**
+     * Get sectorId
+     *
+     * @return \Mbp\ProduccionBundle\Entity\Sectores
+     */
+    public function getSectorId()
+    {
+        return $this->sectorId;
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

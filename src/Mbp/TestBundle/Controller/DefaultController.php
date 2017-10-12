@@ -15,13 +15,16 @@ class DefaultController extends Controller
      */
     public function dbfRead()
     {
-		$arch = "/mnt/recurso_montado/ARTICULO.DBF";
-		$test  = new DBF_class($arch, "");
+		$arch = "OTRABAJO.DBF";
+		/*$test  = new DBF_class($arch, "");
 		
 		for ($i=0; $i < 10; $i++) { 
 			$record = $test->GetNextRecord(true);
 			print_r($record);
-		}
+		}*/
+		$base = dbase_open($arch, 0);
+		$record = dbase_get_record_with_names($base, 1);
+		print_r($record);
 		
 		return new Response;
     }
@@ -104,6 +107,7 @@ class DBF_class{
                 fseek($this->FileHandle, 4, SEEK_CUR);  // Skipping attribute "displacement"
                 $Field["Size"] = ord(fread($this->FileHandle, 1));
                 fseek($this->FileHandle, 15, SEEK_CUR); // Skipping any remaining attributes
+                
                 $this->DB_Fields[] = $Field;
             }
 
