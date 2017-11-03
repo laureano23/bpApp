@@ -220,20 +220,25 @@ class OtController extends Controller
 			//BUSCO USUARIO PARA OBTENER SU SECTOR
 			$usuario = $this->get('security.context')->getToken()->getUser();
 			$sector = $usuario->getSectorId();
+			$listado=array();
 			
-			/*if($sector->getDescripcion() == "PRODUCTO FINAL"){
+			if($sector->getDescripcion() == "PRODUCTO FINAL"){
+				$repoArt = $em->getRepository('MbpArticulosBundle:Articulos');				
 				$dbfService = $this->get('DBF.class');
 				
 				$dbfService->initLoad("OTRABAJO.DBF");
 				
-				while(($record = $dbfService->GetNextRecord(true)) and !empty($record)) {
-			        print_r($record);
-					//exit;
-			    }	
-			}*/
+				//CARGO LAS OTS EXTERNAS
+				$this->cargarOtExterna($usuario);
+				
+				$listado = $repo->listarOrdenesExternas();
+				
+			}else{
+				$listado = $repo->listarOrdenesParaProgramacion($sector);
+			}
 			
 			
-			$listado = $repo->listarOrdenesParaProgramacion($sector);
+			
 			
 			$response->setContent(json_encode(array(
 				'data' => $listado,
@@ -249,6 +254,42 @@ class OtController extends Controller
 			
 			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 		}
+	}
+
+	private function cargarOtExterna($usuario)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$repo = $em->getRepository('MbpProduccionBundle:Ot');
+		$repoArt = $em->getRepository('MbpArticulosBundle:Articulos');		
+		$repoSectores = $em->getRepository('MbpProduccionBundle:Sectores');		
+		$dbfService = $this->get('DBF.class');
+		
+		$dbfService->initLoad("OTRABAJO.DBF");
+		
+		while(($record = $dbfService->GetNextRecord(true)) and !empty($record)) {
+	    	if($record['TER'] == 1){
+	    		//BUSCAMOS SI LA OT YA ESTA CARGADA
+	    		$ot = $repo->findOneByOtExterna($record['NUMERO']);
+				
+				if(empty($ot)){
+					$art = $repoArt->findOneByCodigo($record['CODIGO']);					
+					$fechaProg = \DateTime::createFromFormat('Ymd', $record['FEC_PRG']);
+					
+					$ot = new Ot;
+					$ot->setFechaEmision(new \DateTime);
+					$ot->setIdCodigo($art);
+					$ot->setCantidad($record['CANTIDAD']);
+					$ot->setFechaProg($fechaProg);
+					$ot->setIdUsuario($usuario);
+					$ot->setSectorId($usuario->getSectorId());
+					$ot->setSectorEmisor($repoSectores->findOneByDescripcion('EXTERNO'));	
+					$ot->setOtExterna($record['NUMERO']);
+					
+					$em->persist($ot);
+					$em->flush();
+				}	    		
+	    	}
+	    }
 	}
 	
 	/**
@@ -296,6 +337,7 @@ class OtController extends Controller
 		
 		try{
 			$data = json_decode($request->request->get('data'));
+			
 			
 			$ot = $repo->find($data->otNum);
 			$ot->setAprobado($data->aprobado);
@@ -347,17 +389,24 @@ class OtController extends Controller
 			$ot = $request->request->get('ot');	
 			$repo = $em->getRepository('MbpProduccionBundle:Ot');
 			
-			$resp = $repo->findByOt(33);
+			$resp = $repo->findByOtExterna($ot);
 			
+			$arrayResp = array();
+			$datosOt;
 			
+			if(!empty($resp)){
+				$datosOt['descripcion'] = $resp[0]->getIdCodigo()->getDescripcion();
+				$datosOt['cantidad'] = $resp[0]->getCantidad();	
+			}else{
+				throw new \Exception("No existe la OT ingresada", 1);
+				
+			}
 			
-			//$ordenes = $resp->getMisOrdenes();
-			//\Doctrine\Common\Util\Debug::dump($ordenes);
+			$this->otRecursiva($resp, $arrayResp);
 			
-			$flag=0;
-			$this->otRecursiva($resp, $flag);
-			
-			
+			return $response->setContent(json_encode(
+				array('success' => true, 'data' => $arrayResp, 'datosOt' => $datosOt)
+			));
 		}catch(\Exception $e){
 			$response->setContent(json_encode(array(
 				'success' => false,
@@ -368,12 +417,97 @@ class OtController extends Controller
 		}
 	}
 	
-	private function otRecursiva($ot, &$flag){
+	private function otRecursiva($ot, &$arrayResp){
 		
-		while($ot != null){
-			$this->otRecursiva($ot);
-			$ot=NULL;
+		if(empty($ot)) return;
+		foreach ($ot as $orden) {			
+			
+			$raw['otNum'] = $orden->getOt();
+			$raw['codigo'] = $orden->getIdCodigo()->getCodigo();
+			$raw['descripcion'] = $orden->getIdCodigo()->getDescripcion();
+			$raw['totalOt'] = $orden->getCantidad();
+			$raw['programado'] = $orden->getFechaProg()->format('d/m/Y');
+			$raw['aprobado'] = $orden->getAprobado();
+			$raw['rechazado'] = $orden->getRechazado();
+			$raw['estado'] = $orden->getEstado();
+			$raw['sectorEmisor'] = $orden->getSectorEmisor()->getDescripcion();
+			array_push($arrayResp, $raw);
+			
+			
+			$this->otRecursiva($orden->getOrdenesConmigo(), $arrayResp);	
 		}
+	}
+	
+	/**
+     * @Route("/verificarOT", name="mbp_produccion_verificarOT", options={"expose"=true})
+     */
+    public function verificarOT()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+		$response = new Response;
 		
+		try{
+			$codigo = $request->request->get('codigo');
+			$sector = $request->request->get('sector');	
+			$repo = $em->getRepository('MbpProduccionBundle:Ot');
+			
+			
+			$resp = $repo->listarOTEnProceso($codigo, $sector);
+			
+			$arrayResp=array();
+			$str="";
+			$mensaje;
+			
+			if(!empty($resp)){
+				foreach ($resp as $r) {
+					$str = $str.$r["otNum"]."</br>";
+					array_push($arrayResp, $str);
+				}	
+				$mensaje = array('success' => true, 'data' => $arrayResp, 'type' => 'info');			
+			}else{
+				$mensaje = array('success' => true);
+			}
+			
+			
+			return $response->setContent(json_encode($mensaje));
+		}catch(\Exception $e){
+			$response->setContent(json_encode(array(
+				'success' => false,
+				'msg' => $e->getMessage())
+			));
+			
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	/**
+     * @Route("/eliminarOT", name="mbp_produccion_eliminarOT", options={"expose"=true})
+     */
+    public function eliminarOT()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+		$response = new Response;
+		
+		try{
+			$ot = $request->request->get('ot');
+			$repo = $em->getRepository('MbpProduccionBundle:Ot');
+			
+			
+			$resp = $repo->find($ot);
+			$em->remove($resp);
+			$em->flush();
+			
+			
+			return $response->setContent(json_encode(array('success' => true)));
+		}catch(\Exception $e){
+			$response->setContent(json_encode(array(
+				'success' => false,
+				'msg' => $e->getMessage())
+			));
+			
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
 	}
 }

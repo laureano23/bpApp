@@ -60,7 +60,7 @@ class Ot
 	/**
      * @var string
      *
-     * @ORM\Column(name="observaciones", type="string", length=250)
+     * @ORM\Column(name="observaciones", type="string", length=250, nullable=true)
      */
     private $observaciones;
 	
@@ -105,11 +105,18 @@ class Ot
      * Ordenes referenciadas consigo mismas
      * @ORM\ManyToMany(targetEntity="Ot", inversedBy="ordenesConmigo", cascade={"merge"})
      * @ORM\JoinTable(name="otRelacionadas",
-     *      joinColumns={@ORM\JoinColumn(name="otPadreId", referencedColumnName="ot")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="otHijaId", referencedColumnName="ot", unique=true, nullable=true)}
+     *      joinColumns={@ORM\JoinColumn(name="otHijaId", referencedColumnName="ot")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="otPadreId", referencedColumnName="ot", nullable=true)}
      *      )
      */
     private $misOrdenes;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="otExterna", type="integer", nullable=true)
+     */
+    private $otExterna;
 
 	 
 	
@@ -543,5 +550,39 @@ class Ot
     public function getMisOrdenes()
     {
         return $this->misOrdenes;
+    }
+
+    /**
+     * Set otExterna
+     *
+     * @param integer $otExterna
+     *
+     * @return Ot
+     */
+    public function setOtExterna($otExterna)
+    {
+        $this->otExterna = $otExterna;
+
+        return $this;
+    }
+
+    /**
+     * Get otExterna
+     *
+     * @return integer
+     */
+    public function getOtExterna()
+    {
+        return $this->otExterna;
+    }
+
+    /**
+     * Remove misOrdene
+     *
+     * @param \Mbp\ProduccionBundle\Entity\Ot $misOrdene
+     */
+    public function removeMisOrdene(\Mbp\ProduccionBundle\Entity\Ot $misOrdene)
+    {
+        $this->misOrdenes->removeElement($misOrdene);
     }
 }

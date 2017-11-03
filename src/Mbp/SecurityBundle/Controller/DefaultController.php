@@ -51,9 +51,19 @@ class DefaultController extends Controller
 		$role = $roles[0]->getRole(); 
 		$name = $this->get('security.context')->getToken()->getUsername();
 		
+		 $resSector = $this->get('security.context')->getToken()->getUser()->getSectorId();
+		
+		$sector="";
+		if(!empty($resSector)){
+			$sector = $resSector->getDescripcion();
+		}
+		
+		
+		
 		$data = array(
 			'nombre' => $name,
-			'role' => $role
+			'role' => $role,
+			'sector' => $sector
 		);
 		
 		echo json_encode($data);

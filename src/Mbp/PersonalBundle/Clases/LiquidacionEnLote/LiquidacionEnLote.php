@@ -197,10 +197,11 @@ class LiquidacionEnLote
 		$i=0;
 		$existe = false;
 		
-		foreach ($this->trimestresAll[$this->trimestre] as $meses) {
-			while ($meses != $this->trimestresAll[$this->trimestre][$this->posicionMesTrimestre]) {
+		
+		foreach ($this->trimestresAll[$this->trimestre] as $mes) {
+			while ($mes == $this->trimestresAll[$this->trimestre][$this->posicionMesTrimestre]) {
 				foreach ($fechas as $fecha) {
-					if($fecha['fecha']->format('n') == $meses){
+					if($fecha['fecha']->format('n') == $mes){						
 						$existe = true;
 					}				
 					
@@ -539,7 +540,7 @@ class LiquidacionEnLote
 			$ausenteTotal = $ausenteEnPeriodo + $ausenteFueraPeriodo;
 			
 			if($emp->getLegajo() == 50){
-			print_r($ausenteTotal);	
+			//print_r($ausenteTotal);	
 			}
 			
 			if($ausenteTotal > 6){
@@ -689,7 +690,6 @@ class LiquidacionEnLote
 					$existeSalida = true;
 				}
 				
-				print_r($emp);
 				
 				//ANTES DE PASAR A LA SIGUIENTE FECHA ANALIZAMOS SI LA ULTIMA SALIDA ES < A 15HS				
 				if($existeSalida == true && $ultimaSalida->format('G') < 15){

@@ -32,11 +32,7 @@ class OtRepository extends EntityRepository
 		
 		$statement->execute();
 		$res = $statement->fetchAll();
-		//$rs = $em->createQuery($dql)->getArrayResult();
 		echo json_encode($res);
-		//print_r($res);
-			
-			
 		
 	}
 	
@@ -180,7 +176,38 @@ class OtRepository extends EntityRepository
 			->join('o.idCodigo', 'codigo')
 			->join('o.sectorEmisor', 'emisor')
 			->where('o.sectorId = :sector')
+			->andWhere('o.estado != 2')
 			->setParameter('sector', $sector)
+			->orderBy('o.fechaProg', 'ASC')
+			->getQuery()
+			->getArrayResult();
+			
+		return $query;
+	}
+	
+	public function listarOrdenesExternas()
+	{
+		$em = $this->getEntityManager();
+		$repo = $em->getRepository('MbpProduccionBundle:Ot');
+		
+		$query = $repo->createQueryBuilder('o')
+			->select("o.ot as otNum, o.otExterna, DATE_FORMAT(o.fechaEmision, '%d/%m/%Y') as otEmision,
+					codigo.codigo,
+					codigo.descripcion,
+					o.cantidad as totalOt,
+					DATE_FORMAT(o.fechaProg, '%d/%m/%Y') as programado,
+					emisor.descripcion as sectorEmisor,
+					o.aprobado,
+					o.rechazado,
+					CASE WHEN o.estado = 0 THEN 'No comenzada'
+					 WHEN o.estado = 1 THEN 'En proceso'
+					 WHEN o.estado = 2 THEN 'Terminada'						
+					 ELSE 'No comenzada' END as estado")
+			->join('o.idCodigo', 'codigo')
+			->join('o.sectorEmisor', 'emisor')
+			->where('o.otExterna > :ot')
+			->andWhere('o.estado != 2')
+			->setParameter('ot', 0)
 			->orderBy('o.fechaProg', 'ASC')
 			->getQuery()
 			->getArrayResult();
@@ -210,6 +237,37 @@ class OtRepository extends EntityRepository
 			->join('o.sectorId', 'receptor')
 			->where('o.sectorEmisor = :sector')
 			->setParameter('sector', $sector)
+			->orderBy('o.fechaProg', 'ASC')
+			->getQuery()
+			->getArrayResult();
+			
+		return $query;
+	}
+
+	public function listarOTEnProceso($codigo, $sector){
+		$em = $this->getEntityManager();
+		$repo = $em->getRepository('MbpProduccionBundle:Ot');
+		
+		$query = $repo->createQueryBuilder('o')
+			->select("o.ot as otNum, DATE_FORMAT(o.fechaEmision, '%d/%m/%Y') as otEmision,
+					codigo.codigo,
+					codigo.descripcion,
+					o.cantidad as totalOt,
+					DATE_FORMAT(o.fechaProg, '%d/%m/%Y') as programado,
+					receptor.descripcion as sectorReceptor,
+					o.aprobado,
+					o.rechazado,
+					CASE WHEN o.estado = 0 THEN 'No comenzada'
+					 WHEN o.estado = 1 THEN 'En proceso'
+					 WHEN o.estado = 2 THEN 'Terminada'						
+					 ELSE 'No comenzada' END as estado")
+			->join('o.idCodigo', 'codigo')
+			->join('o.sectorId', 'receptor')
+			->where('receptor = :sector')
+			->andWhere('codigo.codigo = :codigo')
+			->andWhere('o.estado < 2')
+			->setParameter('sector', $sector)
+			->setParameter('codigo', $codigo)
 			->orderBy('o.fechaProg', 'ASC')
 			->getQuery()
 			->getArrayResult();

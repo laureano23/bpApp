@@ -105,3 +105,15 @@ mbp_calidad_showRepoEstanqueidad3D:
     defaults: { _controller: MbpCalidadBundle:Reportes:showRepoEstanqueidad3D }
     options:
        expose: true
+
+mbp_calidad_generateRepoAcumuladoOpe:
+    path:     /generateRepoAcumuladoOpe
+    defaults: { _controller: MbpCalidadBundle:Reportes:generateRepoAcumuladoOpe }
+    options:
+       expose: true
+
+mbp_calidad_showRepoAcumuladoOpe:
+    path:     /showRepoAcumuladoOpe
+    defaults: { _controller: MbpCalidadBundle:Reportes:showRepoAcumuladoOpe }
+    options:
+       expose: true

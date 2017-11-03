@@ -470,6 +470,110 @@ class ReportesController extends Controller
 
         return $response;
    } 
+   
+   public function generateRepoAcumuladoOpeAction()
+   {
+   		$repo = $this->get('reporteador');		
+		$kernel = $this->get('kernel');	
+		
+		/*
+		 * Recibo parametros del request 
+		 */
+		$em = $this->getDoctrine()->getManager();
+		$req = $this->getRequest();
+		$desde = $req->request->get('desde'); 
+		$hasta = $req->request->get('hasta');
+								
+		$jru = $repo->jru();
+		$ruta = $kernel->locateResource('@MbpCalidadBundle/Reportes/Operaciones_soldadura_entreFechas.jrxml');		
+		
+		//Ruta de destino
+		$destino = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'Operaciones_soldadura_entreFechas.pdf';
+		
+		//Parametros HashMap
+		$param = $repo->getJava('java.util.HashMap');
+		
+		/*
+		 * NUEVA FECHA FORMATO PHP 
+		 */	
+		$fechaDesde = \DateTime::createFromFormat('d/m/Y', $desde);
+		$fechaHasta = \DateTime::createFromFormat('d/m/Y', $hasta);	
+		
+		/*
+		 * FECHA OUTPUT FORMATO SQL PARA CONSULTA
+		 */		
+		$fechaDesdeSql = $fechaDesde->format('Y-m-d');
+		$fechaHastaSql = $fechaHasta->format('Y-m-d');
+		
+		try{
+			$param->put('fechaInicio', $fechaDesde->format('d/m/Y'));
+			$param->put('fechaFin', $fechaHasta->format('d/m/Y'));
+			
+			$conn = $repo->getJdbc();
+			
+						
+			$sql = "
+				SELECT
+				     COUNT(ProduccionSoldado.`id`) AS cantOperacion,
+				     ProduccionSoldado.`fecha` AS ProduccionSoldado_fecha,
+				     ProduccionSoldado.`ot` AS ProduccionSoldado_ot,
+				     ProduccionSoldado.`hsInicio` AS ProduccionSoldado_hsInicio,
+				     ProduccionSoldado.`hsFin` AS ProduccionSoldado_hsFin,
+				     ProduccionSoldado.`personalId` AS ProduccionSoldado_personalId,
+				     ProduccionSoldado.`operacionId` AS ProduccionSoldado_operacionId,
+				     ProduccionSoldado.`cantidad` AS ProduccionSoldado_cantidad,
+				     Personal.`idP` AS Personal_idP,
+				     Personal.`nombre` AS Personal_nombre,
+				     Operaciones.`id` AS Operaciones_id,
+				     Operaciones.`centroCostosId` AS Operaciones_centroCostosId,
+				     Operaciones.`descripcion` AS Operaciones_descripcion,
+				     Operaciones.`codigo` AS Operaciones_codigo
+				FROM
+				     `Personal` Personal INNER JOIN `ProduccionSoldado` ProduccionSoldado ON Personal.`idP` = ProduccionSoldado.`personalId`
+				     INNER JOIN `Operaciones` Operaciones ON ProduccionSoldado.`operacionId` = Operaciones.`id`
+				WHERE ProduccionSoldado.`fecha` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql'
+				GROUP BY Operaciones_codigo, Personal.`idP`
+				ORDER BY Personal.`idP`, Operaciones.`codigo`		
+			";
+						
+			//Exportamos el reporte
+			$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
+			
+			
+			echo json_encode(
+					array(
+						'success'=> true,
+						'reporte' => $destino,		
+					)
+				);
+			
+			return new Response();	
+		}catch(JavaException $ex){
+			$trace = new Java('java.io.ByteArrayOutputStream');
+			$ex->printStackTrace(new Java('java.io.PrintStream', $trace));
+			return array(
+						'success'=> false,
+						'msg' => 'Error al generar el reporte',		
+					);
+		}	
+   }
+   
+   public function showRepoAcumuladoOpeAction()
+   {
+   		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'Operaciones_soldadura_entreFechas.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'ReporteGraficoEstanqueidad.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+
+        return $response;
+   } 
 }
 
 

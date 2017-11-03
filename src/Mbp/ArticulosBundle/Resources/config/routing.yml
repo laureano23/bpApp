@@ -46,6 +46,12 @@ mbp_articulos_DBF_verEstructura:
     options:
       expose: true
 
+mbp_articulos_actualizar_base:
+    path:     /actualizarArticulosBd
+    defaults: { _controller: MbpArticulosBundle:Articulos:actualizarArticulosBd }
+    options:
+      expose: true
+
 mbp_formulas_read:
     path:     /extranet/formulaslist
     defaults: { _controller: MbpArticulosBundle:Formulas:formulaslist }

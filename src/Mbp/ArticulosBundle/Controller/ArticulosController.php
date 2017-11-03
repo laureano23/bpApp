@@ -281,6 +281,54 @@ class ArticulosController extends Controller
 			'data' => $table
 		)));
 	}
+
+	public function actualizarArticulosBdAction()
+	{
+		ini_set('max_execution_time', 3000); //300 seconds = 5 minutes
+		$dbfService = $this->get('DBF.class');
+		$dbfService->initLoad("ARTICULO.DBF", "");
+		$em = $this->getDoctrine()->getManager();
+		$rep = $em->getRepository('MbpArticulosBundle:Articulos');
+		
+		try{
+			$batch = 0;
+			while(($record = $dbfService->GetNextRecord(true)) and !empty($record)){
+				
+				$art = $rep->findOneByCodigo($record['COD_ART']);
+				if($art == NULL){
+					$newArt = new Articulos;
+					$newArt->setCodigo($record['COD_ART']);
+					$newArt->setDescripcion($record['DES_ART']);
+	
+					$em->persist($newArt);
+	
+					$batch++;
+					if($batch == 100){
+						$em->flush();
+						$batch = 0;	
+					}
+					
+				}
+			
+			}	
+	
+			$em->flush();
+	
+			$response = new Response;
+			$resp = array('success' =>true, 'msg' => "Proceso exitoso");
+			return $response->setContent(json_encode($resp));	
+		}catch(\Exception $e){
+			$response = new Response;
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(
+				json_encode(array(
+					'success' => false,
+					'msg' => $e->getMessage()
+				))
+			);
+		}
+			
+	}
 }
 
 
