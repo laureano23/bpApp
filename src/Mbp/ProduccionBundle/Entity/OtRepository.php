@@ -140,12 +140,48 @@ class OtRepository extends EntityRepository
 		$repo = $em->getRepository('MbpProduccionBundle:Ot');
 		
 		$query = $repo->createQueryBuilder('o')
+			->select("o.otExterna as otNum, DATE_FORMAT(o.fechaEmision, '%d/%m/%Y') as otEmision,
+					c.descripcion as cliente,
+					codigo.codigo,
+					codigo.descripcion,
+					o.cantidad as totalOt,
+					DATE_FORMAT(o.fechaProg, '%d/%m/%Y') as programado,
+					o.otExterna,
+					o.aprobado,
+					o.rechazado,
+					CASE WHEN o.estado = 0 THEN 'No comenzada'
+					 WHEN o.estado = 1 THEN 'En proceso'
+					 WHEN o.estado = 2 THEN 'Terminada'						
+					 ELSE 'No comenzada' END as estado")
+			->join('o.idCodigo', 'codigo')
+			->join('o.sectorId', 'c')
+			->where('o.otExterna IS NOT NULL')
+			->orderBy('otNum', 'DESC')
+			->getQuery()
+			->getArrayResult();
+			
+		return $query;
+	}
+	
+	public function listarOrdenesCompletas()
+	{
+		$em = $this->getEntityManager();
+		$repo = $em->getRepository('MbpProduccionBundle:Ot');
+		
+		$query = $repo->createQueryBuilder('o')
 			->select("o.ot as otNum, DATE_FORMAT(o.fechaEmision, '%d/%m/%Y') as otEmision,
 					c.descripcion as cliente,
 					codigo.codigo,
 					codigo.descripcion,
 					o.cantidad as totalOt,
-					DATE_FORMAT(o.fechaProg, '%d/%m/%Y') as programado")
+					DATE_FORMAT(o.fechaProg, '%d/%m/%Y') as programado,
+					o.otExterna,
+					o.aprobado,
+					o.rechazado,
+					CASE WHEN o.estado = 0 THEN 'No comenzada'
+					 WHEN o.estado = 1 THEN 'En proceso'
+					 WHEN o.estado = 2 THEN 'Terminada'						
+					 ELSE 'No comenzada' END as estado")
 			->join('o.idCodigo', 'codigo')
 			->join('o.sectorId', 'c')
 			->orderBy('otNum', 'DESC')

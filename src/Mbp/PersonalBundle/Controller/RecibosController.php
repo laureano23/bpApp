@@ -138,7 +138,7 @@ class RecibosController extends Controller
 			}
 			
 			//DESCUENTOS SI EL RECIBO ES EN BLANCO
-			if($this->compensatorio != TRUE){
+			if($this->compensatorio != TRUE && $remunerativo > 0){
 				$descuentosDetalle = $this->liquidarDescuentos($remunerativo);
 				foreach ($descuentosDetalle as $descuento) {
 					$recibo->addReciboDetalleId($descuento);	

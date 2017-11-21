@@ -31,4 +31,14 @@ parameters:
 
     #REPORTEADOR
     driver: com.mysql.jdbc.Driver
+    
+    #IMAGENES
+    image_directory: '%kernel.root_dir%/../web/bundles/mbppersonal/xls'
+    image_news_directory: '%kernel.root_dir%/../web/bundles/mbpweb/images/news'
+    
+    #RUTA ARCHIVOS DBF
+    directorio_dbf: '%kernel.root_dir%/../'
+    
+    #RUTA PARA ARCHIVO DE FICHADAS PARA LIQUIDACIONES
+    directorio_liquidaciones: '%kernel.root_dir%/../src/Mbp/PersonalBundle/Resources/public/xls'
 

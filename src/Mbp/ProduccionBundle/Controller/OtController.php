@@ -64,6 +64,8 @@ class OtController extends Controller
 			//VALIDACIONES
 			$validador = $this->get('validator');			
 			$errors = $validador->validate($ot);
+			
+			
 				
 			if(count($errors) > 0){
 				$errList = array();
@@ -85,11 +87,22 @@ class OtController extends Controller
 			}
 			$em->persist($ot);
 			$em->flush();
+			
+			//NOTIFICACION
+			$pusher = $this->container->get('lopi_pusher.pusher');
+			
+		    $data=array(
+				'message' => 'Se ingreso la OT: '.$ot->getOt().". Verificar panel de programacion",
+				'sectorReceptor' => $sector->getDescripcion()
+			);
+			
+		    $pusher->trigger('my-channel', 'my-event', json_encode($data));
 				        
 	        return $response->setContent(
 				json_encode(array('success' => true, 'ot' => $ot->getOt()))
 			);
 		}catch(\Exception $e){
+			throw $e;
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR); 
 			return $response->setContent(
 					json_encode(array('success' => false, 'msg' => $e->getMessage()))
@@ -207,6 +220,35 @@ class OtController extends Controller
 	}
 	
 	/**
+     * @Route("/listarOrdenesCompletas", name="mbp_produccion_ListarOrdenesCompletas", options={"expose"=true})
+     */
+    public function listarOrdenesCompletas()
+	{
+		$em = $this->getDoctrine()->getManager();
+		$response = new Response;
+		$repo = $em->getRepository('MbpProduccionBundle:Ot');
+		$request = $this->getRequest();
+		
+		try{
+			$listado = $repo->listarOrdenesCompletas();
+			
+			$response->setContent(json_encode(array(
+				'data' => $listado,
+				'success' => true,
+			)));
+			
+			return $response;
+		}catch(\Exception $e){
+			$response->setContent(json_encode(array(
+				'success' => false,
+				'msg' => $e->getMessage())
+			));
+			
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	/**
      * @Route("/listarOrdenesParaProgramacion", name="mbp_produccion_ListarOrdenesProg", options={"expose"=true})
      */
     public function listarOrdenesParaProgramacion()
@@ -269,6 +311,7 @@ class OtController extends Controller
 		while(($record = $dbfService->GetNextRecord(true)) and !empty($record)) {
 	    	if($record['TER'] == 1){
 	    		//BUSCAMOS SI LA OT YA ESTA CARGADA
+	    		$prueba = $record;
 	    		$ot = $repo->findOneByOtExterna($record['NUMERO']);
 				
 				if(empty($ot)){

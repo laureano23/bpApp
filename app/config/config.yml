@@ -142,6 +142,13 @@ swiftmailer:
     auth_mode: login
     encryption: ssl
     port: "%mailer_port%"
+    
+lopi_pusher:
+    # Default configuration
+    app_id: "430769"
+    key: "afe4f1c54cf0b11142f7"
+    secret: "7cbaeaa7ddf0254702df"
+    host: "api-us2.pusher.com"
 
 services:
    get_set_method_normalizer:
