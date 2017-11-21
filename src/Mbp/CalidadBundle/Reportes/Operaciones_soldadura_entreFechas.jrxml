@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Operaciones_soldadura_entreFechas" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bd61a8dc-35b0-49d2-9e82-573863b27720">
+	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="fechaInicio" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaFin" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     COUNT(ProduccionSoldado.`id`) AS cantOperacion,
+     ProduccionSoldado.`fecha` AS ProduccionSoldado_fecha,
+     ProduccionSoldado.`ot` AS ProduccionSoldado_ot,
+     ProduccionSoldado.`hsInicio` AS ProduccionSoldado_hsInicio,
+     ProduccionSoldado.`hsFin` AS ProduccionSoldado_hsFin,
+     ProduccionSoldado.`personalId` AS ProduccionSoldado_personalId,
+     ProduccionSoldado.`operacionId` AS ProduccionSoldado_operacionId,
+     ProduccionSoldado.`cantidad` AS ProduccionSoldado_cantidad,
+     Personal.`idP` AS Personal_idP,
+     Personal.`nombre` AS Personal_nombre,
+     Operaciones.`id` AS Operaciones_id,
+     Operaciones.`centroCostosId` AS Operaciones_centroCostosId,
+     Operaciones.`descripcion` AS Operaciones_descripcion,
+     Operaciones.`codigo` AS Operaciones_codigo
+FROM
+     `Personal` Personal INNER JOIN `ProduccionSoldado` ProduccionSoldado ON Personal.`idP` = ProduccionSoldado.`personalId`
+     INNER JOIN `Operaciones` Operaciones ON ProduccionSoldado.`operacionId` = Operaciones.`id`
+WHERE ProduccionSoldado.`fecha` BETWEEN $P{fechaInicio} AND $P{fechaFin}
+GROUP BY Operaciones_codigo, Personal.`idP`
+ORDER BY Personal.`idP`, Operaciones.`codigo`]]>
+	</queryString>
+	<field name="cantOperacion" class="java.lang.Long"/>
+	<field name="ProduccionSoldado_fecha" class="java.sql.Date"/>
+	<field name="ProduccionSoldado_ot" class="java.lang.String"/>
+	<field name="ProduccionSoldado_hsInicio" class="java.sql.Time"/>
+	<field name="ProduccionSoldado_hsFin" class="java.sql.Time"/>
+	<field name="ProduccionSoldado_personalId" class="java.lang.Integer"/>
+	<field name="ProduccionSoldado_operacionId" class="java.lang.Integer"/>
+	<field name="ProduccionSoldado_cantidad" class="java.lang.Integer"/>
+	<field name="Personal_idP" class="java.lang.Integer"/>
+	<field name="Personal_nombre" class="java.lang.String"/>
+	<field name="Operaciones_id" class="java.lang.Integer"/>
+	<field name="Operaciones_centroCostosId" class="java.lang.Integer"/>
+	<field name="Operaciones_descripcion" class="java.lang.String"/>
+	<field name="Operaciones_codigo" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="25" uuid="31472a3c-db1e-4b07-b393-750af3132108"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="15" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[ACUMULADO DE OPERACIONES POR SOLDADOR]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="42" height="20" uuid="d3d29d72-4115-4b48-97bd-8785c4a99f49"/>
+				<text><![CDATA[Desde:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="42" y="0" width="100" height="20" uuid="e362253a-2744-4f07-b31d-595f9fa7c32c"/>
+				<textFieldExpression><![CDATA[$P{fechaInicio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="184" y="0" width="100" height="20" uuid="129516e4-fde9-4463-85dc-cbf25d99e318"/>
+				<textFieldExpression><![CDATA[$P{fechaFin}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="142" y="0" width="42" height="20" uuid="51003365-5605-4594-af7a-ccfc5459d427"/>
+				<text><![CDATA[Hasta:]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="167" height="20" uuid="3e9f2e39-9160-4b53-acb7-ec1db7751745"/>
+				<box leftPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[Empleado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="0" width="286" height="20" uuid="97731fe1-5992-477b-8faa-682283af0961"/>
+				<box leftPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[Operacion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="167" y="0" width="33" height="20" uuid="c4e554b9-d9d5-4de4-863e-9e88f374ca93"/>
+				<box leftPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[Codigo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="486" y="0" width="69" height="20" uuid="3e2d9e7c-fb8b-45a9-a2c3-fdf0eba032a4"/>
+				<box leftPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="167" height="20" uuid="330eebe4-9f64-4ad7-8401-0e4419c2332c"/>
+				<box leftPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{Personal_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="167" y="0" width="33" height="20" uuid="1279ee5a-55a9-44c8-91e7-912f71b4d486"/>
+				<box leftPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{Operaciones_codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="200" y="0" width="286" height="20" uuid="0f306d67-4fc8-4c3c-827b-f026891e99db"/>
+				<box leftPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{Operaciones_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="486" y="0" width="69" height="20" uuid="2625fa4a-0d79-45b4-bed1-4e4611b11aed"/>
+				<box leftPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{cantOperacion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="435" y="0" width="80" height="20" uuid="c1111603-9980-4964-aa6c-4a873e4f1c95"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Pág. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="515" y="0" width="40" height="20" uuid="69a32f41-a2c2-4806-99fa-4d487a452b42"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>
