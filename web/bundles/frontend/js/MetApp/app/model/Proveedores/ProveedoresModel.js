@@ -1,0 +1,26 @@
+Ext.define('MetApp.model.Proveedores.ProveedoresModel',{
+	extend: 'Ext.data.Model',
+	fields: [
+		{name: 'id', type: 'int'},
+		{name: 'rSocial', type: 'string'},
+		{name: 'denominacion', type: 'string'},
+		{name: 'direccion', type: 'string'},
+		{name: 'email', type: 'string'},
+		{name: 'cuit', type: 'int'},
+		{name: 'cPostal', type: 'string'},
+		{name: 'telefono1', type: 'string'},
+		{name: 'contacto1', type: 'string'},
+		{name: 'telefono2', type: 'string'},
+		{name: 'contacto2', type: 'string'},
+		{name: 'telefono3', type: 'string'},
+		{name: 'contacto3', type: 'string'},
+		{name: 'condCompra', type: 'string'},
+		{name: 'vencimientoFc', type: 'int'},
+		{name: 'aplicaRetencion', type: 'boolean'},
+		{name: 'porcentajeRetencion', type: 'float'},
+		{name: 'tipoGasto', type: 'int'},
+		{name: 'localidad', type: 'int'},
+		{name: 'provincia', type: 'int'},
+		{name: 'cuentaCerrada', type: 'boolean'},
+	]
+});

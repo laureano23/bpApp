@@ -1,0 +1,12 @@
+{
+    "name": "MetApp",
+
+    "requires": [
+    	"ext-locale-es"
+    ],
+    
+    "locale": "es", 
+    "theme": "ext-theme-neptune",  
+
+    "id": "fae405e5-213a-47f5-a264-0124c8f0fe62"
+}

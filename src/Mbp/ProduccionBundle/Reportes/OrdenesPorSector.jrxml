@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OrdenesPorSector" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="faabb94c-b32d-4f38-913c-e824ee7dd96c">
+	<property name="ireport.zoom" value="1.4641000000000028"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="desde" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="hasta" class="java.util.Date"/>
+	<queryString>
+		<![CDATA[SELECT
+     ot.`ot` AS ot_ot,
+     ot.`cantidad` AS ot_cantidad,
+     ot.`fechaEmision` AS ot_fechaEmision,
+     ot.`fechaProg` AS ot_fechaProg,
+     ot.`observaciones` AS ot_observaciones,
+     ot.`anulada` AS ot_anulada,
+     ot.`idCodigo` AS ot_idCodigo,
+     ot.`sectorEmisor` AS ot_sectorEmisor,
+     ot.`idUsuario` AS ot_idUsuario,
+     ot.`aprobado` AS ot_aprobado,
+     ot.`rechazado` AS ot_rechazado,
+     ot.`sectorId` AS ot_sectorId,
+     ot.`otExterna` AS ot_otExterna,
+     ot.`estado` AS ot_estado,
+     sectores.`id` AS sectores_id,
+     sectores.`costoMin` AS sectores_costoMin,
+     sectores.`descripcion` AS sectores_descripcion,
+     sectores.`piso` AS sectores_piso,
+     sectores.`nave` AS sectores_nave,
+     sectores.`tiempo` AS sectores_tiempo,
+     articulos.`codigo` AS articulos_codigo,
+     articulos.`descripcion` AS articulos_descripcion,
+     articulos.`idArticulos` AS articulos_idArticulos,
+     articulos.`unidad` AS articulos_unidad,
+     articulos.`costo` AS articulos_costo,
+     articulos.`precio` AS articulos_precio,
+     articulos.`moneda` AS articulos_moneda,
+     articulos.`iva` AS articulos_iva,
+     articulos.`familiaId` AS articulos_familiaId,
+     articulos.`subFamiliaId` AS articulos_subFamiliaId,
+     articulos.`monedaPrecio` AS articulos_monedaPrecio,
+     articulos.`stock` AS articulos_stock,
+     articulos.`presentacion` AS articulos_presentacion,
+     articulos.`utilidadPretendida` AS articulos_utilidadPretendida,
+     articulos.`fechaPrecio` AS articulos_fechaPrecio,
+     articulos.`type` AS articulos_type,
+     articulos.`caudal` AS articulos_caudal,
+     articulos.`peso` AS articulos_peso,
+     articulos.`voltage` AS articulos_voltage,
+     articulos.`corriente` AS articulos_corriente,
+     articulos.`potencia` AS articulos_potencia,
+     articulos.`presion` AS articulos_presion,
+     articulos.`nombreImagen` AS articulos_nombreImagen,
+     sectores_A.`id` AS sectores_A_id,
+     sectores_A.`costoMin` AS sectores_A_costoMin,
+     sectores_A.`descripcion` AS sectores_A_descripcion,
+     sectores_A.`piso` AS sectores_A_piso,
+     sectores_A.`nave` AS sectores_A_nave,
+     sectores_A.`tiempo` AS sectores_A_tiempo,
+     sectores_A.`id` AS sectores_A_id,
+     sectores_A.`costoMin` AS sectores_A_costoMin,
+     sectores_A.`descripcion` AS sectores_A_descripcion,
+     sectores_A.`piso` AS sectores_A_piso,
+     sectores_A.`nave` AS sectores_A_nave,
+     sectores_A.`tiempo` AS sectores_A_tiempo
+FROM
+     `sectores` sectores RIGHT OUTER JOIN `ot` ot ON sectores.`id` = ot.`sectorEmisor`
+     LEFT OUTER JOIN `articulos` articulos ON ot.`idCodigo` = articulos.`idArticulos`
+     LEFT OUTER JOIN `sectores` sectores_A ON ot.`sectorId` = sectores_A.`id`
+WHERE ot.`fechaProg` BETWEEN $P{desde} AND $P{hasta}
+ORDER BY
+     sectores_A.`id` ASC,
+     ot.`fechaProg` ASC]]>
+	</queryString>
+	<field name="ot_ot" class="java.lang.Integer"/>
+	<field name="ot_cantidad" class="java.math.BigDecimal"/>
+	<field name="ot_fechaEmision" class="java.sql.Timestamp"/>
+	<field name="ot_fechaProg" class="java.sql.Date"/>
+	<field name="ot_observaciones" class="java.lang.String"/>
+	<field name="ot_anulada" class="java.lang.Boolean"/>
+	<field name="ot_idCodigo" class="java.lang.Integer"/>
+	<field name="ot_sectorEmisor" class="java.lang.Integer"/>
+	<field name="ot_idUsuario" class="java.lang.Integer"/>
+	<field name="ot_aprobado" class="java.math.BigDecimal"/>
+	<field name="ot_rechazado" class="java.math.BigDecimal"/>
+	<field name="ot_sectorId" class="java.lang.Integer"/>
+	<field name="ot_otExterna" class="java.lang.Integer"/>
+	<field name="ot_estado" class="java.lang.Integer"/>
+	<field name="sectores_id" class="java.lang.Integer"/>
+	<field name="sectores_costoMin" class="java.math.BigDecimal"/>
+	<field name="sectores_descripcion" class="java.lang.String"/>
+	<field name="sectores_piso" class="java.lang.String"/>
+	<field name="sectores_nave" class="java.lang.String"/>
+	<field name="sectores_tiempo" class="java.math.BigDecimal"/>
+	<field name="articulos_codigo" class="java.lang.String"/>
+	<field name="articulos_descripcion" class="java.lang.String"/>
+	<field name="articulos_idArticulos" class="java.lang.Integer"/>
+	<field name="articulos_unidad" class="java.lang.String"/>
+	<field name="articulos_costo" class="java.math.BigDecimal"/>
+	<field name="articulos_precio" class="java.math.BigDecimal"/>
+	<field name="articulos_moneda" class="java.lang.Boolean"/>
+	<field name="articulos_iva" class="java.math.BigDecimal"/>
+	<field name="articulos_familiaId" class="java.lang.Integer"/>
+	<field name="articulos_subFamiliaId" class="java.lang.Integer"/>
+	<field name="articulos_monedaPrecio" class="java.lang.Boolean"/>
+	<field name="articulos_stock" class="java.math.BigDecimal"/>
+	<field name="articulos_presentacion" class="java.lang.String"/>
+	<field name="articulos_utilidadPretendida" class="java.math.BigDecimal"/>
+	<field name="articulos_fechaPrecio" class="java.sql.Date"/>
+	<field name="articulos_type" class="java.lang.String"/>
+	<field name="articulos_caudal" class="java.math.BigDecimal"/>
+	<field name="articulos_peso" class="java.math.BigDecimal"/>
+	<field name="articulos_voltage" class="java.math.BigDecimal"/>
+	<field name="articulos_corriente" class="java.math.BigDecimal"/>
+	<field name="articulos_potencia" class="java.math.BigDecimal"/>
+	<field name="articulos_presion" class="java.math.BigDecimal"/>
+	<field name="articulos_nombreImagen" class="java.lang.String"/>
+	<field name="sectores_A_id" class="java.lang.Integer"/>
+	<field name="sectores_A_costoMin" class="java.math.BigDecimal"/>
+	<field name="sectores_A_descripcion" class="java.lang.String"/>
+	<field name="sectores_A_piso" class="java.lang.String"/>
+	<field name="sectores_A_nave" class="java.lang.String"/>
+	<field name="sectores_A_tiempo" class="java.math.BigDecimal"/>
+	<group name="sector">
+		<groupExpression><![CDATA[$F{ot_sectorId}]]></groupExpression>
+		<groupHeader>
+			<band height="61">
+				<frame>
+					<reportElement x="0" y="0" width="802" height="61" uuid="7ce382de-fe6a-4cf8-8941-50f4c1e1d1b2"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textField>
+						<reportElement x="100" y="0" width="100" height="20" uuid="a726745b-e883-45e6-8761-2601b348e180"/>
+						<textFieldExpression><![CDATA[$F{sectores_A_descripcion}]]></textFieldExpression>
+					</textField>
+					<staticText>
+						<reportElement x="0" y="0" width="100" height="20" uuid="2bd8efc1-9778-41e6-8769-ff3c5a1dba8e"/>
+						<box leftPadding="2"/>
+						<text><![CDATA[Sector:]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="0" y="41" width="100" height="20" uuid="c6d30f2c-1a31-4b88-a2be-8cdc6d02af4f"/>
+						<box leftPadding="2"/>
+						<text><![CDATA[OT]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="100" y="41" width="100" height="20" uuid="ca4f0d52-2096-4da9-9ad2-84244ed0abf6"/>
+						<text><![CDATA[Código]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="200" y="41" width="322" height="20" uuid="039c6bce-78a6-404c-bbc1-b03debd74acf"/>
+						<text><![CDATA[Descripción]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="522" y="41" width="100" height="20" uuid="872cbbeb-206a-4ae2-a684-b1174787870c"/>
+						<text><![CDATA[Entrega]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="622" y="41" width="100" height="20" uuid="02f427b1-5d79-4503-8a3a-f8de130348c0"/>
+						<text><![CDATA[Estado]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="252" y="0" width="45" height="20" uuid="9945bfd5-7c94-415f-aaf5-eb7837736a2d"/>
+						<text><![CDATA[Desde:]]></text>
+					</staticText>
+					<textField pattern="dd/MM/yyyy">
+						<reportElement x="297" y="0" width="79" height="20" uuid="268d180a-c43c-4b54-82d5-5bf50df1d112"/>
+						<textFieldExpression><![CDATA[$P{desde}]]></textFieldExpression>
+					</textField>
+					<textField pattern="dd/MM/yyyy">
+						<reportElement x="418" y="0" width="79" height="20" uuid="674a8dc0-9441-4182-adb1-6bb9599db271"/>
+						<textFieldExpression><![CDATA[$P{hasta}]]></textFieldExpression>
+					</textField>
+					<staticText>
+						<reportElement x="376" y="0" width="42" height="20" uuid="1b2431d2-1b2f-4354-8564-ed68a3240d5c"/>
+						<text><![CDATA[Hasta:]]></text>
+					</staticText>
+				</frame>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="49" splitType="Stretch">
+			<image scaleImage="FillFrame">
+				<reportElement x="0" y="0" width="83" height="49" uuid="8009c870-a6d3-4d3d-a669-d3147a124cc5"/>
+				<imageExpression><![CDATA["logo.jpg"]]></imageExpression>
+			</image>
+			<frame>
+				<reportElement x="0" y="0" width="802" height="49" uuid="aab7acce-5585-4461-bd02-49b95c483ed0"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<staticText>
+					<reportElement x="149" y="0" width="416" height="49" uuid="b1e84316-5096-47c1-b899-49b63a6e4aa3"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<text><![CDATA[ORDENES DE TRABAJO ENTRE FECHAS POR SECTOR]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20" uuid="b70cc88d-6747-4ade-87f5-c1bea7d032bf"/>
+				<box leftPadding="2"/>
+				<textFieldExpression><![CDATA[$F{ot_ot}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="100" height="20" uuid="f86d323e-122d-4bcd-93c7-48d4fa0bc625"/>
+				<textFieldExpression><![CDATA[$F{articulos_codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="200" y="0" width="322" height="20" uuid="b8271bf6-68d2-49f4-a47a-34304c926a50"/>
+				<textFieldExpression><![CDATA[$F{articulos_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="522" y="0" width="100" height="20" uuid="3ef30d8f-7cb1-49c7-87a0-6a05888f7b2a"/>
+				<textFieldExpression><![CDATA[$F{ot_fechaProg}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="622" y="0" width="100" height="20" uuid="ea1bfc58-ac79-4331-acfa-d08aa857b3d1"/>
+				<textFieldExpression><![CDATA[$F{ot_estado} == 0 ? "NO COMENZADA" : $F{ot_estado} == 1 ? "EN PROCESO" : "TERMINADA"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="34" splitType="Stretch">
+			<textField evaluationTime="Report">
+				<reportElement x="762" y="14" width="40" height="20" uuid="6ead00c1-b1d7-47a5-86ff-2fabbfa964c8"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="682" y="14" width="80" height="20" uuid="936ef277-06f5-4e87-84ef-7d5745a43d47"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Pág. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

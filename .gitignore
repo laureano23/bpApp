@@ -1,21 +1,33 @@
+#IGNORAMOS LA CARPETA COMPLETA
 /web/bundles/*
+
+#EXCLUIMOS FRONTEND
 !/web/bundles/frontend/
 
+#IGNORAMOS LA CARPETA COMPLETA
 /web/bundles/frontend/*
+#EXCLUIMOS FRONTEND
 !/web/bundles/frontend/js/
 
+#IGNORAMOS JS
 /web/bundles/frontend/js/*
-!/web/bundles/frontend/js/App/
-!/web/bundles/frontend/js/Resources/
-!/web/bundles/frontend/js/app.json
-!/web/bundles/frontend/js/build.xml
+#EXCLUIMOS METAPP
+!/web/bundles/frontend/js/MetApp/
+
 /app/bootstrap.php.cache
+
 /app/cache/*
+
 /app/config/parameters.yml
+
 /app/logs/*
+
 !app/cache/.gitkeep
 !app/logs/.gitkeep
+
 /build/
+
 /vendor/
+
 /bin/
 
