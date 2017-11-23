@@ -32,12 +32,16 @@ Ext.define('MetApp.view.Produccion.Reportes.ReporteOrdenesPorSector', {
 							xtype: 'datefield',
 							itemId: 'desde',
 							name: 'desde',
+							submitFormat: 'd/m/Y',
+							format: 'd/m/Y',
 							fieldLabel: 'Desde',
 							labelWidth: 40
 						},
 						{
 							xtype: 'datefield',
 							itemId: 'hasta',
+							submitFormat: 'd/m/Y',
+							format: 'd/m/Y',
 							name: 'hasta',
 							fieldLabel: 'Hasta',
 							labelWidth: 40
