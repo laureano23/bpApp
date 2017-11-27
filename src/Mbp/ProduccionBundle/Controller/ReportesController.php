@@ -18,7 +18,7 @@ class ReportesController extends Controller
 	 /**
      * @Route("/produccion/reporteCalculo", name="mbp_produccion_reportecalculo", options={"expose"=true})
      */
-	public function reporteCalculoAction()
+	public function reporteCalculoAction() 
 	{
 		$repo = $this->get('reporteador');
 		$calc = $this->get('mbp.calculo');
@@ -554,7 +554,7 @@ class ReportesController extends Controller
 			 * Ruta archivo Jasper
 			 */				
 					
-			$ruta = $kernel->locateResource('@MbpProduccionBundle/Reportes/OrdenesPorSector2.jrxml');
+			$ruta = $kernel->locateResource('@MbpProduccionBundle/Reportes/OrdenesPorSector.jrxml');
 			$rutaLogo = $reporteador->getRutaLogo($kernel);
 			
 			/*
@@ -570,7 +570,7 @@ class ReportesController extends Controller
 			$param->put('desde', $desde->format("Y-m-d"));
 			$param->put('hasta', $hasta->format("Y-m-d"));
 			
-			$conn = $reporteador->getJdbc();
+			$conn = $reporteador->getJdbc(); 
 			
 			$sql = "
 				SELECT
