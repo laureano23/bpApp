@@ -572,6 +572,12 @@ class ReportesController extends Controller
 			
 			$conn = $reporteador->getJdbc(); 
 			
+			/*
+			 * FECHA OUTPUT FORMATO SQL PARA CONSULTA
+			 */		
+			$fechaDesdeSql = $desde->format('Y-m-d');
+			$fechaHastaSql = $hasta->format('Y-m-d');
+			
 			$sql = "
 				SELECT
 				     ot.`ot` AS ot_ot,
@@ -633,7 +639,8 @@ class ReportesController extends Controller
 				     `Sectores` sectores RIGHT OUTER JOIN `Ot` ot ON sectores.`id` = ot.`sectorEmisor`
 				     LEFT OUTER JOIN `articulos` articulos ON ot.`idCodigo` = articulos.`idArticulos`
 				     LEFT OUTER JOIN `Sectores` sectores_A ON ot.`sectorId` = sectores_A.`id`
-
+				WHERE
+					ot.`fechaProg` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql'
 				ORDER BY
 				     sectores_A.`id` ASC,
 				     ot.`fechaProg` ASC
