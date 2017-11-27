@@ -164,7 +164,9 @@ Ext.define('MetApp.view.Produccion.OrdenesTrabajo.NuevaOTView', {
 								{
 									header: 'Fecha de entrega',
 									width: 150,
-									dataIndex: 'programado',						
+									dataIndex: 'programado',
+									xtype: 'datecolumn',
+									format: 'd/m/Y',						
 								},
 							]	      
 						},		

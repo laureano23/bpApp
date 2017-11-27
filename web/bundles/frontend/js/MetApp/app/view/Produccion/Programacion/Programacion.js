@@ -63,7 +63,9 @@ Ext.define('MetApp.view.Produccion.Programacion.Programacion',{
 								{
 									header: 'Fecha de entrega',
 									width: 100,
-									dataIndex: 'programado',						
+									dataIndex: 'programado',
+									xtype: 'datecolumn',
+									format: 'd/m/Y',						
 								},
 								{
 									header: 'Aprobado',
@@ -93,15 +95,19 @@ Ext.define('MetApp.view.Produccion.Programacion.Programacion',{
 					                    store: {
 					                    	fields: ['idEstado', 'estado'],
 					                    	data : [
-										        {"idEstado":"0", "estado":"No comenzado"},
+										        {"idEstado":"0", "estado":"No comenzada"},
 										        {"idEstado":"1", "estado":"En proceso"},
-										        {"idEstado":"2", "estado":"Terminada"}
+										        {"idEstado":"2", "estado":"Terminada"},
+										        {"idEstado":"3", "estado":"Generada"},
 										        //...
 										    ]
 					                    }
 					               	},
 									renderer: function(value, metaData, record, row, col, store, gridView){
-										return value == "No comenzada" ? '<span style="color:red;">'+value+'</span>' : value == "Terminada" ? '<span style="color:green;">'+value+'</span>' : '<span style="background-color:yellow;">'+value+'</span>';
+										return value == "No comenzada" ? '<span style="color:red;">'+value+'</span>' :
+										 	value == "Terminada" ? '<span style="color:green;">'+value+'</span>' :
+										 	value == "Generada" ? '<span style="color:brown;">'+value+'</span>' :
+										 	'<span style="background-color:yellow;">'+value+'</span>';
 									},									
 								},
 								{

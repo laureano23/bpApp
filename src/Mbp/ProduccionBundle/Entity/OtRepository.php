@@ -151,7 +151,8 @@ class OtRepository extends EntityRepository
 					o.rechazado,
 					CASE WHEN o.estado = 0 THEN 'No comenzada'
 					 WHEN o.estado = 1 THEN 'En proceso'
-					 WHEN o.estado = 2 THEN 'Terminada'						
+					 WHEN o.estado = 2 THEN 'Terminada'
+					 WHEN o.estado = 3 THEN 'Generada'						
 					 ELSE 'No comenzada' END as estado")
 			->join('o.idCodigo', 'codigo')
 			->join('o.sectorId', 'c')
@@ -180,7 +181,8 @@ class OtRepository extends EntityRepository
 					o.rechazado,
 					CASE WHEN o.estado = 0 THEN 'No comenzada'
 					 WHEN o.estado = 1 THEN 'En proceso'
-					 WHEN o.estado = 2 THEN 'Terminada'						
+					 WHEN o.estado = 2 THEN 'Terminada'	
+					 WHEN o.estado = 3 THEN 'Generada'					
 					 ELSE 'No comenzada' END as estado")
 			->join('o.idCodigo', 'codigo')
 			->join('o.sectorId', 'c')
@@ -207,7 +209,8 @@ class OtRepository extends EntityRepository
 					o.rechazado,
 					CASE WHEN o.estado = 0 THEN 'No comenzada'
 					 WHEN o.estado = 1 THEN 'En proceso'
-					 WHEN o.estado = 2 THEN 'Terminada'						
+					 WHEN o.estado = 2 THEN 'Terminada'	
+					 WHEN o.estado = 3 THEN 'Generada'					
 					 ELSE 'No comenzada' END as estado")
 			->join('o.idCodigo', 'codigo')
 			->join('o.sectorEmisor', 'emisor')
@@ -237,7 +240,8 @@ class OtRepository extends EntityRepository
 					o.rechazado,
 					CASE WHEN o.estado = 0 THEN 'No comenzada'
 					 WHEN o.estado = 1 THEN 'En proceso'
-					 WHEN o.estado = 2 THEN 'Terminada'						
+					 WHEN o.estado = 2 THEN 'Terminada'	
+					 WHEN o.estado = 3 THEN 'Generada'					
 					 ELSE 'No comenzada' END as estado")
 			->join('o.idCodigo', 'codigo')
 			->join('o.sectorEmisor', 'emisor')
@@ -267,7 +271,8 @@ class OtRepository extends EntityRepository
 					o.rechazado,
 					CASE WHEN o.estado = 0 THEN 'No comenzada'
 					 WHEN o.estado = 1 THEN 'En proceso'
-					 WHEN o.estado = 2 THEN 'Terminada'						
+					 WHEN o.estado = 2 THEN 'Terminada'	
+					 WHEN o.estado = 3 THEN 'Generada'					
 					 ELSE 'No comenzada' END as estado")
 			->join('o.idCodigo', 'codigo')
 			->join('o.sectorId', 'receptor')
@@ -295,7 +300,8 @@ class OtRepository extends EntityRepository
 					o.rechazado,
 					CASE WHEN o.estado = 0 THEN 'No comenzada'
 					 WHEN o.estado = 1 THEN 'En proceso'
-					 WHEN o.estado = 2 THEN 'Terminada'						
+					 WHEN o.estado = 2 THEN 'Terminada'		
+					 WHEN o.estado = 3 THEN 'Generada'				
 					 ELSE 'No comenzada' END as estado")
 			->join('o.idCodigo', 'codigo')
 			->join('o.sectorId', 'receptor')

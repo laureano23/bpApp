@@ -431,6 +431,9 @@ class OtController extends Controller
 				case 'Terminada':
 					$ot->setEstado(2);
 					break;
+				case 'Generada':
+					$ot->setEstado(3);
+					break;
 				default:
 					$ot->setEstado(0);
 					break;
