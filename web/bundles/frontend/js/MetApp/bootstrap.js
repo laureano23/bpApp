@@ -891,6 +891,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.controller.Produccion.Programacion.FormulasMoController": [],
   "MetApp.controller.Produccion.Programacion.OperacionesController": [],
   "MetApp.controller.Produccion.Programacion.ProgramacionController": [],
+  "MetApp.controller.Produccion.ReportesProduccionController": [],
   "MetApp.controller.Produccion.SoldaduraController": [],
   "MetApp.controller.Proveedores.CCProveedoresController": [],
   "MetApp.controller.Proveedores.FacturaProveedoresController": [],
@@ -1086,6 +1087,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.view.Produccion.Programacion.Sectores": [],
   "MetApp.view.Produccion.Programacion.SectoresBusqueda": [],
   "MetApp.view.Produccion.RadiadoresAgua.CalculoSeleccionWin": [],
+  "MetApp.view.Produccion.Reportes.ReporteOrdenesPorSector": [],
   "MetApp.view.Produccion.Soldadura.ControlProduccionView": [],
   "MetApp.view.Proveedores.FormProveedores": [],
   "MetApp.view.Proveedores.FormasPagoView": [],
@@ -2147,6 +2149,7 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.controller.Produccion.Programacion.FormulasMoController": [],
   "MetApp.controller.Produccion.Programacion.OperacionesController": [],
   "MetApp.controller.Produccion.Programacion.ProgramacionController": [],
+  "MetApp.controller.Produccion.ReportesProduccionController": [],
   "MetApp.controller.Produccion.SoldaduraController": [],
   "MetApp.controller.Proveedores.CCProveedoresController": [],
   "MetApp.controller.Proveedores.FacturaProveedoresController": [],
@@ -2581,6 +2584,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "MetApp.view.Produccion.RadiadoresAgua.CalculoSeleccionWin": [
     "widget.calculoSeleccion"
+  ],
+  "MetApp.view.Produccion.Reportes.ReporteOrdenesPorSector": [
+    "widget.ReporteOrdenesPorSector"
   ],
   "MetApp.view.Produccion.Soldadura.ControlProduccionView": [
     "widget.ControlProduccionView"
