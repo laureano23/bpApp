@@ -554,7 +554,7 @@ class ReportesController extends Controller
 			 * Ruta archivo Jasper
 			 */				
 					
-			$ruta = $kernel->locateResource('@MbpProduccionBundle/Reportes/OrdenesPorSector.jrxml');
+			$ruta = $kernel->locateResource('@MbpProduccionBundle/Reportes/OrdenesPorSector2.jrxml');
 			$rutaLogo = $reporteador->getRutaLogo($kernel);
 			
 			/*
@@ -562,22 +562,13 @@ class ReportesController extends Controller
 			 */
 			$destino = $kernel->locateResource('@MbpProduccionBundle/Resources/public/pdf/').'OrdenesPorSector.pdf';
 			
-			/*
-			 * NUEVA FECHA FORMATO PHP 
-			 */	
-			$fechaDesde = \DateTime::createFromFormat('d/m/Y', $desde);
-			$fechaHasta = \DateTime::createFromFormat('d/m/Y', $hasta);	
 			
-			/*
-			 * FECHA OUTPUT FORMATO SQL PARA CONSULTA
-			 */		
-			$fechaDesdeSql = $fechaDesde->format('Y-m-d');
-			$fechaHastaSql = $fechaHasta->format('Y-m-d');
-			
+			$desde = \DateTime::createFromFormat('d/m/Y', $desde);
+			$hasta = \DateTime::createFromFormat('d/m/Y', $hasta);
 			//Parametros HashMap
 			$param = $reporteador->getJava('java.util.HashMap');
-			$param->put('desde', $fechaDesde->format('Y-m-d'));
-			$param->put('hasta', $fechaHasta->format('Y-m-d'));
+			$param->put('desde', $desde->format("Y-m-d"));
+			$param->put('hasta', $hasta->format("Y-m-d"));
 			
 			$conn = $reporteador->getJdbc();
 			
@@ -639,17 +630,17 @@ class ReportesController extends Controller
 				     sectores_A.`nave` AS sectores_A_nave,
 				     sectores_A.`tiempo` AS sectores_A_tiempo
 				FROM
-				     `sectores` sectores RIGHT OUTER JOIN `ot` ot ON sectores.`id` = ot.`sectorEmisor`
+				     `Sectores` sectores RIGHT OUTER JOIN `Ot` ot ON sectores.`id` = ot.`sectorEmisor`
 				     LEFT OUTER JOIN `articulos` articulos ON ot.`idCodigo` = articulos.`idArticulos`
-				     LEFT OUTER JOIN `sectores` sectores_A ON ot.`sectorId` = sectores_A.`id`
-				WHERE ot.`fechaProg` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql'
+				     LEFT OUTER JOIN `Sectores` sectores_A ON ot.`sectorId` = sectores_A.`id`
+
 				ORDER BY
 				     sectores_A.`id` ASC,
 				     ot.`fechaProg` ASC
+				
 			";
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
-
 			
 			return $response->setContent(
 					json_encode(

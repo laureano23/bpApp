@@ -39,7 +39,7 @@ Ext.define('MetApp.controller.Produccion.ReportesProduccionController',{
 		 	},
 		 	
 		 	success: function(resp){
-		 		/*var jsonResp = Ext.JSON.decode(resp.responseText);
+		 		var jsonResp = Ext.JSON.decode(resp.responseText);
 		 		
 		 		if(jsonResp.success == true){
 		 			var ruta = Routing.generate('mbp_produccion_verOTPorSector');
@@ -49,7 +49,7 @@ Ext.define('MetApp.controller.Produccion.ReportesProduccionController',{
 					
 					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');	
 		 		}
-		 		myMask.hide();*/
+		 		myMask.hide();
 		 	}
 		 });
 	}
