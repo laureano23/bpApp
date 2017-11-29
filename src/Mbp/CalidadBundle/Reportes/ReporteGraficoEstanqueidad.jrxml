@@ -17,12 +17,13 @@
      SUM(if(Estanqueidad.`mPisoDesp`=1,1,0)) AS Estanqueidad_mPisoDesp,
      SUM(if(Estanqueidad.`tRosca`=1,1,0)) AS Estanqueidad_tRosca,
      SUM(if(Estanqueidad.`tPoros`=1,1,0)) AS Estanqueidad_tPoros,
+     SUM(if(Estanqueidad.`tFijacion`=1,1,0)) AS Estanqueidad_tFijacion,
+     SUM(if(Estanqueidad.`tConector`=1,1,0)) AS Estanqueidad_tConector,
      SUM(if(Estanqueidad.`sConector`=1,1,0)) AS Estanqueidad_sConector,
      SUM(if(Estanqueidad.`sTapaPanel`=1,1,0)) AS Estanqueidad_sTapaPanel,
      SUM(if(Estanqueidad.`sPlanchuelas`=1,1,0)) AS Estanqueidad_sPlanchuelas,
      SUM(if(Estanqueidad.`mAnulado`=1,1,0)) AS Estanqueidad_mAnulado,
      SUM(if(Estanqueidad.`mCiba`=1,1,0)) AS Estanqueidad_mCiba,
-     SUM(if(Estanqueidad.`tFijacion`=1,1,0)) AS Estanqueidad_tFijacion,
      COUNT(Estanqueidad.`id`) AS total,
      Estanqueidad.`fechaPrueba` AS Estanqueidad_fechaPrueba
 FROM
@@ -36,13 +37,16 @@ WHERE
 	<field name="Estanqueidad_mPisoDesp" class="java.math.BigDecimal"/>
 	<field name="Estanqueidad_tRosca" class="java.math.BigDecimal"/>
 	<field name="Estanqueidad_tPoros" class="java.math.BigDecimal"/>
+	<field name="Estanqueidad_tFijacion" class="java.math.BigDecimal"/>
+	<field name="Estanqueidad_tConector" class="java.math.BigDecimal"/>
 	<field name="Estanqueidad_sConector" class="java.math.BigDecimal"/>
 	<field name="Estanqueidad_sTapaPanel" class="java.math.BigDecimal"/>
 	<field name="Estanqueidad_sPlanchuelas" class="java.math.BigDecimal"/>
 	<field name="Estanqueidad_mAnulado" class="java.math.BigDecimal"/>
 	<field name="Estanqueidad_mCiba" class="java.math.BigDecimal"/>
-	<field name="Estanqueidad_tFijacion" class="java.lang.Double"/>
-	<field name="total" class="java.lang.Long"/>
+	<field name="total" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="Estanqueidad_fechaPrueba" class="java.sql.Date"/>
 	<background>
 		<band splitType="Stretch"/>
@@ -74,10 +78,9 @@ WHERE
 						<labelExpression><![CDATA["Bagueta " + new java.text.DecimalFormat("0.00").format(($F{Estanqueidad_mBagueta}.doubleValue()*100)/$F{total})+"%"]]></labelExpression>
 					</pieSeries>
 					<pieSeries>
-						<keyExpression><![CDATA["Chapa" ]]></keyExpression>
+						<keyExpression><![CDATA["Chapa"]]></keyExpression>
 						<valueExpression><![CDATA[$F{Estanqueidad_mChapa}]]></valueExpression>
-						<labelExpression><![CDATA["Chapa " + new java.text.DecimalFormat("0.00").format(($F{Estanqueidad_mChapa}.doubleValue()*100)/$F{total})+"%"
-]]></labelExpression>
+						<labelExpression><![CDATA["Chapa " + new java.text.DecimalFormat("0.00").format(($F{Estanqueidad_mChapa}.doubleValue()*100)/$F{total})+"%"]]></labelExpression>
 					</pieSeries>
 					<pieSeries>
 						<keyExpression><![CDATA["Perfil"]]></keyExpression>
@@ -128,6 +131,11 @@ WHERE
 						<keyExpression><![CDATA["Fijacion"]]></keyExpression>
 						<valueExpression><![CDATA[$F{Estanqueidad_tFijacion}]]></valueExpression>
 						<labelExpression><![CDATA["Fijacion " + new java.text.DecimalFormat("0.00").format(($F{Estanqueidad_tFijacion}.doubleValue()*100)/$F{total})+"%"]]></labelExpression>
+					</pieSeries>
+					<pieSeries>
+						<keyExpression><![CDATA["Tapa Conector"]]></keyExpression>
+						<valueExpression><![CDATA[$F{Estanqueidad_tConector}]]></valueExpression>
+						<labelExpression><![CDATA["Tapa conector " + new java.text.DecimalFormat("0.00").format(($F{Estanqueidad_tConector}.doubleValue()*100)/$F{total})+"%"]]></labelExpression>
 					</pieSeries>
 				</pieDataset>
 				<pie3DPlot isShowLabels="true" isCircular="false" labelFormat="{0}">

@@ -133,7 +133,8 @@ Ext.define('MetApp.view.Calidad.FormEstanqueidadRG010', {
 											items: [												
 												{ boxLabel: 'Poros', name: 'tPoros', inputValue: '1', uncheckedValue: '0' },
 												{ boxLabel: 'Rosca', name: 'tRosca', inputValue: '1', uncheckedValue: '0' },
-												{ boxLabel: 'Fijacion', name: 'tFijacion', inputValue: '1', uncheckedValue: '0' },																														
+												{ boxLabel: 'Fijacion', name: 'tFijacion', inputValue: '1', uncheckedValue: '0' },
+												{ boxLabel: 'Conector', name: 'tConector', inputValue: '1', uncheckedValue: '0' },																														
 											]
 										},
 										{

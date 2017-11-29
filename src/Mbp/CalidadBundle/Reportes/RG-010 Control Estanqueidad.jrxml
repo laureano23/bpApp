@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RG-010 Control Estanqueidad" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="faabb94c-b32d-4f38-913c-e824ee7dd96c">
-	<property name="ireport.zoom" value="2.143588810000046"/>
-	<property name="ireport.x" value="612"/>
-	<property name="ireport.y" value="122"/>
+	<property name="ireport.zoom" value="1.7715610000000022"/>
+	<property name="ireport.x" value="348"/>
+	<property name="ireport.y" value="0"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#1E90FF">
 		<box>
@@ -128,7 +128,7 @@
 				<text><![CDATA[Prueba N°]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="529" y="0" width="27" height="70" uuid="99a6a902-8899-4b41-be07-92332a37cecb"/>
+				<reportElement x="559" y="0" width="27" height="70" uuid="99a6a902-8899-4b41-be07-92332a37cecb"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -141,7 +141,7 @@
 				<text><![CDATA[Reparado]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="557" y="0" width="24" height="70" uuid="ba667f4a-e98c-45ed-85ff-e277a9082d84"/>
+				<reportElement x="587" y="0" width="24" height="70" uuid="ba667f4a-e98c-45ed-85ff-e277a9082d84"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -256,7 +256,7 @@
 				<text><![CDATA[Anulado]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="339" y="0" width="83" height="22" uuid="9e148b9a-8e2f-441d-9d4f-2dd5de0a1e03"/>
+				<reportElement x="339" y="0" width="113" height="22" uuid="9e148b9a-8e2f-441d-9d4f-2dd5de0a1e03"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -269,7 +269,7 @@
 				<text><![CDATA[Tapas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="422" y="22" width="27" height="48" uuid="04acedd1-5ebd-47f2-8266-2e7369b0d686"/>
+				<reportElement x="452" y="22" width="27" height="48" uuid="04acedd1-5ebd-47f2-8266-2e7369b0d686"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -282,7 +282,7 @@
 				<text><![CDATA[Tapa / panel]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="449" y="22" width="20" height="48" uuid="056ca896-d07c-40a1-904c-cef24eba0731">
+				<reportElement x="479" y="22" width="20" height="48" uuid="056ca896-d07c-40a1-904c-cef24eba0731">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -298,7 +298,7 @@
 				<text><![CDATA[Conector]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="469" y="22" width="20" height="48" uuid="f921ba8e-8770-4c12-b4b7-2d8eb9ea7bda">
+				<reportElement x="499" y="22" width="20" height="48" uuid="f921ba8e-8770-4c12-b4b7-2d8eb9ea7bda">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="local_mesure_unitwidth" value="pixel"/>
 				</reportElement>
@@ -314,7 +314,7 @@
 				<text><![CDATA[Planchuela]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="489" y="22" width="20" height="48" uuid="ddc8cacb-16d5-494b-9ac7-defece411ca0">
+				<reportElement x="519" y="22" width="20" height="48" uuid="ddc8cacb-16d5-494b-9ac7-defece411ca0">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<box>
@@ -329,7 +329,7 @@
 				<text><![CDATA[Puntera]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="422" y="0" width="106" height="22" uuid="645c2876-a610-477b-a5e9-b68cc3cf0397"/>
+				<reportElement x="452" y="0" width="106" height="22" uuid="645c2876-a610-477b-a5e9-b68cc3cf0397"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -342,7 +342,7 @@
 				<text><![CDATA[Soldadura]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="638" y="0" width="164" height="70" uuid="8c2f070f-a5ea-48c6-a517-dbcadb78293c"/>
+				<reportElement x="668" y="0" width="134" height="70" uuid="8c2f070f-a5ea-48c6-a517-dbcadb78293c"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -355,7 +355,7 @@
 				<text><![CDATA[Observaciones]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="609" y="0" width="29" height="70" uuid="de286fe1-c437-441e-b41d-5e4676ce943b"/>
+				<reportElement x="639" y="0" width="29" height="70" uuid="de286fe1-c437-441e-b41d-5e4676ce943b"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -380,7 +380,7 @@
 				<text><![CDATA[Presion (Kg)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="582" y="0" width="28" height="70" uuid="2730ce95-42f6-4bc8-af0f-bb53b34e9cff"/>
+				<reportElement x="612" y="0" width="28" height="70" uuid="2730ce95-42f6-4bc8-af0f-bb53b34e9cff"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<bottomPen lineWidth="1.0"/>
@@ -445,7 +445,7 @@
 				<text><![CDATA[Chapa Colectora]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="509" y="22" width="19" height="48" uuid="dacb7f07-6f67-4795-8584-72cd7a9bdf87">
+				<reportElement x="539" y="22" width="19" height="48" uuid="dacb7f07-6f67-4795-8584-72cd7a9bdf87">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<box>
@@ -472,7 +472,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="469" y="70" width="20" height="20" uuid="3fcf72e7-4a4a-4cf2-92ea-59045add9908">
+				<reportElement x="499" y="70" width="20" height="20" uuid="3fcf72e7-4a4a-4cf2-92ea-59045add9908">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -484,7 +484,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="609" y="70" width="29" height="20" uuid="d9011afc-1a71-496f-b4fc-43b130dd539e">
+				<reportElement x="639" y="70" width="29" height="20" uuid="d9011afc-1a71-496f-b4fc-43b130dd539e">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -520,7 +520,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="422" y="70" width="27" height="20" uuid="30be5711-f6de-488c-8c6b-b2da369745d4">
+				<reportElement x="452" y="70" width="27" height="20" uuid="30be5711-f6de-488c-8c6b-b2da369745d4">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -532,25 +532,25 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="508" y="70" width="20" height="20" uuid="cf64e373-1cca-4149-883b-ce437499aeab">
+				<reportElement x="538" y="70" width="20" height="20" uuid="cf64e373-1cca-4149-883b-ce437499aeab">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="449" y="70" width="20" height="20" uuid="d17b3d65-f71d-4045-b857-707a6f8f9f9b">
+				<reportElement x="479" y="70" width="20" height="20" uuid="d17b3d65-f71d-4045-b857-707a6f8f9f9b">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="489" y="70" width="20" height="20" uuid="f4c897ae-6795-405d-a0d8-ee1e66559f5b">
+				<reportElement x="519" y="70" width="20" height="20" uuid="f4c897ae-6795-405d-a0d8-ee1e66559f5b">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="528" y="70" width="29" height="20" uuid="89cd9745-d1b8-474e-ba83-50496e73f732">
+				<reportElement x="558" y="70" width="29" height="20" uuid="89cd9745-d1b8-474e-ba83-50496e73f732">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -580,13 +580,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="581" y="70" width="28" height="20" uuid="46e47f4e-2d5f-4f0f-8243-88caedd755d3">
+				<reportElement x="611" y="70" width="28" height="20" uuid="46e47f4e-2d5f-4f0f-8243-88caedd755d3">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="638" y="70" width="164" height="20" uuid="180b5206-2f26-4a7c-bd03-c5a8711248ae">
+				<reportElement x="668" y="70" width="134" height="20" uuid="180b5206-2f26-4a7c-bd03-c5a8711248ae">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -598,7 +598,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="557" y="70" width="24" height="20" uuid="893b053d-027a-4d04-be16-442189686a78">
+				<reportElement x="587" y="70" width="24" height="20" uuid="893b053d-027a-4d04-be16-442189686a78">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -610,13 +610,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="528" y="90" width="29" height="20" uuid="0fc04821-c12f-4998-95a8-1d509d8d37aa">
+				<reportElement x="558" y="90" width="29" height="20" uuid="0fc04821-c12f-4998-95a8-1d509d8d37aa">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="508" y="90" width="20" height="20" uuid="502f8350-85a0-4b86-92dc-f4346fabf528">
+				<reportElement x="538" y="90" width="20" height="20" uuid="502f8350-85a0-4b86-92dc-f4346fabf528">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -646,13 +646,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="449" y="90" width="20" height="20" uuid="d568a874-819e-449e-bf04-bfdbdc06361c">
+				<reportElement x="479" y="90" width="20" height="20" uuid="d568a874-819e-449e-bf04-bfdbdc06361c">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="557" y="90" width="24" height="20" uuid="46e8aa47-1a50-4901-9f96-6b9e2f4f6b74">
+				<reportElement x="587" y="90" width="24" height="20" uuid="46e8aa47-1a50-4901-9f96-6b9e2f4f6b74">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -682,13 +682,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="609" y="90" width="29" height="20" uuid="a9fa7966-bf54-46fd-970f-ce28afd4de76">
+				<reportElement x="639" y="90" width="29" height="20" uuid="a9fa7966-bf54-46fd-970f-ce28afd4de76">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="469" y="90" width="20" height="20" uuid="7228b4d4-84f5-4a9a-8ca5-44a042cea466">
+				<reportElement x="499" y="90" width="20" height="20" uuid="7228b4d4-84f5-4a9a-8ca5-44a042cea466">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -700,7 +700,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="581" y="90" width="28" height="20" uuid="95fdcee6-16e0-4fde-a03d-5cd4724afa42">
+				<reportElement x="611" y="90" width="28" height="20" uuid="95fdcee6-16e0-4fde-a03d-5cd4724afa42">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -724,19 +724,19 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="489" y="90" width="20" height="20" uuid="f22a14f8-bec7-488d-970f-67ab4e12075b">
+				<reportElement x="519" y="90" width="20" height="20" uuid="f22a14f8-bec7-488d-970f-67ab4e12075b">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="638" y="90" width="164" height="20" uuid="7bc41884-d5e6-4a46-aa0d-e55be0de3c64">
+				<reportElement x="668" y="90" width="134" height="20" uuid="7bc41884-d5e6-4a46-aa0d-e55be0de3c64">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="422" y="90" width="27" height="20" uuid="6d15d092-b695-4dc8-9382-4d733c4f68b3">
+				<reportElement x="452" y="90" width="27" height="20" uuid="6d15d092-b695-4dc8-9382-4d733c4f68b3">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -754,7 +754,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="528" y="110" width="29" height="20" uuid="a048a2e2-c6b5-4c9a-9305-3e97c697f88b">
+				<reportElement x="558" y="110" width="29" height="20" uuid="a048a2e2-c6b5-4c9a-9305-3e97c697f88b">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -784,7 +784,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="557" y="130" width="24" height="20" uuid="510359ac-479f-43b7-bffd-a6e2b95b27f2">
+				<reportElement x="587" y="130" width="24" height="20" uuid="510359ac-479f-43b7-bffd-a6e2b95b27f2">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -802,13 +802,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="449" y="110" width="20" height="20" uuid="7423c1c6-1eb5-43e8-8060-4a40d1793498">
+				<reportElement x="479" y="110" width="20" height="20" uuid="7423c1c6-1eb5-43e8-8060-4a40d1793498">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="449" y="130" width="20" height="20" uuid="5bfff40d-1c5e-4ca2-86de-94199a6ef7cb">
+				<reportElement x="479" y="130" width="20" height="20" uuid="5bfff40d-1c5e-4ca2-86de-94199a6ef7cb">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -820,7 +820,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="609" y="130" width="29" height="20" uuid="2a567752-3154-4eff-b82b-177a0a0f279e">
+				<reportElement x="639" y="130" width="29" height="20" uuid="2a567752-3154-4eff-b82b-177a0a0f279e">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -832,13 +832,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="638" y="130" width="164" height="20" uuid="c46461de-05c0-4167-a40e-0d40ea6ced7a">
+				<reportElement x="668" y="130" width="134" height="20" uuid="c46461de-05c0-4167-a40e-0d40ea6ced7a">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="508" y="130" width="20" height="20" uuid="4d202ef2-a5a3-4076-ac91-126748a92c70">
+				<reportElement x="538" y="130" width="20" height="20" uuid="4d202ef2-a5a3-4076-ac91-126748a92c70">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -856,7 +856,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="489" y="130" width="20" height="20" uuid="9740543e-ca7f-4275-a2ff-e903bfe8f6bc">
+				<reportElement x="519" y="130" width="20" height="20" uuid="9740543e-ca7f-4275-a2ff-e903bfe8f6bc">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -868,7 +868,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="528" y="130" width="29" height="20" uuid="f8945bb2-bd1f-4d98-93db-b4b2604b28c3">
+				<reportElement x="558" y="130" width="29" height="20" uuid="f8945bb2-bd1f-4d98-93db-b4b2604b28c3">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -880,7 +880,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="469" y="130" width="20" height="20" uuid="b4054803-cbd0-4d1e-9e5e-3a79ef0c969c">
+				<reportElement x="499" y="130" width="20" height="20" uuid="b4054803-cbd0-4d1e-9e5e-3a79ef0c969c">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -904,13 +904,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="609" y="110" width="29" height="20" uuid="595e8de5-26d3-40c5-a425-79b9e041604c">
+				<reportElement x="639" y="110" width="29" height="20" uuid="595e8de5-26d3-40c5-a425-79b9e041604c">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="422" y="130" width="27" height="20" uuid="a8174c44-2d6a-4b01-bd0c-4184b1e42c83">
+				<reportElement x="452" y="130" width="27" height="20" uuid="a8174c44-2d6a-4b01-bd0c-4184b1e42c83">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -928,7 +928,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="581" y="110" width="28" height="20" uuid="fc537e26-54f8-433e-b416-658299c71607">
+				<reportElement x="611" y="110" width="28" height="20" uuid="fc537e26-54f8-433e-b416-658299c71607">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -970,19 +970,19 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="489" y="110" width="20" height="20" uuid="b4628770-49ac-4ef9-812b-49bf9bb7b197">
+				<reportElement x="519" y="110" width="20" height="20" uuid="b4628770-49ac-4ef9-812b-49bf9bb7b197">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="638" y="110" width="164" height="20" uuid="1e2e9a6f-b59f-43bf-b294-cc602f82af62">
+				<reportElement x="668" y="110" width="134" height="20" uuid="1e2e9a6f-b59f-43bf-b294-cc602f82af62">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="422" y="110" width="27" height="20" uuid="608be817-526e-43c8-806c-e4e62b27e43e">
+				<reportElement x="452" y="110" width="27" height="20" uuid="608be817-526e-43c8-806c-e4e62b27e43e">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1006,19 +1006,19 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="581" y="130" width="28" height="20" uuid="e42b153f-0d8a-439f-9405-b25bf4655a25">
+				<reportElement x="611" y="130" width="28" height="20" uuid="e42b153f-0d8a-439f-9405-b25bf4655a25">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="581" y="150" width="28" height="20" uuid="b2d84b11-92c5-41ad-bd22-83751a563afb">
+				<reportElement x="611" y="150" width="28" height="20" uuid="b2d84b11-92c5-41ad-bd22-83751a563afb">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="528" y="150" width="29" height="20" uuid="84b1f22b-f3fd-4553-b41c-222f02452f2b">
+				<reportElement x="558" y="150" width="29" height="20" uuid="84b1f22b-f3fd-4553-b41c-222f02452f2b">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1030,7 +1030,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="489" y="150" width="20" height="20" uuid="5d607d6f-4745-438c-9efa-b0f1db868f03">
+				<reportElement x="519" y="150" width="20" height="20" uuid="5d607d6f-4745-438c-9efa-b0f1db868f03">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1042,7 +1042,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="557" y="150" width="24" height="20" uuid="19a1b8a7-9706-4569-ba06-b83bdc5f6b07">
+				<reportElement x="587" y="150" width="24" height="20" uuid="19a1b8a7-9706-4569-ba06-b83bdc5f6b07">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1096,7 +1096,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="509" y="150" width="19" height="20" uuid="b04b1bf5-67ae-4967-b40e-18e15d797ded">
+				<reportElement x="539" y="150" width="19" height="20" uuid="b04b1bf5-67ae-4967-b40e-18e15d797ded">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1108,13 +1108,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="449" y="150" width="20" height="20" uuid="0ffc1f02-6bd0-457c-bd0f-e288b4d3ddf6">
+				<reportElement x="479" y="150" width="20" height="20" uuid="0ffc1f02-6bd0-457c-bd0f-e288b4d3ddf6">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="638" y="150" width="164" height="20" uuid="6fef1a6e-938f-4150-b920-32e8aeebe2f2">
+				<reportElement x="668" y="150" width="134" height="20" uuid="6fef1a6e-938f-4150-b920-32e8aeebe2f2">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1132,7 +1132,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="422" y="150" width="27" height="20" uuid="c1cccdb1-a5c0-4588-836e-9a36fd752717">
+				<reportElement x="452" y="150" width="27" height="20" uuid="c1cccdb1-a5c0-4588-836e-9a36fd752717">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1144,13 +1144,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="609" y="150" width="29" height="20" uuid="718ce966-4a7e-4e11-b2a7-9e9e9cb5b281">
+				<reportElement x="639" y="150" width="29" height="20" uuid="718ce966-4a7e-4e11-b2a7-9e9e9cb5b281">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="469" y="150" width="20" height="20" uuid="c4dd6826-0018-42c5-b5b8-19a90334360a">
+				<reportElement x="499" y="150" width="20" height="20" uuid="c4dd6826-0018-42c5-b5b8-19a90334360a">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1174,7 +1174,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="489" y="170" width="20" height="20" uuid="bf253811-ea85-4c57-8a6d-9e96847a71c6">
+				<reportElement x="519" y="170" width="20" height="20" uuid="bf253811-ea85-4c57-8a6d-9e96847a71c6">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1186,13 +1186,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="449" y="170" width="20" height="20" uuid="241efa5f-3584-4289-aece-46a262ec1e34">
+				<reportElement x="479" y="170" width="20" height="20" uuid="241efa5f-3584-4289-aece-46a262ec1e34">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="528" y="170" width="29" height="20" uuid="ae824e34-d788-4e73-b543-53e6bfa36caa">
+				<reportElement x="558" y="170" width="29" height="20" uuid="ae824e34-d788-4e73-b543-53e6bfa36caa">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1204,13 +1204,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="422" y="170" width="27" height="20" uuid="dffbdd41-0134-4b9e-946b-5b54433438f0">
+				<reportElement x="452" y="170" width="27" height="20" uuid="dffbdd41-0134-4b9e-946b-5b54433438f0">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="469" y="170" width="20" height="20" uuid="f572ea32-54e5-43a9-b29f-9f8a25858672">
+				<reportElement x="499" y="170" width="20" height="20" uuid="f572ea32-54e5-43a9-b29f-9f8a25858672">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1222,7 +1222,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="557" y="170" width="24" height="20" uuid="bf01b2e2-bd24-4236-a0bc-a73125cd0a01">
+				<reportElement x="587" y="170" width="24" height="20" uuid="bf01b2e2-bd24-4236-a0bc-a73125cd0a01">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1234,7 +1234,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="638" y="170" width="164" height="20" uuid="ff2b5271-4ac1-4c48-adb7-481e4ffdeb69">
+				<reportElement x="668" y="170" width="134" height="20" uuid="ff2b5271-4ac1-4c48-adb7-481e4ffdeb69">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1252,13 +1252,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="581" y="170" width="28" height="20" uuid="afca8150-ffaf-4435-905f-52502339a6a0">
+				<reportElement x="611" y="170" width="28" height="20" uuid="afca8150-ffaf-4435-905f-52502339a6a0">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="509" y="170" width="19" height="20" uuid="c05515c6-8c40-4be3-a949-6ca48152b858">
+				<reportElement x="539" y="170" width="19" height="20" uuid="c05515c6-8c40-4be3-a949-6ca48152b858">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1276,7 +1276,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="609" y="170" width="29" height="20" uuid="283a0cb4-ad4c-4bca-a90e-723aee3faae6">
+				<reportElement x="639" y="170" width="29" height="20" uuid="283a0cb4-ad4c-4bca-a90e-723aee3faae6">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1300,13 +1300,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="557" y="190" width="24" height="20" uuid="af9780ed-404f-4e41-b3e8-752761ebf897">
+				<reportElement x="587" y="190" width="24" height="20" uuid="af9780ed-404f-4e41-b3e8-752761ebf897">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="422" y="190" width="27" height="20" uuid="735d77fd-9d17-473a-a3e0-849e1a90508e">
+				<reportElement x="452" y="190" width="27" height="20" uuid="735d77fd-9d17-473a-a3e0-849e1a90508e">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1318,7 +1318,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="638" y="190" width="164" height="20" uuid="3b1ec203-2b95-4fcc-a36f-3f16d6af9275">
+				<reportElement x="668" y="190" width="134" height="20" uuid="3b1ec203-2b95-4fcc-a36f-3f16d6af9275">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1336,7 +1336,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="581" y="190" width="28" height="20" uuid="f803897c-1fad-4620-8b6d-608aab7bf33c">
+				<reportElement x="611" y="190" width="28" height="20" uuid="f803897c-1fad-4620-8b6d-608aab7bf33c">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1354,7 +1354,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="489" y="190" width="20" height="20" uuid="ca664830-8bf4-48cf-b569-21c0fb5df1ee">
+				<reportElement x="519" y="190" width="20" height="20" uuid="ca664830-8bf4-48cf-b569-21c0fb5df1ee">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1366,7 +1366,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="509" y="190" width="19" height="20" uuid="fc14e0b6-1e67-40b9-ba15-118fe15ebfa5">
+				<reportElement x="539" y="190" width="19" height="20" uuid="fc14e0b6-1e67-40b9-ba15-118fe15ebfa5">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1390,13 +1390,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="449" y="190" width="20" height="20" uuid="4c0a1ab7-c58f-4a1a-a91d-7525332ccc39">
+				<reportElement x="479" y="190" width="20" height="20" uuid="4c0a1ab7-c58f-4a1a-a91d-7525332ccc39">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="528" y="190" width="29" height="20" uuid="e11a49db-ce5f-47a4-a3a3-2bae7377a5ac">
+				<reportElement x="558" y="190" width="29" height="20" uuid="e11a49db-ce5f-47a4-a3a3-2bae7377a5ac">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1408,7 +1408,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="469" y="190" width="20" height="20" uuid="399b338f-c692-4c73-b6a1-bdbedc13338f">
+				<reportElement x="499" y="190" width="20" height="20" uuid="399b338f-c692-4c73-b6a1-bdbedc13338f">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1426,7 +1426,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="609" y="190" width="29" height="20" uuid="34d9d033-d1be-40ee-a266-2adc3ed2fc40">
+				<reportElement x="639" y="190" width="29" height="20" uuid="34d9d033-d1be-40ee-a266-2adc3ed2fc40">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1462,13 +1462,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="509" y="210" width="19" height="20" uuid="3708468a-e0a9-4cf6-a247-1c94628f1a1d">
+				<reportElement x="539" y="210" width="19" height="20" uuid="3708468a-e0a9-4cf6-a247-1c94628f1a1d">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="422" y="210" width="27" height="20" uuid="328cbc92-8660-4bd5-a01f-5f22cdffc80d">
+				<reportElement x="452" y="210" width="27" height="20" uuid="328cbc92-8660-4bd5-a01f-5f22cdffc80d">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1480,7 +1480,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="638" y="210" width="164" height="20" uuid="debac144-c238-4487-89cc-495bf1d2d93b">
+				<reportElement x="668" y="210" width="134" height="20" uuid="debac144-c238-4487-89cc-495bf1d2d93b">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1516,13 +1516,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="581" y="210" width="28" height="20" uuid="c9d33d92-bfa0-4a39-bdb8-d3725525e82f">
+				<reportElement x="611" y="210" width="28" height="20" uuid="c9d33d92-bfa0-4a39-bdb8-d3725525e82f">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="449" y="210" width="20" height="20" uuid="a8f08e5e-4ab2-45d4-a707-b4f135b20424">
+				<reportElement x="479" y="210" width="20" height="20" uuid="a8f08e5e-4ab2-45d4-a707-b4f135b20424">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1546,25 +1546,25 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="528" y="210" width="29" height="20" uuid="28f169f8-80a0-442f-ac25-aeb7b8e24992">
+				<reportElement x="558" y="210" width="29" height="20" uuid="28f169f8-80a0-442f-ac25-aeb7b8e24992">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="489" y="210" width="20" height="20" uuid="cab55d32-19e4-4cf4-ae25-5b31007ef94f">
+				<reportElement x="519" y="210" width="20" height="20" uuid="cab55d32-19e4-4cf4-ae25-5b31007ef94f">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="557" y="210" width="24" height="20" uuid="b5712ef2-f955-4261-b0b4-42e33288fab2">
+				<reportElement x="587" y="210" width="24" height="20" uuid="b5712ef2-f955-4261-b0b4-42e33288fab2">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="609" y="210" width="29" height="20" uuid="addc781b-1c93-4952-b34c-7467e1a168fb">
+				<reportElement x="639" y="210" width="29" height="20" uuid="addc781b-1c93-4952-b34c-7467e1a168fb">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1582,7 +1582,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="469" y="210" width="20" height="20" uuid="278a2f2e-0ba9-4c23-a33d-dc58f14b0625">
+				<reportElement x="499" y="210" width="20" height="20" uuid="278a2f2e-0ba9-4c23-a33d-dc58f14b0625">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1594,7 +1594,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="489" y="230" width="20" height="20" uuid="0cb74a22-26bd-47b5-9ea3-b6c0111529c3">
+				<reportElement x="519" y="230" width="20" height="20" uuid="0cb74a22-26bd-47b5-9ea3-b6c0111529c3">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1612,7 +1612,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="581" y="230" width="28" height="20" uuid="cec7aa7e-13db-4842-afc8-5906e484c9b7">
+				<reportElement x="611" y="230" width="28" height="20" uuid="cec7aa7e-13db-4842-afc8-5906e484c9b7">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1630,7 +1630,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="509" y="230" width="19" height="20" uuid="6c09151b-faa1-4304-bc94-eedb4ad6805c">
+				<reportElement x="539" y="230" width="19" height="20" uuid="6c09151b-faa1-4304-bc94-eedb4ad6805c">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1648,7 +1648,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="449" y="230" width="20" height="20" uuid="b2dc75d5-2509-40db-8313-f7f87d59991f">
+				<reportElement x="479" y="230" width="20" height="20" uuid="b2dc75d5-2509-40db-8313-f7f87d59991f">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1660,25 +1660,25 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="469" y="230" width="20" height="20" uuid="183a6d48-b5c9-4254-87bf-666c927e9f98">
+				<reportElement x="499" y="230" width="20" height="20" uuid="183a6d48-b5c9-4254-87bf-666c927e9f98">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="638" y="230" width="164" height="20" uuid="72482ef5-874f-4f34-9c5c-35505de44ed8">
+				<reportElement x="668" y="230" width="134" height="20" uuid="72482ef5-874f-4f34-9c5c-35505de44ed8">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="609" y="230" width="29" height="20" uuid="32a2ae04-68ee-40ce-90e3-7d7093e184eb">
+				<reportElement x="639" y="230" width="29" height="20" uuid="32a2ae04-68ee-40ce-90e3-7d7093e184eb">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="422" y="230" width="27" height="20" uuid="d0208926-8521-4531-abd4-95727f444f09">
+				<reportElement x="452" y="230" width="27" height="20" uuid="d0208926-8521-4531-abd4-95727f444f09">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1690,13 +1690,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="528" y="230" width="29" height="20" uuid="3d1642cc-6631-48c6-8f75-516d612c8fdc">
+				<reportElement x="558" y="230" width="29" height="20" uuid="3d1642cc-6631-48c6-8f75-516d612c8fdc">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="557" y="230" width="24" height="20" uuid="264c9cfc-0987-4ff6-9cb9-72d72351f6d9">
+				<reportElement x="587" y="230" width="24" height="20" uuid="264c9cfc-0987-4ff6-9cb9-72d72351f6d9">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1738,13 +1738,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="509" y="250" width="19" height="20" uuid="da9a5fe7-b14a-4f82-a4f8-c3707e2cc4df">
+				<reportElement x="539" y="250" width="19" height="20" uuid="da9a5fe7-b14a-4f82-a4f8-c3707e2cc4df">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="557" y="250" width="24" height="20" uuid="03cb6672-369b-4ecc-9a9c-406aca82a15f">
+				<reportElement x="587" y="250" width="24" height="20" uuid="03cb6672-369b-4ecc-9a9c-406aca82a15f">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1762,7 +1762,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="422" y="250" width="27" height="20" uuid="6cc2e385-2396-41b2-8d2c-97b88e81077d">
+				<reportElement x="452" y="250" width="27" height="20" uuid="6cc2e385-2396-41b2-8d2c-97b88e81077d">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1780,7 +1780,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="469" y="250" width="20" height="20" uuid="bf42faa1-d7de-45fe-b578-a8bb18bebd1e">
+				<reportElement x="499" y="250" width="20" height="20" uuid="bf42faa1-d7de-45fe-b578-a8bb18bebd1e">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1810,13 +1810,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="528" y="250" width="29" height="20" uuid="41797a83-dff9-42fc-ad57-0ac9ca2b492b">
+				<reportElement x="558" y="250" width="29" height="20" uuid="41797a83-dff9-42fc-ad57-0ac9ca2b492b">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="449" y="250" width="20" height="20" uuid="d623f67e-2f56-4d48-aa7e-87ee1eaf6464">
+				<reportElement x="479" y="250" width="20" height="20" uuid="d623f67e-2f56-4d48-aa7e-87ee1eaf6464">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1840,19 +1840,19 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="581" y="250" width="28" height="20" uuid="3a5cd792-f7a9-4c01-9d80-2ef4826c2ef7">
+				<reportElement x="611" y="250" width="28" height="20" uuid="3a5cd792-f7a9-4c01-9d80-2ef4826c2ef7">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="638" y="250" width="164" height="20" uuid="139cda3d-1e1b-4538-8480-0560d81affbc">
+				<reportElement x="668" y="250" width="134" height="20" uuid="139cda3d-1e1b-4538-8480-0560d81affbc">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="609" y="250" width="29" height="20" uuid="23071bf0-79d2-4791-8092-570e61e1b05b">
+				<reportElement x="639" y="250" width="29" height="20" uuid="23071bf0-79d2-4791-8092-570e61e1b05b">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1870,19 +1870,19 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="489" y="250" width="20" height="20" uuid="84b9206d-5455-4dba-bffc-05097b17c722">
+				<reportElement x="519" y="250" width="20" height="20" uuid="84b9206d-5455-4dba-bffc-05097b17c722">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="609" y="270" width="29" height="20" uuid="9f4ce2f9-73ca-4453-9203-7bbd855314f9">
+				<reportElement x="639" y="270" width="29" height="20" uuid="9f4ce2f9-73ca-4453-9203-7bbd855314f9">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="638" y="270" width="164" height="20" uuid="4ab3777f-96d8-482d-8053-fbd620db41c4">
+				<reportElement x="668" y="270" width="134" height="20" uuid="4ab3777f-96d8-482d-8053-fbd620db41c4">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1906,7 +1906,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="489" y="270" width="20" height="20" uuid="f3402bb8-4821-4435-abe7-1f9e876cc022">
+				<reportElement x="519" y="270" width="20" height="20" uuid="f3402bb8-4821-4435-abe7-1f9e876cc022">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1930,7 +1930,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="557" y="270" width="24" height="20" uuid="4608e625-d15c-48a7-935c-c02cb19b38e8">
+				<reportElement x="587" y="270" width="24" height="20" uuid="4608e625-d15c-48a7-935c-c02cb19b38e8">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1942,7 +1942,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="469" y="270" width="20" height="20" uuid="cc0b6cf0-2592-4c53-a09a-56467c44f789">
+				<reportElement x="499" y="270" width="20" height="20" uuid="cc0b6cf0-2592-4c53-a09a-56467c44f789">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1966,7 +1966,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="449" y="270" width="20" height="20" uuid="6588d3bd-6486-4d56-92eb-745493c68878">
+				<reportElement x="479" y="270" width="20" height="20" uuid="6588d3bd-6486-4d56-92eb-745493c68878">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1978,13 +1978,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="528" y="270" width="29" height="20" uuid="54938a62-02ae-4b3e-8ff3-f987ae35ab62">
+				<reportElement x="558" y="270" width="29" height="20" uuid="54938a62-02ae-4b3e-8ff3-f987ae35ab62">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="509" y="270" width="19" height="20" uuid="6ed3c658-799c-4161-a053-e8291d5ceea9">
+				<reportElement x="539" y="270" width="19" height="20" uuid="6ed3c658-799c-4161-a053-e8291d5ceea9">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -1996,7 +1996,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="422" y="270" width="27" height="20" uuid="9d3213ba-5d13-4902-954f-6f3e0388973e">
+				<reportElement x="452" y="270" width="27" height="20" uuid="9d3213ba-5d13-4902-954f-6f3e0388973e">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2008,7 +2008,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="581" y="270" width="28" height="20" uuid="7b58bc81-c66d-46fb-8b96-e80e92474344">
+				<reportElement x="611" y="270" width="28" height="20" uuid="7b58bc81-c66d-46fb-8b96-e80e92474344">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2020,7 +2020,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="422" y="290" width="27" height="20" uuid="ef0afc85-cfcb-4d1e-889d-c72d403ce34b">
+				<reportElement x="452" y="290" width="27" height="20" uuid="ef0afc85-cfcb-4d1e-889d-c72d403ce34b">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2032,7 +2032,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="449" y="290" width="20" height="20" uuid="0c3bd1e8-35ae-438a-967f-a30bac90a585">
+				<reportElement x="479" y="290" width="20" height="20" uuid="0c3bd1e8-35ae-438a-967f-a30bac90a585">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2056,7 +2056,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="581" y="290" width="28" height="20" uuid="3d679a6d-9045-49dc-8019-1db495888ba8">
+				<reportElement x="611" y="290" width="28" height="20" uuid="3d679a6d-9045-49dc-8019-1db495888ba8">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2074,7 +2074,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="509" y="290" width="19" height="20" uuid="a470fc44-4aab-4ade-9820-149793af09b6">
+				<reportElement x="539" y="290" width="19" height="20" uuid="a470fc44-4aab-4ade-9820-149793af09b6">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2092,7 +2092,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="609" y="290" width="29" height="20" uuid="947dd25f-836a-48e5-857e-289cf49c1a48">
+				<reportElement x="639" y="290" width="29" height="20" uuid="947dd25f-836a-48e5-857e-289cf49c1a48">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2116,7 +2116,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="557" y="290" width="24" height="20" uuid="15fac7c5-3669-49a0-a653-e65315ce587a">
+				<reportElement x="587" y="290" width="24" height="20" uuid="15fac7c5-3669-49a0-a653-e65315ce587a">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2128,19 +2128,19 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="469" y="290" width="20" height="20" uuid="5632329f-a1d8-4b4d-8b7d-9bc5554df92a">
+				<reportElement x="499" y="290" width="20" height="20" uuid="5632329f-a1d8-4b4d-8b7d-9bc5554df92a">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="638" y="290" width="164" height="20" uuid="b038be58-1532-4b84-bb0e-c1e0745dfb02">
+				<reportElement x="668" y="290" width="134" height="20" uuid="b038be58-1532-4b84-bb0e-c1e0745dfb02">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="489" y="290" width="20" height="20" uuid="c3707f84-2891-475a-a35a-ca98547ecc0d">
+				<reportElement x="519" y="290" width="20" height="20" uuid="c3707f84-2891-475a-a35a-ca98547ecc0d">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2158,7 +2158,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="528" y="290" width="29" height="20" uuid="d1761fc9-591f-4a03-9009-7152176fd8b1">
+				<reportElement x="558" y="290" width="29" height="20" uuid="d1761fc9-591f-4a03-9009-7152176fd8b1">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2182,13 +2182,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="449" y="310" width="20" height="20" uuid="4d237f63-e6ad-458f-a50e-a01ebcaa3eb1">
+				<reportElement x="479" y="310" width="20" height="20" uuid="4d237f63-e6ad-458f-a50e-a01ebcaa3eb1">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="469" y="310" width="20" height="20" uuid="7ffa187c-4b1a-4b8c-8aba-f08f420d2eb5">
+				<reportElement x="499" y="310" width="20" height="20" uuid="7ffa187c-4b1a-4b8c-8aba-f08f420d2eb5">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2200,7 +2200,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="581" y="310" width="28" height="20" uuid="84d30341-70b7-4b6e-8c6b-babc05ee936e">
+				<reportElement x="611" y="310" width="28" height="20" uuid="84d30341-70b7-4b6e-8c6b-babc05ee936e">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2218,25 +2218,25 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="528" y="310" width="29" height="20" uuid="0bc2400e-bbea-4c04-8ea3-5b0c852024da">
+				<reportElement x="558" y="310" width="29" height="20" uuid="0bc2400e-bbea-4c04-8ea3-5b0c852024da">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="557" y="310" width="24" height="20" uuid="e0d3d437-6c04-45d8-bffd-a4eb82438dfa">
+				<reportElement x="587" y="310" width="24" height="20" uuid="e0d3d437-6c04-45d8-bffd-a4eb82438dfa">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="609" y="310" width="29" height="20" uuid="1a01f86d-d971-432d-8f8e-773dd107a432">
+				<reportElement x="639" y="310" width="29" height="20" uuid="1a01f86d-d971-432d-8f8e-773dd107a432">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="489" y="310" width="20" height="20" uuid="2080d338-18d1-4860-9af0-a44c7c698845">
+				<reportElement x="519" y="310" width="20" height="20" uuid="2080d338-18d1-4860-9af0-a44c7c698845">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2248,13 +2248,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="509" y="310" width="19" height="20" uuid="7a906333-8742-484f-984e-14b7588dcbb1">
+				<reportElement x="539" y="310" width="19" height="20" uuid="7a906333-8742-484f-984e-14b7588dcbb1">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="422" y="310" width="27" height="20" uuid="f1942655-006e-4946-b944-99eb958af426">
+				<reportElement x="452" y="310" width="27" height="20" uuid="f1942655-006e-4946-b944-99eb958af426">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2272,7 +2272,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="638" y="310" width="164" height="20" uuid="a5113e8e-9c3a-4631-9987-0c77d1923fe2">
+				<reportElement x="668" y="310" width="134" height="20" uuid="a5113e8e-9c3a-4631-9987-0c77d1923fe2">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2308,13 +2308,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="638" y="330" width="164" height="20" uuid="5c07fe9f-557c-47bb-80c9-31ff8b766fc9">
+				<reportElement x="668" y="330" width="134" height="20" uuid="5c07fe9f-557c-47bb-80c9-31ff8b766fc9">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="509" y="330" width="19" height="20" uuid="3b9d296b-a005-43f7-9a77-e380b6089b2a">
+				<reportElement x="539" y="330" width="19" height="20" uuid="3b9d296b-a005-43f7-9a77-e380b6089b2a">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2326,7 +2326,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="557" y="330" width="24" height="20" uuid="b123c598-1125-49a9-8736-da43054bd813">
+				<reportElement x="587" y="330" width="24" height="20" uuid="b123c598-1125-49a9-8736-da43054bd813">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2350,13 +2350,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="489" y="330" width="20" height="20" uuid="86707810-3c01-4b3c-a5c4-150267a260e0">
+				<reportElement x="519" y="330" width="20" height="20" uuid="86707810-3c01-4b3c-a5c4-150267a260e0">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="469" y="330" width="20" height="20" uuid="744c1ae5-d34f-40cf-8e40-6128d50535c6">
+				<reportElement x="499" y="330" width="20" height="20" uuid="744c1ae5-d34f-40cf-8e40-6128d50535c6">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2374,7 +2374,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="609" y="330" width="29" height="20" uuid="c800c774-fc43-4b66-bb09-54cf221c806d">
+				<reportElement x="639" y="330" width="29" height="20" uuid="c800c774-fc43-4b66-bb09-54cf221c806d">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2392,13 +2392,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="449" y="330" width="20" height="20" uuid="578aacf6-f1c9-4573-99a9-c8b136551306">
+				<reportElement x="479" y="330" width="20" height="20" uuid="578aacf6-f1c9-4573-99a9-c8b136551306">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="422" y="330" width="27" height="20" uuid="347827fd-fb8c-419b-bbc1-119ecc6cf27e">
+				<reportElement x="452" y="330" width="27" height="20" uuid="347827fd-fb8c-419b-bbc1-119ecc6cf27e">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2410,7 +2410,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="581" y="330" width="28" height="20" uuid="2fe985a1-83b3-4a54-b223-c2ecaccb0a49">
+				<reportElement x="611" y="330" width="28" height="20" uuid="2fe985a1-83b3-4a54-b223-c2ecaccb0a49">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2446,7 +2446,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="528" y="330" width="29" height="20" uuid="8b3e7e64-ea35-43bf-9578-4ef1e3249f99">
+				<reportElement x="558" y="330" width="29" height="20" uuid="8b3e7e64-ea35-43bf-9578-4ef1e3249f99">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2458,19 +2458,19 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="557" y="350" width="24" height="20" uuid="20461427-07c3-4e46-89f2-d67eda77c757">
+				<reportElement x="587" y="350" width="24" height="20" uuid="20461427-07c3-4e46-89f2-d67eda77c757">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="581" y="350" width="28" height="20" uuid="1dd92f8a-32e7-45b6-bdd3-2468784ce3a3">
+				<reportElement x="611" y="350" width="28" height="20" uuid="1dd92f8a-32e7-45b6-bdd3-2468784ce3a3">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="638" y="350" width="164" height="20" uuid="2888afd3-7ef1-4e0d-96c6-4121239f509d">
+				<reportElement x="668" y="350" width="134" height="20" uuid="2888afd3-7ef1-4e0d-96c6-4121239f509d">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2488,13 +2488,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="449" y="350" width="20" height="20" uuid="59241525-34ab-4488-9dc2-cd342e048ba2">
+				<reportElement x="479" y="350" width="20" height="20" uuid="59241525-34ab-4488-9dc2-cd342e048ba2">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="469" y="350" width="20" height="20" uuid="f99c9893-135f-4add-aace-57e3e756f8ba">
+				<reportElement x="499" y="350" width="20" height="20" uuid="f99c9893-135f-4add-aace-57e3e756f8ba">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2512,7 +2512,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="509" y="350" width="19" height="20" uuid="50d3f88d-31dd-441d-8bf1-06ed1e39f3ed">
+				<reportElement x="539" y="350" width="19" height="20" uuid="50d3f88d-31dd-441d-8bf1-06ed1e39f3ed">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2536,7 +2536,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="489" y="350" width="20" height="20" uuid="2f09bfdd-5723-4198-a9b9-fce395279b22">
+				<reportElement x="519" y="350" width="20" height="20" uuid="2f09bfdd-5723-4198-a9b9-fce395279b22">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2560,7 +2560,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="528" y="350" width="29" height="20" uuid="7045ee22-f5e7-47c4-83ac-b2df70b95153">
+				<reportElement x="558" y="350" width="29" height="20" uuid="7045ee22-f5e7-47c4-83ac-b2df70b95153">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2578,7 +2578,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="422" y="350" width="27" height="20" uuid="bd1f1b89-0e68-43f5-bba6-8ada0cfc8c05">
+				<reportElement x="452" y="350" width="27" height="20" uuid="bd1f1b89-0e68-43f5-bba6-8ada0cfc8c05">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2590,19 +2590,19 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="609" y="350" width="29" height="20" uuid="af986794-9359-4f9a-9cd1-45b256223a7f">
+				<reportElement x="639" y="350" width="29" height="20" uuid="af986794-9359-4f9a-9cd1-45b256223a7f">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="609" y="370" width="29" height="20" uuid="c7f955e7-dfb8-4609-abe1-26d3bed139a0">
+				<reportElement x="639" y="370" width="29" height="20" uuid="c7f955e7-dfb8-4609-abe1-26d3bed139a0">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="489" y="370" width="20" height="20" uuid="024a7f4f-c30d-4572-9f98-6aac3a579099">
+				<reportElement x="519" y="370" width="20" height="20" uuid="024a7f4f-c30d-4572-9f98-6aac3a579099">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2626,7 +2626,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="581" y="370" width="28" height="20" uuid="6d0f4fa2-d83f-4e59-a825-7d3091ae7cc9">
+				<reportElement x="611" y="370" width="28" height="20" uuid="6d0f4fa2-d83f-4e59-a825-7d3091ae7cc9">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2644,19 +2644,19 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="422" y="370" width="27" height="20" uuid="eea25a59-8331-4507-a757-6afe6ec15ec5">
+				<reportElement x="452" y="370" width="27" height="20" uuid="eea25a59-8331-4507-a757-6afe6ec15ec5">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="528" y="370" width="29" height="20" uuid="85a73553-0c76-4b07-99b8-a24b9a97c9cd">
+				<reportElement x="558" y="370" width="29" height="20" uuid="85a73553-0c76-4b07-99b8-a24b9a97c9cd">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="509" y="370" width="19" height="20" uuid="7d825c65-77a8-4fce-a4af-e82ded7d59e5">
+				<reportElement x="539" y="370" width="19" height="20" uuid="7d825c65-77a8-4fce-a4af-e82ded7d59e5">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2692,13 +2692,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="557" y="370" width="24" height="20" uuid="15fd3806-20a9-4863-a175-724daa2e5638">
+				<reportElement x="587" y="370" width="24" height="20" uuid="15fd3806-20a9-4863-a175-724daa2e5638">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="469" y="370" width="20" height="20" uuid="54287337-fb7b-4be9-86c4-0a79c9b2030e">
+				<reportElement x="499" y="370" width="20" height="20" uuid="54287337-fb7b-4be9-86c4-0a79c9b2030e">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2716,7 +2716,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="449" y="370" width="20" height="20" uuid="3711e1b2-5b10-49b0-84f3-e4010608d424">
+				<reportElement x="479" y="370" width="20" height="20" uuid="3711e1b2-5b10-49b0-84f3-e4010608d424">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2734,25 +2734,25 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="638" y="370" width="164" height="20" uuid="a6e985a5-0fa4-4828-9f28-f604c68736c5">
+				<reportElement x="668" y="370" width="134" height="20" uuid="a6e985a5-0fa4-4828-9f28-f604c68736c5">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="509" y="390" width="19" height="20" uuid="d20de7f0-eb22-4cf2-8d09-2fe6ef0afcb9">
+				<reportElement x="539" y="390" width="19" height="20" uuid="d20de7f0-eb22-4cf2-8d09-2fe6ef0afcb9">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="557" y="390" width="24" height="20" uuid="c204e36f-7cbb-4de1-850e-fcec5951ad48">
+				<reportElement x="587" y="390" width="24" height="20" uuid="c204e36f-7cbb-4de1-850e-fcec5951ad48">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="422" y="390" width="27" height="20" uuid="d437b81f-3566-4521-ab1a-b88fbda215b6">
+				<reportElement x="452" y="390" width="27" height="20" uuid="d437b81f-3566-4521-ab1a-b88fbda215b6">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2764,7 +2764,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="469" y="390" width="20" height="20" uuid="a7d537b0-5b3f-43dd-a5cb-0cf905e49796">
+				<reportElement x="499" y="390" width="20" height="20" uuid="a7d537b0-5b3f-43dd-a5cb-0cf905e49796">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2776,13 +2776,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="609" y="390" width="29" height="20" uuid="2518226e-ab97-43ee-9219-cb344099f818">
+				<reportElement x="639" y="390" width="29" height="20" uuid="2518226e-ab97-43ee-9219-cb344099f818">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="581" y="390" width="28" height="20" uuid="6ba80ac8-68f2-4bc6-864b-66944d748eda">
+				<reportElement x="611" y="390" width="28" height="20" uuid="6ba80ac8-68f2-4bc6-864b-66944d748eda">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2812,13 +2812,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="489" y="390" width="20" height="20" uuid="b543ce85-4dac-4aa0-b005-37d72fc497de">
+				<reportElement x="519" y="390" width="20" height="20" uuid="b543ce85-4dac-4aa0-b005-37d72fc497de">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="528" y="390" width="29" height="20" uuid="38fa12ed-0f1d-4e56-b5da-62413a30a4b0">
+				<reportElement x="558" y="390" width="29" height="20" uuid="38fa12ed-0f1d-4e56-b5da-62413a30a4b0">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2842,7 +2842,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="449" y="390" width="20" height="20" uuid="6234c14c-d996-4968-9788-519e995ea7c6">
+				<reportElement x="479" y="390" width="20" height="20" uuid="6234c14c-d996-4968-9788-519e995ea7c6">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2866,7 +2866,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="638" y="390" width="164" height="20" uuid="c33d2c42-48d8-4583-bf2b-4c78cd228d25">
+				<reportElement x="668" y="390" width="134" height="20" uuid="c33d2c42-48d8-4583-bf2b-4c78cd228d25">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2890,13 +2890,13 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="609" y="410" width="29" height="20" uuid="d7a7e366-7645-4948-9dd7-20238c19620a">
+				<reportElement x="639" y="410" width="29" height="20" uuid="d7a7e366-7645-4948-9dd7-20238c19620a">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="509" y="410" width="19" height="20" uuid="74980e59-da54-4f01-8571-35e496847915">
+				<reportElement x="539" y="410" width="19" height="20" uuid="74980e59-da54-4f01-8571-35e496847915">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2914,7 +2914,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="638" y="410" width="164" height="20" uuid="f10eff4c-b045-4b11-a840-8e6518088534">
+				<reportElement x="668" y="410" width="134" height="20" uuid="f10eff4c-b045-4b11-a840-8e6518088534">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2932,7 +2932,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="581" y="410" width="28" height="20" uuid="20b95645-99a8-48ea-945f-2a275c249497">
+				<reportElement x="611" y="410" width="28" height="20" uuid="20b95645-99a8-48ea-945f-2a275c249497">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2944,7 +2944,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="449" y="410" width="20" height="20" uuid="d47ecbf1-edc0-4f28-91f1-c5042f1fc8aa">
+				<reportElement x="479" y="410" width="20" height="20" uuid="d47ecbf1-edc0-4f28-91f1-c5042f1fc8aa">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2962,7 +2962,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="489" y="410" width="20" height="20" uuid="dba67f52-dd83-4f98-a861-66bc3995cf88">
+				<reportElement x="519" y="410" width="20" height="20" uuid="dba67f52-dd83-4f98-a861-66bc3995cf88">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2974,7 +2974,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="557" y="410" width="24" height="20" uuid="0e7ea149-219e-4b8c-a4e1-9866281210a9">
+				<reportElement x="587" y="410" width="24" height="20" uuid="0e7ea149-219e-4b8c-a4e1-9866281210a9">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2986,7 +2986,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="469" y="410" width="20" height="20" uuid="e75e4b90-419f-494e-be7d-f81fbc035649">
+				<reportElement x="499" y="410" width="20" height="20" uuid="e75e4b90-419f-494e-be7d-f81fbc035649">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -2998,7 +2998,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="528" y="410" width="29" height="20" uuid="8285e703-10da-4bf9-a17f-842927424507">
+				<reportElement x="558" y="410" width="29" height="20" uuid="8285e703-10da-4bf9-a17f-842927424507">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -3010,7 +3010,7 @@
 				</reportElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="422" y="410" width="27" height="20" uuid="fe8b9db6-eb6a-4fdf-9a2a-dfa8a8fd0707">
+				<reportElement x="452" y="410" width="27" height="20" uuid="fe8b9db6-eb6a-4fdf-9a2a-dfa8a8fd0707">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -3023,6 +3023,127 @@
 			</rectangle>
 			<rectangle>
 				<reportElement x="260" y="410" width="39" height="20" uuid="4538d1a1-8a60-4a7b-9df6-8430091ac7c7">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="422" y="190" width="30" height="20" uuid="138e4a9c-bb63-470e-b65a-ff3e58119094">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="422" y="110" width="30" height="20" uuid="0f5f3e01-452b-4afa-824e-66ed5b15b718">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="422" y="70" width="30" height="20" uuid="670de2e8-1d27-4bff-be7b-4f85fe60ddc5">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="422" y="410" width="30" height="20" uuid="f9d265a3-a105-48c7-9ef9-9d87c90b80f1">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="422" y="290" width="30" height="20" uuid="61495bcd-53e5-438f-b9a6-f8bc1bd9edae">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="422" y="22" width="30" height="48" uuid="2ec9adc2-234b-4724-b4e9-84ca71293987"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Conector]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="422" y="130" width="30" height="20" uuid="a9849025-4e5a-45c2-9ace-dce55390e0ab">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="422" y="390" width="30" height="20" uuid="f7eab5e0-cc57-423d-aa07-2f5030577da9">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="422" y="170" width="30" height="20" uuid="95031ac7-eba1-4ef9-85d9-d329661b7893">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="422" y="210" width="30" height="20" uuid="8389740d-cda9-4c4e-9481-ee185e264717">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="422" y="250" width="30" height="20" uuid="85d25bba-4949-43b0-a053-074dc2bd4c25">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="422" y="310" width="30" height="20" uuid="4eedacc6-171a-4926-96c8-63973bf08549">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="422" y="370" width="30" height="20" uuid="26c8e947-b881-425d-9d53-514c1ea5f4b8">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="422" y="350" width="30" height="20" uuid="1a6da502-23ee-4e36-8287-5a03846bd61a">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="422" y="330" width="30" height="20" uuid="e3b8ee9b-4fdf-416b-82dc-9161f136b510">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="422" y="270" width="30" height="20" uuid="eb790309-bd92-47ce-8ae0-ce1b47816bce">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="422" y="90" width="30" height="20" uuid="dc992faf-bfae-4691-b757-626480b25d17">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="422" y="230" width="30" height="20" uuid="3d978bf0-0acf-47c2-bee9-79ac2cb865ed">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="422" y="150" width="30" height="20" uuid="92d9a823-6f68-4ee7-a88c-75fbf3fdf8a1">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>

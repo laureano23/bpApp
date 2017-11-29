@@ -66,6 +66,7 @@ class EstanqueidadRepository extends EntityRepository
 				->settRosca($reg['tRosca'])
 				->settPoros($reg['tPoros'])
 				->settFijacion($reg['tFijacion'])
+				->setTConector($reg['tConector'])
 				->setsConector($reg['sConector'])
 				->setsTapaPanel($reg['sTapaPanel'])
 				->setsPlanchuelas($reg['sPlanchuelas'])

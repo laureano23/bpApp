@@ -23,6 +23,7 @@ Ext.define('MetApp.model.Calidad.Estanqueidad',{
 		{name: 'tRosca', type: 'boolean', },
 		{name: 'tPoros', type: 'boolean', },
 		{name: 'tFijacion', type: 'boolean', },
+		{name: 'tConector', type: 'boolean', },
 		{name: 'sConector', type: 'boolean', },
 		{name: 'sTapaPanel', type: 'boolean', },
 		{name: 'sPlanchuelas', type: 'boolean', },

@@ -679,28 +679,4 @@ class Estanqueidad
     {
         return $this->sPuntera;
     }
-
-    /**
-     * Set tConector
-     *
-     * @param boolean $tConector
-     *
-     * @return Estanqueidad
-     */
-    public function setTConector($tConector)
-    {
-        $this->tConector = $tConector;
-
-        return $this;
-    }
-
-    /**
-     * Get tConector
-     *
-     * @return boolean
-     */
-    public function getTConector()
-    {
-        return $this->tConector;
-    }
 }

@@ -254,12 +254,13 @@ Ext.define('MetApp.controller.Calidad.CalidadController',{
 				model.set('tRosca', values.tRosca);
 				model.set('tPoros', values.tPoros);
 				model.set('tFijacion', values.tFijacion);
+				model.set('tConector', values.tConector);
 				model.set('sConector', values.sConector);
 				model.set('sTapaPanel', values.sTapaPanel);
 				model.set('sPuntera', values.sPuntera);
 				model.set('sPlanchuelas', values.sPlanchuelas);
 				model.set('idSoldador', values['idSoldador']);
-				model.set('idProbador', values['idProbador']);
+				model.set('idProbador', values['idProbador']); 
 				store.add(model);	
 				
 			}else{
