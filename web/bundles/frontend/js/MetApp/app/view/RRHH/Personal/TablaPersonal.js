@@ -206,15 +206,34 @@ Ext.define('MetApp.view.RRHH.Personal.TablaPersonal', {
 						fieldLabel: 'Legajo',						
 					}
 				]
-			},			
+			},
 			{
-				xtype: 'checkbox',
-				uncheckedValue: 0,
-				fieldLabel: 'Liquida calorias',
-				name: 'liquidaCalorias',
-				itemId: 'liquidaCalorias',
-				readOnly: true
-			}	
+				xtype: 'container',
+				margins: '5 0 0 0',
+				defaults: {
+					readOnly: true,
+				},
+				layout: 'hbox',
+				items: [
+					{
+						xtype: 'checkbox',
+						uncheckedValue: 0,
+						fieldLabel: 'Liquida calorias',
+						name: 'liquidaCalorias',
+						itemId: 'liquidaCalorias',
+						readOnly: true,
+						margin: '0 5 0 0'
+					},
+					{
+						xtype: 'checkbox',
+						uncheckedValue: 0,
+						fieldLabel: 'Liquida premios',
+						name: 'liquidaPremio',
+						itemId: 'liquidaPremio',
+						readOnly: true
+					}
+				]
+			}			
 		]
 		
 	

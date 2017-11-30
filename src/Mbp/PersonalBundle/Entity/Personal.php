@@ -276,6 +276,16 @@ class Personal
 	/**
      * @var boolean
      *
+     * @ORM\Column(name="liquidaPremio", type="boolean", nullable=false)
+	 * @Assert\Type(
+     *     type="bool"
+     * )
+     */
+    private $liquidaPremio = false;
+	
+	/**
+     * @var boolean
+     *
      * @ORM\Column(name="liquidaCalorias", type="boolean", nullable=false)
 	 * @Assert\Type(
      *     type="bool"
@@ -1060,5 +1070,29 @@ class Personal
     public function getLiquidaCalorias()
     {
         return $this->liquidaCalorias;
+    }
+
+    /**
+     * Set liquidaPremio
+     *
+     * @param boolean $liquidaPremio
+     *
+     * @return Personal
+     */
+    public function setLiquidaPremio($liquidaPremio)
+    {
+        $this->liquidaPremio = $liquidaPremio;
+
+        return $this;
+    }
+
+    /**
+     * Get liquidaPremio
+     *
+     * @return boolean
+     */
+    public function getLiquidaPremio()
+    {
+        return $this->liquidaPremio;
     }
 }

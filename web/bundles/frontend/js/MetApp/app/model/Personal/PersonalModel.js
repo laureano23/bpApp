@@ -38,5 +38,6 @@ Ext.define('MetApp.model.Personal.PersonalModel',{
 		{ name: 'liquidaPorLote', type: 'bool' },
 		{ name: 'legajo', type: 'int' },
 		{ name: 'liquidaCalorias', type: 'bool' },
+		{ name: 'liquidaPremio', type: 'bool' },
 	]
 });

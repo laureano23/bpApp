@@ -73,7 +73,6 @@ Ext.define('MetApp.controller.Calidad.CalidadReportesController',{
 	PrintRepoRG010: function(btn){
 		form = btn.up('form');
 		ot = form.queryById('ot').getValue();
-		console.log(ot);
 		
 		if(form.isValid() == true){
 			Ext.Ajax.request({
@@ -121,6 +120,10 @@ Ext.define('MetApp.controller.Calidad.CalidadReportesController',{
 					var ruta = Routing.generate('mbp_calidad_showReporteRg010Fechas');
 									
 					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+				},
+				
+				failure: function(resp){
+					myMask.hide();
 				}	
 			});
 		}
@@ -154,6 +157,10 @@ Ext.define('MetApp.controller.Calidad.CalidadReportesController',{
 					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');				
 				}
 				myMask.hide();	
+			},
+				
+			failure: function(resp){
+				myMask.hide();
 			}
 		});
 	},
@@ -186,6 +193,10 @@ Ext.define('MetApp.controller.Calidad.CalidadReportesController',{
 					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');			
 				}
 				myMask.hide();	
+			},
+				
+			failure: function(resp){
+				myMask.hide();
 			}
 		});
 	},
@@ -218,6 +229,10 @@ Ext.define('MetApp.controller.Calidad.CalidadReportesController',{
 					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');			
 				}
 				myMask.hide();	
+			},
+				
+			failure: function(resp){
+				myMask.hide();
 			}
 		});
 	}
