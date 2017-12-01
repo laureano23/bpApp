@@ -226,6 +226,12 @@ class Empleado
 	public function getHsAsistencia(){
 		return $this->hsAsistencia;
 	}
+	
+	public function ordenarFechas(){
+		
+		$res=array_reverse($this->fecha);
+		$this->fecha = $res;
+	}
 }
 
 

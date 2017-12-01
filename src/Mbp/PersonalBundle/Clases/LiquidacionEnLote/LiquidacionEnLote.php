@@ -1,7 +1,7 @@
 <?php
 namespace Mbp\PersonalBundle\Clases\LiquidacionEnLote;
 
-use Mbp\PersonalBundle\Clases\LiquidacionEnLote\EmpleadosCollection;
+use Mbp\PersonalBundle\Clases\LiquidacionEnLote\EmpleadosCollection; 
 
 /*
  * ESTA CLASE PREPARA LA COLECCION DE EMPLEADOS PARA LIQUIDAR LAS HORAS SEGUN EL PERIODO
@@ -519,35 +519,17 @@ class LiquidacionEnLote
 
 	private function calcularAsistencia($periodo, $mes)
 	{
-		$empleados = $this->getEmpleadosCollection()->getEmpleado();
-		$contAsistencia=0; //SE PERMITE HASTA 6 HORAS TRIMESTRALES
-		
+		$empleados = $this->getEmpleadosCollection()->getEmpleado();		
 				
 		
 		foreach ($empleados as $emp) {
 			$fechas = $emp->getFecha();
-			$ausenteTotal=0;
 			
 			$ausenteFueraPeriodo = $this->contarSalidasFueraDeJornada($periodo, $mes, $emp);
-			$ausenteEnPeriodo = $this->contarSalidasEnJornada($periodo, $mes, $emp);
-			
-			
 			
 			if($ausenteFueraPeriodo > 6){
-				$ausenteFueraPeriodo = 0;
-			}
-			
-			$ausenteTotal = $ausenteEnPeriodo + $ausenteFueraPeriodo;
-			
-			if($emp->getLegajo() == 50){
-			//print_r($ausenteTotal);	
-			}
-			
-			if($ausenteTotal > 6){
 				$emp->setHsAsistencia(0);
 			}
-			
-			
 		}	
 	}
 
@@ -557,18 +539,17 @@ class LiquidacionEnLote
 		$strFecha;
 		$contAsistencia=0; //SE PERMITE HASTA 6 HORAS TRIMESTRALES
 		
-		if($periodo == 7){
-			$strFecha = "01/".$mes."/".$this->anio;
-		}else{
-			$strFecha = "31/".$mes."/".$this->anio;
-		}
-		
-		$fechaLimite = \DateTime::createFromFormat('d/m/Y', $strFecha);
-		
 		$fechas = $emp->getFecha();
 		
 		foreach ($fechas as $fecha) {
-			if($fecha['fecha'] < $fechaLimite){
+				
+				if($fecha['fecha']->format('m') == $mes && $contAsistencia > 6 && $fecha['fecha']->format('d') == 1){
+					$contAsistencia = 0;
+				}
+				
+				if($fecha['fecha']->format('m') == $mes && $contAsistencia > 6 && $fecha['fecha']->format('d') == 16){
+					$contAsistencia = 0;
+				}
 				
 				//NO HACEMOS ANALISIS SI NO HAY FICHADA O SI EL DIA A ANALIZAR ES SABADO O DOMINGO
 				if(empty($fecha['fichadaE'][0]) || $fecha['fecha']->format('D') == "Sat" || $fecha['fecha']->format('D') == "Sun") continue;
@@ -613,98 +594,11 @@ class LiquidacionEnLote
 				if($ultimaSalida->format('G') < 15 && $ultimaSalida->format('i') > 0){
 					$contAsistencia -= 0.5;
 				}	
-			}
 		}
 		return $contAsistencia;
 	}
 	
-	//CONTAR LAS HORAS NO TRABAJADAS EN LA JORNADA LABORAL FUERA DEL PERIODO QUE ESTAMOS LIQUIDANDO
-	private function contarSalidasEnJornada($periodo, $mes, $emp)
-	{
-		$strFecha;
-		$contAsistencia=0; //SE PERMITE HASTA 6 HORAS TRIMESTRALES
-		$repoConceptos = $this->em->getRepository('MbpPersonalBundle:CodigoSueldos');
-		
-		if($periodo == 7){
-			$strFecha = "01/".$mes."/".$this->anio;
-		}else{
-			$strFecha = "15/".$mes."/".$this->anio;
-		}
-		
-		$fechaInicio = \DateTime::createFromFormat('d/m/Y', $strFecha);
-		
-		$fechas = $emp->getFecha();
-		
-		foreach ($fechas as $fecha) {
-			if($fecha['fecha'] >= $fechaInicio){
-				
-				//NO HACEMOS ANALISIS SI NO HAY FICHADA O SI EL DIA A ANALIZAR ES SABADO O DOMINGO Y NO HAY OBSERVACIONES
-				if(empty($fecha['fichadaE'][0]) && $fecha['novedades'] == -1 ||
-					$fecha['fecha']->format('D') == "Sat" ||
-					$fecha['fecha']->format('D') == "Sun")
-					{
-						continue;	
-					} 
-				
-				$primerFichadaDelDia=true;
-				$ultimaSalida;
-				$existeSalida = false;
-				
-				foreach ($emp->getNovedades() as $novedad) {						
-					$novedad = $repoConceptos->find($novedad);
-					if($novedad->getCuentaAsistencia() == true){
-						
-						return 10; //RETORNAMOS UN VALOR MAYOR A 6 PARA MARCAR QUE PERDIO LA ASISTENCIA
-					}
-				}
-				
-				foreach ($fecha['fichadaE'] as $ent) {
-					
-					//AJUSTAMOS LAS HORAS DE LA PRIMER ENTRADA
-					if($ent->format('G') > 6 && $primerFichadaDelDia){
-						//$primerFichadaDelDia = false; 
-						$contAsistencia += $ent->format('G') - 6;								
-					}
-					
-					//AJUSTAMOS LOS MINUTOS DE LA PRIMER ENTRADA
-					if($ent->format('i') > 0 && $primerFichadaDelDia){
-						//$primerFichadaDelDia = false; 
-						$contAsistencia += 0.5;						
-					}
-					
-					//SI HAY MAS DE UNA ENTRADA EL MISMO DIA ANALIZAR CUANTAS HORAS ESTUVO FUERA DE LA EMPRESA
-					$contSalida=0;
-					if($primerFichadaDelDia == false && $ent->format('G') > 6){
-						$minutos=0;
-						$horasTomadas = $ent->format('G') - $fecha['fichadaS'][$contSalida]->format('G');
-						if($ent->format('i') > 0){
-							$minutos += 0.5;
-						}
-						$contAsistencia += $horasTomadas;
-						//$contSalida++;						
-					}
-					
-					
-					$primerFichadaDelDia = false;
-					$ultimaSalida = $fecha['fichadaS'][$contSalida];
-					$existeSalida = true;
-				}
-				
-				
-				//ANTES DE PASAR A LA SIGUIENTE FECHA ANALIZAMOS SI LA ULTIMA SALIDA ES < A 15HS				
-				if($existeSalida == true && $ultimaSalida->format('G') < 15){
-					
-					$contAsistencia += 15 - $ultimaSalida->format('G');
-				}
-				
-				//AJUSTAMOS LOS MINUTOS DE LA ULTIMA SALIDA
-				if($existeSalida == true && $ultimaSalida->format('G') < 15 && $ultimaSalida->format('i') > 0){
-					$contAsistencia -= 0.5;
-				}
-			}
-		}
-		return $contAsistencia;
-	}
+	
 }
 
 

@@ -133,6 +133,9 @@ class EmpleadosCollection
 			//AGREGO EL EMPLEADO A LA COLECCION
 			$this->addEmpleado($empleado);
 			
+			$empleado->ordenarFechas();	
+			
+			
 			
 		} while ($activeSheet->getCell($this->columnas[self::$columnLegajo].($fila))->getValue() != "");
 		
