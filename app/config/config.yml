@@ -148,7 +148,7 @@ lopi_pusher:
     app_id: "430769"
     key: "afe4f1c54cf0b11142f7"
     secret: "7cbaeaa7ddf0254702df"
-    host: "api-us2.pusher.com"
+    host: "api-us2.pusher.com"    
 
 services:
    get_set_method_normalizer:

@@ -223,7 +223,7 @@ class LiquidacionEnLoteController extends RecibosController
 		
 		//BUSCAMOS LOS EMPLEADOS QUE ADHERIDOS A LIQUIDACION POR LOTE
 		$empleados = $repoEmpleados->findBy(
-			array('liquidaPorLote' => true, 'periodo' => $this->tipoLiquidacion)
+			array('liquidaPorLote' => true, 'periodo' => $this->tipoLiquidacion, 'liquidaPremio' => true)
 		);
 		$banco = $repoBancos->find($this->banco);
 		

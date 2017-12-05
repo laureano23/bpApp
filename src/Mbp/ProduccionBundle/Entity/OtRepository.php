@@ -217,7 +217,7 @@ class OtRepository extends EntityRepository
 			->where('o.sectorId = :sector')
 			->andWhere('o.estado != 2')
 			->setParameter('sector', $sector)
-			->orderBy('o.fechaProg', 'ASC')
+			->orderBy('o.fechaProg', 'DESC')
 			->getQuery()
 			->getArrayResult();
 			
@@ -278,7 +278,7 @@ class OtRepository extends EntityRepository
 			->join('o.sectorId', 'receptor')
 			->where('o.sectorEmisor = :sector')
 			->setParameter('sector', $sector)
-			->orderBy('o.fechaProg', 'ASC')
+			->orderBy('o.fechaProg', 'DESC')
 			->getQuery()
 			->getArrayResult();
 			

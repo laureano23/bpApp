@@ -1071,28 +1071,4 @@ class Personal
     {
         return $this->liquidaCalorias;
     }
-
-    /**
-     * Set liquidaPremio
-     *
-     * @param boolean $liquidaPremio
-     *
-     * @return Personal
-     */
-    public function setLiquidaPremio($liquidaPremio)
-    {
-        $this->liquidaPremio = $liquidaPremio;
-
-        return $this;
-    }
-
-    /**
-     * Get liquidaPremio
-     *
-     * @return boolean
-     */
-    public function getLiquidaPremio()
-    {
-        return $this->liquidaPremio;
-    }
 }

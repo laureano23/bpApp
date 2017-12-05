@@ -68,7 +68,9 @@ class PersonalRepository extends EntityRepository
 								sind.id as sindicato,
 								sec.id as sector,
 								p.liquidaPorLote,
-								p.legajo
+								p.legajo,
+								p.liquidaPremio,
+								p.liquidaCalorias
 								")
 					->leftJoin('p.localidad', 'loc')
 					->leftJoin('loc.departamentoId', 'depto')
@@ -196,6 +198,7 @@ class PersonalRepository extends EntityRepository
 			$data->talleCamisa == 0 ? $empleado->setTalleCamisa(null) : $empleado->setTalleCamisa($data->talleCamisa);
 			$data->talleCalzado == 0 ? $empleado->setTalleCalzado(null) : $empleado->setTalleCalzado($data->talleCalzado);
 			$data->liquidaCalorias === 0 ? $empleado->setLiquidaCalorias(false) : $empleado->setLiquidaCalorias(true);
+			$data->liquidaPremio === 0 ? $empleado->setLiquidaPremio(false) : $empleado->setLiquidaPremio(true);
 			
 			//VALIDO LOS DATOS DEL RECIBO
 			
