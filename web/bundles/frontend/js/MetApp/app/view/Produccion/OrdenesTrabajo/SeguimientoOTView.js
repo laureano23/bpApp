@@ -105,7 +105,9 @@ Ext.define('MetApp.view.Produccion.OrdenesTrabajo.SeguimientoOTView', {
 								{
 									header: 'Fecha de entrega',
 									width: 100,
-									dataIndex: 'programado',						
+									dataIndex: 'programado',		
+									xtype: 'datecolumn',
+									format: 'd/m/Y',				
 								},
 								{
 									header: 'Aprobado',

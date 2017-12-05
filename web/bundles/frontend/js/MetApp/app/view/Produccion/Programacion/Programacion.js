@@ -141,12 +141,13 @@ Ext.define('MetApp.view.Produccion.Programacion.Programacion',{
 					xtype: 'container',
 					region: 'center',
 					title: 'Programado a:',
+					border: false,
 					items: [
 						{
 				        	xtype: 'grid',
 				        	//border: false,
 				        	itemId: 'gridMisPedidos',
-				        	height: 200,
+				        	height: 205,
 				        	store: 'MetApp.store.Produccion.OrdenesTrabajo.OTStoreEmisor',
 				        	plugins: [
 			        			Ext.create('Ext.grid.plugin.CellEditing',{
@@ -158,7 +159,7 @@ Ext.define('MetApp.view.Produccion.Programacion.Programacion',{
 				        		enableTextSelection: true,
 					    	},			        	
 				        	columns: [
-								{text: 'OT', hidden: false, dataIndex: 'otNum', width: 30},		
+								{text: 'OT', hidden: false, dataIndex: 'otNum', width: 50},		
 								{text: 'Codigo', hidden: false, dataIndex: 'codigo', autoSizeColumn: true },
 								{ 
 									header: 'Descripcion',
@@ -236,11 +237,9 @@ Ext.define('MetApp.view.Produccion.Programacion.Programacion',{
 					xtype: 'container',
 					itemId: 'cntBtn',
 					region: 'south',
-					//border: false,
-					//margin: '5 5 5 5',
 					anchorSize: '100%',
 					layout: 'hbox',
-					height: 50,
+					height: 35,
 					style: {
 						background: 'white'
 					},
@@ -250,20 +249,20 @@ Ext.define('MetApp.view.Produccion.Programacion.Programacion',{
 					items: [
 						{
 							xtype: 'button',
-							margin: '0 5 0 0',
+							margin: '5 5 0 5',
 							itemId: 'programar',
 							action: 'programar',
 							text: 'Programar'
 						},
 						{
 							xtype: 'button',
-							margin: '0 5 0 0',
+							margin: '5 5 0 0',
 							itemId: 'solicitarMat',
 							text: 'Solicitar Materiales'
 						},
 						{
 							xtype: 'button',
-							margin: '0 5 0 0',
+							margin: '5 5 0 0',
 							itemId: 'actualizar',
 							text: 'Actualizar'
 						},
