@@ -6,6 +6,7 @@ Ext.define('MetApp.view.Produccion.OrdenesTrabajo.VerCodigoOTView', {
 	layout: 'fit',
 	modal: true,
 	autoShow: true,
+	itemId: 'VerCodigoOTView',
 	
 	
 	initComponent: function(){		

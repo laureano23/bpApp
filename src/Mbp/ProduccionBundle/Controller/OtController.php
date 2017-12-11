@@ -381,7 +381,7 @@ class OtController extends Controller
 			$ot = $request->request->get('ot');	
 			$repo = $em->getRepository('MbpProduccionBundle:Ot');
 			
-			$resp = $repo->findByOtExterna($ot);
+			$resp = $repo->findByOt($ot);
 			
 			$arrayResp = array();
 			$datosOt;

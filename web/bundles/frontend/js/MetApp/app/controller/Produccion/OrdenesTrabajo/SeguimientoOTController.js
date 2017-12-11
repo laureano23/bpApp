@@ -41,8 +41,15 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.SeguimientoOTController'
 			},
 			'VerCodigoOTView button[itemId=verOT]': {
 				click: this.DevolverOT
+			},
+			'VerCodigoOTView': {
+				close: this.CerrarWin
 			}
 		});
+	},
+	
+	CerrarWin: function(win){
+		win.down('grid').getStore().clearFilter();
 	},
 		
 	SeguimientoOtView: function(btn){
