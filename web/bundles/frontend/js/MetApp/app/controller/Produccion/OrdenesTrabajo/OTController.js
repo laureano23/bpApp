@@ -60,6 +60,7 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 			},
 		});
 	},
+	
 		
 	NuevaOT: function(btn){
 		Ext.widget('NuevaOTView');
@@ -248,6 +249,8 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 			anyMatch: true}
 		);
 	},
+	
+	
 	
 	VerOT: function(btn){
 		var view = Ext.widget('VerOTView');

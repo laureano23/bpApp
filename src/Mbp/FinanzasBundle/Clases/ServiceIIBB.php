@@ -73,6 +73,12 @@ XML;
 		$respuesta=$objCurlFileUploader->UploadFile();
 
 		$this->response = json_decode(json_encode((array)simplexml_load_string($respuesta)),1);
+		
+		$error = array_key_exists('codigoError', $this->response);
+		
+		if($error){
+			throw new \Exception($this->response['mensajeError'], 1);			
+		}
 
 		//UNA VEZ DEVUELTA LA RESPUESTA BORRAMOS EL ARCHIVO
 		unlink($this->file);
@@ -80,6 +86,8 @@ XML;
 
 	public function getAlicuotaPercepcion()
 	{
+		//print_r($this->response);
+		//exit;
 		$alicuota = $this->response['contribuyentes']['contribuyente']['alicuotaPercepcion'];
 		return str_replace(',', '.', $alicuota);
 	}

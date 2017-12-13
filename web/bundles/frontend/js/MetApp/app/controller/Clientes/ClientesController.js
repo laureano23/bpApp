@@ -120,7 +120,7 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 		var botonera = win.queryById('botonera');
 		botonera.editarItem(botonera);
 		
-		form.query('.field').forEach(function(c){c.setDisabled(false);}); //HABILITO TODOS LOS CAMPOS
+		form.query('.field').forEach(function(c){c.setReadOnly(false);}); //HABILITO TODOS LOS CAMPOS
 	},
 	
 	ResetForm: function(btn){
@@ -141,7 +141,7 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 				success: function(resp, act){
 					jsonResp = Ext.JSON.decode(act.response.responseText);
 					if(jsonResp.success == true){
-						form.query('.field').forEach(function(c){c.setDisabled(true);});
+						form.query('.field').forEach(function(c){c.setReadOnly(true);});
 						form.queryById('id').setValue(jsonResp.id);
 					}
 					botonera.guardarItem(botonera);

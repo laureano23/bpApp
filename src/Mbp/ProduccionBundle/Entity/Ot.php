@@ -585,4 +585,18 @@ class Ot
     {
         $this->misOrdenes->removeElement($misOrdene);
     }
+
+    /**
+     * Add misOrdene
+     *
+     * @param \Mbp\ProduccionBundle\Entity\Ot $misOrdene
+     *
+     * @return Ot
+     */
+    public function addMisOrdene(\Mbp\ProduccionBundle\Entity\Ot $misOrdene)
+    {
+        $this->misOrdenes[] = $misOrdene;
+
+        return $this;
+    }
 }

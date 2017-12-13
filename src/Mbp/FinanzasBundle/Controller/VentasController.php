@@ -203,7 +203,8 @@ class VentasController extends Controller
 				throw new \Exception("El cliente debe tener cargados localidad y provincia para calcular IIBB", 1);				
 			}
 			
-			if($cliente->getLocalidad()->getDepartamentoId()->getProvinciaId()->getId() == $parametrosFinanzas->getProvincia()->getId() && $alicuotaPercepcion > 0){
+			if($cliente->getLocalidad()->getDepartamentoId()->getProvinciaId()->getId() == 
+				$parametrosFinanzas->getProvincia()->getId() && $alicuotaPercepcion > 0){
 				$percepcionIIBB = $netoGrabado * $alicuotaPercepcion / 100; 
 				$percepcionIIBB = number_format($percepcionIIBB, 2);
 			}	
