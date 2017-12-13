@@ -140,7 +140,7 @@ class OtRepository extends EntityRepository
 		$repo = $em->getRepository('MbpProduccionBundle:Ot');
 		
 		$query = $repo->createQueryBuilder('o')
-			->select("o.otExterna as otNum, DATE_FORMAT(o.fechaEmision, '%d/%m/%Y') as otEmision,
+			->select("o.ot as otNum, DATE_FORMAT(o.fechaEmision, '%d/%m/%Y') as otEmision,
 					c.descripcion as cliente,
 					codigo.codigo,
 					codigo.descripcion,
