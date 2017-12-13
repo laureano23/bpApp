@@ -124,6 +124,8 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.SeguimientoOTController'
 		
 		var seguimientoView = me.getSeguimientoView();
 		
+		console.log(data);
+		
 		seguimientoView.queryById('otNum').setValue(data.otNum);
 		seguimientoView.queryById('codigo').setValue(data.codigo);
 		seguimientoView.queryById('descripcion').setValue(data.descripcion);
