@@ -150,6 +150,13 @@ class Ot
      * @ORM\Column(name="estado", type="smallint")
      */
     private $estado=0;
+	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="visionTomada", type="boolean")
+     */
+    private $visionTomada=0;
 
     /**
      * Set ot
@@ -584,19 +591,5 @@ class Ot
     public function removeMisOrdene(\Mbp\ProduccionBundle\Entity\Ot $misOrdene)
     {
         $this->misOrdenes->removeElement($misOrdene);
-    }
-
-    /**
-     * Add misOrdene
-     *
-     * @param \Mbp\ProduccionBundle\Entity\Ot $misOrdene
-     *
-     * @return Ot
-     */
-    public function addMisOrdene(\Mbp\ProduccionBundle\Entity\Ot $misOrdene)
-    {
-        $this->misOrdenes[] = $misOrdene;
-
-        return $this;
     }
 }

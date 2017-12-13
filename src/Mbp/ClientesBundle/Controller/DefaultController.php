@@ -54,7 +54,14 @@ class DefaultController extends Controller
 			$cliente->setEmail($request->request->get('email'));
 			$cliente->setCuit($request->request->get('cuit'));
 			$cliente->setCPostal($request->request->get('cPostal'));
-			$cliente->setIva($repoIva->find($request->request->get('iva')));
+			$iva = $repoIva->find($request->request->get('iva'));
+			
+			if(empty($iva)){
+				throw new \Exception("No existe la posicion de IVA", 1);
+				
+			}
+			
+			$cliente->setIva($iva);
 			$cliente->setTelefono1($request->request->get('telefono1'));
 			$cliente->setContacto1($request->request->get('contacto1'));
 			$cliente->setTelefono2($request->request->get('telefono2'));
