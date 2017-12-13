@@ -12,7 +12,7 @@ use Mbp\ProduccionBundle\Entity\Ot;
 
 class OtController extends Controller
 {	
-	/**
+	/** 
      * @Route("/nuevaot", name="mbp_produccion_nuevaot", options={"expose"=true})
      */
     public function nuevaOt()
