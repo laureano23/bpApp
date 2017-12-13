@@ -14,7 +14,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
  */
 class OtRepository extends EntityRepository
 {
-	public function readOtPaneles()
+	public function readOtPaneles() 
 	{
 		$em = $this->getEntityManager();
 		$connection = $em->getConnection();

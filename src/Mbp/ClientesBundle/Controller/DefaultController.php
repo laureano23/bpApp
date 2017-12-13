@@ -57,7 +57,7 @@ class DefaultController extends Controller
 			$iva = $repoIva->find($request->request->get('iva'));
 			
 			if(empty($iva)){
-				throw new \Exception("No existe la posicion de IVA", 1);
+				throw new \Exception("No existe la posicion de IVA", 1); 
 				
 			}
 			
