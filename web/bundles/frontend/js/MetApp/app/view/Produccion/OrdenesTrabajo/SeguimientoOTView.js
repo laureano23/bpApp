@@ -136,9 +136,10 @@ Ext.define('MetApp.view.Produccion.OrdenesTrabajo.SeguimientoOTView', {
 					                    store: {
 					                    	fields: ['idEstado', 'estado'],
 					                    	data : [
-										        {"idEstado":"0", "estado":"No comenzado"},
+										        {"idEstado":"0", "estado":"No comenzada"},
 										        {"idEstado":"1", "estado":"En proceso"},
-										        {"idEstado":"2", "estado":"Terminada"}
+										        {"idEstado":"2", "estado":"Terminada"},
+										        {"idEstado":"3", "estado":"Generada"},
 										        //...
 										    ]
 					                    }

@@ -207,6 +207,7 @@ class OtRepository extends EntityRepository
 					emisor.descripcion as sectorEmisor,
 					o.aprobado,
 					o.rechazado,
+					cliente.rsocial,
 					CASE WHEN o.estado = 0 THEN 'No comenzada'
 					 WHEN o.estado = 1 THEN 'En proceso'
 					 WHEN o.estado = 2 THEN 'Terminada'	
@@ -214,6 +215,7 @@ class OtRepository extends EntityRepository
 					 ELSE 'No comenzada' END as estado")
 			->join('o.idCodigo', 'codigo')
 			->join('o.sectorEmisor', 'emisor')
+			->leftjoin('o.clienteId', 'cliente')
 			->where('o.sectorId = :sector')
 			->andWhere('o.estado != 2')
 			->setParameter('sector', $sector)
@@ -269,6 +271,7 @@ class OtRepository extends EntityRepository
 					receptor.descripcion as sectorReceptor,
 					o.aprobado,
 					o.rechazado,
+					cliente.rsocial,
 					CASE WHEN o.estado = 0 THEN 'No comenzada'
 					 WHEN o.estado = 1 THEN 'En proceso'
 					 WHEN o.estado = 2 THEN 'Terminada'	
@@ -276,6 +279,7 @@ class OtRepository extends EntityRepository
 					 ELSE 'No comenzada' END as estado")
 			->join('o.idCodigo', 'codigo')
 			->join('o.sectorId', 'receptor')
+			->leftjoin('o.clienteId', 'cliente')
 			->where('o.sectorEmisor = :sector')
 			->setParameter('sector', $sector)
 			->orderBy('o.fechaProg', 'DESC')

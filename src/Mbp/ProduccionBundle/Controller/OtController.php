@@ -32,6 +32,7 @@ class OtController extends Controller
 			$repoClientes = $em->getRepository('MbpClientesBundle:Cliente');
 			$repoSectores = $em->getRepository('MbpProduccionBundle:Sectores');
 			$repoOt = $em->getRepository('MbpProduccionBundle:Ot');
+			$repoCliente = $em->getRepository('MbpClientesBundle:Cliente');
 			
 			//BUSCO ARTICULO
 			$articulo = $repoArticulos->findByCodigo($stdObj->codigo);
@@ -42,8 +43,18 @@ class OtController extends Controller
 			//BUSCO SECTOR
 			$sector = $repoSectores->find($stdObj->tipo);
 			
+			//BUSCO CLIENTE
+			$cliente = $repoCliente->find($stdObj->idCliente);
+			
 			//BUSCO EL SECTOR DEL USUARIO QUE EMITE LA OT
 			$sectorEmisor = $repoSectores->find($usuario->getSectorId());
+			
+			//LANZAMOS ERRORES
+			if(empty($articulo)) throw new \Exception("No existe el articulo ingresado", 1);
+			if(empty($sector)) throw new \Exception("No existe el sector ingresado", 1);
+			if(empty($cliente)) throw new \Exception("No existe el cliente ingresado", 1);
+			
+			
 			
 	        $ot = new Ot;
 			$ot->setFechaEmision(new \DateTime);
@@ -55,6 +66,7 @@ class OtController extends Controller
 			$ot->setIdUsuario($usuario);
 			$ot->setSectorId($sector);
 			$ot->setSectorEmisor($sectorEmisor);
+			$ot->setClienteId($cliente);
 			
 			//SI EXISTEN ORDENES ASOCIADAS LAS AGREGO
 			foreach ($ordenesAsociadas as $otA) {				
@@ -102,7 +114,6 @@ class OtController extends Controller
 				json_encode(array('success' => true, 'ot' => $ot->getOt()))
 			);
 		}catch(\Exception $e){
-			throw $e;
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR); 
 			return $response->setContent(
 					json_encode(array('success' => false, 'msg' => $e->getMessage()))

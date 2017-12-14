@@ -47,6 +47,18 @@ Ext.define('MetApp.view.Produccion.Reportes.ReporteOrdenesPorSector', {
 							labelWidth: 40
 						},
 						{
+							xtype: 'combo',
+							fieldLabel: 'Sector',
+							labelWidth: 50,
+							store: 'MetApp.store.Produccion.Programacion.SectoresStore',
+							itemId: 'sector',
+							title: 'Sector',
+							name: 'tipo',
+							displayField: 'descripcion',
+							valueField: 'id',
+							allowBlank: true
+						},	
+						{
 							xtype: 'button',
 							itemId: 'printDateReport',
 							action: 'printDateReport',

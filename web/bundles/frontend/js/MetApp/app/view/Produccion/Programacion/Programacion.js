@@ -48,7 +48,6 @@ Ext.define('MetApp.view.Produccion.Programacion.Programacion',{
 					    	},
 				        	columns: [
 								{text: 'OT', hidden: false, dataIndex: 'otNum', autoSizeColumn: true},
-								{text: 'OT externa', hidden: false, dataIndex: 'otExterna', autoSizeColumn: true},
 								{text: 'Codigo', hidden: false, dataIndex: 'codigo', autoSizeColumn: true },
 								{ 
 									header: 'Descripcion',
@@ -109,6 +108,11 @@ Ext.define('MetApp.view.Produccion.Programacion.Programacion',{
 										 	value == "Generada" ? '<span style="color:brown;">'+value+'</span>' :
 										 	'<span style="background-color:yellow;">'+value+'</span>';
 									},									
+								},
+								{
+									header: 'Cliente',
+									width: 150,
+									dataIndex: 'cliente',
 								},
 								{
 									header: 'Sector emisor',
@@ -205,6 +209,11 @@ Ext.define('MetApp.view.Produccion.Programacion.Programacion',{
 					               	renderer: function(value, metaData, record, row, col, store, gridView){
 										return value == "No comenzada" ? '<span style="color:red;">'+value+'</span>' : value == "Terminada" ? '<span style="color:green;">'+value+'</span>' : '<span style="background-color:yellow;">'+value+'</span>';
 									},
+								},
+								{
+									header: 'Cliente',
+									width: 150,
+									dataIndex: 'cliente',
 								},
 								{
 									header: 'Sector receptor',

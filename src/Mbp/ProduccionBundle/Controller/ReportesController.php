@@ -455,33 +455,37 @@ class ReportesController extends Controller
 			
 			$sql = "
 				SELECT
-			     Ot.`ot` AS Ot_ot,
-			     Ot.`cantidad` AS Ot_cantidad,
-			     Ot.`fechaProg` AS Ot_fechaProg,
-			     Ot.`observaciones` AS Ot_observaciones,
-			     Ot.`anulada` AS Ot_anulada,
-			     Ot.`idCodigo` AS Ot_idCodigo,
-			     Ot.`idUsuario` AS Ot_idUsuario,
-			     Ot.`fechaEmision` AS Ot_fechaEmision,
-			     Ot.`aprobado` AS Ot_aprobado,
-			     Ot.`rechazado` AS Ot_rechazado,
-			     articulos.`codigo` AS articulos_codigo,
-			     articulos.`descripcion` AS articulos_descripcion,
-			     articulos.`unidad` AS articulos_unidad,
-			     articulos.`presentacion` AS articulos_presentacion,
-			     articulos.`idArticulos` AS articulos_idArticulos,
-			     articulos.`stock` AS articulos_stock,
-			     Sectores.`id` AS Sectores_id,
-			     Sectores.`descripcion` AS Sectores_descripcion,
-			     Ot.`sectorId` AS Ot_sectorId,
-			     Ot.`sectorEmisor` AS Ot_sectorEmisor,
-			     Sectores_A.`id` AS Sectores_A_id,
-			     Sectores_A.`descripcion` AS Sectores_A_descripcion
-			FROM
-			     `articulos` articulos INNER JOIN `Ot` Ot ON articulos.`idArticulos` = Ot.`idCodigo`
-			     INNER JOIN `Sectores` Sectores ON Ot.`sectorId` = Sectores.`id`
-			     INNER JOIN `Sectores` Sectores_A ON Ot.`sectorEmisor` = Sectores_A.`id`
-			WHERE Ot.`ot` = $ot
+				     Ot.`ot` AS Ot_ot,
+				     Ot.`cantidad` AS Ot_cantidad,
+				     Ot.`fechaProg` AS Ot_fechaProg,
+				     Ot.`observaciones` AS Ot_observaciones,
+				     Ot.`anulada` AS Ot_anulada,
+				     Ot.`idCodigo` AS Ot_idCodigo,
+				     Ot.`idUsuario` AS Ot_idUsuario,
+				     Ot.`fechaEmision` AS Ot_fechaEmision,
+				     Ot.`aprobado` AS Ot_aprobado,
+				     Ot.`rechazado` AS Ot_rechazado,
+				     articulos.`codigo` AS articulos_codigo,
+				     articulos.`descripcion` AS articulos_descripcion,
+				     articulos.`unidad` AS articulos_unidad,
+				     articulos.`presentacion` AS articulos_presentacion,
+				     articulos.`idArticulos` AS articulos_idArticulos,
+				     articulos.`stock` AS articulos_stock,
+				     Sectores.`id` AS Sectores_id,
+				     Sectores.`descripcion` AS Sectores_descripcion,
+				     Ot.`sectorId` AS Ot_sectorId,
+				     Ot.`sectorEmisor` AS Ot_sectorEmisor,
+				     Sectores_A.`id` AS Sectores_A_id,
+				     Sectores_A.`descripcion` AS Sectores_A_descripcion,
+				     cliente.`idCliente` AS cliente_idCliente,
+				     cliente.`rsocial` AS cliente_rsocial
+				FROM
+				     `articulos` articulos INNER JOIN `Ot` Ot ON articulos.`idArticulos` = Ot.`idCodigo`
+				     INNER JOIN `Sectores` Sectores ON Ot.`sectorId` = Sectores.`id`
+				     INNER JOIN `Sectores` Sectores_A ON Ot.`sectorEmisor` = Sectores_A.`id`
+				     INNER JOIN `cliente` cliente ON Ot.`clienteId` = cliente.`idCliente`
+				WHERE
+				     Ot.`ot` = $ot
 			";
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
@@ -682,6 +686,172 @@ class ReportesController extends Controller
 		$response = new BinaryFileResponse($basePath);
         $response->trustXSendfileTypeHeader();
 		$filename = 'OrdenesPorSector.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-Type', 'application/pdf');
+
+        return $response;
+	}
+	
+	/**
+     * @Route("/produccion/reporteOTPorSectorFiltrado", name="mbp_produccion_reporteOTPorSectorFiltrado", options={"expose"=true})
+     */
+    public function reporteOTPorSectorFiltrado()
+    {
+        /*
+		 * PARAMETROS
+		 */
+		$desde = $this->getRequest()->request->get('desde');
+		$hasta = $this->getRequest()->request->get('hasta');
+		$sectorId = $this->getRequest()->request->get('sector');
+		$response = new Response;
+
+		try {
+			$reporteador = $this->get('reporteador');
+			$kernel = $this->get('kernel');
+			
+			
+			/*
+			 * Configuro reporte
+			 */
+			$jru = $reporteador->jru();
+			
+			/*
+			 * Ruta archivo Jasper
+			 */				
+					
+			$ruta = $kernel->locateResource('@MbpProduccionBundle/Reportes/OrdenesPorSector2.jrxml');
+			$rutaLogo = $reporteador->getRutaLogo($kernel);
+			
+			/*
+			 * Ruta de destino del PDF
+			 */
+			$destino = $kernel->locateResource('@MbpProduccionBundle/Resources/public/pdf/').'OrdenesPorSector2.pdf';
+			
+			
+			$desde = \DateTime::createFromFormat('d/m/Y', $desde);
+			$hasta = \DateTime::createFromFormat('d/m/Y', $hasta);
+			//Parametros HashMap
+			$param = $reporteador->getJava('java.util.HashMap');
+			$param->put('desde', $desde->format("Y-m-d"));
+			$param->put('hasta', $hasta->format("Y-m-d"));
+			$param->put('sectorId', $sectorId);
+			
+			$conn = $reporteador->getJdbc(); 
+			
+			/*
+			 * FECHA OUTPUT FORMATO SQL PARA CONSULTA
+			 */		
+			$fechaDesdeSql = $desde->format('Y-m-d');
+			$fechaHastaSql = $hasta->format('Y-m-d');
+			
+			$sql = "
+				SELECT
+				     ot.`ot` AS ot_ot,
+				     ot.`cantidad` AS ot_cantidad,
+				     ot.`fechaEmision` AS ot_fechaEmision,
+				     ot.`fechaProg` AS ot_fechaProg,
+				     ot.`observaciones` AS ot_observaciones,
+				     ot.`anulada` AS ot_anulada,
+				     ot.`idCodigo` AS ot_idCodigo,
+				     ot.`sectorEmisor` AS ot_sectorEmisor,
+				     ot.`idUsuario` AS ot_idUsuario,
+				     ot.`aprobado` AS ot_aprobado,
+				     ot.`rechazado` AS ot_rechazado,
+				     ot.`sectorId` AS ot_sectorId,
+				     ot.`otExterna` AS ot_otExterna,
+				     ot.`estado` AS ot_estado,
+				     sectores.`id` AS sectores_id,
+				     sectores.`costoMin` AS sectores_costoMin,
+				     sectores.`descripcion` AS sectores_descripcion,
+				     sectores.`piso` AS sectores_piso,
+				     sectores.`nave` AS sectores_nave,
+				     sectores.`tiempo` AS sectores_tiempo,
+				     articulos.`codigo` AS articulos_codigo,
+				     articulos.`descripcion` AS articulos_descripcion,
+				     articulos.`idArticulos` AS articulos_idArticulos,
+				     articulos.`unidad` AS articulos_unidad,
+				     articulos.`costo` AS articulos_costo,
+				     articulos.`precio` AS articulos_precio,
+				     articulos.`moneda` AS articulos_moneda,
+				     articulos.`iva` AS articulos_iva,
+				     articulos.`familiaId` AS articulos_familiaId,
+				     articulos.`subFamiliaId` AS articulos_subFamiliaId,
+				     articulos.`monedaPrecio` AS articulos_monedaPrecio,
+				     articulos.`stock` AS articulos_stock,
+				     articulos.`presentacion` AS articulos_presentacion,
+				     articulos.`utilidadPretendida` AS articulos_utilidadPretendida,
+				     articulos.`fechaPrecio` AS articulos_fechaPrecio,
+				     articulos.`type` AS articulos_type,
+				     articulos.`caudal` AS articulos_caudal,
+				     articulos.`peso` AS articulos_peso,
+				     articulos.`voltage` AS articulos_voltage,
+				     articulos.`corriente` AS articulos_corriente,
+				     articulos.`potencia` AS articulos_potencia,
+				     articulos.`presion` AS articulos_presion,
+				     articulos.`nombreImagen` AS articulos_nombreImagen,
+				     sectores_A.`id` AS sectores_A_id,
+				     sectores_A.`costoMin` AS sectores_A_costoMin,
+				     sectores_A.`descripcion` AS sectores_A_descripcion,
+				     sectores_A.`piso` AS sectores_A_piso,
+				     sectores_A.`nave` AS sectores_A_nave,
+				     sectores_A.`tiempo` AS sectores_A_tiempo,
+				     sectores_A.`id` AS sectores_A_id,
+				     sectores_A.`costoMin` AS sectores_A_costoMin,
+				     sectores_A.`descripcion` AS sectores_A_descripcion,
+				     sectores_A.`piso` AS sectores_A_piso,
+				     sectores_A.`nave` AS sectores_A_nave,
+				     sectores_A.`tiempo` AS sectores_A_tiempo
+				FROM
+				     `Sectores` sectores RIGHT OUTER JOIN `Ot` ot ON sectores.`id` = ot.`sectorEmisor`
+				     LEFT OUTER JOIN `articulos` articulos ON ot.`idCodigo` = articulos.`idArticulos`
+				     LEFT OUTER JOIN `Sectores` sectores_A ON ot.`sectorId` = sectores_A.`id`
+				WHERE ot.`fechaProg` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql'
+				AND sectores_A.`id` = $sectorId
+				ORDER BY
+				     sectores_A.`id` ASC,
+				     ot.`fechaProg` ASC
+				
+			";
+			
+			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
+			
+			return $response->setContent(
+					json_encode(
+						array(
+							'success'=> true,	
+						)
+					)
+				);
+		} catch (\Exception $e) {
+			throw $e;
+			exit;
+			$response->setContent(
+				json_encode(
+					array(
+						'success'=> false,	
+						'msg' => $e->getMessage()
+					)
+				)
+			);
+
+			return $response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+    }
+    
+    /**
+     * @Route("/produccion/verOTPorSectorFiltrado", name="mbp_produccion_verOTPorSectorFiltrado", options={"expose"=true})
+     */
+	public function verOTPorSectorFiltrado()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpProduccionBundle/Resources/public/pdf/').'OrdenesPorSector2.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'OrdenesPorSector2.pdf';
         $response->setContentDisposition(
             ResponseHeaderBag::DISPOSITION_INLINE,
             $filename,
