@@ -661,8 +661,6 @@ class ReportesController extends Controller
 					)
 				);
 		} catch (\Exception $e) {
-			throw $e;
-			exit;
 			$response->setContent(
 				json_encode(
 					array(
@@ -827,8 +825,6 @@ class ReportesController extends Controller
 					)
 				);
 		} catch (\Exception $e) {
-			throw $e;
-			exit;
 			$response->setContent(
 				json_encode(
 					array(

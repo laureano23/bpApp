@@ -32,9 +32,7 @@ Ext.define('MetApp.controller.Produccion.ReportesProduccionController',{
 		
 		var urlReporte, urlPdf;
 		
-		console.log(values.sector);
-		
-		if(values.sector == null){
+		if(values.tipo == null){
 			urlReporte = 'mbp_produccion_reporteOTPorSector';
 			urlPdf = 'mbp_produccion_verOTPorSector';
 		}else{
