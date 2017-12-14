@@ -150,6 +150,14 @@ class Ot
      * @ORM\Column(name="estado", type="smallint")
      */
     private $estado=0;
+	
+	/**
+     * @var \Mbp\ClientesBundle\Entity\Cliente
+     *
+     * @ORM\ManyToOne(targetEntity="Mbp\ClientesBundle\Entity\Cliente")
+     * @ORM\JoinColumn(name="clienteId", referencedColumnName="idCliente", nullable=true)	 
+     */
+    private $clienteId;
 
     /**
      * Set ot
@@ -598,5 +606,29 @@ class Ot
         $this->misOrdenes[] = $misOrdene;
 
         return $this;
+    }
+
+    /**
+     * Set clienteId
+     *
+     * @param \Mbp\ClientesBundle\Entity\Cliente $clienteId
+     *
+     * @return Ot
+     */
+    public function setClienteId(\Mbp\ClientesBundle\Entity\Cliente $clienteId = null)
+    {
+        $this->clienteId = $clienteId;
+
+        return $this;
+    }
+
+    /**
+     * Get clienteId
+     *
+     * @return \Mbp\ClientesBundle\Entity\Cliente
+     */
+    public function getClienteId()
+    {
+        return $this->clienteId;
     }
 }

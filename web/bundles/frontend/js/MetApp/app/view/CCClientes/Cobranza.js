@@ -8,6 +8,7 @@ Ext.define('MetApp.view.CCClientes.Cobranza' ,{
 	itemId: 'cobranza',
 	title: 'Cobranzas',
 	layout: 'border',
+	bodyStyle: 'background-color: transparent',
 	listeners: {
 		afterrender: function(win){
 			win.queryById('reciboNum').focus(true, 100);
@@ -25,14 +26,15 @@ Ext.define('MetApp.view.CCClientes.Cobranza' ,{
 			items: [
 				{
 					xtype: 'form',
-					border: false,
 					itemId: 'formDatosCob',
 					region: 'north',
+					border: false,
 					layout: 'vbox',
 					margins: '5 0 5 5',
 					items: [
 						{
 							xtype: 'container',
+							frame: false,
 							layout: 'hbox',
 							items: [
 								{

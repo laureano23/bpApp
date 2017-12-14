@@ -73,7 +73,7 @@ Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 							xtype: 'container',
 							layout: 'hbox',
 							defaults: {
-								margins: '5 0 0 0',
+								margins: '5 0 5 5',
 								allowBlank: false,
 							},
 							items: [

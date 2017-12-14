@@ -77,6 +77,7 @@ XML;
 		$error = array_key_exists('codigoError', $this->response);
 		
 		if($error){
+			print_r($this->response);
 			throw new \Exception($this->response['mensajeError'], 1);			
 		}
 
@@ -86,8 +87,6 @@ XML;
 
 	public function getAlicuotaPercepcion()
 	{
-		//print_r($this->response);
-		//exit;
 		$alicuota = $this->response['contribuyentes']['contribuyente']['alicuotaPercepcion'];
 		return str_replace(',', '.', $alicuota);
 	}

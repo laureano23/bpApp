@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OT" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="701769ed-d3de-4a78-92fe-e21c0125043d">
 	<property name="ireport.zoom" value="1.3310000000000015"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="143"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
@@ -51,11 +51,14 @@
      Ot.`sectorId` AS Ot_sectorId,
      Ot.`sectorEmisor` AS Ot_sectorEmisor,
      Sectores_A.`id` AS Sectores_A_id,
-     Sectores_A.`descripcion` AS Sectores_A_descripcion
+     Sectores_A.`descripcion` AS Sectores_A_descripcion,
+     cliente.`idCliente` AS cliente_idCliente,
+     cliente.`rsocial` AS cliente_rsocial
 FROM
      `articulos` articulos INNER JOIN `Ot` Ot ON articulos.`idArticulos` = Ot.`idCodigo`
      INNER JOIN `Sectores` Sectores ON Ot.`sectorId` = Sectores.`id`
      INNER JOIN `Sectores` Sectores_A ON Ot.`sectorEmisor` = Sectores_A.`id`
+     INNER JOIN `cliente` cliente ON Ot.`clienteId` = cliente.`idCliente`
 WHERE
      Ot.`ot` = $P{ot}]]>
 	</queryString>
@@ -81,11 +84,13 @@ WHERE
 	<field name="Ot_sectorEmisor" class="java.lang.Integer"/>
 	<field name="Sectores_A_id" class="java.lang.Integer"/>
 	<field name="Sectores_A_descripcion" class="java.lang.String"/>
+	<field name="cliente_idCliente" class="java.lang.Integer"/>
+	<field name="cliente_rsocial" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch">
+		<band height="100" splitType="Stretch">
 			<staticText>
 				<reportElement x="312" y="0" width="143" height="20" uuid="81e29e8f-1a07-4ee9-8242-0dbbb91bdd43"/>
 				<textElement>
@@ -127,6 +132,20 @@ WHERE
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[FECHA DE EMISION:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="370" y="60" width="185" height="20" uuid="24106aa7-442a-4b60-8d2d-0b77a28c3dac"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cliente_rsocial}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="312" y="60" width="58" height="20" uuid="fffa1cc6-f9d6-4a0f-958d-5f53d048ee8d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENTE:]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -978,9 +997,6 @@ WHERE
 			</textField>
 		</band>
 	</columnHeader>
-	<columnFooter>
-		<band height="45" splitType="Stretch"/>
-	</columnFooter>
 	<pageFooter>
 		<band height="54" splitType="Stretch"/>
 	</pageFooter>
