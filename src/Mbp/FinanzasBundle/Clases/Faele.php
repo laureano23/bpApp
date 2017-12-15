@@ -21,7 +21,9 @@ class Faele extends wsfev1
 			'msg' => 'Error al abrir el ticket xml TA'
 		);
 		//VERIFICO QUE EL WSAA 
-		if($this->wsaa->get_expiration() < date("Y-m-d h:m:i")) {
+		$time = strtotime($this->wsaa->get_expiration());
+		$newTime = \DateTime::createFromFormat('U', $time);
+		if($newTime < new \DateTime) {
 			if ($this->wsaa->generar_TA()) {				
 			} else {
 				return array(
