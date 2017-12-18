@@ -41,8 +41,15 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.SeguimientoOTController'
 			},
 			'VerCodigoOTView button[itemId=verOT]': {
 				click: this.DevolverOT
+			},
+			'VerCodigoOTView': {
+				close: this.CerrarWin
 			}
 		});
+	},
+	
+	CerrarWin: function(win){
+		win.down('grid').getStore().clearFilter();
 	},
 		
 	SeguimientoOtView: function(btn){
@@ -116,6 +123,8 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.SeguimientoOTController'
 		var data = selection.data;
 		
 		var seguimientoView = me.getSeguimientoView();
+		
+		console.log(data);
 		
 		seguimientoView.queryById('otNum').setValue(data.otNum);
 		seguimientoView.queryById('codigo').setValue(data.codigo);

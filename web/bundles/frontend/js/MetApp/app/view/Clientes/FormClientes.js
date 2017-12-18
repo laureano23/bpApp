@@ -27,7 +27,7 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 						{
 							xtype: 'container',	
 							defaults: {								
-								disabled: true,
+								readOnly: true,
 								disabledCls: 'myDisabledClass'
 							},					
 							height: 50,
@@ -47,7 +47,7 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 								},
 								{
 									xtype: 'button',
-									disabled: false,
+									readOnly: true,
 									iconCls: 'search',
 									action: 'buscaCliente',
 									itemId: 'buscarCliente'
@@ -67,7 +67,7 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 							xtype: 'container',
 							height: 50,
 							defaults: {								
-								disabled: true,
+								readOnly: true,
 								disabledCls: 'myDisabledClass'
 							},
 							layout: {
@@ -88,7 +88,7 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 							xtype: 'container',
 							defaults: {
 								padding: '5 5 0 5',
-								disabled: true,
+								readOnly: true,
 								disabledCls: 'myDisabledClass'
 							},
 							layout: 'column',
@@ -137,7 +137,7 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 							xtype: 'container',
 							defaults: {
 								padding: '5 5 0 5',
-								disabled: true,
+								readOnly: true,
 								disabledCls: 'myDisabledClass'
 							},
 							layout: 'column',
@@ -175,7 +175,7 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 								{
 									title: 'Posicion IVA',
 									defaults: {
-										disabled: true,
+										readOnly: true,
 										disabledCls: 'myDisabledClass'
 									},
 									columnWidth: 0.33,
@@ -209,7 +209,7 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 											layout: 'hbox',
 											defaults: {
 												border: false,
-												disabled: true,
+												readOnly: true,
 												disabledCls: 'myDisabledClass'
 											},
 											margin: '2 0 2 0',
@@ -239,7 +239,7 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 											xtype: 'container',
 											defaults: {
 												border: false,
-												disabled: true,
+												readOnly: true,
 												disabledCls: 'myDisabledClass'
 											},
 											layout: 'hbox',
@@ -269,7 +269,7 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 											xtype: 'container',
 											defaults: {
 												border: false,
-												disabled: true,
+												readOnly: true,
 												disabledCls: 'myDisabledClass'
 											},
 											layout: 'hbox',
@@ -311,14 +311,14 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 											fieldLabel: 'Condicion de Vta:',
 											width: 570,
 											labelWidth: 120,
-											disabled: true,
+											readOnly: true,
 											disabledCls: 'myDisabledClass'
 										},
 										{
 											xtype: 'container',
 											defaults: {
 												padding: '5 0 0 0',
-												disabled: true,
+												readOnly: true,
 												disabledCls: 'myDisabledClass'
 											},
 											layout: 'hbox',
@@ -355,7 +355,7 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 									title: 'Percepciones',
 									columnWidth: 0.33,
 									defaults: {
-										disabled: true,
+										readOnly: true,
 										disabledCls: 'myDisabledClass'
 									},
 									items: [

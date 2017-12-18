@@ -51,11 +51,18 @@
      Ot.`sectorId` AS Ot_sectorId,
      Ot.`sectorEmisor` AS Ot_sectorEmisor,
      Sectores_A.`id` AS Sectores_A_id,
-     Sectores_A.`descripcion` AS Sectores_A_descripcion
+     Sectores_A.`descripcion` AS Sectores_A_descripcion,
+     cliente.`idCliente` AS cliente_idCliente,
+     cliente.`rsocial` AS cliente_rsocial,
+     users.`id` AS users_id,
+     users.`username` AS users_username,
+     Ot.`clienteId` AS Ot_clienteId
 FROM
      `articulos` articulos INNER JOIN `Ot` Ot ON articulos.`idArticulos` = Ot.`idCodigo`
      INNER JOIN `Sectores` Sectores ON Ot.`sectorId` = Sectores.`id`
      INNER JOIN `Sectores` Sectores_A ON Ot.`sectorEmisor` = Sectores_A.`id`
+     LEFT OUTER JOIN `cliente` cliente ON Ot.`clienteId` = cliente.`idCliente`
+     INNER JOIN `users` users ON Ot.`idUsuario` = users.`id`
 WHERE
      Ot.`ot` = $P{ot}]]>
 	</queryString>
@@ -81,11 +88,16 @@ WHERE
 	<field name="Ot_sectorEmisor" class="java.lang.Integer"/>
 	<field name="Sectores_A_id" class="java.lang.Integer"/>
 	<field name="Sectores_A_descripcion" class="java.lang.String"/>
+	<field name="cliente_idCliente" class="java.lang.Integer"/>
+	<field name="cliente_rsocial" class="java.lang.String"/>
+	<field name="users_id" class="java.lang.Integer"/>
+	<field name="users_username" class="java.lang.String"/>
+	<field name="Ot_clienteId" class="java.lang.Integer"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch">
+		<band height="100" splitType="Stretch">
 			<staticText>
 				<reportElement x="312" y="0" width="143" height="20" uuid="81e29e8f-1a07-4ee9-8242-0dbbb91bdd43"/>
 				<textElement>
@@ -128,6 +140,35 @@ WHERE
 				</textElement>
 				<text><![CDATA[FECHA DE EMISION:]]></text>
 			</staticText>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="370" y="60" width="185" height="20" uuid="24106aa7-442a-4b60-8d2d-0b77a28c3dac"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cliente_rsocial}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="312" y="60" width="58" height="20" uuid="fffa1cc6-f9d6-4a0f-958d-5f53d048ee8d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENTE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="58" height="20" uuid="ad41811d-e422-4ea2-9b0e-8e5e350884b8"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[EMISOR:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="57" y="0" width="132" height="20" uuid="4d6e2b79-ee64-456e-94d7-032d3897022d"/>
+				<box leftPadding="2"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{users_username}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
@@ -978,9 +1019,6 @@ WHERE
 			</textField>
 		</band>
 	</columnHeader>
-	<columnFooter>
-		<band height="45" splitType="Stretch"/>
-	</columnFooter>
 	<pageFooter>
 		<band height="54" splitType="Stretch"/>
 	</pageFooter>

@@ -8,6 +8,7 @@ Ext.define('MetApp.view.Produccion.OrdenesTrabajo.VerOTView', {
 	autoShow: true,
 	
 	
+	
 	initComponent: function(){		
 				
 		var me = this;

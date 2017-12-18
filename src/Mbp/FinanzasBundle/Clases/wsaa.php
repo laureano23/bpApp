@@ -181,6 +181,8 @@ class wsaa {
 	} else {
 		$r = $this->TA['header']['expirationTime'];
 	}
+	//print_r($r);
+	//exit;
 	return $r;
 	}
 	

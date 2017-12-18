@@ -12,7 +12,7 @@ use Mbp\ProduccionBundle\Entity\Ot;
 
 class OtController extends Controller
 {	
-	/**
+	/** 
      * @Route("/nuevaot", name="mbp_produccion_nuevaot", options={"expose"=true})
      */
     public function nuevaOt()
@@ -32,6 +32,7 @@ class OtController extends Controller
 			$repoClientes = $em->getRepository('MbpClientesBundle:Cliente');
 			$repoSectores = $em->getRepository('MbpProduccionBundle:Sectores');
 			$repoOt = $em->getRepository('MbpProduccionBundle:Ot');
+			$repoCliente = $em->getRepository('MbpClientesBundle:Cliente');
 			
 			//BUSCO ARTICULO
 			$articulo = $repoArticulos->findByCodigo($stdObj->codigo);
@@ -42,8 +43,18 @@ class OtController extends Controller
 			//BUSCO SECTOR
 			$sector = $repoSectores->find($stdObj->tipo);
 			
+			//BUSCO CLIENTE
+			$cliente = $repoCliente->find($stdObj->idCliente);
+			
 			//BUSCO EL SECTOR DEL USUARIO QUE EMITE LA OT
 			$sectorEmisor = $repoSectores->find($usuario->getSectorId());
+			
+			//LANZAMOS ERRORES
+			if(empty($articulo)) throw new \Exception("No existe el articulo ingresado", 1);
+			if(empty($sector)) throw new \Exception("No existe el sector ingresado", 1);
+			if(empty($cliente)) throw new \Exception("No existe el cliente ingresado", 1);
+			
+			
 			
 	        $ot = new Ot;
 			$ot->setFechaEmision(new \DateTime);
@@ -55,6 +66,7 @@ class OtController extends Controller
 			$ot->setIdUsuario($usuario);
 			$ot->setSectorId($sector);
 			$ot->setSectorEmisor($sectorEmisor);
+			$ot->setClienteId($cliente);
 			
 			//SI EXISTEN ORDENES ASOCIADAS LAS AGREGO
 			foreach ($ordenesAsociadas as $otA) {				
@@ -102,7 +114,6 @@ class OtController extends Controller
 				json_encode(array('success' => true, 'ot' => $ot->getOt()))
 			);
 		}catch(\Exception $e){
-			throw $e;
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR); 
 			return $response->setContent(
 					json_encode(array('success' => false, 'msg' => $e->getMessage()))
@@ -261,30 +272,14 @@ class OtController extends Controller
 			//BUSCO USUARIO PARA OBTENER SU SECTOR
 			$usuario = $this->get('security.context')->getToken()->getUser();
 			$sector = $usuario->getSectorId();
-			$listado=array();
-			
-			if($sector->getDescripcion() == "PRODUCTO FINAL"){
-				$repoArt = $em->getRepository('MbpArticulosBundle:Articulos');				
-				$dbfService = $this->get('DBF.class');
-				
-				$dbfService->initLoad("OTRABAJO.DBF");
-				
-				//CARGO LAS OTS EXTERNAS
-				$this->cargarOtExterna($usuario);
-				
-				$listado = $repo->listarOrdenesExternas();
-				
-			}else{
-				$listado = $repo->listarOrdenesParaProgramacion($sector);
-			}
-			
-			
+			$listado = $repo->listarOrdenesParaProgramacion($sector);
 			
 			
 			$response->setContent(json_encode(array(
 				'data' => $listado,
 				'success' => true,
 			)));
+			
 			
 			return $response;
 		}catch(\Exception $e){
@@ -297,78 +292,6 @@ class OtController extends Controller
 		}
 	}
 
-	private function cargarOtExterna($usuario)
-	{
-		$em = $this->getDoctrine()->getManager();
-		$repo = $em->getRepository('MbpProduccionBundle:Ot');
-		$repoArt = $em->getRepository('MbpArticulosBundle:Articulos');		
-		$repoSectores = $em->getRepository('MbpProduccionBundle:Sectores');		
-		$dbfService = $this->get('DBF.class');		
-		$dbfService->initLoad("OTRABAJO.DBF");
-		$pusher = $this->container->get('lopi_pusher.pusher');//NOTIFICADOR
-		
-		while(($record = $dbfService->GetNextRecord(true)) and !empty($record)) {
-	    	if($record['TER'] == 1){
-	    		//BUSCAMOS SI LA OT YA ESTA CARGADA
-	    		$prueba = $record;
-	    		$ot = $repo->findOneByOtExterna($record['NUMERO']);
-				
-				if(empty($ot)){
-				 //print_r($record);
-					$sector;
-					switch ($record['CLA']) {
-						case 1:
-							$sector = $repoSectores->findOneByDescripcion('MECANIZADO');
-							break;						
-						case 2:
-							$sector = $repoSectores->findOneByDescripcion('RADIADORES');
-							break;
-						case 3:
-							$sector = $repoSectores->findOneByDescripcion('SOLDADO');
-							break;
-						case 4:
-							$sector = $repoSectores->findOneByDescripcion('PANELES PLACA BARRA');
-							break;
-						case 5:
-							$sector = $repoSectores->findOneByDescripcion('FUNDICION');
-							break;
-						case 6:
-							$sector = $repoSectores->findOneByDescripcion('PANELES DE TUBO');
-							break;
-						default:
-							throw new \Exception("No se encuentra el sector", 1);							
-							break;
-					}
-				 
-					$art = $repoArt->findOneByCodigo($record['CODIGO']);					
-					$fechaProg = \DateTime::createFromFormat('Ymd', $record['FEC_PRG']);
-					
-					$ot = new Ot;
-					$ot->setFechaEmision(new \DateTime);
-					$ot->setIdCodigo($art);
-					$ot->setCantidad($record['CANTIDAD']);
-					$ot->setFechaProg($fechaProg);
-					$ot->setIdUsuario($usuario);
-					$ot->setSectorId($sector);
-					$ot->setSectorEmisor($usuario->getSectorId());	
-					$ot->setOtExterna($record['NUMERO']);
-					
-					$em->persist($ot);
-					$em->flush();
-					
-					//NOTIFICACION
-					
-					
-				    $data=array(
-						'message' => 'Se ingreso la OT: '.$ot->getOt().". Verificar panel de programacion",
-						'sectorReceptor' => $sector->getDescripcion()
-					);
-					
-				    $pusher->trigger('my-channel', 'my-event', json_encode($data));
-				}	    		
-	    	}
-	    }
-	}
 	
 	/**
      * @Route("/listarOrdenesParaProgramacionEmisor", name="mbp_produccion_ListarOrdenesProgEmisor", options={"expose"=true})
@@ -470,7 +393,7 @@ class OtController extends Controller
 			$ot = $request->request->get('ot');	
 			$repo = $em->getRepository('MbpProduccionBundle:Ot');
 			
-			$resp = $repo->findByOtExterna($ot);
+			$resp = $repo->findByOt($ot);
 			
 			$arrayResp = array();
 			$datosOt;
