@@ -306,62 +306,7 @@ class LiquidacionEnLote
 		array_push($this->errores, $strError);
 	}
 	
-	/*
-	 * FUNCION QUE DE ACUERDO AL PERIODO A LIQUIDAR Y AL MES CALCULA LAS HORAS NORMALES
-	 * */
-	private function CalcularHorasNormales()
-	{
-		$empleados = $this->getEmpleadosCollection()->getEmpleado();
-		
-				
-		$dias=0;
-		$diasMes = cal_days_in_month(CAL_GREGORIAN, $this->mes, $this->anio);
-		
-		if($this->periodo == 1){
-			$fechas = $empleados[0]->getFecha();
-			
-			foreach ($fechas as $fechaEntrada) {
-				if(array_key_exists('fecha', $fechaEntrada) == false) continue;
-				if($fechaEntrada['fecha']->format('D') != 'Sat' && $fechaEntrada['fecha']->format('D') != 'Sun'){
-					$dias++;
-				}				
-			}
-			$this->horasNormales = $dias*self::$hsNormales;	
-		}
-		
-		if($this->periodo == 2){
-			
-			foreach ($empleados[0]->getFecha() as $fechaEntrada) {
-				if($fechaEntrada['fecha']->format('D') == 'Sat' || $fechaEntrada['fecha']->format('D') == 'Sun'){
-					$dias++;	
-				}				
-			}
-			
-			$this->horasNormales = ($diasMes - 15 - $dias) * self::$hsNormales;	
-		}
-		
-		
-		
-		if($this->periodo == 3){
-			foreach ($empleados[0]->getFecha() as $fechaEntrada) {
-				if($fechaEntrada['fecha']->format('D') != 'Sat' && $fechaEntrada['fecha']->format('D') != 'Sun'){
-					$dias++;	
-				}				
-			}
-			$this->diasMensuales = $dias;	
-		}
-		
-		/* SI TENEMOS UN FERIADO SABADO O DOMINGO DEBEMOS AUMENTAR LAS HS NORMALES */
-		$fechaEntrada = $empleados[0]->getFecha();
-		$ultimaFecha=count($fechaEntrada) - 1;
-		foreach ($empleados[0]->getObservaciones() as $obs) {			
-			if($obs == 6 && $fechaEntrada[$ultimaFecha]['fecha']->format('D') == 'Sat' || $obs == 6 && $fechaEntrada[$ultimaFecha]['fecha']->format('D') == 'Sun'){
-				$this->horasNormales += 9;
-				
-			}
-			$ultimaFecha--;
-		}
-	}
+	
 	
 	/*
 	 * FUNCION PARA CALCULAR LAS HORAS TRABAJADAS DE LA COLECCION DE EMPLEADOS
@@ -375,7 +320,7 @@ class LiquidacionEnLote
 			$horas = 0;
 			$minutosSalida = 0;
 			$minutosEntrada = 0;
-			
+			$hsExtras=0;
 						
 			
 			$dia=0;
@@ -386,6 +331,15 @@ class LiquidacionEnLote
 					$horas = $horas + ($fecha['fichadaS'][$contadorSalida]->format('H') - $fichada->format('H'));
 					$minutosSalida = $minutosSalida + ($fecha['fichadaS'][$contadorSalida]->format('i'));
 					$minutosEntrada = $minutosEntrada + ($fecha['fichadaE'][$contadorSalida]->format('i'));
+					
+					if($fecha['fichadaE'][$contadorSalida]->format('i') >= 30){
+						$horas += 0.5;
+					}
+					
+					if($fecha['fichadaE'][$contadorSalida]->format('H') > 15){
+						$horas += 1;
+					}
+					
 					$contadorSalida++;
 				}
 				$dia++;											
@@ -404,24 +358,12 @@ class LiquidacionEnLote
 				$horas += $hsJustificadas;
 			}
 			
-			//SON LAS HORAS QUE EL EMPLEADO DEBERIA HABER TRABAJO
-			$hsATrabajar = $this->horasNormales - $hsJustificadas;		
 			
-			$hsNormales = 0;
-			$hsExtras = 0;
-			
-			
-			if($horas <= $hsATrabajar){
-				$hsNormales = $horas;
-				$hsExtras = 0;
-				
-			}else{				
-				$hsNormales = $hsATrabajar;
-				$hsExtras = $horas - $this->horasNormales;
-				$hsExtras <= 0 ? $hsExtras = 0 : $hsExtras;
-			}	
 			$empleado->setHsNormalesTrabajadas($hsNormales);
 			$empleado->setHsExtrasTrabajadas($hsExtras);
+			
+			print_r($empleado);
+			exit;
 		}
 	}
 
