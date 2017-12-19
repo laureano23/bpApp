@@ -915,6 +915,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.model.Articulos.DepositoArticulosModel": [],
   "MetApp.model.Articulos.Familia": [],
   "MetApp.model.Articulos.Formulas": [],
+  "MetApp.model.Articulos.RemitosModel": [],
   "MetApp.model.Articulos.SubFamilia": [],
   "MetApp.model.Bancos.ConceptosBancoModel": [],
   "MetApp.model.Bancos.MovimientosBancoModel": [],
@@ -974,6 +975,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.store.Articulos.FamiliaStore": [],
   "MetApp.store.Articulos.Formula": [],
   "MetApp.store.Articulos.FormulaEnfriadoresStore": [],
+  "MetApp.store.Articulos.RemitosPendientesStore": [],
   "MetApp.store.Articulos.SubFamiliaStore": [],
   "MetApp.store.Bancos.ConceptosBancoStore": [],
   "MetApp.store.Bancos.MovimientosBancoStore": [],
@@ -1034,6 +1036,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.view.Articulos.Stock.EntradaSalidaArticulos": [],
   "MetApp.view.Articulos.Stock.Remitos.ArticulosOrdenCompraView": [],
   "MetApp.view.Articulos.Stock.Remitos.RemitoClienteView": [],
+  "MetApp.view.Articulos.Stock.Remitos.RemitosPendientesView": [],
   "MetApp.view.Articulos.SubFamiliaView": [],
   "MetApp.view.Articulos.WinArticuloSearch": [],
   "MetApp.view.Bancos.ConceptosBancoView": [],
@@ -2173,6 +2176,7 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.model.Articulos.DepositoArticulosModel": [],
   "MetApp.model.Articulos.Familia": [],
   "MetApp.model.Articulos.Formulas": [],
+  "MetApp.model.Articulos.RemitosModel": [],
   "MetApp.model.Articulos.SubFamilia": [],
   "MetApp.model.Bancos.ConceptosBancoModel": [],
   "MetApp.model.Bancos.MovimientosBancoModel": [],
@@ -2249,6 +2253,9 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.store.Articulos.Formula": [],
   "MetApp.store.Articulos.FormulaEnfriadoresStore": [
     "store.FormulaEnfriadoresStore"
+  ],
+  "MetApp.store.Articulos.RemitosPendientesStore": [
+    "store.RemitosPendientesStore"
   ],
   "MetApp.store.Articulos.SubFamiliaStore": [
     "subFamiliaStore"
@@ -2425,6 +2432,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "MetApp.view.Articulos.Stock.Remitos.RemitoClienteView": [
     "widget.RemitoClienteView"
+  ],
+  "MetApp.view.Articulos.Stock.Remitos.RemitosPendientesView": [
+    "widget.RemitosPendientesView"
   ],
   "MetApp.view.Articulos.SubFamiliaView": [
     "widget.SubFamiliaView"

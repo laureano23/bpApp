@@ -478,12 +478,16 @@ class ReportesController extends Controller
 				     Sectores_A.`id` AS Sectores_A_id,
 				     Sectores_A.`descripcion` AS Sectores_A_descripcion,
 				     cliente.`idCliente` AS cliente_idCliente,
-				     cliente.`rsocial` AS cliente_rsocial
+				     cliente.`rsocial` AS cliente_rsocial,
+				     users.`id` AS users_id,
+				     users.`username` AS users_username,
+				     Ot.`clienteId` AS Ot_clienteId
 				FROM
 				     `articulos` articulos INNER JOIN `Ot` Ot ON articulos.`idArticulos` = Ot.`idCodigo`
 				     INNER JOIN `Sectores` Sectores ON Ot.`sectorId` = Sectores.`id`
 				     INNER JOIN `Sectores` Sectores_A ON Ot.`sectorEmisor` = Sectores_A.`id`
-				     INNER JOIN `cliente` cliente ON Ot.`clienteId` = cliente.`idCliente`
+				     LEFT OUTER JOIN `cliente` cliente ON Ot.`clienteId` = cliente.`idCliente`
+				     INNER JOIN `users` users ON Ot.`idUsuario` = users.`id`
 				WHERE
 				     Ot.`ot` = $ot
 			";

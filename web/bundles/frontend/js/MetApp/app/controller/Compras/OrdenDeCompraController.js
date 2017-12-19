@@ -429,8 +429,6 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 			value: val,
 			anyMatch: true}
 		);
-		console.log(store);
-		console.log(val);
 	}
 });
 

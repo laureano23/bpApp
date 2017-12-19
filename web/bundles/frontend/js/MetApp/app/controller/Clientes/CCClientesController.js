@@ -7,13 +7,15 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		'MetApp.store.Finanzas.CCClientesStore',
 		'MetApp.store.Finanzas.GrillaFacturacionStore',
 		'MetApp.store.Finanzas.TiposPagoStore',
-		'Finanzas.GridImputaFcStore'
+		'Finanzas.GridImputaFcStore',
+		'MetApp.store.Articulos.RemitosPendientesStore'
 	],
 	views: [
 		'CCClientes.CCClientes',
 		'MetApp.view.CCClientes.Facturacion',
 		'MetApp.view.CCClientes.Cobranza',
-		'MetApp.resources.ux.MailerWindow'
+		'MetApp.resources.ux.MailerWindow',
+		'Articulos.Stock.Remitos.RemitosPendientesView',
 	],
 	refs:[
 		{
@@ -27,7 +29,8 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 	],
 	
 	init: function(){
-		var me = this;
+		var me = this;		
+		
 		me.control({
 			'#tbCCClientes': {
 				click: this.AddCCClientesTb
@@ -67,6 +70,9 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			},
 			'facturacion button[itemId=btnSave]': {
 				click: this.GuardarFactura
+			},
+			'facturacion button[itemId=btnRemito]': {
+				click: this.RemitosPendientes
 			},
 			'cobranza button[itemId=btnEdit]': {
 				click: this.EditaItemCob
@@ -153,7 +159,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		store.loadData([], false);
 						
 		/* ESCUCHA CAMBIOS DEL STORE PARA ACTUALIZAR SUBTOTALES Y TOTAL */
-		store.on('datachanged', function(store){	
+		store.on('datachanged', function(store){
 			var win = me.getFacturacion();
 			var aux = 0;
 			var fieldSub = win.queryById('subTotal');
@@ -165,7 +171,8 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 				fieldTotal.setValue(0);
 			}else{
 				store.each(function(rec){
-					var data = rec.getData();				
+					rec.data.parcial = rec.data.cantidad * rec.data.precio;
+					var data = rec.getData();									
 					subTotal = data.parcial + aux;
 					aux = subTotal;
 				});
@@ -495,6 +502,44 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 				});
 			}
 		});
+	},
+	
+	RemitosPendientes: function(btn){
+		var viewFacturacion = btn.up('window');
+		var view = Ext.widget('RemitosPendientesView');
+		
+		var grid = view.down('grid');
+		var store = grid.getStore();
+		
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_articulos_remitosPendientesFacturacion'),
+			
+			success: function(resp){
+				var jsonResp = Ext.JSON.decode(resp.responseText);
+				store.loadRawData(jsonResp);
+			},
+			
+			failure: function(resp){
+				
+			}
+		});
+		
+		view.down('button').on('click', function(){
+			var selection = grid.getStore().findRecord('facturado', true, 0, true);
+			var gridFacturacion = viewFacturacion.down('grid');
+			var storeFacturacion = gridFacturacion.getStore();
+			var data={'items': []};
+			store.each(function(rec){
+				if(rec.data.facturado == true){
+					rec.data.parcial = rec.data.cantidad * rec.data.precio;
+					data.items.push(rec.data);	
+				}				
+			});
+			storeFacturacion.loadRawData(data);
+			
+			view.close();
+		});
+		
 	},
 	
 	AddNuevoCobro: function(btn){
