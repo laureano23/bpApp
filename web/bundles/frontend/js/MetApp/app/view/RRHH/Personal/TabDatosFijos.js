@@ -3,7 +3,7 @@ Ext.define('MetApp.view.RRHH.Personal.TabDatosFijos', {
 	modal: true,	
 	width: 900,
 	height: 350,
-	layout: 'border',
+	layout: 'fit',
 	border: false,
 	itemId: 'personalDatosFijos',
 	alias: 'widget.personalDatosFijos',	
@@ -25,6 +25,7 @@ Ext.define('MetApp.view.RRHH.Personal.TabDatosFijos', {
 				{
 					xtype: 'container',
 					frame: false,
+					border: false,
 					defaults: {
 						allowBlank: false,
 						readOnlyCls: 'myDisabledClass',
@@ -63,12 +64,17 @@ Ext.define('MetApp.view.RRHH.Personal.TabDatosFijos', {
 					readOnlyCls: 'myDisabledClass'
 				},
 				{
+					xtype: 'button',
+					text: 'Insertar',
+					action: 'actSave'
+				},
+				{
 					xtype: 'grid',
 					border: false,
 					frame: false,
 					itemId: 'gridDatosFijos',
 					store: 'MetApp.store.Personal.PersonalDatosFijosStore',
-					width: 450,
+					width: 550,
 					layout: 'fit',
 					columns: [
 						{ 
@@ -96,6 +102,15 @@ Ext.define('MetApp.view.RRHH.Personal.TabDatosFijos', {
 							renderer: function(val){
 								return val.importe;
 							}
+						},
+						{							
+							header: 'Borrar',
+							itemId: 'eliminarDatoFijo',
+							xtype: 'actioncolumn',
+							items: [
+								{ iconCls: 'delete' }										
+							],	
+							flex: 1
 						}
 					]
 				},							

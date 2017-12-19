@@ -58,13 +58,10 @@ Ext.define('MetApp.controller.RRHH.PersonalController', {
 			/*			 
 			 * TAB CONCEPTOS
 			 * */
-			'personalWin container[itemId=btnDatosFijos] button[action=actNew]': {
-				click: this.NuevoDatoFijo
-			},
-			'personalWin container[itemId=btnDatosFijos] button[action=actSave]': {
+			'personalWin form[itemId=formDatosFijos] button[action=actSave]': {
 				click: this.GuardarDatoFijo
 			},
-			'personalWin container[itemId=btnDatosFijos] button[action=actDelete]': {
+			'personalWin grid[itemId=gridDatosFijos] actioncolumn[itemId=eliminarDatoFijo]': {
 				click: this.EliminarDatoFijo
 			},
 			
@@ -214,11 +211,6 @@ Ext.define('MetApp.controller.RRHH.PersonalController', {
 					//BOTONERA DATOS PERSONALES										
 					var botonera = win.queryById('botonera'); 
 					botonera.busquedaItem(botonera);
-					
-					//BOTONERA DATOS FIJOS
-					var cntFijos = win.queryById('btnDatosFijos');
-					var botoneraFijos = cntFijos.queryById('botonera');
-					botoneraFijos.busquedaItem(botoneraFijos);	
 				}		
 			});			
 			searchPersonal.close();
@@ -382,17 +374,6 @@ Ext.define('MetApp.controller.RRHH.PersonalController', {
 		});
 	},
 	
-	NuevoDatoFijo: function(btn){
-		var win = btn.up('window');
-		var form = win.down('form [itemId=formDatosFijos]');
-		var cntBotonera = win.queryById('btnDatosFijos');
-		var botonera = cntBotonera.queryById('botonera');
-		
-		var btnSearch = win.queryById('btnSearchConcepto');
-		btnSearch.setDisabled(false);
-		botonera.nuevoItem(botonera);
-	},
-	
 	GuardarDatoFijo: function(btn){
 		var win = btn.up('window');
 		var form = win.down('form [itemId=formDatosFijos]');
@@ -410,8 +391,7 @@ Ext.define('MetApp.controller.RRHH.PersonalController', {
 			
 						
 			store.on('write', function(store, operation){
-				if(operation.action == 'create' && operation.success == true){
-					botonera.guardarItem(botonera);
+				if(operation.action == 'create' && operation.success == true){					
 					form.getForm().reset();
 				}
 			});
@@ -420,13 +400,9 @@ Ext.define('MetApp.controller.RRHH.PersonalController', {
 		form.getForm().markInvalid();
 	},
 	
-	EliminarDatoFijo: function(btn){
-		var win = btn.up('window');
-		var tabFijos = win.queryById('personalDatosFijos');
-		var form = tabFijos.down('form');
-		var grid = tabFijos.down('grid');
+	EliminarDatoFijo: function(grid, colIndex, rowIndex){
 		var store = grid.getStore();
-		var selection = grid.getSelectionModel().getSelection()[0];
+		var selection = grid.getStore().getAt(rowIndex);
 		
 		var proxy = store.getProxy();
 		proxy.setExtraParam('idP', selection.data.datosFijos.idP);
