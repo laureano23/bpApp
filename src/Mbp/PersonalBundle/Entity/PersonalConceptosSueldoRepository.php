@@ -72,10 +72,6 @@ class PersonalConceptosSueldoRepository extends \Doctrine\ORM\EntityRepository
 			
 			$em->remove($res[0]);
 			$em->flush();
-			
-			echo json_encode(array(
-				'success' => true
-			));
 		}catch(\Doctrine\ORM\ORMException $e){
 			$this->get('logger')->error($e->getMessage());
 		}

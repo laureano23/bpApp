@@ -107,7 +107,7 @@ class LiquidacionEnLoteController extends RecibosController
 				)));
 			
 		}catch(\Exception $e){
-			//throw $e;
+			throw $e;
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(
 				json_encode(

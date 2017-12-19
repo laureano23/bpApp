@@ -31,3 +31,5 @@
 
 /bin/
 
+#EXCLUIMOS TODOS LOS ARCHIVOS PDF
+*.pdf
