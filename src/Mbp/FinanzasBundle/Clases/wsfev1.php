@@ -136,9 +136,7 @@ class wsfev1 {
 							'Cuit' => self::CUIT),
 			'PtoVta' => $ptovta,
 			'CbteTipo' => $tipo_cbte));
-	//print_r($results);	
     $e = $this->_checkErrors($results, 'FECompUltimoAutorizado');
-	//var_dump($results->FECompUltimoAutorizadoResult->CbteNro);
     return $e == false ? $results->FECompUltimoAutorizadoResult->CbteNro : false;
 	} //end function FECompUltimoAutorizado
   

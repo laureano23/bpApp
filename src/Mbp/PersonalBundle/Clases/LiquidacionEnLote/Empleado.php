@@ -29,6 +29,36 @@ class Empleado
 	public function setLegajo($legajo){
 		$this->legajo = $legajo;
 	}
+	
+	public function getLegajo(){
+		return $this->legajo;		
+	}
+	
+	public function setNombre($nombre){
+		$this->nombre = $nombre;
+	}
+	
+	public function getNombe(){
+		return $this->nombre;
+	}
+	
+	public function setFecha($fecha){
+		$fecha = \DateTime::createFromFormat('d-m-Y', $fecha);
+		array_push($this->fecha['fecha'], $fecha);
+	}
+	
+	public function getFecha(){
+		return $this->fecha;
+	}
+	
+	public function setEntrada($entrada){
+		$entrada = \DateTime::createFromFormat('H:i', $entrada);
+		array_push($this->fecha['entrada'], $entrada);
+	}
+	
+	public function getEntrada(){
+		return $this->fecha;
+	}
 }
 
 

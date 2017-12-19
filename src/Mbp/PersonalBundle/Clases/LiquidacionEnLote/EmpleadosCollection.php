@@ -101,18 +101,16 @@ class EmpleadosCollection
 			$empleado->setNombre($activeSheet->getCell($this->columnas[self::$columnNombre].$fila)->getValue());		
 					
 			do{//CARGO LOS ARRAYS DE FECHA, DIA Y HORARIOS							
-				$empleado->addFecha($activeSheet->getCell($this->columnas[self::$columnFecha].$fila)->getValue());
-				$empleado->addDia($activeSheet->getCell($this->columnas[self::$columnDia].$fila)->getValue());
+				$empleado->setFecha($activeSheet->getCell($this->columnas[self::$columnFecha].$fila)->getValue());
+				$empleado->setFecha($activeSheet->getCell($this->columnas[self::$columnDia].$fila)->getValue());
 								
 				$contFichadas = 0; //PARA AVANZAR POR LAS COLUMNAS DE FICHADAS (ENTRADAS Y SALIDAS)
 				//BUCLE PARA CARGAR TODAS LAS ENTRADAS Y SALIDAS
 				do{
 					$entrada = $activeSheet->getCell($this->columnas[self::$columnaEntradas + $contFichadas].$fila)->getValue();
 					$salida = $activeSheet->getCell($this->columnas[self::$columnaSalidas + $contFichadas].$fila)->getValue();
-					$empleado->addEntradas($entrada);
-					$empleado->addSalidas($salida);
-					$empleado->addFichadaEntrada($entrada);					
-					$empleado->addFichadaSalida($salida);
+					$empleado->setEntrada($entrada);
+					$empleado->setSalida($salida);
 					$contFichadas += 2;
 						
 				}while($contFichadas < 10);
