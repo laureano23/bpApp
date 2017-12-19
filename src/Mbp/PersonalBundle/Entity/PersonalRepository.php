@@ -16,7 +16,9 @@ class PersonalRepository extends EntityRepository
 	public function listarPersonal()
 	{
 		$em = $this->getEntityManager();
-		$dql = 'SELECT p.idP, p.nombre FROM MbpPersonalBundle:Personal p';
+		$dql = 'SELECT p.idP, p.nombre FROM MbpPersonalBundle:Personal p
+			WHERE p.inactivo = 0
+			ORDER BY p.nombre ASC';
 		
 		try{
 			$reg = $em->createQuery($dql);

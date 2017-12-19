@@ -517,6 +517,11 @@ Ext.define('MetApp.controller.RRHH.RecibosController', {
 			success: function(resp){
 				var ruta = Routing.generate('mbp_personal_resumenAguinaldoPdf');
 		    	window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+		    	myMask.hide();
+			},
+			
+			failure: function(resp){
+				myMask.hide();
 			}
 		})
 		
