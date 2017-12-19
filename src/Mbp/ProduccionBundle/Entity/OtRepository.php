@@ -156,7 +156,7 @@ class OtRepository extends EntityRepository
 					 ELSE 'No comenzada' END as estado")
 			->join('o.idCodigo', 'codigo')
 			->join('o.sectorId', 'c')
-			->where('o.otExterna IS NOT NULL')
+			//->where('o.otExterna IS NOT NULL')
 			->orderBy('otNum', 'DESC')
 			->getQuery()
 			->getArrayResult();
