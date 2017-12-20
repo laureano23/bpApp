@@ -31,6 +31,10 @@ class Empleado
 		
 	}
 	
+	public function ordenarObs(){
+		sort($this->observaciones);
+	}
+	
 	public function getHsJustificadas()
 	{
 		return $this->hsJustificadas;
@@ -175,8 +179,8 @@ class Empleado
 	public function addObservacion($observacion){
 		$obs = str_split($observacion, 2);
 		if($obs[0]==""){
-			$this->fecha[0]['novedades'] = -1;
-			array_push($this->observaciones, -1);
+			//$this->fecha[0]['novedades'] = -1;
+			//array_push($this->observaciones, -1);
 		}else{
 			$this->fecha[0]['novedades'] = (int)$obs[0];
 			array_push($this->observaciones, (int)$obs[0]);	

@@ -136,6 +136,8 @@ class EmpleadosCollection
 			
 		} while ($activeSheet->getCell($this->columnas[self::$columnLegajo].($fila))->getValue() != "");
 		
+		$empleado->ordenarObs();
+		
 	}	
 
 	private function ValidarColeccionEmpleados()
