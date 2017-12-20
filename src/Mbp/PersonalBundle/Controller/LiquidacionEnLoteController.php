@@ -465,7 +465,56 @@ class LiquidacionEnLoteController extends RecibosController
 		$em = $this->getDoctrine()->getManager();
 		$repoConceptos = $em->getRepository('MbpPersonalBundle:CodigoSueldos');
 		
-		
+		foreach ($this->objLote->getEmpleadosCollection()->getEmpleado() as $objEmpleado) {
+			foreach ($objEmpleado->getNovedades() as $novedad) {
+				if($objEmpleado->getLegajo() == $empleado->getLegajo()){
+					$nuevaNovedad = $repoConceptos->find($novedad);
+					$sueldoBlanco = $empleado->getSueldoBlanco();
+					$detalles = $recibo->getReciboDetalleId();
+					$sueldoComp = $empleado->getCompensatorio();
+					
+					$novedadFlag=0;
+					foreach ($detalles as $detalle) {
+						$codigosSueldos = $detalle->getCodigoSueldos();
+						foreach ($codigosSueldos as $idCodigo) {
+							if($idCodigo->getId() == $novedad){								
+								$detalle->setCantConceptoVar($detalle->getCantConceptoVar() + self::$hsNormalesDiarias);
+								if($this->compensatorio != true){
+									$detalleRecibo->setRemunerativo($detalle->getCantConceptoVar() * $sueldoBlanco);
+									$this->remunerativo += self::$hsNormalesDiarias * $sueldoBlanco;																		
+								}else{
+									if($sueldoComp == 0) return;
+									$detalleRecibo->setRemunerativo($detalle->getCantConceptoVar() * $sueldoComp);
+									$this->remunerativo += self::$hsNormalesDiarias * $sueldoComp;	
+								}									
+								$novedadFlag++;		
+							}	
+						} 
+						
+					}	
+					
+					if($novedadFlag == 0){
+						$detalleRecibo = new RecibosDetalle;
+						
+						$detalleRecibo->setCantConceptoVar(self::$hsNormalesDiarias);
+						$detalleRecibo->setValorConceptoHist($sueldoBlanco);
+						//SI ESTAMOS LIQUIDANDO EN NEGRO TOMAMOS EL VALOR HORA COMPENSATORIO
+						if($this->compensatorio != true){							
+							$detalleRecibo->setRemunerativo(self::$hsNormalesDiarias * $sueldoBlanco);
+							$this->remunerativo += self::$hsNormalesDiarias * $sueldoBlanco;
+						}else{
+							if($sueldoComp == 0) return;
+							$detalleRecibo->setRemunerativo(self::$hsNormalesDiarias * $sueldoComp);
+							$this->remunerativo += self::$hsNormalesDiarias * $sueldoComp;				 				
+						}	
+						//$detalleRecibo->setRemunerativo(self::$hsNormalesDiarias * $sueldoBlanco);						
+						$detalleRecibo->setValorCompensatorioHist($empleado->getCompensatorio());
+						$detalleRecibo->addCodigoSueldo($nuevaNovedad);
+						$recibo->addReciboDetalleId($detalleRecibo);		
+					}					
+				}				
+			}
+		}	
 	}
 
 	public function LiquidarHsExtras($empleado, $recibo)
