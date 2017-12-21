@@ -30,19 +30,30 @@ Ext.define('MetApp.controller.Produccion.ReportesProduccionController',{
 		var form = btn.up('form');
 		var values = form.getValues();
 		
+		var urlReporte, urlPdf;
+		
+		if(values.tipo == null){
+			urlReporte = 'mbp_produccion_reporteOTPorSector';
+			urlPdf = 'mbp_produccion_verOTPorSector';
+		}else{
+			urlReporte = 'mbp_produccion_reporteOTPorSectorFiltrado';
+			urlPdf = 'mbp_produccion_verOTPorSectorFiltrado';
+		}
+		
 		 Ext.Ajax.request({
-		 	url: Routing.generate('mbp_produccion_reporteOTPorSector'),
+		 	url: Routing.generate(urlReporte),
 		 	
 		 	params: {
 		 		desde: values.desde,
-		 		hasta: values.hasta
+		 		hasta: values.hasta,
+		 		sector: values.tipo,
 		 	},
 		 	
 		 	success: function(resp){
 		 		var jsonResp = Ext.JSON.decode(resp.responseText);
 		 		
 		 		if(jsonResp.success == true){
-		 			var ruta = Routing.generate('mbp_produccion_verOTPorSector');
+		 			var ruta = Routing.generate(urlPdf);
 					
 					var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
 					myMask.show();			

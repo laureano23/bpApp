@@ -40,32 +40,7 @@ Ext.define('MetApp.view.Produccion.OrdenesTrabajo.NuevaOTView', {
 									labelWidth: 55,
 									value: new Date
 								},
-								{
-									xtype: 'textfield',
-									fieldLabel: 'Id',
-									width: 450,
-									labelWidth: 55,		
-									name: 'idCliente',
-									itemId: 'idCliente',
-									hidden: true,
-									allowBlank: true		
-								},
-								{
-									xtype: 'textfield',
-									hidden: true,
-									fieldLabel: 'Cliente',
-									width: 450,
-									labelWidth: 55,		
-									name: 'rsocial',
-									allowBlank: true							
-								},
-								{
-									xtype: 'button',
-									hidden: true,
-									iconCls: 'search',
-									margin: '2 0 0 0',
-									itemId: 'btnCliente'
-								},
+								
 							]
 						},
 						{
@@ -113,7 +88,31 @@ Ext.define('MetApp.view.Produccion.OrdenesTrabajo.NuevaOTView', {
 									name: 'fechaProg',
 									fieldLabel: 'Fecha de programación',
 									width: 270
-								}
+								},
+								{
+									xtype: 'textfield',
+									fieldLabel: 'Id',
+									width: 450,
+									labelWidth: 55,		
+									name: 'idCliente',
+									itemId: 'idCliente',
+									hidden: true,
+									allowBlank: true		
+								},
+								{
+									xtype: 'textfield',
+									fieldLabel: 'Cliente',
+									width: 300,
+									labelWidth: 55,		
+									name: 'rsocial',
+									allowBlank: false							
+								},
+								{
+									xtype: 'button',
+									iconCls: 'search',
+									margin: '2 0 0 0',
+									itemId: 'btnCliente'
+								},
 							]
 						},
 						{

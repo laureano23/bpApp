@@ -213,6 +213,28 @@ class RemitosController extends Controller
 
         return $response;
 	}
+	
+	 /**
+     * @Route("/remitosPendientesFacturacion", name="mbp_articulos_remitosPendientesFacturacion", options={"expose"=true})
+     */
+	public function remitosPendientesFacturacion()
+	{
+		$response = new Response;
+		$em = $this->getDoctrine()->getManager();
+		
+		try{
+			$repo = $em->getRepository('MbpArticulosBundle:RemitosClientes');
+		
+			$res = $repo->listarRemitosPendientesFacturacion();	
+		}catch(\Exception $e){
+			throw $e;
+			$response->setContent(json_encode(array('success' => false, 'msg' => $e->getMessage())));
+			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response;
+		}		
+
+        return $response->setContent(json_encode($res));
+	}
 }
 
 

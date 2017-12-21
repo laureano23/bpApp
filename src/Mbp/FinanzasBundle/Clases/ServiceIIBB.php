@@ -73,6 +73,13 @@ XML;
 		$respuesta=$objCurlFileUploader->UploadFile();
 
 		$this->response = json_decode(json_encode((array)simplexml_load_string($respuesta)),1);
+		
+		$error = array_key_exists('codigoError', $this->response);
+		
+		if($error){
+			print_r($this->response);
+			throw new \Exception($this->response['mensajeError'], 1);			
+		}
 
 		//UNA VEZ DEVUELTA LA RESPUESTA BORRAMOS EL ARCHIVO
 		unlink($this->file);

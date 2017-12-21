@@ -254,9 +254,9 @@ G: Generada]]></text>
 				<reportElement x="100" y="0" width="242" height="20" uuid="3f7017ff-704a-46fd-9f63-380d4820a0fa"/>
 				<textFieldExpression><![CDATA[$F{articulos_descripcion}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="#,##0.00">
 				<reportElement x="342" y="0" width="44" height="20" uuid="df1ee130-9763-4494-9125-9a54d60d0286"/>
-				<textFieldExpression><![CDATA[$F{articulos_codigo}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{ot_cantidad}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="386" y="0" width="68" height="20" uuid="34ce5525-3d34-4f6c-9627-5759d4ab2e96"/>

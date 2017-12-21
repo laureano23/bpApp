@@ -60,6 +60,7 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 			},
 		});
 	},
+	
 		
 	NuevaOT: function(btn){
 		Ext.widget('NuevaOTView');
@@ -93,7 +94,7 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 			form.loadRecord(selection);
 			form.queryById('idCliente').setValue(selection.data.id);
 			viewClientes.close();
-			win.queryById('btnCodigo').focus('', 20);
+			win.queryById('sector').focus('', 20);
 		});
 	},
 	
@@ -248,6 +249,8 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 			anyMatch: true}
 		);
 	},
+	
+	
 	
 	VerOT: function(btn){
 		var view = Ext.widget('VerOTView');

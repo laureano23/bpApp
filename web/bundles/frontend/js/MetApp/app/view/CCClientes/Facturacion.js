@@ -46,6 +46,14 @@ Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 				   				btnSave.fireEvent('click', btnSave);
 				   			}
 				   		},
+				   		{
+				   			key: Ext.EventObject.F4,
+				   			defaultEventAction: 'preventDefault',
+				   			fn: function(){ 
+				   				var btnSave = win.queryById('btnRemito');
+				   				btnSave.fireEvent('click', btnSave);
+				   			}
+				   		},
 				   	]
 				});	
 			}
@@ -73,7 +81,7 @@ Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 							xtype: 'container',
 							layout: 'hbox',
 							defaults: {
-								margins: '5 0 0 0',
+								margins: '5 0 5 5',
 								allowBlank: false,
 							},
 							items: [
@@ -180,9 +188,6 @@ Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 														desc.setReadOnly(false);
 														desc.focus('', 20);
 													}
-													console.log(field);
-													console.log(me);
-													
 												}
 											}
 										},
@@ -282,13 +287,28 @@ Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 							]
 						},
 						{
-							xtype: 'button',
-							itemId: 'btnSave',
-							text: 'Guardar (F5)',
-							width: 90,
-							height: 50,
-							margins: '5 5 5 5'
-						}						
+							xtype: 'container',
+							layout: 'hbox',
+							items: [
+								{
+									xtype: 'button',
+									itemId: 'btnSave',
+									text: 'Guardar (F5)',
+									width: 90,
+									height: 50,
+									margins: '5 5 5 5'
+								},
+								{
+									xtype: 'button',
+									itemId: 'btnRemito',
+									text: 'Remitos (F4)',
+									width: 90,
+									height: 50,
+									margins: '5 5 5 5'
+								}
+							]
+						}
+															
 					]
 				}
 			]

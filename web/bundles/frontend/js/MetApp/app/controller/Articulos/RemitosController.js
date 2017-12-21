@@ -2,7 +2,7 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 	extend: 'Ext.app.Controller',	
 	views: [
 		'Articulos.Stock.Remitos.ArticulosOrdenCompraView',
-		'Articulos.Stock.Remitos.RemitoClienteView',
+		'Articulos.Stock.Remitos.RemitoClienteView',		
 		'Clientes.SearchGridClientes',
 		'Articulos.WinArticuloSearch'
 		],

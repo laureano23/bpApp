@@ -69,7 +69,14 @@ class RemitosClientesDetalles
      * @ORM\JoinColumn(name="pedidoId", referencedColumnName="id", nullable=true)    
      */
     private $pedidoId;
-
+	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="facturado", type="boolean", nullable=false)
+     */
+    private $facturado=0; 
+	
 
     /**
      * Get id
@@ -223,5 +230,29 @@ class RemitosClientesDetalles
     public function getPedidoId()
     {
         return $this->pedidoId;
+    }
+
+    /**
+     * Set facturado
+     *
+     * @param boolean $facturado
+     *
+     * @return RemitosClientesDetalles
+     */
+    public function setFacturado($facturado)
+    {
+        $this->facturado = $facturado;
+
+        return $this;
+    }
+
+    /**
+     * Get facturado
+     *
+     * @return boolean
+     */
+    public function getFacturado()
+    {
+        return $this->facturado;
     }
 }
