@@ -469,7 +469,6 @@ class LiquidacionEnLoteController extends RecibosController
 		$sueldoNegro = $empleado->getCompensatorio();
 		$lote = $this->getObjLote();
 	
-		//print_r($lote->getEmpleadosCollection()->getEmpleado());
 		
 		foreach ($lote->getEmpleadosCollection()->getEmpleado() as $empLote) {
 			if($empLote->getLegajo() == $empleado->getLegajo()){
@@ -531,11 +530,12 @@ class LiquidacionEnLoteController extends RecibosController
 				}
 				
 				
-				break;// Si encontre el empleado puedo terminar el foreach
+			break;// Si encontre el empleado puedo terminar el foreach
 				
-			}	
 		}	
-	}
+	}	
+	
+	
 
 	public function LiquidarHsExtras($empleado, $recibo)
 	{
