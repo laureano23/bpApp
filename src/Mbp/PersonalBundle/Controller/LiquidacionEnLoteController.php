@@ -492,8 +492,7 @@ class LiquidacionEnLoteController extends RecibosController
 						if($this->compensatorio == 1){
 							$detalle->setRemunerativo($detalle->getCantConceptoVar() * $sueldoNegro);
 							$this->remunerativo += 	$detalle->getCantConceptoVar() * $sueldoNegro;
-						}else{
-<<<<<<< HEAD
+						}else{ 
 							if($sueldoComp == 0) return;
 							$detalleRecibo->setRemunerativo(self::$hsNormalesDiarias * $sueldoComp);
 							$this->remunerativo += self::$hsNormalesDiarias * $sueldoComp;				 				
@@ -501,8 +500,7 @@ class LiquidacionEnLoteController extends RecibosController
 						//$detalleRecibo->setRemunerativo(self::$hsNormalesDiarias * $sueldoBlanco);						
 						$detalleRecibo->setValorCompensatorioHist($empleado->getCompensatorio());
 						$detalleRecibo->addCodigoSueldo($nuevaNovedad);
-						$recibo->addReciboDetalleId($detalleRecibo);		
-=======
+						$recibo->addReciboDetalleId($detalleRecibo);
 							$detalle->setRemunerativo($detalle->getCantConceptoVar() * $sueldoBlanco);
 							$this->remunerativo += 	$detalle->getCantConceptoVar() * $sueldoBlanco;
 						}
@@ -512,7 +510,6 @@ class LiquidacionEnLoteController extends RecibosController
 						$recibo->addReciboDetalleId($detalle);				
 								
 						$cant = 1;
->>>>>>> ramaSueldosNovedades
 					}					
 					$anterior = $n;
 				}
