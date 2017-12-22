@@ -144,6 +144,8 @@ class LiquidacionEnLoteController extends RecibosController
 				
 		
 		foreach ($empleados as $empleado) {
+			if($empleado->getLegajo() != 51) continue; 
+			
 			$this->idP = $empleado->getIdP();
 			$antiguedad = $empleado->getFechaIngreso()->diff(new \DateTime("now"));
 			$this->antiguedadAnios = $antiguedad->format('%Y');
@@ -181,7 +183,6 @@ class LiquidacionEnLoteController extends RecibosController
 			
 			//LIQUIDAR NOVEDADES DEL LOTE
 			$this->LiquidarNovedadesLote($empleado, $recibo);
-			
 			
 						
 			//HS EXTRAS SE LIQUIDAN EN NEGRO
@@ -464,45 +465,35 @@ class LiquidacionEnLoteController extends RecibosController
 	{
 		$em = $this->getDoctrine()->getManager();
 		$repoConceptos = $em->getRepository('MbpPersonalBundle:CodigoSueldos');
+		$sueldoBlanco = $empleado->getCategoria()->getSalario();
+		$sueldoNegro = $empleado->getCompensatorio();
+		$lote = $this->getObjLote();
+	
+		//print_r($lote->getEmpleadosCollection()->getEmpleado());
 		
-		foreach ($this->objLote->getEmpleadosCollection()->getEmpleado() as $objEmpleado) {
-			foreach ($objEmpleado->getNovedades() as $novedad) {
-				if($objEmpleado->getLegajo() == $empleado->getLegajo()){
-					$nuevaNovedad = $repoConceptos->find($novedad);
-					$sueldoBlanco = $empleado->getSueldoBlanco();
-					$detalles = $recibo->getReciboDetalleId();
-					$sueldoComp = $empleado->getCompensatorio();
-					
-					$novedadFlag=0;
-					foreach ($detalles as $detalle) {
-						$codigosSueldos = $detalle->getCodigoSueldos();
-						foreach ($codigosSueldos as $idCodigo) {
-							if($idCodigo->getId() == $novedad){								
-								$detalle->setCantConceptoVar($detalle->getCantConceptoVar() + self::$hsNormalesDiarias);
-								if($this->compensatorio != true){
-									$detalleRecibo->setRemunerativo($detalle->getCantConceptoVar() * $sueldoBlanco);
-									$this->remunerativo += self::$hsNormalesDiarias * $sueldoBlanco;																		
-								}else{
-									if($sueldoComp == 0) return;
-									$detalleRecibo->setRemunerativo($detalle->getCantConceptoVar() * $sueldoComp);
-									$this->remunerativo += self::$hsNormalesDiarias * $sueldoComp;	
-								}									
-								$novedadFlag++;		
-							}	
-						} 
+		foreach ($lote->getEmpleadosCollection()->getEmpleado() as $empLote) {
+			if($empLote->getLegajo() == $empleado->getLegajo()){
+				$novedades = $empLote->getObservaciones();
+				
+				$anterior;
+				if(!empty($novedades)){
+					$anterior = $novedades[0];
+				}
+				$cant=0;
+				$codSueldo;
+				foreach ($novedades as $n) {
+					if($n == $anterior){
+						$cant++;
+						$codSueldo = $repoConceptos->findOneByCodigoObservacion($n);
+					}else{ //Podemos agregar la novedad
 						
-					}	
-					
-					if($novedadFlag == 0){
-						$detalleRecibo = new RecibosDetalle;
-						
-						$detalleRecibo->setCantConceptoVar(self::$hsNormalesDiarias);
-						$detalleRecibo->setValorConceptoHist($sueldoBlanco);
-						//SI ESTAMOS LIQUIDANDO EN NEGRO TOMAMOS EL VALOR HORA COMPENSATORIO
-						if($this->compensatorio != true){							
-							$detalleRecibo->setRemunerativo(self::$hsNormalesDiarias * $sueldoBlanco);
-							$this->remunerativo += self::$hsNormalesDiarias * $sueldoBlanco;
+						$detalle = new RecibosDetalle;
+						$detalle->setCantConceptoVar($cant * self::$hsNormalesDiarias);
+						if($this->compensatorio == 1){
+							$detalle->setRemunerativo($detalle->getCantConceptoVar() * $sueldoNegro);
+							$this->remunerativo += 	$detalle->getCantConceptoVar() * $sueldoNegro;
 						}else{
+<<<<<<< HEAD
 							if($sueldoComp == 0) return;
 							$detalleRecibo->setRemunerativo(self::$hsNormalesDiarias * $sueldoComp);
 							$this->remunerativo += self::$hsNormalesDiarias * $sueldoComp;				 				
@@ -511,9 +502,41 @@ class LiquidacionEnLoteController extends RecibosController
 						$detalleRecibo->setValorCompensatorioHist($empleado->getCompensatorio());
 						$detalleRecibo->addCodigoSueldo($nuevaNovedad);
 						$recibo->addReciboDetalleId($detalleRecibo);		
+=======
+							$detalle->setRemunerativo($detalle->getCantConceptoVar() * $sueldoBlanco);
+							$this->remunerativo += 	$detalle->getCantConceptoVar() * $sueldoBlanco;
+						}
+						$detalle->setValorCompensatorioHist($sueldoNegro);
+						$detalle->setValorConceptoHist($sueldoBlanco);
+						$detalle->addCodigoSueldo($codSueldo);
+						$recibo->addReciboDetalleId($detalle);				
+								
+						$cant = 1;
+>>>>>>> ramaSueldosNovedades
 					}					
-				}				
-			}
+					$anterior = $n;
+				}
+				
+				if($cant != 0){
+					//$codSueldo = $repoConceptos->findByCodigoObservacion($n);
+					$detalle = new RecibosDetalle;
+					$detalle->setCantConceptoVar($cant * self::$hsNormalesDiarias);
+					if($this->compensatorio == 1){
+						$detalle->setRemunerativo($detalle->getCantConceptoVar() * $sueldoNegro);	
+					}else{
+						$detalle->setRemunerativo($detalle->getCantConceptoVar() * $sueldoBlanco);
+					}
+					$detalle->setValorCompensatorioHist($sueldoNegro);
+					$detalle->setValorConceptoHist($sueldoBlanco);
+					$detalle->addCodigoSueldo($codSueldo);
+					$recibo->addReciboDetalleId($detalle);						
+					$cant = 0;
+				}
+				
+				
+				break;// Si encontre el empleado puedo terminar el foreach
+				
+			}	
 		}	
 	}
 
