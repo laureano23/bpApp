@@ -454,9 +454,11 @@ class ReportesController extends Controller
 		     INNER JOIN `Personal` Personal ON RecibosPersonal.`personal_id` = Personal.`idP`
 		WHERE
 		     Recibos.mes BETWEEN '$mesDesde' AND '$mesHasta' AND
-		     Recibos.anio BETWEEN '$anioDesde' AND '$anioHasta'  AND
-		     Recibos.periodo != 7 AND
-		     Recibos.periodo != 5 AND
+		     Recibos.anio BETWEEN '$anioDesde' AND '$anioHasta' AND
+		     Recibos.periodo != 7 AND /*PREMIOS 1°*/
+		     Recibos.periodo != 5 AND /*SAC°*/
+		     Recibos.periodo != 8 AND /*PREMIOS 2°*/
+		     Recibos.periodo != 4 AND /*VACACIONES°*/
 		     Recibos.compensatorio = $comp
 		GROUP BY
 		     Personal.nombre, Recibos.mes
