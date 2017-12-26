@@ -26,10 +26,10 @@ class Empleado
 		
 	}
 	
-<<<<<<< HEAD
+
 	public function setLegajo($legajo){
 		$this->legajo = $legajo;
-=======
+	}
 	public function ordenarObs(){
 		sort($this->observaciones);
 	}
@@ -42,7 +42,6 @@ class Empleado
 	public function setHsJustificadas($hs)
 	{
 		$this->hsJustificadas = $hs;
->>>>>>> ramaSueldosNovedades
 	}
 	
 	public function getLegajo(){
@@ -71,10 +70,10 @@ class Empleado
 		array_push($this->fecha['entrada'], $entrada);
 	}
 	
-<<<<<<< HEAD
+
 	public function getEntrada(){
 		return $this->fecha;
-=======
+	}
 	// CONVIERTE LAS HORAS DE LA PLANILLA EN FORMAT H:i A OBJETOS DATETIME
 	public function addFichadaEntrada($strHora){
 		$fichadaEntrada = \DateTime::CreateFromFormat('H:i', $strHora);
@@ -208,7 +207,6 @@ class Empleado
 	
 	public function getHsAsistencia(){
 		return $this->hsAsistencia;
->>>>>>> ramaSueldosNovedades
 	}
 }
 
