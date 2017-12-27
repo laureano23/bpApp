@@ -353,6 +353,21 @@ class OtController extends Controller
 					break;
 				case 'Terminada':
 					$ot->setEstado(2);
+					
+					/* Si la OT esta terminada enviamos una notificacion al sector que la solicitó */
+					//NOTIFICACION
+					$pusher = $this->container->get('lopi_pusher.pusher');
+					
+				    $data=array(
+						'message' => 'Se cerró la OT n°: '.$ot->getOt().
+							" código: ".$ot->getIdCodigo()->getCodigo().
+							" del cliente ".$ot->getClienteId()->getrSocial().
+							" verifique el panel de programación.",
+						'sectorReceptor' => $ot->getSectorEmisor()->getDescripcion()
+					);
+					
+				    $pusher->trigger('my-channel', 'my-event', json_encode($data));
+					
 					break;
 				case 'Generada':
 					$ot->setEstado(3);

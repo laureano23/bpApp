@@ -125,7 +125,6 @@ Ext.define('MetApp.controller.Produccion.Programacion.ProgramacionController', {
 				},
 						
 				success: function(resp){
-					console.log(resp);
 					st.resumeEvents();
 				},
 				
