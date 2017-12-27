@@ -647,8 +647,7 @@ class ReportesController extends Controller
 				     `Sectores` sectores RIGHT OUTER JOIN `Ot` ot ON sectores.`id` = ot.`sectorEmisor`
 				     LEFT OUTER JOIN `articulos` articulos ON ot.`idCodigo` = articulos.`idArticulos`
 				     LEFT OUTER JOIN `Sectores` sectores_A ON ot.`sectorId` = sectores_A.`id`
-				WHERE
-					ot.`fechaProg` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql'
+			    WHERE ot.`fechaProg` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql'
 				ORDER BY
 				     sectores_A.`id` ASC,
 				     ot.`fechaProg` ASC
@@ -665,6 +664,7 @@ class ReportesController extends Controller
 					)
 				);
 		} catch (\Exception $e) {
+			throw $e;
 			$response->setContent(
 				json_encode(
 					array(

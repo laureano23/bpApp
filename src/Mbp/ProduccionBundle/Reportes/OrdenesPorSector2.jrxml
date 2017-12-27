@@ -219,7 +219,7 @@ AND sectores_A.`id` = $P{sectorId}
 			<staticText>
 				<reportElement x="0" y="0" width="555" height="57" uuid="8758b0ad-6290-4e2d-87ba-b3b8d47db922"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Verdana" size="14" isUnderline="true"/>
+					<font fontName="SansSerif" size="14" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[ORDENES DE TRABAJO POR SECTOR]]></text>
 			</staticText>
