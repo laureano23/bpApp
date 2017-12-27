@@ -79,7 +79,7 @@ Ext.define('MetApp.controller.Produccion.ReportesProduccionController',{
 		
 		var urlReporte, urlPdf;
 		
-		if(values.tipo == null){
+		if(values.tipo == null || values.tipo == ""){
 			urlReporte = 'mbp_produccion_reporteOTPorSector';
 			urlPdf = 'mbp_produccion_verOTPorSector';
 		}else{
