@@ -358,10 +358,15 @@ class OtController extends Controller
 					//NOTIFICACION
 					$pusher = $this->container->get('lopi_pusher.pusher');
 					
+					$cliente = $ot->getClienteId();
+					if(!empty($cliente)){
+						$cliente = $ot->getClienteId()->getrSocial();
+					}
+					
 				    $data=array(
 						'message' => 'Se cerró la OT n°: '.$ot->getOt().
 							" código: ".$ot->getIdCodigo()->getCodigo().
-							" del cliente ".$ot->getClienteId()->getrSocial().
+							" del cliente ".$cliente.
 							" verifique el panel de programación.",
 						'sectorReceptor' => $ot->getSectorEmisor()->getDescripcion()
 					);
