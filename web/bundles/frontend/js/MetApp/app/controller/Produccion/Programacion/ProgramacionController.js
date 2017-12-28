@@ -4,7 +4,6 @@ Ext.define('MetApp.controller.Produccion.Programacion.ProgramacionController', {
 	views: [
 		'Produccion.Programacion.Programacion',
 		'Produccion.Programacion.FormProgramacion',
-		'MetApp.view.Compras.PedidosInternosView',
 		'MetApp.view.Articulos.ArticuloSearchGrd'
 	],
 	
@@ -33,10 +32,7 @@ Ext.define('MetApp.controller.Produccion.Programacion.ProgramacionController', {
 			},
 			'programacion actioncolumn[itemId=formula]': {
 				click: this.DetalleFormula
-			},
-			'programacion button[itemId=solicitarMat]': {
-				click: this.PedidoInterno
-			},
+			},			
 			'programacion button[itemId=actualizar]': {
 				click: this.ActualizarProgramacion
 			},
@@ -49,18 +45,7 @@ Ext.define('MetApp.controller.Produccion.Programacion.ProgramacionController', {
 			'programacion grid[itemId=gridMisPedidos]': {
 				gridcellchanging: this.CambiarFechaEntrega
 			},
-			'PedidosInternosView button[itemId=insertar]': {
-				click: this.InsertarArticulo
-			},
-			'PedidosInternosView button[itemId=guardar]': {
-				click: this.GuardarPedidoMat
-			},
-			'PedidosInternosView actioncolumn[itemId=editar]': {
-				click: this.EditarItem
-			},
-			'PedidosInternosView actioncolumn[itemId=eliminar]': {
-				click: this.EliminarItem
-			},						
+								
 		});
 	},	
 	
@@ -178,99 +163,7 @@ Ext.define('MetApp.controller.Produccion.Programacion.ProgramacionController', {
 		});
 	},
 	
-	PedidoInterno: function(btn){
-		var pedidoInterno = Ext.widget('PedidosInternosView');
-		
-		pedidoInterno.queryById('btnCodigo').on('click', function(){
-			var winSearch = Ext.widget('winarticulosearch');
-			
-			winSearch.down('button').on('click', function(){
-				var grid = winSearch.down('grid');
-				var sel = grid.getSelectionModel().getSelection()[0];
-				
-				var formArt = pedidoInterno.queryById('formaArt');
-				formArt.loadRecord(sel);
-				
-				winSearch.close();
-				pedidoInterno.queryById('cantidad').focus('', 10);
-			});
-		});
-	},
 	
-	InsertarArticulo: function(btn){
-		var win = btn.up('window');
-		var values = win.queryById('formaArt').getForm().getValues();
-		
-		var model = Ext.create('MetApp.model.Compras.OrdenCompraModel');
-		model.set(values);
-		
-		var store = win.down('grid').getStore();
-		store.add(model);
-		
-		win.queryById('formaArt').getForm().reset();
-	},
-	
-	GuardarPedidoMat: function(btn){
-		var win = btn.up('window');
-		
-		var store = win.down('grid').getStore();
-		
-		var data = new Array();
-		var i =0;
-		
-		store.each(function(rec){
-			data[i] = rec.getData();
-			i++;	
-		});
-		
-		console.log(data);
-		var jsonData = Ext.JSON.encode(data);
-		Ext.Ajax.request({
-			url: Routing.generate('mbp_pedidosInternos_nuevoPedido'),
-			
-			params: {
-				articulos: jsonData,				
-			},
-			
-			success: function(resp){
-				var jsonResp = Ext.JSON.decode(resp.responseText);
-				if(jsonResp.success == true){
-					store.removeAll();
-				}
-			},
-			
-			failure: function(resp){
-				
-			}
-		});
-	},
-	
-	EditarItem: function(grid, colIndex, rowIndex){
-		var selection = grid.getStore().getAt(rowIndex);
-		var win = grid.up('window');
-		var form = win.queryById('formaArt');
-		
-		form.loadRecord(selection);
-		var store = grid.getStore();
-		store.remove(selection);
-	},
-	
-	EliminarItem: function(grid, colIndex, rowIndex){
-		var selection = grid.getStore().getAt(rowIndex);
-		var win = grid.up('window');
-		
-		Ext.Msg.show({
-			title: 'Atencion',
-			msg: 'Desea remover el articulo?',
-			buttons: Ext.Msg.YESNO,
-			fn: function(btn){
-				if(btn == "yes"){
-					var store = grid.getStore();
-					store.remove(selection);			
-				}
-			}
-		});
-	},
 
 	ImprimirOt: function(grid, colIndex, rowIndex){
 		var selection = grid.getStore().getAt(rowIndex);

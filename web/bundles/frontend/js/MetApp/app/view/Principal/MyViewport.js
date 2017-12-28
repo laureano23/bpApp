@@ -501,6 +501,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                 listeners : {
                     render : dragZone,
                 }, 
+            },
+            {
+                text: 'Ver Pedidos Internos',
+                itemId: 'verPedidosInternos',
+                listeners : {
+                    render : dragZone,
+                }, 
             }
     	]
     	

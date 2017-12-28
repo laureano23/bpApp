@@ -58,7 +58,6 @@ Ext.define('MetApp.view.Compras.PedidosInternosView' ,{
 				{
 					xtype: 'grid',
 					region: 'center',
-					//margin: '5 0 0 0',
 					border: false,
 					itemId: 'detallesStore',
 					store: 'MetApp.store.Compras.OrdenCompraStore',
@@ -74,7 +73,10 @@ Ext.define('MetApp.view.Compras.PedidosInternosView' ,{
 								text: 'Entrega',
 								dataIndex: 'entrega',
 								xtype: 'datecolumn',
-								format: 'd/m/Y',
+								dateFormat: 'd/m/Y',
+								renderer: function(val){
+									return val;
+								},
 								width: 100,
 							},
 							{ 
@@ -141,6 +143,7 @@ Ext.define('MetApp.view.Compras.PedidosInternosView' ,{
 								{
 									xtype: 'textfield',
 									name: 'descripcion',
+									itemId: 'descripcion',
 									fieldLabel: 'Descripción',
 									width: 550,
 									readOnly: true

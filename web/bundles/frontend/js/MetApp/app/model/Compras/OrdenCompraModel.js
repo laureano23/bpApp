@@ -20,6 +20,7 @@ Ext.define('MetApp.model.Compras.OrdenCompraModel',{
 		{ name: 'actCosto', type: 'bool', defaultValue: 1 },
 		{ name: 'observaciones', type: 'string'},
 		{ name: 'descuentoGral', type: 'float' },
-		{ name: 'loteNum', type: 'int' },	
+		{ name: 'loteNum', type: 'int' },
+		{ name: 'pedido', type: 'int' },		
 	]
 });

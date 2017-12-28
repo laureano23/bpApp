@@ -289,9 +289,15 @@ Ext.define('MetApp.view.Compras.OrdenCompraView' ,{
 					xtype: 'container',
 					region: 'south',
 					layout: 'vbox',
+					style: {
+						background: 'white'
+					},
 					items: [
 						{
 							xtype: 'container',
+							style: {
+								background: 'white'
+							},
 							margin: '10 0 0 5',
 							layout: 'hbox',
 							defaults: {								

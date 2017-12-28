@@ -251,4 +251,66 @@ class ComprasController extends Controller
 		
 		
     }
+
+	/**
+     * @Route("/pedidosInternos/listarPedidos", name="mbp_pedidosInternos_listarPedidos", options={"expose"=true})
+     */
+    public function listarPedidos()
+    {
+    	$req = $this->getRequest();
+		$em = $this->getDoctrine()->getEntityManager();
+		$response = new Response;
+		
+		try{
+			$repo = $em->getRepository('MbpComprasBundle:PedidosInternos');
+			
+			$data = $repo->listarPendientes();
+				
+	    	return $response->setContent(
+				json_encode(array('success' => true, 'data' => $data))
+			);
+		}catch(\Exception $e){
+			$response->setContent(
+				json_encode(array('success' => false, 'msg'=>$e->getMessage())) 
+			);
+			return $response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+    	}
+    }
+	
+	/**
+     * @Route("/pedidosInternos/actualizarPedido", name="mbp_pedidosInternos_actualizarPedido", options={"expose"=true})
+     */
+    public function actualizarPedido()
+    {
+    	$req = $this->getRequest();
+		$em = $this->getDoctrine()->getEntityManager();
+		$response = new Response;
+		
+		try{
+			$pedido = $req->request->get('data');
+			$data = json_decode($pedido);
+			$repo = $em->getRepository('MbpComprasBundle:PedidoInternoDetalle');
+			
+			$row = $repo->find($data->id);
+			
+			$row->setPedido($data->pedido);
+			$row->setCumplido($data->cumplido);
+			
+			if($row->getCumplido() >= $row->getCantidad()){
+				$row->setInactivo(TRUE);
+			}
+			
+			$em->persist($row);
+			$em->flush();			
+				
+	    	return $response->setContent(
+				json_encode(array('success' => true))
+			);
+		}catch(\Exception $e){
+			$response->setContent(
+				json_encode(array('success' => false, 'msg'=>$e->getMessage())) 
+			);
+			return $response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+    	}
+    }
 }

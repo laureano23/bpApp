@@ -10,4 +10,20 @@ namespace Mbp\ComprasBundle\Entity;
  */
 class PedidosInternosRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function listarPendientes(){
+		$em = $this->getEntityManager();
+		$rep = $em->getRepository('MbpComprasBundle:PedidosInternos');
+		
+		$data = $rep->createQueryBuilder('p')
+				->select("d.id, DATE_FORMAT(p.emision, '%d/%m/%Y') fecha, d.descripcion, d.cantidad as cant,
+				 	d.unidad, d.inactivo, DATE_FORMAT(d.entrega, '%d/%m/%Y') entrega,
+				 	d.pedido,
+				 	d.cumplido")	
+				->join('p.detalleId', 'd')				
+				->where('d.inactivo = false')
+				->getQuery()
+				->getArrayResult();
+		
+		return $data;
+	}
 }
