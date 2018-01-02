@@ -534,4 +534,37 @@ class OtController extends Controller
 			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	/**
+     * @Route("/cambiarFechaEntrega", name="mbp_produccion_cambiarFechaEntrega", options={"expose"=true})
+     */
+    public function cambiarFechaEntrega()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+		$response = new Response;
+		
+		try{
+			$ot = $request->request->get('ot');
+			$fecha = $request->request->get('fecha');
+			$repo = $em->getRepository('MbpProduccionBundle:Ot');
+			
+			
+			$row = $repo->find($ot);
+			
+			$row->setFechaProg(\DateTime::createFromFormat('d/m/Y', $fecha));
+			$em->persist($row);
+			$em->flush(); 
+			
+			
+			return $response->setContent(json_encode(array('success' => true)));
+		}catch(\Exception $e){
+			$response->setContent(json_encode(array(
+				'success' => false,
+				'msg' => $e->getMessage())
+			));
+			
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+	}
 }

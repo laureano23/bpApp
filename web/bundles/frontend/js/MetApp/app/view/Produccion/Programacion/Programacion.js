@@ -185,7 +185,8 @@ Ext.define('MetApp.view.Produccion.Programacion.Programacion',{
 									editor: {
 						                xtype: 'datefield',
 						                format: 'd/m/Y',
-				                        listeners : {
+						                submitFormat: 'd/m/Y',
+				                        listeners : { 
 				                            change : function(cmp, e,eOpts) {
 				                                cmp.up("grid").fireEvent("gridcellchanging",cmp,e,eOpts);
 				                            }

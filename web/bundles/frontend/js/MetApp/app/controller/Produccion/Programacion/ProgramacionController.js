@@ -49,13 +49,16 @@ Ext.define('MetApp.controller.Produccion.Programacion.ProgramacionController', {
 		});
 	},	
 	
-	CambiarFechaEntrega: function(field){
-		console.log(field);
+	CambiarFechaEntrega: function(field, row){
+		var selection = field.up('grid').getSelectionModel().getSelection()[0];
+		var date = Ext.Date.format(field.getValue(), 'd/m/Y');
+		console.log(date);
 		Ext.Ajax.request({
-			url: Routing.generate(''),
+			url: Routing.generate('mbp_produccion_cambiarFechaEntrega'),
 			
 			params: {
-				fecha: ''
+				fecha: date,
+				ot: selection.data.otNum
 			}
 		})
 	},
