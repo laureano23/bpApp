@@ -87,13 +87,13 @@ XML;
 
 	public function getAlicuotaPercepcion()
 	{
-		$alicuota = $this->response['contribuyentes']['contribuyente']['alicuotaPercepcion'];
+		$alicuota = $this->response['contribuyentes']['contribuyente']['alicuotaPercepcion'];		
 		return str_replace(',', '.', $alicuota);
 	}
 
 	public function getAlicuotaRetencion()
 	{
 		$alicuota = $this->response['contribuyentes']['contribuyente']['alicuotaRetencion'];	
-		return number_format($alicuota, 2, ',');
+		return str_replace(',', '.', $alicuota);
 	}
 }
