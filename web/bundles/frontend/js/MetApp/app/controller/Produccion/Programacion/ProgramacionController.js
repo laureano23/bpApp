@@ -104,22 +104,36 @@ Ext.define('MetApp.controller.Produccion.Programacion.ProgramacionController', {
 		
 		//SI HAY ALGUN CAMBIO EN LA GRILLA HACEMOS LA LLAMADA AL SERVER
 		store.on('update', function(st, rec, op){
-			st.suspendEvents();
-			Ext.Ajax.request({
-				url: Routing.generate('mbp_produccion_ActualizarEstadoOt'),
+			console.log(rec);
+			if(rec.data.estado == "Terminada" && rec.data.aprobado == 0){
+				Ext.Msg.show({
+					title: 'Atención',
+					msg: 'El campo cantidad debe ser mayor a 0 para cerrar la OT',
+					buttons: Ext.Msg.OK,
+	     			icon: Ext.Msg.ALERT,
+	     			fn: function(opt){
+	     				console.log(opt);
+	     			}
+				});
+				//st.suspendEvents();
 				
-				params: {
-					data: Ext.JSON.encode(rec.data)
-				},
-						
-				success: function(resp){
-					st.resumeEvents();
-				},
-				
-				failure: function(resp){
+			}else{
+				Ext.Ajax.request({
+					url: Routing.generate('mbp_produccion_ActualizarEstadoOt'),
 					
-				}
-			})	
+					params: {
+						data: Ext.JSON.encode(rec.data)
+					},
+							
+					success: function(resp){
+						st.resumeEvents();
+					},
+					
+					failure: function(resp){
+						
+					}
+				})	
+			}				
 		});
 		
 		programacionWin.on('close', function(){

@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="16e6de9d-fb51-412e-8030-8e1390577ccf">
+	<property name="ireport.zoom" value="1.210000000000001"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="no comenzado" forecolor="#000000" backcolor="#FFFFFF" pattern="">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{Ot_estado} == 0]]></conditionExpression>
+			<style forecolor="#FF0000"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{Ot_estado} == 1]]></conditionExpression>
+			<style forecolor="#CC00CC"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{Ot_estado} == 2]]></conditionExpression>
+			<style forecolor="#00CC33"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{Ot_estado} == 3]]></conditionExpression>
+			<style forecolor="#0033CC"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="codigo1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="codigo2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="desde" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="hasta" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     articulos.`codigo` AS articulos_codigo,
+     articulos.`descripcion` AS articulos_descripcion,
+     articulos.`idArticulos` AS articulos_idArticulos,
+     articulos.`unidad` AS articulos_unidad,
+     Ot.`ot` AS Ot_ot,
+     Ot.`cantidad` AS Ot_cantidad,
+     Ot.`fechaEmision` AS Ot_fechaEmision,
+     Ot.`fechaProg` AS Ot_fechaProg,
+     Ot.`idCodigo` AS Ot_idCodigo,
+     Ot.`sectorEmisor` AS Ot_sectorEmisor,
+     Ot.`idUsuario` AS Ot_idUsuario,
+     Ot.`aprobado` AS Ot_aprobado,
+     Ot.`rechazado` AS Ot_rechazado,
+     Ot.`sectorId` AS Ot_sectorId,
+     Ot.`estado` AS Ot_estado,
+     Ot.`clienteId` AS Ot_clienteId,
+     cliente.`idCliente` AS cliente_idCliente,
+     cliente.`denominacion` AS cliente_denominacion,
+     cliente.`rsocial` AS cliente_rsocial,
+     Sectores.`id` AS Sectores_id,
+     Sectores.`costoMin` AS Sectores_costoMin,
+     Sectores.`descripcion` AS Sectores_descripcion,
+     Sectores.`piso` AS Sectores_piso,
+     Sectores.`nave` AS Sectores_nave,
+     Sectores.`tiempo` AS Sectores_tiempo,
+     Ot.`anulada` AS Ot_anulada
+FROM
+     `articulos` articulos INNER JOIN `Ot` Ot ON articulos.`idArticulos` = Ot.`idCodigo`
+     LEFT OUTER JOIN `cliente` cliente ON Ot.`clienteId` = cliente.`idCliente`
+     INNER JOIN `Sectores` Sectores ON Ot.`sectorId` = Sectores.`id`
+WHERE
+     articulos.`codigo` BETWEEN $P{codigo1} AND $P{codigo2} AND
+     Ot.`fechaEmision` BETWEEN $P{desde} AND $P{hasta} AND
+     Ot.`anulada` = 0
+ORDER BY
+     articulos.`codigo` ASC]]>
+	</queryString>
+	<field name="articulos_codigo" class="java.lang.String"/>
+	<field name="articulos_descripcion" class="java.lang.String"/>
+	<field name="articulos_idArticulos" class="java.lang.Integer"/>
+	<field name="articulos_unidad" class="java.lang.String"/>
+	<field name="Ot_ot" class="java.lang.Integer"/>
+	<field name="Ot_cantidad" class="java.math.BigDecimal"/>
+	<field name="Ot_fechaEmision" class="java.sql.Timestamp"/>
+	<field name="Ot_fechaProg" class="java.sql.Date"/>
+	<field name="Ot_idCodigo" class="java.lang.Integer"/>
+	<field name="Ot_sectorEmisor" class="java.lang.Integer"/>
+	<field name="Ot_idUsuario" class="java.lang.Integer"/>
+	<field name="Ot_aprobado" class="java.math.BigDecimal"/>
+	<field name="Ot_rechazado" class="java.math.BigDecimal"/>
+	<field name="Ot_sectorId" class="java.lang.Integer"/>
+	<field name="Ot_estado" class="java.lang.Integer"/>
+	<field name="Ot_clienteId" class="java.lang.Integer"/>
+	<field name="cliente_idCliente" class="java.lang.Integer"/>
+	<field name="cliente_denominacion" class="java.lang.String"/>
+	<field name="cliente_rsocial" class="java.lang.String"/>
+	<field name="Sectores_id" class="java.lang.Integer"/>
+	<field name="Sectores_costoMin" class="java.math.BigDecimal"/>
+	<field name="Sectores_descripcion" class="java.lang.String"/>
+	<field name="Sectores_piso" class="java.lang.String"/>
+	<field name="Sectores_nave" class="java.lang.String"/>
+	<field name="Sectores_tiempo" class="java.math.BigDecimal"/>
+	<field name="Ot_anulada" class="java.lang.Boolean"/>
+	<group name="articulos">
+		<groupExpression><![CDATA[$F{articulos_codigo}]]></groupExpression>
+		<groupHeader>
+			<band height="70">
+				<staticText>
+					<reportElement x="0" y="10" width="100" height="20" uuid="4371dbae-0324-4cba-a100-5b4be10a53c9"/>
+					<box leftPadding="3">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Código:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="30" width="100" height="20" uuid="b9f76605-2ce2-4916-8a93-dfeb9b0408a4"/>
+					<box leftPadding="3">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Descripción:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="100" y="10" width="455" height="20" uuid="3d3ae8ce-b313-480f-a140-178a1d25bb68"/>
+					<box leftPadding="3">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{articulos_codigo}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="100" y="30" width="455" height="20" uuid="e66beae0-d0e4-4d72-a9c2-307e51f469a9"/>
+					<box leftPadding="3">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{articulos_descripcion}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="50" width="52" height="20" uuid="3bbca582-572d-4db4-b831-c932540fbe62"/>
+					<box leftPadding="3">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Emisión]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="52" y="50" width="48" height="20" uuid="b767ad77-016d-4665-9a12-3bb5f84a9893"/>
+					<box leftPadding="3">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[OT N°]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="100" y="50" width="55" height="20" uuid="cadd7215-1873-450a-ba6d-734a2a30740c"/>
+					<box leftPadding="3">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Entrega]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="285" y="50" width="53" height="20" uuid="fbf2afa0-4ce4-49c1-b683-05efc7f6cdc7"/>
+					<box leftPadding="3">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Estado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="155" y="50" width="50" height="20" uuid="aa8e11c1-9c9a-4d18-9d34-1d611d4ed758"/>
+					<box leftPadding="3">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Cantidad]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="205" y="50" width="51" height="20" uuid="4d43ae97-8379-43c0-b035-a403d92edce2"/>
+					<box leftPadding="3">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Aprobado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="256" y="50" width="29" height="20" uuid="bc9a84bf-1a3d-4599-bf46-00730b132a5b"/>
+					<box leftPadding="3">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[NC]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="338" y="50" width="117" height="20" uuid="e2e1752c-4880-40b4-bb18-66fff2b08a4a"/>
+					<box leftPadding="3">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Cliente]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="455" y="50" width="100" height="20" uuid="55e34d3f-b2bd-49af-ac30-12dcc40fc012"/>
+					<box leftPadding="3">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Sector]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="40" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="40" uuid="1dbfb939-5463-4a95-8cfe-0edb67f49cc4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[Histórico de Ordenes de Trabajo]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="52" height="20" uuid="68c5d45a-f2e2-4c90-a657-21d8783e25e0"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Ot_fechaEmision}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="52" y="0" width="48" height="20" uuid="e1d591e4-75cf-4269-b4bf-8b0cf3ce06df"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Ot_ot}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="102" y="0" width="53" height="20" uuid="921d638e-6162-4a03-b675-c2e8c4ab0599"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Ot_fechaProg}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement x="155" y="0" width="50" height="20" uuid="7eb7a9e0-6a7e-4086-b756-a7d1fadc51a4"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Ot_cantidad}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement x="205" y="0" width="51" height="20" uuid="6475fe04-31b3-4108-92d8-1e4d0b4a30fb"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Ot_aprobado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement x="256" y="0" width="29" height="20" uuid="aa27c237-0724-499d-9a5b-5d8c1dd3ab91"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Ot_rechazado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="no comenzado" x="285" y="0" width="53" height="20" uuid="32ae5439-fa4e-41d7-ad68-e1e0b71db2ea"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Ot_estado} == 0 ? "N" : $F{Ot_estado} == 1 ? "P" : $F{Ot_estado} == 3 ? "G" : "T"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="338" y="0" width="117" height="20" uuid="daaaf7d3-249c-48e1-9aed-d50360518746"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cliente_rsocial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="455" y="0" width="100" height="20" uuid="aa2e6265-da80-44c9-89a3-0aed0358d241"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Sectores_descripcion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="424" y="10" width="68" height="20" uuid="f2ae6510-8603-4a8c-bf29-f22fa0d84464"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Pág. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="492" y="10" width="63" height="20" uuid="244d362b-4869-4f54-b48b-313a32c27944"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

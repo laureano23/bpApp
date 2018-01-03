@@ -353,7 +353,7 @@ class OtController extends Controller
 					break;
 				case 'Terminada':
 					$ot->setEstado(2);
-					
+										
 					/* Si la OT esta terminada enviamos una notificacion al sector que la solicitó */
 					//NOTIFICACION
 					$pusher = $this->container->get('lopi_pusher.pusher');
