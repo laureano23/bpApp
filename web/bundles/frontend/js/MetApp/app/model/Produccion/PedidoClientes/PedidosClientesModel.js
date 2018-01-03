@@ -11,6 +11,8 @@ Ext.define('MetApp.model.Produccion.PedidoClientes.PedidosClientesModel', {
 		{ name: 'precio', type: 'int' },
 		{ name: 'fechaProgramacion', type: 'datetime' },
 		{ name: 'cliente', type: 'int' },
-		{ name: 'clienteDesc', type: 'string' },		
+		{ name: 'clienteDesc', type: 'string' },
+		{ name: 'oc', type: 'string' },
+		{ name: 'autEntrega', type: 'string' },		
 	]
 });

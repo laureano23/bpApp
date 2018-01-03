@@ -42,6 +42,13 @@ class PedidoClientes
      * @ORM\Column(name="oc", type="string", length=25)
      */
     private $oc;
+	
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="autEntrega", type="string", length=25, nullable=true)
+     */
+    private $autEntrega;
 
     /**
      * @var boolean
@@ -236,5 +243,29 @@ class PedidoClientes
     public function getDetalleId()
     {
         return $this->detalleId;
+    }
+
+    /**
+     * Set autEntrega
+     *
+     * @param string $autEntrega
+     *
+     * @return PedidoClientes
+     */
+    public function setAutEntrega($autEntrega)
+    {
+        $this->autEntrega = $autEntrega;
+
+        return $this;
+    }
+
+    /**
+     * Get autEntrega
+     *
+     * @return string
+     */
+    public function getAutEntrega()
+    {
+        return $this->autEntrega;
     }
 }

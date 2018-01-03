@@ -116,6 +116,8 @@ Ext.define('MetApp.controller.Produccion.PedidoClientes.PedidoClientesController
 		var idClienteValue = idCliente.getValue();
 		var oc = form.queryById('oc');
 		var ocValue = oc.getValue();
+		var autNum = form.queryById('autEntrega');
+		var autValue = autNum.getValue();
 		
 		if(form.isValid()){
 			values = form.getValues();
@@ -130,6 +132,7 @@ Ext.define('MetApp.controller.Produccion.PedidoClientes.PedidoClientesController
 			cliente.setValue(clienteValue); //VOLVEMOS A SETEAR EL CLIENTE
 			idCliente.setValue(idClienteValue); //VOLVEMOS A SETEAR EL CLIENTE
 			oc.setValue(ocValue); //VOLVEMOS A SETEAR EL VALOR DE LA OC
+			autNum.setValue(autValue); //VOLVEMOS A SETEAR EL VALOR DE NUM ENTREGA
 			form.queryById('buscaArt').focus();
 		}
 	},
@@ -196,7 +199,8 @@ Ext.define('MetApp.controller.Produccion.PedidoClientes.PedidoClientesController
 				params: {
 					data: values,
 					cliente: win.queryById('idCliente').getValue(),
-					oc: win.queryById('oc').getValue()
+					oc: win.queryById('oc').getValue(),
+					autNum: win.queryById('autEntrega').getValue(),
 				},
 				
 				success: function(resp, opt){

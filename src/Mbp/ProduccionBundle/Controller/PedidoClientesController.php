@@ -21,6 +21,7 @@ class PedidoClientesController extends Controller
 		$values = $req->request->get('data');
 		$clienteId = $req->request->get('cliente');
 		$oc = $req->request->get('oc');
+		$autNum = $req->request->get('autNum');
 		
 		$em = $this->getDoctrine()->getManager();
 		$repo = $em->getRepository('MbpProduccionBundle:PedidoClientes');
@@ -41,6 +42,7 @@ class PedidoClientesController extends Controller
 			$pedido->setCliente($idCliente);
 			$pedido->setUsuarioId($usuario);
 			$pedido->setFechaPedido(new \DateTime);
+			$pedido->setAutEntrega($autNum);
 			
 			foreach ($json as $val) {
 				$pedidoDetalle = new PedidoClientesDetalle;
@@ -55,7 +57,7 @@ class PedidoClientesController extends Controller
 				
 				$pedidoDetalle->setCodigo($codigoArticulo);
 				$pedidoDetalle->setCantidad($val->cantidad);
-				$pedidoDetalle->setFechaProg($date);
+				$pedidoDetalle->setFechaProg($date);				
 				$pedido->AddDetalleId($pedidoDetalle);
 				
 				$em->persist($pedido);

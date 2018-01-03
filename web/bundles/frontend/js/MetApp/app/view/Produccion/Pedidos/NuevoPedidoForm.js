@@ -44,6 +44,27 @@ Ext.define('MetApp.view.Produccion.Pedidos.NuevoPedidoForm', {
 			}
 		]
 		
+		var lineInt = [	
+			{
+				xtype: 'textfield',
+				itemId: 'oc',
+				width: 150,
+				labelWidth: 40,
+				name: 'oc',
+				fieldLabel: 'O/C :',
+				allowBlank: true
+			},
+			{
+				xtype: 'textfield',
+				allowBlank: true,
+				itemId: 'autEntrega',
+				width: 130,
+				labelWidth: 50,
+				name: 'autEntrega',
+				fieldLabel: 'Aut. N°:'
+			}
+		]
+		
 		var line2 = [
 			{
 				xtype: 'grid',
@@ -79,7 +100,7 @@ Ext.define('MetApp.view.Produccion.Pedidos.NuevoPedidoForm', {
 					{header: 'Cantidad', dataIndex: 'cantidad', flex: 1},
 					{header: 'U', dataIndex: 'unidad', width: 50},
 					{header: 'Precio', dataIndex: 'precio', flex: 1},
-					{header: 'Fecha Prog.', dataIndex: 'fechaProgramacion', flex: 1}
+					{header: 'Fecha Prog.', dataIndex: 'fechaProgramacion', flex: 1},
 				]										
 			}			
 		]
@@ -137,14 +158,7 @@ Ext.define('MetApp.view.Produccion.Pedidos.NuevoPedidoForm', {
 				name: 'fechaProgramacion',
 				fieldLabel: 'Fecha Prog:'
 			},
-			{
-				xtype: 'textfield',
-				itemId: 'oc',
-				width: 150,
-				labelWidth: 40,
-				name: 'oc',
-				fieldLabel: 'O/C :'
-			}		
+					
 		]
 		
 		var line5= [
@@ -192,6 +206,12 @@ Ext.define('MetApp.view.Produccion.Pedidos.NuevoPedidoForm', {
 							xtype: 'container',
 							border: false,
 							items: line1,
+							layout: 'hbox'
+						},
+						{
+							xtype: 'container',
+							border: false,
+							items: lineInt,
 							layout: 'hbox'
 						},
 						{
