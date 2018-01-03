@@ -368,7 +368,14 @@ Ext.define('MetApp.view.Principal.MyViewport', {
 						listeners : {
                        		render : dragZone,
                        }
-                    }
+                   },
+                   {
+	    				text: 'Histórico de Producción',
+						itemId: 'historicoProduccion',
+						listeners : {
+                       		render : dragZone,
+                       }
+                   },
     			]
     		}
     	]

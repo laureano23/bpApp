@@ -1016,6 +1016,143 @@ class ReportesController extends Controller
 
         return $response;
 	}
+	
+	/**
+     * @Route("/produccion/reporteHistoricoOT", name="mbp_produccion_reporteHistoricoOT", options={"expose"=true})
+     */
+    public function reporteHistoricoOT()
+    {
+        /*
+		 * PARAMETROS
+		 */
+		$desde = $this->getRequest()->request->get('desde');
+		$hasta = $this->getRequest()->request->get('hasta');
+		$codigo1 = $this->getRequest()->request->get('codigo1');
+		$codigo2 = $this->getRequest()->request->get('codigo2');
+		$response = new Response;
+
+		try {
+			$reporteador = $this->get('reporteador');
+			$kernel = $this->get('kernel');
+			
+			
+			/*
+			 * Configuro reporte
+			 */
+			$jru = $reporteador->jru();
+			
+			/*
+			 * Ruta archivo Jasper
+			 */				
+					
+			$ruta = $kernel->locateResource('@MbpProduccionBundle/Reportes/HistoricoOt.jrxml');
+			$rutaLogo = $reporteador->getRutaLogo($kernel);
+			
+			/*
+			 * Ruta de destino del PDF
+			 */
+			$destino = $kernel->locateResource('@MbpProduccionBundle/Resources/public/pdf/').'HistoricoOt.pdf';
+			
+			
+			$desde = \DateTime::createFromFormat('d/m/Y', $desde);
+			$hasta = \DateTime::createFromFormat('d/m/Y', $hasta);
+			//Parametros HashMap
+			$param = $reporteador->getJava('java.util.HashMap');
+			$param->put('desde', $desde->format("Y-m-d"));
+			$param->put('hasta', $hasta->format("Y-m-d"));
+			$param->put('codigo1', $codigo1);
+			$param->put('codigo2', $codigo2);
+			
+			$conn = $reporteador->getJdbc(); 
+			
+			/*
+			 * FECHA OUTPUT FORMATO SQL PARA CONSULTA
+			 */		
+			$fechaDesdeSql = $desde->format('Y-m-d');
+			$fechaHastaSql = $hasta->format('Y-m-d');
+			
+			$sql = "
+			SELECT
+			     articulos.`codigo` AS articulos_codigo,
+			     articulos.`descripcion` AS articulos_descripcion,
+			     articulos.`idArticulos` AS articulos_idArticulos,
+			     articulos.`unidad` AS articulos_unidad,
+			     Ot.`ot` AS Ot_ot,
+			     Ot.`cantidad` AS Ot_cantidad,
+			     Ot.`fechaEmision` AS Ot_fechaEmision,
+			     Ot.`fechaProg` AS Ot_fechaProg,
+			     Ot.`idCodigo` AS Ot_idCodigo,
+			     Ot.`sectorEmisor` AS Ot_sectorEmisor,
+			     Ot.`idUsuario` AS Ot_idUsuario,
+			     Ot.`aprobado` AS Ot_aprobado,
+			     Ot.`rechazado` AS Ot_rechazado,
+			     Ot.`sectorId` AS Ot_sectorId,
+			     Ot.`estado` AS Ot_estado,
+			     Ot.`clienteId` AS Ot_clienteId,
+			     cliente.`idCliente` AS cliente_idCliente,
+			     cliente.`denominacion` AS cliente_denominacion,
+			     cliente.`rsocial` AS cliente_rsocial,
+			     Sectores.`id` AS Sectores_id,
+			     Sectores.`costoMin` AS Sectores_costoMin,
+			     Sectores.`descripcion` AS Sectores_descripcion,
+			     Sectores.`piso` AS Sectores_piso,
+			     Sectores.`nave` AS Sectores_nave,
+			     Sectores.`tiempo` AS Sectores_tiempo,
+			     Ot.`anulada` AS Ot_anulada
+			FROM
+			     `articulos` articulos INNER JOIN `Ot` Ot ON articulos.`idArticulos` = Ot.`idCodigo`
+			     LEFT OUTER JOIN `cliente` cliente ON Ot.`clienteId` = cliente.`idCliente`
+			     INNER JOIN `Sectores` Sectores ON Ot.`sectorId` = Sectores.`id`
+			WHERE
+			     articulos.`codigo` BETWEEN $codigo1 AND $codigo2 AND
+			     Ot.`fechaEmision` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql' AND
+			     Ot.`anulada` = 0
+			ORDER BY
+			     articulos.`codigo` ASC
+			";
+			
+			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
+			
+			return $response->setContent(
+					json_encode(
+						array(
+							'success'=> true,	
+						)
+					)
+				);
+		} catch (\Exception $e) {
+			$response->setContent(
+				json_encode(
+					array(
+						'success'=> false,	
+						'msg' => $e->getMessage()
+					)
+				)
+			);
+
+			return $response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+    }
+    
+    /**
+     * @Route("/produccion/verHistoricoOt", name="mbp_produccion_verHistoricoOt", options={"expose"=true})
+     */
+	public function verHistoricoOt()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpProduccionBundle/Resources/public/pdf/').'HistoricoOt.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'reporteOTPorClientes.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-Type', 'application/pdf');
+
+        return $response;
+	}
 }
 
 
