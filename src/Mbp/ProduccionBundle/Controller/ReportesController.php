@@ -1104,7 +1104,7 @@ class ReportesController extends Controller
 			     LEFT OUTER JOIN `cliente` cliente ON Ot.`clienteId` = cliente.`idCliente`
 			     INNER JOIN `Sectores` Sectores ON Ot.`sectorId` = Sectores.`id`
 			WHERE
-			     articulos.`codigo` BETWEEN $codigo1 AND $codigo2 AND
+			     articulos.`codigo` BETWEEN '$codigo1' AND '$codigo2' AND
 			     Ot.`fechaEmision` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql' AND
 			     Ot.`anulada` = 0
 			ORDER BY
