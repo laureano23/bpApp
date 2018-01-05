@@ -103,28 +103,4 @@ class Localidades
     {
         return $this->departamentoId;
     }
-
-    /**
-     * Set provinciaId
-     *
-     * @param \Mbp\PersonalBundle\Entity\Provincia $provinciaId
-     *
-     * @return Localidades
-     */
-    public function setProvinciaId(\Mbp\PersonalBundle\Entity\Provincia $provinciaId = null)
-    {
-        $this->provinciaId = $provinciaId;
-
-        return $this;
-    }
-
-    /**
-     * Get provinciaId
-     *
-     * @return \Mbp\PersonalBundle\Entity\Provincia
-     */
-    public function getProvinciaId()
-    {
-        return $this->provinciaId;
-    }
 }

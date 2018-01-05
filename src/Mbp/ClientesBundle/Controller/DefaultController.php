@@ -32,8 +32,8 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
 		$request = $this->getRequest();
 		$response = new Response;
-		$repoLocalidad = $em->getRepository('MbpPersonalBundle:Localidades');
-		$repoProvincia = $em->getRepository('MbpPersonalBundle:Provincias');
+		$repoDepto = $em->getRepository('MbpPersonalBundle:Departamentos');
+		$repoProvincia = $em->getRepository('MbpPersonalBundle:Provincia');
 		$repoClientes = $em->getRepository('MbpClientesBundle:Cliente');
 		$repoIva = $em->getRepository('MbpFinanzasBundle:PosicionIVA');
 		
@@ -49,7 +49,7 @@ class DefaultController extends Controller
 			$cliente->setRsocial($request->request->get('rsocial'));
 			$cliente->setDenominacion($request->request->get('denominacion'));
 			$cliente->setDireccion($request->request->get('direccion'));
-			$cliente->setLocalidad($repoLocalidad->find($request->request->get('localidad')));
+			$cliente->setDepartamento($repoDepto->find($request->request->get('departamento')));
 			$cliente->setProvincia($repoProvincia->find($request->request->get('provincia')));
 			$cliente->setEmail($request->request->get('email'));
 			$cliente->setCuit($request->request->get('cuit'));

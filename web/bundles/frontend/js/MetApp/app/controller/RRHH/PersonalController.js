@@ -24,11 +24,11 @@ Ext.define('MetApp.controller.RRHH.PersonalController', {
 			'#tablaPersonal': {
 				click: this.TablaPersonal
 			},
-			'personalWin combobox[itemId=comboPartido]': {
-				focus: this.FilterPartido
+			'personalWin combobox[itemId=comboProv]': {
+				select: this.FilterPartido
 			},
-			'personalWin combobox[itemId=comboLocalidad]': {
-				focus: this.FilterLocalidad
+			'personalWin combobox[itemId=comboPartido]': {
+				select: this.FilterLocalidad
 			},
 			'personalWin combobox[itemId=comboCategoria]': {
 				focus: this.FilterCategoria
@@ -86,16 +86,12 @@ Ext.define('MetApp.controller.RRHH.PersonalController', {
 		var storeCategoria = tabPersonal.queryById('comboCategoria').getStore();
 		var storeSector = tabPersonal.queryById('comboSector').getStore();
 		var storeProvincia = tabPersonal.queryById('comboProv').getStore();
-		var storeDepartamento = tabPersonal.queryById('comboPartido').getStore();
-		var storeLocalidad = tabPersonal.queryById('comboLocalidad').getStore();
 		
 		storePersonal.load();
 		storeSindicato.load();
 		storeCategoria.load();
 		storeSector.load();
 		storeProvincia.load();
-		storeDepartamento.load();
-		storeLocalidad.load();
 		
 		var map = new Ext.util.KeyMap({
 		    target: tabPersonal.getId(),	
@@ -135,25 +131,41 @@ Ext.define('MetApp.controller.RRHH.PersonalController', {
 	
 	FilterPartido: function(combo){
 		var win = combo.up('window');
-		var storePartido = combo.getStore();
+		var storePartido = win.queryById('comboPartido').getStore();
 		var provId = win.queryById('comboProv').getValue();
 		
-		storePartido.clearFilter();
-		storePartido.filter('idProvincia', provId);
+		if(provId == null){
+			console.log('entramos');
+			Ext.Msg.show({
+				title: 'Atención',
+				msg: 'Seleccione una provincia primero',
+				buttons: Ext.Msg.OK,
+     			icon: Ext.Msg.ALERT
+			})
+		}else{
+			storePartido.getProxy().setExtraParam('provinciaId', provId);
+			storePartido.load();	
+		}
+		
+		
 	},
 	
 	FilterLocalidad: function(combo){
 		var win = combo.up('window');
-		var storeLocalidad = combo.getStore();
+		var storeLocalidad = win.queryById('comboLocalidad').getStore();
 		var partidoId = win.queryById('comboPartido').getValue();
-				
-		storeLocalidad.clearFilter();
-		storeLocalidad.filter({
-			property: "idDepartamento",
-			  value: partidoId, 
-			  exactMatch: true
-			}		  
-		);
+		
+		if(partidoId == null){
+			Ext.Msg.show({
+				title: 'Atención',
+				msg: 'Seleccione un partido primero',
+				buttons: Ext.Msg.OK,
+     			icon: Ext.Msg.ALERT
+			})
+		}else{
+			storeLocalidad.getProxy().setExtraParam('partidoId', partidoId);
+			storeLocalidad.load();	
+		}
 	},
 
 	FilterCategoria: function(combo){
@@ -203,6 +215,31 @@ Ext.define('MetApp.controller.RRHH.PersonalController', {
 				},				
 				success: function(resp){
 					var jsonResp = Ext.decode(resp.responseText);
+					console.log(jsonResp);
+					
+					/*CARGAMOS DEPARTAMENTO Y LOCALIDAD*/
+					var comboDepto = win.queryById('comboPartido');
+					var storeDepto = comboDepto.getStore();
+					
+					var comboLocalidad = win.queryById('comboLocalidad');
+					var storeLocalidad = comboLocalidad.getStore();
+					
+					storeDepto.getProxy().setExtraParam('provinciaId', jsonResp.provincia);
+					storeDepto.load({
+						callback: function(records, operation, success) {
+					        comboDepto.select(jsonResp.departamento);
+					        
+					    }
+					});
+					
+					storeLocalidad.getProxy().setExtraParam('partidoId', jsonResp.departamento);
+					storeLocalidad.load({
+						callback: function(records, operation, success) {
+					        comboLocalidad.select(jsonResp.localidad);
+					        
+					    }
+					});
+					
 					var fullRecord = Ext.create('MetApp.model.Personal.PersonalModel');
 					fullRecord.set(jsonResp);
 					form.getForm().setValues(jsonResp);

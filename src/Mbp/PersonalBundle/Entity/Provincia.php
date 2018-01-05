@@ -5,19 +5,18 @@ namespace Mbp\PersonalBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Provincias
+ * Provincia
  *
- * @ORM\Table(name="provincias")
- * @ORM\Entity(repositoryClass="Mbp\PersonalBundle\Entity\ProvinciasRepository")
+ * @ORM\Table(name="provincia")
+ * @ORM\Entity(repositoryClass="Mbp\PersonalBundle\Entity\ProvinciaRepository")
  */
-class Provincias
+class Provincia
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="string", length=4, nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 

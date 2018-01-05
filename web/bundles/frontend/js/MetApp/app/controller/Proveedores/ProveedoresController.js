@@ -16,6 +16,9 @@ Ext.define('MetApp.controller.Proveedores.ProveedoresController',{
 			'ProveedoresWin button[itemId=buscaProveedor]': {
 				click: this.BuscaProveedor
 			},
+			'ProveedoresWin combobox[itemId=comboProv]': {
+				select: this.FilterPartido
+			},
 			'ProveedoresWin button[itemId=btnNew]': {
 				click: this.NuevoProveedor
 			},
@@ -28,13 +31,30 @@ Ext.define('MetApp.controller.Proveedores.ProveedoresController',{
 		});
 	},
 	
+	FilterPartido: function(combo){
+		var win = combo.up('window');
+		var storePartido = win.queryById('comboPartido').getStore();
+		var provId = win.queryById('comboProv').getValue();
+		
+		if(provId == null){
+			Ext.Msg.show({
+				title: 'Atención',
+				msg: 'Seleccione una provincia primero',
+				buttons: Ext.Msg.OK,
+     			icon: Ext.Msg.ALERT
+			})
+		}else{
+			storePartido.getProxy().setExtraParam('provinciaId', provId);
+			storePartido.load();	
+		}
+	},
+	
 	AddProveedoresWin: function(btn){
 		var win = Ext.widget('ProveedoresWin');
 		var comboLocalidad = win.queryById('comboLocalidad');
 		var comboProvincia = win.queryById('comboProv');
 		var comboGastos = win.queryById('tipoGasto');
 		
-		comboLocalidad.getStore().load();
 		comboProvincia.getStore().load();
 		comboGastos.getStore().load();
 	},
@@ -61,7 +81,7 @@ Ext.define('MetApp.controller.Proveedores.ProveedoresController',{
 		var botonera = win.queryById('botonera');
 		
 		form.getForm().reset();
-		form.query('.field').forEach(function(c){c.setDisabled(false);}); //HABILITO TODOS LOS CAMPOS
+		form.query('.field').forEach(function(c){c.setReadOnly(false);}); //HABILITO TODOS LOS CAMPOS
 		botonera.nuevoItem(botonera);
 		form.queryById('rSocial').focus();		
 	},
@@ -85,7 +105,7 @@ Ext.define('MetApp.controller.Proveedores.ProveedoresController',{
 					var jsonResp = Ext.JSON.decode(resp.responseText);
 					if(jsonResp.success == true){
 						win.queryById('id').setValue(jsonResp.id);
-						form.query('.field').forEach(function(c){c.setDisabled(true);}); //HABILITO TODOS LOS CAMPOS
+						form.query('.field').forEach(function(c){c.setReadOnly(true);}); //HABILITO TODOS LOS CAMPOS
 						botonera.resetFn(botonera);		
 					}
 				}
@@ -97,7 +117,7 @@ Ext.define('MetApp.controller.Proveedores.ProveedoresController',{
 		var win = btn.up('window');
 		var form = win.down('form');
 		var botonera = win.queryById('botonera');
-		form.query('.field').forEach(function(c){c.setDisabled(false);});
+		form.query('.field').forEach(function(c){c.setReadOnly(false);});
 		
 		botonera.editarItem(botonera);
 	}

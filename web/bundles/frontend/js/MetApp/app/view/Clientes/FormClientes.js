@@ -95,26 +95,10 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 							items: [
 								{
 									xtype: 'textfield',
-									width: 300,
+									//width: 300,
 									name: 'direccion',
 									fieldLabel: 'Direccion:',
 									columnWidth: 0.33
-								},
-								{
-									xtype: 'combobox',
-									columnWidth: 0.33,
-									labelWidth: 70,
-									forceSelection: true,
-									queryMode: 'local',
-									name: 'localidad',
-									itemId: 'comboLocalidad',
-									store: 'MetApp.store.Personal.LocalidadesStore',
-									displayField: 'nombre',
-									valueField: 'id',
-									fieldLabel: 'Localidad',
-									valueField: 'idLocalidad',
-									typeAhead: true,
-									minChars: 1,
 								},
 								{
 									xtype: 'combobox',
@@ -130,7 +114,21 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 									typeAhead: true,							
 									minChars: 1,
 									fieldLabel: 'Provincia',
-								}
+								},								
+								{
+									xtype: 'combobox',
+									forceSelection: true,
+									queryMode: 'local',
+									name: 'departamento',
+									itemId: 'comboPartido',
+									store: 'MetApp.store.Personal.PartidosStore',
+									displayField: 'nombre',
+									valueField: 'idPartido',
+									typeAhead: true,
+									minChars: 1,
+									fieldLabel: 'Partido',
+									columnWidth: 0.33
+								},
 							]							
 						},
 						{

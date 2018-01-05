@@ -29,11 +29,11 @@ class ClienteRepository extends  EntityRepository
 							c.porcentajePercepcion,
 							c.cuentaCerrada,
 							prov.id as provincia,
-							loc.id as localidad')
+							dep.id as localidad')
 			->from('Mbp\ClientesBundle\Entity\Cliente', 'c')
 		    ->where($qb->expr()->like('c.rsocial', $qb->expr()->literal($q.'%')))
 			->leftjoin('c.provincia', 'prov')
-			->leftjoin('c.localidad', 'loc')
+			->leftjoin('c.departamento', 'dep')
 			->leftjoin('c.iva', 'i')
 		    ->getQuery()
 		    ->getArrayResult();

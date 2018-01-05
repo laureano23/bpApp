@@ -708,28 +708,4 @@ class Facturas
     {
         return $this->porcentajeIIBB;
     }
-
-    /**
-     * Set departamento
-     *
-     * @param string $departamento
-     *
-     * @return Facturas
-     */
-    public function setDepartamento($departamento)
-    {
-        $this->departamento = $departamento;
-
-        return $this;
-    }
-
-    /**
-     * Get departamento
-     *
-     * @return string
-     */
-    public function getDepartamento()
-    {
-        return $this->departamento;
-    }
 }

@@ -138,7 +138,7 @@ class PersonalController extends Controller
 	public function listProvinciasAction()
 	{
 		$em = $this->getDoctrine()->getManager();
-		$repo = $em->getRepository('MbpPersonalBundle:Provincias');
+		$repo = $em->getRepository('MbpPersonalBundle:Provincia');
 		
 		$repo->listarProvincias();
 		
@@ -152,9 +152,14 @@ class PersonalController extends Controller
 	{
 		$em = $this->getDoctrine()->getManager();
 		$repo = $em->getRepository('MbpPersonalBundle:Departamentos');
+		$req = $this->getRequest();
+		$provId = $req->query->get('provinciaId');
 		
-		$dql = 'SELECT dep.id AS idPartido, dep.nombre, prov.id AS idProvincia FROM MbpPersonalBundle:Departamentos dep JOIN dep.provinciaId prov
-				ORDER BY dep.nombre ASC';
+		$dql = "SELECT dep.id AS idPartido, dep.nombre, prov.id AS idProvincia 
+				FROM MbpPersonalBundle:Departamentos dep 
+				JOIN dep.provinciaId prov
+				WHERE dep.provinciaId = '$provId' 
+				ORDER BY dep.nombre ASC";
 		$query = $em->createQuery($dql);
 		$res = $query->getArrayResult();
 		
@@ -174,9 +179,14 @@ class PersonalController extends Controller
 	{
 		$em = $this->getDoctrine()->getManager();
 		$repo = $em->getRepository('MbpPersonalBundle:Localidades');
+		$req = $this->getRequest();
+		$partidoId = $req->query->get('partidoId');
 		
-		$dql = 'SELECT loc.id idLocalidad, loc.nombre, dep.id AS idDepartamento FROM MbpPersonalBundle:Localidades loc JOIN loc.departamentoId dep
-				ORDER BY loc.nombre';
+		$dql = "SELECT loc.id idLocalidad, loc.nombre, dep.id AS idDepartamento
+				FROM MbpPersonalBundle:Localidades loc
+				JOIN loc.departamentoId dep
+				WHERE loc.departamentoId = '$partidoId'
+				ORDER BY loc.nombre";
 		$query = $em->createQuery($dql);
 		$res = $query->getArrayResult();
 		

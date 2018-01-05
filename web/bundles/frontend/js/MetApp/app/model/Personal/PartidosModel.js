@@ -4,6 +4,6 @@ Ext.define('MetApp.model.Personal.PartidosModel',{
 	fields: [
 		{name: 'idPartido', type: 'int'},
 		{name: 'nombre', type: 'string'},
-		{name: 'idProvincia'}
+		{name: 'idProvincia', type: 'string'}
 	]
 });

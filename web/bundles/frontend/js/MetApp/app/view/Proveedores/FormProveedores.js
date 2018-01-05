@@ -27,7 +27,7 @@ Ext.define('MetApp.view.Proveedores.FormProveedores' ,{
 						{
 							xtype: 'container',	
 							defaults: {								
-								disabled: true,
+								readOnly: true,
 								disabledCls: 'myDisabledClass'
 							},					
 							height: 50,
@@ -47,7 +47,7 @@ Ext.define('MetApp.view.Proveedores.FormProveedores' ,{
 								},
 								{
 									xtype: 'button',
-									disabled: false,
+									readOnly: false,
 									iconCls: 'search',
 									action: 'buscaProveedor',
 									itemId: 'buscaProveedor'
@@ -67,7 +67,7 @@ Ext.define('MetApp.view.Proveedores.FormProveedores' ,{
 							xtype: 'container',
 							height: 50,
 							defaults: {								
-								disabled: true,
+								readOnly: true,
 								disabledCls: 'myDisabledClass'
 							},
 							layout: {
@@ -88,7 +88,7 @@ Ext.define('MetApp.view.Proveedores.FormProveedores' ,{
 							xtype: 'container',
 							defaults: {
 								padding: '5 5 0 5',
-								disabled: true,
+								readOnly: true,
 								disabledCls: 'myDisabledClass'
 							},
 							layout: 'column',
@@ -99,23 +99,7 @@ Ext.define('MetApp.view.Proveedores.FormProveedores' ,{
 									name: 'direccion',
 									fieldLabel: 'Direccion:',
 									columnWidth: 0.33
-								},
-								{
-									xtype: 'combobox',
-									columnWidth: 0.33,
-									labelWidth: 70,
-									forceSelection: true,
-									queryMode: 'local',
-									name: 'localidad',
-									itemId: 'comboLocalidad',
-									store: 'MetApp.store.Personal.LocalidadesStore',
-									displayField: 'nombre',
-									valueField: 'id',
-									fieldLabel: 'Localidad',
-									valueField: 'id',
-									typeAhead: true,
-									minChars: 1,
-								},
+								},								
 								{
 									xtype: 'combobox',
 									columnWidth: 0.33,
@@ -126,18 +110,32 @@ Ext.define('MetApp.view.Proveedores.FormProveedores' ,{
 									displayField: 'nombre',
 									forceSelection: true,
 									queryMode: 'local',
-									valueField: 'id',
+									valueField: 'idProvincia',
 									typeAhead: true,							
 									minChars: 1,
 									fieldLabel: 'Provincia',
-								}
+								},
+								{
+									xtype: 'combobox',
+									forceSelection: true,
+									queryMode: 'local',
+									name: 'departamento',
+									itemId: 'comboPartido',
+									store: 'MetApp.store.Personal.PartidosStore',
+									displayField: 'nombre',
+									valueField: 'idPartido',
+									typeAhead: true,
+									minChars: 1,
+									fieldLabel: 'Partido',
+									columnWidth: 0.33
+								},
 							]							
 						},
 						{
 							xtype: 'container',
 							defaults: {
 								padding: '5 5 0 5',
-								disabled: true,
+								readOnly: true,
 								disabledCls: 'myDisabledClass'
 							},
 							layout: 'column',
@@ -181,7 +179,7 @@ Ext.define('MetApp.view.Proveedores.FormProveedores' ,{
 											title: 'Retencion',
 											border: false,
 											defaults: {
-												disabled: true,
+												readOnly: true,
 												disabledCls: 'myDisabledClass'
 											},
 											items: [
@@ -203,7 +201,7 @@ Ext.define('MetApp.view.Proveedores.FormProveedores' ,{
 											queryMode: 'local',
 											allowBlank: false,
 											store: 'Proveedores.ImputacionGastosStore',
-											disabled: true,
+											readOnly: true,
 											disabledCls: 'myDisabledClass',
 											width: 280,
 											labelWidth: 130, 
@@ -229,7 +227,7 @@ Ext.define('MetApp.view.Proveedores.FormProveedores' ,{
 											layout: 'hbox',
 											defaults: {
 												border: false,
-												disabled: true,
+												readOnly: true,
 												disabledCls: 'myDisabledClass'
 											},
 											margin: '2 0 2 0',
@@ -259,7 +257,7 @@ Ext.define('MetApp.view.Proveedores.FormProveedores' ,{
 											xtype: 'container',
 											defaults: {
 												border: false,
-												disabled: true,
+												readOnly: true,
 												disabledCls: 'myDisabledClass'
 											},
 											layout: 'hbox',
@@ -289,7 +287,7 @@ Ext.define('MetApp.view.Proveedores.FormProveedores' ,{
 											xtype: 'container',
 											defaults: {
 												border: false,
-												disabled: true,
+												readOnly: true,
 												disabledCls: 'myDisabledClass'
 											},
 											layout: 'hbox',
@@ -339,14 +337,14 @@ Ext.define('MetApp.view.Proveedores.FormProveedores' ,{
 													fieldLabel: 'Condicion de Compra:',
 													width: 450,
 													labelWidth: 120,
-													disabled: true,
+													readOnly: true,
 													disabledCls: 'myDisabledClass'
 												},
 												{
 													xtype: 'container',
 													defaults: {
 														padding: '5 0 0 0',
-														disabled: true,
+														readOnly: true,
 														disabledCls: 'myDisabledClass'
 													},
 													layout: 'hbox',
@@ -383,7 +381,7 @@ Ext.define('MetApp.view.Proveedores.FormProveedores' ,{
 													grow: true,
 													name: 'notas',
 													itemId: 'notas',
-													disabled: true,
+													readOnly: true,
 													disabledCls: 'myDisabledClass'
 												}									
 											]

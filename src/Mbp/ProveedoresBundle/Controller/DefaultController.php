@@ -85,8 +85,8 @@ class DefaultController extends Controller
     	$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
 		$repoProveedor = $em->getRepository('MbpProveedoresBundle:Proveedor');
-		$repoLocalidad = $em->getRepository('MbpPersonalBundle:Localidades');
-		$repoProvincia = $em->getRepository('MbpPersonalBundle:Provincias');
+		$repoDepto = $em->getRepository('MbpPersonalBundle:Departamentos');
+		$repoProvincia = $em->getRepository('MbpPersonalBundle:Provincia');
 		$repoImputaciones = $em->getRepository('MbpProveedoresBundle:ImputacionGastos');
 		
 		try{
@@ -101,7 +101,6 @@ class DefaultController extends Controller
 			}
 					
 			$proveedor->setRsocial($decData->rSocial);
-			$proveedor->setLocalidad($repoLocalidad->find($decData->localidad));
 			$proveedor->setProvincia($repoProvincia->find($decData->provincia));
 			$proveedor->setImputacionGastos($repoImputaciones->find($decData->tipoGasto));
 			$proveedor->setDenominacion($decData->denominacion);

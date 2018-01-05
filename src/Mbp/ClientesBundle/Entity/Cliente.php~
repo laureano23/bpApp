@@ -611,28 +611,4 @@ class Cliente
     {
         return $this->cuentaCerrada;
     }
-
-    /**
-     * Set departamento
-     *
-     * @param \Mbp\PersonalBundle\Entity\Departamentos $departamento
-     *
-     * @return Cliente
-     */
-    public function setDepartamento(\Mbp\PersonalBundle\Entity\Departamentos $departamento = null)
-    {
-        $this->departamento = $departamento;
-
-        return $this;
-    }
-
-    /**
-     * Get departamento
-     *
-     * @return \Mbp\PersonalBundle\Entity\Departamentos
-     */
-    public function getDepartamento()
-    {
-        return $this->departamento;
-    }
 }

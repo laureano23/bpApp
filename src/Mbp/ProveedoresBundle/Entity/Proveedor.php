@@ -29,15 +29,15 @@ class Proveedor
     private $rsocial;
 	
 	/**
-     * @var \Mbp\PersonalBundle\Entity\Localidades
-	 * @ORM\ManyToOne(targetEntity="Mbp\PersonalBundle\Entity\Localidades")
-	 * @ORM\JoinColumn(name="localidad", referencedColumnName="id", nullable=true)
+     * @var \Mbp\PersonalBundle\Entity\Departamentos
+	 * @ORM\ManyToOne(targetEntity="Mbp\PersonalBundle\Entity\Departamentos")
+	 * @ORM\JoinColumn(name="departamento", referencedColumnName="id", nullable=true)
      */
-    private $localidad;
+    private $departamento;
     
     /**
-     * @var \Mbp\PersonalBundle\Entity\Provincias
-	 * @ORM\ManyToOne(targetEntity="Mbp\PersonalBundle\Entity\Provincias")
+     * @var \Mbp\PersonalBundle\Entity\Provincia
+	 * @ORM\ManyToOne(targetEntity="Mbp\PersonalBundle\Entity\Provincia")
 	 * @ORM\JoinColumn(name="provincia", referencedColumnName="id", nullable=true)
      */
     private $provincia;
@@ -580,38 +580,15 @@ class Proveedor
         return $this->cuentaCerrada;
     }
 
-    /**
-     * Set localidad
-     *
-     * @param \Mbp\PersonalBundle\Entity\Localidades $localidad
-     *
-     * @return Proveedor
-     */
-    public function setLocalidad(\Mbp\PersonalBundle\Entity\Localidades $localidad = null)
-    {
-        $this->localidad = $localidad;
-
-        return $this;
-    }
-
-    /**
-     * Get localidad
-     *
-     * @return \Mbp\PersonalBundle\Entity\Localidades
-     */
-    public function getLocalidad()
-    {
-        return $this->localidad;
-    }
-
+    
     /**
      * Set provincia
      *
-     * @param \Mbp\PersonalBundle\Entity\Provincias $provincia
+     * @param \Mbp\PersonalBundle\Entity\Provincia $provincia
      *
      * @return Proveedor
      */
-    public function setProvincia(\Mbp\PersonalBundle\Entity\Provincias $provincia = null)
+    public function setProvincia(\Mbp\PersonalBundle\Entity\Provincia $provincia = null)
     {
         $this->provincia = $provincia;
 

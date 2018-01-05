@@ -199,11 +199,11 @@ class VentasController extends Controller
 			$repoFinanzas = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
 			$parametrosFinanzas = $repoFinanzas->find(1);
 			
-			if($cliente->getLocalidad() == NULL || $cliente->getLocalidad()->getDepartamentoId()->getProvinciaId() == NULL){
+			if($cliente->getDepartamento() == NULL || $cliente->getDepartamento()->getProvinciaId() == NULL){
 				throw new \Exception("El cliente debe tener cargados localidad y provincia para calcular IIBB", 1);				
 			}
 			
-			if($cliente->getLocalidad()->getDepartamentoId()->getProvinciaId()->getId() == 
+			if($cliente->getDepartamento()->getProvinciaId()->getId() == 
 				$parametrosFinanzas->getProvincia()->getId() && $alicuotaPercepcion > 0){
 				$percepcionIIBB = $netoGrabado * $alicuotaPercepcion / 100; 
 				$percepcionIIBB = number_format($percepcionIIBB, 2);
@@ -265,7 +265,7 @@ class VentasController extends Controller
 			//DATOS DEL CLIENTES
 			$factura->setRSocial($cliente->getRSocial());
 			$factura->setDomicilio($cliente->getDireccion());
-			$factura->setLocalidad($cliente->getLocalidad()->getNombre());
+			$factura->setDepartamento($cliente->getDepartamento()->getNombre());
 			$factura->setCuit($cliente->getCuit());
 			$factura->setIvaCond($cliente->getIva()->getPosicion());
 			$factura->setCondVta($cliente->getCondVenta()); 

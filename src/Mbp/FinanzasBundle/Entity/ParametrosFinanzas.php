@@ -43,7 +43,7 @@ class ParametrosFinanzas
     private $dolarBlue;
 
     /**
-     * @ORM\OneToOne(targetEntity="Mbp\PersonalBundle\Entity\Provincias")
+     * @ORM\OneToOne(targetEntity="Mbp\PersonalBundle\Entity\Provincia")
      * @ORM\JoinColumn(name="provincia_id", referencedColumnName="id")
      */
     private $provincia;

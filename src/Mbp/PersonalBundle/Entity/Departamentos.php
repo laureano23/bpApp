@@ -22,9 +22,9 @@ class Departamentos
     private $id;
 
     /**
-     * @var \Mbp\PersonalBundle\Entity\Provincias
+     * @var \Mbp\PersonalBundle\Entity\Provincia
      *
-	 * @ORM\ManyToOne(targetEntity="Mbp\PersonalBundle\Entity\Provincias")
+	 * @ORM\ManyToOne(targetEntity="Mbp\PersonalBundle\Entity\Provincia")
      * @ORM\JoinColumn(name="provincia_id", referencedColumnName="id")	
      */
     private $provinciaId;
@@ -79,7 +79,7 @@ class Departamentos
      *
      * @return Departamentos
      */
-    public function setProvinciaId(\Mbp\PersonalBundle\Entity\Provincias $provinciaId = null)
+    public function setProvinciaId(\Mbp\PersonalBundle\Entity\Provincia $provinciaId = null)
     {
         $this->provinciaId = $provinciaId;
 
@@ -89,7 +89,7 @@ class Departamentos
     /**
      * Get provinciaId
      *
-     * @return \Mbp\PersonalBundle\Entity\Provincias
+     * @return \Mbp\PersonalBundle\Entity\Provincia
      */
     public function getProvinciaId()
     {

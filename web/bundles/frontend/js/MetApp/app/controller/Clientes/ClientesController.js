@@ -18,6 +18,9 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 			'clientestb button[action=actNew]': {
 				click: this.NewCliente
 			},
+			'clientestb combobox[itemId=comboProv]': {
+				select: this.FilterPartido
+			},
 			'clientestb button[action=actEdit]': {
 				click: this.EditaCliente
 			},
@@ -33,12 +36,29 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 		});
 	},
 	
+	FilterPartido: function(combo){
+		var win = combo.up('window');
+		var storePartido = win.queryById('comboPartido').getStore();
+		var provId = win.queryById('comboProv').getValue();
+		
+		if(provId == null){
+			Ext.Msg.show({
+				title: 'Atención',
+				msg: 'Seleccione una provincia primero',
+				buttons: Ext.Msg.OK,
+     			icon: Ext.Msg.ALERT
+			})
+		}else{
+			storePartido.getProxy().setExtraParam('provinciaId', provId);
+			storePartido.load();	
+		}
+	},
+	
 	AddClientesTb: function(btn){
 		var me = this;
 		var win = Ext.widget('clientestb');
 		var comboLocalidad = win.queryById('comboLocalidad');
 		var comboProv = win.queryById('comboProv');
-		var store = comboLocalidad.getStore();
 		var storeProv = comboProv.getStore();
 		
 		var map = new Ext.util.KeyMap({
@@ -75,7 +95,6 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 		   	]
 		});	
 		
-		store.load();
 		storeProv.load();
 	},
 	
@@ -109,7 +128,7 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 		var botonera = form.queryById('botonera');
 		form.getForm().reset(); //RESET DEL FORM
 		
-		form.query('.field').forEach(function(c){c.setDisabled(false);}); //HABILITO TODOS LOS CAMPOS
+		form.query('.field').forEach(function(c){c.setReadOnly(false);}); //HABILITO TODOS LOS CAMPOS
 		botonera.nuevoItem(botonera);
 		form.queryById('rsocial').focus(); //FOCUS SOBRE RSOCIAL				
 	},
@@ -126,7 +145,7 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 	ResetForm: function(btn){
 		var form = btn.up('form');
 		form.getForm().reset();	
-		form.query('.field').forEach(function(c){c.setDisabled(true);});
+		form.query('.field').forEach(function(c){c.setReadOnly(true);});
 	},
 	
 	SaveCliente: function(btn){
