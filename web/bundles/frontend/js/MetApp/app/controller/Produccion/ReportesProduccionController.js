@@ -41,13 +41,18 @@ Ext.define('MetApp.controller.Produccion.ReportesProduccionController',{
 			},
 			'viewport menuitem[itemId=ordenesPorCliente]': {
 				click: this.ReporteOrdenesPorCliente
-			},	
+			},
+			'ReporteOrdenesPorCliente button[itemId=clienteBtn]': {
+				click: this.BuscarCliente
+			},
+			'ReporteOrdenesPorCliente button[itemId=clienteBtn2]': {
+				click: this.BuscarCliente
+			},		
 			'ReporteOrdenesPorCliente button[itemId=printDateReport]': {
 				click: this.GenerarReporteOTClientes
 			},			
 		});
 	},
-	
 	
 	
 	ReporteHistoricoProduccion: function(btn){
@@ -126,10 +131,35 @@ Ext.define('MetApp.controller.Produccion.ReportesProduccionController',{
 		Ext.widget('ReporteOrdenesPorCliente');
 	},
 	
+	BuscarCliente: function(btn){
+		var winReporte = btn.up('window');
+		var win = Ext.widget('clientesSearchGrid');
+		var store = win.down('grid').getStore();
+		store.load();
+		
+		console.log(btn);
+		var txt;
+		if(btn.itemId == "clienteBtn"){
+			txt = winReporte.queryById('clienteId');
+		}else{
+			txt = winReporte.queryById('clienteId2');
+		}
+		
+		win.queryById('insertCliente').on('click', function(){
+			var sel = win.down('grid').getSelectionModel().getSelection()[0];
+			txt.setValue(sel.data.id);
+			win.close();
+		});
+	},
+	
+	
+	
 	GenerarReporteOTClientes: function(btn){
 		var win = btn.up('window');
 		var form = btn.up('form');
 		var values = form.getValues();
+		
+		if(!form.isValid()) return;
 		
 		var urlReporte, urlPdf;
 		
@@ -144,6 +174,8 @@ Ext.define('MetApp.controller.Produccion.ReportesProduccionController',{
 		 	params: {
 		 		desde: values.desde,
 		 		hasta: values.hasta,
+		 		cliente1: values.clienteId,
+		 		cliente2: values.clienteId2
 		 	},
 		 	
 		 	success: function(resp){

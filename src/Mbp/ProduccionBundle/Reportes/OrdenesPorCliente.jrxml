@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OrdenesPorSector2" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9c56db6d-e34e-471e-a0fa-3c43960748b0">
-	<property name="ireport.zoom" value="1.2100000000000006"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="no comenzado" forecolor="#000000" backcolor="#FFFFFF" pattern="">
@@ -25,6 +25,12 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="hasta" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idCliente" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idCliente2" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
@@ -80,11 +86,12 @@ FROM
      LEFT OUTER JOIN `articulos` articulos ON ot.`idCodigo` = articulos.`idArticulos`
      RIGHT OUTER JOIN `cliente` cliente ON ot.`clienteId` = cliente.`idCliente`
 WHERE
-     ot.`fechaProg` BETWEEN $P{desde} AND $P{hasta}
+     ot.`fechaProg` BETWEEN $P{desde} AND $P{hasta} AND
+     ot.`clienteId`  BETWEEN $P{idCliente} AND $P{idCliente2}
 ORDER BY
      cliente.`idCliente` ASC,
      ot.`fechaProg` ASC
-     ]]>
+]]>
 	</queryString>
 	<field name="ot_ot" class="java.lang.Integer"/>
 	<field name="ot_cantidad" class="java.math.BigDecimal"/>

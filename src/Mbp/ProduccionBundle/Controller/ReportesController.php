@@ -872,7 +872,8 @@ class ReportesController extends Controller
 		 */
 		$desde = $this->getRequest()->request->get('desde');
 		$hasta = $this->getRequest()->request->get('hasta');
-		$sectorId = $this->getRequest()->request->get('sector');
+		$clienteId1 = $this->getRequest()->request->get('cliente');
+		$clienteId2 = $this->getRequest()->request->get('cliente2');
 		$response = new Response;
 
 		try {
@@ -904,7 +905,8 @@ class ReportesController extends Controller
 			$param = $reporteador->getJava('java.util.HashMap');
 			$param->put('desde', $desde->format("Y-m-d"));
 			$param->put('hasta', $hasta->format("Y-m-d"));
-			$param->put('sectorId', $sectorId);
+			$param->put('idCliente', $clienteId1);
+			$param->put('idCliente2', $clienteId2);
 			
 			$conn = $reporteador->getJdbc(); 
 			
@@ -967,11 +969,11 @@ class ReportesController extends Controller
 			     LEFT OUTER JOIN `articulos` articulos ON ot.`idCodigo` = articulos.`idArticulos`
 			     RIGHT OUTER JOIN `cliente` cliente ON ot.`clienteId` = cliente.`idCliente`
 			WHERE
-			     ot.`fechaProg` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql'
+			     ot.`fechaProg` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql' AND
+			     ot.`clienteId`  BETWEEN '$clienteId1' AND '$clienteId2'
 			ORDER BY
 			     cliente.`idCliente` ASC,
-			     ot.`fechaProg` ASC
-     
+			     ot.`fechaProg` ASC     
 			";
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
@@ -984,6 +986,7 @@ class ReportesController extends Controller
 					)
 				);
 		} catch (\Exception $e) {
+			throw $e;
 			$response->setContent(
 				json_encode(
 					array(

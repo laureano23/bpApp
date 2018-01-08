@@ -1,7 +1,7 @@
 Ext.define('MetApp.view.Produccion.Reportes.ReporteOrdenesPorCliente', {
 	extend: 'Ext.window.Window',
 	layout: 'fit',
-	width: 300,
+	width: 600,
 	autoShow: true,
 	modal: true,
 	alias: 'widget.ReporteOrdenesPorCliente', 
@@ -15,7 +15,7 @@ Ext.define('MetApp.view.Produccion.Reportes.ReporteOrdenesPorCliente', {
 				{
 					xtype: 'form',
 					itemId: 'fechaForm',
-					width: 295,
+					width: 600,
 					border: false,
 					layout: {
 						type: 'vbox',
@@ -35,7 +35,8 @@ Ext.define('MetApp.view.Produccion.Reportes.ReporteOrdenesPorCliente', {
 							submitFormat: 'd/m/Y',
 							format: 'd/m/Y',
 							fieldLabel: 'Desde',
-							labelWidth: 40
+							labelWidth: 40,
+							allowBlank: false
 						},
 						{
 							xtype: 'datefield',
@@ -44,8 +45,45 @@ Ext.define('MetApp.view.Produccion.Reportes.ReporteOrdenesPorCliente', {
 							format: 'd/m/Y',
 							name: 'hasta',
 							fieldLabel: 'Hasta',
-							labelWidth: 40
+							labelWidth: 40,
+							allowBlank: false
 						},
+						{
+							xtype: 'fieldset',
+							itemId: 'fieldSetCliente',
+							layout: 'hbox',							
+							title: 'Cliente',
+							collapsible: false,
+							collapsed: false,
+							items: [
+								{
+									xtype: 'textfield',
+									margins: '0 0 0 5',
+									itemId: 'clienteId',
+									name: 'clienteId',
+									labelWidth: 40,
+								},
+								{
+									xtype: 'button',
+									itemId: 'clienteBtn',
+									iconCls: 'search',
+									margin: '2 0 0 2'
+								},
+								{
+									xtype: 'textfield',
+									margins: '0 0 0 5',
+									itemId: 'clienteId2',
+									name: 'clienteId2',
+									labelWidth: 40,
+								},
+								{
+									xtype: 'button',
+									itemId: 'clienteBtn2',
+									iconCls: 'search',
+									margin: '2 0 0 2'
+								},
+							]
+						},						
 						{
 							xtype: 'button',
 							itemId: 'printDateReport',
