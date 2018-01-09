@@ -54,46 +54,56 @@ Ext.define('MetApp.view.Produccion.Reportes.ReporteHistoricoProduccion', {
 							]
 						},								
 						{
-							xtype: 'container',
+							xtype: 'fieldset',
+							title: 'Código',
 							layout: 'hbox',
-							items: [
+							style: {
+								'text-align': 'center'
+							},
+							items: [								
 								{
-									xtype: 'container',
-									layout: 'hbox',
-									items: [
-										{
-											xtype: 'textfield',
-											itemId: 'codigo1',
-											name: 'codigo1',
-											labelWidth: 40,
-										},
-										{
-											xtype: 'button',
-											itemId: 'btnCodigo1',
-											iconCls: 'search',
-											margin: '2 0 0 2'
-										},
-									]
+									xtype: 'textfield',
+									itemId: 'codigo1',
+									name: 'codigo1',
+									labelWidth: 40,
+									listeners: {
+										blur: {
+											fn: function(txt){
+												if(txt.getValue() == ""){
+													txt.setValue(1);
+												}
+											}, 
+										}	
+									},		
 								},
 								{
-									xtype: 'container',
-									layout: 'hbox',
-									items: [
-										{
-											xtype: 'textfield',
-											margins: '0 0 0 5',
-											itemId: 'codigo2',
-											name: 'codigo2',
-											labelWidth: 40,
-										},
-										{
-											xtype: 'button',
-											itemId: 'btnCodigo2',
-											iconCls: 'search',
-											margin: '2 0 0 2'
-										},
-									]
-								}	
+									xtype: 'button',
+									itemId: 'btnCodigo1',
+									iconCls: 'search',
+									margin: '2 0 0 2'
+								},
+								{
+									xtype: 'textfield',
+									margins: '0 0 0 5',
+									itemId: 'codigo2',
+									name: 'codigo2',
+									labelWidth: 40,
+									listeners: {
+										blur: {
+											fn: function(txt){
+												if(txt.getValue() == ""){
+													txt.setValue(99999);
+												}
+											}, 
+										}	
+									},		
+								},
+								{
+									xtype: 'button',
+									itemId: 'btnCodigo2',
+									iconCls: 'search',
+									margin: '2 0 0 2'
+								},									
 							]
 						},								
 						{

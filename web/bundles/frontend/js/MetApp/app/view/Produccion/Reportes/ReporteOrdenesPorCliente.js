@@ -1,11 +1,10 @@
 Ext.define('MetApp.view.Produccion.Reportes.ReporteOrdenesPorCliente', {
 	extend: 'Ext.window.Window',
 	layout: 'fit',
-	width: 600,
 	autoShow: true,
 	modal: true,
 	alias: 'widget.ReporteOrdenesPorCliente', 
-	layout: 'vbox',
+	layout: 'fit',
 	title: 'Reporte OT por cliente',
 	
 	initComponent: function(){
@@ -14,8 +13,7 @@ Ext.define('MetApp.view.Produccion.Reportes.ReporteOrdenesPorCliente', {
 			items: [
 				{
 					xtype: 'form',
-					itemId: 'fechaForm',
-					width: 600,
+					itemId: 'fechaForm',					
 					border: false,
 					layout: {
 						type: 'vbox',
@@ -50,6 +48,9 @@ Ext.define('MetApp.view.Produccion.Reportes.ReporteOrdenesPorCliente', {
 						},
 						{
 							xtype: 'fieldset',
+							style: {
+								'text-align': 'center'
+							},
 							itemId: 'fieldSetCliente',
 							layout: 'hbox',							
 							title: 'Cliente',
@@ -61,6 +62,15 @@ Ext.define('MetApp.view.Produccion.Reportes.ReporteOrdenesPorCliente', {
 									margins: '0 0 0 5',
 									itemId: 'clienteId',
 									name: 'clienteId',
+									listeners: {
+										blur: {
+											fn: function(txt){
+												if(txt.getValue() == ""){
+													txt.setValue(1);
+												}
+											}, 
+										}	
+									},									
 									labelWidth: 40,
 								},
 								{
@@ -75,6 +85,15 @@ Ext.define('MetApp.view.Produccion.Reportes.ReporteOrdenesPorCliente', {
 									itemId: 'clienteId2',
 									name: 'clienteId2',
 									labelWidth: 40,
+									listeners: {
+										blur: {
+											fn: function(txt){
+												if(txt.getValue() == ""){
+													txt.setValue(999999);
+												}
+											}, 
+										}	
+									},
 								},
 								{
 									xtype: 'button',
