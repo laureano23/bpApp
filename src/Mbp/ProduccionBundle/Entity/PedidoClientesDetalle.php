@@ -56,6 +56,13 @@ class PedidoClientesDetalle
      * @ORM\JoinColumn(name="codigo", referencedColumnName="idArticulos")
      */
     private $codigo;
+	
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="descripcion", type="string")
+     */
+    private $descripcion;
 
 
     /**
@@ -186,5 +193,29 @@ class PedidoClientesDetalle
     public function getCodigo()
     {
         return $this->codigo;
+    }
+
+    /**
+     * Set descripcion
+     *
+     * @param string $descripcion
+     *
+     * @return PedidoClientesDetalle
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+
+        return $this;
+    }
+
+    /**
+     * Get descripcion
+     *
+     * @return string
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
     }
 }

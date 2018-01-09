@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Pedidos" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="faabb94c-b32d-4f38-913c-e824ee7dd96c">
-	<property name="ireport.zoom" value="1.7715610000000053"/>
+	<property name="ireport.zoom" value="0.9090909090909117"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="codigoDesde" class="java.lang.String" isForPrompting="false">
@@ -9,10 +9,10 @@
 	<parameter name="codigoHasta" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["ZZZ"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="fechaDesde" class="java.util.Date">
+	<parameter name="fechaDesde" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
-	<parameter name="fechaHasta" class="java.util.Date">
+	<parameter name="fechaHasta" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="clienteDesde" class="java.lang.Integer" isForPrompting="false">
@@ -112,6 +112,22 @@ WHERE
 				</textElement>
 				<text><![CDATA[Articulos pedidos por cliente y periodo]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="43" height="20" uuid="8ee52849-e8c2-4f74-ac0a-2ddf0f9b4652"/>
+				<text><![CDATA[Desde:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="43" height="20" uuid="7040f8a6-34bd-4c72-81de-1de56f07de75"/>
+				<text><![CDATA[Hasta:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="43" y="0" width="100" height="20" uuid="41e4c23b-1825-4e39-8449-e43fddea6ca0"/>
+				<textFieldExpression><![CDATA[$P{fechaDesde}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="43" y="20" width="100" height="20" uuid="d440c29c-c5db-468d-a4e4-e26070b40894"/>
+				<textFieldExpression><![CDATA[$P{fechaHasta}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<columnHeader>
@@ -197,67 +213,102 @@ WHERE
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
-			<textField isBlankWhenNull="true">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="100" height="20" uuid="ce076702-864e-420b-b7f3-d27766d01ca9"/>
-				<box leftPadding="2">
-					<leftPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{articulos_codigo}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="100" y="0" width="390" height="20" uuid="eda36d26-bfcf-4f60-bb81-c476766dbf04"/>
-				<box leftPadding="2">
-					<leftPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{articulos_descripcion}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="543" y="0" width="57" height="20" uuid="5d9787f4-248e-43a5-98f5-def87db5d6b9"/>
 				<box>
-					<leftPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{PedidoClientesDetalle_cantidad}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement x="709" y="0" width="93" height="20" uuid="e9685f59-f47f-4bf0-b4b2-338c32bd443f"/>
 				<box>
-					<leftPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{PedidoClientesDetalle_fechaProg}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="490" y="0" width="53" height="20" uuid="df5db287-17aa-4a62-93ab-4ab5f628d9e8"/>
 				<box>
-					<leftPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{PedidoClientes_oc}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="600" y="0" width="57" height="20" uuid="4b54da41-5f9d-4eff-8b53-d3b31db9b032"/>
 				<box>
-					<leftPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{PedidoClientesDetalle_entregado}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="657" y="0" width="52" height="20" uuid="d4f865ba-0f3a-49e3-8997-0d01be133c08"/>
 				<box>
-					<leftPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{PedidoClientesDetalle_cantidad} - $F{PedidoClientesDetalle_entregado}]]></textFieldExpression>
 			</textField>
 		</band>

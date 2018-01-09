@@ -57,7 +57,8 @@ class PedidoClientesController extends Controller
 				
 				$pedidoDetalle->setCodigo($codigoArticulo);
 				$pedidoDetalle->setCantidad($val->cantidad);
-				$pedidoDetalle->setFechaProg($date);				
+				$pedidoDetalle->setFechaProg($date);
+				$pedidoDetalle->setDescripcion($val->descripcion);				
 				$pedido->AddDetalleId($pedidoDetalle);
 				
 				$em->persist($pedido);
@@ -121,9 +122,7 @@ class PedidoClientesController extends Controller
 			//Ruta de destino del PDF			 
 			$destino = $kernel->locateResource('@MbpProduccionBundle/Resources/public/pdf/').'Pedidos.pdf';
 			
-			//PARAMETROS
-			$param = $repo->getJava('java.util.HashMap');
-			
+						
 			//Parametros de conexion
 			$host = $this->container->getParameter('database_host');
 			$dbName = $this->container->getParameter('database_name');
@@ -141,6 +140,11 @@ class PedidoClientesController extends Controller
 			 */	
 			$fechaDesde = \DateTime::createFromFormat('d/m/Y', $values->fechaDesde);
 			$fechaHasta = \DateTime::createFromFormat('d/m/Y', $values->fechaHasta);
+			
+			//PARAMETROS
+			$param = $repo->getJava('java.util.HashMap');
+			$param->put('fechaDesde', $fechaDesde->format("d/m/Y"));
+			$param->put('fechaHasta', $fechaHasta->format("d/m/Y"));
 				
 			/*
 			 * FECHA OUTPUT FORMATO SQL PARA CONSULTA
@@ -184,7 +188,7 @@ class PedidoClientesController extends Controller
 			     INNER JOIN `articulos` articulos ON PedidoClientesDetalle.`codigo` = articulos.`idArticulos`
 			WHERE
 			     PedidoClientes.`cliente` BETWEEN $clienteDesde AND $clienteHasta
-			 AND articulos.`codigo` BETWEEN $codigoDesde AND $codigoHasta
+			 AND articulos.`codigo` BETWEEN '$codigoDesde' AND '$codigoHasta'
 			 AND PedidoClientes.`fechaPedido` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql'";
 			
 						
