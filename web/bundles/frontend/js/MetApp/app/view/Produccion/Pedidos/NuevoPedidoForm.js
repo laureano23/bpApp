@@ -52,7 +52,7 @@ Ext.define('MetApp.view.Produccion.Pedidos.NuevoPedidoForm', {
 				labelWidth: 40,
 				name: 'oc',
 				fieldLabel: 'O/C :',
-				allowBlank: true
+				allowBlank: false
 			},
 			{
 				xtype: 'textfield',
@@ -113,7 +113,18 @@ Ext.define('MetApp.view.Produccion.Pedidos.NuevoPedidoForm', {
 				readOnly: true,
 				width: 200,
 				labelWidth: 50,
-				fieldLabel: 'Codigo:'
+				fieldLabel: 'Codigo:',
+				listeners: {
+					change: {
+						fn: function(txt){
+							var win = txt.up('window');
+							var desc = win.queryById('descripcion');
+							if(txt.getValue() == 'ZZZ'){
+								desc.setReadOnly(false);
+							}
+						}
+					}
+				}
 			},
 			{
 				xtype: 'button',	
@@ -128,6 +139,7 @@ Ext.define('MetApp.view.Produccion.Pedidos.NuevoPedidoForm', {
 			{
 				xtype: 'textfield',
 				name: 'descripcion',
+				itemId: 'descripcion',
 				readOnly: true,
 				width: 600,
 				fieldLabel: 'Descripcion:'

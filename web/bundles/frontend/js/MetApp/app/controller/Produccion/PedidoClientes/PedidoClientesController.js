@@ -134,6 +134,7 @@ Ext.define('MetApp.controller.Produccion.PedidoClientes.PedidoClientesController
 			oc.setValue(ocValue); //VOLVEMOS A SETEAR EL VALOR DE LA OC
 			autNum.setValue(autValue); //VOLVEMOS A SETEAR EL VALOR DE NUM ENTREGA
 			form.queryById('buscaArt').focus();
+			form.queryById('descripcion').setReadOnly(true);
 		}
 	},
 	
@@ -218,7 +219,7 @@ Ext.define('MetApp.controller.Produccion.PedidoClientes.PedidoClientesController
 	},
 
 	//FORMULARIO REPORTE DE PEDIDOS PENDIENTES
-	NewFormReportePedidos: function(button){
+	NewFormReportePedidos: function(button){		
 		var repo = Ext.widget('repoPedidos');
 		var btnSubmit = repo.queryById('newReportePedidos');
 		
@@ -236,20 +237,17 @@ Ext.define('MetApp.controller.Produccion.PedidoClientes.PedidoClientesController
 				},
 				
 				success: function(resp, opt){
-					var jsonReporte = Ext.JSON.decode(resp.responseText);
-					Reporte=jsonReporte.reporte;
-					
-					var ruta = Routing.generate('mbp_produccion_reporte_pedidoPdf');
-									
-					var WinReporte=Ext.create('Ext.Window', {
-					  title: 'Recibos de sueldo',
-					  width: 900,
-					  height: 600,
-					  layout: 'fit',
-					  modal:true,										
-					  html: '<iframe src='+ruta+' width="100%" height="100%"></iframe>'						  
-				  });
-				  WinReporte.show();
+					var win = btnSubmit.up('window');				  
+				    var jsonResp = Ext.JSON.decode(resp.responseText);
+					if(jsonResp.success == true){
+						var ruta = Routing.generate('mbp_produccion_reporte_pedidoPdf');
+						
+						var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
+						myMask.show();			
+						
+						window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+						myMask.hide();
+					}
 				}
 			});
 		});
