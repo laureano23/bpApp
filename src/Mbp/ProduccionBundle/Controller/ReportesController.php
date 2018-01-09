@@ -872,7 +872,7 @@ class ReportesController extends Controller
 		 */
 		$desde = $this->getRequest()->request->get('desde');
 		$hasta = $this->getRequest()->request->get('hasta');
-		$clienteId1 = $this->getRequest()->request->get('cliente');
+		$clienteId1 = $this->getRequest()->request->get('cliente1');
 		$clienteId2 = $this->getRequest()->request->get('cliente2');
 		$response = new Response;
 
