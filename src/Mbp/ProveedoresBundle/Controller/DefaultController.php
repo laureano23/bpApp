@@ -30,7 +30,7 @@ class DefaultController extends Controller
 		
 		try{
 			$query = $repo->createQueryBuilder('p')
-					->select('p.id, dep.id AS departamento, prov.id AS provincia, p.rsocial AS rSocial, p.denominacion, p.direccion, p.email, p.cuit, p.cPostal, p.telefono1, p.contacto1, p.telefono2, p.contacto2, p.telefono3, p.contacto3, p.condCompra, p.vencimientoFc, p.aplicaRetencion, p.porcentajeRetencion, p.cuentaCerrada, imputacion.id AS tipoGasto')
+					->select('p.id, dep.id AS departamento, prov.id AS provincia, p.rsocial AS rsocial, p.denominacion, p.direccion, p.email, p.cuit, p.cPostal, p.telefono1, p.contacto1, p.telefono2, p.contacto2, p.telefono3, p.contacto3, p.condCompra, p.vencimientoFc, p.aplicaRetencion, p.porcentajeRetencion, p.cuentaCerrada, imputacion.id AS tipoGasto')
 					->leftjoin('p.departamento', 'dep')
 					->leftjoin('p.provincia', 'prov')
 					->leftjoin('p.imputacionGastos', 'imputacion')

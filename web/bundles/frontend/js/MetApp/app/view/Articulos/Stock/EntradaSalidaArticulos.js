@@ -8,7 +8,8 @@ Ext.define('MetApp.view.Articulos.Stock.EntradaSalidaArticulos', {
 	layout: 'border',
 	autoShow: true,
 	title: 'Entrada/Salida de artículos',
-	modal: true,
+	modal: true,	
+	bodyStyle:{"background-color":"white"}, 
 	
 	initComponent: function(){
 		
@@ -24,13 +25,16 @@ Ext.define('MetApp.view.Articulos.Stock.EntradaSalidaArticulos', {
 				{
 					xtype: 'form',
 					itemId: 'formGral',
-					region: 'center',
+					region: 'center',					
 					border: false,
-					margins: '5 5 5 5',
+					padding: '5 5 5 5',
 					items: [
 						{
 							xtype: 'container',
 							layout: 'hbox',
+							style: {
+								background: 'white'
+							},
 							defaults: {
 								allowBlank: false
 							},
@@ -116,6 +120,7 @@ Ext.define('MetApp.view.Articulos.Stock.EntradaSalidaArticulos', {
 								},
 								{
 									xtype: 'textfield',
+									readOnly: true,
 									margin: '10 0 0 5',
 									width: 400,
 									name: 'fuente',
@@ -161,13 +166,16 @@ Ext.define('MetApp.view.Articulos.Stock.EntradaSalidaArticulos', {
 						{
 							xtype: 'textfield',
 							name: 'observaciones',
-							allowBlank: false,
+							allowBlank: true,
 							margin: '5 0 5 0',
 							width: 700,
 							fieldLabel: 'Observaciones'
 						},
 						{
 							xtype: 'grid',
+							style: {
+								background: 'white'
+							},
 							margins: '5 0 0 0',
 							cls: 'extra-alt',
 							region: 'center',
@@ -202,16 +210,23 @@ Ext.define('MetApp.view.Articulos.Stock.EntradaSalidaArticulos', {
 				},
 				{
 					xtype: 'form',
-					margin: '5 5 5 5',
+					padding: '5 5 5 5',
 					border: false,
 					region: 'south',
+					style: {
+						background: 'white'
+					},
 					itemId: 'formArticulo',
 					margins: '10 0 0 0',					
 					layout: 'vbox',
+					 	
 					items: [
 						{
 							xtype: 'container',
 							layout: 'hbox',
+							style: {
+								background: 'white'
+							},
 							defaults: {
 								readOnly: true,
 								disabledCls: 'myDisabledClass',
@@ -224,7 +239,17 @@ Ext.define('MetApp.view.Articulos.Stock.EntradaSalidaArticulos', {
 									labelWidth: 60,
 									name: 'codigo',
 									itemId: 'codigo',
-									fieldLabel: 'Código'
+									fieldLabel: 'Código',
+									listeners: {
+										change: {
+											fn: function(txt){
+												if(txt.getValue() == 'ZZZ'){
+													var win = txt.up('window');
+													win.queryById('descripcion').setReadOnly(false);
+												}
+											}
+										}
+									}
 								},
 								{
 									xtype: 'button',
@@ -236,7 +261,7 @@ Ext.define('MetApp.view.Articulos.Stock.EntradaSalidaArticulos', {
 									xtype: 'textfield',
 									width: 400,
 									name: 'descripcion',
-									itemId: 'descipcion'									
+									itemId: 'descripcion'									
 								},
 								{
 									xtype: 'numberfield',
