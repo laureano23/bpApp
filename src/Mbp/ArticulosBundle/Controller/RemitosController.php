@@ -246,6 +246,30 @@ class RemitosController extends Controller
 
         return $response->setContent(json_encode($res));
 	}
+	
+	/**
+     * @Route("/listarRemitos", name="mbp_articulos_listarRemitos", options={"expose"=true})
+     */
+	public function listarRemitos()
+	{
+		$response = new Response;
+		$em = $this->getDoctrine()->getManager();
+		
+		try{
+			$repo = $em->getRepository('MbpArticulosBundle:RemitosClientes');
+		
+			$res = $repo->listarRemitos();
+			
+			return $response->setContent(json_encode(array('success' => true, 'data' => $res)));	
+		}catch(\Exception $e){
+			throw $e;
+			$response->setContent(json_encode(array('success' => false, 'msg' => $e->getMessage())));
+			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response;
+		}		
+
+        return $response->setContent(json_encode($res));
+	}
 }
 
 

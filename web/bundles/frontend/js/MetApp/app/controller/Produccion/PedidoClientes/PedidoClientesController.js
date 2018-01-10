@@ -66,38 +66,10 @@ Ext.define('MetApp.controller.Produccion.PedidoClientes.PedidoClientesController
 			icon: Ext.Msg.ALERT,
 			fn:function(btn){
 				if(btn == 'yes'){
-					/*var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-					myMask.show();*/
 					var store = grid.getStore();
 					var selection = store.getAt(rowIndex);
-					console.log(selection);
 					store.remove(selection);
-					var win = grid.up('window');
-					
-							
-					/*Ext.Ajax.request({
-						url: Routing.generate('mbp_produccion_eliminarOT'),
-						
-						params: {
-							ot: selection.data.otNum
-						},
-						
-						success: function(resp){
-							Ext.Msg.show({
-				    			title: 'Formula',
-				    			msg: "La OT fué eliminada correctamente",
-				    			buttons: Ext.Msg.OK,
-				    			icon: Ext.Msg.INFO
-				    		});
-				    		
-				    		myMask.hide();
-				    		store.remove(selection);
-						},
-						
-						failure: function(resp){
-							
-						}
-					})*/
+					var win = grid.up('window');	
 				}
 			}
 		});	

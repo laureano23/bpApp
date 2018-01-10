@@ -4,9 +4,12 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 		'Articulos.Stock.Remitos.ArticulosOrdenCompraView',
 		'Articulos.Stock.Remitos.RemitoClienteView',		
 		'Clientes.SearchGridClientes',
-		'Articulos.WinArticuloSearch'
+		'Articulos.WinArticuloSearch',
+		'Articulos.Stock.Remitos.RemitosListadoView'
 		],
-	stores: [],
+	stores: [
+		'Articulos.RemitosPendientesStore'
+	],
 	
 	init: function(){
 		var me = this;
@@ -35,7 +38,63 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 			'RemitoClienteView button[itemId=guardarRemito]': {
 				click: this.GuardarRemito
 			},
+			'viewport menuitem[itemId=verRemitos]': {
+				click: this.VerRemitos
+			},
+			'RemitosListadoView actioncolumn[itemId=verRemito]': {
+				click: this.VerRemito
+			},
 		});
+	},
+	
+	VerRemito: function(grid, colIndex, rowIndex){
+		var store = grid.getStore();
+		var selection = store.getAt(rowIndex);
+		var win = grid.up('window');
+		
+		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
+		myMask.show();	
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_articulos_imprimirRemitoCliente'),
+			
+			params: {
+				idRemito: selection.data.id
+			},
+			
+			success: function(resp){
+				var jsonResp = Ext.JSON.decode(resp.responseText);
+				myMask.hide();
+				if(jsonResp.success == true){
+					var ruta = Routing.generate('mbp_articulos_verRemitoCliente');
+    				window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');	
+				}								
+			},
+			
+			failure: function(resp){
+				myMask.hide();
+			}
+		});						
+	
+	},
+	
+	VerRemitos: function(btn){
+		console.log(btn);
+		var view = Ext.widget('RemitosListadoView');
+		var store = view.down('grid').getStore();
+		
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_articulos_listarRemitos'),
+			
+			params: {
+				
+			},
+			
+			success: function(resp){
+				console.log(resp);
+				var jsonResp = Ext.JSON.decode(resp.responseText);
+				store.loadRawData(jsonResp.data);
+			}
+		})
 	},
 	
 	RemitoClienteView: function(btn){

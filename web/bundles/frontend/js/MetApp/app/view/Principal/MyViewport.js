@@ -543,6 +543,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                     render : dragZone,
                 }, 
             },
+            {
+                text: 'Ver Remitos',
+                itemId: 'verRemitos',
+                listeners : {
+                    render : dragZone,
+                }, 
+            },
         ]
         
         var menuReportes = [
