@@ -12,7 +12,10 @@ Ext.define('MetApp.store.Produccion.PedidoClientes.PedidoClientesStore',{
 		type: 'ajax',		
 		
 		api: {
+			create: Routing.generate('mbp_produccion_pedidos_borrar'),
 			read: Routing.generate('mbp_produccion_listar_pedidos'),
+			update: Routing.generate('mbp_produccion_pedidos_actualizar'),
+			destroy: Routing.generate('mbp_produccion_pedidos_borrar'),
 		},
 		
 		reader: {

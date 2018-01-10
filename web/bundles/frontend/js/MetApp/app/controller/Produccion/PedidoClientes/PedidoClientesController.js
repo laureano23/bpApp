@@ -2,7 +2,8 @@ Ext.define('MetApp.controller.Produccion.PedidoClientes.PedidoClientesController
 	extend: 'Ext.app.Controller',
 	views: [
 		'Produccion.Pedidos.NuevoPedidoForm',
-		'Produccion.Pedidos.Reportes.ReportePedidos'
+		'Produccion.Pedidos.Reportes.ReportePedidos',
+		'Produccion.Pedidos.ModificacionPedidosView'
 	],
 	stores: [
 		'Produccion.PedidoClientes.PedidoClientesStore',
@@ -47,8 +48,66 @@ Ext.define('MetApp.controller.Produccion.PedidoClientes.PedidoClientesController
 			},
 			'repoPedidos button[action=buscaArtHasta]': {
 				click: this.BuscaArtHasta
-			}
+			},
+			'viewport menuitem[itemId=modificarPedido]': {
+				click: this.ModificarPedido
+			},
+			'ModificacionPedidosView actioncolumn[itemId=eliminar]': {
+				click: this.EliminarPedido
+			},
 		});
+	},
+	
+	EliminarPedido: function(grid, colIndex, rowIndex){
+		Ext.Msg.show({
+			title: 'Atencion ',
+			msg: "Esta por borrar un pedido, desea continuar?",
+			buttons: Ext.Msg.YESNO,
+			icon: Ext.Msg.ALERT,
+			fn:function(btn){
+				if(btn == 'yes'){
+					/*var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
+					myMask.show();*/
+					var store = grid.getStore();
+					var selection = store.getAt(rowIndex);
+					console.log(selection);
+					store.remove(selection);
+					var win = grid.up('window');
+					
+							
+					/*Ext.Ajax.request({
+						url: Routing.generate('mbp_produccion_eliminarOT'),
+						
+						params: {
+							ot: selection.data.otNum
+						},
+						
+						success: function(resp){
+							Ext.Msg.show({
+				    			title: 'Formula',
+				    			msg: "La OT fué eliminada correctamente",
+				    			buttons: Ext.Msg.OK,
+				    			icon: Ext.Msg.INFO
+				    		});
+				    		
+				    		myMask.hide();
+				    		store.remove(selection);
+						},
+						
+						failure: function(resp){
+							
+						}
+					})*/
+				}
+			}
+		});	
+	},
+	
+	ModificarPedido: function(btn){
+		console.log(btn);
+		var win = Ext.widget('ModificacionPedidosView');
+		var store = win.down('grid').getStore();
+		store.load();
 	},
 	
 	AddWin: function(btn){

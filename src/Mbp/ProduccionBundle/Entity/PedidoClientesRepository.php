@@ -15,18 +15,20 @@ class PedidoClientesRepository extends \Doctrine\ORM\EntityRepository
 		try{
 			$em = $this->getEntityManager();
 			$repo = $em->getRepository('MbpProduccionBundle:PedidoClientes');
-			$res = $repo->findByInactivo(0);
-			$info = array();
 			
-			for($i=0; $i<count($res); $i++){				
-					$info[$i]['codigo'] = $res[$i]->getCodigo()->getCodigo();
-					$info[$i]['descripcion'] = $res[$i]->getCodigo()->getDescripcion();
-					$info[$i]['cantidad'] = $res[$i]->getCantidad();
-					$info[$i]['clienteDesc'] = $res[$i]->getCliente()->getRsocial();
-					$info[$i]['fechaProgramacion'] = $res[$i]->getFechaProg();				
-			}
+			$qb = $repo->createQueryBuilder("p")
+				->select("DATE_FORMAT(p.fechaPedido, '%d/%m/%Y') as fechaPedido, p.oc, p.autEntrega, p.id as idPedido,
+					c.rsocial as clienteDesc,
+					d.cantidad,	DATE_FORMAT(d.fechaProg, '%d/%m/%Y') as fechaProgramacion, d.entregado, d.descripcion, d.id as idDetalle,
+					cod.codigo")
+				->leftJoin('p.cliente', 'c')
+				->leftJoin('p.detalleId', 'd')
+				->leftJoin('d.codigo', 'cod')
+				->where('d.inactivo = 0')				
+				->getQuery()
+				->getArrayResult();
 			
-			echo json_encode($info);
+			echo json_encode($qb);
 			
 		}catch(\Doctrine\ORM\ORMException $e){
 			$this->get('logger')->error($e->getMessage());

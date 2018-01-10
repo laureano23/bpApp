@@ -145,36 +145,38 @@ class RemitosController extends Controller
 			     RemitosClientes.`fecha` AS RemitosClientes_fecha,
 			     RemitosClientes.`remitoNum` AS RemitosClientes_remitoNum,
 			     RemitosClientes.`clienteId` AS RemitosClientes_clienteId,
+			     RemitosClientes.`proveedorId` AS RemitosClientes_proveedorId,
+			     RemitoClientes_detalle.`remitosclientes_id` AS RemitoClientes_detalle_remitosclientes_id,
+			     RemitoClientes_detalle.`remitosclientesdetalles_id` AS RemitoClientes_detalle_remitosclientesdetalles_id,
 			     RemitosClientesDetalles.`id` AS RemitosClientesDetalles_id,
 			     RemitosClientesDetalles.`descripcion` AS RemitosClientesDetalles_descripcion,
 			     RemitosClientesDetalles.`cantidad` AS RemitosClientesDetalles_cantidad,
 			     RemitosClientesDetalles.`unidad` AS RemitosClientesDetalles_unidad,
 			     RemitosClientesDetalles.`oc` AS RemitosClientesDetalles_oc,
 			     RemitosClientesDetalles.`articuloId` AS RemitosClientesDetalles_articuloId,
-			     RemitoClientes_detalle.`remitosclientes_id` AS RemitoClientes_detalle_remitosclientes_id,
-			     RemitoClientes_detalle.`remitosclientesdetalles_id` AS RemitoClientes_detalle_remitosclientesdetalles_id,
-			     cliente.`rsocial` AS cliente_rsocial,
-			     cliente.`idCliente` AS cliente_idCliente,
-			     cliente.`denominacion` AS cliente_denominacion,
-			     cliente.`direccion` AS cliente_direccion,
-			     cliente.`cuit` AS cliente_cuit,
-			     cliente.`localidad` AS cliente_localidad,
-			     cliente.`iva` AS cliente_iva,
+			     RemitosClientesDetalles.`pedidoId` AS RemitosClientesDetalles_pedidoId,
+			     RemitosClientesDetalles.`facturado` AS RemitosClientesDetalles_facturado,
 			     Proveedor.`id` AS Proveedor_id,
-			     Proveedor.`localidad` AS Proveedor_localidad,
+			     Proveedor.`departamento` AS Proveedor_departamento,
 			     Proveedor.`provincia` AS Proveedor_provincia,
 			     Proveedor.`rsocial` AS Proveedor_rsocial,
 			     Proveedor.`denominacion` AS Proveedor_denominacion,
 			     Proveedor.`direccion` AS Proveedor_direccion,
 			     Proveedor.`cuit` AS Proveedor_cuit,
-			     RemitosClientes.`proveedorId` AS RemitosClientes_proveedorId
+			     cliente.`departamento` AS cliente_departamento,
+			     cliente.`provincia` AS cliente_provincia,
+			     cliente.`iva` AS cliente_iva,
+			     cliente.`rsocial` AS cliente_rsocial,
+			     cliente.`idCliente` AS cliente_idCliente,
+			     cliente.`denominacion` AS cliente_denominacion,
+			     cliente.`direccion` AS cliente_direccion,
+			     cliente.`cuit` AS cliente_cuit
 			FROM
-			     `RemitosClientesDetalles` RemitosClientesDetalles INNER JOIN `RemitoClientes_detalle` RemitoClientes_detalle ON RemitosClientesDetalles.`id` = RemitoClientes_detalle.`remitosclientesdetalles_id`
-			     INNER JOIN `RemitosClientes` RemitosClientes ON RemitoClientes_detalle.`remitosclientes_id` = RemitosClientes.`id`
-			     LEFT JOIN `cliente` cliente ON RemitosClientes.`clienteId` = cliente.`idCliente`
-			     RIGHT JOIN `Proveedor` Proveedor ON RemitosClientes.`proveedorId` = Proveedor.`id`
-			WHERE
-			     RemitosClientes.`id` = $idRemito";
+			     `RemitosClientes` RemitosClientes LEFT OUTER JOIN `RemitoClientes_detalle` RemitoClientes_detalle ON RemitosClientes.`id` = RemitoClientes_detalle.`remitosclientes_id`
+			     INNER JOIN `RemitosClientesDetalles` RemitosClientesDetalles ON RemitoClientes_detalle.`remitosclientesdetalles_id` = RemitosClientesDetalles.`id`
+			     LEFT OUTER JOIN `Proveedor` Proveedor ON RemitosClientes.`proveedorId` = Proveedor.`id`
+			     LEFT OUTER JOIN `cliente` cliente ON RemitosClientes.`clienteId` = cliente.`idCliente`
+			WHERE RemitosClientes.`id` = $idRemito";
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 
@@ -188,10 +190,19 @@ class RemitosController extends Controller
 				);				
 			
         }catch(\Exception $e){
+        	throw $e;
         	$response->setContent(json_encode(array('success' => false, 'msg' => $e->getMessage())));
         	$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
         	return $response;        
-        }
+        }catch(\JavaException $ex){
+			$trace = new \Java('java.io.ByteArrayOutputStream');
+			$ex->printStackTrace(new \Java('java.io.PrintStream', $trace));
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			$response->setContent(
+				json_encode(array('success' => false, 'msg' => nl2br("java stack trace: Error al generar el reporte")))
+			);
+			return $response;
+		}
     }
     
     /**

@@ -266,6 +266,67 @@ class PedidoClientesController extends Controller
 		return $response;
 		
 	}
+	
+	public function ActualizarPedidoAction(){
+		$req = $this->getRequest();		
+		$pedidos = $req->request->get('pedidos');
+		$response = new Response;
+
+		$em = $this->getDoctrine()->getManager();
+		$repo = $em->getRepository('MbpProduccionBundle:PedidoClientesDetalle');
+		
+		try{
+			$ped = json_decode($pedidos);
+			
+		
+			$detalle = $repo->find($ped->idDetalle);
+			if(empty($detalle)) throw new \Exception("No se encuentra el pedido a modificar", 1);
+			$nuevaFecha = \DateTime::createFromFormat('d/m/Y', $ped->fechaProgramacion);
+			$detalle->setFechaProg($nuevaFecha);
+			$detalle->setCantidad($ped->cantidad);
+			$em->persist($detalle);
+			$em->flush();
+			
+			return $response->setContent(json_encode(array('success' => true)));	
+		}catch(\Exception $e){
+			throw $e;
+			$res = array('success' => false, 'msg' => $e->getMessage());
+
+			$response->setContent(json_encode($res));
+			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+
+			return $response;
+		}        
+	}
+	
+	public function BorrarPedidoAction(){
+		$req = $this->getRequest();		
+		$pedidos = $req->request->get('pedidos');
+		$response = new Response;
+
+		$em = $this->getDoctrine()->getManager();
+		$repo = $em->getRepository('MbpProduccionBundle:PedidoClientesDetalle');
+		
+		try{
+			$ped = json_decode($pedidos);
+			
+		
+			$detalle = $repo->find($ped->idDetalle);
+			if(empty($detalle)) throw new \Exception("No se encuentra el pedido a modificar", 1);			
+			$detalle->setInactivo(true);
+			$em->persist($detalle);
+			$em->flush();
+			
+			return $response->setContent(json_encode(array('success' => true)));	
+		}catch(\Exception $e){
+			$res = array('success' => false, 'msg' => $e->getMessage());
+
+			$response->setContent(json_encode($res));
+			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+
+			return $response;
+		}        
+	}
 }
 
 
