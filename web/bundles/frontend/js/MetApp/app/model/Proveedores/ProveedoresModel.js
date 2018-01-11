@@ -3,6 +3,7 @@ Ext.define('MetApp.model.Proveedores.ProveedoresModel',{
 	fields: [
 		{name: 'id', type: 'int'},
 		{name: 'rSocial', type: 'string'},
+		{name: 'rsocial', type: 'string'},
 		{name: 'denominacion', type: 'string'},
 		{name: 'direccion', type: 'string'},
 		{name: 'email', type: 'string'},

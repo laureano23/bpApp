@@ -93,8 +93,9 @@ Ext.define('MetApp.controller.Articulos.StockController',{
 		
 		fuente.down('button').on('click', function(btn){
 			var selection = fuente.down('grid').getSelectionModel().getSelection()[0];
+			console.log(selection);
 			win.queryById('idOrigen').setValue(selection.data.id);
-			win.queryById('fuente').setValue(selection.data.denominacion);
+			win.queryById('fuente').setValue(selection.data.rsocial);
 			fuente.close();
 			
 			win.queryById('comprobante').focus('', 10);

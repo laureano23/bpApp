@@ -253,6 +253,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                 }, 
         	},
         	{
+        		text: 'Modificar pedidos',
+        		itemId: 'modificarPedido',
+                listeners : {
+                    render : dragZone,
+                }, 
+        	},
+        	{
         		text: 'Reportes',
         		menu: [
         			{
@@ -532,6 +539,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
             {
                 text: 'Nuevo Remito',
                 itemId: 'remitoCliente',
+                listeners : {
+                    render : dragZone,
+                }, 
+            },
+            {
+                text: 'Ver Remitos',
+                itemId: 'verRemitos',
                 listeners : {
                     render : dragZone,
                 }, 

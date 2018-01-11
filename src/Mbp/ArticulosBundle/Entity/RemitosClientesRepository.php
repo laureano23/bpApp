@@ -28,4 +28,19 @@ class RemitosClientesRepository extends \Doctrine\ORM\EntityRepository
 		return $res;
 	}
 	
+	public function listarRemitos(){
+		$em = $this->getEntityManager();
+		
+		$repo = $em->getRepository('MbpArticulosBundle:RemitosClientes');
+		$res = $repo->createQueryBuilder('r')
+						->select("r.id, r.remitoNum, DATE_FORMAT(r.fecha, '%d/%m/%Y') as fecha,
+							c.rsocial as cliente,
+							p.rsocial as proveedor")
+						->leftJoin('r.proveedorId', 'p')
+						->leftJoin('r.clienteId', 'c')
+						->getQuery()
+						->getArrayResult();
+		
+		return $res;
+	}
 }

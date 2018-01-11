@@ -80,7 +80,7 @@ Ext.define('MetApp.view.Proveedores.SearchGridProveedores', {
 					columns: [
 						{xtype: 'rownumberer', width: 50, sortable: false},
 						{text: 'Id', dataIndex: 'id', width: 30},
-						{text: 'Razon social', dataIndex: 'rSocial', flex: 1},			
+						{text: 'Razon social', dataIndex: 'rsocial', flex: 1},			
 					],	
 				},								
 			],			

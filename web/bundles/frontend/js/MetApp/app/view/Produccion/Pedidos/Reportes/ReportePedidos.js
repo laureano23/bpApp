@@ -36,7 +36,16 @@ Ext.define('MetApp.view.Produccion.Pedidos.Reportes.ReportePedidos', {
 									itemId: 'clienteDesde',
 									width: 100,
 									fieldLabel: 'Cliente',
-									labelAlign: 'top'
+									labelAlign: 'top',
+									listeners: {
+										blur: {
+											fn: function(txt){
+												if(txt.getValue() == ""){
+													txt.setValue(1);
+												}
+											}
+										}
+									}
 								},
 								{
 									xtype: 'button',
@@ -51,7 +60,16 @@ Ext.define('MetApp.view.Produccion.Pedidos.Reportes.ReportePedidos', {
 									itemId: 'clienteHasta',
 									width: 100,
 									fieldLabel: 'Cliente',
-									labelAlign: 'top'
+									labelAlign: 'top',
+									listeners: {
+										blur: {
+											fn: function(txt){
+												if(txt.getValue() == ""){
+													txt.setValue(99999);
+												}
+											}
+										}
+									}
 								},
 								{
 									xtype: 'button',
@@ -95,7 +113,16 @@ Ext.define('MetApp.view.Produccion.Pedidos.Reportes.ReportePedidos', {
 									itemId: 'articuloDesde',
 									width: 100,
 									fieldLabel: 'Articulo',
-									labelAlign: 'top'
+									labelAlign: 'top',
+									listeners: {
+										blur: {
+											fn: function(txt){
+												if(txt.getValue() == ""){
+													txt.setValue(1);
+												}
+											}
+										}
+									}
 								},
 								{
 									xtype: 'button',
@@ -110,7 +137,16 @@ Ext.define('MetApp.view.Produccion.Pedidos.Reportes.ReportePedidos', {
 									itemId: 'articuloHasta',
 									width: 100,
 									fieldLabel: 'Articulo',
-									labelAlign: 'top'
+									labelAlign: 'top',
+									listeners: {
+										blur: {
+											fn: function(txt){
+												if(txt.getValue() == ""){
+													txt.setValue("ZZZ");
+												}
+											}
+										}
+									}
 								},
 								{
 									xtype: 'button',
