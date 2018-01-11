@@ -100,7 +100,7 @@ class PedidoClientesController extends Controller
 		
 	}
 	
-	public function reportePedidoAction()
+	public function reportePedidoAction() 
 	{
 		$req = $this->getRequest();
 		$response = new Response;
@@ -198,14 +198,10 @@ class PedidoClientesController extends Controller
 			     INNER JOIN `articulos` articulos ON PedidoClientesDetalle.`codigo` = articulos.`idArticulos`
 			WHERE
 			     PedidoClientes.`cliente` BETWEEN $clienteDesde AND $clienteHasta
-<<<<<<< HEAD
+
 			 AND articulos.`codigo` BETWEEN $codigoDesde AND $codigoHasta
 			 AND PedidoClientes.`fechaPedido` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql'
-			 AND PedidoClientesDetalle.`inactivo` = 0'";
-=======
-			 AND articulos.`codigo` BETWEEN '$codigoDesde' AND '$codigoHasta'
-			 AND PedidoClientes.`fechaPedido` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql'";
->>>>>>> test
+			 AND PedidoClientesDetalle.`inactivo` = 0";
 			
 						
 			//Exportamos el reporte

@@ -211,6 +211,7 @@ Ext.define('MetApp.controller.Produccion.PedidoClientes.PedidoClientesController
 		var values = [];
 		
 		store.each(function (rec){
+			rec.data.fechaProgramacion = Ext.Date.format(rec.data.fechaProgramacion, 'd/m/Y');
 			values.push(rec.data);
 		});
 		
@@ -268,11 +269,7 @@ Ext.define('MetApp.controller.Produccion.PedidoClientes.PedidoClientesController
 				},
 				
 				success: function(resp, opt){
-<<<<<<< HEAD
-					var win = btnSubmit.up('window');				  
-=======
-					var win = btnSubmit.up('window');			  
->>>>>>> test
+					var win = btnSubmit.up('window');
 				    var jsonResp = Ext.JSON.decode(resp.responseText);
 					if(jsonResp.success == true){
 						var ruta = Routing.generate('mbp_produccion_reporte_pedidoPdf');

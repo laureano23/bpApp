@@ -100,7 +100,14 @@ Ext.define('MetApp.view.Produccion.Pedidos.NuevoPedidoForm', {
 					{header: 'Cantidad', dataIndex: 'cantidad', flex: 1},
 					{header: 'U', dataIndex: 'unidad', width: 50},
 					{header: 'Precio', dataIndex: 'precio', flex: 1},
-					{header: 'Fecha Prog.', dataIndex: 'fechaProgramacion', flex: 1},
+					{
+						header: 'Fecha Prog.',
+						dataIndex: 'fechaProgramacion',
+						flex: 1,
+						xtype: 'datecolumn',
+						format: 'd/m/Y',
+						submitFormat: 'd/m/Y'
+					},
 				]										
 			}			
 		]
