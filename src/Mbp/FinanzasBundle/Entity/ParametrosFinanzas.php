@@ -140,11 +140,11 @@ class ParametrosFinanzas
     /**
      * Set provincia
      *
-     * @param \Mbp\PersonalBundle\Entity\Provincias $provincia
+     * @param \Mbp\PersonalBundle\Entity\Provincia $provincia
      *
      * @return ParametrosFinanzas
      */
-    public function setProvincia(\Mbp\PersonalBundle\Entity\Provincias $provincia = null)
+    public function setProvincia(\Mbp\PersonalBundle\Entity\Provincia $provincia = null)
     {
         $this->provincia = $provincia;
 
@@ -154,7 +154,7 @@ class ParametrosFinanzas
     /**
      * Get provincia
      *
-     * @return \Mbp\PersonalBundle\Entity\Provincias
+     * @return \Mbp\PersonalBundle\Entity\Provincia
      */
     public function getProvincia()
     {
