@@ -105,8 +105,8 @@ Ext.define('MetApp.view.Produccion.Pedidos.NuevoPedidoForm', {
 						dataIndex: 'fechaProgramacion',
 						flex: 1,
 						xtype: 'datecolumn',
-						format: 'd/m/Y',
-						submitFormat: 'd/m/Y'
+						format: 'd/m/Y', 
+						submitFormat: 'd/m/Y',  
 					},
 				]										
 			}			

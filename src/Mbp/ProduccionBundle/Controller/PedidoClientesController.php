@@ -100,7 +100,7 @@ class PedidoClientesController extends Controller
 		
 	}
 	
-	public function reportePedidoAction() 
+	public function reportePedidoAction()
 	{
 		$req = $this->getRequest();
 		$response = new Response;
@@ -117,10 +117,10 @@ class PedidoClientesController extends Controller
 			$jru = $repo->jru();
 			
 			//Ruta archivo Jasper			 
-			$ruta = $kernel->locateResource('@MbpProduccionBundle/Reportes/Pedidos.jrxml');
+			$ruta = $kernel->locateResource('@MbpProduccionBundle/Reportes/Pedido.jrxml');
 			
 			//Ruta de destino del PDF			 
-			$destino = $kernel->locateResource('@MbpProduccionBundle/Resources/public/pdf/').'Pedidos.pdf';
+			$destino = $kernel->locateResource('@MbpProduccionBundle/Resources/public/pdf/').'Pedido.pdf';
 			
 						
 			//Parametros de conexion
@@ -151,14 +151,11 @@ class PedidoClientesController extends Controller
 			 */		
 			$fechaDesdeSql = $fechaDesde->format('Y-m-d');
 			$fechaHastaSql = $fechaHasta->format('Y-m-d');
-			
-			print_r($fechaDesdeSql);
-			print_r($fechaHastaSql);
-			
+						
 			//PARAMETROS
 			$param = $repo->getJava('java.util.HashMap');
-			$param->put('fechaDesde', $fechaDesde->format("Y-m-d"));
-			$param->put('fechaHasta', $fechaHasta->format("Y-m-d"));
+			$param->put('fechaDesde', $fechaDesde->format("d/m/Y"));
+			$param->put('fechaHasta', $fechaHasta->format("d/m/Y"));
 			$param->put('codigoDesde', $codigoDesde);
 			$param->put('codigoHasta', $codigoHasta);
 			$param->put('clienteDesde', $clienteDesde);
@@ -198,9 +195,8 @@ class PedidoClientesController extends Controller
 			     INNER JOIN `articulos` articulos ON PedidoClientesDetalle.`codigo` = articulos.`idArticulos`
 			WHERE
 			     PedidoClientes.`cliente` BETWEEN $clienteDesde AND $clienteHasta
-
-			 AND articulos.`codigo` BETWEEN $codigoDesde AND $codigoHasta
-			 AND PedidoClientes.`fechaPedido` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql'
+			 AND articulos.`codigo` BETWEEN '$codigoDesde' AND '$codigoHasta'
+			 AND PedidoClientes.`fechaPedido` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql'  
 			 AND PedidoClientesDetalle.`inactivo` = 0";
 			
 						
@@ -237,10 +233,10 @@ class PedidoClientesController extends Controller
 	
 	public function reportePedidoPdfAction(){
 		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpProduccionBundle/Resources/public/pdf/').'Pedidos.pdf';
+		$basePath = $kernel->locateResource('@MbpProduccionBundle/Resources/public/pdf/').'Pedido.pdf';
 		$response = new BinaryFileResponse($basePath);
         $response->trustXSendfileTypeHeader();
-		$filename = 'Pedidos.pdf';
+		$filename = 'Pedido.pdf';
         $response->setContentDisposition(
             ResponseHeaderBag::DISPOSITION_INLINE,
             $filename,
