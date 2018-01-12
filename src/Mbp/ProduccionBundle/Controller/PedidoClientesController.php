@@ -90,13 +90,22 @@ class PedidoClientesController extends Controller
 	public function listarPedidosAction() 
 	{	
 		$em = $this->getDoctrine()->getManager();
+		$req = $this->getRequest();
+		$response = new Response;
+		
+		$cliente = $req->query->get('cliente');
+		$codigo = $req->query->get('codigo');
 		$repo = $em->getRepository('MbpProduccionBundle:PedidoClientes');
 		
-		//LISTA TODOS LOS PEDIDOS
-		$repo->listarPedidos();
+		$res;
+		if(!empty($cliente) && !empty($codigo)){
+			$res = $repo->listarPedidosClienteCodigo($cliente, $codigo);
+		}else{
+			//LISTA TODOS LOS PEDIDOS
+			$res = $repo->listarPedidos();
+		}
 		
-		
-		return new Response();
+		return $response->setContent(json_encode($res));
 		
 	}
 	

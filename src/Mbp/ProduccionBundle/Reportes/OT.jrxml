@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OT" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="701769ed-d3de-4a78-92fe-e21c0125043d">
 	<property name="ireport.zoom" value="1.3310000000000015"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="515"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -246,7 +246,7 @@ WHERE
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="563" splitType="Stretch">
+		<band height="583" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="0" width="57" height="20" uuid="613b9613-2429-49b8-9e25-5285ea632962"/>
 				<box>
@@ -1011,15 +1011,89 @@ WHERE
 				<text><![CDATA[Observaciones:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="244" width="555" height="231" uuid="a377fc29-263c-4392-941f-35bdaeac35dd"/>
+				<reportElement x="0" y="244" width="555" height="32" uuid="a377fc29-263c-4392-941f-35bdaeac35dd"/>
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{Ot_observaciones}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="0" y="313" width="150" height="78" uuid="037b8681-f33c-4bde-a739-0b92bc34e0b9">
+					<printWhenExpression><![CDATA[$F{Sectores_id} == 9]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[CORTE DE CHAPA
+
+Fecha                Firma
+
+.................      ........................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="162" y="313" width="150" height="78" uuid="49df9457-2fe5-4f82-9706-b0a81b233ffd">
+					<printWhenExpression><![CDATA[$F{Sectores_id} == 9]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[CORTE DE TUBO
+
+Fecha                Firma
+
+.................      ........................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="335" y="313" width="150" height="78" uuid="a8ea3937-6f7f-4a15-8381-dc5a54eccf91">
+					<printWhenExpression><![CDATA[$F{Sectores_id} == 9]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[RECOCIDO
+
+Fecha                Firma
+
+.................      ........................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="412" width="150" height="78" uuid="25e9f54c-c26e-4b90-a2af-25fd49a0734b">
+					<printWhenExpression><![CDATA[$F{Sectores_id} == 9]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[MATRIZADO
+
+Fecha                Firma
+
+.................      ........................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="162" y="412" width="150" height="78" uuid="bd0cc8af-d891-47cc-86fd-b53abe1a1fac">
+					<printWhenExpression><![CDATA[$F{Sectores_id} == 9]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[PLEGADO
+
+Fecha                Firma
+
+.................      ........................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="335" y="412" width="150" height="78" uuid="4cc4075e-cd8a-46e4-b1a0-c87e95232438">
+					<printWhenExpression><![CDATA[$F{Sectores_id} == 9]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[TURBULADO
+
+Fecha                Firma
+
+.................      ........................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="490" width="150" height="78" uuid="f43abf4b-bdb0-4c1d-a5c7-c98ad2450617">
+					<printWhenExpression><![CDATA[$F{Sectores_id} == 9]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ARMADO
+
+Fecha                Firma
+
+.................      ........................]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
-	<pageFooter>
-		<band height="54" splitType="Stretch"/>
-	</pageFooter>
 </jasperReport>

@@ -28,7 +28,7 @@ class PedidoClientesRepository extends \Doctrine\ORM\EntityRepository
 				->getQuery()
 				->getArrayResult();
 			
-			echo json_encode($qb);
+			return $qb;
 			
 		}catch(\Doctrine\ORM\ORMException $e){
 			$this->get('logger')->error($e->getMessage());
@@ -58,6 +58,29 @@ class PedidoClientesRepository extends \Doctrine\ORM\EntityRepository
 
 		return $qb;
 
+	}
+	
+	public function listarPedidosClienteCodigo($idCliente, $codigo){		
+		$em = $this->getEntityManager();
+		$repo = $em->getRepository('MbpProduccionBundle:PedidoClientes');
+		
+		$qb = $repo->createQueryBuilder("p")
+			->select("DATE_FORMAT(p.fechaPedido, '%d/%m/%Y') as fechaPedido, p.oc, p.autEntrega, p.id as idPedido,
+				c.rsocial as clienteDesc,
+				d.cantidad,	DATE_FORMAT(d.fechaProg, '%d/%m/%Y') as fechaProgramacion, d.entregado, d.descripcion, d.id as idDetalle,
+				cod.codigo")
+			->leftJoin('p.cliente', 'c')
+			->leftJoin('p.detalleId', 'd')
+			->leftJoin('d.codigo', 'cod')
+			->where('d.inactivo = 0')
+			->andWhere('c.id =:cliente')
+			->andWhere('cod.codigo =:codigo')
+			->setParameter('cliente', $idCliente)
+			->setParameter('codigo', $codigo)				
+			->getQuery()
+			->getArrayResult();
+		
+		return $qb;
 	}
 }
 

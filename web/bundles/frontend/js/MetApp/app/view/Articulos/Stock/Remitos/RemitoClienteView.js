@@ -155,7 +155,8 @@ Ext.define('MetApp.view.Articulos.Stock.Remitos.RemitoClienteView' ,{
 				readOnly: true,
 				name: 'pedidoNum',
 				itemId: 'pedidoNum',
-				fieldLabel: 'Pedido N°'
+				fieldLabel: 'Pedido N°',
+				emptyText: 'Click para ver pedidos'
 			},					
 		]
 		
@@ -187,7 +188,7 @@ Ext.define('MetApp.view.Articulos.Stock.Remitos.RemitoClienteView' ,{
 				itemId: 'guardarRemito',
 				action: 'guardarRemito',
 				text: 'Guardar'				
-			}
+			},
 		]
 
 		Ext.applyIf(me,{

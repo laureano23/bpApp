@@ -5,7 +5,8 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 		'Articulos.Stock.Remitos.RemitoClienteView',		
 		'Clientes.SearchGridClientes',
 		'Articulos.WinArticuloSearch',
-		'Articulos.Stock.Remitos.RemitosListadoView'
+		'Articulos.Stock.Remitos.RemitosListadoView',
+		'Produccion.Pedidos.PedidosPendientesView'
 		],
 	stores: [
 		'Articulos.RemitosPendientesStore'
@@ -38,6 +39,9 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 			'RemitoClienteView button[itemId=guardarRemito]': {
 				click: this.GuardarRemito
 			},
+			'RemitoClienteView textfield[itemId=pedidoNum]': {
+				focus: this.VerPedidos
+			},
 			'viewport menuitem[itemId=verRemitos]': {
 				click: this.VerRemitos
 			},
@@ -45,6 +49,32 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 				click: this.VerRemito
 			},
 		});
+	},
+	
+	VerPedidos: function(btn){
+		var winRemito = btn.up('window');
+		var cliente = winRemito.queryById('idOrigen').getValue();
+		var codigo = winRemito.queryById('codigo').getValue();
+		if(cliente == "" || codigo == ""){
+			Ext.Msg.show({
+				title: 'Ateción',
+				msg: 'Debe ingresar cliente y código de articulo',
+				buttons: Ext.Msg.OK,
+     			icon: Ext.Msg.ALERT
+			})
+			return;
+		}
+		
+		var win = Ext.widget('PedidosPendientesView');
+		var store = win.down('grid').getStore();
+		
+		if(cliente != ""){
+			store.getProxy().setExtraParam('cliente', cliente);
+			store.getProxy().setExtraParam('codigo', codigo);		
+		}
+		
+		console.log(store);
+		store.load();
 	},
 	
 	VerRemito: function(grid, colIndex, rowIndex){
@@ -118,7 +148,7 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 		fuente.down('button').on('click', function(btn){
 			var selection = fuente.down('grid').getSelectionModel().getSelection()[0];
 			win.queryById('idOrigen').setValue(selection.data.id);
-			win.queryById('fuente').setValue(selection.data.denominacion);
+			win.queryById('fuente').setValue(selection.data.rsocial);
 			fuente.close();
 			
 			win.queryById('buscaArt').focus('', 10);
