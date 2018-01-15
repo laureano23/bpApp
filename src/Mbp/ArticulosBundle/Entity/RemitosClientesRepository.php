@@ -14,16 +14,18 @@ class RemitosClientesRepository extends \Doctrine\ORM\EntityRepository
 		$em = $this->getEntityManager();
 		
 		$repo = $em->getRepository('MbpArticulosBundle:RemitosClientes');
-		$res = $repo->createQueryBuilder('r')
-						->select('r.id, d.descripcion, d.cantidad, d.unidad,
-						 	art.codigo, d.oc, p.id as pedido, d.facturado,
-						 	art.costo, art.precio')
-						->join('r.detalleRemito', 'd')
-						->join('d.articuloId', 'art')
-						->leftjoin('d.pedidoId', 'p')
-						->where('d.facturado = 0')
-						->getQuery()
-						->getResult();
+		$qb = $repo->createQueryBuilder('r');
+		
+		$res =	$qb->select('r.id, d.id as remitoNum, d.descripcion, d.cantidad, d.unidad,
+			 	art.codigo, d.oc, p.id as pedido, d.facturado,
+			 	art.costo, art.precio')
+			->join('r.detalleRemito', 'd')
+			->join('d.articuloId', 'art')
+			->leftjoin('d.pedidoDetalleId', 'p')
+			->where('d.facturado = 0')
+			->andWhere($qb->expr()->isNotNull('r.clienteId'))
+			->getQuery()
+			->getResult();
 		
 		return $res;
 	}

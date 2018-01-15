@@ -63,12 +63,12 @@ class RemitosClientesDetalles
     private $articuloId;
 
     /**
-     * @var \Mbp\ProduccionBundle\Entity\PedidoClientes
+     * @var \Mbp\ProduccionBundle\Entity\PedidoClientesDetalle
      *
-     * @ORM\ManyToOne(targetEntity="Mbp\ProduccionBundle\Entity\PedidoClientes")
-     * @ORM\JoinColumn(name="pedidoId", referencedColumnName="id", nullable=true)    
+     * @ORM\ManyToOne(targetEntity="Mbp\ProduccionBundle\Entity\PedidoClientesDetalle")
+     * @ORM\JoinColumn(name="pedidoDetalleId", referencedColumnName="id", nullable=true)    
      */
-    private $pedidoId;
+    private $pedidoDetalleId;
 	
 	/**
      * @var boolean
@@ -208,29 +208,7 @@ class RemitosClientesDetalles
         return $this->articuloId;
     }
 
-    /**
-     * Set pedidoId
-     *
-     * @param \Mbp\ProduccionBundle\Entity\PedidoClientes $pedidoId
-     *
-     * @return RemitosClientesDetalles
-     */
-    public function setPedidoId(\Mbp\ProduccionBundle\Entity\PedidoClientes $pedidoId = null)
-    {
-        $this->pedidoId = $pedidoId;
-
-        return $this;
-    }
-
-    /**
-     * Get pedidoId
-     *
-     * @return \Mbp\ProduccionBundle\Entity\PedidoClientes
-     */
-    public function getPedidoId()
-    {
-        return $this->pedidoId;
-    }
+    
 
     /**
      * Set facturado
@@ -254,5 +232,29 @@ class RemitosClientesDetalles
     public function getFacturado()
     {
         return $this->facturado;
+    }
+
+    /**
+     * Set pedidoDetalleId
+     *
+     * @param \Mbp\ProduccionBundle\Entity\PedidoClientesDetalle $pedidoDetalleId
+     *
+     * @return RemitosClientesDetalles
+     */
+    public function setPedidoDetalleId(\Mbp\ProduccionBundle\Entity\PedidoClientesDetalle $pedidoDetalleId = null)
+    {
+        $this->pedidoDetalleId = $pedidoDetalleId;
+
+        return $this;
+    }
+
+    /**
+     * Get pedidoDetalleId
+     *
+     * @return \Mbp\ProduccionBundle\Entity\PedidoClientesDetalle
+     */
+    public function getPedidoDetalleId()
+    {
+        return $this->pedidoDetalleId;
     }
 }

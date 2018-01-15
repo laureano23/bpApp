@@ -22,20 +22,7 @@ class RemitoClientesListener
         	$articulo->setStock($articulo->getStock() - $detalle->getCantidad());
         	$entityManager->persist($articulo);        	
 
-        	//AJUSTAMOS CANTIDAD ENTREGADA
-        	if($detalle->getPedidoId() != null){
-        		$pedido = $detalle->getPedidoId()->getDetalleId();
 
-                foreach ($pedido as $item) {
-                    $item->setEntregado($item->getEntregado() + $detalle->getCantidad());
-
-                    //SI SE COMPLETO LA CANTIDAD PEDIDA, DAMOS LA BAJA LOGICA
-                    if($item->getCantidad() <= $item->getEntregado()){
-                        $item->setInactivo(true);
-                    }
-                    $entityManager->persist($item);
-                }            		
-        	}
         }
 
         //AUMENTO EN 1 EL NUMERO DE REMITO

@@ -66,15 +66,24 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 		}
 		
 		var win = Ext.widget('PedidosPendientesView');
-		var store = win.down('grid').getStore();
+		var grid = win.down('grid');
+		var store = grid.getStore();
 		
 		if(cliente != ""){
 			store.getProxy().setExtraParam('cliente', cliente);
 			store.getProxy().setExtraParam('codigo', codigo);		
 		}
 		
-		console.log(store);
 		store.load();
+		
+		var btn = win.queryById('insert');
+		btn.on('click', function(btn){
+			var sel = grid.getSelectionModel().getSelection()[0];
+			winRemito.queryById('pedidoNum').setValue(sel.data.idDetalle);
+			win.close();
+			
+			console.log(sel);
+		});
 	},
 	
 	VerRemito: function(grid, colIndex, rowIndex){

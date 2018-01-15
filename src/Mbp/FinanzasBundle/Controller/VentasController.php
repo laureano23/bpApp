@@ -179,7 +179,16 @@ class VentasController extends Controller
 				$detalleFc->setCantidad($items->cantidad);
 				$detalleFc->setPrecio($items->precio);
 				$articulo = $repoArticulo->findByCodigo($items->codigo);
-				$detalleFc->setArticuloId($articulo[0]);			
+				$detalleFc->setArticuloId($articulo[0]);
+				
+				//BUSCO EL REMITO
+				$repoRemito = $em->getRepository('MbpArticulosBundle:RemitosClientesDetalles');
+				$remitoDetalle = $repoRemito->find($items->remitoNum);			
+				if(!empty($remitoDetalle)){
+					$detalleFc->setRemitoDetalleId($remitoDetalle);
+					$remitoDetalle->setFacturado(TRUE);	
+				}					
+							
 				$factura->addFacturaDetalleId($detalleFc);
 				$em->persist($detalleFc);
 				

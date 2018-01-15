@@ -59,7 +59,7 @@ Ext.define('MetApp.view.CCClientes.CCClientes' ,{
 							margins: '5 0 0 5',
 							defaults: {
 								margins: '5 0 0 5',
-								disabled: true,
+								readOnly: true,
 								disabledCls: 'myDisabledClass'
 							},
 							layout: 'hbox',
@@ -73,7 +73,6 @@ Ext.define('MetApp.view.CCClientes.CCClientes' ,{
 								},
 								{
 									xtype: 'button',
-									disabled: false,
 									iconCls: 'search',
 									itemId: 'buscaCliente'
 								},
@@ -90,7 +89,7 @@ Ext.define('MetApp.view.CCClientes.CCClientes' ,{
 							margins: '5 0 0 5',
 							defaults: {
 								margins: '5 0 0 5',
-								disabled: true,
+								readOnly: true,
 								disabledCls: 'myDisabledClass'
 							},
 							layout: 'hbox',
@@ -176,7 +175,7 @@ Ext.define('MetApp.view.CCClientes.CCClientes' ,{
 					style: {
 						background: 'white'
 					},
-					disabled: true,
+					readOnly: true,
 					border: false,
 					itemId: 'btnCnt',
 					region: 'south',

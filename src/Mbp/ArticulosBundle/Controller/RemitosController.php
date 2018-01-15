@@ -28,7 +28,7 @@ class RemitosController extends Controller
 		$repoProveedores = $em->getRepository('MbpProveedoresBundle:Proveedor');
         $repoArticulos = $em->getRepository('MbpArticulosBundle:Articulos');
         $repoParametros = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
-        $repoPedidos = $em->getRepository('MbpProduccionBundle:PedidoClientes');
+        $repoPedidos = $em->getRepository('MbpProduccionBundle:PedidoClientesDetalle');
         $validador = $this->get('validator');	//VALIDADOR DE ENTIDADES SERVICIO
         $response = new Response;        
 
@@ -56,7 +56,16 @@ class RemitosController extends Controller
 				$remitoDetalle->setOc($item->oc);
 
 				if($item->pedidoNum != ""){
-					$remitoDetalle->setPedidoId($repoPedidos->find($item->pedidoNum));
+					$pedido = $repoPedidos->find($item->pedidoNum);
+					$remitoDetalle->setPedidoDetalleId($pedido);
+					$pedido->setEntregado($pedido->getEntregado() + $item->cantidad);
+					
+					//SI LA CANTIDAD REMITADA + LAS PIEZAS YA ENTREGADAS ES MAYOR O IGUAL A LA CANTIDAD PEDIDA DAMOS DE BAJA EL PEDIDO
+					if($pedido->getEntregado() >= $pedido->getCantidad()){
+						$pedido->setInactivo(TRUE);
+					}
+					
+					$em->persist($pedido);
 				}
 				
 
@@ -146,23 +155,15 @@ class RemitosController extends Controller
 			     RemitosClientes.`remitoNum` AS RemitosClientes_remitoNum,
 			     RemitosClientes.`clienteId` AS RemitosClientes_clienteId,
 			     RemitosClientes.`proveedorId` AS RemitosClientes_proveedorId,
-			     RemitoClientes_detalle.`remitosclientes_id` AS RemitoClientes_detalle_remitosclientes_id,
-			     RemitoClientes_detalle.`remitosclientesdetalles_id` AS RemitoClientes_detalle_remitosclientesdetalles_id,
 			     RemitosClientesDetalles.`id` AS RemitosClientesDetalles_id,
 			     RemitosClientesDetalles.`descripcion` AS RemitosClientesDetalles_descripcion,
 			     RemitosClientesDetalles.`cantidad` AS RemitosClientesDetalles_cantidad,
 			     RemitosClientesDetalles.`unidad` AS RemitosClientesDetalles_unidad,
 			     RemitosClientesDetalles.`oc` AS RemitosClientesDetalles_oc,
 			     RemitosClientesDetalles.`articuloId` AS RemitosClientesDetalles_articuloId,
-			     RemitosClientesDetalles.`pedidoId` AS RemitosClientesDetalles_pedidoId,
-			     RemitosClientesDetalles.`facturado` AS RemitosClientesDetalles_facturado,
-			     Proveedor.`id` AS Proveedor_id,
-			     Proveedor.`departamento` AS Proveedor_departamento,
-			     Proveedor.`provincia` AS Proveedor_provincia,
-			     Proveedor.`rsocial` AS Proveedor_rsocial,
-			     Proveedor.`denominacion` AS Proveedor_denominacion,
-			     Proveedor.`direccion` AS Proveedor_direccion,
-			     Proveedor.`cuit` AS Proveedor_cuit,
+			     RemitosClientesDetalles.`pedidoDetalleId` AS RemitosClientesDetalles_pedidoDetalleId,
+			     RemitoClientes_detalle.`remitosclientes_id` AS RemitoClientes_detalle_remitosclientes_id,
+			     RemitoClientes_detalle.`remitosclientesdetalles_id` AS RemitoClientes_detalle_remitosclientesdetalles_id,
 			     cliente.`departamento` AS cliente_departamento,
 			     cliente.`provincia` AS cliente_provincia,
 			     cliente.`iva` AS cliente_iva,
@@ -170,13 +171,30 @@ class RemitosController extends Controller
 			     cliente.`idCliente` AS cliente_idCliente,
 			     cliente.`denominacion` AS cliente_denominacion,
 			     cliente.`direccion` AS cliente_direccion,
-			     cliente.`cuit` AS cliente_cuit
+			     cliente.`cuit` AS cliente_cuit,
+			     cliente.`cPostal` AS cliente_cPostal,
+			     PedidoClientesDetalle.`id` AS PedidoClientesDetalle_id,
+			     PedidoClientesDetalle.`codigo` AS PedidoClientesDetalle_codigo,
+			     PedidoClientesDetalle.`cantidad` AS PedidoClientesDetalle_cantidad,
+			     PedidoClientesDetalle.`fechaProg` AS PedidoClientesDetalle_fechaProg,
+			     PedidoClientesDetalle.`entregado` AS PedidoClientesDetalle_entregado,
+			     PedidoClientesDetalle.`inactivo` AS PedidoClientesDetalle_inactivo,
+			     PedidoClientesDetalle.`descripcion` AS PedidoClientesDetalle_descripcion,
+			     Proveedor.`id` AS Proveedor_id,
+			     Proveedor.`departamento` AS Proveedor_departamento,
+			     Proveedor.`provincia` AS Proveedor_provincia,
+			     Proveedor.`rsocial` AS Proveedor_rsocial,
+			     Proveedor.`denominacion` AS Proveedor_denominacion,
+			     Proveedor.`direccion` AS Proveedor_direccion,
+			     Proveedor.`cuit` AS Proveedor_cuit
 			FROM
-			     `RemitosClientes` RemitosClientes LEFT OUTER JOIN `RemitoClientes_detalle` RemitoClientes_detalle ON RemitosClientes.`id` = RemitoClientes_detalle.`remitosclientes_id`
-			     INNER JOIN `RemitosClientesDetalles` RemitosClientesDetalles ON RemitoClientes_detalle.`remitosclientesdetalles_id` = RemitosClientesDetalles.`id`
-			     LEFT OUTER JOIN `Proveedor` Proveedor ON RemitosClientes.`proveedorId` = Proveedor.`id`
+			     `RemitosClientesDetalles` RemitosClientesDetalles INNER JOIN `RemitoClientes_detalle` RemitoClientes_detalle ON RemitosClientesDetalles.`id` = RemitoClientes_detalle.`remitosclientesdetalles_id`
+			     INNER JOIN `RemitosClientes` RemitosClientes ON RemitoClientes_detalle.`remitosclientes_id` = RemitosClientes.`id`
 			     LEFT OUTER JOIN `cliente` cliente ON RemitosClientes.`clienteId` = cliente.`idCliente`
-			WHERE RemitosClientes.`id` = $idRemito";
+			     LEFT OUTER JOIN `Proveedor` Proveedor ON RemitosClientes.`proveedorId` = Proveedor.`id`
+			     LEFT OUTER JOIN `PedidoClientesDetalle` PedidoClientesDetalle ON RemitosClientesDetalles.`pedidoDetalleId` = PedidoClientesDetalle.`id`
+			WHERE
+			     RemitosClientes.`id` = $idRemito";
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 

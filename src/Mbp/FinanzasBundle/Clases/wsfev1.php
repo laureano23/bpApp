@@ -70,7 +70,7 @@ class wsfev1 {
 	* si encuentra un error no fatal, loguea lo que paso en $this->error
 	*/
 	private function _checkErrors($results, $method)
-	{
+	{		
     if (self::LOG_XMLS) {
 		file_put_contents($this->path."/xml/request-".$method.".xml",$this->client->__getLastRequest());
 		file_put_contents($this->path."/xml/response-".$method.".xml",$this->client->__getLastResponse());
@@ -211,7 +211,7 @@ class wsfev1 {
 	);
 	
 	$results = $this->client->FECAESolicitar($params, 'FECAESolicitar');
-
+		
     $e = $this->_checkErrors($results, 'FECAESolicitar');
    
 	$resp_cae = $results->FECAESolicitarResult->FeDetResp->FECAEDetResponse->CAE;

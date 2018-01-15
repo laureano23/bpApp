@@ -171,11 +171,6 @@ class Facturas
      */
     private $condVta;
 
-    /**
-     * @ORM\Column(name="rtoNro", type="string", length=250, nullable=true)
-     */
-    private $rtoNro=NULL;
-
 
     /**
      * Get id
@@ -613,30 +608,7 @@ class Facturas
         return $this->condVta;
     }
 
-    /**
-     * Set rtoNro
-     *
-     * @param string $rtoNro
-     *
-     * @return Facturas
-     */
-    public function setRtoNro($rtoNro)
-    {
-        $this->rtoNro = $rtoNro;
-
-        return $this;
-    }
-
-    /**
-     * Get rtoNro
-     *
-     * @return string
-     */
-    public function getRtoNro()
-    {
-        return $this->rtoNro;
-    }
-
+   
     /**
      * Set fcNro
      *

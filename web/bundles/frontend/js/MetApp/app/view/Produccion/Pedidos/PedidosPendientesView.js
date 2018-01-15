@@ -3,7 +3,7 @@ Ext.define('MetApp.view.Produccion.Pedidos.PedidosPendientesView', {
 	alias: 'widget.PedidosPendientesView',
 	itemdId: 'PedidosPendientesView',
 	title: 'Pedidos Pendientes',
-	layout: 'fit',
+	layout: 'vbox',
 	modal: true,
 	autoShow: true,
 	
@@ -41,13 +41,13 @@ Ext.define('MetApp.view.Produccion.Pedidos.PedidosPendientesView', {
 							submitFormat: 'd/m/Y',
 							xtype:'datecolumn',							
 						},
-						{ 
-							header: 'Marcar',						
-							xtype: 'checkcolumn',
-							itemId: 'marcar',
-							width: 'auto'
-						},
 					]										
+				},
+				{
+					xtype:'button',
+					margins: '5 5 5 5',
+					text: 'Insertar',
+					itemId: 'insert'
 				}
 			]
 		});

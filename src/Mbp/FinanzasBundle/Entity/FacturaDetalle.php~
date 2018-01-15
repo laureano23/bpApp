@@ -184,28 +184,4 @@ class FacturaDetalle
     {
         return $this->articuloId;
     }
-
-    /**
-     * Set remitoDetalleId
-     *
-     * @param \Mbp\ArticulosBundle\Entity\RemitosClientesDetalles $remitoDetalleId
-     *
-     * @return FacturaDetalle
-     */
-    public function setRemitoDetalleId(\Mbp\ArticulosBundle\Entity\RemitosClientesDetalles $remitoDetalleId = null)
-    {
-        $this->remitoDetalleId = $remitoDetalleId;
-
-        return $this;
-    }
-
-    /**
-     * Get remitoDetalleId
-     *
-     * @return \Mbp\ArticulosBundle\Entity\RemitosClientesDetalles
-     */
-    public function getRemitoDetalleId()
-    {
-        return $this->remitoDetalleId;
-    }
 }

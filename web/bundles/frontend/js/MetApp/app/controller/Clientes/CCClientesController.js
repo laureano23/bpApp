@@ -313,8 +313,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 							var jsonResp = Ext.JSON.decode(resp.responseText);
 							if(jsonResp.success == true){
 								var store = grid.getStore();
-								var rec = store.findRecord('id', data.id);
-								store.remove(rec);	
+								store.remove(selection);	
 							}
 						}	
 					});
@@ -535,6 +534,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 					data.items.push(rec.data);	
 				}				
 			});
+			console.log(data);
 			storeFacturacion.loadRawData(data);
 			
 			view.close();
@@ -664,7 +664,9 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		});
 		
 		storeAplicados.each(function(rec){
-			aplicados.push(rec.getData());
+			if(rec.data.aplicar > 0){
+				aplicados.push(rec.getData());	
+			}			
 		});
 		
 		var countRec = store.getCount();

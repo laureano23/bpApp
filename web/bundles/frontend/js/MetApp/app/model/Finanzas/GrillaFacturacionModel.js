@@ -8,6 +8,7 @@ Ext.define('MetApp.model.Finanzas.GrillaFacturacionModel',{
 		{ name: 'cantidad', type: 'float' },
 		{ name: 'costo', type: 'float' },
 		{ name: 'precio', type: 'float' },
-		{ name: 'parcial', type: 'float' }
+		{ name: 'parcial', type: 'float' },
+		{ name: 'remitoNum', type: 'int' }
 	]
 });

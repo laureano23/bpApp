@@ -63,19 +63,19 @@ class RemitosClientesDetalles
     private $articuloId;
 
     /**
-     * @var \Mbp\ProduccionBundle\Entity\PedidoClientes
+     * @var \Mbp\ProduccionBundle\Entity\PedidoClientesDetalle
      *
-     * @ORM\ManyToOne(targetEntity="Mbp\ProduccionBundle\Entity\PedidoClientes")
-     * @ORM\JoinColumn(name="pedidoId", referencedColumnName="id", nullable=true)    
+     * @ORM\ManyToOne(targetEntity="Mbp\ProduccionBundle\Entity\PedidoClientesDetalle")
+     * @ORM\JoinColumn(name="pedidoDetalleId", referencedColumnName="id", nullable=true)    
      */
-    private $pedidoId;
+    private $pedidoDetalleId;
 	
 	/**
      * @var boolean
      *
      * @ORM\Column(name="facturado", type="boolean", nullable=false)
      */
-    private $facturado=0;
+    private $facturado=0; 
 	
 
     /**
@@ -208,27 +208,29 @@ class RemitosClientesDetalles
         return $this->articuloId;
     }
 
+    
+
     /**
-     * Set pedidoId
+     * Set facturado
      *
-     * @param \Mbp\ProduccionBundle\Entity\PedidoClientes $pedidoId
+     * @param boolean $facturado
      *
      * @return RemitosClientesDetalles
      */
-    public function setPedidoId(\Mbp\ProduccionBundle\Entity\PedidoClientes $pedidoId = null)
+    public function setFacturado($facturado)
     {
-        $this->pedidoId = $pedidoId;
+        $this->facturado = $facturado;
 
         return $this;
     }
 
     /**
-     * Get pedidoId
+     * Get facturado
      *
-     * @return \Mbp\ProduccionBundle\Entity\PedidoClientes
+     * @return boolean
      */
-    public function getPedidoId()
+    public function getFacturado()
     {
-        return $this->pedidoId;
+        return $this->facturado;
     }
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b7fbe4cc-9642-4a30-b319-1f1509ec7bd0">
-	<property name="ireport.zoom" value="1.4641000000000037"/>
-	<property name="ireport.x" value="70"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="1.3310000000000046"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="20"/>
 	<parameter name="rutaLogo" class="java.lang.String"/>
 	<parameter name="facturaId" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -35,20 +35,38 @@
      Facturas.`ivaCond` AS Facturas_ivaCond,
      Facturas.`rSocial` AS Facturas_rSocial,
      Facturas.`domicilio` AS Facturas_domicilio,
-     Facturas.`localidad` AS Facturas_localidad,
      Facturas.`cuit` AS Facturas_cuit,
      Facturas.`condVta` AS Facturas_condVta,
-     Facturas.`rtoNro` AS Facturas_rtoNro,
      Facturas.`perIIBB` AS Facturas_perIIBB,
      Facturas.`iva21` AS Facturas_iva21,
      Facturas.`dtoTotal` AS Facturas_dtoTotal,
      Facturas.`vtoCae` AS Facturas_vtoCae,
-     Facturas.`fcNro` AS Facturas_fcNro
+     Facturas.`fcNro` AS Facturas_fcNro,
+     Facturas.`departamento` AS Facturas_departamento,
+     FacturaDetalle.`remitoId` AS FacturaDetalle_remitoId,
+     RemitosClientes.`id` AS RemitosClientes_id,
+     RemitosClientes.`fecha` AS RemitosClientes_fecha,
+     RemitosClientes.`remitoNum` AS RemitosClientes_remitoNum,
+     RemitosClientes.`clienteId` AS RemitosClientes_clienteId,
+     RemitosClientes.`proveedorId` AS RemitosClientes_proveedorId,
+     RemitoClientes_detalle.`remitosclientes_id` AS RemitoClientes_detalle_remitosclientes_id,
+     RemitoClientes_detalle.`remitosclientesdetalles_id` AS RemitoClientes_detalle_remitosclientesdetalles_id,
+     RemitosClientesDetalles.`id` AS RemitosClientesDetalles_id,
+     RemitosClientesDetalles.`descripcion` AS RemitosClientesDetalles_descripcion,
+     RemitosClientesDetalles.`cantidad` AS RemitosClientesDetalles_cantidad,
+     RemitosClientesDetalles.`unidad` AS RemitosClientesDetalles_unidad,
+     RemitosClientesDetalles.`oc` AS RemitosClientesDetalles_oc,
+     RemitosClientesDetalles.`articuloId` AS RemitosClientesDetalles_articuloId,
+     RemitosClientesDetalles.`pedidoDetalleId` AS RemitosClientesDetalles_pedidoDetalleId,
+     RemitosClientesDetalles.`facturado` AS RemitosClientesDetalles_facturado
 FROM
-     `Facturas` Facturas INNER JOIN `factura_detallesFacturas` factura_detallesFacturas ON Facturas.`id` = factura_detallesFacturas.`factura_id`
+     `Facturas` Facturas LEFT OUTER JOIN `factura_detallesFacturas` factura_detallesFacturas ON Facturas.`id` = factura_detallesFacturas.`factura_id`
      INNER JOIN `FacturaDetalle` FacturaDetalle ON factura_detallesFacturas.`facturadetalle_id` = FacturaDetalle.`id`
-     INNER JOIN `articulos` articulos ON FacturaDetalle.`articuloId` = articulos.`idArticulos`
-     INNER JOIN `cliente` cliente ON Facturas.`clienteId` = cliente.`idCliente`
+     LEFT OUTER JOIN `articulos` articulos ON FacturaDetalle.`articuloId` = articulos.`idArticulos`
+     LEFT OUTER JOIN `RemitosClientesDetalles` RemitosClientesDetalles ON FacturaDetalle.`remitoId` = RemitosClientesDetalles.`id`
+     INNER JOIN `RemitoClientes_detalle` RemitoClientes_detalle ON RemitosClientesDetalles.`id` = RemitoClientes_detalle.`remitosclientesdetalles_id`
+     LEFT OUTER JOIN `RemitosClientes` RemitosClientes ON RemitoClientes_detalle.`remitosclientes_id` = RemitosClientes.`id`
+     LEFT OUTER JOIN `cliente` cliente ON Facturas.`clienteId` = cliente.`idCliente`
 WHERE
      Facturas.`id` = $P{facturaId}]]>
 	</queryString>
@@ -77,14 +95,29 @@ WHERE
 	<field name="Facturas_ivaCond" class="java.lang.String"/>
 	<field name="Facturas_rSocial" class="java.lang.String"/>
 	<field name="Facturas_domicilio" class="java.lang.String"/>
-	<field name="Facturas_localidad" class="java.lang.String"/>
 	<field name="Facturas_cuit" class="java.lang.String"/>
 	<field name="Facturas_condVta" class="java.lang.String"/>
-	<field name="Facturas_rtoNro" class="java.lang.String"/>
 	<field name="Facturas_perIIBB" class="java.math.BigDecimal"/>
 	<field name="Facturas_iva21" class="java.math.BigDecimal"/>
 	<field name="Facturas_dtoTotal" class="java.math.BigDecimal"/>
 	<field name="Facturas_fcNro" class="java.lang.Integer"/>
+	<field name="Facturas_departamento" class="java.lang.String"/>
+	<field name="FacturaDetalle_remitoId" class="java.lang.Integer"/>
+	<field name="RemitosClientes_id" class="java.lang.Integer"/>
+	<field name="RemitosClientes_fecha" class="java.sql.Timestamp"/>
+	<field name="RemitosClientes_remitoNum" class="java.lang.String"/>
+	<field name="RemitosClientes_clienteId" class="java.lang.Integer"/>
+	<field name="RemitosClientes_proveedorId" class="java.lang.Integer"/>
+	<field name="RemitoClientes_detalle_remitosclientes_id" class="java.lang.Integer"/>
+	<field name="RemitoClientes_detalle_remitosclientesdetalles_id" class="java.lang.Integer"/>
+	<field name="RemitosClientesDetalles_id" class="java.lang.Integer"/>
+	<field name="RemitosClientesDetalles_descripcion" class="java.lang.String"/>
+	<field name="RemitosClientesDetalles_cantidad" class="java.math.BigDecimal"/>
+	<field name="RemitosClientesDetalles_unidad" class="java.lang.String"/>
+	<field name="RemitosClientesDetalles_oc" class="java.lang.String"/>
+	<field name="RemitosClientesDetalles_articuloId" class="java.lang.Integer"/>
+	<field name="RemitosClientesDetalles_pedidoDetalleId" class="java.lang.Integer"/>
+	<field name="RemitosClientesDetalles_facturado" class="java.lang.Boolean"/>
 	<variable name="subTotal" class="java.lang.Float" calculation="Sum">
 		<variableExpression><![CDATA[$F{FacturaDetalle_cantidad} * $F{FacturaDetalle_precio}]]></variableExpression>
 	</variable>
@@ -278,10 +311,10 @@ PARTIDA MUNICIPAL N° 070-039139]]></text>
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{Facturas_localidad}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Facturas_departamento}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="354" y="191" width="55" height="20" uuid="df65f1ec-a58a-46ec-b054-35997a48ef2a"/>
+				<reportElement x="354" y="191" width="55" height="40" uuid="df65f1ec-a58a-46ec-b054-35997a48ef2a"/>
 				<box leftPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -292,7 +325,7 @@ PARTIDA MUNICIPAL N° 070-039139]]></text>
 				<text><![CDATA[C.U.I.T.]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="409" y="191" width="146" height="20" uuid="2707afc9-89c9-4168-932b-091fa1c63b1e"/>
+				<reportElement x="409" y="191" width="146" height="40" uuid="2707afc9-89c9-4168-932b-091fa1c63b1e"/>
 				<box leftPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -301,28 +334,6 @@ PARTIDA MUNICIPAL N° 070-039139]]></text>
 				</box>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{Facturas_cuit}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="354" y="211" width="55" height="20" uuid="8c784af9-484d-48a1-9d2e-e2a147a3ce4e"/>
-				<box leftPadding="3">
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[Remito N°]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="409" y="211" width="146" height="20" uuid="af78c415-c540-4fce-a9cd-4c875658ef77"/>
-				<box leftPadding="3">
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{Facturas_rtoNro}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="250" y="7" width="52" height="43" forecolor="#FFFFFF" backcolor="#000000" uuid="65081864-a8b3-4d72-b5ba-29690f46ca45"/>
@@ -393,7 +404,7 @@ $F{Facturas_tipo} == 3 ? "A" : ""]]></textFieldExpression>
 	<columnHeader>
 		<band height="20" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="75" height="20" uuid="450a781d-004e-4505-974c-fc7ccf90f62f"/>
+				<reportElement x="0" y="0" width="65" height="20" uuid="450a781d-004e-4505-974c-fc7ccf90f62f"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -406,7 +417,7 @@ $F{Facturas_tipo} == 3 ? "A" : ""]]></textFieldExpression>
 				<text><![CDATA[CANTIDAD]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="150" y="0" width="259" height="20" uuid="6b1d436d-aaba-407f-8162-bbb11aaaa598"/>
+				<reportElement x="140" y="0" width="230" height="20" uuid="6b1d436d-aaba-407f-8162-bbb11aaaa598"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -419,7 +430,7 @@ $F{Facturas_tipo} == 3 ? "A" : ""]]></textFieldExpression>
 				<text><![CDATA[DESCRIPCION]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="409" y="0" width="74" height="20" uuid="b54d5681-b41c-4e1d-9159-a0cff7059300"/>
+				<reportElement x="370" y="0" width="50" height="20" uuid="b54d5681-b41c-4e1d-9159-a0cff7059300"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -429,10 +440,10 @@ $F{Facturas_tipo} == 3 ? "A" : ""]]></textFieldExpression>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[P/UNITARIO]]></text>
+				<text><![CDATA[P/UNIT.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="483" y="0" width="72" height="20" uuid="b6fae9a3-db62-449d-8934-2820f1874156"/>
+				<reportElement x="420" y="0" width="75" height="20" uuid="b6fae9a3-db62-449d-8934-2820f1874156"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -445,7 +456,7 @@ $F{Facturas_tipo} == 3 ? "A" : ""]]></textFieldExpression>
 				<text><![CDATA[IMPORTE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="75" y="0" width="75" height="20" uuid="b21d2e37-613c-4b40-b9da-c8fedfd92a7a"/>
+				<reportElement x="65" y="0" width="75" height="20" uuid="b21d2e37-613c-4b40-b9da-c8fedfd92a7a"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -457,34 +468,52 @@ $F{Facturas_tipo} == 3 ? "A" : ""]]></textFieldExpression>
 				</textElement>
 				<text><![CDATA[CODIGO]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="495" y="0" width="60" height="20" uuid="460d794a-1e0f-41a7-8055-3a5441e78b1e"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[REM. N°]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement x="1" y="0" width="74" height="20" uuid="52b4ec0b-0029-4afd-8d4a-c776ab86a82b"/>
+				<reportElement x="1" y="0" width="65" height="20" uuid="52b4ec0b-0029-4afd-8d4a-c776ab86a82b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{FacturaDetalle_cantidad}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="75" y="0" width="75" height="20" uuid="5d55342f-5f98-4ca5-95dc-6bc4c5423822"/>
+				<reportElement x="65" y="0" width="75" height="20" isPrintWhenDetailOverflows="true" uuid="5d55342f-5f98-4ca5-95dc-6bc4c5423822"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{articulos_codigo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="150" y="0" width="259" height="20" uuid="049c181d-1756-443b-b6a8-96555eb8d1a0"/>
+				<reportElement x="140" y="0" width="230" height="20" isPrintWhenDetailOverflows="true" uuid="049c181d-1756-443b-b6a8-96555eb8d1a0"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{FacturaDetalle_descripcion}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="409" y="0" width="74" height="20" uuid="5ce21c8c-900c-4f0d-bdb8-7b9a1a837e63"/>
+				<reportElement x="370" y="0" width="50" height="20" isPrintWhenDetailOverflows="true" uuid="5ce21c8c-900c-4f0d-bdb8-7b9a1a837e63"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{FacturaDetalle_precio}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="483" y="0" width="72" height="20" uuid="496184bb-0990-4c67-b641-27ec47eb5a93"/>
+			<textField pattern="#,##0.00">
+				<reportElement x="420" y="0" width="75" height="20" isPrintWhenDetailOverflows="true" uuid="496184bb-0990-4c67-b641-27ec47eb5a93"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{FacturaDetalle_precio} * $F{FacturaDetalle_cantidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="495" y="0" width="60" height="20" isPrintWhenDetailOverflows="true" uuid="1b5e7d5d-f353-4375-bb3c-88b4a4d5244b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{RemitosClientes_remitoNum}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
