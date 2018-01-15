@@ -93,6 +93,7 @@ Ext.define('MetApp.view.RRHH.DatosLiquidacion', {
 										{ boxLabel: 'Otros', name: 'pagoTipo', inputValue: 6 },
 										{ boxLabel: 'Premios 1°', name: 'pagoTipo', inputValue: 7 },
 										{ boxLabel: 'Premios 2°', name: 'pagoTipo', inputValue: 8 },
+										{ boxLabel: 'Liquidación final', name: 'pagoTipo', inputValue: 9 },
 									]
 								},
 								{

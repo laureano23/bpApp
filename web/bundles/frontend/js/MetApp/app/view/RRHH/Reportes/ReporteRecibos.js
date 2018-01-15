@@ -1,6 +1,6 @@
 Ext.define('MetApp.view.RRHH.Reportes.ReporteRecibos', {
 	extend: 'Ext.window.Window',
-	height: 315,
+	height: 345,
 	width: 500,
 	modal: true,
 	autoShow: true,
@@ -42,6 +42,7 @@ Ext.define('MetApp.view.RRHH.Reportes.ReporteRecibos', {
 										{ boxLabel: 'Otros', name: 'pagoTipo', inputValue: 6 },	
 										{ boxLabel: 'Premios 1°', name: 'pagoTipo', inputValue: 7 },
 										{ boxLabel: 'Premios 2°', name: 'pagoTipo', inputValue: 8 },
+										{ boxLabel: 'Liquidación final', name: 'pagoTipo', inputValue: 9 },
 									]
 								}
 							]
