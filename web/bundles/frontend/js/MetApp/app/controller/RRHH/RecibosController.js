@@ -205,6 +205,10 @@ Ext.define('MetApp.controller.RRHH.RecibosController', {
 					textPeriodo = 'Premios 2°';
 					textCodigoPeriodo = 8;
 					break;
+				case 9:
+					textPeriodo = 'Liquidación final';
+					textCodigoPeriodo = 9;
+					break;
 				default:
 			}
 			codigoPeriodo.setValue(textCodigoPeriodo)

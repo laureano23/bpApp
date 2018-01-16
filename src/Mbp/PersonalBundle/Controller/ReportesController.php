@@ -131,7 +131,8 @@ class ReportesController extends Controller
 		 AND Recibos.`compensatorio` = 0
 		ORDER BY
 		     Personal.`nombre` ASC,
-		     RecibosDetalle.`remunerativo` DESC";
+		     RecibosDetalle.`remunerativo` DESC,
+		     RecibosDetalle.`exento` DESC";
 		
 		$sqlCompensatorio = "SELECT
 		     Recibos.`id` AS Recibos_id,
@@ -204,7 +205,8 @@ class ReportesController extends Controller
 		 AND Recibos.`compensatorio` = 1
 		ORDER BY
 		     Personal.`nombre` ASC,
-		     RecibosDetalle.`remunerativo` DESC";
+		     RecibosDetalle.`remunerativo` DESC,
+		     RecibosDetalle.`exento` DESC";
 		     
 		//Exportamos el reporte
 		$sql = '';
@@ -292,6 +294,7 @@ class ReportesController extends Controller
 		//Parametros HashMap
 		$param = $reporteador->getJava('java.util.HashMap');
 		$param->put('periodoDesde', $periodoDesde);
+		$param->put('periodoHasta', $periodoHasta);
 		$param->put('mesDesde', (int)$mesDesde);
 		$param->put('anioHasta', (int)$anioHasta);
 		

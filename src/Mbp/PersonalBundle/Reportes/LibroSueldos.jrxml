@@ -64,7 +64,8 @@ WHERE
  AND Recibos.`compensatorio` = $P{compensatorio}
 ORDER BY
      Personal.`nombre` ASC,
-     RecibosDetalle.`remunerativo` DESC]]>
+     RecibosDetalle.`remunerativo` DESC
+]]>
 	</queryString>
 	<field name="Recibos_id" class="java.lang.Integer"/>
 	<field name="Recibos_compensatorio" class="java.lang.Boolean"/>
@@ -256,8 +257,16 @@ ORDER BY
 					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{periodoDesde}==1?"1° quincena "+$P{mesDesde}+"-"+$P{anioHasta}:
+					<textFieldExpression><![CDATA[$P{periodoHasta}==99?"Todos los conceptos "+$P{mesDesde}+"-"+$P{anioHasta}:
+$P{periodoDesde}==1?"1° quincena "+$P{mesDesde}+"-"+$P{anioHasta}:
 $P{periodoDesde}==2?"2° quincena "+$P{mesDesde}+"-"+$P{anioHasta}:
+$P{periodoDesde}==3?"Mes "+$P{mesDesde}+"-"+$P{anioHasta}:
+$P{periodoDesde}==4?"Vacaciones "+$P{mesDesde}+"-"+$P{anioHasta}:
+$P{periodoDesde}==5?"SAC "+$P{mesDesde}+"-"+$P{anioHasta}:
+$P{periodoDesde}==6?"Otros "+$P{mesDesde}+"-"+$P{anioHasta}:
+$P{periodoDesde}==7?"Premios 1° "+$P{mesDesde}+"-"+$P{anioHasta}:
+$P{periodoDesde}==8?"Premios 2° "+$P{mesDesde}+"-"+$P{anioHasta}:
+$P{periodoDesde}==9?"Liquidación Final "+$P{mesDesde}+"-"+$P{anioHasta}:
 $P{mesDesde}+"-"+$P{anioHasta}]]></textFieldExpression>
 				</textField>
 				<staticText>

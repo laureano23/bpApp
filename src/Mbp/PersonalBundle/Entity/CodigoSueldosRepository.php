@@ -75,7 +75,9 @@ class CodigoSueldosRepository extends \Doctrine\ORM\EntityRepository
 					$periodo['numero'] == 4 ? $rep[$i]['vacaciones'] = 1 : '';
 					$periodo['numero'] == 5 ? $rep[$i]['sac'] = 1 : '';
 					$periodo['numero'] == 6 ? $rep[$i]['otros'] = 1 : '';
-					$periodo['numero'] == 7 ? $rep[$i]['premios'] = 1 : '';
+					$periodo['numero'] == 7 ? $rep[$i]['premios1'] = 1 : '';
+					$periodo['numero'] == 8 ? $rep[$i]['premios2'] = 1 : '';
+					$periodo['numero'] == 9 ? $rep[$i]['liquidacionFinal'] = 1 : '';
 				}					
 				$rep[$i]['importe'] = $resu['importe'];
 				$rep[$i]['empleadoSueldo'] = $empleadoSueldo;
@@ -130,7 +132,11 @@ class CodigoSueldosRepository extends \Doctrine\ORM\EntityRepository
 			$vacaciones = $repoPeriodos->findByNumero(4);
 			$sac = $repoPeriodos->findByNumero(5);
 			$otros = $repoPeriodos->findByNumero(6);
-			$premios = $repoPeriodos->findByNumero(7);
+			$premios1 = $repoPeriodos->findByNumero(7);
+			$premios2 = $repoPeriodos->findByNumero(8);
+			$liquidacionFinal = $repoPeriodos->findByNumero(9);
+			
+			//\Doctrine\Common\Util\Debug::dump($liquidacionFinal);
 			
 			//SI ESTOY EDITANDO TRAIGO LOS PERIODOS DEL OBJETO ASOCIADOS Y LOS ELIMINO PARA CARGAR LOS NUEVOS ENVIADOS
 			$periodos = $obj->getPeriodo();
@@ -147,7 +153,9 @@ class CodigoSueldosRepository extends \Doctrine\ORM\EntityRepository
 			$jsonData->vacaciones == 4 ? $obj->addPeriodo($vacaciones[0]) : "";
 			$jsonData->sac == 5 ? $obj->addPeriodo($sac[0]) : "";
 			$jsonData->otros == 6 ? $obj->addPeriodo($otros[0]) : "";
-			$jsonData->premios == 7 ? $obj->addPeriodo($premios[0]) : "";
+			$jsonData->premios1 == 7 ? $obj->addPeriodo($premios1[0]) : "";
+			$jsonData->premios2 == 8 ? $obj->addPeriodo($premios2[0]) : "";
+			$jsonData->liquidacionFinal == 9 ? $obj->addPeriodo($liquidacionFinal[0]) : "";
 			
 			$em->persist($obj);
 			$em->flush();

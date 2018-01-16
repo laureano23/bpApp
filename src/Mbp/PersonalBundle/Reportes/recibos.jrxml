@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="recibos" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="807" leftMargin="15" rightMargin="20" topMargin="20" bottomMargin="20" uuid="faabb94c-b32d-4f38-913c-e824ee7dd96c">
 	<property name="ireport.zoom" value="1.610510000000055"/>
-	<property name="ireport.x" value="90"/>
+	<property name="ireport.x" value="6"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
@@ -113,7 +113,8 @@ WHERE
  AND Recibos.`compensatorio` = 0
 ORDER BY
      Personal.`nombre` ASC,
-     RecibosDetalle.`remunerativo` DESC]]>
+     RecibosDetalle.`remunerativo` DESC,
+     RecibosDetalle.`exento` DESC]]>
 	</queryString>
 	<field name="Recibos_id" class="java.lang.Integer"/>
 	<field name="Recibos_compensatorio" class="java.lang.Boolean"/>

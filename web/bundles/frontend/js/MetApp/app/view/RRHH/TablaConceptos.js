@@ -159,7 +159,9 @@ Ext.define('MetApp.view.RRHH.TablaConceptos', {
 												{ boxLabel: 'Vacaciones', name: 'vacaciones', inputValue: 4, uncheckedValue: 0 },
 												{ boxLabel: 'SAC', name: 'sac', inputValue: 5, uncheckedValue: 0 },
 												{ boxLabel: 'Otros', name: 'otros', inputValue: 6, uncheckedValue: 0 },
-												{ boxLabel: 'Premios', name: 'premios', inputValue: 7, uncheckedValue: 0 },											
+												{ boxLabel: 'Premios 1', name: 'premios1', inputValue: 7, uncheckedValue: 0 },
+												{ boxLabel: 'Premios 2', name: 'premios2', inputValue: 8, uncheckedValue: 0 },
+												{ boxLabel: 'Liquidación Final', name: 'liquidacionFinal', inputValue: 9, uncheckedValue: 0 },												
 											]
 										},										
 									]						       		
