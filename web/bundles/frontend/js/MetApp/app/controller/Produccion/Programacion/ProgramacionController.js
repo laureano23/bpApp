@@ -104,7 +104,6 @@ Ext.define('MetApp.controller.Produccion.Programacion.ProgramacionController', {
 		
 		//SI HAY ALGUN CAMBIO EN LA GRILLA HACEMOS LA LLAMADA AL SERVER
 		store.on('update', function(st, rec, op){
-			console.log(rec);
 			if(rec.data.estado == "Terminada" && rec.data.aprobado == 0){
 				Ext.Msg.show({
 					title: 'Atención',
@@ -112,10 +111,8 @@ Ext.define('MetApp.controller.Produccion.Programacion.ProgramacionController', {
 					buttons: Ext.Msg.OK,
 	     			icon: Ext.Msg.ALERT,
 	     			fn: function(opt){
-	     				console.log(opt);
 	     			}
 				});
-				//st.suspendEvents();
 				
 			}else{
 				Ext.Ajax.request({
@@ -126,7 +123,6 @@ Ext.define('MetApp.controller.Produccion.Programacion.ProgramacionController', {
 					},
 							
 					success: function(resp){
-						st.resumeEvents();
 					},
 					
 					failure: function(resp){

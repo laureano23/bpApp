@@ -30,21 +30,12 @@ Ext.define('MetApp.view.Produccion.Programacion.Programacion',{
 			        			Ext.create('Ext.grid.plugin.CellEditing',{
 			        				clicksToEdit: 1,
 			        				pluginId: 'cellplugin',
-			        				listeners: {
-							        }				
 			        			})
 				        	],
 				        	selType: 'cellmodel',
 				        	viewConfig: {
 				        		enableTextSelection: true,
-						        listeners: {
-						            refresh: function(dataview) {
-						                Ext.each(dataview.panel.columns, function(column) {
-						                    if (column.autoSizeColumn === true)
-						                        column.autoSize();
-						                })
-						            }				            
-						        },
+				        		preserveScrollOnRefresh: true,
 					    	},
 				        	columns: [
 								{text: 'OT', hidden: false, dataIndex: 'otNum', autoSizeColumn: true},
