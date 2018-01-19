@@ -24,6 +24,8 @@ class ProduccionSoldadoController extends Controller
 		
 		try{
 			$repo = $em->getRepository('MbpProduccionBundle:ProduccionSoldado');
+			
+			$delay = new \DateTime('-1 months');
 		
 			$data = $repo->createQueryBuilder('p')
 				->select("DATE_FORMAT(p.fecha, '%d/%m/%Y') as fecha,
@@ -40,6 +42,8 @@ class ProduccionSoldadoController extends Controller
 						")
 				->join('p.personalId', 'personal')
 				->join('p.operacionId', 'op')
+				->where('p.fecha > :delay')
+				->setParameter('delay', $delay)
 				->orderBy('p.id', 'ASC')
 				->getQuery()
 				->getArrayResult();
