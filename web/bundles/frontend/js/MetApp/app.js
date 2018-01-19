@@ -41,6 +41,7 @@ Ext.application({
 		'RRHH.CuentaEmpleadosController',
 		'RRHH.LiquidacionEnLoteController',
 		'Clientes.CCClientesController',
+		'Clientes.TransportesController',
 		'Proveedores.CCProveedoresController',
 		'Proveedores.FacturaProveedoresController',
 		'Proveedores.PagoProveedoresController',
