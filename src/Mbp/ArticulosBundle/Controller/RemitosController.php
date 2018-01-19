@@ -208,7 +208,7 @@ class RemitosController extends Controller
 				);				
 			
         }catch(\Exception $e){
-        	throw $e;
+        	//throw $e;
         	$response->setContent(json_encode(array('success' => false, 'msg' => $e->getMessage())));
         	$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
         	return $response;        

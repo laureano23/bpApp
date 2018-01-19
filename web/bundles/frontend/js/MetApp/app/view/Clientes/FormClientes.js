@@ -335,8 +335,24 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 													width: 200,
 												}
 											]
-										}
-										
+										},
+										{
+											xtype: 'combobox',
+											readOnly: true,
+											disabledCls: 'myDisabledClass',
+											width: 350,
+											labelWidth: 70,
+											name: 'transporte',
+											itemId: 'transporte',
+											store: 'MetApp.store.Clientes.TransportesStore',
+											displayField: 'nombre',
+											forceSelection: true,
+											queryMode: 'local',
+											valueField: 'id',
+											typeAhead: true,							
+											minChars: 1,
+											fieldLabel: 'Transporte',
+										},										
 									]
 								}
 							]
@@ -344,7 +360,7 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 						{
 							xtype: 'container',
 							defaults: {
-								padding: '5 0 5 5',
+								padding: '0 0 5 5',
 								border: false,
 							},
 							layout: 'column',

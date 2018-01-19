@@ -279,7 +279,6 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 		
 		if(values.id > 0){
 			var rec = store.findRecord('id', values.id);
-			console.log(values);
 			rec.set(values);			
 		}
 		else{

@@ -161,6 +161,13 @@ class Cliente
      * @ORM\Column(name="cuentaCerrada", type="boolean", nullable=true)
      */
     private $cuentaCerrada=0;
+	
+	/**
+     * @var \Mbp\ClientseBundle\Entity\Transportes
+	 * @ORM\ManyToOne(targetEntity="Mbp\ClientesBundle\Entity\Transportes")
+	 * @ORM\JoinColumn(name="transporteId", referencedColumnName="id", nullable=true)
+     */
+    private $transporteId;
 
     /**
      * Set rsocial
@@ -610,5 +617,29 @@ class Cliente
     public function getCuentaCerrada()
     {
         return $this->cuentaCerrada;
+    }
+
+    /**
+     * Set departamento
+     *
+     * @param \Mbp\PersonalBundle\Entity\Departamentos $departamento
+     *
+     * @return Cliente
+     */
+    public function setDepartamento(\Mbp\PersonalBundle\Entity\Departamentos $departamento = null)
+    {
+        $this->departamento = $departamento;
+
+        return $this;
+    }
+
+    /**
+     * Get departamento
+     *
+     * @return \Mbp\PersonalBundle\Entity\Departamentos
+     */
+    public function getDepartamento()
+    {
+        return $this->departamento;
     }
 }

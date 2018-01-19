@@ -128,7 +128,14 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                         },
 					}
 				]
-			}
+			},
+			{
+				text: 'Transportes',
+				itemId: 'tbTransportes',
+                listeners : {
+                    render : dragZone
+                },
+			},
 		]
 		
         var menuCalidad = [

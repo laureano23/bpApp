@@ -21,6 +21,7 @@ Ext.define('MetApp.model.Clientes.ClientesModel',{
 		{name: 'porcentajePercepcion', type: 'float'},
 		{name: 'localidad', type: 'int'},
 		{name: 'provincia', type: 'int'},
-		{name: 'cuentaCerrada', type: 'boolean'},		
+		{name: 'cuentaCerrada', type: 'boolean'},
+		{name: 'transporte', type: 'int'},		
 	]
 });

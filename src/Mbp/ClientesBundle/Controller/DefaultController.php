@@ -36,6 +36,7 @@ class DefaultController extends Controller
 		$repoProvincia = $em->getRepository('MbpPersonalBundle:Provincia');
 		$repoClientes = $em->getRepository('MbpClientesBundle:Cliente');
 		$repoIva = $em->getRepository('MbpFinanzasBundle:PosicionIVA');
+		$repoTransporte = $em->getRepository('MbpClientesBundle:Transportes');
 		
 		try{
 			$cliente = 0;
@@ -58,7 +59,6 @@ class DefaultController extends Controller
 			
 			if(empty($iva)){
 				throw new \Exception("No existe la posicion de IVA", 1); 
-				
 			}
 			
 			$cliente->setIva($iva);
@@ -73,6 +73,9 @@ class DefaultController extends Controller
 			$cliente->setNetoPercepcion($request->request->get('netoPercepcion'));
 			$cliente->setPorcentajePercepcion($request->request->get('porcentajePercepcion'));
 			$cliente->setCuentaCerrada($estadoCuenta);
+			
+			$transporte = $repoTransporte->find($request->request->get('transporte'));
+			if(!empty($transporte)) $cliente->setTransporteId($transporte);
 			
 			$em->persist($cliente);
 			$em->flush();

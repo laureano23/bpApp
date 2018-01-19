@@ -29,15 +29,17 @@ class ClienteRepository extends  EntityRepository
 							c.porcentajePercepcion,
 							c.cuentaCerrada,
 							prov.id as provincia,
-							dep.id as localidad')
+							dep.id as localidad,
+							t.id as transporte,
+							t.nombre as transporteNombre')
 			->from('Mbp\ClientesBundle\Entity\Cliente', 'c')
 		    ->where($qb->expr()->like('c.rsocial', $qb->expr()->literal($q.'%')))
 			->leftjoin('c.provincia', 'prov')
 			->leftjoin('c.departamento', 'dep')
 			->leftjoin('c.iva', 'i')
+			->leftjoin('c.transporteId', 't')
 		    ->getQuery()
 		    ->getArrayResult();
 		echo json_encode($res);
-		//print_r($res);
 	}
 }

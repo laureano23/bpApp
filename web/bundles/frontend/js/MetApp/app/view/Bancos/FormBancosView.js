@@ -8,6 +8,10 @@ Ext.define('MetApp.view.Bancos.FormBancosView' ,{
 	itemId: 'FormBancosView',
 	title: 'Tabla de Bancos',
 	layout: 'border',
+	bodyStyle: {
+		background: 'white'
+	},
+
 	
 	initComponent: function(){
 		var me = this;
@@ -18,6 +22,9 @@ Ext.define('MetApp.view.Bancos.FormBancosView' ,{
 					xtype: 'form',
 					region: 'center',
 					margin: '5 5 5 5',
+					style: {
+						background: 'white'
+					},
 					defaults: {
 						margin: '2 0 2 0',						
 					},
@@ -182,7 +189,11 @@ Ext.define('MetApp.view.Bancos.FormBancosView' ,{
 				},
 				{
 					xtype: 'container',
+					margins: '0 0 0 5',
 					region: 'south',
+					style: {
+						background: 'white'
+					},
 					items: [
 						botonera
 					]

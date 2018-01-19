@@ -60,6 +60,7 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 		var comboLocalidad = win.queryById('comboLocalidad');
 		var comboProv = win.queryById('comboProv');
 		var storeProv = comboProv.getStore();
+		var storeTransportes = win.queryById('transporte').getStore();
 		
 		var map = new Ext.util.KeyMap({
 		    target: win.getId(),	
@@ -96,6 +97,7 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 		});	
 		
 		storeProv.load();
+		storeTransportes.load();
 	},
 	
 	BuscaCliente: function(btn){
@@ -117,6 +119,7 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 			var selection = grid.getSelectionModel().getSelection()[0];
 			
 			var rec = store.findRecord('id', selection.data.id);
+			console.log(selection);
 			var form = Ext.ComponentQuery.query('#clientesTb')[0].down('form');
 			form.loadRecord(rec);
 			win.close();
