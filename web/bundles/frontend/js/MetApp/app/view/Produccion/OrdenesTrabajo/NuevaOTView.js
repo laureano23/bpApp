@@ -127,16 +127,39 @@ Ext.define('MetApp.view.Produccion.OrdenesTrabajo.NuevaOTView', {
 		        					allowBlank: true
 								},
 								{
-									xtype: 'combo',
-									fieldLabel: 'Sector',
-									labelWidth: 50,
-									store: 'MetApp.store.Produccion.Programacion.SectoresStore',
-									itemId: 'sector',
-									title: 'Sector',
-									name: 'tipo',
-									displayField: 'descripcion',
-									valueField: 'id'
-								}								
+									xtype: 'container',
+									layout: 'vbox',
+									items: [
+										{
+											xtype: 'combo',
+											fieldLabel: 'Sector',
+											labelWidth: 50,
+											store: 'MetApp.store.Produccion.Programacion.SectoresStore',
+											itemId: 'sector',
+											title: 'Sector',
+											name: 'tipo',
+											displayField: 'descripcion',
+											valueField: 'id'
+										},
+										{
+											xtype: 'container',
+											layout: 'hbox',
+											items: [
+												{
+													xtype: 'button',
+													text: 'Asociar Pedidos',
+													itemId: 'pedidos'
+												},
+												{
+													xtype: 'textareafield',
+													name: 'pedidosAsociados',
+													itemId: 'pedidosAsociados',
+													allowBlank: true
+												}
+											]
+										}												
+									]
+								}																		
 							]
 						},
 						{

@@ -61,65 +61,65 @@ class ReportesController extends Controller
 		$conn = $reporteador->getJdbc();
 		
 		$sql = "SELECT
-			     CASE WHEN Facturas.`vtoCae`=0 THEN NULL ELSE Facturas.`vtoCae` END AS Facturas_vtoCae,
-			     factura_detallesFacturas.`factura_id` AS factura_detallesFacturas_factura_id,
-			     factura_detallesFacturas.`facturadetalle_id` AS factura_detallesFacturas_facturadetalle_id,
-			     Facturas.`id` AS Facturas_id,
-			     Facturas.`fecha` AS Facturas_fecha,
-			     Facturas.`concepto` AS Facturas_concepto,
-			     Facturas.`vencimiento` AS Facturas_vencimiento,
-			     Facturas.`clienteId` AS Facturas_clienteId,
-			     Facturas.`tipo` AS Facturas_tipo,
-			     FacturaDetalle.`id` AS FacturaDetalle_id,
-			     FacturaDetalle.`descripcion` AS FacturaDetalle_descripcion,
-			     FacturaDetalle.`cantidad` AS FacturaDetalle_cantidad,
-			     FacturaDetalle.`precio` AS FacturaDetalle_precio,
-			     FacturaDetalle.`articuloId` AS FacturaDetalle_articuloId,
-			     articulos.`idArticulos` AS articulos_idArticulos,
-			     articulos.`codigo` AS articulos_codigo,
-			     articulos.`descripcion` AS articulos_descripcion,
-			     articulos.`unidad` AS articulos_unidad,
-			     articulos.`precio` AS articulos_precio,
-			     cliente.`idCliente` AS cliente_idCliente,
-			     Facturas.`cae` AS Facturas_cae,
-			     Facturas.`ptoVta` AS Facturas_ptoVta,
-			     Facturas.`ivaCond` AS Facturas_ivaCond,
-			     Facturas.`rSocial` AS Facturas_rSocial,
-			     Facturas.`domicilio` AS Facturas_domicilio,
-			     Facturas.`cuit` AS Facturas_cuit,
-			     Facturas.`condVta` AS Facturas_condVta,
-			     Facturas.`perIIBB` AS Facturas_perIIBB,
-			     Facturas.`iva21` AS Facturas_iva21,
-			     Facturas.`dtoTotal` AS Facturas_dtoTotal,
-			     Facturas.`vtoCae` AS Facturas_vtoCae,
-			     Facturas.`fcNro` AS Facturas_fcNro,
-			     Facturas.`departamento` AS Facturas_departamento,
-			     FacturaDetalle.`remitoId` AS FacturaDetalle_remitoId,
-			     RemitosClientes.`id` AS RemitosClientes_id,
-			     RemitosClientes.`fecha` AS RemitosClientes_fecha,
-			     RemitosClientes.`remitoNum` AS RemitosClientes_remitoNum,
-			     RemitosClientes.`clienteId` AS RemitosClientes_clienteId,
-			     RemitosClientes.`proveedorId` AS RemitosClientes_proveedorId,
-			     RemitoClientes_detalle.`remitosclientes_id` AS RemitoClientes_detalle_remitosclientes_id,
-			     RemitoClientes_detalle.`remitosclientesdetalles_id` AS RemitoClientes_detalle_remitosclientesdetalles_id,
-			     RemitosClientesDetalles.`id` AS RemitosClientesDetalles_id,
-			     RemitosClientesDetalles.`descripcion` AS RemitosClientesDetalles_descripcion,
-			     RemitosClientesDetalles.`cantidad` AS RemitosClientesDetalles_cantidad,
-			     RemitosClientesDetalles.`unidad` AS RemitosClientesDetalles_unidad,
-			     RemitosClientesDetalles.`oc` AS RemitosClientesDetalles_oc,
-			     RemitosClientesDetalles.`articuloId` AS RemitosClientesDetalles_articuloId,
-			     RemitosClientesDetalles.`pedidoDetalleId` AS RemitosClientesDetalles_pedidoDetalleId,
-			     RemitosClientesDetalles.`facturado` AS RemitosClientesDetalles_facturado
-			FROM
-			     `Facturas` Facturas LEFT OUTER JOIN `factura_detallesFacturas` factura_detallesFacturas ON Facturas.`id` = factura_detallesFacturas.`factura_id`
-			     INNER JOIN `FacturaDetalle` FacturaDetalle ON factura_detallesFacturas.`facturadetalle_id` = FacturaDetalle.`id`
-			     LEFT OUTER JOIN `articulos` articulos ON FacturaDetalle.`articuloId` = articulos.`idArticulos`
-			     LEFT OUTER JOIN `RemitosClientesDetalles` RemitosClientesDetalles ON FacturaDetalle.`remitoId` = RemitosClientesDetalles.`id`
-			     INNER JOIN `RemitoClientes_detalle` RemitoClientes_detalle ON RemitosClientesDetalles.`id` = RemitoClientes_detalle.`remitosclientesdetalles_id`
-			     LEFT OUTER JOIN `RemitosClientes` RemitosClientes ON RemitoClientes_detalle.`remitosclientes_id` = RemitosClientes.`id`
-			     LEFT OUTER JOIN `cliente` cliente ON Facturas.`clienteId` = cliente.`idCliente`
-			WHERE
-			     Facturas.`id` = $idFactura";
+		     CASE WHEN Facturas.`vtoCae`=0 THEN NULL ELSE Facturas.`vtoCae` END AS Facturas_vtoCae,
+		     factura_detallesFacturas.`factura_id` AS factura_detallesFacturas_factura_id,
+		     factura_detallesFacturas.`facturadetalle_id` AS factura_detallesFacturas_facturadetalle_id,
+		     Facturas.`id` AS Facturas_id,
+		     Facturas.`fecha` AS Facturas_fecha,
+		     Facturas.`concepto` AS Facturas_concepto,
+		     Facturas.`vencimiento` AS Facturas_vencimiento,
+		     Facturas.`clienteId` AS Facturas_clienteId,
+		     Facturas.`tipo` AS Facturas_tipo,
+		     FacturaDetalle.`id` AS FacturaDetalle_id,
+		     FacturaDetalle.`descripcion` AS FacturaDetalle_descripcion,
+		     FacturaDetalle.`cantidad` AS FacturaDetalle_cantidad,
+		     FacturaDetalle.`precio` AS FacturaDetalle_precio,
+		     FacturaDetalle.`articuloId` AS FacturaDetalle_articuloId,
+		     articulos.`idArticulos` AS articulos_idArticulos,
+		     articulos.`codigo` AS articulos_codigo,
+		     articulos.`descripcion` AS articulos_descripcion,
+		     articulos.`unidad` AS articulos_unidad,
+		     articulos.`precio` AS articulos_precio,
+		     cliente.`idCliente` AS cliente_idCliente,
+		     Facturas.`cae` AS Facturas_cae,
+		     Facturas.`ptoVta` AS Facturas_ptoVta,
+		     Facturas.`ivaCond` AS Facturas_ivaCond,
+		     Facturas.`rSocial` AS Facturas_rSocial,
+		     Facturas.`domicilio` AS Facturas_domicilio,
+		     Facturas.`cuit` AS Facturas_cuit,
+		     Facturas.`condVta` AS Facturas_condVta,
+		     Facturas.`perIIBB` AS Facturas_perIIBB,
+		     Facturas.`iva21` AS Facturas_iva21,
+		     Facturas.`dtoTotal` AS Facturas_dtoTotal,
+		     Facturas.`vtoCae` AS Facturas_vtoCae,
+		     Facturas.`fcNro` AS Facturas_fcNro,
+		     Facturas.`departamento` AS Facturas_departamento,
+		     FacturaDetalle.`remitoId` AS FacturaDetalle_remitoId,
+		     RemitosClientes.`id` AS RemitosClientes_id,
+		     RemitosClientes.`fecha` AS RemitosClientes_fecha,
+		     RemitosClientes.`remitoNum` AS RemitosClientes_remitoNum,
+		     RemitosClientes.`clienteId` AS RemitosClientes_clienteId,
+		     RemitosClientes.`proveedorId` AS RemitosClientes_proveedorId,
+		     RemitoClientes_detalle.`remitosclientes_id` AS RemitoClientes_detalle_remitosclientes_id,
+		     RemitoClientes_detalle.`remitosclientesdetalles_id` AS RemitoClientes_detalle_remitosclientesdetalles_id,
+		     RemitosClientesDetalles.`id` AS RemitosClientesDetalles_id,
+		     RemitosClientesDetalles.`descripcion` AS RemitosClientesDetalles_descripcion,
+		     RemitosClientesDetalles.`cantidad` AS RemitosClientesDetalles_cantidad,
+		     RemitosClientesDetalles.`unidad` AS RemitosClientesDetalles_unidad,
+		     RemitosClientesDetalles.`oc` AS RemitosClientesDetalles_oc,
+		     RemitosClientesDetalles.`articuloId` AS RemitosClientesDetalles_articuloId,
+		     RemitosClientesDetalles.`pedidoDetalleId` AS RemitosClientesDetalles_pedidoDetalleId,
+		     RemitosClientesDetalles.`facturado` AS RemitosClientesDetalles_facturado
+		FROM
+		     `Facturas` Facturas LEFT OUTER JOIN `factura_detallesFacturas` factura_detallesFacturas ON Facturas.`id` = factura_detallesFacturas.`factura_id`
+		     INNER JOIN `FacturaDetalle` FacturaDetalle ON factura_detallesFacturas.`facturadetalle_id` = FacturaDetalle.`id`
+		     LEFT OUTER JOIN `articulos` articulos ON FacturaDetalle.`articuloId` = articulos.`idArticulos`
+		     LEFT OUTER JOIN `RemitosClientesDetalles` RemitosClientesDetalles ON FacturaDetalle.`remitoId` = RemitosClientesDetalles.`id`
+		     LEFT OUTER JOIN `RemitoClientes_detalle` RemitoClientes_detalle ON RemitosClientesDetalles.`id` = RemitoClientes_detalle.`remitosclientesdetalles_id`
+		     LEFT OUTER JOIN `RemitosClientes` RemitosClientes ON RemitoClientes_detalle.`remitosclientes_id` = RemitosClientes.`id`
+		     LEFT OUTER JOIN `cliente` cliente ON Facturas.`clienteId` = cliente.`idCliente`
+		WHERE
+		     Facturas.`id` = $idFactura";
 		
 		$res = $jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 		

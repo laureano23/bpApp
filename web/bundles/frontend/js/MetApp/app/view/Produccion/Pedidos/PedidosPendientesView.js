@@ -14,7 +14,7 @@ Ext.define('MetApp.view.Produccion.Pedidos.PedidosPendientesView', {
 		Ext.applyIf(me, {
 			items: [
 				{
-					xtype: 'grid',
+					xtype: 'grid',					
 		        	viewConfig: {
 		        		enableTextSelection: true,
 			    	},

@@ -101,8 +101,12 @@ class PedidoClientesController extends Controller
 		if(!empty($cliente) && !empty($codigo)){
 			$res = $repo->listarPedidosClienteCodigo($cliente, $codigo);
 		}else{
-			//LISTA TODOS LOS PEDIDOS
-			$res = $repo->listarPedidos();
+			if(!empty($codigo)){
+				$res = $repo->listarPedidosCodigo($codigo);
+			}else{
+				//LISTA TODOS LOS PEDIDOS
+				$res = $repo->listarPedidos();	
+			}
 		}
 		
 		return $response->setContent(json_encode($res));

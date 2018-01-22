@@ -33,6 +33,7 @@ class OtController extends Controller
 			$repoSectores = $em->getRepository('MbpProduccionBundle:Sectores');
 			$repoOt = $em->getRepository('MbpProduccionBundle:Ot');
 			$repoCliente = $em->getRepository('MbpClientesBundle:Cliente');
+			$repoPedidosDetalle = $em->getRepository('MbpProduccionBundle:PedidoClientesDetalle');
 			
 			//BUSCO ARTICULO
 			$articulo = $repoArticulos->findByCodigo($stdObj->codigo);
@@ -72,6 +73,17 @@ class OtController extends Controller
 			foreach ($ordenesAsociadas as $otA) {				
 				$ot->addMisOrdenes($repoOt->find($otA->otNum));
 			}
+			
+			//SI EXISTEN PEDIDOS ASOCIADOS LOS AGREGO
+			if(!empty($stdObj->pedidosAsociados)){
+				$asociados = explode(',', $stdObj->pedidosAsociados);
+				
+				foreach ($asociados as $pedido) {
+					$pedId = $repoPedidosDetalle->find($pedido);
+					$ot->addPedido($pedId);
+				}
+			}
+			
 			
 			//VALIDACIONES
 			$validador = $this->get('validator');			

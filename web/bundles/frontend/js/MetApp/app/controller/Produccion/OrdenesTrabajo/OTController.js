@@ -6,20 +6,26 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 		'MetApp.view.Clientes.SearchGridClientes',
 		'MetApp.view.Articulos.WinArticuloSearch',
 		'MetApp.view.Produccion.OrdenesTrabajo.CierreOTView',
-		'MetApp.view.Produccion.OrdenesTrabajo.VerOTView'
+		'MetApp.view.Produccion.OrdenesTrabajo.VerOTView',
+		'MetApp.view.Produccion.Pedidos.PedidosPendientesView'
 	],
 	
 	stores: [
 		'Produccion.OrdenesTrabajo.CierreOTGridStore',
 		'MetApp.store.Produccion.OrdenesTrabajo.OTStore',
-		'MetApp.store.Produccion.OrdenesTrabajo.OTStoreEmisor'
+		'MetApp.store.Produccion.OrdenesTrabajo.OTStoreEmisor',
+		'Produccion.PedidoClientes.PedidoClientesStore'
 	],
 	
+	refs:[
+		{
+			ref:'NuevaOTView',
+			selector: 'NuevaOTView'
+		},
+	],
 	
 	init: function(){
 		var me = this;
-		
-		
 		
 		me.control({
 			'#nuevaOt': {
@@ -43,6 +49,12 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 			'NuevaOTView combo[itemId=sector]': {
 				select: this.VerificarProgramacion
 			},
+			'NuevaOTView button[itemId=pedidos]': {
+				click: this.AsociarPedidos
+			},
+			'PedidosPendientesView button[itemId=insert]': {
+				click: this.InsertarPedidos
+			},			
 			'#cierreOt': {
 				click: this.CerrarOT
 			},
@@ -61,7 +73,61 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 		});
 	},
 	
+	InsertarPedidos: function(btn){
+		var grid = btn.up('window').down('grid');
+		var store = grid.getStore();
+		var sel = [];
 		
+		store.each(function(rec){
+			if(rec.data.marcar == "true"){
+				sel.push(rec);
+			}
+		});
+		
+		var viewProgramacion = this.getNuevaOTView();
+		
+		var pedidosTxt = viewProgramacion.queryById('pedidosAsociados');
+		pedidosTxt.reset();
+		console.log(sel);
+		for (i = 0; i < sel.length; i++) {
+		    if(pedidosTxt.getValue() == ""){
+				pedidosTxt.setValue(String(sel[i].data.idDetalle));
+			}else{
+				pedidosTxt.setValue(pedidosTxt.getValue() + ',' + sel[i].data.idDetalle);	
+			}		    
+		}
+		
+		btn.up('window').close();
+	},
+	
+	AsociarPedidos: function(btn){
+		var viewOT = btn.up('window');
+		var view = Ext.create('MetApp.view.Produccion.Pedidos.PedidosPendientesView');
+		var gridPedidos = view.down('grid');
+				
+		//agregamos a la vista una columna checkbox
+		var column = Ext.create('Ext.grid.column.CheckColumn', {
+	        text: 'Marcar',
+	        dataIndex: 'marcar',
+	    });
+	    
+	    gridPedidos.headerCt.insert(
+	      gridPedidos.columns.length, // that's index column
+	      column);
+		
+		
+		var store = gridPedidos.getStore();
+		
+		var codigo = viewOT.queryById('codigo').getValue();
+		store.getProxy().setExtraParam('codigo', codigo);
+		store.load({
+			callback: function(){
+				store.suspendEvent('update');		
+			}
+		});
+		
+	},
+	
 	NuevaOT: function(btn){
 		Ext.widget('NuevaOTView');
 	},

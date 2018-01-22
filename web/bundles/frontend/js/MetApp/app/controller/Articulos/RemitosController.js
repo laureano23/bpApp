@@ -263,7 +263,17 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 		});
 		
 		var origen = winRemito.queryById('origen').getValue();
-		console.log(origen);
+		
+		if(data == ""){
+			Ext.Msg.show({
+				title: 'Atención',
+				msg: 'No hay artículos en la grilla',
+				icon: Ext.Msg.INFO,
+				buttons: Ext.Msg.OK,
+			});
+			
+			return;
+		}
 		
 		myMask.show();
 		Ext.Ajax.request({

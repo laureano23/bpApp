@@ -640,38 +640,4 @@ class Ot
     {
         return $this->clienteId;
     }
-
-    /**
-     * Add pedido
-     *
-     * @param \Mbp\ProduccionBundle\Entity\PedidoClientesDetalle $pedido
-     *
-     * @return Ot
-     */
-    public function addPedido(\Mbp\ProduccionBundle\Entity\PedidoClientesDetalle $pedido)
-    {
-        $this->pedidos[] = $pedido;
-
-        return $this;
-    }
-
-    /**
-     * Remove pedido
-     *
-     * @param \Mbp\ProduccionBundle\Entity\PedidoClientesDetalle $pedido
-     */
-    public function removePedido(\Mbp\ProduccionBundle\Entity\PedidoClientesDetalle $pedido)
-    {
-        $this->pedidos->removeElement($pedido);
-    }
-
-    /**
-     * Get pedidos
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPedidos()
-    {
-        return $this->pedidos;
-    }
 }

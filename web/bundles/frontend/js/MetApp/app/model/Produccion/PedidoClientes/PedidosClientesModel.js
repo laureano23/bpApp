@@ -17,5 +17,6 @@ Ext.define('MetApp.model.Produccion.PedidoClientes.PedidosClientesModel', {
 		{ name: 'oc', type: 'string' },
 		{ name: 'autEntrega', type: 'string' },
 		{ name: 'entregado', type: 'int' },		
+		{ name: 'marcar', type: 'string' },
 	]
 });
