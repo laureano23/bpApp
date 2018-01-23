@@ -282,28 +282,7 @@ class ReportesController extends Controller
 			$conn = $reporteador->getJdbc();
 						
 			$sql = "SELECT
-			     FacturaProveedor.`id` AS FacturaProveedor_id,
-			     FacturaProveedor.`fechaCarga` AS FacturaProveedor_fechaCarga,
-			     FacturaProveedor.`fechaEmision` AS FacturaProveedor_fechaEmision,
-			     FacturaProveedor.`tipo` AS FacturaProveedor_tipo,
-			     FacturaProveedor.`sucursal` AS FacturaProveedor_sucursal,
-			     FacturaProveedor.`numFc` AS FacturaProveedor_numFc,
-			     FacturaProveedor.`neto` AS FacturaProveedor_neto,
-			     FacturaProveedor.`netoNoGrabado` AS FacturaProveedor_netoNoGrabado,
-			     FacturaProveedor.`iva21` AS FacturaProveedor_iva21,
-			     FacturaProveedor.`iva27` AS FacturaProveedor_iva27,
-			     FacturaProveedor.`iva10_5` AS FacturaProveedor_iva10_5,
-			     FacturaProveedor.`perIva5` AS FacturaProveedor_perIva5,
-			     FacturaProveedor.`perIva3` AS FacturaProveedor_perIva3,
-			     FacturaProveedor.`iibbCf` AS FacturaProveedor_iibbCf,
-			     FacturaProveedor.`vencimiento` AS FacturaProveedor_vencimiento,
-			     FacturaProveedor.`concepto` AS FacturaProveedor_concepto,
-			     FacturaProveedor.`totalFc` AS FacturaProveedor_totalFc,
-			     FacturaProveedor.`imputado` AS FacturaProveedor_imputado,
-			     FacturaProveedor.`proveedorId` AS FacturaProveedor_proveedorId,
-			     FacturaProveedor.`gastoId` AS FacturaProveedor_gastoId,
 			     Proveedor.`id` AS Proveedor_id,
-			     Proveedor.`localidad` AS Proveedor_localidad,
 			     Proveedor.`provincia` AS Proveedor_provincia,
 			     Proveedor.`rsocial` AS Proveedor_rsocial,
 			     Proveedor.`denominacion` AS Proveedor_denominacion,
@@ -311,7 +290,23 @@ class ReportesController extends Controller
 			     Proveedor.`cuit` AS Proveedor_cuit,
 			     Proveedor.`vencimientoFc` AS Proveedor_vencimientoFc,
 			     Proveedor.`imputacionGastos` AS Proveedor_imputacionGastos,
-			     FacturaProveedor.`comprobante` AS FacturaProveedor_comprobante
+			     FacturaProveedor.`proveedorId` AS FacturaProveedor_proveedorId,
+			     FacturaProveedor.`totalFc` AS FacturaProveedor_totalFc,
+			     FacturaProveedor.`concepto` AS FacturaProveedor_concepto,
+			     FacturaProveedor.`vencimiento` AS FacturaProveedor_vencimiento,
+			     FacturaProveedor.`iibbCf` AS FacturaProveedor_iibbCf,
+			     FacturaProveedor.`perIva3` AS FacturaProveedor_perIva3,
+			     FacturaProveedor.`perIva5` AS FacturaProveedor_perIva5,
+			     FacturaProveedor.`iva10_5` AS FacturaProveedor_iva10_5,
+			     FacturaProveedor.`iva21` AS FacturaProveedor_iva21,
+			     FacturaProveedor.`netoNoGrabado` AS FacturaProveedor_netoNoGrabado,
+			     FacturaProveedor.`neto` AS FacturaProveedor_neto,
+			     FacturaProveedor.`iva27` AS FacturaProveedor_iva27,
+			     FacturaProveedor.`numFc` AS FacturaProveedor_numFc,
+			     FacturaProveedor.`sucursal` AS FacturaProveedor_sucursal,
+			     FacturaProveedor.`tipo` AS FacturaProveedor_tipo,
+			     FacturaProveedor.`fechaEmision` AS FacturaProveedor_fechaEmision,
+			     FacturaProveedor.`id` AS FacturaProveedor_id
 			FROM
 			     `Proveedor` Proveedor INNER JOIN `FacturaProveedor` FacturaProveedor ON Proveedor.`id` = FacturaProveedor.`proveedorId`
 			WHERE

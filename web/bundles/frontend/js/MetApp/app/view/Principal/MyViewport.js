@@ -571,7 +571,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
 		                    render : dragZone,
 		                }, 
         			},
-        			
+        			{
+        				text: 'Art. Vendidos por Cliente y Período',
+        				itemId: 'reporteArtVendidos',
+        				listeners : {
+		                    render : dragZone,
+		                }, 
+        			},
         		]        		
         	},
         	{

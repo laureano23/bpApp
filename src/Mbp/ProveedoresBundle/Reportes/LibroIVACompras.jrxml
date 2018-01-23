@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LibroIVAVentas" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="c4b105ad-c9d2-4e6e-aab2-f046571798ae">
 	<property name="ireport.zoom" value="1.948717100000018"/>
-	<property name="ireport.x" value="685"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="27"/>
 	<parameter name="fechaDesde" class="java.lang.String">
 		<defaultValueExpression><![CDATA[01/01/2001]]></defaultValueExpression>
 	</parameter>
@@ -11,28 +11,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-     FacturaProveedor.`id` AS FacturaProveedor_id,
-     FacturaProveedor.`fechaCarga` AS FacturaProveedor_fechaCarga,
-     FacturaProveedor.`fechaEmision` AS FacturaProveedor_fechaEmision,
-     FacturaProveedor.`tipo` AS FacturaProveedor_tipo,
-     FacturaProveedor.`sucursal` AS FacturaProveedor_sucursal,
-     FacturaProveedor.`numFc` AS FacturaProveedor_numFc,
-     FacturaProveedor.`neto` AS FacturaProveedor_neto,
-     FacturaProveedor.`netoNoGrabado` AS FacturaProveedor_netoNoGrabado,
-     FacturaProveedor.`iva21` AS FacturaProveedor_iva21,
-     FacturaProveedor.`iva27` AS FacturaProveedor_iva27,
-     FacturaProveedor.`iva10_5` AS FacturaProveedor_iva10_5,
-     FacturaProveedor.`perIva5` AS FacturaProveedor_perIva5,
-     FacturaProveedor.`perIva3` AS FacturaProveedor_perIva3,
-     FacturaProveedor.`iibbCf` AS FacturaProveedor_iibbCf,
-     FacturaProveedor.`vencimiento` AS FacturaProveedor_vencimiento,
-     FacturaProveedor.`concepto` AS FacturaProveedor_concepto,
-     FacturaProveedor.`totalFc` AS FacturaProveedor_totalFc,
-     FacturaProveedor.`imputado` AS FacturaProveedor_imputado,
-     FacturaProveedor.`proveedorId` AS FacturaProveedor_proveedorId,
-     FacturaProveedor.`gastoId` AS FacturaProveedor_gastoId,
      Proveedor.`id` AS Proveedor_id,
-     Proveedor.`localidad` AS Proveedor_localidad,
      Proveedor.`provincia` AS Proveedor_provincia,
      Proveedor.`rsocial` AS Proveedor_rsocial,
      Proveedor.`denominacion` AS Proveedor_denominacion,
@@ -40,44 +19,55 @@
      Proveedor.`cuit` AS Proveedor_cuit,
      Proveedor.`vencimientoFc` AS Proveedor_vencimientoFc,
      Proveedor.`imputacionGastos` AS Proveedor_imputacionGastos,
-     FacturaProveedor.`comprobante` AS FacturaProveedor_comprobante
+     FacturaProveedor.`proveedorId` AS FacturaProveedor_proveedorId,
+     FacturaProveedor.`totalFc` AS FacturaProveedor_totalFc,
+     FacturaProveedor.`concepto` AS FacturaProveedor_concepto,
+     FacturaProveedor.`vencimiento` AS FacturaProveedor_vencimiento,
+     FacturaProveedor.`iibbCf` AS FacturaProveedor_iibbCf,
+     FacturaProveedor.`perIva3` AS FacturaProveedor_perIva3,
+     FacturaProveedor.`perIva5` AS FacturaProveedor_perIva5,
+     FacturaProveedor.`iva10_5` AS FacturaProveedor_iva10_5,
+     FacturaProveedor.`iva21` AS FacturaProveedor_iva21,
+     FacturaProveedor.`netoNoGrabado` AS FacturaProveedor_netoNoGrabado,
+     FacturaProveedor.`neto` AS FacturaProveedor_neto,
+     FacturaProveedor.`iva27` AS FacturaProveedor_iva27,
+     FacturaProveedor.`numFc` AS FacturaProveedor_numFc,
+     FacturaProveedor.`sucursal` AS FacturaProveedor_sucursal,
+     FacturaProveedor.`tipo` AS FacturaProveedor_tipo,
+     FacturaProveedor.`fechaEmision` AS FacturaProveedor_fechaEmision,
+     FacturaProveedor.`id` AS FacturaProveedor_id
 FROM
      `Proveedor` Proveedor INNER JOIN `FacturaProveedor` FacturaProveedor ON Proveedor.`id` = FacturaProveedor.`proveedorId`
 WHERE
      FacturaProveedor.`fechaEmision` BETWEEN $P{fechaDesde} AND $P{fechaHasta}]]>
 	</queryString>
-	<field name="FacturaProveedor_id" class="java.lang.Integer"/>
-	<field name="FacturaProveedor_fechaCarga" class="java.sql.Timestamp"/>
-	<field name="FacturaProveedor_fechaEmision" class="java.sql.Timestamp"/>
-	<field name="FacturaProveedor_tipo" class="java.lang.String"/>
-	<field name="FacturaProveedor_sucursal" class="java.lang.Integer"/>
-	<field name="FacturaProveedor_numFc" class="java.lang.Integer"/>
-	<field name="FacturaProveedor_neto" class="java.math.BigDecimal"/>
-	<field name="FacturaProveedor_netoNoGrabado" class="java.math.BigDecimal"/>
-	<field name="FacturaProveedor_iva21" class="java.math.BigDecimal"/>
-	<field name="FacturaProveedor_iva27" class="java.math.BigDecimal"/>
-	<field name="FacturaProveedor_iva10_5" class="java.math.BigDecimal"/>
-	<field name="FacturaProveedor_perIva5" class="java.math.BigDecimal"/>
-	<field name="FacturaProveedor_perIva3" class="java.math.BigDecimal"/>
-	<field name="FacturaProveedor_iibbCf" class="java.math.BigDecimal"/>
-	<field name="FacturaProveedor_vencimiento" class="java.sql.Date"/>
-	<field name="FacturaProveedor_concepto" class="java.lang.String"/>
-	<field name="FacturaProveedor_totalFc" class="java.math.BigDecimal"/>
-	<field name="FacturaProveedor_imputado" class="java.math.BigDecimal"/>
-	<field name="FacturaProveedor_proveedorId" class="java.lang.Integer"/>
-	<field name="FacturaProveedor_gastoId" class="java.lang.Integer"/>
 	<field name="Proveedor_id" class="java.lang.Integer"/>
-	<field name="Proveedor_localidad" class="java.lang.Integer"/>
-	<field name="Proveedor_provincia" class="java.lang.Integer"/>
+	<field name="Proveedor_provincia" class="java.lang.String"/>
 	<field name="Proveedor_rsocial" class="java.lang.String"/>
 	<field name="Proveedor_denominacion" class="java.lang.String"/>
 	<field name="Proveedor_direccion" class="java.lang.String"/>
 	<field name="Proveedor_cuit" class="java.lang.String"/>
 	<field name="Proveedor_vencimientoFc" class="java.lang.Integer"/>
 	<field name="Proveedor_imputacionGastos" class="java.lang.Integer"/>
-	<field name="FacturaProveedor_comprobante" class="java.lang.String"/>
+	<field name="FacturaProveedor_proveedorId" class="java.lang.Integer"/>
+	<field name="FacturaProveedor_totalFc" class="java.math.BigDecimal"/>
+	<field name="FacturaProveedor_concepto" class="java.lang.String"/>
+	<field name="FacturaProveedor_vencimiento" class="java.sql.Date"/>
+	<field name="FacturaProveedor_iibbCf" class="java.math.BigDecimal"/>
+	<field name="FacturaProveedor_perIva3" class="java.math.BigDecimal"/>
+	<field name="FacturaProveedor_perIva5" class="java.math.BigDecimal"/>
+	<field name="FacturaProveedor_iva10_5" class="java.math.BigDecimal"/>
+	<field name="FacturaProveedor_iva21" class="java.math.BigDecimal"/>
+	<field name="FacturaProveedor_netoNoGrabado" class="java.math.BigDecimal"/>
+	<field name="FacturaProveedor_neto" class="java.math.BigDecimal"/>
+	<field name="FacturaProveedor_iva27" class="java.math.BigDecimal"/>
+	<field name="FacturaProveedor_numFc" class="java.lang.Integer"/>
+	<field name="FacturaProveedor_sucursal" class="java.lang.Integer"/>
+	<field name="FacturaProveedor_tipo" class="java.lang.String"/>
+	<field name="FacturaProveedor_fechaEmision" class="java.sql.Timestamp"/>
+	<field name="FacturaProveedor_id" class="java.lang.Integer"/>
 	<variable name="total" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{FacturaProveedor_comprobante} == "NC" ? -1 * $F{FacturaProveedor_totalFc} : $F{FacturaProveedor_totalFc}]]></variableExpression>
+		<variableExpression><![CDATA[$F{FacturaProveedor_tipo} == "NC" ? -1 * $F{FacturaProveedor_totalFc} : $F{FacturaProveedor_totalFc}]]></variableExpression>
 	</variable>
 	<variable name="sumaIVA" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{FacturaProveedor_iva21}+$F{FacturaProveedor_iva27}+$F{FacturaProveedor_iva10_5}]]></variableExpression>

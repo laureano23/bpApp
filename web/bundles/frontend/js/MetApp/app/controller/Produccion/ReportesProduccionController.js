@@ -98,6 +98,9 @@ Ext.define('MetApp.controller.Produccion.ReportesProduccionController',{
 		
 		form.getForm().isValid();
 		
+		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
+		myMask.show();	
+		
 		Ext.Ajax.request({
 			url: Routing.generate('mbp_produccion_reporteHistoricoOT'),
 			
@@ -111,10 +114,7 @@ Ext.define('MetApp.controller.Produccion.ReportesProduccionController',{
 			success: function(resp){
 				var jsonResp = Ext.JSON.decode(resp.responseText);
 				if(jsonResp.success == true){
-					var ruta = Routing.generate('mbp_produccion_verHistoricoOt');
-					
-					var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-					myMask.show();			
+					var ruta = Routing.generate('mbp_produccion_verHistoricoOt');		
 					
 					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 					myMask.hide();

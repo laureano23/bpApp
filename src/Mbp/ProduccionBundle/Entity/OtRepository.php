@@ -217,6 +217,7 @@ class OtRepository extends EntityRepository
 			->leftjoin('o.clienteId', 'cliente')
 			->where('o.sectorId = :sector')
 			->andWhere('o.estado != 2')
+			->andWhere('o.anulada = 0')
 			->setParameter('sector', $sector)
 			->orderBy('o.fechaProg', 'DESC')
 			->getQuery()

@@ -320,33 +320,26 @@ class ReportesController extends Controller
 							
 			
 			$sql = "SELECT
-			     Facturas.`id` AS Facturas_id,
-			     Facturas.`fecha` AS Facturas_fecha,
-			     Facturas.`concepto` AS Facturas_concepto,
-			     Facturas.`vencimiento` AS Facturas_vencimiento,
-			     Facturas.`clienteId` AS Facturas_clienteId,
-			     Facturas.`tipo` AS Facturas_tipo,
-			     Facturas.`cae` AS Facturas_cae,
-			     Facturas.`vtoCae` AS Facturas_vtoCae,
-			     Facturas.`ptoVta` AS Facturas_ptoVta,
-			     Facturas.`dtoTotal` AS Facturas_dtoTotal,
-			     Facturas.`perIIBB` AS Facturas_perIIBB,
-			     Facturas.`iva21` AS Facturas_iva21,
-			     Facturas.`rSocial` AS Facturas_rSocial,
-			     Facturas.`domicilio` AS Facturas_domicilio,
-			     Facturas.`localidad` AS Facturas_localidad,
-			     Facturas.`cuit` AS Facturas_cuit,
-			     Facturas.`condVta` AS Facturas_condVta,
-			     Facturas.`rtoNro` AS Facturas_rtoNro,
-			     Facturas.`ivaCond` AS Facturas_ivaCond,
-			     Facturas.`fcNro` AS Facturas_fcNro,
-			     Facturas.`total` AS Facturas_total,
-			     cliente.`idCliente` AS cliente_idCliente,
-			     cliente.`rsocial` AS cliente_rsocial,
-			     Facturas.`porcentajeIIBB` AS Facturas_porcentajeIIBB
-			FROM
-			     `cliente` cliente INNER JOIN `Facturas` Facturas ON cliente.`idCliente` = Facturas.`clienteId`
-			WHERE Facturas.`fecha` BETWEEN '$desde' AND '$hasta'";
+				     cliente.`idCliente` AS cliente_idCliente,
+				     cliente.`rsocial` AS cliente_rsocial,
+				     Facturas.`id` AS Facturas_id,
+				     Facturas.`fecha` AS Facturas_fecha,
+				     Facturas.`concepto` AS Facturas_concepto,
+				     Facturas.`clienteId` AS Facturas_clienteId,
+				     Facturas.`tipo` AS Facturas_tipo,
+				     Facturas.`ptoVta` AS Facturas_ptoVta,
+				     Facturas.`perIIBB` AS Facturas_perIIBB,
+				     Facturas.`iva21` AS Facturas_iva21,
+				     Facturas.`fcNro` AS Facturas_fcNro,
+				     Facturas.`rSocial` AS Facturas_rSocial,
+				     Facturas.`cuit` AS Facturas_cuit,
+				     Facturas.`ivaCond` AS Facturas_ivaCond,
+				     Facturas.`total` AS Facturas_total,
+				     Facturas.`porcentajeIIBB` AS Facturas_porcentajeIIBB
+				FROM
+				     `cliente` cliente INNER JOIN `Facturas` Facturas ON cliente.`idCliente` = Facturas.`clienteId`
+				WHERE
+				     Facturas.`fecha` BETWEEN '$desde' AND '$hasta'";
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	
 		}catch(\Exception $e){
@@ -371,6 +364,145 @@ class ReportesController extends Controller
 		$response = new BinaryFileResponse($basePath);
         $response->trustXSendfileTypeHeader();
 		$filename = 'ReciboCobranzas.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+		
+		return $response;
+	}
+	
+	/**
+     * @Route("/Reportes/ArtVendidos", name="mbp_Reportes_ArtVendidos", options={"expose"=true})
+     */	
+    public function ArtVendidos()
+	{
+		$response = new Response;
+				
+		try{
+			/*
+			 * PARAMETROS
+			 */
+			$desde = $this->get('request')->get('desde');
+			$hasta = $this->get('request')->get('hasta');
+			$cod1 = $this->get('request')->get('codigo1');
+			$cod2 = $this->get('request')->get('codigo2');
+			$cliente1 = $this->get('request')->get('cliente1');
+			$cliente2 = $this->get('request')->get('cliente2');
+							
+			$reporteador = $this->get('reporteador');
+			$kernel = $this->get('kernel');
+			
+			/*
+			 * Configuro reporte
+			 */
+			$jru = $reporteador->jru();
+			
+			/*
+			 * Ruta archivo Jasper
+			 */				
+					
+			$ruta = $kernel->locateResource('@MbpFinanzasBundle/Reportes/ArtClientePeriodo.jrxml');
+			
+			/*
+			 * Ruta de destino del PDF
+			 */
+			$destino = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'ArtClientePeriodo.pdf';		
+			
+			//Parametros HashMap
+			$param = $reporteador->getJava('java.util.HashMap');
+			$rutaLogo = $reporteador->getRutaLogo($kernel);
+			
+			
+			$param->put('CODIGO1', $cod1);
+			$param->put('CODIGO2', $cod2);
+			$param->put('CLIENTE1', $cliente1);
+			$param->put('CLIENTE2', $cliente2); 
+			
+			$conn = $reporteador->getJdbc();
+			
+			$desde = \DateTime::createFromFormat('d/m/Y', $desde);
+			$hasta = \DateTime::createFromFormat('d/m/Y', $hasta);
+			$param->put('DESDE', $desde->format('d/m/Y'));
+			$param->put('HASTA', $hasta->format('d/m/Y'));	
+			
+			
+			$desde = $desde->format('Y-m-d');
+			$hasta = $hasta->format('Y-m-d');
+									
+			
+			$sql = "SELECT
+			     Facturas.`id` AS Facturas_id,
+			     Facturas.`fecha` AS Facturas_fecha,
+			     Facturas.`concepto` AS Facturas_concepto,
+			     Facturas.`vencimiento` AS Facturas_vencimiento,
+			     Facturas.`clienteId` AS Facturas_clienteId,
+			     Facturas.`tipo` AS Facturas_tipo,
+			     Facturas.`ptoVta` AS Facturas_ptoVta,
+			     Facturas.`cae` AS Facturas_cae,
+			     Facturas.`vtoCae` AS Facturas_vtoCae,
+			     Facturas.`dtoTotal` AS Facturas_dtoTotal,
+			     Facturas.`perIIBB` AS Facturas_perIIBB,
+			     Facturas.`iva21` AS Facturas_iva21,
+			     Facturas.`fcNro` AS Facturas_fcNro,
+			     Facturas.`rSocial` AS Facturas_rSocial,
+			     Facturas.`domicilio` AS Facturas_domicilio,
+			     Facturas.`departamento` AS Facturas_departamento,
+			     Facturas.`cuit` AS Facturas_cuit,
+			     Facturas.`ivaCond` AS Facturas_ivaCond,
+			     Facturas.`condVta` AS Facturas_condVta,
+			     Facturas.`porcentajeIIBB` AS Facturas_porcentajeIIBB,
+			     Facturas.`total` AS Facturas_total,
+			     cliente.`idCliente` AS cliente_idCliente,
+			     cliente.`rsocial` AS cliente_rsocial,
+			     cliente.`denominacion` AS cliente_denominacion,
+			     factura_detallesFacturas.`factura_id` AS factura_detallesFacturas_factura_id,
+			     factura_detallesFacturas.`facturadetalle_id` AS factura_detallesFacturas_facturadetalle_id,
+			     FacturaDetalle.`id` AS FacturaDetalle_id,
+			     FacturaDetalle.`descripcion` AS FacturaDetalle_descripcion,
+			     FacturaDetalle.`cantidad` AS FacturaDetalle_cantidad,
+			     FacturaDetalle.`precio` AS FacturaDetalle_precio,
+			     FacturaDetalle.`articuloId` AS FacturaDetalle_articuloId,
+			     FacturaDetalle.`remitoId` AS FacturaDetalle_remitoId,
+			     articulos.`idArticulos` AS articulos_idArticulos,
+			     articulos.`codigo` AS articulos_codigo
+			FROM
+			     `cliente` cliente INNER JOIN `Facturas` Facturas ON cliente.`idCliente` = Facturas.`clienteId`
+			     INNER JOIN `factura_detallesFacturas` factura_detallesFacturas ON Facturas.`id` = factura_detallesFacturas.`factura_id`
+			     INNER JOIN `FacturaDetalle` FacturaDetalle ON factura_detallesFacturas.`facturadetalle_id` = FacturaDetalle.`id`
+			     INNER JOIN `articulos` articulos ON FacturaDetalle.`articuloId` = articulos.`idArticulos`
+			WHERE
+			     Facturas.`fecha` BETWEEN '$desde' AND '$hasta' AND
+			     articulos.`codigo` BETWEEN '$cod1' AND '$cod2' AND
+			     cliente.`idCliente` BETWEEN $cliente1 AND $cliente2
+			ORDER BY cliente.`idCliente` ASC,
+			         Facturas.`fecha` ASC";
+			
+			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	
+		}catch(\Exception $e){
+			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(
+				json_encode(array('success' => false, 'msg' => $e->getMessage()))
+				);
+		}
+		
+		return $response->setContent(
+			json_encode(array('success' => true))
+			);
+	}
+	
+	/**
+     * @Route("/Reportes/VerArtVendidos", name="mbp_Reportes_VerArtVendidos", options={"expose"=true})
+     */	
+    public function VerArtVendidos()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'ArtClientePeriodo.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'ArtClientePeriodo.pdf';
         $response->setContentDisposition(
             ResponseHeaderBag::DISPOSITION_INLINE,
             $filename,
