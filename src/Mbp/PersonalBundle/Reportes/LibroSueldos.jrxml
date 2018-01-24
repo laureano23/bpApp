@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LibroSueldos" language="groovy" pageWidth="595" pageHeight="842" columnWidth="480" leftMargin="90" rightMargin="25" topMargin="20" bottomMargin="20" uuid="d50e8f88-c6e0-49d2-9334-cd40f9c3d6a6">
 	<property name="ireport.zoom" value="1.771561000000022"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="174"/>
 	<property name="ireport.y" value="40"/>
 	<parameter name="anioHasta" class="java.lang.Integer"/>
 	<parameter name="mesDesde" class="java.lang.Integer"/>
@@ -64,8 +64,7 @@ WHERE
  AND Recibos.`compensatorio` = $P{compensatorio}
 ORDER BY
      Personal.`nombre` ASC,
-     RecibosDetalle.`remunerativo` DESC
-]]>
+     RecibosDetalle.`remunerativo` DESC]]>
 	</queryString>
 	<field name="Recibos_id" class="java.lang.Integer"/>
 	<field name="Recibos_compensatorio" class="java.lang.Boolean"/>
@@ -115,7 +114,7 @@ ORDER BY
 		<variableExpression><![CDATA[$F{RecibosDetalle_descuento}]]></variableExpression>
 	</variable>
 	<variable name="neto" class="java.lang.Float">
-		<variableExpression><![CDATA[$V{sumaRem} - $V{sumaDesc}]]></variableExpression>
+		<variableExpression><![CDATA[$V{sumaRem} - $V{sumaDesc} + $V{sumaNoRem}]]></variableExpression>
 	</variable>
 	<variable name="totalNeto" class="java.lang.Float" incrementType="Group" incrementGroup="header" calculation="Sum">
 		<variableExpression><![CDATA[$V{neto}]]></variableExpression>
