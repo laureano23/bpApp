@@ -76,8 +76,8 @@ Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 								},
 								{
 									xtype: 'textfield',
-									name: 'rSocial',
-									itemId: 'rSocial',
+									name: 'rsocial',
+									itemId: 'rsocial',
 									width: 450
 								},
 								{

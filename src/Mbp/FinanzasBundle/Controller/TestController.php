@@ -6,21 +6,49 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Mbp\FinanzasBundle\Entity\Facturas;
-use Mbp\FinanzasBundle\Entity\FacturaDetalle;
 
 class TestController extends Controller
 {
 	/**
-     * @Route("/test/alicuotas", name="mbp_finanzas_alicuotas", options={"expose"=true})
+     * @Route("/test/intereses", name="mbp_finanzas_intereses", options={"expose"=true})
      */
-    public function alicuotas()
-    {
-    	//CONSULTA PERCEPCION DE IIBB
-		$iibbService = $this->get('ServiceIIBB');	//SERVICIO PARA ALICUOTAS DE IIBB
-		$iibbService->setOpts(27129680933);
-		$alicuotaPercepcion = $iibbService->getAlicuotaRetencion();	
+    public function alicuotas(){
+    	
+		$service = $this->get('InteresesResarcitorios');	
 		
-		print_r($alicuotaPercepcion);
+		//fc1
+		$fc1['monto'] = 1000;
+		$fc1['vencimiento'] = new \DateTime('+ 1 month');
+		
+			
+		$fc2['monto'] = 50;
+		$fc2['vencimiento'] = new \DateTime('+ 2 weeks');
+		
+		$facturas[0] = $fc1;
+		$facturas[1] = $fc2;
+	
+		
+		//pagos
+		$pago1['monto'] = 25;
+		$pago1['vencimiento'] = new \DateTime();
+		
+		$pago2['monto'] = 50;
+		$pago2['vencimiento'] = new \DateTime('+ 30 days');
+		
+		$pago3['monto'] = 1000;
+		$pago3['vencimiento'] = new \DateTime('+ 60 days');
+		
+		$pagos[0] = $pago1;		
+		$pagos[1] = $pago2;
+		$pagos[2] = $pago3;
+		
+		
+		$service->calcularIntereses($facturas, $pagos);
+		$service->getIntereses();
+		//new \Mbp\FinanzasBundle\Clases\InteresesResarcitorios();
+		
+		return new Response;
     }
+	
+	
 }

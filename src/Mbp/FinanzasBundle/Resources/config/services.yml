@@ -20,3 +20,7 @@ services:
     ServiceIIBB:
         class: Mbp\FinanzasBundle\Clases\ServiceIIBB
         arguments: [%userArba%, %passArba%, '%kernel.root_dir%', %urlArba%]
+        
+    InteresesResarcitorios:
+        class: Mbp\FinanzasBundle\Clases\InteresesResarcitorios
+        arguments: []

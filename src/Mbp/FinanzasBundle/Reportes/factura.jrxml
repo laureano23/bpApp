@@ -510,7 +510,7 @@ $F{Facturas_tipo} == 3 ? "A" : ""]]></textFieldExpression>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{FacturaDetalle_precio} * $F{FacturaDetalle_cantidad}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="495" y="0" width="60" height="20" isPrintWhenDetailOverflows="true" uuid="1b5e7d5d-f353-4375-bb3c-88b4a4d5244b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{RemitosClientes_remitoNum}]]></textFieldExpression>
