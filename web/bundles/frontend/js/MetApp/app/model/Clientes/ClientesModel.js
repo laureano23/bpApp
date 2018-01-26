@@ -22,6 +22,8 @@ Ext.define('MetApp.model.Clientes.ClientesModel',{
 		{name: 'localidad', type: 'int'},
 		{name: 'provincia', type: 'int'},
 		{name: 'cuentaCerrada', type: 'boolean'},
-		{name: 'transporte', type: 'int'},		
+		{name: 'transporte', type: 'int'},
+		{name: 'intereses', type: 'boolean'},
+		{name: 'tasa', type: 'int'},		
 	]
 });

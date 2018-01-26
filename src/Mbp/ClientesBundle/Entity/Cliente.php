@@ -163,6 +163,20 @@ class Cliente
     private $cuentaCerrada=0;
 	
 	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="intereses", type="boolean", nullable=true)
+     */
+    private $intereses=0;
+	
+	/**
+     * @var decimal
+     *
+     * @ORM\Column(name="tasaInt", type="decimal", scale=2, nullable=true)
+     */
+    private $tasaInt;
+	
+	/**
      * @var \Mbp\ClientseBundle\Entity\Transportes
 	 * @ORM\ManyToOne(targetEntity="Mbp\ClientesBundle\Entity\Transportes")
 	 * @ORM\JoinColumn(name="transporteId", referencedColumnName="id", nullable=true)
@@ -665,5 +679,53 @@ class Cliente
     public function getTransporteId()
     {
         return $this->transporteId;
+    }
+
+    /**
+     * Set intereses
+     *
+     * @param boolean $intereses
+     *
+     * @return Cliente
+     */
+    public function setIntereses($intereses)
+    {
+        $this->intereses = $intereses;
+
+        return $this;
+    }
+
+    /**
+     * Get intereses
+     *
+     * @return boolean
+     */
+    public function getIntereses()
+    {
+        return $this->intereses;
+    }
+
+    /**
+     * Set tasaInt
+     *
+     * @param string $tasaInt
+     *
+     * @return Cliente
+     */
+    public function setTasaInt($tasaInt)
+    {
+        $this->tasaInt = $tasaInt;
+
+        return $this;
+    }
+
+    /**
+     * Get tasaInt
+     *
+     * @return string
+     */
+    public function getTasaInt()
+    {
+        return $this->tasaInt;
     }
 }

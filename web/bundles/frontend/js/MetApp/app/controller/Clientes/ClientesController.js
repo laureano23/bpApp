@@ -119,7 +119,6 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 			var selection = grid.getSelectionModel().getSelection()[0];
 			
 			var rec = store.findRecord('id', selection.data.id);
-			console.log(selection);
 			var form = Ext.ComponentQuery.query('#clientesTb')[0].down('form');
 			form.loadRecord(rec);
 			win.close();

@@ -46,6 +46,7 @@ class DefaultController extends Controller
 				$cliente = new Cliente();	
 			}
 			$estadoCuenta = $request->request->get('cuentaCerrada') == 'on' ? 1 : 0;
+			$intereses = $request->request->get('intereses') == 'on' ? 1 : 0;
 					
 			$cliente->setRsocial($request->request->get('rsocial'));
 			$cliente->setDenominacion($request->request->get('denominacion'));
@@ -73,6 +74,8 @@ class DefaultController extends Controller
 			$cliente->setNetoPercepcion($request->request->get('netoPercepcion'));
 			$cliente->setPorcentajePercepcion($request->request->get('porcentajePercepcion'));
 			$cliente->setCuentaCerrada($estadoCuenta);
+			$cliente->setIntereses($intereses);
+			$cliente->setTasaInt($request->request->get('tasa'));
 			
 			$transporte = $repoTransporte->find($request->request->get('transporte'));
 			if(!empty($transporte)) $cliente->setTransporteId($transporte);

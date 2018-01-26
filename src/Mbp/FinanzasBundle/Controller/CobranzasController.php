@@ -79,7 +79,6 @@ class CobranzasController extends Controller
 				$detalleCob->setImporte($data->importe);
 				$detalleCob->setNumero($data->numero);
 				$detalleCob->setBanco($data->banco);
-				$detalleCob->setImporte($data->importe);
 				$detalleCob->setVencimiento(\DateTime::createFromFormat('d/m/Y', $data->diferido));
 				$detalleCob->setFormaPagoId($formaPago[0]);
 				
@@ -109,6 +108,39 @@ class CobranzasController extends Controller
 					$em->persist($transaccion);
 				}
 			}
+			
+			//SI SE CALCULAN INTERESES RESARCITORIOS POR PAGO FUERA DE TERMINO
+			if($cliente->getIntereses()){
+				$serviceIntereses = $this->get('InteresesResarcitorios');
+				//ARMAMOS LOS ARRAYS DE FCS Y VALORES				
+				if(!$fcImputadas) throw new \Exception("No se pueden calcular intereses porque no hay facturas imputadas", 1);
+				$facturas = array();
+				$valores = array();
+				
+				foreach ($fcImputadas as $f) {
+					$fc = $repoFacturas->find($f->id);
+					$reg['monto'] = $fc->getTotal();
+					$reg['cbteNum'] = $fc->getFcNro();
+					$reg['vencimiento'] = $fc->getVencimiento();
+					
+					array_push($facturas, $reg);
+				}
+				
+				foreach ($decodeData as $d) {
+					$reg['monto'] = $d->importe;
+					$reg['numero'] = $d->numero;
+					$reg['banco'] = $d->banco;
+					$reg['vencimiento'] = \DateTime::createFromFormat('d/m/Y', $data->diferido);
+					
+					array_push($valores, $reg);
+				}
+				
+				$serviceIntereses->calcularIntereses($facturas, $valores);
+				
+				$intereses = $serviceIntereses->getIntereses();
+			}
+			
+			
 			
 			$em->flush();
 		}catch(\Exception $e){

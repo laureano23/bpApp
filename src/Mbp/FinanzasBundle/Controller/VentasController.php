@@ -193,10 +193,11 @@ class VentasController extends Controller
 				$em->persist($detalleFc);
 				
 				//NETO GRABADO
-				$netoGrabado += $items->cantidad * $items->precio;					
+				$netoGrabado += $items->cantidad * $items->precio;	
+								
 			}
-			$ivaLiquidado = $netoGrabado * 0.21;
-
+			
+			$ivaLiquidado = $netoGrabado * 0.21;			
 			$ultimoComp = $faele->ultimoNroComp($decodefcData->tipo);
 
 			//CONSULTA PERCEPCION DE IIBB
@@ -220,8 +221,8 @@ class VentasController extends Controller
 
 
 			//REDONDEO IMPORTES A 2 DECIMALES
-			$netoGrabado = number_format($netoGrabado, 2);
-			$ivaLiquidado = number_format($ivaLiquidado, 2);
+			$netoGrabado = number_format($netoGrabado, 2, ".", "");
+			$ivaLiquidado = number_format($ivaLiquidado, 2, ".", "");
 
 			$regfe['CbteTipo']=$decodefcData->tipo;
 			$regfe['Concepto']=1;//ESTE DATO DEBE VENIR DEL CLIENTE 1=PRODUCTOS, 2=SERVICIOS, 3=PRODUCTOS Y SERVICIOS
@@ -235,7 +236,7 @@ class VentasController extends Controller
 			$regfe['ImpIVA']=$ivaLiquidado;			// IVA liquidado
 			$regfe['ImpTrib']=$percepcionIIBB;			// otros tributos
 			$regfe['ImpOpEx']=0;			// operacion exentas
-			$regfe['ImpTotal']=$netoGrabado + $ivaLiquidado + $percepcionIIBB;			// total de la factura. ImpNeto + ImpTotConc + ImpIVA + ImpTrib + ImpOpEx
+			$regfe['ImpTotal']=$netoGrabado + $ivaLiquidado + $percepcionIIBB;// total de la factura. ImpNeto + ImpTotConc + ImpIVA + ImpTrib + ImpOpEx
 			$regfe['FchServDesde']=null;	// solo concepto 2 o 3
 			$regfe['FchServHasta']=null;	// solo concepto 2 o 3
 			$regfe['FchVtoPago']=null;		// solo concepto 2 o 3
@@ -255,8 +256,10 @@ class VentasController extends Controller
 			$regfetrib['Importe'] = $percepcionIIBB;
 			 
 			// Detalle de iva
-			$regfeiva['Id'] = 5; 
+			$regfeiva['Id'] = 5; //5 codigo IVA 21...4 codigo IVA 10.5
 			$regfeiva['BaseImp'] = $netoGrabado; 
+			
+			//print_r($netoGrabado);
 			$regfeiva['Importe'] = $ivaLiquidado;
 			
 			$cae = $faele->generarFc($regfe, $regfeasoc, $regfetrib, $regfeiva);	//GENERO FC ELECTRONICA

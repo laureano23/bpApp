@@ -18,10 +18,12 @@ class TestController extends Controller
 		
 		//fc1
 		$fc1['monto'] = 1000;
+		$fc1['cbteNum'] = 1;
 		$fc1['vencimiento'] = new \DateTime('+ 1 month');
 		
 			
-		$fc2['monto'] = 50;
+		$fc2['monto'] = 50;		
+		$fc2['cbteNum'] = 2;
 		$fc2['vencimiento'] = new \DateTime('+ 2 weeks');
 		
 		$facturas[0] = $fc1;

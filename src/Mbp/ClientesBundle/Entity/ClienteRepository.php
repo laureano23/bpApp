@@ -28,6 +28,8 @@ class ClienteRepository extends  EntityRepository
 							c.netoPercepcion,
 							c.porcentajePercepcion,
 							c.cuentaCerrada,
+							c.intereses,
+							c.tasaInt as tasa,
 							prov.id as provincia,
 							dep.id as localidad,
 							t.id as transporte,

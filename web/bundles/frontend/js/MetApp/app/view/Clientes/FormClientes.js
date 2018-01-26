@@ -1,6 +1,6 @@
 Ext.define('MetApp.view.Clientes.FormClientes' ,{
 	extend: 'Ext.window.Window',
-	height: 620,
+	height: 565,
 	width: 900,
 	modal: true,
 	autoShow: true,
@@ -174,6 +174,7 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 									title: 'Posicion IVA',
 									defaults: {
 										readOnly: true,
+										border: false,
 										disabledCls: 'myDisabledClass'
 									},
 									columnWidth: 0.33,
@@ -190,6 +191,26 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 												{ boxLabel: 'Consumidor Final', name: 'iva', inputValue: '5' },
 												{ boxLabel: 'Exportacion', name: 'iva', inputValue: '6' },
 												
+											]
+										},
+										{
+											title: 'Percepciones',
+											columnWidth: 0.33,
+											defaults: {
+												readOnly: true,
+												disabledCls: 'myDisabledClass'
+											},
+											items: [
+												{
+													xtype: 'numberfield',
+													name: 'netoPercepcion',
+													fieldLabel: 'Neto mayor a:'
+												},
+												{
+													xtype: 'numberfield',
+													name: 'porcentajePercepcion',
+													fieldLabel: 'Percepcion'
+												}
 											]
 										}
 									]
@@ -352,39 +373,32 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 											typeAhead: true,							
 											minChars: 1,
 											fieldLabel: 'Transporte',
-										},										
-									]
-								}
-							]
-						},
-						{
-							xtype: 'container',
-							defaults: {
-								padding: '0 0 5 5',
-								border: false,
-							},
-							layout: 'column',
-							items: [
-								{
-									title: 'Percepciones',
-									columnWidth: 0.33,
-									defaults: {
-										readOnly: true,
-										disabledCls: 'myDisabledClass'
-									},
-									items: [
-										{
-											xtype: 'numberfield',
-											name: 'netoPercepcion',
-											fieldLabel: 'Neto mayor a:'
 										},
 										{
-											xtype: 'numberfield',
-											name: 'porcentajePercepcion',
-											fieldLabel: 'Percepcion'
-										}
+											xtype: 'container',
+											layout: 'hbox',
+											defaults: {
+												readOnly: true,
+												disabledCls: 'myDisabledClass'
+											},
+											items: [
+												{
+													xtype: 'checkbox',
+													name: 'intereses',
+													itemId: 'intereses',
+													fieldLabel: 'Aplica interés',
+													uncheckedValue: 0,
+												},
+												{
+													xtype: 'numberfield',
+													name: 'tasa',
+													itemId: 'tasa',
+													fieldLabel: 'Tasa diaria'
+												}
+											]
+										}										
 									]
-								}								
+								}
 							]
 						},
 						{
