@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OT" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="701769ed-d3de-4a78-92fe-e21c0125043d">
-	<property name="ireport.zoom" value="1.6105100000000039"/>
+	<property name="ireport.zoom" value="1.1000000000000036"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="1241"/>
+	<property name="ireport.y" value="772"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -56,13 +56,25 @@
      cliente.`rsocial` AS cliente_rsocial,
      users.`id` AS users_id,
      users.`username` AS users_username,
-     Ot.`clienteId` AS Ot_clienteId
+     Ot.`clienteId` AS Ot_clienteId,
+     PedidoClientesDetalle.`id` AS PedidoClientesDetalle_id,
+     pedidoId_detalleId.`pedidoId` AS pedidoId_detalleId_pedidoId,
+     pedidoId_detalleId.`detalleId` AS pedidoId_detalleId_detalleId,
+     PedidoClientes.`id` AS PedidoClientes_id,
+     PedidoClientes.`oc` AS PedidoClientes_oc,
+     Ot_Pedidos.`otId` AS Ot_Pedidos_otId,
+     Ot_Pedidos.`pedidoId` AS Ot_Pedidos_pedidoId
 FROM
      `articulos` articulos INNER JOIN `Ot` Ot ON articulos.`idArticulos` = Ot.`idCodigo`
      INNER JOIN `Sectores` Sectores ON Ot.`sectorId` = Sectores.`id`
      INNER JOIN `Sectores` Sectores_A ON Ot.`sectorEmisor` = Sectores_A.`id`
      LEFT OUTER JOIN `cliente` cliente ON Ot.`clienteId` = cliente.`idCliente`
      INNER JOIN `users` users ON Ot.`idUsuario` = users.`id`
+     INNER JOIN `Ot_Pedidos` Ot_Pedidos ON Ot.`ot` = Ot_Pedidos.`otId`
+     INNER JOIN `PedidoClientesDetalle` PedidoClientesDetalle ON Ot_Pedidos.`pedidoId` = PedidoClientesDetalle.`id`
+     INNER JOIN `pedidoId_detalleId` pedidoId_detalleId ON PedidoClientesDetalle.`id` = pedidoId_detalleId.`detalleId`
+     INNER JOIN `PedidoClientes` PedidoClientes ON pedidoId_detalleId.`pedidoId` = PedidoClientes.`id`
+     AND users.`id` = PedidoClientes.`usuarioId`
 WHERE
      Ot.`ot` = $P{ot}]]>
 	</queryString>
@@ -93,6 +105,13 @@ WHERE
 	<field name="users_id" class="java.lang.Integer"/>
 	<field name="users_username" class="java.lang.String"/>
 	<field name="Ot_clienteId" class="java.lang.Integer"/>
+	<field name="PedidoClientesDetalle_id" class="java.lang.Integer"/>
+	<field name="pedidoId_detalleId_pedidoId" class="java.lang.Integer"/>
+	<field name="pedidoId_detalleId_detalleId" class="java.lang.Integer"/>
+	<field name="PedidoClientes_id" class="java.lang.Integer"/>
+	<field name="PedidoClientes_oc" class="java.lang.String"/>
+	<field name="Ot_Pedidos_otId" class="java.lang.Integer"/>
+	<field name="Ot_Pedidos_pedidoId" class="java.lang.Integer"/>
 	<background>
 		<band height="300" splitType="Stretch">
 			<printWhenExpression><![CDATA[$F{Ot_anulada}]]></printWhenExpression>
@@ -255,7 +274,7 @@ WHERE
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="583" splitType="Stretch">
+		<band height="570" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="0" width="57" height="20" uuid="613b9613-2429-49b8-9e25-5285ea632962"/>
 				<box>
@@ -1027,7 +1046,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{Ot_observaciones}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="313" width="150" height="78" uuid="037b8681-f33c-4bde-a739-0b92bc34e0b9">
+				<reportElement x="0" y="315" width="150" height="78" uuid="037b8681-f33c-4bde-a739-0b92bc34e0b9">
 					<printWhenExpression><![CDATA[$F{Sectores_id} == 9]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
@@ -1038,7 +1057,7 @@ Fecha                Firma
 .................      ........................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="162" y="313" width="150" height="78" uuid="49df9457-2fe5-4f82-9706-b0a81b233ffd">
+				<reportElement x="162" y="315" width="150" height="78" uuid="49df9457-2fe5-4f82-9706-b0a81b233ffd">
 					<printWhenExpression><![CDATA[$F{Sectores_id} == 9]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
@@ -1049,7 +1068,7 @@ Fecha                Firma
 .................      ........................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="335" y="313" width="150" height="78" uuid="a8ea3937-6f7f-4a15-8381-dc5a54eccf91">
+				<reportElement x="335" y="315" width="150" height="78" uuid="a8ea3937-6f7f-4a15-8381-dc5a54eccf91">
 					<printWhenExpression><![CDATA[$F{Sectores_id} == 9]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
@@ -1060,7 +1079,7 @@ Fecha                Firma
 .................      ........................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="412" width="150" height="78" uuid="25e9f54c-c26e-4b90-a2af-25fd49a0734b">
+				<reportElement x="0" y="414" width="150" height="78" uuid="25e9f54c-c26e-4b90-a2af-25fd49a0734b">
 					<printWhenExpression><![CDATA[$F{Sectores_id} == 9]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
@@ -1071,7 +1090,7 @@ Fecha                Firma
 .................      ........................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="162" y="412" width="150" height="78" uuid="bd0cc8af-d891-47cc-86fd-b53abe1a1fac">
+				<reportElement x="162" y="414" width="150" height="78" uuid="bd0cc8af-d891-47cc-86fd-b53abe1a1fac">
 					<printWhenExpression><![CDATA[$F{Sectores_id} == 9]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
@@ -1082,7 +1101,7 @@ Fecha                Firma
 .................      ........................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="335" y="412" width="150" height="78" uuid="4cc4075e-cd8a-46e4-b1a0-c87e95232438">
+				<reportElement x="335" y="414" width="150" height="78" uuid="4cc4075e-cd8a-46e4-b1a0-c87e95232438">
 					<printWhenExpression><![CDATA[$F{Sectores_id} == 9]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
@@ -1093,7 +1112,7 @@ Fecha                Firma
 .................      ........................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="490" width="150" height="78" uuid="f43abf4b-bdb0-4c1d-a5c7-c98ad2450617">
+				<reportElement x="0" y="492" width="150" height="78" uuid="f43abf4b-bdb0-4c1d-a5c7-c98ad2450617">
 					<printWhenExpression><![CDATA[$F{Sectores_id} == 9]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
@@ -1105,4 +1124,22 @@ Fecha                Firma
 			</staticText>
 		</band>
 	</columnHeader>
+	<detail>
+		<band height="20">
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="58" y="0" width="119" height="20" uuid="d3a922cf-5e1e-4cfb-9e4b-8e775078c27d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PedidoClientes_oc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="58" height="20" uuid="25e56d4a-4097-4710-983d-b7ee20ed05dd"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[OC N°:]]></text>
+			</staticText>
+		</band>
+	</detail>
 </jasperReport>

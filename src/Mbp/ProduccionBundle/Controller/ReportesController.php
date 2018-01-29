@@ -481,13 +481,25 @@ class ReportesController extends Controller
 				     cliente.`rsocial` AS cliente_rsocial,
 				     users.`id` AS users_id,
 				     users.`username` AS users_username,
-				     Ot.`clienteId` AS Ot_clienteId
+				     Ot.`clienteId` AS Ot_clienteId,
+				     PedidoClientesDetalle.`id` AS PedidoClientesDetalle_id,
+				     pedidoId_detalleId.`pedidoId` AS pedidoId_detalleId_pedidoId,
+				     pedidoId_detalleId.`detalleId` AS pedidoId_detalleId_detalleId,
+				     PedidoClientes.`id` AS PedidoClientes_id,
+				     PedidoClientes.`oc` AS PedidoClientes_oc,
+				     Ot_Pedidos.`otId` AS Ot_Pedidos_otId,
+				     Ot_Pedidos.`pedidoId` AS Ot_Pedidos_pedidoId
 				FROM
 				     `articulos` articulos INNER JOIN `Ot` Ot ON articulos.`idArticulos` = Ot.`idCodigo`
 				     INNER JOIN `Sectores` Sectores ON Ot.`sectorId` = Sectores.`id`
 				     INNER JOIN `Sectores` Sectores_A ON Ot.`sectorEmisor` = Sectores_A.`id`
 				     LEFT OUTER JOIN `cliente` cliente ON Ot.`clienteId` = cliente.`idCliente`
 				     INNER JOIN `users` users ON Ot.`idUsuario` = users.`id`
+				     INNER JOIN `Ot_Pedidos` Ot_Pedidos ON Ot.`ot` = Ot_Pedidos.`otId`
+				     INNER JOIN `PedidoClientesDetalle` PedidoClientesDetalle ON Ot_Pedidos.`pedidoId` = PedidoClientesDetalle.`id`
+				     INNER JOIN `pedidoId_detalleId` pedidoId_detalleId ON PedidoClientesDetalle.`id` = pedidoId_detalleId.`detalleId`
+				     INNER JOIN `PedidoClientes` PedidoClientes ON pedidoId_detalleId.`pedidoId` = PedidoClientes.`id`
+				     AND users.`id` = PedidoClientes.`usuarioId`
 				WHERE
 				     Ot.`ot` = $ot
 			";
