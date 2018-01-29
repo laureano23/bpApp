@@ -495,11 +495,10 @@ class ReportesController extends Controller
 				     INNER JOIN `Sectores` Sectores_A ON Ot.`sectorEmisor` = Sectores_A.`id`
 				     LEFT OUTER JOIN `cliente` cliente ON Ot.`clienteId` = cliente.`idCliente`
 				     INNER JOIN `users` users ON Ot.`idUsuario` = users.`id`
-				     INNER JOIN `Ot_Pedidos` Ot_Pedidos ON Ot.`ot` = Ot_Pedidos.`otId`
-				     INNER JOIN `PedidoClientesDetalle` PedidoClientesDetalle ON Ot_Pedidos.`pedidoId` = PedidoClientesDetalle.`id`
-				     INNER JOIN `pedidoId_detalleId` pedidoId_detalleId ON PedidoClientesDetalle.`id` = pedidoId_detalleId.`detalleId`
-				     INNER JOIN `PedidoClientes` PedidoClientes ON pedidoId_detalleId.`pedidoId` = PedidoClientes.`id`
-				     AND users.`id` = PedidoClientes.`usuarioId`
+				     LEFT OUTER JOIN `Ot_Pedidos` Ot_Pedidos ON Ot.`ot` = Ot_Pedidos.`otId`
+				     LEFT OUTER JOIN `PedidoClientesDetalle` PedidoClientesDetalle ON Ot_Pedidos.`pedidoId` = PedidoClientesDetalle.`id`
+				     LEFT OUTER JOIN `pedidoId_detalleId` pedidoId_detalleId ON PedidoClientesDetalle.`id` = pedidoId_detalleId.`detalleId`
+				     LEFT OUTER JOIN `PedidoClientes` PedidoClientes ON pedidoId_detalleId.`pedidoId` = PedidoClientes.`id`
 				WHERE
 				     Ot.`ot` = $ot
 			";

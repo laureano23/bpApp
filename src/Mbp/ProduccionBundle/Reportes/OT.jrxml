@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OT" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="701769ed-d3de-4a78-92fe-e21c0125043d">
 	<property name="ireport.zoom" value="1.1000000000000036"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="772"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -70,11 +70,10 @@ FROM
      INNER JOIN `Sectores` Sectores_A ON Ot.`sectorEmisor` = Sectores_A.`id`
      LEFT OUTER JOIN `cliente` cliente ON Ot.`clienteId` = cliente.`idCliente`
      INNER JOIN `users` users ON Ot.`idUsuario` = users.`id`
-     INNER JOIN `Ot_Pedidos` Ot_Pedidos ON Ot.`ot` = Ot_Pedidos.`otId`
-     INNER JOIN `PedidoClientesDetalle` PedidoClientesDetalle ON Ot_Pedidos.`pedidoId` = PedidoClientesDetalle.`id`
-     INNER JOIN `pedidoId_detalleId` pedidoId_detalleId ON PedidoClientesDetalle.`id` = pedidoId_detalleId.`detalleId`
-     INNER JOIN `PedidoClientes` PedidoClientes ON pedidoId_detalleId.`pedidoId` = PedidoClientes.`id`
-     AND users.`id` = PedidoClientes.`usuarioId`
+     LEFT OUTER JOIN `Ot_Pedidos` Ot_Pedidos ON Ot.`ot` = Ot_Pedidos.`otId`
+     LEFT OUTER JOIN `PedidoClientesDetalle` PedidoClientesDetalle ON Ot_Pedidos.`pedidoId` = PedidoClientesDetalle.`id`
+     LEFT OUTER JOIN `pedidoId_detalleId` pedidoId_detalleId ON PedidoClientesDetalle.`id` = pedidoId_detalleId.`detalleId`
+     LEFT OUTER JOIN `PedidoClientes` PedidoClientes ON pedidoId_detalleId.`pedidoId` = PedidoClientes.`id`
 WHERE
      Ot.`ot` = $P{ot}]]>
 	</queryString>
