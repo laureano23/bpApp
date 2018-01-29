@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Mbp\FinanzasBundle\Entity\Cobranzas;
 use Mbp\FinanzasBundle\Entity\CobranzasDetalle;
 use Mbp\FinanzasBundle\Entity\TransaccionCobranzaFactura;
+use Mbp\FinanzasBundle\Entity\InteresesResarcitorios;
 
 class CobranzasController extends Controller
 {
@@ -120,7 +121,7 @@ class CobranzasController extends Controller
 				foreach ($fcImputadas as $f) {
 					$fc = $repoFacturas->find($f->id);
 					$reg['monto'] = $fc->getTotal();
-					$reg['cbteNum'] = $fc->getFcNro();
+					$reg['cbteNum'] = $fc->getPtoVta()."-".$fc->getFcNro();
 					$reg['vencimiento'] = $fc->getVencimiento();
 					
 					array_push($facturas, $reg);
@@ -135,15 +136,32 @@ class CobranzasController extends Controller
 					array_push($valores, $reg);
 				}
 				
-				$serviceIntereses->calcularIntereses($facturas, $valores);
+				$serviceIntereses->calcularIntereses($facturas, $valores, $cliente->getTasaInt());
 				
 				$intereses = $serviceIntereses->getIntereses();
+				if(!empty($intereses)){// si existen intereses los guardamos en la bd
+					foreach ($intereses as $int) {
+						$interes = new InteresesResarcitorios;
+						$interes->setCbte($int['comprobante']);
+						$interes->setClienteId($cliente);
+						$interes->setInteres($int['interes']);
+						$interes->setMonto($int['monto']);
+						$interes->setTasa($cliente->getTasaInt());
+						$interes->setChequeNum($int['numero']);
+						$interes->setBanco($int['banco']);
+						$interes->setDiferidoValor($int['diferidoValor']);
+						$interes->setCobranzaId($cobranza);
+						
+						$em->persist($interes);							
+					}					
+				}
 			}
-			
-			
+
+			//exit;
 			
 			$em->flush();
 		}catch(\Exception $e){
+			throw $e;
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(
 				json_encode(array(

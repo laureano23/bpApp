@@ -708,7 +708,7 @@ class Cliente
     /**
      * Set tasaInt
      *
-     * @param string $tasaInt
+     * @param decimal $tasaInt
      *
      * @return Cliente
      */
@@ -722,7 +722,7 @@ class Cliente
     /**
      * Get tasaInt
      *
-     * @return string
+     * @return decimal
      */
     public function getTasaInt()
     {

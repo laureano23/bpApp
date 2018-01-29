@@ -391,6 +391,7 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 												},
 												{
 													xtype: 'numberfield',
+													decimalSeparator: '.',
 													name: 'tasa',
 													itemId: 'tasa',
 													fieldLabel: 'Tasa diaria'

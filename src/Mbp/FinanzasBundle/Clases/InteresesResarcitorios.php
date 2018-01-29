@@ -18,7 +18,7 @@ class InteresesResarcitorios
 {
 	
 	public $facturas, $pagos;
-	public static $tasaDiaria = 0.08;
+	private $tasaDiaria;
 	
 	//cargamos en un array para probar los intereses calculados
 	public $intereses=array();
@@ -27,8 +27,9 @@ class InteresesResarcitorios
 		
 	}
 	
-	public function calcularIntereses(array $facturas, array $pagos){
+	public function calcularIntereses(array $facturas, array $pagos, $tasaDiaria){
 		//PRIMERO ORDENAMOS LAS FCS Y PAGOS POR FECHA DE VENCIMIENTO
+		$this->tasaDiaria = $tasaDiaria;
 		$this->facturas = $facturas;
 		$this->pagos = $pagos;
 		$this->ordenarFechas();
@@ -57,8 +58,7 @@ class InteresesResarcitorios
 	}
 
 	public function getIntereses(){
-		echo "*********INTERESES**********";
-		print_r($this->intereses);
+		return $this->intereses;
 	}
 	
 	//FORMULAR PARA CALCULAR EL INTERES DIARIO
@@ -69,9 +69,12 @@ class InteresesResarcitorios
 		$dias = $fc['vencimiento']->diff($valor['vencimiento']);
 		$dias = $dias->days;
 				
-		$reg['interes'] = $importe * self::$tasaDiaria * $dias / 100;
+		$reg['interes'] = $importe * $this->tasaDiaria * $dias / 100;
 		$reg['comprobante'] = $fc['cbteNum'];
 		$reg['monto'] = $importe;
+		$reg['numero'] = $valor['numero'];
+		$reg['banco'] = $valor['banco'];
+		$reg['diferidoValor'] = $valor['vencimiento'];
 		
 		array_push($this->intereses, $reg); 
 	}

@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="InteresesResarcitorios" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="81075db1-d301-4d1d-af8a-32eca9f247c5">
+	<property name="ireport.zoom" value="1.2100000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idCobranza" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     InteresesResarcitorios.`id` AS InteresesResarcitorios_id,
+     InteresesResarcitorios.`cbte` AS InteresesResarcitorios_cbte,
+     InteresesResarcitorios.`monto` AS InteresesResarcitorios_monto,
+     InteresesResarcitorios.`tasa` AS InteresesResarcitorios_tasa,
+     InteresesResarcitorios.`interes` AS InteresesResarcitorios_interes,
+     InteresesResarcitorios.`clienteId` AS InteresesResarcitorios_clienteId,
+     InteresesResarcitorios.`chequeNum` AS InteresesResarcitorios_chequeNum,
+     InteresesResarcitorios.`banco` AS InteresesResarcitorios_banco,
+     InteresesResarcitorios.`diferidoValor` AS InteresesResarcitorios_diferidoValor,
+     cliente.`idCliente` AS cliente_idCliente,
+     cliente.`rsocial` AS cliente_rsocial,
+     cliente.`denominacion` AS cliente_denominacion,
+     cliente.`direccion` AS cliente_direccion,
+     InteresesResarcitorios.`cobranzaId` AS InteresesResarcitorios_cobranzaId,
+     Cobranzas.`id` AS Cobranzas_id,
+     Cobranzas.`emision` AS Cobranzas_emision,
+     Cobranzas.`clienteId` AS Cobranzas_clienteId,
+     Cobranzas.`ptoVenta` AS Cobranzas_ptoVenta,
+     Cobranzas.`numRecibo` AS Cobranzas_numRecibo
+FROM
+     `cliente` cliente INNER JOIN `InteresesResarcitorios` InteresesResarcitorios ON cliente.`idCliente` = InteresesResarcitorios.`clienteId`
+     INNER JOIN `Cobranzas` Cobranzas ON InteresesResarcitorios.`cobranzaId` = Cobranzas.`id`
+WHERE
+     InteresesResarcitorios.`cobranzaId` = $P{idCobranza}]]>
+	</queryString>
+	<field name="InteresesResarcitorios_id" class="java.lang.Integer"/>
+	<field name="InteresesResarcitorios_cbte" class="java.lang.String"/>
+	<field name="InteresesResarcitorios_monto" class="java.math.BigDecimal"/>
+	<field name="InteresesResarcitorios_tasa" class="java.math.BigDecimal"/>
+	<field name="InteresesResarcitorios_interes" class="java.math.BigDecimal"/>
+	<field name="InteresesResarcitorios_clienteId" class="java.lang.Integer"/>
+	<field name="InteresesResarcitorios_chequeNum" class="java.lang.String"/>
+	<field name="InteresesResarcitorios_banco" class="java.lang.String"/>
+	<field name="InteresesResarcitorios_diferidoValor" class="java.sql.Date"/>
+	<field name="cliente_idCliente" class="java.lang.Integer"/>
+	<field name="cliente_rsocial" class="java.lang.String"/>
+	<field name="cliente_denominacion" class="java.lang.String"/>
+	<field name="cliente_direccion" class="java.lang.String"/>
+	<field name="InteresesResarcitorios_cobranzaId" class="java.lang.Integer"/>
+	<field name="Cobranzas_id" class="java.lang.Integer"/>
+	<field name="Cobranzas_emision" class="java.sql.Timestamp"/>
+	<field name="Cobranzas_clienteId" class="java.lang.Integer"/>
+	<field name="Cobranzas_ptoVenta" class="java.lang.Integer"/>
+	<field name="Cobranzas_numRecibo" class="java.lang.Integer"/>
+	<variable name="TOTAL_INTERES" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{InteresesResarcitorios_interes}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="79" uuid="c0dac160-50e8-49e4-8fe8-70f230e96592"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DETALLE DE INTERESES RESARCITORIOS]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="104" height="58" uuid="2b085ac0-6ef6-4fcd-aac1-8a063518fcc3"/>
+				<imageExpression><![CDATA["\\\\192.168.0.123\\proyectos\\bpDev\\mbp\\src\\Mbp\\CalidadBundle\\Reportes\\logo.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="57" height="20" uuid="9b80a15f-3808-4ab7-b39a-8c531c416045"/>
+				<text><![CDATA[Cliente:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="57" y="0" width="100" height="20" uuid="0b1f8f0e-aae0-44b0-bdce-30f3c11135b2"/>
+				<textFieldExpression><![CDATA[$F{cliente_rsocial}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="20" width="57" height="20" uuid="8a9720a8-75ce-484e-97c9-e89fff8fc71c"/>
+				<text><![CDATA[Recibo N°:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="57" y="20" width="100" height="20" uuid="6aed2cbc-bbcd-48ab-88fb-8e5e6231777f"/>
+				<textFieldExpression><![CDATA[$F{Cobranzas_numRecibo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="50" uuid="6b2ec2fa-54ed-49db-a359-3035d9332bca"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="86" height="20" backcolor="#CCCCCC" uuid="a313c215-4d1d-4a8a-9f4a-78b3d4fefaac"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[Comprobante n°]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="86" y="0" width="69" height="20" backcolor="#CCCCCC" uuid="15773c87-61eb-4628-840a-7ba510f9b90d"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[Monto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="155" y="0" width="79" height="20" backcolor="#CCCCCC" uuid="7a10c80d-4786-459b-b874-4bece1492638"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[Cheque N°]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="234" y="0" width="100" height="20" backcolor="#CCCCCC" uuid="b1c2a85d-8816-4d8a-8d09-bc3500bcf509"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[Banco]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="334" y="0" width="100" height="20" backcolor="#CCCCCC" uuid="db2037d1-38e7-444e-a872-db4047b35d54"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[Diferido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="434" y="0" width="100" height="20" backcolor="#CCCCCC" uuid="8fe841ac-e24e-4113-9d42-1dcd9eaa23eb"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[Interes]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="86" height="20" uuid="db336012-1fd1-4a80-ab56-07a519f7fc20"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{InteresesResarcitorios_cbte}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="86" y="0" width="69" height="20" uuid="21240a3c-06d2-4324-b573-5a90206d3b5e"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{InteresesResarcitorios_monto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="155" y="0" width="79" height="20" uuid="fb8d0c0e-497d-49c2-baaf-d8acd870d561"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{InteresesResarcitorios_chequeNum}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="234" y="0" width="100" height="20" uuid="2a0483ea-a2a6-4f5c-b455-34b33fe2b959"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{InteresesResarcitorios_banco}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="334" y="0" width="100" height="20" uuid="90548982-b698-4151-9aaf-7f68ac435a78"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{InteresesResarcitorios_diferidoValor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="434" y="0" width="100" height="20" uuid="001f4306-f640-4939-a09a-1a4dca41133f"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{InteresesResarcitorios_interes}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<textField isStretchWithOverflow="true" evaluationTime="Report" pattern="¤ #,##0.00" isBlankWhenNull="false">
+				<reportElement x="434" y="0" width="100" height="20" uuid="44b9072a-ce0a-4e2a-9d4a-01feeed3c46c"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL_INTERES}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
