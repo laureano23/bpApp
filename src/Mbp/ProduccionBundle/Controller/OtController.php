@@ -532,7 +532,7 @@ class OtController extends Controller
 			
 			
 			$resp = $repo->find($ot);
-			$em->remove($resp);
+			$resp->setAnulada(TRUE);
 			$em->flush();
 			
 			
