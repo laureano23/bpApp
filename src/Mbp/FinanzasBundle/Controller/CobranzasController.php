@@ -68,6 +68,7 @@ class CobranzasController extends Controller
 					
 			$cobranza = new Cobranzas();		
 			$cobranza->setEmision(new \DateTime);
+			$cobranza->setFechaRecibo(\DateTime::createFromFormat('d/m/Y', $datosRecibo->fechaRecibo));
 			$cliente = $repoCliente->find($idCliente);
 			$cobranza->setClienteId($cliente);
 			$cobranza->setPtoVenta((int)$datosRecibo->ptoVta);
@@ -89,7 +90,7 @@ class CobranzasController extends Controller
 			
 			
 			//SI SE APLICARON FACTURAS A LA COBRANZA
-			if($fcImputadas != ""){
+			if(!empty($fcImputadas)){
 				foreach ($fcImputadas as $fc) {
 					$factura = $repoFacturas->find($fc->id);
 					//VALIDO QUE EL IMPORTE A APLICAR NO SUPERE EL TOTAL DE LA FC
@@ -108,54 +109,56 @@ class CobranzasController extends Controller
 					
 					$em->persist($transaccion);
 				}
+				
+				//SI SE CALCULAN INTERESES RESARCITORIOS POR PAGO FUERA DE TERMINO
+				if($cliente->getIntereses()){
+					$serviceIntereses = $this->get('InteresesResarcitorios');
+					//ARMAMOS LOS ARRAYS DE FCS Y VALORES				
+					if(!$fcImputadas) throw new \Exception("No se pueden calcular intereses porque no hay facturas imputadas", 1);
+					$facturas = array();
+					$valores = array();
+					
+					foreach ($fcImputadas as $f) {
+						$fc = $repoFacturas->find($f->id);
+						$reg['monto'] = $fc->getTotal();
+						$reg['cbteNum'] = $fc->getPtoVta()."-".$fc->getFcNro();
+						$reg['vencimiento'] = $fc->getVencimiento();
+						
+						array_push($facturas, $reg);
+					}
+					
+					foreach ($decodeData as $d) {
+						$reg['monto'] = $d->importe;
+						$reg['numero'] = $d->numero;
+						$reg['banco'] = $d->banco;
+						$reg['vencimiento'] = \DateTime::createFromFormat('d/m/Y', $data->diferido);
+						
+						array_push($valores, $reg);
+					}
+					
+					$serviceIntereses->calcularIntereses($facturas, $valores, $cliente->getTasaInt());
+					
+					$intereses = $serviceIntereses->getIntereses();
+					if(!empty($intereses)){// si existen intereses los guardamos en la bd
+						foreach ($intereses as $int) {
+							$interes = new InteresesResarcitorios;
+							$interes->setCbte($int['comprobante']);
+							$interes->setClienteId($cliente);
+							$interes->setInteres($int['interes']);
+							$interes->setMonto($int['monto']);
+							$interes->setTasa($cliente->getTasaInt());
+							$interes->setChequeNum($int['numero']);
+							$interes->setBanco($int['banco']);
+							$interes->setDiferidoValor($int['diferidoValor']);
+							$interes->setCobranzaId($cobranza);
+							
+							$em->persist($interes);							
+						}					
+					}
+				}
 			}
 			
-			//SI SE CALCULAN INTERESES RESARCITORIOS POR PAGO FUERA DE TERMINO
-			if($cliente->getIntereses()){
-				$serviceIntereses = $this->get('InteresesResarcitorios');
-				//ARMAMOS LOS ARRAYS DE FCS Y VALORES				
-				if(!$fcImputadas) throw new \Exception("No se pueden calcular intereses porque no hay facturas imputadas", 1);
-				$facturas = array();
-				$valores = array();
 				
-				foreach ($fcImputadas as $f) {
-					$fc = $repoFacturas->find($f->id);
-					$reg['monto'] = $fc->getTotal();
-					$reg['cbteNum'] = $fc->getPtoVta()."-".$fc->getFcNro();
-					$reg['vencimiento'] = $fc->getVencimiento();
-					
-					array_push($facturas, $reg);
-				}
-				
-				foreach ($decodeData as $d) {
-					$reg['monto'] = $d->importe;
-					$reg['numero'] = $d->numero;
-					$reg['banco'] = $d->banco;
-					$reg['vencimiento'] = \DateTime::createFromFormat('d/m/Y', $data->diferido);
-					
-					array_push($valores, $reg);
-				}
-				
-				$serviceIntereses->calcularIntereses($facturas, $valores, $cliente->getTasaInt());
-				
-				$intereses = $serviceIntereses->getIntereses();
-				if(!empty($intereses)){// si existen intereses los guardamos en la bd
-					foreach ($intereses as $int) {
-						$interes = new InteresesResarcitorios;
-						$interes->setCbte($int['comprobante']);
-						$interes->setClienteId($cliente);
-						$interes->setInteres($int['interes']);
-						$interes->setMonto($int['monto']);
-						$interes->setTasa($cliente->getTasaInt());
-						$interes->setChequeNum($int['numero']);
-						$interes->setBanco($int['banco']);
-						$interes->setDiferidoValor($int['diferidoValor']);
-						$interes->setCobranzaId($cobranza);
-						
-						$em->persist($interes);							
-					}					
-				}
-			}
 
 			//exit;
 			

@@ -512,6 +512,122 @@ class ReportesController extends Controller
 		
 		return $response;
 	}
+	
+	/**
+     * @Route("/Reportes/InteresesResarcitorios", name="mbp_Reportes_InteresesResarcitorios", options={"expose"=true})
+     */	
+    public function InteresesResarcitorios()
+	{
+		$response = new Response;
+				
+		try{
+			/*
+			 * PARAMETROS
+			 */
+			$desde = $this->get('request')->get('desde');
+			$hasta = $this->get('request')->get('hasta');
+			$cliente1 = $this->get('request')->get('cliente1');
+			$cliente2 = $this->get('request')->get('cliente2');
+							
+			$reporteador = $this->get('reporteador');
+			$kernel = $this->get('kernel');
+			
+			/*
+			 * Configuro reporte
+			 */
+			$jru = $reporteador->jru();
+			
+			/*
+			 * Ruta archivo Jasper
+			 */				
+					
+			$ruta = $kernel->locateResource('@MbpFinanzasBundle/Reportes/InteresesResarcitorios.jrxml');
+			$rutaLogo = $reporteador->getRutaLogo($kernel);
+			
+			/*
+			 * Ruta de destino del PDF
+			 */
+			$destino = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'InteresesResarcitorios.pdf';		
+			
+			//Parametros HashMap
+			$param = $reporteador->getJava('java.util.HashMap');
+			$rutaLogo = $reporteador->getRutaLogo($kernel);
+						
+			$param->put('CLIENTE_DESDE', $cliente1);
+			$param->put('CLIENTE_HASTA', $cliente2); 
+			
+			$conn = $reporteador->getJdbc();
+			
+			$desde = \DateTime::createFromFormat('d/m/Y', $desde);
+			$hasta = \DateTime::createFromFormat('d/m/Y', $hasta);
+			$param->put('COBRANZA_DESDE', $desde->format('d/m/Y'));
+			$param->put('COBRANZA_HASTA', $hasta->format('d/m/Y'));	
+			$param->put('rutaLogo', $rutaLogo);
+			
+			
+			$desde = $desde->format('Y-m-d');
+			$hasta = $hasta->format('Y-m-d');
+									
+			
+			$sql = "SELECT
+			     InteresesResarcitorios.`id` AS InteresesResarcitorios_id,
+			     InteresesResarcitorios.`cbte` AS InteresesResarcitorios_cbte,
+			     InteresesResarcitorios.`monto` AS InteresesResarcitorios_monto,
+			     InteresesResarcitorios.`tasa` AS InteresesResarcitorios_tasa,
+			     InteresesResarcitorios.`interes` AS InteresesResarcitorios_interes,
+			     InteresesResarcitorios.`clienteId` AS InteresesResarcitorios_clienteId,
+			     InteresesResarcitorios.`chequeNum` AS InteresesResarcitorios_chequeNum,
+			     InteresesResarcitorios.`banco` AS InteresesResarcitorios_banco,
+			     InteresesResarcitorios.`diferidoValor` AS InteresesResarcitorios_diferidoValor,
+			     cliente.`idCliente` AS cliente_idCliente,
+			     cliente.`rsocial` AS cliente_rsocial,
+			     cliente.`denominacion` AS cliente_denominacion,
+			     cliente.`direccion` AS cliente_direccion,
+			     InteresesResarcitorios.`cobranzaId` AS InteresesResarcitorios_cobranzaId,
+			     Cobranzas.`id` AS Cobranzas_id,
+			     Cobranzas.`emision` AS Cobranzas_emision,
+			     Cobranzas.`clienteId` AS Cobranzas_clienteId,
+			     Cobranzas.`ptoVenta` AS Cobranzas_ptoVenta,
+			     Cobranzas.`numRecibo` AS Cobranzas_numRecibo,
+			     Cobranzas.`fechaRecibo` AS Cobranzas_fechaRecibo
+			FROM
+			     `cliente` cliente INNER JOIN `InteresesResarcitorios` InteresesResarcitorios ON cliente.`idCliente` = InteresesResarcitorios.`clienteId`
+			     INNER JOIN `Cobranzas` Cobranzas ON InteresesResarcitorios.`cobranzaId` = Cobranzas.`id`
+			WHERE cliente.`idCliente` BETWEEN $cliente1 AND $cliente2
+				AND Cobranzas.`fechaRecibo` BETWEEN '$desde' AND '$hasta'";
+			
+			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	
+		}catch(\Exception $e){
+			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(
+				json_encode(array('success' => false, 'msg' => $e->getMessage()))
+				);
+		}
+		
+		return $response->setContent(
+			json_encode(array('success' => true))
+			);
+	}
+	
+	/**
+     * @Route("/Reportes/VerReporteIntResarcitorios", name="mbp_Reportes_VerReporteIntResarcitorios", options={"expose"=true})
+     */	
+    public function VerReporteIntResarcitorios()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'InteresesResarcitorios.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'InteresesResarcitorios.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+		
+		return $response;
+	}
 }
 
 

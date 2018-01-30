@@ -24,12 +24,12 @@ Ext.define('MetApp.view.CCProveedores.ChequeTerceros' ,{
 							sortable: false
 						},
 						items: [
-							{ text: 'Id', dataIndex: 'id', hidden: false, flex: 1 },
+							{ text: 'Id', dataIndex: 'id', hidden: true, flex: 1 },
 							{ text: 'Banco', dataIndex: 'banco', flex: 1 },
 							{ text: 'Emision', dataIndex: 'emision', flex: 1 },
 							{ text: 'Diferido', dataIndex: 'diferido', flex: 1 },
 							{ text: 'N° de cheque', dataIndex: 'numero', flex: 1 },									
-							{ text: 'Librador', dataIndex: 'librador', flex: 1 },
+							{ text: 'Librador', dataIndex: 'librador', width: 300 },
 							{ text: 'Importe', dataIndex: 'importe', flex: 1, sortable: true },
 							{ 
 								xtype : 'checkcolumn',

@@ -8,6 +8,9 @@ Ext.define('MetApp.view.Compras.PendienteArticuloComprasView' ,{
 	itemId: 'PendienteArticuloComprasView',
 	title: 'Pendientes de ingreso',
 	layout: 'border',
+	bodyStyle: {
+		'background-color': 'white'
+	},
 	
 	initComponent: function(){
 		var me = this;
@@ -26,7 +29,7 @@ Ext.define('MetApp.view.Compras.PendienteArticuloComprasView' ,{
 						{ 
 							text: 'Fecha entrega',
 							dataIndex: 'entrega',
-							width: 100,
+							flex: 1, 
 							xtype: 'datecolumn',
 							dateFormat: 'd/m/Y',
 							renderer: function(val){
@@ -41,6 +44,9 @@ Ext.define('MetApp.view.Compras.PendienteArticuloComprasView' ,{
 					region: 'south',
 					border: false,
 					margins: '5 5 5 5',
+					style: {
+						'background-color': 'white'
+					},
 					layout: 'vbox',
 					items: [
 						{

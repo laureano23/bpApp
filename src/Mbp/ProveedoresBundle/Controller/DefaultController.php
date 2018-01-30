@@ -480,7 +480,7 @@ class DefaultController extends Controller
 			->join('c.clienteId', 'cl')
 			->where('f.id = :idTipoPago')	//EL ID 3 CORRESPONDE A CHEQUE DE TERCEROS
 			->andWhere('cd.estado = :estado')
-			->setParameter('idTipoPago', 3)
+			->setParameter('idTipoPago', 2)
 			->setParameter('estado', 0)	//ESTADO QUE INDICA CHEQUE EN CARTERA
 			->getQuery();
 		

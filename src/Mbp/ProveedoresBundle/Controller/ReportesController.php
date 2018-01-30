@@ -66,7 +66,6 @@ class ReportesController extends Controller
 			     OrdenDePago_detallesPagos.`pago_id` AS OrdenDePago_detallesPagos_pago_id,
 			     OrdenDePago_detallesPagos.`ordenPago_id` AS OrdenDePago_detallesPagos_ordenPago_id,
 			     Proveedor.`id` AS Proveedor_id,
-			     Proveedor.`localidad` AS Proveedor_localidad,
 			     Proveedor.`provincia` AS Proveedor_provincia,
 			     Proveedor.`rsocial` AS Proveedor_rsocial,
 			     Proveedor.`denominacion` AS Proveedor_denominacion,
@@ -75,18 +74,19 @@ class ReportesController extends Controller
 			     Proveedor.`cPostal` AS Proveedor_cPostal,
 			     provincias.`id` AS provincias_id,
 			     provincias.`nombre` AS provincias_nombre,
-			     localidades.`id` AS localidades_id,
-			     localidades.`departamento_id` AS localidades_departamento_id,
-			     localidades.`nombre` AS localidades_nombre,
 			     FormasPago.`id` AS FormasPago_id,
 			     FormasPago.`descripcion` AS FormasPago_descripcion,
-			     OrdenPago.`fechaEmision` AS OrdenPago_fechaEmision
+			     OrdenPago.`fechaEmision` AS OrdenPago_fechaEmision,
+			     departamentos.`id` AS departamentos_id,
+			     departamentos.`provincia_id` AS departamentos_provincia_id,
+			     departamentos.`nombre` AS departamentos_nombre,
+			     Proveedor.`departamento` AS Proveedor_departamento
 			FROM
 			     `Pago` Pago INNER JOIN `OrdenDePago_detallesPagos` OrdenDePago_detallesPagos ON Pago.`id` = OrdenDePago_detallesPagos.`pago_id`
 			     INNER JOIN `OrdenPago` OrdenPago ON OrdenDePago_detallesPagos.`ordenPago_id` = OrdenPago.`id`
 			     INNER JOIN `Proveedor` Proveedor ON OrdenPago.`proveedorId` = Proveedor.`id`
 			     LEFT OUTER JOIN `provincias` provincias ON Proveedor.`provincia` = provincias.`id`
-			     LEFT OUTER JOIN `localidades` localidades ON Proveedor.`localidad` = localidades.`id`
+			     LEFT OUTER JOIN `departamentos` departamentos ON Proveedor.`departamento` = departamentos.`id`
 			     INNER JOIN `FormasPago` FormasPago ON Pago.`idFormaPago` = FormasPago.`id`
 			WHERE
 			     OrdenDePago_detallesPagos.`ordenPago_id` = $idOp";		     

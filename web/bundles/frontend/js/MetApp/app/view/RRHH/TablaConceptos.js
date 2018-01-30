@@ -2,7 +2,7 @@ Ext.define('MetApp.view.RRHH.TablaConceptos', {
 	extend: 'Ext.window.Window',
 	modal: true,	
 	width: 580,
-	height: 540,
+	height: 560,
 	layout: 'border',
 	border: false,
 	itemId: 'conceptosTabla',
@@ -230,6 +230,9 @@ Ext.define('MetApp.view.RRHH.TablaConceptos', {
 				{
 					xtype: 'container',
 					padding: '0 5 0 5',
+					style: {
+						'background-color': 'white'
+					},
 					region: 'south',
 					layout: 'vbox',		
 					items: [botonera]

@@ -23,7 +23,6 @@
      OrdenDePago_detallesPagos.`pago_id` AS OrdenDePago_detallesPagos_pago_id,
      OrdenDePago_detallesPagos.`ordenPago_id` AS OrdenDePago_detallesPagos_ordenPago_id,
      Proveedor.`id` AS Proveedor_id,
-     Proveedor.`localidad` AS Proveedor_localidad,
      Proveedor.`provincia` AS Proveedor_provincia,
      Proveedor.`rsocial` AS Proveedor_rsocial,
      Proveedor.`denominacion` AS Proveedor_denominacion,
@@ -32,18 +31,19 @@
      Proveedor.`cPostal` AS Proveedor_cPostal,
      provincias.`id` AS provincias_id,
      provincias.`nombre` AS provincias_nombre,
-     localidades.`id` AS localidades_id,
-     localidades.`departamento_id` AS localidades_departamento_id,
-     localidades.`nombre` AS localidades_nombre,
      FormasPago.`id` AS FormasPago_id,
      FormasPago.`descripcion` AS FormasPago_descripcion,
-     OrdenPago.`fechaEmision` AS OrdenPago_fechaEmision
+     OrdenPago.`fechaEmision` AS OrdenPago_fechaEmision,
+     departamentos.`id` AS departamentos_id,
+     departamentos.`provincia_id` AS departamentos_provincia_id,
+     departamentos.`nombre` AS departamentos_nombre,
+     Proveedor.`departamento` AS Proveedor_departamento
 FROM
      `Pago` Pago INNER JOIN `OrdenDePago_detallesPagos` OrdenDePago_detallesPagos ON Pago.`id` = OrdenDePago_detallesPagos.`pago_id`
      INNER JOIN `OrdenPago` OrdenPago ON OrdenDePago_detallesPagos.`ordenPago_id` = OrdenPago.`id`
      INNER JOIN `Proveedor` Proveedor ON OrdenPago.`proveedorId` = Proveedor.`id`
      LEFT OUTER JOIN `provincias` provincias ON Proveedor.`provincia` = provincias.`id`
-     LEFT OUTER JOIN `localidades` localidades ON Proveedor.`localidad` = localidades.`id`
+     LEFT OUTER JOIN `departamentos` departamentos ON Proveedor.`departamento` = departamentos.`id`
      INNER JOIN `FormasPago` FormasPago ON Pago.`idFormaPago` = FormasPago.`id`
 WHERE
      OrdenDePago_detallesPagos.`ordenPago_id` = $P{ordenPagoId}]]>
@@ -60,8 +60,7 @@ WHERE
 	<field name="OrdenDePago_detallesPagos_pago_id" class="java.lang.Integer"/>
 	<field name="OrdenDePago_detallesPagos_ordenPago_id" class="java.lang.Integer"/>
 	<field name="Proveedor_id" class="java.lang.Integer"/>
-	<field name="Proveedor_localidad" class="java.lang.Integer"/>
-	<field name="Proveedor_provincia" class="java.lang.Integer"/>
+	<field name="Proveedor_provincia" class="java.lang.String"/>
 	<field name="Proveedor_rsocial" class="java.lang.String"/>
 	<field name="Proveedor_denominacion" class="java.lang.String"/>
 	<field name="Proveedor_direccion" class="java.lang.String"/>
@@ -69,12 +68,13 @@ WHERE
 	<field name="Proveedor_cPostal" class="java.lang.String"/>
 	<field name="provincias_id" class="java.lang.Integer"/>
 	<field name="provincias_nombre" class="java.lang.String"/>
-	<field name="localidades_id" class="java.lang.Integer"/>
-	<field name="localidades_departamento_id" class="java.lang.Integer"/>
-	<field name="localidades_nombre" class="java.lang.String"/>
 	<field name="FormasPago_id" class="java.lang.Integer"/>
 	<field name="FormasPago_descripcion" class="java.lang.String"/>
 	<field name="OrdenPago_fechaEmision" class="java.sql.Timestamp"/>
+	<field name="departamentos_id" class="java.lang.Integer"/>
+	<field name="departamentos_provincia_id" class="java.lang.String"/>
+	<field name="departamentos_nombre" class="java.lang.String"/>
+	<field name="Proveedor_departamento" class="java.lang.Integer"/>
 	<variable name="totalImporte" class="java.lang.Float" calculation="Sum">
 		<variableExpression><![CDATA[$F{Pago_importe}]]></variableExpression>
 	</variable>
@@ -168,7 +168,7 @@ Tel/Fax: 4484-2416]]></text>
 			<staticText>
 				<reportElement x="263" y="44" width="59" height="20" uuid="01dcea6d-b142-49e0-b45f-8034cfbe4fe2"/>
 				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[Localidad:]]></text>
+				<text><![CDATA[Partido:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="71" y="24" width="192" height="20" uuid="ff6e470c-0dd8-415b-b4f3-f0389d38b97e"/>
@@ -188,7 +188,7 @@ Tel/Fax: 4484-2416]]></text>
 			<textField isBlankWhenNull="true">
 				<reportElement x="322" y="44" width="192" height="20" uuid="a92319f1-01d0-4985-a999-893cbb73ee1e"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{localidades_nombre}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{departamentos_nombre}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

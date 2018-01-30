@@ -212,28 +212,4 @@ class Cobranzas
     {
         return $this->numRecibo;
     }
-
-    /**
-     * Set fechaRecibo
-     *
-     * @param \DateTime $fechaRecibo
-     *
-     * @return Cobranzas
-     */
-    public function setFechaRecibo($fechaRecibo)
-    {
-        $this->fechaRecibo = $fechaRecibo;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaRecibo
-     *
-     * @return \DateTime
-     */
-    public function getFechaRecibo()
-    {
-        return $this->fechaRecibo;
-    }
 }

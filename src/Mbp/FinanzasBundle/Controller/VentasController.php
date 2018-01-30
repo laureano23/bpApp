@@ -358,6 +358,14 @@ class VentasController extends Controller
 				throw new \Exception("No se encontró el registro", 1);			
 			}	
 			
+			//SI HAY INTERESES ASOCIADOS LOS BORRAMOS
+			$repoIntereses = $em->getRepository('MbpFinanzasBundle:InteresesResarcitorios');
+			$intereses = $repoIntereses->findByCobranzaId($record);
+			
+			foreach ($intereses as $i) {
+				$em->remove($i);
+			}
+			
 			$em->remove($record);
 			$em->flush();
 			

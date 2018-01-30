@@ -578,6 +578,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
 		                    render : dragZone,
 		                }, 
         			},
+        			{
+        				text: 'Intereses por Pago Fuera de Término',
+        				itemId: 'reporteIntResarcitorios',
+        				listeners : {
+		                    render : dragZone,
+		                }, 
+        			},
         		]        		
         	},
         	{

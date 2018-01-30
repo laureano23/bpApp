@@ -6,7 +6,8 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 	views: [
 		'MetApp.view.Reportes.RepoIVAVentas',
 		'MetApp.view.Reportes.RepoIVACompras',
-		'MetApp.view.Reportes.ReporteArtVendidos'
+		'MetApp.view.Reportes.ReporteArtVendidos',
+		'MetApp.view.Reportes.ReporteIntResarcitorios'
 	],
 	refs:[
 	],
@@ -35,10 +36,93 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 			'ReporteArtVendidos button[itemId=btnCodigo2]': {
 				click: this.BuscarArt
 			},
+			'ReporteArtVendidos button[itemId=btnCliente1]': {
+				click: this.ArtVendidosCliente
+			},
+			'ReporteArtVendidos button[itemId=btnCliente2]': {
+				click: this.ArtVendidosCliente
+			},
 			'ReporteArtVendidos button[itemId=printDateReport]': {
 				click: this.ImprimirArtVendidos
 			},
+			'viewport menuitem[itemId=reporteIntResarcitorios]': {
+				click: this.AddReportesIntResarcitorios
+			},
+			'ReporteIntResarcitorios button[itemId=printDateReport]': {
+				click: this.ImprimirArtVendidos
+			},
+			'ReporteIntResarcitorios button[itemId=btnCliente1]': {
+				click: this.ArtVendidosCliente
+			},
+			'ReporteIntResarcitorios button[itemId=btnCliente2]': {
+				click: this.ArtVendidosCliente
+			},
+			'ReporteIntResarcitorios button[itemId=printDateReport]': {
+				click: this.PrintInteresesRes
+			},
 		});
+	},
+	
+	PrintInteresesRes: function(btn){
+		var win = btn.up('window');
+		var form = win.down('form');
+		
+		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
+		
+		if(form.isValid()){
+			myMask.show();
+			var values = form.getForm().getValues();
+			Ext.Ajax.request({
+				url: Routing.generate('mbp_Reportes_InteresesResarcitorios'),
+				
+				params: {
+					cliente1: values.cliente1,
+					cliente2: values.cliente2,
+					desde: values.desde,
+					hasta: values.hasta,
+				},
+				
+				success: function(resp){
+					var jsonResp = Ext.JSON.decode(resp.responseText);
+					if(jsonResp.success == true){
+						var ruta = Routing.generate('mbp_Reportes_VerReporteIntResarcitorios');
+						
+						window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+					}
+					myMask.hide();
+				},
+				
+				failure: function(resp){
+					myMask.hide();
+				}
+			});
+		}
+	},
+	
+	AddReportesIntResarcitorios: function(btn){
+		var view = Ext.widget('ReporteIntResarcitorios');
+	},
+	
+	ArtVendidosCliente: function(btn){
+		console.log(btn);
+		var view = Ext.widget('clientesSearchGrid');
+		view.down('grid').getStore().load();
+		var viewReportes = btn.up('window');
+		var btn2 = view.down('button');
+		
+		btn2.on('click', function(){			
+			var sel = view.down('grid').getSelectionModel().getSelection()[0];
+			
+			if(btn.itemId == 'btnCliente1'){
+				console.log("Es el boton 1");
+				viewReportes.queryById('cliente1').setValue(sel.data.id);
+			}else{
+				viewReportes.queryById('cliente2').setValue(sel.data.id);
+			}
+			view.close();
+		});
+		
+		
 	},
 	
 	ImprimirArtVendidos: function(btn){

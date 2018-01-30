@@ -80,8 +80,16 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 									xtype: 'textfield',
 									name: 'denominacion',
 									fieldLabel: 'Denominacion',
-									width: 550
-								}
+									width: 450
+								},
+								{
+									xtype: 'textfield',
+									width: 380,
+									labelWidth: 70,
+									margins: '0 0 0 5',
+									name: 'direccion',
+									fieldLabel: 'Direccion:',
+								},
 							]
 						},
 						{
@@ -92,17 +100,10 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 								disabledCls: 'myDisabledClass'
 							},
 							layout: 'column',
-							items: [
-								{
-									xtype: 'textfield',
-									//width: 300,
-									name: 'direccion',
-									fieldLabel: 'Direccion:',
-									columnWidth: 0.33
-								},
+							items: [								
 								{
 									xtype: 'combobox',
-									columnWidth: 0.33,
+									columnWidth: 0.5,
 									labelWidth: 70,
 									name: 'provincia',
 									itemId: 'comboProv',
@@ -127,7 +128,7 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 									typeAhead: true,
 									minChars: 1,
 									fieldLabel: 'Partido',
-									columnWidth: 0.33
+									columnWidth: 0.5
 								},
 							]							
 						},

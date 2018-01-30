@@ -1,6 +1,6 @@
 Ext.define('MetApp.view.CCProveedores.PagoProveedores' ,{
 	extend: 'Ext.window.Window',
-	height: 530,
+	height: 550,
 	width: 950,
 	modal: true,
 	autoShow: true,
@@ -8,6 +8,9 @@ Ext.define('MetApp.view.CCProveedores.PagoProveedores' ,{
 	itemId: 'PagoProveedores',
 	title: 'Pago a proveedores',
 	layout: 'border',
+	bodyStyle: {
+		'background-color': 'white'
+	},
 	
 	initComponent: function(){
 		var me = this;
@@ -19,6 +22,9 @@ Ext.define('MetApp.view.CCProveedores.PagoProveedores' ,{
 			items: [
 				{
 					xtype: 'container',
+					style: {
+						'background-color': 'white'
+					},
 					region: 'north',
 					items: [
 						{
@@ -64,7 +70,7 @@ Ext.define('MetApp.view.CCProveedores.PagoProveedores' ,{
 				{
 					xtype: 'form',
 					border: false,
-					margin: '5 5 5 5',
+					margin: '5 5 0 5',
 					region: 'center',
 					items: [
 						{
@@ -85,20 +91,13 @@ Ext.define('MetApp.view.CCProveedores.PagoProveedores' ,{
 								},
 								{
 									xtype: 'textfield',
+									labelWidth: 120,
 									fieldLabel: 'Concepto bancario',
 									name: 'conceptoBancario',
 									itemId: 'conceptoBancario',
 									//inputValue: true,
 									hidden: false,
-								},
-								{
-									xtype: 'textfield',
-									width: 200,
-									labelWidth: 50,
-									itemId: 'numero',
-									name: 'numero',
-									fieldLabel: 'Numero'
-								},
+								},								
 								{
 									xtype: 'combobox',
 									store: 'MetApp.store.Finanzas.BancosStore',
@@ -108,15 +107,6 @@ Ext.define('MetApp.view.CCProveedores.PagoProveedores' ,{
 									itemId: 'banco',
 									name: 'banco',
 									fieldLabel: 'Banco'
-								},
-								{
-									xtype: 'numberfield',
-									allowBlank: false,
-									width: 200,
-									labelWidth: 50,
-									itemId: 'importe',
-									name: 'importe',
-									fieldLabel: 'Importe'
 								},
 							]
 						},
@@ -128,7 +118,25 @@ Ext.define('MetApp.view.CCProveedores.PagoProveedores' ,{
 							},
 							items: [
 								{
-									xtype: 'datefield',									
+									xtype: 'textfield',
+									width: 200,
+									labelWidth: 50,
+									itemId: 'numero',
+									name: 'numero',
+									fieldLabel: 'Numero'
+								},								
+								{
+									xtype: 'numberfield',
+									allowBlank: false,
+									width: 200,
+									labelWidth: 50,
+									itemId: 'importe',
+									name: 'importe',
+									fieldLabel: 'Importe'
+								},
+								{
+									xtype: 'datefield',		
+									labelWidth: 60,							
 									name: 'diferido',
 									itemId: 'diferido',
 									fieldLabel: 'Diferido'
@@ -152,6 +160,7 @@ Ext.define('MetApp.view.CCProveedores.PagoProveedores' ,{
 				},
 				{
 					xtype: 'container',
+					margins: '5 0 0 0',
 					region: 'south',
 					items: [
 						{
