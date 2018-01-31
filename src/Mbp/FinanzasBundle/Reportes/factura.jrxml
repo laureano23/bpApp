@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b7fbe4cc-9642-4a30-b319-1f1509ec7bd0">
-	<property name="ireport.zoom" value="1.3310000000000046"/>
+	<property name="ireport.zoom" value="1.0000000000000036"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="20"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="rutaLogo" class="java.lang.String"/>
 	<parameter name="facturaId" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -485,32 +485,32 @@ $F{Facturas_tipo} == 3 ? "A" : ""]]></textFieldExpression>
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="1" y="0" width="65" height="20" uuid="52b4ec0b-0029-4afd-8d4a-c776ab86a82b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{FacturaDetalle_cantidad}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="65" y="0" width="75" height="20" isPrintWhenDetailOverflows="true" uuid="5d55342f-5f98-4ca5-95dc-6bc4c5423822"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{articulos_codigo}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="140" y="0" width="230" height="20" isPrintWhenDetailOverflows="true" uuid="049c181d-1756-443b-b6a8-96555eb8d1a0"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{FacturaDetalle_descripcion}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="370" y="0" width="50" height="20" isPrintWhenDetailOverflows="true" uuid="5ce21c8c-900c-4f0d-bdb8-7b9a1a837e63"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{FacturaDetalle_precio}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
 				<reportElement x="420" y="0" width="75" height="20" isPrintWhenDetailOverflows="true" uuid="496184bb-0990-4c67-b641-27ec47eb5a93"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{FacturaDetalle_precio} * $F{FacturaDetalle_cantidad}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="495" y="0" width="60" height="20" isPrintWhenDetailOverflows="true" uuid="1b5e7d5d-f353-4375-bb3c-88b4a4d5244b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{RemitosClientes_remitoNum}]]></textFieldExpression>

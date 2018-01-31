@@ -31,13 +31,15 @@ class ClienteRepository extends  EntityRepository
 							c.intereses,
 							c.tasaInt as tasa,
 							prov.id as provincia,
-							dep.id as localidad,
+							dep.id as departamento,
+							l.id as localidad,
 							t.id as transporte,
 							t.nombre as transporteNombre')
 			->from('Mbp\ClientesBundle\Entity\Cliente', 'c')
 		    ->where($qb->expr()->like('c.rsocial', $qb->expr()->literal($q.'%')))
 			->leftjoin('c.provincia', 'prov')
 			->leftjoin('c.departamento', 'dep')
+			->leftjoin('c.localidad', 'l')
 			->leftjoin('c.iva', 'i')
 			->leftjoin('c.transporteId', 't')
 		    ->getQuery()

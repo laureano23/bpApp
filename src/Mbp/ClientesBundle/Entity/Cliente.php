@@ -56,6 +56,13 @@ class Cliente
 	 * @ORM\JoinColumn(name="provincia", referencedColumnName="id", nullable=true)
      */
     private $provincia;
+	
+	/**
+     * @var \Mbp\PersonalBundle\Entity\Localidades
+	 * @ORM\ManyToOne(targetEntity="Mbp\PersonalBundle\Entity\Localidades")
+	 * @ORM\JoinColumn(name="localidad", referencedColumnName="id", nullable=true)
+     */
+    private $localidad;
     
     /**
      * @var string
@@ -727,5 +734,29 @@ class Cliente
     public function getTasaInt()
     {
         return $this->tasaInt;
+    }
+
+    /**
+     * Set localidad
+     *
+     * @param \Mbp\PersonalBundle\Entity\Localidades $localidad
+     *
+     * @return Cliente
+     */
+    public function setLocalidad(\Mbp\PersonalBundle\Entity\Localidades $localidad = null)
+    {
+        $this->localidad = $localidad;
+
+        return $this;
+    }
+
+    /**
+     * Get localidad
+     *
+     * @return \Mbp\PersonalBundle\Entity\Localidades
+     */
+    public function getLocalidad()
+    {
+        return $this->localidad;
     }
 }

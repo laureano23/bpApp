@@ -21,6 +21,9 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 			'clientestb combobox[itemId=comboProv]': {
 				select: this.FilterPartido
 			},
+			'clientestb combobox[itemId=comboPartido]': {
+				select: this.FilterLocalidad
+			},
 			'clientestb button[action=actEdit]': {
 				click: this.EditaCliente
 			},
@@ -36,12 +39,35 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 		});
 	},
 	
+	FilterLocalidad: function(combo){
+		var win = combo.up('window');
+		var storeLocalidad = win.queryById('comboLocalidad').getStore();
+		var deptoId = win.queryById('comboPartido').getValue();
+		
+		storeLocalidad.getProxy().setExtraParam('partidoId', deptoId);
+		storeLocalidad.load();	
+		/*if(deptoId == null){
+			Ext.Msg.show({
+				title: 'Atención',
+				msg: 'Seleccione un partido primero',
+				buttons: Ext.Msg.OK,
+     			icon: Ext.Msg.ALERT
+			})
+		}else{
+			storeLocalidad.getProxy().setExtraParam('partidoId', deptoId);
+			storeLocalidad.load();	
+		}*/
+	},
+	
 	FilterPartido: function(combo){
 		var win = combo.up('window');
 		var storePartido = win.queryById('comboPartido').getStore();
 		var provId = win.queryById('comboProv').getValue();
 		
-		if(provId == null){
+		
+		storePartido.getProxy().setExtraParam('provinciaId', provId);
+		storePartido.load();	
+		/*if(provId == null){
 			Ext.Msg.show({
 				title: 'Atención',
 				msg: 'Seleccione una provincia primero',
@@ -51,7 +77,7 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 		}else{
 			storePartido.getProxy().setExtraParam('provinciaId', provId);
 			storePartido.load();	
-		}
+		}*/
 	},
 	
 	AddClientesTb: function(btn){
@@ -101,6 +127,7 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 	},
 	
 	BuscaCliente: function(btn){
+		var me = this;
 		var tablaCliente = btn.up('window');
 		var botonera = tablaCliente.queryById('botonera');
 		var win = Ext.widget('clientesSearchGrid');
@@ -120,7 +147,16 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 			
 			var rec = store.findRecord('id', selection.data.id);
 			var form = Ext.ComponentQuery.query('#clientesTb')[0].down('form');
+						
 			form.loadRecord(rec);
+			
+			var comboProv = tablaCliente.queryById('comboProv');
+			var comboPartido = tablaCliente.queryById('comboPartido');
+			me.FilterPartido(comboProv);
+			form.loadRecord(rec);
+			me.FilterLocalidad(comboPartido);
+			form.loadRecord(rec);
+			
 			win.close();
 		});
 	},

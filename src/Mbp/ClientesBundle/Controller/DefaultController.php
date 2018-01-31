@@ -34,6 +34,7 @@ class DefaultController extends Controller
 		$response = new Response;
 		$repoDepto = $em->getRepository('MbpPersonalBundle:Departamentos');
 		$repoProvincia = $em->getRepository('MbpPersonalBundle:Provincia');
+		$repoLocalidad = $em->getRepository('MbpPersonalBundle:Localidades');
 		$repoClientes = $em->getRepository('MbpClientesBundle:Cliente');
 		$repoIva = $em->getRepository('MbpFinanzasBundle:PosicionIVA');
 		$repoTransporte = $em->getRepository('MbpClientesBundle:Transportes');
@@ -53,6 +54,7 @@ class DefaultController extends Controller
 			$cliente->setDireccion($request->request->get('direccion'));
 			$cliente->setDepartamento($repoDepto->find($request->request->get('departamento')));
 			$cliente->setProvincia($repoProvincia->find($request->request->get('provincia')));
+			$cliente->setLocalidad($repoLocalidad->find($request->request->get('localidad')));
 			$cliente->setEmail($request->request->get('email'));
 			$cliente->setCuit($request->request->get('cuit'));
 			$cliente->setCPostal($request->request->get('cPostal'));
