@@ -101,16 +101,18 @@ class EmpleadosCollection
 			$empleado->setNombre($activeSheet->getCell($this->columnas[self::$columnNombre].$fila)->getValue());		
 					
 			do{//CARGO LOS ARRAYS DE FECHA, DIA Y HORARIOS							
-				$empleado->setFecha($activeSheet->getCell($this->columnas[self::$columnFecha].$fila)->getValue());
-				$empleado->setFecha($activeSheet->getCell($this->columnas[self::$columnDia].$fila)->getValue());
+				$empleado->addFecha($activeSheet->getCell($this->columnas[self::$columnFecha].$fila)->getValue());
+				$empleado->addDia($activeSheet->getCell($this->columnas[self::$columnDia].$fila)->getValue());
 								
 				$contFichadas = 0; //PARA AVANZAR POR LAS COLUMNAS DE FICHADAS (ENTRADAS Y SALIDAS)
 				//BUCLE PARA CARGAR TODAS LAS ENTRADAS Y SALIDAS
 				do{
 					$entrada = $activeSheet->getCell($this->columnas[self::$columnaEntradas + $contFichadas].$fila)->getValue();
 					$salida = $activeSheet->getCell($this->columnas[self::$columnaSalidas + $contFichadas].$fila)->getValue();
-					$empleado->setEntrada($entrada);
-					$empleado->setSalida($salida);
+					$empleado->addEntradas($entrada);
+					$empleado->addSalidas($salida);
+					$empleado->addFichadaEntrada($entrada);					
+					$empleado->addFichadaSalida($salida);
 					$contFichadas += 2;
 						
 				}while($contFichadas < 10);
@@ -131,13 +133,8 @@ class EmpleadosCollection
 			//AGREGO EL EMPLEADO A LA COLECCION
 			$this->addEmpleado($empleado);
 			
-			$empleado->ordenarFechas();	
-			
-			
 			
 		} while ($activeSheet->getCell($this->columnas[self::$columnLegajo].($fila))->getValue() != "");
-		
-		$empleado->ordenarObs();
 		
 	}	
 

@@ -65,9 +65,7 @@ class Empleado
 	public function addFecha($strFecha){
 		$fecha = \DateTime::CreateFromFormat('d-M-y', $strFecha);
 		if($fecha == false){
-			throw new \Exception("Fecha no Valida", 1);		
-
-	
+			throw new \Exception("Fecha no Valida", 1);			
 		}
 		
 		$data = array(
@@ -96,40 +94,22 @@ class Empleado
 	
 	// CONVIERTE LAS HORAS DE LA PLANILLA EN FORMAT H:i A OBJETOS DATETIME
 	public function addFichadaEntrada($strHora){
-		$fichadaEntrada = \DateTime::CreateFromFormat('H:i', 
-
-$strHora);
+		$fichadaEntrada = \DateTime::CreateFromFormat('H:i', $strHora);
 		
-		if($fichadaEntrada == false || $fichadaEntrada == "")
-
-{return;}
+		if($fichadaEntrada == false || $fichadaEntrada == ""){return;}
 		
 		//VALIDACION DE ENTRADAS SEGUN POLITICA DE LA EMPRESA
-		if($fichadaEntrada && $fichadaEntrada->format('i') > 0 && 
-
-$fichadaEntrada->format('i') <= 5){
-			$fichadaEntrada->setTime($fichadaEntrada->format
-
-('H'), 0);
+		if($fichadaEntrada && $fichadaEntrada->format('i') > 0 && $fichadaEntrada->format('i') <= 5){
+			$fichadaEntrada->setTime($fichadaEntrada->format('H'), 0);
 		}
-		if($fichadaEntrada && $fichadaEntrada->format('i') > 5 && 
-
-$fichadaEntrada->format('i') <= 30){
-			$fichadaEntrada->setTime($fichadaEntrada->format
-
-('H'), 30);
+		if($fichadaEntrada && $fichadaEntrada->format('i') > 5 && $fichadaEntrada->format('i') <= 30){
+			$fichadaEntrada->setTime($fichadaEntrada->format('H'), 30);
 		}		
-		if($fichadaEntrada && $fichadaEntrada->format('i') > 30 && 
-
-$fichadaEntrada->format('i') <= 35){
-			$fichadaEntrada->setTime($fichadaEntrada->format
-
-('H'), 30);
+		if($fichadaEntrada && $fichadaEntrada->format('i') > 30 && $fichadaEntrada->format('i') <= 35){
+			$fichadaEntrada->setTime($fichadaEntrada->format('H'), 30);
 		}
 		if($fichadaEntrada && $fichadaEntrada->format('i') > 35){
-			$fichadaEntrada->setTime(($fichadaEntrada->format
-
-('H') + 1), 0);
+			$fichadaEntrada->setTime(($fichadaEntrada->format('H') + 1), 0);
 		}		
 		if($fichadaEntrada && $fichadaEntrada->format('H') < 6){
 			$fichadaEntrada->setTime(6, 0);
@@ -144,16 +124,10 @@ $fichadaEntrada->format('i') <= 35){
 	}
 
 	public function addEntradas($strHora){
-		$fichadaEntrada = \DateTime::CreateFromFormat('H:i', 
-
-$strHora);
-		if($fichadaEntrada == false || $fichadaEntrada == "")
-
-{return;}
+		$fichadaEntrada = \DateTime::CreateFromFormat('H:i', $strHora);
+		if($fichadaEntrada == false || $fichadaEntrada == ""){return;}
 		
-		array_push($this->fecha[0]['entradaSimple'], 
-
-$fichadaEntrada);
+		array_push($this->fecha[0]['entradaSimple'], $fichadaEntrada);
 	}
 	
 	public function getEntradas(){
@@ -165,44 +139,26 @@ $fichadaEntrada);
 	}
 	
 	public function addFichadaSalida($strHora){		
-		$fichadaSalida = \DateTime::CreateFromFormat('H:i', 
-
-$strHora);
+		$fichadaSalida = \DateTime::CreateFromFormat('H:i', $strHora);
 		
-		if($fichadaSalida == false || $fichadaSalida == "")
-
-{return;}
+		if($fichadaSalida == false || $fichadaSalida == ""){return;}
 		
 		//VALIDACION DE SALIDAS SEGUN POLITICA DE LA EMPRESA
-		if($fichadaSalida && $fichadaSalida->format('i') > 0 && 
-
-$fichadaSalida->format('i') < 30){
-			$fichadaSalida->setTime($fichadaSalida->format
-
-('H'), 0);
+		if($fichadaSalida && $fichadaSalida->format('i') > 0 && $fichadaSalida->format('i') < 30){
+			$fichadaSalida->setTime($fichadaSalida->format('H'), 0);
 		}
-		if($fichadaSalida && $fichadaSalida->format('i') >= 30 && 
-
-$fichadaSalida->format('i') <= 59){
-			$fichadaSalida->setTime($fichadaSalida->format
-
-('H'), 30);
+		if($fichadaSalida && $fichadaSalida->format('i') >= 30 && $fichadaSalida->format('i') <= 59){
+			$fichadaSalida->setTime($fichadaSalida->format('H'), 30);
 		}
 		
 		array_push($this->fecha[0]['fichadaS'], $fichadaSalida);
 	}
 	
 	public function addSalidas($strHora){
-		$fichadaSalida = \DateTime::CreateFromFormat('H:i', 
-
-$strHora);		
-		if($fichadaSalida == false || $fichadaSalida == "")
-
-{return;}
+		$fichadaSalida = \DateTime::CreateFromFormat('H:i', $strHora);		
+		if($fichadaSalida == false || $fichadaSalida == ""){return;}
 		
-		array_push($this->fecha[0]['salidaSimple'], 
-
-$fichadaSalida);
+		array_push($this->fecha[0]['salidaSimple'], $fichadaSalida);
 	}
 	
 	public function getSalidas(){
@@ -214,9 +170,7 @@ $fichadaSalida);
 	}
 	
 	/*
-	 * GUARDAMOS SOLO EL CODIGO DE LA OBSERVACION PARA LUEGO COMPARAR 
-
-CONTRA LA BD
+	 * GUARDAMOS SOLO EL CODIGO DE LA OBSERVACION PARA LUEGO COMPARAR CONTRA LA BD
 	 * */
 	public function addObservacion($observacion){
 		$obs = str_split($observacion, 2);
@@ -258,9 +212,7 @@ CONTRA LA BD
 	}
 	
 	public function setHsPuntualidad($hs){
-		$hs < 0 ? $this->hsPuntualidad = 0 : $this->hsPuntualidad 
-
-= $hs; //SI QUIERO SETEAR UNA HORA NEGATIVA SETEA 0;
+		$hs < 0 ? $this->hsPuntualidad = 0 : $this->hsPuntualidad = $hs; //SI QUIERO SETEAR UNA HORA NEGATIVA SETEA 0;
 	}
 	
 	public function getHsPuntualidad(){
