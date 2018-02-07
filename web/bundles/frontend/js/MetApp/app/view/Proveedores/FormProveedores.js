@@ -1,6 +1,6 @@
 Ext.define('MetApp.view.Proveedores.FormProveedores' ,{
 	extend: 'Ext.window.Window',
-	height: 520,
+	height: 540,
 	width: 900,
 	modal: true,
 	autoShow: true,
@@ -25,16 +25,15 @@ Ext.define('MetApp.view.Proveedores.FormProveedores' ,{
 					},					
 					items: [
 						{
-							xtype: 'container',	
+							xtype: 'container',
+							margin: '5 0 0 5',	
 							defaults: {								
 								readOnly: true,
 								disabledCls: 'myDisabledClass'
-							},					
-							height: 50,
+							},			
 							layout: {
 								type: 'hbox',
-								align: 'middle',
-								padding: '0 0 0 5'
+								align: 'middle',								
 							},
 							items: [
 								{
@@ -55,8 +54,8 @@ Ext.define('MetApp.view.Proveedores.FormProveedores' ,{
 								{
 									xtype: 'textfield',
 									padding: '0 0 0 5',
-									name: 'rSocial',
-									itemId: 'rSocial',
+									name: 'rsocial',
+									itemId: 'rsocial',
 									fieldLabel: 'Razon social:',
 									width: 700,
 									allowBlank: false
@@ -98,8 +97,20 @@ Ext.define('MetApp.view.Proveedores.FormProveedores' ,{
 									width: 300,
 									name: 'direccion',
 									fieldLabel: 'Direccion:',
-									columnWidth: 0.33
+									columnWidth: 1
 								},								
+								
+							]							
+						},
+						{
+							xtype: 'container',
+							defaults: {
+								padding: '5 5 0 5',
+								readOnly: true,
+								disabledCls: 'myDisabledClass'
+							},
+							layout: 'column',
+							items: [
 								{
 									xtype: 'combobox',
 									columnWidth: 0.33,
@@ -129,8 +140,23 @@ Ext.define('MetApp.view.Proveedores.FormProveedores' ,{
 									fieldLabel: 'Partido',
 									columnWidth: 0.33
 								},
-							]							
-						},
+								{
+									xtype: 'combobox',
+									forceSelection: true,
+									queryMode: 'local',
+									name: 'localidad',
+									itemId: 'comboLocalidad',
+									store: 'MetApp.store.Personal.LocalidadesStore',
+									displayField: 'nombre',
+									valueField: 'idLocalidad',
+									typeAhead: true,
+									minChars: 1,
+									fieldLabel: 'Localidad',
+									labelWidth: 60,
+									columnWidth: 0.33
+								},
+							]
+						},								
 						{
 							xtype: 'container',
 							defaults: {

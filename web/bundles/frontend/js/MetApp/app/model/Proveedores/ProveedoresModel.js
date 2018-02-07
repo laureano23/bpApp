@@ -21,7 +21,8 @@ Ext.define('MetApp.model.Proveedores.ProveedoresModel',{
 		{name: 'porcentajeRetencion', type: 'float'},
 		{name: 'tipoGasto', type: 'int'},
 		{name: 'localidad', type: 'int'},
-		{name: 'provincia', type: 'int'},
+		{name: 'departamento', type: 'int'},
+		{name: 'provincia', type: 'string'},
 		{name: 'cuentaCerrada', type: 'boolean'},
 	]
 });

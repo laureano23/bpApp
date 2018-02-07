@@ -54,6 +54,13 @@ class FormasPago
      * @ORM\Column(name="retencionIVA21", type="boolean")
      */
     private $retencionIVA21=0; 
+	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="esBancario", type="boolean")
+     */
+    private $esBancario=0; 
 
 
     /**
@@ -160,5 +167,53 @@ class FormasPago
     public function getConceptoBancoId()
     {
         return $this->conceptoBancoId;
+    }
+
+    /**
+     * Set retencionIIBB
+     *
+     * @param boolean $retencionIIBB
+     *
+     * @return FormasPago
+     */
+    public function setRetencionIIBB($retencionIIBB)
+    {
+        $this->retencionIIBB = $retencionIIBB;
+
+        return $this;
+    }
+
+    /**
+     * Get retencionIIBB
+     *
+     * @return boolean
+     */
+    public function getRetencionIIBB()
+    {
+        return $this->retencionIIBB;
+    }
+
+    /**
+     * Set retencionIVA21
+     *
+     * @param boolean $retencionIVA21
+     *
+     * @return FormasPago
+     */
+    public function setRetencionIVA21($retencionIVA21)
+    {
+        $this->retencionIVA21 = $retencionIVA21;
+
+        return $this;
+    }
+
+    /**
+     * Get retencionIVA21
+     *
+     * @return boolean
+     */
+    public function getRetencionIVA21()
+    {
+        return $this->retencionIVA21;
     }
 }

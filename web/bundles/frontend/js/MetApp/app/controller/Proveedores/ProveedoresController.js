@@ -19,6 +19,9 @@ Ext.define('MetApp.controller.Proveedores.ProveedoresController',{
 			'ProveedoresWin combobox[itemId=comboProv]': {
 				select: this.FilterPartido
 			},
+			'ProveedoresWin combobox[itemId=comboPartido]': {
+				select: this.FilterLocalidad
+			},
 			'ProveedoresWin button[itemId=btnNew]': {
 				click: this.NuevoProveedor
 			},
@@ -29,6 +32,15 @@ Ext.define('MetApp.controller.Proveedores.ProveedoresController',{
 				click: this.EditarProveedor
 			}
 		});
+	},
+	
+	FilterLocalidad: function(combo){
+		var win = combo.up('window');
+		var storeLocalidad = win.queryById('comboLocalidad').getStore();
+		var deptoId = win.queryById('comboPartido').getValue();
+		
+		storeLocalidad.getProxy().setExtraParam('partidoId', deptoId);
+		storeLocalidad.load();	
 	},
 	
 	FilterPartido: function(combo){
@@ -61,6 +73,7 @@ Ext.define('MetApp.controller.Proveedores.ProveedoresController',{
 	},
 	
 	BuscaProveedor: function(btn){
+		var me = this;
 		var tablaProveedor = btn.up('window');
 		var form = tablaProveedor.down('form');
 		var win = Ext.widget('ProveedoresSearchGrid');
@@ -73,6 +86,13 @@ Ext.define('MetApp.controller.Proveedores.ProveedoresController',{
 			var record = grid.getSelectionModel().getSelection()[0];
 			form.loadRecord(record);
 			win.close();
+			
+			var comboProv = tablaProveedor.queryById('comboProv');
+			var comboPartido = tablaProveedor.queryById('comboPartido');
+			me.FilterPartido(comboProv);
+			form.loadRecord(record);
+			me.FilterLocalidad(comboPartido);
+			form.loadRecord(record);
 		});
 	},
 	

@@ -34,16 +34,34 @@ Ext.define('MetApp.view.Proveedores.FormasPagoView',{
 						},						
 						{
 							xtype: 'textfield',
-							name: 'formaPago',
+							name: 'descripcion',
 							itemId: 'formaPago',
 							fieldLabel: 'Forma de Pago',
 							width: 450
 						},
 						{
 							xtype: 'checkbox',
-							name: 'conceptoBancario',
+							name: 'esBancario',
 							itemId: 'conceptoBancario',
 							fieldLabel: 'Concepto bancario',
+							labelWidth: 120,
+							uncheckedValue: 0
+						},
+						{
+							xtype: 'checkbox',
+							name: 'retencionIIBB',
+							itemId: 'retencionIIBB',
+							fieldLabel: 'Retención IIBB',
+							labelWidth: 120,
+							uncheckedValue: 0
+						},
+						{
+							xtype: 'checkbox',
+							name: 'retencionIVA21',
+							itemId: 'retencionIVA',
+							fieldLabel: 'Retención IVA',
+							labelWidth: 120,
+							uncheckedValue: 0
 						},
 						{
 							xtype: 'grid',

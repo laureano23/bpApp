@@ -46,17 +46,6 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 		
 		storeLocalidad.getProxy().setExtraParam('partidoId', deptoId);
 		storeLocalidad.load();	
-		/*if(deptoId == null){
-			Ext.Msg.show({
-				title: 'Atención',
-				msg: 'Seleccione un partido primero',
-				buttons: Ext.Msg.OK,
-     			icon: Ext.Msg.ALERT
-			})
-		}else{
-			storeLocalidad.getProxy().setExtraParam('partidoId', deptoId);
-			storeLocalidad.load();	
-		}*/
 	},
 	
 	FilterPartido: function(combo){
@@ -66,18 +55,7 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 		
 		
 		storePartido.getProxy().setExtraParam('provinciaId', provId);
-		storePartido.load();	
-		/*if(provId == null){
-			Ext.Msg.show({
-				title: 'Atención',
-				msg: 'Seleccione una provincia primero',
-				buttons: Ext.Msg.OK,
-     			icon: Ext.Msg.ALERT
-			})
-		}else{
-			storePartido.getProxy().setExtraParam('provinciaId', provId);
-			storePartido.load();	
-		}*/
+		storePartido.load();
 	},
 	
 	AddClientesTb: function(btn){

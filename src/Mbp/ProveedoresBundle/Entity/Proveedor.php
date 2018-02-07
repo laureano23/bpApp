@@ -34,6 +34,13 @@ class Proveedor
 	 * @ORM\JoinColumn(name="departamento", referencedColumnName="id", nullable=true)
      */
     private $departamento;
+	
+	/**
+     * @var \Mbp\PersonalBundle\Entity\Localidades
+	 * @ORM\ManyToOne(targetEntity="Mbp\PersonalBundle\Entity\Localidades")
+	 * @ORM\JoinColumn(name="localidad", referencedColumnName="id", nullable=true)
+     */
+    private $localidad;
     
     /**
      * @var \Mbp\PersonalBundle\Entity\Provincia
@@ -627,5 +634,53 @@ class Proveedor
     public function getImputacionGastos()
     {
         return $this->imputacionGastos;
+    }
+
+    /**
+     * Set departamento
+     *
+     * @param \Mbp\PersonalBundle\Entity\Departamentos $departamento
+     *
+     * @return Proveedor
+     */
+    public function setDepartamento(\Mbp\PersonalBundle\Entity\Departamentos $departamento = null)
+    {
+        $this->departamento = $departamento;
+
+        return $this;
+    }
+
+    /**
+     * Get departamento
+     *
+     * @return \Mbp\PersonalBundle\Entity\Departamentos
+     */
+    public function getDepartamento()
+    {
+        return $this->departamento;
+    }
+
+    /**
+     * Set localidad
+     *
+     * @param \Mbp\PersonalBundle\Entity\Localidades $localidad
+     *
+     * @return Proveedor
+     */
+    public function setLocalidad(\Mbp\PersonalBundle\Entity\Localidades $localidad = null)
+    {
+        $this->localidad = $localidad;
+
+        return $this;
+    }
+
+    /**
+     * Get localidad
+     *
+     * @return \Mbp\PersonalBundle\Entity\Localidades
+     */
+    public function getLocalidad()
+    {
+        return $this->localidad;
     }
 }

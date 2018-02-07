@@ -27,12 +27,6 @@ class FormasPago
      * @ORM\Column(name="descripcion", type="string", length=35)
      */
     private $descripcion;
-	
-	/**
-	 * @ORM\ManyToOne(targetEntity="ConceptosBanco")
-	 * @ORM\JoinColumn(name="ConceptoBanco_id", referencedColumnName="id", nullable=true)
-	 */
-	private $conceptoBancario;
 
     /**
      * @var boolean
@@ -54,6 +48,13 @@ class FormasPago
      * @ORM\Column(name="retencionIVA21", type="boolean")
      */
     private $retencionIVA21=0; 
+	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="esBancario", type="boolean")
+     */
+    private $esBancario=0; 
 
 
     /**
@@ -115,54 +116,6 @@ class FormasPago
     }
 
     /**
-     * Set conceptoBancario
-     *
-     * @param boolean $conceptoBancario
-     *
-     * @return FormasPago
-     */
-    public function setConceptoBancario($conceptoBancario)
-    {
-        $this->conceptoBancario = $conceptoBancario;
-
-        return $this;
-    }
-
-    /**
-     * Get conceptoBancario
-     *
-     * @return boolean
-     */
-    public function getConceptoBancario()
-    {
-        return $this->conceptoBancario;
-    }
-
-    /**
-     * Set conceptoBancoId
-     *
-     * @param \Mbp\FinanzasBundle\Entity\ConceptosBanco $conceptoBancoId
-     *
-     * @return FormasPago
-     */
-    public function setConceptoBancoId(\Mbp\FinanzasBundle\Entity\ConceptosBanco $conceptoBancoId = null)
-    {
-        $this->conceptoBancoId = $conceptoBancoId;
-
-        return $this;
-    }
-
-    /**
-     * Get conceptoBancoId
-     *
-     * @return \Mbp\FinanzasBundle\Entity\ConceptosBanco
-     */
-    public function getConceptoBancoId()
-    {
-        return $this->conceptoBancoId;
-    }
-
-    /**
      * Set retencionIIBB
      *
      * @param boolean $retencionIIBB
@@ -208,5 +161,29 @@ class FormasPago
     public function getRetencionIVA21()
     {
         return $this->retencionIVA21;
+    }
+
+    /**
+     * Set esBancario
+     *
+     * @param boolean $esBancario
+     *
+     * @return FormasPago
+     */
+    public function setEsBancario($esBancario)
+    {
+        $this->esBancario = $esBancario;
+
+        return $this;
+    }
+
+    /**
+     * Get esBancario
+     *
+     * @return boolean
+     */
+    public function getEsBancario()
+    {
+        return $this->esBancario;
     }
 }

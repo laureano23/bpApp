@@ -42,12 +42,6 @@ class MovimientosBancos
 	  * @ORM\JoinColumn(name="Banco_id", referencedColumnName="id")
 	  * */
 	 private $banco;
-	 
-	 /**
-	  * @ORM\ManyToOne(targetEntity="ConceptosBanco")
-	  * @ORM\JoinColumn(name="Concepto_id", referencedColumnName="id")
-	  * */
-	 private $conceptoMovimiento;
 
 
     /**
@@ -147,29 +141,5 @@ class MovimientosBancos
     public function getBanco()
     {
         return $this->banco;
-    }
-
-    /**
-     * Set conceptoMovimiento
-     *
-     * @param \Mbp\FinanzasBundle\Entity\ConceptosBanco $conceptoMovimiento
-     *
-     * @return MovimientosBancos
-     */
-    public function setConceptoMovimiento(\Mbp\FinanzasBundle\Entity\ConceptosBanco $conceptoMovimiento = null)
-    {
-        $this->conceptoMovimiento = $conceptoMovimiento;
-
-        return $this;
-    }
-
-    /**
-     * Get conceptoMovimiento
-     *
-     * @return \Mbp\FinanzasBundle\Entity\ConceptosBanco
-     */
-    public function getConceptoMovimiento()
-    {
-        return $this->conceptoMovimiento;
     }
 }

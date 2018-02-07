@@ -340,20 +340,21 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 	},
 	
 	EvaluarConceptoBancario: function(field){
+		console.log(field);
 		var win = field.up('window');
 		var store = field.getStore();
 		var rec = store.findRecord('descripcion', field.getValue());
 		
+		console.log(rec);
 		if(rec== null){
 			return;
 		}
 		
-		win.queryById('conceptoBancario').setValue(rec.data.conceptoBancario);
+		//win.queryById('conceptoBancario').setValue(rec.data.conceptoBancario);
 	},
 	
 	AddFormasPagoView: function(btn){
 		var win = Ext.widget('FormasPagoView');
-		win.queryById('conceptoBancario').getStore().load();
 		win.down('grid').getStore().load();
 	},
 	
@@ -366,8 +367,6 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 		form.query('.field').forEach(function(field){
 			field.setReadOnly(false);
 		});
-		
-		form.queryById('conceptoBancario').getStore().load();
 		win.queryById('btnSave').setDisabled(false);
 	},
 	
@@ -391,6 +390,7 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 				if(jsonResp.success == true){
 					store.load();
 					botonera.guardarItem(botonera);
+					form.getForm().reset();
 				}
 			},
 			
@@ -412,13 +412,8 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 		form.query('.field').forEach(function(field){
 			field.setReadOnly(false);
 		});
+		form.getForm().setValues(data);
 		
-		form.queryById('id').setValue(data.id);
-		form.queryById('formaPago').setValue(data.descripcion);
-		
-		var combo = form.queryById('conceptoBancario');
-		var concepto = combo.getStore().findRecord('id', data.conceptoBancario);
-		combo.select(concepto);
 	},
 	
 	EliminarFormaPago: function(btn){
@@ -453,8 +448,6 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 		var win = txt.up('window');
 		var val = txt.getValue();
 		var val2 = 0;
-		
-		console.log(txt);
 		
 		if(txt.itemId == 'totalAPagar'){
 			val2 = win.queryById('totalImputado').getValue();

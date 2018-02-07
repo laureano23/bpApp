@@ -30,9 +30,17 @@ class DefaultController extends Controller
 		
 		try{
 			$query = $repo->createQueryBuilder('p')
-					->select('p.id, dep.id AS departamento, prov.id AS provincia, p.rsocial AS rsocial, p.denominacion, p.direccion, p.email, p.cuit, p.cPostal, p.telefono1, p.contacto1, p.telefono2, p.contacto2, p.telefono3, p.contacto3, p.condCompra, p.vencimientoFc, p.aplicaRetencion, p.porcentajeRetencion, p.cuentaCerrada, imputacion.id AS tipoGasto')
+					->select('p.id, p.rsocial AS rsocial, 
+							p.denominacion, p.direccion, p.email, p.cuit, p.cPostal, p.telefono1, p.contacto1,
+							p.telefono2, p.contacto2, p.telefono3, p.contacto3, p.condCompra, p.vencimientoFc, 
+							p.aplicaRetencion, p.porcentajeRetencion, p.cuentaCerrada, imputacion.id AS tipoGasto,
+							prov.id AS provincia,
+							dep.id AS departamento,
+							loc.id AS localidad
+							')
 					->leftjoin('p.departamento', 'dep')
 					->leftjoin('p.provincia', 'prov')
+					->leftjoin('p.localidad', 'loc')
 					->leftjoin('p.imputacionGastos', 'imputacion')
 					->getQuery();
 					
@@ -87,6 +95,7 @@ class DefaultController extends Controller
 		$repoProveedor = $em->getRepository('MbpProveedoresBundle:Proveedor');
 		$repoDepto = $em->getRepository('MbpPersonalBundle:Departamentos');
 		$repoProvincia = $em->getRepository('MbpPersonalBundle:Provincia');
+		$repoLocalidad = $em->getRepository('MbpPersonalBundle:Localidades');
 		$repoImputaciones = $em->getRepository('MbpProveedoresBundle:ImputacionGastos');
 		
 		try{
@@ -100,8 +109,10 @@ class DefaultController extends Controller
 				$proveedor = new Proveedor();	
 			}
 					
-			$proveedor->setRsocial($decData->rSocial);
+			$proveedor->setRsocial($decData->rsocial);
 			$proveedor->setProvincia($repoProvincia->find($decData->provincia));
+			$proveedor->setDepartamento($repoDepto->find($decData->departamento));
+			$proveedor->setLocalidad($repoLocalidad->find($decData->localidad));
 			$proveedor->setImputacionGastos($repoImputaciones->find($decData->tipoGasto));
 			$proveedor->setDenominacion($decData->denominacion);
 			$proveedor->setDireccion($decData->direccion);
@@ -286,7 +297,7 @@ class DefaultController extends Controller
 			}
 			
 		}catch(\Exception $e){
-			throw $e;
+			//throw $e;
 			$response->setContent(
 				json_encode(array(
 					'success' => false,
@@ -670,7 +681,6 @@ class DefaultController extends Controller
     public function NuevaFormaPago()
     {
     	$em = $this->getDoctrine()->getManager();
-		$repoConceptosBanco = $em->getRepository('MbpFinanzasBundle:ConceptosBanco');
 		$repoFormaPago = $em->getRepository('MbpFinanzasBundle:FormasPago');
 		$response = new Response;
 		$req = $this->getRequest();
@@ -685,12 +695,11 @@ class DefaultController extends Controller
 				$formaPago = new FormasPago;
 			}
 			
-			$formaPago->setDescripcion($data->formaPago);
+			$formaPago->setDescripcion($data->descripcion);
+			$data->esBancario === "on" ? $formaPago->setEsBancario(TRUE) : $formaPago->setEsBancario(FALSE);
+			$data->retencionIIBB === "on" ? $formaPago->setRetencionIIBB(TRUE) : $formaPago->setRetencionIIBB(FALSE);
+			$data->retencionIVA21 === "on" ? $formaPago->setRetencionIVA21(TRUE) : $formaPago->setRetencionIVA21(FALSE);
 			
-			if($data->conceptoBancario != ""){
-				$conceptoBanco = $repoConceptosBanco->find($data->conceptoBancario);
-				$formaPago->setConceptoBancario($conceptoBanco);
-			}
 			
 			$em->persist($formaPago);
 			$em->flush();
