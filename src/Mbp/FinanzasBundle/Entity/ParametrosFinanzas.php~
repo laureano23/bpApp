@@ -191,28 +191,4 @@ class ParametrosFinanzas
     {
         return $this->remitoNum;
     }
-
-    /**
-     * Set topeRetencionIIBB
-     *
-     * @param integer $topeRetencionIIBB
-     *
-     * @return ParametrosFinanzas
-     */
-    public function setTopeRetencionIIBB($topeRetencionIIBB)
-    {
-        $this->topeRetencionIIBB = $topeRetencionIIBB;
-
-        return $this;
-    }
-
-    /**
-     * Get topeRetencionIIBB
-     *
-     * @return integer
-     */
-    public function getTopeRetencionIIBB()
-    {
-        return $this->topeRetencionIIBB;
-    }
 }

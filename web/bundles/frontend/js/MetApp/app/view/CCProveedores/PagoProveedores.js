@@ -126,7 +126,7 @@ Ext.define('MetApp.view.CCProveedores.PagoProveedores' ,{
 									fieldLabel: 'Numero'
 								},								
 								{
-									xtype: 'numberfield',
+									xtype: 'textfield',
 									allowBlank: false,
 									width: 200,
 									labelWidth: 50,
@@ -160,7 +160,6 @@ Ext.define('MetApp.view.CCProveedores.PagoProveedores' ,{
 				},
 				{
 					xtype: 'container',
-					margins: '5 0 0 0',
 					region: 'south',
 					items: [
 						{
@@ -209,9 +208,18 @@ Ext.define('MetApp.view.CCProveedores.PagoProveedores' ,{
 									}
 								},
 								{
-									xtype: 'textfield',
+									xtype: 'numberfield',
 									fieldLabel: 'Total imputado',
 									itemId: 'totalImputado',
+									readOnly: true,
+									fieldStyle: {
+										'font-weight'   : 'bold',										
+									}
+								},
+								{
+									xtype: 'numberfield',
+									fieldLabel: 'Diferencia',
+									itemId: 'diferencia',
 									readOnly: true,
 									fieldStyle: {
 										'font-weight'   : 'bold',										

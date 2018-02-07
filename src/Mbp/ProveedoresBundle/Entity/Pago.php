@@ -32,7 +32,7 @@ class Pago
 	/**
      * @var string
      *
-     * @ORM\Column(name="banco", type="string", length=50)
+     * @ORM\Column(name="banco", type="string", length=50, nullable=true)
      */
     private $banco;
 	
@@ -46,7 +46,7 @@ class Pago
     /**
      * @var string
      *
-     * @ORM\Column(name="numero", type="string", length=50)
+     * @ORM\Column(name="numero", type="string", length=50, nullable=true)
      */
     private $numero;
 
@@ -60,7 +60,7 @@ class Pago
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="diferido", type="datetime")
+     * @ORM\Column(name="diferido", type="datetime", nullable=true)
      */
     private $diferido;
 	

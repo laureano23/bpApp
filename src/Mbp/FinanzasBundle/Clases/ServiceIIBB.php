@@ -71,8 +71,10 @@ XML;
 				Array('user'=>$this->user,'password'=>$this->pass));
 
 		$respuesta=$objCurlFileUploader->UploadFile();
+		
+		//print_r($respuesta);
 
-		//$this->response = json_decode(json_encode((array)simplexml_load_string($respuesta)),1);
+		$this->response = json_decode(json_encode((array)simplexml_load_string($respuesta)),1);
 		$str = simplexml_load_string($respuesta, NULL, LIBXML_NOCDATA);
 		$parse =  str_replace("<![CDATA[","",$str->mensajeError);
 		$str->mensajeError = $parse;
@@ -97,7 +99,8 @@ XML;
 
 	public function getAlicuotaRetencion()
 	{
-		$alicuota = $this->response['contribuyentes']['contribuyente']['alicuotaRetencion'];	
+		$alicuota = $this->response['contribuyentes']['contribuyente']['alicuotaRetencion'];
+		
 		return str_replace(',', '.', $alicuota);
 	}
 }

@@ -407,8 +407,8 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 													uncheckedValue: 0,
 												},
 												{
-													xtype: 'numberfield',
-													decimalSeparator: '.',
+													xtype: 'textfield',
+													//decimalSeparator: '.',
 													name: 'tasa',
 													itemId: 'tasa',
 													fieldLabel: 'Tasa diaria'

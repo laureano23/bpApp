@@ -98,6 +98,7 @@ Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 											{ 'tipo': 6, 'descripcion': 'Factura B' },
 											{ 'tipo': 7, 'descripcion': 'Nota de debito B' },
 											{ 'tipo': 8, 'descripcion': 'Nota de credito B' },
+											{ 'tipo': 99, 'descripcion': 'Presupuesto' },
 										]
 									},
 									queryMode: 'local',
@@ -133,7 +134,7 @@ Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 						},
 						items: [							
 							{ text: 'Codigo', dataIndex: 'codigo' },
-							{ text: 'Descripcion', dataIndex: 'descripcion' },
+							{ text: 'Descripcion', dataIndex: 'descripcion', width: 275 },
 							{ text: 'Cantidad', dataIndex: 'cantidad' },
 							{ text: 'Costo', dataIndex: 'costo' },
 							{ 

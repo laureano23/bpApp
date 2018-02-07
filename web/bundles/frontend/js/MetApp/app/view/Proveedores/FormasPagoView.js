@@ -40,14 +40,10 @@ Ext.define('MetApp.view.Proveedores.FormasPagoView',{
 							width: 450
 						},
 						{
-							xtype: 'combobox',
+							xtype: 'checkbox',
 							name: 'conceptoBancario',
 							itemId: 'conceptoBancario',
 							fieldLabel: 'Concepto bancario',
-							store: 'MetApp.store.Bancos.ConceptosBancoStore',
-							displayField: 'concepto',
-							valueField: 'id',
-							width: 450
 						},
 						{
 							xtype: 'grid',

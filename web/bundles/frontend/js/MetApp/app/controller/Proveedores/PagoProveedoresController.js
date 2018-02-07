@@ -53,7 +53,13 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 			},
 			'PagoProveedores combobox[itemId=formaPago]': {
 				change: this.EvaluarConceptoBancario
-			},		
+			},
+			'PagoProveedores numberfield[itemId=totalAPagar]': {
+				change: this.CalcularDiferencia
+			},
+			'PagoProveedores numberfield[itemId=totalImputado]': {
+				change: this.CalcularDiferencia
+			},						
 			'#tbFormasPago': {
 				click: this.AddFormasPagoView
 			},
@@ -73,6 +79,7 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 	},
 	
 	InsertaEnGrilla: function(btn){
+		var me = this;
 		var win = btn.up('window');
 		var grid = win.down('grid');
 		var store = grid.getStore();
@@ -83,7 +90,6 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 			var model = Ext.create('MetApp.model.Proveedores.PagoProveedoresModel');
 			
 			//VALIDAMOS SI ES UN CHEQUE PROPIO O TRANSFERENCIA DEBE ASOCIARSE UN BANCO
-			console.log(values);
 			if(values.conceptoBancario == true){
 				if(values.banco==""){
 					Ext.Msg.show({
@@ -100,6 +106,7 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 			store.add(model);
 			form.getForm().reset();	
 		}
+		
 	},
 	
 	EditarGrilla: function(btn){
@@ -141,6 +148,7 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 		var totalImputado = win.queryById('totalImputado').getValue();
 		var totalAPagar = win.queryById('totalAPagar').getValue();
 		var idOP = win.queryById('idOP').getValue();
+		var dif = win.queryById('diferencia').getValue();
 		
 		
 		//STORE DE FACTURAS A IMPUTAR
@@ -159,61 +167,63 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 			}			
 		});
 		
-		if(totalImputado > 0){
-			if(totalImputado != totalAPagar){
-				Ext.Msg.show({
-					title: 'Atencion',
-					msg: 'El total imputado y el total a pagar deben ser iguales',
-					buttons: Ext.Msg.OK,
-				})
-				return;
-			}
-		}
-		
-		Ext.Ajax.request({
-			url: Routing.generate('mbp_proveedores_nuevoPago'),
-			
-			params: {
-				data: Ext.JSON.encode(arrayRecords),
-				fcImputar: Ext.JSON.encode(fcImputar),
-				idProv: idProv,
-				listener: 'nuevoPago',
-				idOP: idOP
-			},
-			
-			success: function(resp){
-				var status = Ext.JSON.decode(resp.responseText);
-				if(status.success == true){
-					store.loadData([]);
-					storeCC.load();
-					storeFcImputar.load();
-					win.queryById('totalImputado').reset();
-					win.queryById('totalAPagar').reset();
-					Ext.Msg.show({
-						title: 'Atencion',
-						msg: 'La orden de pago se generó con éxito',
-						buttons: Ext.Msg.OK,
-					});
-					
-					//MOSTRAMOS LA OP
-					Ext.Ajax.request({
-						url: Routing.generate('mbp_proveedores_reporteDetallePago'),
-						
-						params: {
-							idOp: status.idOrdenPago
-						},
-						
-						success: function(resp){
-							var status = Ext.JSON.decode(resp.responseText);
-							if(status.success == true){
-								var ruta = Routing.generate('mbp_proveedores_verReporteDetallePago');
-								window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+		if(dif != 0){
+			Ext.Msg.show({
+				title: 'Atencion',
+				msg: 'El total imputado no coincide con el total a pagar. Desea guardar de todas maneras?',
+				buttons: Ext.Msg.YESNO,
+				fn: function(resp){
+					console.log(resp);
+					if(resp == 'yes'){
+						Ext.Ajax.request({
+							url: Routing.generate('mbp_proveedores_nuevoPago'),
+							
+							params: {
+								data: Ext.JSON.encode(arrayRecords),
+								fcImputar: Ext.JSON.encode(fcImputar),
+								idProv: idProv,
+								listener: 'nuevoPago',
+								idOP: idOP
+							},
+							
+							success: function(resp){
+								var status = Ext.JSON.decode(resp.responseText);
+								if(status.success == true){
+									store.loadData([]);
+									storeCC.load();
+									storeFcImputar.load();
+									win.queryById('totalImputado').reset();
+									win.queryById('totalAPagar').reset();
+									Ext.Msg.show({
+										title: 'Atencion',
+										msg: 'La orden de pago se generó con éxito',
+										buttons: Ext.Msg.OK,
+									});
+									
+									//MOSTRAMOS LA OP
+									Ext.Ajax.request({
+										url: Routing.generate('mbp_proveedores_reporteDetallePago'),
+										
+										params: {
+											idOp: status.idOrdenPago
+										},
+										
+										success: function(resp){
+											var status = Ext.JSON.decode(resp.responseText);
+											if(status.success == true){
+												var ruta = Routing.generate('mbp_proveedores_verReporteDetallePago');
+												window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+											}
+										}
+									});
+								}
 							}
-						}
-					});
+						});
+					}
 				}
-			}
-		});
+			})
+			return;			
+		}				
 	},
 	
 	ChequeTerceros: function(btn){
@@ -295,13 +305,44 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 			totalImputado = totalImputado + rec.data.aplicar;
 		});
 		txtTotal.setValue(totalImputado);
+		
+		//actualizamos el calculo de retencion
+		var gridPagos = win.down('grid[itemId=gridPP]');
+		var storePagos = gridPagos.getStore();
+		var retencionIIBB = storePagos.findRecord('retencionIIBB', true);
+		var ccProv = this.getCCProveedores();
+		var idProv = ccProv.queryById('id').getValue();
+		
+		if(retencionIIBB != null){
+			Ext.Ajax.request({
+				url: Routing.generate('mbp_proveedores_verificarRetencion'),
+				
+				params: {
+					totalImputado: totalImputado,
+					idProv: idProv
+				},
+				
+				success: function(resp){
+					var decodeResp = Ext.JSON.decode(resp.responseText);
+					console.log(decodeResp);
+					var rec = storePagos.findRecord('retencionIIBB', true);
+					if(decodeResp.aplicaRetencion == true && decodeResp.retencion > 0){
+						
+						rec.set('importe', decodeResp.retencion);
+					}else{
+						//storePagos.remove(rec);
+					}
+					
+					me.CalcularDiferencia(win.queryById('totalImputado'));
+				}
+			})
+		}
 	},
 	
 	EvaluarConceptoBancario: function(field){
 		var win = field.up('window');
 		var store = field.getStore();
 		var rec = store.findRecord('descripcion', field.getValue());
-		console.log(rec);
 		
 		if(rec== null){
 			return;
@@ -406,6 +447,22 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 				
 			}
 		});
+	},
+	
+	CalcularDiferencia: function(txt){
+		var win = txt.up('window');
+		var val = txt.getValue();
+		var val2 = 0;
+		
+		console.log(txt);
+		
+		if(txt.itemId == 'totalAPagar'){
+			val2 = win.queryById('totalImputado').getValue();
+		}else{
+			val2 = win.queryById('totalAPagar').getValue();
+		}
+		
+		win.queryById('diferencia').setValue(val - val2);
 	}
 })
 

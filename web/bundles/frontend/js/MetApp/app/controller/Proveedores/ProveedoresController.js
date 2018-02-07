@@ -56,7 +56,8 @@ Ext.define('MetApp.controller.Proveedores.ProveedoresController',{
 		var comboGastos = win.queryById('tipoGasto');
 		
 		comboProvincia.getStore().load();
-		comboGastos.getStore().load();
+		comboGastos.getStore().load();		
+		
 	},
 	
 	BuscaProveedor: function(btn){

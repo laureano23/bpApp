@@ -10,7 +10,10 @@ Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 	layout: 'border',
 	listeners: {
 		afterrender: {
-			fn: function(win){				
+			fn: function(win){	
+				var btnPago = win.queryById('nuevoPago');	
+				var btnFc = win.queryById('nuevaFc');
+				var btnNotas = win.queryById('notas');
 				var map = new Ext.util.KeyMap({
 				    target: this.getId(),	
 				   	binding: [
@@ -18,21 +21,21 @@ Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 				   			key: Ext.EventObject.F3,
 				   			defaultEventAction: 'preventDefault',
 				   			fn: function(){ 
-				   				win.queryById('nuevaFc').fireEvent('click');
+				   				btnFc.fireEvent('click', btnFc);
 				   			}
 				   		},
 				   		{
 				   			key: Ext.EventObject.F4,
 				   			defaultEventAction: 'preventDefault',
 				   			fn: function(){ 
-				   				win.queryById('nuevoPago').fireEvent('click');
+				   				btnPago.fireEvent('click', btnPago);
 				   			}
 				   		},
 				   		{
 				   			key: Ext.EventObject.F5,
 				   			defaultEventAction: 'preventDefault',
 				   			fn: function(){ 
-				   				win.queryById('notas').fireEvent('click');
+				   				btnNotas.fireEvent('click', btnNotas);
 				   			}
 				   		},
 				   	]

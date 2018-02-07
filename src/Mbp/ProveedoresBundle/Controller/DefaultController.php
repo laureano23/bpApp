@@ -248,6 +248,57 @@ class DefaultController extends Controller
 	}
 	
 	/**
+     * @Route("/proveedores/verificarRetencion", name="mbp_proveedores_verificarRetencion", options={"expose"=true})
+     */
+    public function verificarRetencion()
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	$req = $this->getRequest();
+		$repoProv = $em->getRepository('MbpProveedoresBundle:Proveedor');
+		$idProv = $req->request->get('idProv');
+		$imputado = $req->request->get('totalImputado');
+		$response = new Response;
+		
+		try{
+			$proveedor = $repoProv->find($idProv);
+			$repoFinanzas = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
+			$parametrosFinanzas = $repoFinanzas->find(1);			
+			$iibbService = $this->get('ServiceIIBB');	//SERVICIO PARA ALICUOTAS DE IIBB
+			$iibbService->setOpts($proveedor->getCuit());
+			$alicuotaRetencion = $iibbService->getAlicuotaRetencion();
+			
+			$resp = array();
+			if($proveedor->getProvincia()->getId() == $parametrosFinanzas->getProvincia()->getId()
+			 && $alicuotaRetencion > 0
+			 && $parametrosFinanzas->getTopeRetencionIIBB() <= $imputado){
+				$retencion=0;
+				$resp['success'] = true;
+				$resp['aplicaRetencion'] = true;
+				
+				if($imputado){
+					$retencion = $imputado * $alicuotaRetencion / 100;
+					$resp['retencion'] = number_format($retencion, 2);
+				}
+				
+				return $response->setContent(json_encode($resp));			
+			}else{				
+				return $response->setContent(json_encode(array('success' => false, 'aplicaRetencion' => true, 'importe' => 0)));
+			}
+			
+		}catch(\Exception $e){
+			throw $e;
+			$response->setContent(
+				json_encode(array(
+					'success' => false,
+					'msg' => $e->getMessage()
+				))
+			);
+			
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	/**
      * @Route("/proveedores/nuevoPago", name="mbp_proveedores_nuevoPago", options={"expose"=true})
      */
     public function nuevoPagoAction()
@@ -276,7 +327,9 @@ class DefaultController extends Controller
 				$ordenPago->setEmision(new \DateTime());
 				$ordenPago->setProveedorId($proveedor);	
 				
+				
 				foreach ($decData as $rec) {
+					if($rec->retencionIIBB == true) continue;
 					$tipoPago = $repoTipoPago->findByDescripcion($rec->formaPago);
 					$pago = new Pago(); //NUEVO DETALLE DE PAGO
 					$pago->setEmision(new \DateTime());
@@ -306,8 +359,11 @@ class DefaultController extends Controller
 			//FACTURAS A IMPUTAR
 			$factura;
 			$transOpFc;	//OBEJTO QUE GUARDA EL MONTO APLICADO A CADA FC EN UN MOMENTO DADO
+			$acumImputado=0;
+			$valorAplicado=0;
 			foreach ($fcImputarDec as $fc) {
 				$factura = $repoFc->find($fc->id);	
+				$valorAplicado += $fc->aplicar;
 
 				//VALIDAR QUE NO SE IMPUTE MAS DEL TOTAL DE UNA FACTURA
 				$imputaciones = $repoTrans->selectSumImputacionByFc($factura);
@@ -319,11 +375,22 @@ class DefaultController extends Controller
 				//FIN DE LA VALIDACION
 
 				$factura->setImputado($factura->getImputado() + $fc->aplicar);	
-				
+				$acumImputado += $factura->getImputado();
 			}
+			
+			//CALCULO DE RETENCION
+			$retencion = $this->calculoRentecion($valorAplicado, $proveedor);
+			if($retencion > 0){
+				$pago = new Pago;
+				$tipoPago = $repoTipoPago->findOneByRetencionIIBB(true);
+				$pago->setIdFormaPago($tipoPago);
+				$pago->setEmision(new \DateTime);
+				$pago->setImporte($retencion);
+				$ordenPago->addPagoDetalleId($pago);
+			}
+			
 				
 			$em->persist($ordenPago);
-			$em->flush();
 			
 			foreach ($fcImputarDec as $fc) {
 				$factura = $repoFc->find($fc->id);
@@ -332,10 +399,10 @@ class DefaultController extends Controller
 				$transOpFc->setAplicado($fc->aplicar);				
 				$transOpFc->setOrdenPagoImputada($ordenPago);
 				$ordenPago->addFacturasImputada($transOpFc);
-				$em->persist($transOpFc);
-				$em->flush();
+				$em->persist($transOpFc);				
 			}		
 			
+			$em->flush();
 			
 			$response->setContent(
 				json_encode(array(
@@ -356,6 +423,28 @@ class DefaultController extends Controller
 			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 		}
     }
+
+	private function calculoRentecion($acumImputado, $proveedor)
+	{
+		if($acumImputado == 0) return;
+		
+		$em = $this->getDoctrine()->getManager();
+		$importe = 0;
+		//CONSULTA RETENCION DE IIBB
+		$repoFinanzas = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
+		$parametrosFinanzas = $repoFinanzas->find(1);
+		$iibbService = $this->get('ServiceIIBB');	//SERVICIO PARA ALICUOTAS DE IIBB
+		$iibbService->setOpts($proveedor->getCuit());
+		$alicuotaRetencion = $iibbService->getAlicuotaRetencion();
+		
+		if($proveedor->getProvincia()->getId() == $parametrosFinanzas->getProvincia()->getId()
+			&& $alicuotaRetencion > 0
+			&& $parametrosFinanzas->getTopeRetencionIIBB() <= $acumImputado){
+			$importe = $acumImputado * $alicuotaRetencion / 100;
+			return number_format($importe, 2);;			
+		}
+		return $importe;
+	}
 
 	private function NuevoChequePropio($data, $proveedor)
 	{

@@ -24,23 +24,11 @@ class CobranzasController extends Controller
 			->select()
 			->where('t.inactivo = 0')
 			->getQuery()
-			->getResult();
+			->getArrayResult();
 		
-		$resp = array();
-		$i=0;
-		foreach ($resu as $res) {
-			$resp[$i]['id'] = $res->getId();
-			$resp[$i]['descripcion'] = $res->getDescripcion();
-			if($res->getConceptoBancario()){
-				$resp[$i]['conceptoBancario'] = $res->getConceptoBancario()->getId();	
-			}else{
-				$resp[$i]['conceptoBancario'] = null;
-			}
-			
-			$i++;
-		}
+		
 		echo json_encode(array(
-			'items' => $resp
+			'items' => $resu
 		));
 		return new Response();
 	}

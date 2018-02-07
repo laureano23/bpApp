@@ -285,10 +285,7 @@ class VentasController extends Controller
 			$factura->setPerIIBB($percepcionIIBB);
 			$factura->setTotal($regfe['ImpTotal']);
 			$factura->setIva21($ivaLiquidado);
-			$factura->setporcentajeIIBB($alicuotaPercepcion);
-			//$factura->setRtoNro(); COMPLETAR LOGICA PARA VINCULAR REMITO
-
-			
+			$factura->setporcentajeIIBB($alicuotaPercepcion);			
 			
 				
 			$em->persist($factura);

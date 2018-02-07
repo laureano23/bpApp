@@ -126,6 +126,7 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 	},
 		
 	NuevoPago: function(btn){
+		var winProv = btn.up('window');
 		var win = Ext.widget('PagoProveedores');
 		var grid = win.queryById('gridPP');
 		var store = grid.getStore();
@@ -140,6 +141,36 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 				totalAPagar = totalAPagar + rec.data.importe;
 			});	
 			txtTotalAPagar.setValue(totalAPagar);
+		})
+		
+		//Verifica si al proveedor corresponde aplicarle retencion de IIBB
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_proveedores_verificarRetencion'),
+			
+			params: {
+				idProv: winProv.queryById('id').getValue(),
+				
+			},
+			
+			success: function(resp){
+				var decodeResp = Ext.JSON.decode(resp.responseText);
+				if(decodeResp.aplicaRetencion){
+					var storeTipoPago = win.queryById('formaPago').getStore();
+					storeTipoPago.load({
+						callback: function(){
+							var rec = storeTipoPago.findRecord('retencionIIBB', true);	
+							var pagoModel = Ext.create('MetApp.model.Proveedores.PagoProveedoresModel');
+							pagoModel.set('formaPago', rec.descripcion);
+							pagoModel.set('importe', 0);
+							pagoModel.set('formaPago', rec.data.descripcion);
+							pagoModel.set('retencionIIBB', true);
+							
+							grid.getStore().add(pagoModel);
+						}
+					})
+					
+				}
+			}
 		})
 	},
 	
