@@ -14,7 +14,7 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 		'MetApp.view.CCProveedores.FacturaProveedor',
 		'MetApp.view.CCProveedores.PagoProveedores',
 		'MetApp.view.CCProveedores.ChequeTerceros',
-		'MetApp.view.Proveedores.FormasPagoView'
+		'MetApp.view.Proveedores.FormasPagoView',
 	],
 	refs:[
 		{
@@ -139,6 +139,7 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 	},
 	
 	GuardarPago: function(btn){
+		console.log("hola");
 		var win = btn.up('window');
 		var grid = win.down('grid');
 		var store = grid.getStore();
@@ -173,7 +174,6 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 				msg: 'El total imputado no coincide con el total a pagar. Desea guardar de todas maneras?',
 				buttons: Ext.Msg.YESNO,
 				fn: function(resp){
-					console.log(resp);
 					if(resp == 'yes'){
 						Ext.Ajax.request({
 							url: Routing.generate('mbp_proveedores_nuevoPago'),
@@ -221,8 +221,52 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 						});
 					}
 				}
-			})
-			return;			
+			})		
+		}else{
+			Ext.Ajax.request({
+				url: Routing.generate('mbp_proveedores_nuevoPago'),
+				
+				params: {
+					data: Ext.JSON.encode(arrayRecords),
+					fcImputar: Ext.JSON.encode(fcImputar),
+					idProv: idProv,
+					listener: 'nuevoPago',
+					idOP: idOP
+				},
+				
+				success: function(resp){
+					var status = Ext.JSON.decode(resp.responseText);
+					if(status.success == true){
+						store.loadData([]);
+						storeCC.load();
+						storeFcImputar.load();
+						win.queryById('totalImputado').reset();
+						win.queryById('totalAPagar').reset();
+						Ext.Msg.show({
+							title: 'Atencion',
+							msg: 'La orden de pago se generó con éxito',
+							buttons: Ext.Msg.OK,
+						});
+						
+						//MOSTRAMOS LA OP
+						Ext.Ajax.request({
+							url: Routing.generate('mbp_proveedores_reporteDetallePago'),
+							
+							params: {
+								idOp: status.idOrdenPago
+							},
+							
+							success: function(resp){
+								var status = Ext.JSON.decode(resp.responseText);
+								if(status.success == true){
+									var ruta = Routing.generate('mbp_proveedores_verReporteDetallePago');
+									window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+								}
+							}
+						});
+					}
+				}
+			});
 		}				
 	},
 	

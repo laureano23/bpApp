@@ -30,7 +30,7 @@ class Factura
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="Mbp\ProveedoresBundle\Entity\ImputacionGastos")
-	 * @ORM\JoinColumn(name="gastoId", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="gastoId", referencedColumnName="id", nullable=true)
 	 */
 	private $imputacionGasto;
 	
@@ -51,7 +51,7 @@ class Factura
     /**
      * @var string
      *
-     * @ORM\Column(name="tipo", type="string", length=1)
+     * @ORM\Column(name="tipo", type="string", length=1, nullable=true)
      */
     private $tipo;
 
@@ -79,49 +79,49 @@ class Factura
     /**
      * @var string
      *
-     * @ORM\Column(name="netoNoGrabado", type="decimal", precision=11 , scale=2)
+     * @ORM\Column(name="netoNoGrabado", type="decimal", precision=11 , scale=2, nullable=true)
      */
     private $netoNoGrabado;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="iva21", type="decimal", precision=7 , scale=2)
+     * @ORM\Column(name="iva21", type="decimal", precision=7 , scale=2, nullable=true)
      */
     private $iva21;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="iva27", type="decimal", precision=7 , scale=2)
+     * @ORM\Column(name="iva27", type="decimal", precision=7 , scale=2, nullable=true)
      */
     private $iva27;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="iva10_5", type="decimal", precision=7 , scale=2)
+     * @ORM\Column(name="iva10_5", type="decimal", precision=7 , scale=2, nullable=true)
      */
     private $iva105;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="perIva5", type="decimal", precision=7 , scale=2)
+     * @ORM\Column(name="perIva5", type="decimal", precision=7 , scale=2, nullable=true)
      */
     private $perIva5;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="perIva3", type="decimal", precision=7 , scale=2)
+     * @ORM\Column(name="perIva3", type="decimal", precision=7 , scale=2, nullable=true)
      */
     private $perIva3;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="iibbCf", type="decimal", precision=7 , scale=2)
+     * @ORM\Column(name="iibbCf", type="decimal", precision=7 , scale=2, nullable=true)
      */
     private $iibbCf;
 
@@ -135,7 +135,7 @@ class Factura
     /**
      * @var string
      *
-     * @ORM\Column(name="concepto", type="string", length=150)
+     * @ORM\Column(name="concepto", type="string", length=150, nullable=true)
      */
     private $concepto;
     
@@ -149,7 +149,7 @@ class Factura
 	 /**
      * @var decimal
      *
-     * @ORM\Column(name="imputado", type="decimal", precision=11 , scale=2)
+     * @ORM\Column(name="imputado", type="decimal", precision=11 , scale=2, nullable=true)
      */
     private $imputado=0;
 
@@ -157,6 +157,20 @@ class Factura
      * @ORM\OneToMany(targetEntity="TransaccionOPFC", mappedBy="ordenPagoImputada")
      */
     private $ordenPago;
+    
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="observaciones", type="string", length=250, nullable=true)
+     */
+    private $observaciones;
+    
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="esBalance", type="boolean", nullable=true)
+     */
+    private $esBalance=0;
 
     public function __construct() {
         $this->ordenPago = new ArrayCollection();
@@ -660,5 +674,53 @@ class Factura
     public function getOrdenPago()
     {
         return $this->ordenPago;
+    }
+
+    /**
+     * Set observaciones
+     *
+     * @param string $observaciones
+     *
+     * @return Factura
+     */
+    public function setObservaciones($observaciones)
+    {
+        $this->observaciones = $observaciones;
+
+        return $this;
+    }
+
+    /**
+     * Get observaciones
+     *
+     * @return string
+     */
+    public function getObservaciones()
+    {
+        return $this->observaciones;
+    }
+
+    /**
+     * Set esBalance
+     *
+     * @param boolean $esBalance
+     *
+     * @return Factura
+     */
+    public function setEsBalance($esBalance)
+    {
+        $this->esBalance = $esBalance;
+
+        return $this;
+    }
+
+    /**
+     * Get esBalance
+     *
+     * @return boolean
+     */
+    public function getEsBalance()
+    {
+        return $this->esBalance;
     }
 }

@@ -22,6 +22,7 @@ class FacturaRepository extends \Doctrine\ORM\EntityRepository
 										f.numFc AS concepto,
 										f.vencimiento AS vencimiento,
 										f.totalFc AS haber,
+										f.esBalance,
 										t.id AS idT,
 										SUM(t.aplicado) AS valorImputado')
 					->from('MbpProveedoresBundle:Factura', 'f')
@@ -37,7 +38,7 @@ class FacturaRepository extends \Doctrine\ORM\EntityRepository
 			foreach ($res2 as $rec) {
 				$res2[$i]['fechaEmision'] = $rec['fechaEmision']->format('d-m-Y H:i:s');
 				$res2[$i]['vencimiento'] = $rec['vencimiento']->format('d-m-Y');
-				$res2[$i]['concepto'] = 'FACTURA N° '.$rec['concepto'];
+				$res2[$i]['esBalance'] == false ? $res2[$i]['concepto'] = 'FACTURA N° '.$rec['concepto'] : $res2[$i]['concepto'] = 'BALANCE';
 				$res2[$i]['debe'] = 0;
 				$res2[$i]['detalle'] = false; //define si aparece o no el icono en la grilla
 				$res2[$i]['imputado'] = true; //define si aparece o no el icono en la grilla

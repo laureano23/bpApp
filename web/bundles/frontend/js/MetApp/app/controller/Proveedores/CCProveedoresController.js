@@ -15,6 +15,7 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 		'MetApp.view.CCProveedores.FacturaProveedor',
 		'MetApp.view.CCProveedores.PagoProveedores',
 		'MetApp.view.CCProveedores.ChequeTerceros',
+		'MetApp.view.CCProveedores.BalanceView'
 	],
 	refs:[
 		{
@@ -57,8 +58,46 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 			},
 			'CCProveedores button[itemId=nuevoPago]': {
 				click: this.NuevoPago
+			},	
+			'CCProveedores button[itemId=balance]': {
+				click: this.WinBalance
+			},
+			'BalanceView button[itemId=guardar]': {
+				click: this.GuardarBalance
 			},
 		});
+	},
+	
+	GuardarBalance: function(btn){
+		var me = this;
+		var win = btn.up('window');
+		var form = btn.up('form');
+		var values = form.getForm().getValues();
+		var cc = me.getCCProveedores();
+		
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_proveedores_balance'),
+			
+			params: {
+				proveedorId: cc.queryById('id').getValue(),
+				neto: values.neto,
+				observacioens: values.observaciones
+			},
+			
+			success: function(resp){
+				var jsonResp = Ext.JSON.decode(resp.responseText);
+				
+				if(jsonResp.success == true){
+					cc.down('grid').getStore().load();
+				}
+				
+				win.close();
+			}
+		});
+	},
+	
+	WinBalance: function(btn){
+		Ext.widget('BalanceView');
 	},
 	
 	AddCCProveedoresTb: function(btn){
@@ -265,6 +304,7 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 		var txtIdOP;
 		var idF;
 		
+		if(selection.data.concepto == "BALANCE") return;
 		
 		if(selection.data.idF > 0){
 			win = Ext.widget('FacturaProveedor');

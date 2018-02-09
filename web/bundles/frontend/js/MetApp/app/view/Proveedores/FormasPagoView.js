@@ -64,6 +64,14 @@ Ext.define('MetApp.view.Proveedores.FormasPagoView',{
 							uncheckedValue: 0
 						},
 						{
+							xtype: 'checkbox',
+							name: 'chequeTerceros',
+							itemId: 'chequeTerceros',
+							fieldLabel: 'Cheque de Terceros',
+							labelWidth: 120,
+							uncheckedValue: 0
+						},
+						{
 							xtype: 'grid',
 							height: 200,
 							margin: '0 0 5 0',

@@ -246,45 +246,51 @@ Ext.define('MetApp.controller.Produccion.Programacion.ProgramacionController', {
 	},
 	
 	EliminarOT: function(grid, colIndex, rowIndex){
-		Ext.Msg.show({
-			title: 'Atencion ',
-			msg: "Esta por borrar una OT, desea continuar?",
-			buttons: Ext.Msg.YESNO,
-			icon: Ext.Msg.ALERT,
-			fn:function(btn){
-				if(btn == 'yes'){
-					var store = grid.getStore();
-					var selection = store.getAt(rowIndex);
-					var win = grid.up('window');
-					var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-					myMask.show();
-							
-					Ext.Ajax.request({
-						url: Routing.generate('mbp_produccion_eliminarOT'),
-						
-						params: {
-							ot: selection.data.otNum
-						},
-						
-						success: function(resp){
-							Ext.Msg.show({
-				    			title: 'Formula',
-				    			msg: "La OT fué eliminada correctamente",
-				    			buttons: Ext.Msg.OK,
-				    			icon: Ext.Msg.INFO
-				    		});
-				    		
-				    		myMask.hide();
-				    		store.remove(selection);
-						},
-						
-						failure: function(resp){
-							
-						}
+		
+		Ext.Msg.prompt('Anular OT', 'Ingrese el motivo de anulación de la OT:', function(btn, text){
+			if(btn == "ok"){
+				
+				if(text == ""){
+					Ext.Msg.show({
+						title: 'Atencion',
+						msg: 'Debe ingresar un motivo de anulación'
 					})
+					return;
 				}
+				
+				
+				var store = grid.getStore();
+				var selection = store.getAt(rowIndex);
+				var win = grid.up('window');
+				var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
+				myMask.show();
+						
+				Ext.Ajax.request({
+					url: Routing.generate('mbp_produccion_eliminarOT'),
+					
+					params: {
+						ot: selection.data.otNum,
+						observacion: text
+					},
+					
+					success: function(resp){
+						Ext.Msg.show({
+			    			title: 'Formula',
+			    			msg: "La OT fué eliminada correctamente",
+			    			buttons: Ext.Msg.OK,
+			    			icon: Ext.Msg.INFO
+			    		});
+			    		
+			    		myMask.hide();
+			    		store.remove(selection);
+					},
+					
+					failure: function(resp){
+						
+					}
+				})
 			}
-		});		
+		})	
 	}
 });
 

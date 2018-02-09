@@ -6,6 +6,7 @@ Ext.define('MetApp.model.Finanzas.TiposPagoModel',{
 		{ name: 'descripcion', type: 'string'},
 		{ name: 'esBancario', type: 'bool'},
 		{ name: 'retencionIIBB', type: 'bool'},
-		{ name: 'retencionIVA21', type: 'bool'},			
+		{ name: 'retencionIVA21', type: 'bool'},
+		{ name: 'chequeTerceros', type: 'bool'},			
 	]
 });

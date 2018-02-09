@@ -269,6 +269,11 @@ Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 							xtype: 'button',
 							text: 'Notas (F5)',
 							itemId: 'notas'
+						},
+						{
+							xtype: 'button',
+							text: 'Balance (F6)',
+							itemId: 'balance'
 						}
 					]
 				}

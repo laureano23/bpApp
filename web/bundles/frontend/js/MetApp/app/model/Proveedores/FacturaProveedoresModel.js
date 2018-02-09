@@ -28,5 +28,7 @@ Ext.define('MetApp.model.Proveedores.FacturaProveedoresModel',{
 		{name: 'valorImputado', type: 'float'},
 		{name: 'valorAplicado', type: 'float'},
 		{name: 'tipoGasto', type: 'int'},
+		{name: 'observaciones', type: 'string'},
+		{name: 'esBalance', type: 'bool'},
 	]
 });

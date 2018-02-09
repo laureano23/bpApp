@@ -96,7 +96,8 @@ Ext.define('MetApp.view.CCProveedores.PagoProveedores' ,{
 									labelWidth: 50,
 									itemId: 'banco',
 									name: 'banco',
-									fieldLabel: 'Banco'
+									fieldLabel: 'Banco',
+									forceSelection: true
 								},
 							]
 						},

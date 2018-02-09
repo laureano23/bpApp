@@ -55,6 +55,13 @@ class FormasPago
      * @ORM\Column(name="esBancario", type="boolean")
      */
     private $esBancario=0; 
+	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="chequeTerceros", type="boolean")
+     */
+    private $chequeTerceros=0; 
 
 
     /**
@@ -185,5 +192,29 @@ class FormasPago
     public function getEsBancario()
     {
         return $this->esBancario;
+    }
+
+    /**
+     * Set chequeTerceros
+     *
+     * @param boolean $chequeTerceros
+     *
+     * @return FormasPago
+     */
+    public function setChequeTerceros($chequeTerceros)
+    {
+        $this->chequeTerceros = $chequeTerceros;
+
+        return $this;
+    }
+
+    /**
+     * Get chequeTerceros
+     *
+     * @return boolean
+     */
+    public function getChequeTerceros()
+    {
+        return $this->chequeTerceros;
     }
 }

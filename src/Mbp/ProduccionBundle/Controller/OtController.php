@@ -528,11 +528,13 @@ class OtController extends Controller
 		
 		try{
 			$ot = $request->request->get('ot');
+			$obs = $request->request->get('observacion');
 			$repo = $em->getRepository('MbpProduccionBundle:Ot');
 			
 			
 			$resp = $repo->find($ot);
 			$resp->setAnulada(TRUE);
+			$resp->setObservaciones($resp->getObservaciones()."----------MOTIVO DE ANULACIÓN: ".$obs);
 			$em->flush();
 			
 			
