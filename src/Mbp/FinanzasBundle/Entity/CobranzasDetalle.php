@@ -50,7 +50,7 @@ class CobranzasDetalle
     private $vencimiento;
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="Mbp\FinanzasBundle\Entity\FormasPago")
+	 * @ORM\ManyToOne(targetEntity="Mbp\FinanzasBundle\Entity\FormasPagos")
 	 * @ORM\JoinColumn(name="formaPagoId", referencedColumnName="id")
 	 */
 	private $formaPagoId;
@@ -179,11 +179,11 @@ class CobranzasDetalle
     /**
      * Set formaPagoId
      *
-     * @param \Mbp\FinanzasBundle\Entity\FormasPago $formaPagoId
+     * @param \Mbp\FinanzasBundle\Entity\FormasPagos $formaPagoId
      *
      * @return CobranzasDetalle
      */
-    public function setFormaPagoId(\Mbp\FinanzasBundle\Entity\FormasPago $formaPagoId = null)
+    public function setFormaPagoId(\Mbp\FinanzasBundle\Entity\FormasPagos $formaPagoId = null)
     {
         $this->formaPagoId = $formaPagoId;
 

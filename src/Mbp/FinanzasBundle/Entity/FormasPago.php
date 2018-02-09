@@ -5,12 +5,12 @@ namespace Mbp\FinanzasBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * FormasPago
+ * FormasPagos
  * 
  * @ORM\Table()
  * @ORM\Entity
  */
-class FormasPago
+class FormasPagos
 {
     /**
      * @var integer

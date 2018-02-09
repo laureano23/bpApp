@@ -22,9 +22,9 @@ class Pago
     private $id;
 			
 	/**
-	 * @var \Mbp\FinanzasBundle\Entity\FormasPago
+	 * @var \Mbp\FinanzasBundle\Entity\FormasPagos
 	 * 
-	 * @ORM\ManyToOne(targetEntity="Mbp\FinanzasBundle\Entity\FormasPago")
+	 * @ORM\ManyToOne(targetEntity="Mbp\FinanzasBundle\Entity\FormasPagos")
 	 * @ORM\JoinColumn(name="idFormaPago", referencedColumnName="id")
 	 */
 	private $idFormaPago;
@@ -180,11 +180,11 @@ class Pago
     /**
      * Set idFormaPago
      *
-     * @param \Mbp\FinanzasBundle\Entity\FormasPago $idFormaPago
+     * @param \Mbp\FinanzasBundle\Entity\FormasPagos $idFormaPago
      *
      * @return Pago
      */
-    public function setIdFormaPago(\Mbp\FinanzasBundle\Entity\FormasPago $idFormaPago = null)
+    public function setIdFormaPagos(\Mbp\FinanzasBundle\Entity\FormasPagos $idFormaPago = null)
     {
         $this->idFormaPago = $idFormaPago;
 
@@ -194,9 +194,9 @@ class Pago
     /**
      * Get idFormaPago
      *
-     * @return \Mbp\FinanzasBundle\Entity\FormasPago
+     * @return \Mbp\FinanzasBundle\Entity\FormasPagos
      */
-    public function getIdFormaPago()
+    public function getIdFormaPagos()
     {
         return $this->idFormaPago;
     }
