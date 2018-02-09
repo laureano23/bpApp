@@ -270,7 +270,7 @@ Ext.define('MetApp.controller.Produccion.Programacion.ProgramacionController', {
 					
 					params: {
 						ot: selection.data.otNum,
-						observacion: text
+						observacion: text	
 					},
 					
 					success: function(resp){
