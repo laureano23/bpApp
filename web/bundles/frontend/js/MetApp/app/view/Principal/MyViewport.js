@@ -87,7 +87,7 @@ Ext.define('MetApp.view.Principal.MyViewport', {
 			{                						
 				text: 'Clientes',
 				itemId: 'tbClientes', 
-				require: {role1: true},
+				require: {role2: true},
                 listeners : {
                     render : dragZone
                 },               						
