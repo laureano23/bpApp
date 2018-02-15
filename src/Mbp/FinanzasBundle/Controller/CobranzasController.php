@@ -19,7 +19,7 @@ class CobranzasController extends Controller
     public function listarTiposAction()
 	{
 		$em = $this->getDoctrine()->getEntityManager();		
-		$repo = $em->getRepository('MbpFinanzasBundle:FormasPago');
+		$repo = $em->getRepository('MbpFinanzasBundle:FormasPagos');
 		$resu = $repo->createQueryBuilder('t')
 			->select()
 			->where('t.inactivo = 0')
@@ -48,7 +48,7 @@ class CobranzasController extends Controller
 			$idCliente = json_decode($req->request->get('cliente'));
 			$datosRecibo = json_decode($req->request->get('datosRecibo'));
 			$repoCliente = $em->getRepository('MbpClientesBundle:Cliente');
-			$repoTipoPago = $em->getRepository('MbpFinanzasBundle:FormasPago');
+			$repoTipoPago = $em->getRepository('MbpFinanzasBundle:FormasPagos');
 			$repoFacturas = $em->getRepository('MbpFinanzasBundle:Facturas');
 			$repoTransaccion = $em->getRepository('MbpFinanzasBundle:TransaccionCobranzaFactura');
 			

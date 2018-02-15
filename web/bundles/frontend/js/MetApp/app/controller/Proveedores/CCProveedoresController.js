@@ -197,14 +197,22 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 					var storeTipoPago = win.queryById('formaPago').getStore();
 					storeTipoPago.load({
 						callback: function(){
-							var rec = storeTipoPago.findRecord('retencionIIBB', true);	
-							var pagoModel = Ext.create('MetApp.model.Proveedores.PagoProveedoresModel');
-							pagoModel.set('formaPago', rec.descripcion);
-							pagoModel.set('importe', 0);
-							pagoModel.set('formaPago', rec.data.descripcion);
-							pagoModel.set('retencionIIBB', true);
-							
-							grid.getStore().add(pagoModel);
+							var rec = storeTipoPago.findRecord('retencionIIBB', true);
+							if(rec == null){
+								Ext.Msg.show({
+									title: 'Atención',
+									msg: 'No existe concepto para retener IIBB'
+								})
+							}else{
+								var pagoModel = Ext.create('MetApp.model.Proveedores.PagoProveedoresModel');
+								console.log(rec);
+								pagoModel.set('formaPago', rec.descripcion);
+								pagoModel.set('importe', 0);
+								pagoModel.set('formaPago', rec.data.descripcion);
+								pagoModel.set('retencionIIBB', true);
+								
+								grid.getStore().add(pagoModel);
+							}								
 						}
 					})
 					

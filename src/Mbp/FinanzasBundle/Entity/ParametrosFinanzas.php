@@ -61,6 +61,13 @@ class ParametrosFinanzas
      * @ORM\Column(name="topeRetencionIIBB", type="integer")
      */
     private $topeRetencionIIBB;
+	
+	/**
+     * @var integer
+     *
+     * @ORM\Column(name="topePercepcionIIBB", type="integer")
+     */
+    private $topePercepcionIIBB;
 
     /**
      * Get id
@@ -214,5 +221,29 @@ class ParametrosFinanzas
     public function getTopeRetencionIIBB()
     {
         return $this->topeRetencionIIBB;
+    }
+
+    /**
+     * Set topePercepcionIIBB
+     *
+     * @param integer $topePercepcionIIBB
+     *
+     * @return ParametrosFinanzas
+     */
+    public function setTopePercepcionIIBB($topePercepcionIIBB)
+    {
+        $this->topePercepcionIIBB = $topePercepcionIIBB;
+
+        return $this;
+    }
+
+    /**
+     * Get topePercepcionIIBB
+     *
+     * @return integer
+     */
+    public function getTopePercepcionIIBB()
+    {
+        return $this->topePercepcionIIBB;
     }
 }

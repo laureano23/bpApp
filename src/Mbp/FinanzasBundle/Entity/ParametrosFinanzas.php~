@@ -61,6 +61,13 @@ class ParametrosFinanzas
      * @ORM\Column(name="topeRetencionIIBB", type="integer")
      */
     private $topeRetencionIIBB;
+	
+	/**
+     * @var integer
+     *
+     * @ORM\Column(name="topePercepcionIIBB", type="integer")
+     */
+    private $topePercepcionIIBB;
 
     /**
      * Get id
@@ -190,5 +197,29 @@ class ParametrosFinanzas
     public function getRemitoNum()
     {
         return $this->remitoNum;
+    }
+
+    /**
+     * Set topeRetencionIIBB
+     *
+     * @param integer $topeRetencionIIBB
+     *
+     * @return ParametrosFinanzas
+     */
+    public function setTopeRetencionIIBB($topeRetencionIIBB)
+    {
+        $this->topeRetencionIIBB = $topeRetencionIIBB;
+
+        return $this;
+    }
+
+    /**
+     * Get topeRetencionIIBB
+     *
+     * @return integer
+     */
+    public function getTopeRetencionIIBB()
+    {
+        return $this->topeRetencionIIBB;
     }
 }
