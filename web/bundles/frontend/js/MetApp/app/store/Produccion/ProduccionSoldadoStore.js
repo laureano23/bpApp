@@ -4,8 +4,6 @@ Ext.define('MetApp.store.Produccion.ProduccionSoldadoStore', {
 	alias: 'ProduccionSoldadoStore',
 	autoSync: true,
 	autoLoad: false,
-	buffered: true,
-	pageSize: 300,
 	
 	proxy: {
 		type: 'ajax',
