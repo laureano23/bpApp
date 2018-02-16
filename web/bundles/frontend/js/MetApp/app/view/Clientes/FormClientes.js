@@ -115,6 +115,7 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 									typeAhead: true,							
 									minChars: 1,
 									fieldLabel: 'Provincia',
+									allowBlank: false
 								},								
 								{
 									xtype: 'combobox',
@@ -129,7 +130,8 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 									minChars: 1,
 									fieldLabel: 'Partido',
 									labelWidth: 60,
-									columnWidth: 0.33
+									columnWidth: 0.33,
+									allowBlank: false
 								},
 								{
 									xtype: 'combobox',
@@ -144,7 +146,8 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 									minChars: 1,
 									fieldLabel: 'Localidad',
 									labelWidth: 60,
-									columnWidth: 0.33
+									columnWidth: 0.33,
+									allowBlank: false
 								},
 							]							
 						},
@@ -169,7 +172,8 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 									columnWidth: 0.33,
 									fieldLabel: 'CUIT:',
 									emptyText: '33678767439',
-									labelWidth: 35
+									labelWidth: 35,
+									allowBlank: false
 								},
 								{
 									xtype: 'textfield',
@@ -210,26 +214,6 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 												
 											]
 										},
-										{
-											title: 'Percepciones',
-											columnWidth: 0.33,
-											defaults: {
-												readOnly: true,
-												disabledCls: 'myDisabledClass'
-											},
-											items: [
-												{
-													xtype: 'numberfield',
-													name: 'netoPercepcion',
-													fieldLabel: 'Neto mayor a:'
-												},
-												{
-													xtype: 'numberfield',
-													name: 'porcentajePercepcion',
-													fieldLabel: 'Percepcion'
-												}
-											]
-										}
 									]
 								},
 								{

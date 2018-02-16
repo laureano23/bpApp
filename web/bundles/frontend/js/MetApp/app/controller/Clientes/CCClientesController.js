@@ -467,7 +467,6 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		});
 		
 		valuesDatosFc.idCliente = ccView.queryById('id').getValue();
-		//arrayRecords.push(valuesDatosFc);
 				
 		Ext.Ajax.request({
 			url: Routing.generate('mbp_CCClientes_guardarFc'),
@@ -481,11 +480,19 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 				var decodeResp = Ext.JSON.decode(resp.responseText);
 				if(decodeResp.success == true){
 					store.removeAll();
-					var storeCC = ccView.down('grid').getStore();
-					storeCC.load();
-					win.close();
-					var btnCC = ccView.queryById('nuevaFc');
-					me.DetalleComprobante(btnCC);
+					var grid = ccView.down('grid');
+					var storeCC = grid.getStore();
+					storeCC.load({
+						callback: function(){
+							var lastRecord = storeCC.count() - 1;	
+							console.log(lastRecord);						
+							grid.getSelectionModel().select(lastRecord);
+							win.close();
+							var btnCC = ccView.queryById('nuevaFc');
+							me.DetalleComprobante(btnCC);
+						}
+					});
+					
 				}
 				myMask.hide();
 			},

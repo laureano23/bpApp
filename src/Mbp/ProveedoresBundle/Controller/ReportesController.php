@@ -19,6 +19,7 @@ class ReportesController extends Controller
     	//RECIBO PARAMETROS
 		$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
+		$response = new Response;
 		
 		try{
 			/*
@@ -94,19 +95,17 @@ class ReportesController extends Controller
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 			
-						
-			echo json_encode(
+			
+			return $response->setContent(json_encode(
 				array(
 					'success'=> true,	
 				)
-			);
-			
-	    	return new Response();	
+			));
 		}catch(\Exception $e){
-			echo json_encode(array(
+			return $response->setContent(json_encode(array(
 				'success' => false,
 				'msg' => $e->getMessage()
-			));
+			)));
 		}		
 	}
 	

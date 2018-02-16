@@ -15,43 +15,29 @@ class FacturaRepository extends \Doctrine\ORM\EntityRepository
 		$em = $this->getEntityManager();
 		$repo = $em->getRepository('MbpProveedoresBundle:Factura');
 		
-		try{			
-			$qb2 = $em->createQueryBuilder()
-							->select('	f.id AS idF,
-										f.fechaEmision,
-										f.numFc AS concepto,
-										f.vencimiento AS vencimiento,
-										f.totalFc AS haber,
-										f.esBalance,
-										t.id AS idT,
-										SUM(t.aplicado) AS valorImputado')
-					->from('MbpProveedoresBundle:Factura', 'f')
-					->leftJoin('MbpProveedoresBundle:TransaccionOPFC', 't', 'WITH', 't.facturaImputada = f.id')
-					->where('f.proveedorId = :provId')								
-					->setParameter('provId', $idPRov)
-					->groupBy('f.id')		
-					->getQuery();
-			$res2 = $qb2->getResult();
+				
+		$qb2 = $em->createQueryBuilder()
+						->select("	f.id AS idF,
+									DATE_FORMAT(f.fechaEmision, '%d-%m-%Y %H:%i:%s') as fechaEmision,
+									f.numFc,
+									DATE_FORMAT(f.vencimiento, '%d-%m-%Y') AS vencimiento,
+									CASE WHEN f.totalFc > 0 THEN f.totalFc ELSE 0 END AS haber,
+									CASE WHEN f.totalFc < 0 THEN f.totalFc*-1 ELSE 0 END AS debe,
+									CASE WHEN f.esBalance = 0 THEN CONCAT('FACTURA NUM ', f.numFc) ELSE 'BALANCE' END as concepto,
+									CASE WHEN f.id > 0 THEN false ELSE false END as detalle,
+									CASE WHEN f.id > 0 THEN true ELSE true END as imputado,
+									t.id AS idT,
+									SUM(t.aplicado) AS valorImputado")
+				->from('MbpProveedoresBundle:Factura', 'f')
+				->leftJoin('MbpProveedoresBundle:TransaccionOPFC', 't', 'WITH', 't.facturaImputada = f.id')
+				->where('f.proveedorId = :provId')								
+				->setParameter('provId', $idPRov)
+				->groupBy('f.id')		
+				->getQuery();
+		$res2 = $qb2->getArrayResult();
 			
-			
-			$i=0;
-			foreach ($res2 as $rec) {
-				$res2[$i]['fechaEmision'] = $rec['fechaEmision']->format('d-m-Y H:i:s');
-				$res2[$i]['vencimiento'] = $rec['vencimiento']->format('d-m-Y');
-				$res2[$i]['esBalance'] == false ? $res2[$i]['concepto'] = 'FACTURA N° '.$rec['concepto'] : $res2[$i]['concepto'] = 'BALANCE';
-				$res2[$i]['debe'] = 0;
-				$res2[$i]['detalle'] = false; //define si aparece o no el icono en la grilla
-				$res2[$i]['imputado'] = true; //define si aparece o no el icono en la grilla
-				$i++;
-			}
-			return $res2;
-			
-		}catch(\Exception $e){
-			echo json_encode(array(
-				'success' => false,
-				'msg' => $e->getMessage()
-			));
-		}
+		return $res2;
+		
 	}
 	
 	/*

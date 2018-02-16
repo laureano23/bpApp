@@ -148,19 +148,6 @@ class Cliente
      */
     private $vencimientoFc;
     
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="netoPercepcion", type="integer", nullable=true)
-     */
-    private $netoPercepcion;
-    
-    /**
-     * @var decimal
-     *
-     * @ORM\Column(name="porcentajePercepcion", type="decimal", scale=2, nullable=true)
-     */
-    private $porcentajePercepcion;
 
 	/**
      * @var boolean
@@ -570,52 +557,7 @@ class Cliente
         return $this->vencimientoFc;
     }
 	
-	/**
-     * Set netoPercepcion
-     *
-     * @param integer $netoPercepcion
-     * @return Cliente
-     */
-    public function setNetoPercepcion($netoPercepcion)
-    {
-        $this->netoPercepcion = $netoPercepcion;
-
-        return $this;
-    }
-
-    /**
-     * Get netoPercepcion
-     *
-     * @return integer 
-     */
-    public function getNetoPercepcion()
-    {
-        return $this->netoPercepcion;
-    }
 	
-	/**
-     * Set porcentajePercepcion
-     *
-     * @param decimal $porcentajePercepcion
-     * @return Cliente
-     */
-    public function setPorcentajePercepcion($porcentajePercepcion)
-    {
-        $this->porcentajePercepcion = $porcentajePercepcion;
-
-        return $this;
-    }
-
-    /**
-     * Get porcentajePercepcion
-     *
-     * @return decimal 
-     */
-    public function getPorcentajePercepcion()
-    {
-        return $this->porcentajePercepcion;
-    }
-
     /**
      * Set cuentaCerrada
      *

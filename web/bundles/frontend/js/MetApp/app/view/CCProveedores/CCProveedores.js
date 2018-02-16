@@ -177,7 +177,7 @@ Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 									{ 
 										iconCls: 'search',
 										getClass: function(value,metadata,record){
-											var debe = record.get('debe');
+											var debe = record.get('detalle');
 											if (debe == 0 ) {
 											    return 'x-hide-display'; 
 											} else {

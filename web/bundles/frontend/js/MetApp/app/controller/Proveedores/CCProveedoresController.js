@@ -75,6 +75,8 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 		var values = form.getForm().getValues();
 		var cc = me.getCCProveedores();
 		
+		if(!form.isValid()) return;
+		
 		Ext.Ajax.request({
 			url: Routing.generate('mbp_proveedores_balance'),
 			

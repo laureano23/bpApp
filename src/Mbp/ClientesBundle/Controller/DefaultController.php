@@ -73,8 +73,6 @@ class DefaultController extends Controller
 			$cliente->setContacto3($request->request->get('contacto3'));
 			$cliente->setCondVenta($request->request->get('condVenta'));
 			$cliente->setVencimientoFc($request->request->get('vencimientoFc'));
-			$cliente->setNetoPercepcion($request->request->get('netoPercepcion'));
-			$cliente->setPorcentajePercepcion($request->request->get('porcentajePercepcion'));
 			$cliente->setCuentaCerrada($estadoCuenta);
 			$cliente->setIntereses($intereses);
 			$cliente->setTasaInt($request->request->get('tasa'));

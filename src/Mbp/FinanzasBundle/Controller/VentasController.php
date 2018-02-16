@@ -132,13 +132,14 @@ class VentasController extends Controller
 		//RECIBO PARAMETROS
 		$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
+		$response = new Response;
 
 		try{
 			$faele = $this->get('mbp.faele'); //FACTURA ELECTRONICA			
 			
 			$auxFinanzas = $this->get('AuxiliarFinanzas');
-			$response = new Response();
 			
+						
 			$data = $req->request->get('data');
 			$fcData = $req->request->get('fcData');
 			$decodeData = json_decode($data);
@@ -206,19 +207,27 @@ class VentasController extends Controller
 			$alicuotaPercepcion = $iibbService->getAlicuotaPercepcion();			
 			$percepcionIIBB=0;
 			
+			
 			$repoFinanzas = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
 			$parametrosFinanzas = $repoFinanzas->find(1);
+			
+						
+			if(empty($parametrosFinanzas)) throw new \Exception("No estan definidos los parámetros financieros", 1);
+			
 			
 			if($cliente->getDepartamento() == NULL || $cliente->getDepartamento()->getProvinciaId() == NULL){
 				throw new \Exception("El cliente debe tener cargados localidad y provincia para calcular IIBB", 1);				
 			}
 			
-			if($cliente->getDepartamento()->getProvinciaId()->getId() == 
-				$parametrosFinanzas->getProvincia()->getId() && $alicuotaPercepcion > 0){
+			if($cliente->getDepartamento()->getProvinciaId()->getId() == $parametrosFinanzas->getProvincia()->getId()
+				&& $alicuotaPercepcion > 0
+				&& $netoGrabado > $parametrosFinanzas->getTopePercepcionIIBB())
+			{
 				$percepcionIIBB = $netoGrabado * $alicuotaPercepcion / 100; 
 				$percepcionIIBB = number_format($percepcionIIBB, 2);
 			}	
-
+			
+			
 
 			//REDONDEO IMPORTES A 2 DECIMALES
 			$netoGrabado = number_format($netoGrabado, 2, ".", "");
@@ -297,8 +306,7 @@ class VentasController extends Controller
 			return $response;
 
 		}catch(\Exception $e){
-			//throw $e;
-			echo json_encode(array("success"=>false, "msg"=>$e->getMessage()));
+			$response->setContent(json_encode(array("success"=>false, "msg"=>$e->getMessage())));
 			return new Response;
 		}
 	}

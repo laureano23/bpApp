@@ -224,8 +224,8 @@ class ReportesController extends Controller
 			     cobranza_detallesCobranzas.`cobranzasdetalle_id` AS cobranza_detallesCobranzas_cobranzasdetalle_id,
 			     cliente.`idCliente` AS cliente_idCliente,
 			     cliente.`rsocial` AS cliente_rsocial,
-			     FormasPago.`id` AS FormasPago_id,
-			     FormasPago.`descripcion` AS FormasPago_descripcion,
+			     FormasPagos.`id` AS FormasPago_id,
+			     FormasPagos.`descripcion` AS FormasPago_descripcion,
 			     Cobranzas.`numRecibo` AS Cobranzas_numRecibo,
 			     CobranzasDetalle.`numero` AS CobranzasDetalle_numero,
 			     CobranzasDetalle.`banco` AS CobranzasDetalle_banco
@@ -233,7 +233,7 @@ class ReportesController extends Controller
 			     `Cobranzas` Cobranzas INNER JOIN `cobranza_detallesCobranzas` cobranza_detallesCobranzas ON Cobranzas.`id` = cobranza_detallesCobranzas.`cobranza_id`
 			     INNER JOIN `cliente` cliente ON Cobranzas.`clienteId` = cliente.`idCliente`
 			     INNER JOIN `CobranzasDetalle` CobranzasDetalle ON cobranza_detallesCobranzas.`cobranzasdetalle_id` = CobranzasDetalle.`id`
-			     INNER JOIN `FormasPago` FormasPago ON CobranzasDetalle.`formaPagoId` = FormasPago.`id`
+			     INNER JOIN `FormasPagos` FormasPagos ON CobranzasDetalle.`formaPagoId` = FormasPagos.`id`
 			WHERE
 			     Cobranzas.`id` = $idCobranza";
 			

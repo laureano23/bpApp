@@ -116,6 +116,7 @@ class CuentaCorrienteController extends Controller
 			));
 			
 		}catch(\Exception $e){
+			throw $e;
 			echo json_encode(array(
 				'success' => false,
 				'msg' => $e->getMessage()
@@ -145,7 +146,7 @@ class CuentaCorrienteController extends Controller
 		$em->getConnection()->beginTransaction();
 		try{
 
-			if($data->haber != 0){
+			if($data->idF > 0){
 				$id = $data->idF;	
 				$repo = $em->getRepository("MbpProveedoresBundle:Factura");	
 				$repoTr = $em->getRepository("MbpProveedoresBundle:TransaccionOPFC");	
@@ -330,8 +331,7 @@ class CuentaCorrienteController extends Controller
 			$obs = $req->request->get('observaciones');
 			
 			$balance = new Factura;
-			$proveedor = $repo->find($proveedorId);
-			
+			$proveedor = $repo->find($proveedorId);			
 			$balance->setFechaCarga(new \DateTime);
 			$balance->setFechaEmision(new \DateTime);
 			$balance->setEsBalance(true);

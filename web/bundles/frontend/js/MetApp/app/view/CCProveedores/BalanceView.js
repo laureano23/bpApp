@@ -32,7 +32,8 @@ Ext.define('MetApp.view.CCProveedores.BalanceView' ,{
 							xtype: 'textareafield',
 							name: 'observaciones',
 							itemId: 'observaciones',
-							fieldLabel: 'Observaciones'
+							fieldLabel: 'Observaciones',
+							emptyText: 'Ingrese el motivo del balance',
 						},
 						{
 							xtype: 'button',

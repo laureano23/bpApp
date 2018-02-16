@@ -25,8 +25,6 @@ class ClienteRepository extends  EntityRepository
 							c.contacto3,
 							c.condVenta,
 							c.vencimientoFc,
-							c.netoPercepcion,
-							c.porcentajePercepcion,
 							c.cuentaCerrada,
 							c.intereses,
 							c.tasaInt as tasa,
