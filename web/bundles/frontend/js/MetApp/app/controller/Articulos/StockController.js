@@ -118,7 +118,13 @@ Ext.define('MetApp.controller.Articulos.StockController',{
 			var form = winStock.queryById('formArticulo');
 			form.loadRecord(selection);
 			win.close();
-			winStock.queryById('cantidad').focus('', 10);
+			
+			if(selection.data.codigo == 'ZZZ'){
+				winStock.queryById('descripcion').focus('', 10);
+			}else{
+				winStock.queryById('cantidad').focus('', 10);
+			}
+			
 		});		
 		
 	},

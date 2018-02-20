@@ -47,6 +47,7 @@ class ComprasController extends Controller
 				$det->entrega == "" ? $fechaEntrega = new \DateTime : $fechaEntrega = \DateTime::createFromFormat('d/m/Y', $det->entrega);
 				//CARGO DATOS DEL DETALLE DE OC			
 				$detalle->setArticuloId($articulo);
+				$detalle->setDescripcion($det->descripcion);
 				$detalle->setUnidad($det->unidad);
 				$detalle->setPrecio($det->costo);
 				$detalle->setCant($det->cant);

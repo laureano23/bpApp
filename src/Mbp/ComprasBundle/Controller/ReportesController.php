@@ -76,7 +76,8 @@ class ReportesController extends Controller
 			     articulos.`descripcion` AS articulos_descripcion,
 			     OrdenCompra.`monedaOC` AS OrdenCompra_monedaOC,
 			     OrdenCompra.`tc` AS OrdenCompra_tc,
-			     OrdenCompraDetalle.`ivaCalculado` AS OrdenCompraDetalle_ivaCalculado
+			     OrdenCompraDetalle.`ivaCalculado` AS OrdenCompraDetalle_ivaCalculado,
+			     OrdenCompraDetalle.`descripcion` AS OrdenCompraDetalle_descripcion
 			FROM
 			     `OrdenCompraDetalle` OrdenCompraDetalle INNER JOIN `ordenCompra_detallesOrdenCompra` ordenCompra_detallesOrdenCompra ON OrdenCompraDetalle.`id` = ordenCompra_detallesOrdenCompra.`ordencompradetalle_id`
 			     INNER JOIN `OrdenCompra` OrdenCompra ON ordenCompra_detallesOrdenCompra.`orden_id` = OrdenCompra.`id`

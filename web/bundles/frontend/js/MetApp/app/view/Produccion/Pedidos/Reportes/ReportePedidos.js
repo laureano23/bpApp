@@ -91,7 +91,16 @@ Ext.define('MetApp.view.Produccion.Pedidos.Reportes.ReportePedidos', {
 									itemId: 'fechaDesde',
 									width: 140,
 									fieldLabel: 'Desde',
-									labelAlign: 'top'
+									labelAlign: 'top',
+									listeners: {
+										blur: {
+											fn: function(txt){
+												if(txt.getValue() == null){
+													txt.setValue('01/01/2000');
+												}
+											}
+										}
+									}
 								},
 								{
 									xtype: 'datefield',
@@ -99,7 +108,17 @@ Ext.define('MetApp.view.Produccion.Pedidos.Reportes.ReportePedidos', {
 									itemId: 'fechaHasta',
 									width: 140,
 									fieldLabel: 'Hasta',
-									labelAlign: 'top'
+									labelAlign: 'top',
+									listeners: {
+										blur: {
+											fn: function(txt){
+												console.log(txt.getValue());
+												if(txt.getValue() == null){
+													txt.setValue('31/12/2030');
+												}
+											}
+										}
+									}
 								}
 							]
 						},

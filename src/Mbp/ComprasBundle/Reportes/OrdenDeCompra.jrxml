@@ -32,7 +32,8 @@
      articulos.`descripcion` AS articulos_descripcion,
      OrdenCompra.`monedaOC` AS OrdenCompra_monedaOC,
      OrdenCompra.`tc` AS OrdenCompra_tc,
-     OrdenCompraDetalle.`ivaCalculado` AS OrdenCompraDetalle_ivaCalculado
+     OrdenCompraDetalle.`ivaCalculado` AS OrdenCompraDetalle_ivaCalculado,
+     OrdenCompraDetalle.`descripcion` AS OrdenCompraDetalle_descripcion
 FROM
      `OrdenCompraDetalle` OrdenCompraDetalle INNER JOIN `ordenCompra_detallesOrdenCompra` ordenCompra_detallesOrdenCompra ON OrdenCompraDetalle.`id` = ordenCompra_detallesOrdenCompra.`ordencompradetalle_id`
      INNER JOIN `OrdenCompra` OrdenCompra ON ordenCompra_detallesOrdenCompra.`orden_id` = OrdenCompra.`id`
@@ -64,6 +65,7 @@ WHERE
 	<field name="OrdenCompra_monedaOC" class="java.lang.Boolean"/>
 	<field name="OrdenCompra_tc" class="java.math.BigDecimal"/>
 	<field name="OrdenCompraDetalle_ivaCalculado" class="java.math.BigDecimal"/>
+	<field name="OrdenCompraDetalle_descripcion" class="java.lang.String"/>
 	<variable name="subtotal" class="java.lang.Float" calculation="Sum">
 		<variableExpression><![CDATA[$F{OrdenCompra_monedaOC} == true &&
  $F{OrdenCompraDetalle_moneda} == true ?
@@ -252,7 +254,7 @@ Tel: 4484-2416]]></text>
 				<reportElement x="81" y="0" width="215" height="20" uuid="b89cb5e4-9cc2-4eaf-b428-1c1ac5b3dacd"/>
 				<box leftPadding="3"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{articulos_descripcion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{OrdenCompraDetalle_descripcion}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="296" y="0" width="48" height="20" uuid="064cd2b7-7f3d-4cf4-932d-1714cd29d72a"/>

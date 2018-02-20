@@ -132,7 +132,13 @@ Ext.define('MetApp.controller.Produccion.PedidoClientes.PedidoClientesController
 						
 			formPedido.loadRecord(selection);				
 			button.up('window').close();
-			inputCantidad.focus('', true);
+			
+			if(selection.data.codigo == 'ZZZ'){
+				formPedido.queryById('descripcion').focus('', 50);
+			}else{
+				inputCantidad.focus('', true);	
+			}
+			
 		});	
 	},
 	

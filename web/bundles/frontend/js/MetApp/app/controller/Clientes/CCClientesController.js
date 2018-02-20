@@ -363,7 +363,15 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			
 			formArt.loadRecord(selection);
 			winArt.close();
-			winFacturacion.queryById('cantidad').focus(true, 50);
+			
+			if(selection.data.codigo == 'ZZZ'){
+				winFacturacion.queryById('descripcion').focus(true, 50);
+			}else{
+				winFacturacion.queryById('cantidad').focus(true, 50);	
+			}
+			console.log(selection);
+			
+			
 		});
 	},
 	

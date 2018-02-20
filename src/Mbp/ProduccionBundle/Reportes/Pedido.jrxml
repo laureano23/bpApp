@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Pedidos" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="faabb94c-b32d-4f38-913c-e824ee7dd96c">
-	<property name="ireport.zoom" value="1.1"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.x" value="46"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="codigoDesde" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["1"]]></defaultValueExpression>
@@ -252,7 +252,7 @@ WHERE
 					<bottomPen lineWidth="0.0"/>
 					<rightPen lineWidth="0.0"/>
 				</box>
-				<textFieldExpression><![CDATA[$F{articulos_descripcion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{PedidoClientesDetalle_descripcion}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="543" y="0" width="57" height="20" uuid="5d9787f4-248e-43a5-98f5-def87db5d6b9"/>

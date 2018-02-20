@@ -65,7 +65,7 @@ class OrdenCompraDetalle
     private $iva;
 	
 	/**
-     * @var string
+     * @var decimal
      *
      * @ORM\Column(name="ivaCalculado", type="decimal", precision=12, scale=4)
      */
@@ -77,6 +77,13 @@ class OrdenCompraDetalle
      * @ORM\Column(name="moneda", type="boolean")
      */
     private $moneda;
+    
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="descripcion", type="string", length=250)
+     */
+    private $descripcion;
 
 
     /**
@@ -279,5 +286,29 @@ class OrdenCompraDetalle
     public function getIvaCalculado()
     {
         return $this->ivaCalculado;
+    }
+
+    /**
+     * Set descripcion
+     *
+     * @param string $descripcion
+     *
+     * @return OrdenCompraDetalle
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+
+        return $this;
+    }
+
+    /**
+     * Get descripcion
+     *
+     * @return string
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
     }
 }

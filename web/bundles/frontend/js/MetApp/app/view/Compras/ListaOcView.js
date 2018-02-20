@@ -8,6 +8,9 @@ Ext.define('MetApp.view.Compras.ListaOcView' ,{
 	itemId: 'ListaOcView',
 	title: 'Listado ordenes de compra',
 	layout: 'border',
+	bodyStyle: {
+		background: 'white'
+	},
 	
 	initComponent: function(){
 		var me = this;

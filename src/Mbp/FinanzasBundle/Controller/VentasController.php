@@ -20,17 +20,15 @@ class VentasController extends Controller
 		$repo = $em->getRepository('MbpFinanzasBundle:Bancos');
 		$res = $repo->findAll();
 		
-		$resu = array();
+		$res = $repo->createQueryBuilder('b')
+			->select('')
+			->getQuery()
+			->getArrayResult();
 		
-		$i=0;
-		foreach ($res as $reg) {
-			$resu[$i]['id'] = $reg->getId();
-			$resu[$i]['nombre'] = $reg->getNombre();
-			$i++;
-		}
+		
 		echo json_encode(array(
 			'success' => true,
-			'items' => $resu
+			'items' => $res
 		));
 		
         return new Response();

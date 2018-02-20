@@ -55,8 +55,8 @@ Ext.define('MetApp.view.Compras.OrdenCompraView' ,{
 								},
 								{
 									xtype: 'textfield',
-									name: 'rSocial',
-									itemId: 'rSocial',
+									name: 'rsocial',
+									itemId: 'rsocial',
 									width: 450,
 									margin: '0 5 0 0'
 								},								
