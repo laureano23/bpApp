@@ -7,7 +7,8 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 		'MetApp.view.Reportes.RepoIVAVentas',
 		'MetApp.view.Reportes.RepoIVACompras',
 		'MetApp.view.Reportes.ReporteArtVendidos',
-		'MetApp.view.Reportes.ReporteIntResarcitorios'
+		'MetApp.view.Reportes.ReporteIntResarcitorios',
+		'MetApp.view.Reportes.ReporteHistoricoMov'
 	],
 	refs:[
 	],
@@ -60,7 +61,52 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 			'ReporteIntResarcitorios button[itemId=printDateReport]': {
 				click: this.PrintInteresesRes
 			},
+			'viewport menuitem[itemId=reporteHistMov]': {
+				click: this.AddFormHistoricoMov
+			},
+			'ReporteHistoricoMov button[itemId=printDateReport]': {
+				click: this.PrintHistoricoMovReporte
+			},
 		});
+	},
+	
+	PrintHistoricoMovReporte: function(btn){
+		var win = btn.up('window');
+		var form = win.down('form');
+		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
+		
+		if(form.isValid()){
+			var values = form.getForm().getValues();
+			
+			Ext.Ajax.request({
+				url: Routing.generate('mbp_reportes_historicoMov'),
+				
+				params: {
+					desde: values.desde,
+					hasta: values.hasta,
+					codigo1: values.codigo1,
+					codigo2: values.codigo2
+				},
+				
+				success: function(resp){					
+					var jsonResp = Ext.JSON.decode(resp.responseText);
+					if(jsonResp.success == true){
+						var ruta = Routing.generate('mbp_reportes_historicoMov_PDF');
+						
+						window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+					}
+					myMask.hide();
+				},
+				
+				failure: function(resp){
+					myMask.hide();
+				}
+			});	
+		}
+	},
+	
+	AddFormHistoricoMov: function(btn){
+		Ext.widget('ReporteHistoricoMov');
 	},
 	
 	PrintInteresesRes: function(btn){

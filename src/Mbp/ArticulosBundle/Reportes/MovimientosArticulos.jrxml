@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MovimientosArticulos" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="33981c64-6d8e-412e-ad48-a07bb2e86f1b">
+	<property name="ireport.zoom" value="3.1384283767210093"/>
+	<property name="ireport.x" value="53"/>
+	<property name="ireport.y" value="60"/>
+	<parameter name="rutaLogo" class="java.lang.String"/>
+	<parameter name="fechaDesde" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaHasta" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="codigoDesde" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="codigoHasta" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+	RemitosClientes.fecha AS fechaRemito,
+	RemitosClientes.remitoNum AS remitoNum,
+	RemitosClientesDetalles.cantidad AS remitoCant,
+	RemitosClientesDetalles.descripcion AS detalleRem,
+	ProveedorRem.rsocial AS proveedorRem,
+	ClienteRem.rsocial AS clienteRem,
+
+	MovimientosArticulos.fechaMovimiento,
+	MovimientosArticulos.comprobanteNum AS movimientoNum,
+	MovimientosArticulos.tipoMovimiento,
+	ConceptosStock.concepto AS conceptoMovimiento,
+	ProveedorMov.rsocial AS proveedorMov,
+	ClienteMov.rsocial AS clienteMov,
+	DetalleMovArt.cantidad AS cantMov,
+	DetalleMovArt.descripcion AS descripcionMov,
+
+	articulos.codigo,
+	articulos.descripcion AS descArt
+FROM (SELECT
+     DetalleMovArt.`id` AS MOVIMIENTO_REMITO_ID,
+     DetalleMovArt.`descripcion` AS DESCRIPCION_MOV,
+     DetalleMovArt.`articuloId` AS ARTICULO_ID
+FROM
+     `DetalleMovArt` DetalleMovArt
+UNION
+SELECT
+     RemitosClientesDetalles.`id` AS RemitosClientesDetalles_id,
+     RemitosClientesDetalles.`descripcion` AS RemitosClientesDetalles_descripcion,
+     RemitosClientesDetalles.`articuloId` AS RemitosClientesDetalles_articuloId
+FROM
+     `RemitosClientesDetalles` RemitosClientesDetalles) AS SUB
+LEFT JOIN movimientos_detalles ON MOVIMIENTO_REMITO_ID = movimientos_detalles.detallemovart_id
+LEFT JOIN MovimientosArticulos ON movimientos_detalles.movimientosarticulos_id = MovimientosArticulos.id
+LEFT JOIN Proveedor AS ProveedorMov ON ProveedorMov.id = MovimientosArticulos.proveedorId
+LEFT JOIN cliente AS ClienteMov ON ClienteMov.idCliente = MovimientosArticulos.clienteId
+LEFT JOIN ConceptosStock ON ConceptosStock.id = MovimientosArticulos.conceptoId
+LEFT JOIN DetalleMovArt ON DetalleMovArt.id = movimientos_detalles.detallemovart_id
+
+LEFT JOIN RemitoClientes_detalle ON RemitoClientes_detalle.remitosclientes_id = MOVIMIENTO_REMITO_ID
+LEFT JOIN RemitosClientes ON RemitosClientes.id = RemitoClientes_detalle.remitosclientes_id
+LEFT JOIN RemitosClientesDetalles ON RemitosClientesDetalles.id = RemitoClientes_detalle.remitosclientesdetalles_id
+LEFT JOIN Proveedor AS ProveedorRem ON ProveedorRem.id = RemitosClientes.proveedorId
+LEFT JOIN cliente AS ClienteRem ON ClienteRem.idCliente = RemitosClientes.clienteId
+
+LEFT JOIN articulos ON articulos.idArticulos = ARTICULO_ID
+
+WHERE
+	RemitosClientes.fecha BETWEEN $P{fechaDesde} AND $P{fechaHasta} AND
+	articulos.codigo BETWEEN $P{codigoDesde} AND $P{codigoHasta} OR
+	fechaMovimiento BETWEEN $P{fechaDesde} AND $P{fechaHasta} AND
+	articulos.codigo BETWEEN $P{codigoDesde} AND $P{codigoHasta}]]>
+	</queryString>
+	<field name="fechaRemito" class="java.sql.Timestamp"/>
+	<field name="remitoNum" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="remitoCant" class="java.math.BigDecimal"/>
+	<field name="detalleRem" class="java.lang.String"/>
+	<field name="proveedorRem" class="java.lang.String"/>
+	<field name="clienteRem" class="java.lang.String"/>
+	<field name="fechaMovimiento" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="movimientoNum" class="java.lang.String"/>
+	<field name="tipoMovimiento" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="conceptoMovimiento" class="java.lang.String"/>
+	<field name="proveedorMov" class="java.lang.String"/>
+	<field name="clienteMov" class="java.lang.String"/>
+	<field name="cantMov" class="java.math.BigDecimal"/>
+	<field name="descripcionMov" class="java.lang.String"/>
+	<field name="codigo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="descArt" class="java.lang.String"/>
+	<variable name="TOTAL_ENTRADAS" class="java.lang.Float" resetType="Group" resetGroup="CODIGO" calculation="Sum">
+		<variableExpression><![CDATA[$F{tipoMovimiento} == false && $F{remitoNum} == null ? $F{cantMov} : 0]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_SALIDAS_REMITO" class="java.lang.Float" resetType="Group" resetGroup="CODIGO" calculation="Sum">
+		<variableExpression><![CDATA[$F{remitoCant}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_SALIDAS_MOV" class="java.lang.Float" resetType="Group" resetGroup="CODIGO" calculation="Sum">
+		<variableExpression><![CDATA[$F{tipoMovimiento} == 1 ? $F{cantMov} : 0]]></variableExpression>
+	</variable>
+	<group name="CODIGO" keepTogether="true">
+		<groupExpression><![CDATA[$F{codigo}]]></groupExpression>
+		<groupHeader>
+			<band height="30">
+				<textField>
+					<reportElement x="0" y="0" width="100" height="20" uuid="7eaef027-4852-4f72-be9f-5d130048a982"/>
+					<box leftPadding="3">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="100" y="0" width="702" height="20" uuid="b07a751b-ad12-45ae-b55b-1359cd5e0b30"/>
+					<box leftPadding="3">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{descArt}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="50">
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement x="471" y="0" width="81" height="20" uuid="270a2870-ef08-4139-bcbb-bc6221eefa1d"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{TOTAL_SALIDAS_MOV} + $V{TOTAL_SALIDAS_REMITO}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement x="390" y="0" width="81" height="20" uuid="364d66bd-fea4-4b6f-80fb-31d13afd726e"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{TOTAL_ENTRADAS}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="200" y="0" width="190" height="20" uuid="ed2e4e46-dfec-422e-a8da-d8482b711507"/>
+					<box rightPadding="2"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isItalic="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[Total:]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="52" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="802" height="52" uuid="2e513571-5057-4452-93b3-b40ffd80caf0"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HISTÓRICO DE MOVIMIENTOS]]></text>
+			</staticText>
+			<image onErrorType="Blank">
+				<reportElement x="5" y="4" width="125" height="45" uuid="278a6c5c-3481-42a5-a70f-8e77423d7a79"/>
+				<imageExpression><![CDATA[$P{rutaLogo}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="2" width="100" height="20" uuid="1a6d7914-3744-42e8-9241-5ed5f420d05e"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Emisión]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="2" width="100" height="20" uuid="247d39fc-906e-469b-9e28-26b6abbacd32"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[N° de Comprobante]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="2" width="190" height="20" uuid="7c6e893d-e1f7-4d0c-b3be-62d2154c2741"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Movimiento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="2" width="81" height="20" uuid="6511dc08-f8e2-4561-915a-d03deea7f594"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Entradas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="471" y="2" width="81" height="20" uuid="9349904f-eb04-4bff-a501-40fa634ca1c2"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Salidas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="552" y="2" width="250" height="20" uuid="bc6fdff9-a085-4bef-a375-8765d8f5069d"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Cliente / Proveedor]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="0" y="0" width="100" height="20" uuid="f418e6ab-8175-433d-863a-eec80790928d"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fechaRemito} == null ? $F{fechaMovimiento} : $F{fechaRemito}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="100" y="0" width="100" height="20" uuid="e628bfa0-fd05-4fd4-ae6d-3c9b41cde09b"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{remitoNum} == null ? $F{movimientoNum} : $F{remitoNum}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="200" y="0" width="190" height="20" uuid="2e41096a-94e1-430b-b48a-c787ab6a48f2"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{remitoNum} != null ? "Remito N°: "+$F{remitoNum} :
+$F{conceptoMovimiento}+" N° "+$F{movimientoNum}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="390" y="0" width="81" height="20" uuid="42963790-dbe0-4359-9ba2-69a7a0bbde32"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{remitoNum} != null ? "" : $F{cantMov}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="471" y="0" width="81" height="20" uuid="c6cc4436-23c3-45b1-ae75-6a56f392a22f"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{remitoNum} != null ? $F{remitoCant} :
+$F{tipoMovimiento} == 0 ? $F{cantMov} : ""]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="552" y="0" width="250" height="20" uuid="394a9348-a2ef-46f4-bee2-356230a61f7c"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{clienteMov} != null ? $F{clienteMov} :
+$F{proveedorMov} != null ? $F{proveedorMov} :
+$F{clienteRem} != null ? $F{clienteRem} :
+$F{proveedorRem}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="0" width="735" height="13" backcolor="#E6E6E6" uuid="5a30a822-3b76-4742-b91b-387f99a76d14"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="735" y="0" width="67" height="13" backcolor="#E6E6E6" uuid="d5e6c32e-52e8-48e3-9163-196ab487a3eb"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

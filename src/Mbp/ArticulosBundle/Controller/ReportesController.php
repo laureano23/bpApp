@@ -163,23 +163,34 @@ class ReportesController extends Controller
 		 */
 		$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
-		$idNodo = (int)$req->request->get('idNodo');
-		$tipoCambio = $this->get('TipoCambio');
-		$tc = (float)$tipoCambio->getTipoCambio();
 		
 		$jru = $repo->jru();
 				
-		$ruta = $kernel->locateResource('@MbpArticulosBundle/Reportes/EstructuraDeMateriales.jrxml');
+		$ruta = $kernel->locateResource('@MbpArticulosBundle/Reportes/MovimientosArticulos.jrxml');
 		$rutaLogo = $repo->getRutaLogo($kernel);
 		
 		//Ruta de destino
-		$destino = $kernel->locateResource('@MbpArticulosBundle/Resources/public/pdf/').'Estructura_materiales.pdf';
+		$destino = $kernel->locateResource('@MbpArticulosBundle/Resources/public/pdf/').'MovimientosArticulos.pdf';
+		
+		//Fechas
+		$desde = \DateTime::createFromFormat('d/m/Y', $req->request->get('desde'));
+		$desde = $desde->format('Y-m-d');
+		
+		
+		$hasta = \DateTime::createFromFormat('d/m/Y', $req->request->get('hasta'));
+		$hasta = $hasta->format('Y-m-d');
+		
+		$cod1 = $req->request->get('codigo1');
+		$cod2 = $req->request->get('codigo2');
 		
 		//Parametros HashMap
 		$param = $repo->getJava('java.util.HashMap');
-		$param->put('idNodo', $idNodo);
 		$param->put('rutaLogo', $rutaLogo);
-		$param->put('tc', $tc);
+		$param->put('fechaDesde', $desde);
+		$param->put('fechaHasta', $hasta);
+		$param->put('codigoDesde', $cod1);
+		$param->put('codigoHasta', $cod2);
+		
 				
 		$conn = $repo->getJdbc();
 		
@@ -234,6 +245,12 @@ class ReportesController extends Controller
 			LEFT JOIN cliente AS ClienteRem ON ClienteRem.idCliente = RemitosClientes.clienteId
 			
 			LEFT JOIN articulos ON articulos.idArticulos = ARTICULO_ID
+			
+			WHERE			
+				RemitosClientes.fecha BETWEEN '$desde' AND '$hasta' AND
+				codigo BETWEEN '$cod1' AND '$cod2' OR
+				fechaMovimiento BETWEEN '$desde' AND '$hasta' AND
+				codigo BETWEEN '$cod1' AND '$cod2'
 		";
 		 /*
 		  * FIN SQL
@@ -251,4 +268,23 @@ class ReportesController extends Controller
 		);
 	}
 	
+	/**
+     * @Route("/ReporteHistoricoMov_PDF", name="mbp_reportes_historicoMov_PDF", options={"expose"=true})
+     */
+	public function ReporteHistoricoMov_PDF()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpArticulosBundle/Resources/public/pdf/').'MovimientosArticulos.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'MovimientosArticulos.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+
+        return $response;
+	}
 }

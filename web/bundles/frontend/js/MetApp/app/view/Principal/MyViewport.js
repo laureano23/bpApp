@@ -598,6 +598,18 @@ Ext.define('MetApp.view.Principal.MyViewport', {
 		                }, 
         			}
         		]
+        	},
+        	{
+        		text: 'Stock',
+        		menu: [
+        			{
+        				text: 'Histórico de Movimientos Articulos',
+        				itemId: 'reporteHistMov',
+        				listeners : {
+		                    render : dragZone,
+		                }, 
+        			}
+        		]
         	}
         	
         ]

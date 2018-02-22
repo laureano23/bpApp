@@ -32,6 +32,11 @@ mbp_articulos_familia:
     type:     annotation
     prefix:   /articulos
 
+mbp_articulos_reportes:
+    resource: "@MbpArticulosBundle/Controller/ReportesController.php"
+    type:     annotation
+    prefix:   /articulos/reportes
+
 mbp_proveedores:
     resource: "@MbpProveedoresBundle/Controller/"
     type:     annotation
