@@ -2,7 +2,7 @@ Ext.define('MetApp.model.Articulos.RemitosModel',{
 	extend: 'Ext.data.Model',
 	fields: [
 		{name: 'id', type: 'int'},
-		{name: 'fecha', type: 'date'},
+		{name: 'fecha', type: 'date', dateFormat: 'd/m/Y'},
 		{name: 'remitoNum', type: 'string'},
 		{name: 'cliente', type: 'string'},
 		{name: 'proveedor', type: 'string'},

@@ -10,6 +10,24 @@ use Mbp\FinanzasBundle\Entity\CentroCostos;
 
 class ParametrosController extends Controller
 {
+	/**
+     * @Route("/finanzas/listarParametros", name="mbp_finanzas_listarParametros", options={"expose"=true})
+     */
+    public function listarParametros()
+    {
+    	$em = $this->getDoctrine()->getManager();
+		$repo = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
+		$response = new Response;
+		
+		$qb = $repo->createQueryBuilder('p')
+			->select('p')
+			->getQuery()
+			->getArrayResult();
+			
+		return $response->setContent(json_encode(array('success' => true, 'data' => $qb)));
+    }
+	
+	
     /**
      * @Route("/finanzas/initParams", name="mbp_finanzas_initParams", options={"expose"=true})
      */

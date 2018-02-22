@@ -48,6 +48,7 @@ Ext.application({
 		'Articulos.CentroCostosController',
 		'Articulos.FamiliaController',
 		'Articulos.SubFamiliaController',
+		'Articulos.ParametrosController',
 		'Compras.OrdenDeCompraController',
 		'Articulos.ListaDePreciosController',
 		'Articulos.RemitosController',

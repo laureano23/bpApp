@@ -140,6 +140,7 @@ Ext.define('MetApp.controller.Articulos.StockController',{
 			
 			store.add(model);
 			form.getForm().reset();	
+			form.queryById('descripcion').setReadOnly(true);
 		}else{
 			form.getForm().markInvalid();
 		} 

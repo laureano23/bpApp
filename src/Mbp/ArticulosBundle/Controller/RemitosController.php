@@ -93,12 +93,8 @@ class RemitosController extends Controller
 				}
 			
 				$em->persist($remito);
-				//SE AUMENTA EN 1 EL REMITO EN PARAMETROS
-				$param->setRemitoNum($param->getRemitoNum() + 1);
-				$em->persist($param);
 				//SE EJECUTA UN LISTENER PARA DESCONTAR STOCK DE CADA ITEM				
-			}//EOF FOREACH ITEM				
-
+			}//EOF FOREACH ITEM
 			$em->flush();
 
 			$response->setContent(json_encode(array('success' => true, 'idRemito' => $remito->getId())));

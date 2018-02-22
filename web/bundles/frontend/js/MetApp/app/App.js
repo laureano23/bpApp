@@ -48,6 +48,7 @@ Ext.application({
 		'Articulos.CentroCostosController',
 		'Articulos.FamiliaController',
 		'Articulos.SubFamiliaController',
+		'Articulos.ParametrosController',
 		'Compras.OrdenDeCompraController',
 		'Compras.PedidosInternosController',
 		'Articulos.ListaDePreciosController',
@@ -57,7 +58,7 @@ Ext.application({
 		'Reportes.ReportesController',
 		'MetApp.controller.Bancos.BancosController',
 		'MetApp.controller.Articulos.EnfriadoresController',
-		'MetApp.controller.Articulos.StockController',		
+		'MetApp.controller.Articulos.StockController'
 	],
 	name: 'MetApp',
 	appFolder: '../bundles/frontend/js/MetApp/app',

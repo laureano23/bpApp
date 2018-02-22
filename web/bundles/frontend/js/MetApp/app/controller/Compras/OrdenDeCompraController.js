@@ -201,6 +201,7 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 		
 		store.loadRawData(values, true);
 		form.getForm().reset();
+		form.queryById('descripcion').setReadOnly(true);
 		win.focus();
 	},
 	

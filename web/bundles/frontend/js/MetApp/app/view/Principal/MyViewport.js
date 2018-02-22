@@ -135,6 +135,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                 listeners : {
                     render : dragZone
                 },
+			},			
+			{
+				text: 'Parámetros',
+				itemId: 'formParametros',
+                listeners : {
+                    render : dragZone
+                },
 			},
 		]
 		

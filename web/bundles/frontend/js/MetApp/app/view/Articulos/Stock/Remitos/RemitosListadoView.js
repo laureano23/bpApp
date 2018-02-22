@@ -26,6 +26,7 @@ Ext.define('MetApp.view.Articulos.Stock.Remitos.RemitosListadoView' ,{
 							dataIndex: 'fecha',
 							width: 100,
 							format: 'd/m/Y',
+							dateFormat: 'd/m/Y',
 							submitFormat: 'd/m/Y',
 							xtype:'datecolumn',
 						},

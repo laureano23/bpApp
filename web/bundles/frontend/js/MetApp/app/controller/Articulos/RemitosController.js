@@ -129,7 +129,6 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 			},
 			
 			success: function(resp){
-				console.log(resp);
 				var jsonResp = Ext.JSON.decode(resp.responseText);
 				store.loadRawData(jsonResp.data);
 			}
@@ -172,13 +171,17 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 		winArt.queryById('insertArt').on('click', function(){
 			var selection = grid.getSelectionModel().getSelection();
 			selection = selection[0];
+			var form = winRemito.down('form');
+							
+			form.getForm().setValues(selection.data);
 
-			winRemito.queryById('codigo').setValue(selection.data.codigo);
-			winRemito.queryById('descripcion').setValue(selection.data.descripcion);
-			winRemito.queryById('unidad').setValue(selection.data.unidad);
-
-			winArt.close();
-			winRemito.queryById('cantidad').focus('', 20);
+			if(selection.data.codigo == 'ZZZ'){
+				form.queryById('descripcion').setReadOnly(false);
+				form.queryById('descripcion').focus('', 50);
+			}else{
+				winRemito.queryById('cantidad').focus('', 20);	
+			}
+			winArt.close();			
 		});
 	},
 
@@ -226,6 +229,7 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 		if(form.isValid()){
 			grid.getStore().add(values);
 			form.getForm().reset();
+			form.queryById('descripcion').setReadOnly(true);
 		}	
 
 	},
