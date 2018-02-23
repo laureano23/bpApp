@@ -617,8 +617,19 @@ Ext.define('MetApp.view.Principal.MyViewport', {
 		                }, 
         			}
         		]
+        	},
+        	{
+        		text: 'Bancos',
+        		menu: [
+        			{
+        				text: 'Movimientos Bancarios Histórico',
+        				itemId: 'reporteHistMovBancarios',
+        				listeners : {
+		                    render : dragZone,
+		                }, 
+        			}
+        		]
         	}
-        	
         ]
         
         var menuBancos = [

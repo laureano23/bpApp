@@ -221,7 +221,7 @@ class BancosController extends Controller
 			}
 			
 			$concepto->setConcepto($data);
-			$concepto->setContabiliza($contabiliza);
+			$concepto->setImputaDebe($concepto == 'Debe' ? true:false);
 			
 			$em->persist($concepto);
 			$em->flush();
@@ -302,9 +302,8 @@ class BancosController extends Controller
 			$repoConceptoMov = $em->getRepository('MbpFinanzasBundle:ConceptosBanco');
 			$repoChequeTerceros = $em->getRepository('MbpFinanzasBundle:CobranzasDetalle');
 			
-			$banco = $repoConceptoMov->find($operacion->idBanco);
-			$conceptoMov = $repoConceptoMov->find($operacion->conceptoMov);
-			
+			$banco = $repoBancos->find($operacion->idBanco);
+			$conceptoMov = $repoConceptoMov->find($operacion->conceptoMov);			
 									
 			$movimiento = new MovimientosBancos;	
 			$movimiento->setFechaMovimiento(new \DateTime); //CAMBIAR A FECHA DEL CLIENTE
@@ -332,7 +331,7 @@ class BancosController extends Controller
 			}
 			
 			$movimiento->setBanco($banco);
-			$movimiento->setConceptoMovimiento($conceptoMov);
+			$movimiento->setConceptoBancoId($conceptoMov);
 			
 			$em->persist($movimiento);			
 			$em->flush();				

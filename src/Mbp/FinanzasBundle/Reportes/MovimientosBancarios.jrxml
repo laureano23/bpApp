@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MovimientosBancarios" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="709b51c8-5f4d-4b2d-a677-76deaca708e6">
+	<property name="ireport.zoom" value="1.6105100000000012"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="17"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="71" height="20" uuid="91e0b724-27eb-40b7-90ad-16f282873ed2"/>
+				<text><![CDATA[Emisión]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="71" y="0" width="142" height="20" uuid="c4be852a-76e1-45c3-9000-9a8840c85210"/>
+				<text><![CDATA[Concepto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="213" y="0" width="71" height="20" uuid="d87b83b6-1820-498a-9fd9-908c22dec0b8"/>
+				<text><![CDATA[N° Comp.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="284" y="0" width="100" height="20" uuid="d6a9c49b-9e26-4051-87d8-86d8560f250e"/>
+				<text><![CDATA[Fecha Acreditación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="384" y="0" width="271" height="20" uuid="b76f5cc6-d255-43bc-a89c-59cbe00532a2"/>
+				<text><![CDATA[Proveedor / Banco]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="655" y="0" width="71" height="20" uuid="52b2c50b-d998-424b-b20d-8ff27ee014e0"/>
+				<text><![CDATA[Debe]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="726" y="0" width="76" height="20" uuid="16fd8c8a-3535-4bef-8bb6-0a049ddfa0a9"/>
+				<text><![CDATA[Haber]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

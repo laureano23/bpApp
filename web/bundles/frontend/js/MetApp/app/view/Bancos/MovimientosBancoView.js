@@ -119,10 +119,11 @@ Ext.define('MetApp.view.Bancos.MovimientosBancoView',{
 							store: 'MetApp.store.Bancos.MovimientosBancoStore',						
 							columns: [
 								{ text: 'N° comprobante', dataIndex: 'numCbte' },
+								{ text: 'Banco', dataIndex: 'banco', flex: 1 },
 								{ text: 'Fecha diferida', dataIndex: 'fechaDiferida', flex: 1 },
 								{ text: 'Importe', dataIndex: 'importe', flex: 1 },
 								{ text: 'Observacion', dataIndex: 'obsCbte', flex: 1 },
-								{ text: 'Cheque terceros', dataIndex: 'idChequeTerceros', flex: 1 },
+								{ text: 'Cheque terceros', dataIndex: 'idChequeTerceros', flex: 1, hidden:true },
 							],
 							itemId: 'gridMov',
 							width: 700						

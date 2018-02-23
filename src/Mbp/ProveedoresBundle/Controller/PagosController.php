@@ -84,7 +84,7 @@ class PagosController extends Controller
 		$fcImputar = $req->request->get('fcImputar'); 
 		$decData = json_decode($data);
 		$fcImputarDec = json_decode($fcImputar);
-		$repoTipoPago = $em->getRepository('MbpFinanzasBundle:FormasPago');
+		$repoTipoPago = $em->getRepository('MbpFinanzasBundle:FormasPagos');
 		$repoBancos = $em->getRepository('MbpFinanzasBundle:Bancos');
 		$repoProv = $em->getRepository('MbpProveedoresBundle:Proveedor');
 		$repoFc = $em->getRepository('MbpProveedoresBundle:Factura');
@@ -110,7 +110,7 @@ class PagosController extends Controller
 					$pago->setImporte($rec->importe);
 					empty($rec->diferido) ? $pago->setDiferido(new \DateTime) : $pago->setDiferido(\DateTime::createFromFormat('d/m/Y', $rec->diferido));
 					$pago->setBanco($rec->banco);
-					empty($tipoPago) ? "" : $pago->setIdFormaPago($tipoPago[0]);
+					empty($tipoPago) ? "" : $pago->setIdFormaPagos($tipoPago[0]);
 					
 					//SI ES UN CHEQUE PROPIO DEBO REGISTRAR LA OPERACION COMO MOVIMIENTO BANCARIO
 					if($rec->conceptoBancario == true){

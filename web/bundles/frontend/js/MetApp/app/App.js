@@ -57,6 +57,7 @@ Ext.application({
 		'Compras.ReportesCompraController',
 		'Reportes.ReportesController',
 		'MetApp.controller.Bancos.BancosController',
+		'MetApp.controller.Bancos.ReportesController',
 		'MetApp.controller.Articulos.EnfriadoresController',
 		'MetApp.controller.Articulos.StockController'
 	],

@@ -3,6 +3,7 @@
 namespace Mbp\FinanzasBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * ParametrosFinanzas
@@ -31,7 +32,9 @@ class ParametrosFinanzas
     /**
      * @var string
      *
-     * @ORM\Column(name="dolarOficial", type="decimal")
+     * @ORM\Column(name="dolarOficial", type="decimal", nullable=false)
+	 * @Assert\NotNull()
+	 * @Assert\NotBlank()
      */
     private $dolarOficial;
 
@@ -44,28 +47,42 @@ class ParametrosFinanzas
 
     /**
      * @ORM\OneToOne(targetEntity="Mbp\PersonalBundle\Entity\Provincia")
-     * @ORM\JoinColumn(name="provincia_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="provincia_id", referencedColumnName="id", nullable=false)
+	 * @Assert\NotNull()
+	 * @Assert\NotBlank()
      */
     private $provincia;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="remitoNum", type="integer")
+     * @ORM\Column(name="remitoNum", type="integer", nullable=false)
+	 * @Assert\NotNull()
+	 * @Assert\NotBlank()
      */
     private $remitoNum;
 	
 	/**
      * @var integer
      *
-     * @ORM\Column(name="topeRetencionIIBB", type="integer")
+     * @ORM\Column(name="topeRetencionIIBB", type="integer", nullable=false)
+	 * @Assert\NotNull()
+	 * @Assert\NotBlank()
+	 *  @Assert\Range(
+     *      min = 0,
+	 * )
      */
     private $topeRetencionIIBB;
 	
 	/**
      * @var integer
      *
-     * @ORM\Column(name="topePercepcionIIBB", type="integer")
+     * @ORM\Column(name="topePercepcionIIBB", type="integer", nullable=false)
+	 * @Assert\NotNull()
+	 * @Assert\NotBlank()
+	 *  @Assert\Range(
+     *      min = 0,
+	 * )
      */
     private $topePercepcionIIBB;
 

@@ -10,6 +10,52 @@ use Mbp\FinanzasBundle\Entity\CentroCostos;
 
 class ParametrosController extends Controller
 {
+	
+	/**
+     * @Route("/finanzas/guardarParametros", name="mbp_finanzas_guardarParametros", options={"expose"=true})
+     */
+    public function guardarParametros()
+    {
+    	$em = $this->getDoctrine()->getManager();
+		$req = $this->getRequest();
+		$repo = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
+		$repoProv = $em->getRepository('MbpPersonalBundle:Provincia');
+		$response = new Response;
+		
+		try{
+			$res = $repo->find(1);
+			$res->setIva($req->request->get('iva'));
+			$res->setDolarOficial($req->request->get('dolarOficial'));
+			$provincia = $repoProv->find($req->request->get('provincia'));
+			$res->setProvincia($provincia);
+			$res->setRemitoNum($req->request->get('remitoNum'));
+			$res->setTopeRetencionIIBB($req->request->get('topeRetencionIIBB'));
+			$res->setTopePercepcionIIBB($req->request->get('topePercepcionIIBB'));
+			
+			$validador = $this->get('validator');
+			$errors = $validador->validate($res);
+			if(count($errors) > 0){
+				$errList = array();
+				foreach ($errors as $error) {
+					$errList[$error->getPropertyPath()] = $error->getMessage();
+				}
+				
+				return $response->setContent(json_encode(array('success' => false, 'errors' => $errList, 'tipo' => 'validacion')));
+				
+			}
+			
+			$em->persist($res);
+			$em->flush();
+			
+			
+			
+		}catch(\Exception $e){
+			return $response->setContent(json_encode(array('success' => false, 'msg' => $e->getMessage())));
+		}
+		
+		return $response->setContent(json_encode(array('success' => true)));
+    }
+	
 	/**
      * @Route("/finanzas/listarParametros", name="mbp_finanzas_listarParametros", options={"expose"=true})
      */
@@ -19,12 +65,18 @@ class ParametrosController extends Controller
 		$repo = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
 		$response = new Response;
 		
-		$qb = $repo->createQueryBuilder('p')
-			->select('p')
-			->getQuery()
-			->getArrayResult();
+		try{
+			$qb = $repo->createQueryBuilder('p')
+				->select('p.iva, p.dolarOficial, p.remitoNum, p.topeRetencionIIBB, p.topePercepcionIIBB, prov.id as provincia')
+				->join('p.provincia', 'prov')
+				->getQuery()
+				->getArrayResult();	
+		}catch(\Exception $e){
+			return $response->setContent(json_encode(array('success' => false, 'msg' => $e->getMessage())));
+		}
+		
 			
-		return $response->setContent(json_encode(array('success' => true, 'data' => $qb)));
+		return $response->setContent(json_encode(array('success' => true, 'data' => $qb[0])));
     }
 	
 	

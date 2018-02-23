@@ -392,12 +392,7 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 			
 			success: function(resp){
 				var jsonResp = Ext.JSON.decode(resp.responseText);
-				var models = [];
-				var i=0;
-				for(i; i<jsonResp.data.length; i++){
-					models[i] = (jsonResp.data[i]);
-				}
-				storeCheques.loadRawData(models);
+				storeCheques.loadRawData(jsonResp.data);
 				storeCheques.suspendEvent('update');
 			}
 		});
@@ -410,7 +405,6 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 			storeCheques.each(function(rec){			
 				if(rec.get('marca') == true){
 					var data = rec.getData();
-					console.log(data);
 					record[i] = {
 						idChequeTerceros: data.id,
 						numCbte: data.numero,

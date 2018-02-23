@@ -148,28 +148,4 @@ class MovimientosBancos
     {
         return $this->banco;
     }
-
-    /**
-     * Set conceptoBancoId
-     *
-     * @param \Mbp\FinanzasBundle\Entity\ConceptosBanco $conceptoBancoId
-     *
-     * @return MovimientosBancos
-     */
-    public function setConceptoBancoId(\Mbp\FinanzasBundle\Entity\ConceptosBanco $conceptoBancoId)
-    {
-        $this->conceptoBancoId = $conceptoBancoId;
-
-        return $this;
-    }
-
-    /**
-     * Get conceptoBancoId
-     *
-     * @return \Mbp\FinanzasBundle\Entity\ConceptosBanco
-     */
-    public function getConceptoBancoId()
-    {
-        return $this->conceptoBancoId;
-    }
 }
