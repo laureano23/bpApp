@@ -451,7 +451,7 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 		var selection = grid.getSelectionModel().getSelection()[0];
 		var data = selection.getData();
 		var botonera = win.queryById('botonera');
-		
+				
 		botonera.editarItem(botonera);
 		form.query('.field').forEach(function(field){
 			field.setReadOnly(false);

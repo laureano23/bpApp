@@ -45,7 +45,7 @@ class MovimientosBancos
 	 
 	 /**
 	  * @ORM\ManyToOne(targetEntity="ConceptosBanco")
-	  * @ORM\JoinColumn(name="ceonceptoBancoId", referencedColumnName="id", nullable=false)
+	  * @ORM\JoinColumn(name="ceonceptoBancoId", referencedColumnName="id", nullable=true)
 	  */
 	 private $conceptoBancoId;
 
@@ -156,7 +156,7 @@ class MovimientosBancos
      *
      * @return MovimientosBancos
      */
-    public function setConceptoBancoId(\Mbp\FinanzasBundle\Entity\ConceptosBanco $conceptoBancoId)
+    public function setConceptoBancoId(\Mbp\FinanzasBundle\Entity\ConceptosBanco $conceptoBancoId = null)
     {
         $this->conceptoBancoId = $conceptoBancoId;
 

@@ -45,7 +45,7 @@ class MovimientosBancos
 	 
 	 /**
 	  * @ORM\ManyToOne(targetEntity="ConceptosBanco")
-	  * @ORM\JoinColumn(name="ceonceptoBancoId", referencedColumnName="id", nullable=false)
+	  * @ORM\JoinColumn(name="ceonceptoBancoId", referencedColumnName="id", nullable=true)
 	  */
 	 private $conceptoBancoId;
 

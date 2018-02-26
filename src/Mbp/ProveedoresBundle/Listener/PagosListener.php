@@ -3,9 +3,9 @@ namespace  Mbp\ProveedoresBundle\Listener;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Mbp\FinanzasBundle\Entity\Cobranzas;
 use Mbp\ProveedoresBundle\Entity\OrdenPago;
-use Mbp\ProveedoresBundle\Entity\TransaccionOPFC;
+use Mbp\FinanzasBundle\Entity\MovimientosBancos;
+use Mbp\FinanzasBundle\Entity\DetalleMovimientosBancos;
 
 
 class PagosListener
@@ -40,16 +40,20 @@ class PagosListener
 		}
 		
 		$repoCobranzaDetalle = $this->em->getRepository('MbpFinanzasBundle:CobranzasDetalle');
+		$repoFormaPago = $this->em->getRepository('MbpFinanzasBundle:FormasPagos');
 		foreach ($data as $rec) {
 			/* SI EL CHEQUE TIENE ID = 0 ES PORQUE ES UN CHEQUE PROPIO */
 			if($rec->idCheque == 0){ return; }
-			if($rec->formaPago == "CHEQUE DE TERCEROS"){
+			
+			$formaPago = $repoFormaPago->findOneByDescripcion($rec->formaPago);
+			if(!empty($formaPago) && $formaPago->getChequeTerceros() == true){
 				$cheque = $repoCobranzaDetalle->find($rec->idCheque);
 				$cheque->setEstado(1);
 				$this->em->persist($cheque);
 			}
 		}
 	}
+	
 }
 
 

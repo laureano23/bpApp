@@ -112,13 +112,14 @@ class PagosController extends Controller
 					$pago->setBanco($rec->banco);
 					empty($tipoPago) ? "" : $pago->setIdFormaPagos($tipoPago[0]);
 					
-					//SI ES UN CHEQUE PROPIO DEBO REGISTRAR LA OPERACION COMO MOVIMIENTO BANCARIO
+					//SI ES UN CHEQUE PROPIO DEBO REGISTRAR LA OPERACION COMO MOVIMIENTO BANCARIO, funciona un listener
+					/*$rec->conceptoBancario = true;
 					if($rec->conceptoBancario == true){
 						$banco = $repoBancos->findByNombre($rec->banco);
 						$pago->setBancoChequePropioId($banco[0]);
 						
 						$this->NuevoChequePropio($rec, $proveedor);
-					}
+					}*/
 					
 											
 					$ordenPago->addPagoDetalleId($pago);	
@@ -186,6 +187,7 @@ class PagosController extends Controller
 			
 			return $response;
 		}catch(\Exception $e){
+			throw $e;
 			$response->setContent(
 				json_encode(array(
 					'success' => false,

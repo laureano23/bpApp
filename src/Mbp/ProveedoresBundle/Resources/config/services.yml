@@ -12,3 +12,7 @@ services:
         class: Mbp\ProveedoresBundle\Listener\EliminarFCListener
         tags:
           - { name: doctrine.event_listener, event: preRemove }
+    movimientoBancario:
+        class: Mbp\ProveedoresBundle\Listener\MovimientoBancarioListener
+        tags:
+          - { name: doctrine.event_listener, event: postPersist }

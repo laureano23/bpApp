@@ -13,7 +13,7 @@ use Mbp\ProveedoresBundle\Entity\OrdenPago;
 use Mbp\ProveedoresBundle\Entity\TransaccionOPFC;
 use Mbp\FinanzasBundle\Entity\MovimientosBancos;
 use Mbp\FinanzasBundle\Entity\DetalleMovimientosBancos;
-use Mbp\FinanzasBundle\Entity\FormasPago;
+use Mbp\FinanzasBundle\Entity\FormasPagos;
 use Mbp\FinanzasBundle\Entity\ConceptosBanco;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -159,7 +159,7 @@ class DefaultController extends Controller
     public function NuevaFormaPago()
     {
     	$em = $this->getDoctrine()->getManager();
-		$repoFormaPago = $em->getRepository('MbpFinanzasBundle:FormasPago');
+		$repoFormaPago = $em->getRepository('MbpFinanzasBundle:FormasPagos');
 		$response = new Response;
 		$req = $this->getRequest();
 		$data = json_decode($req->request->get('data'));
@@ -170,7 +170,7 @@ class DefaultController extends Controller
 			if($data->id != ""){
 				$formaPago = $repoFormaPago->find($data->id);
 			}else{
-				$formaPago = new FormasPago;
+				$formaPago = new FormasPagos;
 			}
 			
 			$formaPago->setDescripcion($data->descripcion);
@@ -178,6 +178,7 @@ class DefaultController extends Controller
 			$data->retencionIIBB === "on" ? $formaPago->setRetencionIIBB(TRUE) : $formaPago->setRetencionIIBB(FALSE);
 			$data->retencionIVA21 === "on" ? $formaPago->setRetencionIVA21(TRUE) : $formaPago->setRetencionIVA21(FALSE);
 			$data->chequeTerceros === "on" ? $formaPago->setChequeTerceros(TRUE) : $formaPago->setChequeTerceros(FALSE);
+			$data->esChequePropio === "on" ? $formaPago->setEsChequePropio(TRUE) : $formaPago->setEsChequePropio(FALSE);
 			
 			$em->persist($formaPago);
 			$em->flush();

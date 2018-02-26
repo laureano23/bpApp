@@ -72,6 +72,14 @@ Ext.define('MetApp.view.Proveedores.FormasPagoView',{
 							uncheckedValue: 0
 						},
 						{
+							xtype: 'checkbox',
+							name: 'esChequePropio',
+							itemId: 'esChequePropio',
+							fieldLabel: 'Cheque Propio',
+							labelWidth: 120,
+							uncheckedValue: 0
+						},
+						{
 							xtype: 'grid',
 							height: 200,
 							margin: '0 0 5 0',
