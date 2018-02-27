@@ -400,6 +400,7 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 	AddFormasPagoView: function(btn){
 		var win = Ext.widget('FormasPagoView');
 		win.down('grid').getStore().load();
+		win.queryById('conceptoMov').getStore().load();
 	},
 	
 	NuevaFormaPago: function(btn){
@@ -456,6 +457,7 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 		form.query('.field').forEach(function(field){
 			field.setReadOnly(false);
 		});
+		console.log(data);
 		form.getForm().setValues(data);
 		
 	},

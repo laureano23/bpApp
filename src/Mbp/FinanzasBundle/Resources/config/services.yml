@@ -24,3 +24,8 @@ services:
     InteresesResarcitorios:
         class: Mbp\FinanzasBundle\Clases\InteresesResarcitorios
         arguments: []
+    
+    movimientoBancario:
+        class: Mbp\FinanzasBundle\Listeners\MovimientoBancarioListener
+        tags:
+          - { name: doctrine.event_listener, event: postPersist }

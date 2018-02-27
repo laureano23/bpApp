@@ -11,7 +11,8 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 		'MetApp.store.Personal.BancosStore',
 		'MetApp.store.Bancos.ConceptosBancoStore',
 		'MetApp.store.Bancos.MovimientosBancoStore',
-		'MetApp.store.Proveedores.GridChequeTercerosStore'
+		'MetApp.store.Proveedores.GridChequeTercerosStore',
+		'MetApp.store.Bancos.CuentasBancoStore'
 	],
 	
 	refs:[
@@ -316,7 +317,12 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 		
 		form.query('.field').forEach(function(c){c.setReadOnly(false);}); //HABILITO TODOS LOS CAMPOS	
 		
-		win.queryById('banco').focus('', 20);	
+		var cuenta = win.queryById('cuenta');
+		var store = cuenta.getStore();
+		
+		
+		cuenta.focus('', 20);
+		
 	},
 	
 	InsertarComprobante: function(btn){

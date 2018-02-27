@@ -1,6 +1,6 @@
 <?php
 
-namespace Mbp\FinanzasBundle\Controller;
+namespace Mbp\FinanzasBundle\Controller;	
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +14,28 @@ use Mbp\FinanzasBundle\Entity\DetalleMovimientosBancos;
 
 class BancosController extends Controller
 {
+	/**
+     * @Route("/bancos/listarCuentas", name="mbp_finanzas_listaCuentas", options={"expose"=true})
+     */
+    public function listarCuentas()
+    {
+    	$em = $this->getDoctrine()->getManager();
+		$repo = $em->getRepository('MbpFinanzasBundle:Bancos');
+		$response = new Response;
+		
+		try{
+			$qb = $repo->createQueryBuilder('b')
+				->select("c.id, CONCAT(c.tipo, c.numero, '----',b.nombre) AS cuenta")
+				->join('b.cuentasBancarias', 'c')
+				->getQuery()
+				->getArrayResult();
+				
+			return $response->setContent(json_encode(array('success' => true, 'data' => $qb)));		
+		}catch(\Exception $e){
+			return $response->setContent(json_encode(array('success' => false)));
+		}
+    }
+	
 	/**
      * @Route("/bancos/listar", name="mbp_finanzas_listaBancos", options={"expose"=true})
      */
@@ -298,11 +320,11 @@ class BancosController extends Controller
 			$comprobantes = json_decode($this->getRequest()->request->get('comprobantes'));
 			
 			//REPOSITORIOS
-			$repoBancos = $em->getRepository('MbpFinanzasBundle:Bancos');
+			$repoCuentasBrias = $em->getRepository('MbpFinanzasBundle:CuentasBancarias');
 			$repoConceptoMov = $em->getRepository('MbpFinanzasBundle:ConceptosBanco');
 			$repoChequeTerceros = $em->getRepository('MbpFinanzasBundle:CobranzasDetalle');
 			
-			$banco = $repoBancos->find($operacion->idBanco);
+			$cuentaBancaria = $repoCuentasBrias->find($operacion->cuenta);
 			$conceptoMov = $repoConceptoMov->find($operacion->conceptoMov);			
 									
 			$movimiento = new MovimientosBancos;	
@@ -330,7 +352,7 @@ class BancosController extends Controller
 				$movimiento->addDetallesMovimiento($detalleMov);
 			}
 			
-			$movimiento->setBanco($banco);
+			$movimiento->setCuentaBancaria($cuentaBancaria);
 			$movimiento->setConceptoBancoId($conceptoMov);
 			
 			$em->persist($movimiento);			

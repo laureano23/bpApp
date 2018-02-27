@@ -85,7 +85,7 @@ class PagosController extends Controller
 		$decData = json_decode($data);
 		$fcImputarDec = json_decode($fcImputar);
 		$repoTipoPago = $em->getRepository('MbpFinanzasBundle:FormasPagos');
-		$repoBancos = $em->getRepository('MbpFinanzasBundle:Bancos');
+		$repoCuentas = $em->getRepository('MbpFinanzasBundle:CuentasBancarias');
 		$repoProv = $em->getRepository('MbpProveedoresBundle:Proveedor');
 		$repoFc = $em->getRepository('MbpProveedoresBundle:Factura');
 		$repoOP = $em->getRepository('MbpProveedoresBundle:OrdenPago');
@@ -121,6 +121,9 @@ class PagosController extends Controller
 						$this->NuevoChequePropio($rec, $proveedor);
 					}*/
 					
+					if($rec->cuenta > 0){
+						$pago->setCuentaId($repoCuentas->find($rec->cuenta));
+					}
 											
 					$ordenPago->addPagoDetalleId($pago);	
 				}

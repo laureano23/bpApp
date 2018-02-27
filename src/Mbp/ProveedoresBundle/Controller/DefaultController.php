@@ -180,6 +180,13 @@ class DefaultController extends Controller
 			$data->chequeTerceros === "on" ? $formaPago->setChequeTerceros(TRUE) : $formaPago->setChequeTerceros(FALSE);
 			$data->esChequePropio === "on" ? $formaPago->setEsChequePropio(TRUE) : $formaPago->setEsChequePropio(FALSE);
 			
+			if(!empty($data->conceptoMov)){
+				$repoConceptosBanco = $em->getRepository('MbpFinanzasBundle:ConceptosBanco');
+				
+				$conceptoBanco = $repoConceptosBanco->find($data->conceptoMov);
+				$formaPago->setConceptoBancoId($conceptoBanco);
+			}
+			
 			$em->persist($formaPago);
 			$em->flush();
 			
@@ -210,7 +217,7 @@ class DefaultController extends Controller
     public function EliminarFormaPago()
     {
     	$em = $this->getDoctrine()->getManager();
-		$repoFormaPago = $em->getRepository('MbpFinanzasBundle:FormasPago');
+		$repoFormaPago = $em->getRepository('MbpFinanzasBundle:FormasPagos');
 		$response = new Response;
 		$req = $this->getRequest();
 		$data = json_decode($req->request->get('data'));

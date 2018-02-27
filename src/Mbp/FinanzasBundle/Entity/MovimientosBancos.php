@@ -38,16 +38,23 @@ class MovimientosBancos
 	 private $detallesMovimientos;
 	 
 	 /**
-	  * @ORM\ManyToOne(targetEntity="Bancos")
-	  * @ORM\JoinColumn(name="Banco_id", referencedColumnName="id")
+	  * @ORM\ManyToOne(targetEntity="CuentasBancarias")
+	  * @ORM\JoinColumn(name="cuentaId", referencedColumnName="id")
 	  * */
-	 private $banco;
+	 private $cuentaBancaria;
 	 
 	 /**
 	  * @ORM\ManyToOne(targetEntity="ConceptosBanco")
 	  * @ORM\JoinColumn(name="ceonceptoBancoId", referencedColumnName="id", nullable=true)
 	  */
 	 private $conceptoBancoId;
+	 
+	 /**
+     * @var \boolean
+     *
+     * @ORM\Column(name="anulado", type="boolean")
+     */
+    private $anulado=0;
 
 
     /**
@@ -125,30 +132,7 @@ class MovimientosBancos
         return $this->detallesMovimientos;
     }
 
-    /**
-     * Set banco
-     *
-     * @param \Mbp\FinanzasBundle\Entity\Bancos $banco
-     *
-     * @return MovimientosBancos
-     */
-    public function setBanco(\Mbp\FinanzasBundle\Entity\Bancos $banco = null)
-    {
-        $this->banco = $banco;
-
-        return $this;
-    }
-
-    /**
-     * Get banco
-     *
-     * @return \Mbp\FinanzasBundle\Entity\Bancos
-     */
-    public function getBanco()
-    {
-        return $this->banco;
-    }
-
+    
     /**
      * Set conceptoBancoId
      *
@@ -171,5 +155,53 @@ class MovimientosBancos
     public function getConceptoBancoId()
     {
         return $this->conceptoBancoId;
+    }
+
+    /**
+     * Set cuentaBancaria
+     *
+     * @param \Mbp\FinanzasBundle\Entity\CuentasBancarias $cuentaBancaria
+     *
+     * @return MovimientosBancos
+     */
+    public function setCuentaBancaria(\Mbp\FinanzasBundle\Entity\CuentasBancarias $cuentaBancaria = null)
+    {
+        $this->cuentaBancaria = $cuentaBancaria;
+
+        return $this;
+    }
+
+    /**
+     * Get cuentaBancaria
+     *
+     * @return \Mbp\FinanzasBundle\Entity\CuentasBancarias
+     */
+    public function getCuentaBancaria()
+    {
+        return $this->cuentaBancaria;
+    }
+
+    /**
+     * Set anulado
+     *
+     * @param boolean $anulado
+     *
+     * @return MovimientosBancos
+     */
+    public function setAnulado($anulado)
+    {
+        $this->anulado = $anulado;
+
+        return $this;
+    }
+
+    /**
+     * Get anulado
+     *
+     * @return boolean
+     */
+    public function getAnulado()
+    {
+        return $this->anulado;
     }
 }

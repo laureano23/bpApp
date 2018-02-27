@@ -41,13 +41,15 @@ Ext.define('MetApp.view.Bancos.MovimientosBancoView',{
 								},						
 								{
 									xtype: 'combo',
-									name: 'banco',
-									store: 'MetApp.store.Personal.BancosStore',
-									displayField: 'nombre',							
-									fieldLabel: 'Banco',
-									itemId: 'banco',
+									name: 'cuenta',
+									store: 'MetApp.store.Bancos.CuentasBancoStore',
+									displayField: 'cuenta',					
+									fieldLabel: 'Cuenta',
+									itemId: 'cuenta',
 									valueField: 'id',
-									allowBlank: false
+									allowBlank: false,
+									forceSelection: true,
+									width: 400
 								},
 							]
 						},	

@@ -9,6 +9,7 @@ Ext.define('MetApp.model.Proveedores.PagoProveedoresModel',{
 		{name: 'importe', type: 'float'},
 		{name: 'diferido', type: 'datetime'},
 		{name: 'conceptoBancario', type: 'string'},
-		{name: 'retencionIIBB', type: 'bool'},		
+		{name: 'retencionIIBB', type: 'bool'},
+		{name: 'cuenta', type: 'int'},			
 	]
 });

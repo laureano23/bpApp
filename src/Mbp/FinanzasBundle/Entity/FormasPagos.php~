@@ -69,6 +69,12 @@ class FormasPagos
      * @ORM\Column(name="esChequePropio", type="boolean")
      */
     private $esChequePropio=0; 
+	
+	/**
+	  * @ORM\ManyToOne(targetEntity="Mbp\FinanzasBundle\Entity\ConceptosBanco")
+	  * @ORM\JoinColumn(name="ceonceptoBancoId", referencedColumnName="id", nullable=true)
+	  */
+	 private $conceptoBancoId;
 
 
     /**
@@ -223,5 +229,29 @@ class FormasPagos
     public function getChequeTerceros()
     {
         return $this->chequeTerceros;
+    }
+
+    /**
+     * Set esChequePropio
+     *
+     * @param boolean $esChequePropio
+     *
+     * @return FormasPagos
+     */
+    public function setEsChequePropio($esChequePropio)
+    {
+        $this->esChequePropio = $esChequePropio;
+
+        return $this;
+    }
+
+    /**
+     * Get esChequePropio
+     *
+     * @return boolean
+     */
+    public function getEsChequePropio()
+    {
+        return $this->esChequePropio;
     }
 }

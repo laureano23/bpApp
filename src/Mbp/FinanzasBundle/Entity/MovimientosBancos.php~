@@ -38,16 +38,23 @@ class MovimientosBancos
 	 private $detallesMovimientos;
 	 
 	 /**
-	  * @ORM\ManyToOne(targetEntity="Bancos")
-	  * @ORM\JoinColumn(name="Banco_id", referencedColumnName="id")
+	  * @ORM\ManyToOne(targetEntity="CuentasBancarias")
+	  * @ORM\JoinColumn(name="cuentaId", referencedColumnName="id")
 	  * */
-	 private $banco;
+	 private $cuentaBancaria;
 	 
 	 /**
 	  * @ORM\ManyToOne(targetEntity="ConceptosBanco")
 	  * @ORM\JoinColumn(name="ceonceptoBancoId", referencedColumnName="id", nullable=true)
 	  */
 	 private $conceptoBancoId;
+	 
+	 /**
+     * @var \boolean
+     *
+     * @ORM\Column(name="anulado", type="boolean")
+     */
+    private $anulado;
 
 
     /**
@@ -125,27 +132,52 @@ class MovimientosBancos
         return $this->detallesMovimientos;
     }
 
+    
     /**
-     * Set banco
+     * Set conceptoBancoId
      *
-     * @param \Mbp\FinanzasBundle\Entity\Bancos $banco
+     * @param \Mbp\FinanzasBundle\Entity\ConceptosBanco $conceptoBancoId
      *
      * @return MovimientosBancos
      */
-    public function setBanco(\Mbp\FinanzasBundle\Entity\Bancos $banco = null)
+    public function setConceptoBancoId(\Mbp\FinanzasBundle\Entity\ConceptosBanco $conceptoBancoId = null)
     {
-        $this->banco = $banco;
+        $this->conceptoBancoId = $conceptoBancoId;
 
         return $this;
     }
 
     /**
-     * Get banco
+     * Get conceptoBancoId
      *
-     * @return \Mbp\FinanzasBundle\Entity\Bancos
+     * @return \Mbp\FinanzasBundle\Entity\ConceptosBanco
      */
-    public function getBanco()
+    public function getConceptoBancoId()
     {
-        return $this->banco;
+        return $this->conceptoBancoId;
+    }
+
+    /**
+     * Set cuentaBancaria
+     *
+     * @param \Mbp\FinanzasBundle\Entity\CuentasBancarias $cuentaBancaria
+     *
+     * @return MovimientosBancos
+     */
+    public function setCuentaBancaria(\Mbp\FinanzasBundle\Entity\CuentasBancarias $cuentaBancaria = null)
+    {
+        $this->cuentaBancaria = $cuentaBancaria;
+
+        return $this;
+    }
+
+    /**
+     * Get cuentaBancaria
+     *
+     * @return \Mbp\FinanzasBundle\Entity\CuentasBancarias
+     */
+    public function getCuentaBancaria()
+    {
+        return $this->cuentaBancaria;
     }
 }

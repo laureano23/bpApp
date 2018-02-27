@@ -221,28 +221,4 @@ class DetalleMovimientosBancos
     {
         return $this->proveedorId;
     }
-
-    /**
-     * Set idCliente
-     *
-     * @param \Mbp\ClientesBundle\Entity\Cliente $idCliente
-     *
-     * @return DetalleMovimientosBancos
-     */
-    public function setIdCliente(\Mbp\ClientesBundle\Entity\Cliente $idCliente = null)
-    {
-        $this->idCliente = $idCliente;
-
-        return $this;
-    }
-
-    /**
-     * Get idCliente
-     *
-     * @return \Mbp\ClientesBundle\Entity\Cliente
-     */
-    public function getIdCliente()
-    {
-        return $this->idCliente;
-    }
 }

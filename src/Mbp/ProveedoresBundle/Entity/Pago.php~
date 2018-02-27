@@ -251,28 +251,4 @@ class Pago
     {
         return $this->idFormaPago;
     }
-
-    /**
-     * Set cuentaId
-     *
-     * @param \Mbp\FinanzasBundle\Entity\CuentasBancarias $cuentaId
-     *
-     * @return Pago
-     */
-    public function setCuentaId(\Mbp\FinanzasBundle\Entity\CuentasBancarias $cuentaId = null)
-    {
-        $this->cuentaId = $cuentaId;
-
-        return $this;
-    }
-
-    /**
-     * Get cuentaId
-     *
-     * @return \Mbp\FinanzasBundle\Entity\CuentasBancarias
-     */
-    public function getCuentaId()
-    {
-        return $this->cuentaId;
-    }
 }

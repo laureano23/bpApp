@@ -89,15 +89,16 @@ Ext.define('MetApp.view.CCProveedores.PagoProveedores' ,{
 									fieldLabel: 'Forma de pago',									
 								},						
 								{
-									xtype: 'combobox',
-									store: 'MetApp.store.Finanzas.BancosStore',
-									displayField: 'nombre',
-									width: 200,
-									labelWidth: 50,
-									itemId: 'banco',
-									name: 'banco',
-									fieldLabel: 'Banco',
-									forceSelection: true
+									xtype: 'combo',
+									name: 'cuenta',
+									store: 'MetApp.store.Bancos.CuentasBancoStore',
+									displayField: 'cuenta',						
+									fieldLabel: 'Cuenta',
+									itemId: 'cuenta',
+									valueField: 'id',
+									allowBlank: false,
+									forceSelection: true,
+									width: 400
 								},
 							]
 						},

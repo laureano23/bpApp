@@ -40,45 +40,75 @@ Ext.define('MetApp.view.Proveedores.FormasPagoView',{
 							width: 450
 						},
 						{
-							xtype: 'checkbox',
-							name: 'esBancario',
-							itemId: 'conceptoBancario',
-							fieldLabel: 'Concepto bancario',
-							labelWidth: 120,
-							uncheckedValue: 0
-						},
-						{
-							xtype: 'checkbox',
-							name: 'retencionIIBB',
-							itemId: 'retencionIIBB',
-							fieldLabel: 'Retención IIBB',
-							labelWidth: 120,
-							uncheckedValue: 0
-						},
-						{
-							xtype: 'checkbox',
-							name: 'retencionIVA21',
-							itemId: 'retencionIVA',
-							fieldLabel: 'Retención IVA',
-							labelWidth: 120,
-							uncheckedValue: 0
-						},
-						{
-							xtype: 'checkbox',
-							name: 'chequeTerceros',
-							itemId: 'chequeTerceros',
-							fieldLabel: 'Cheque de Terceros',
-							labelWidth: 120,
-							uncheckedValue: 0
-						},
-						{
-							xtype: 'checkbox',
-							name: 'esChequePropio',
-							itemId: 'esChequePropio',
-							fieldLabel: 'Cheque Propio',
-							labelWidth: 120,
-							uncheckedValue: 0
-						},
+							xtype: 'container',
+							layout: 'hbox',
+							items: [
+								{
+									xtype: 'container',
+									layout: 'vbox',
+									defaults: {
+										readOnly: true,
+										disabledCls: 'myDisabledClass',	
+									},
+									items: [
+										{
+											xtype: 'checkbox',
+											name: 'esBancario',
+											itemId: 'conceptoBancario',
+											fieldLabel: 'Concepto bancario',
+											labelWidth: 120,
+											uncheckedValue: 0
+										},
+										{
+											xtype: 'checkbox',
+											name: 'retencionIIBB',
+											itemId: 'retencionIIBB',
+											fieldLabel: 'Retención IIBB',
+											labelWidth: 120,
+											uncheckedValue: 0
+										},
+										{
+											xtype: 'checkbox',
+											name: 'retencionIVA21',
+											itemId: 'retencionIVA',
+											fieldLabel: 'Retención IVA',
+											labelWidth: 120,
+											uncheckedValue: 0
+										},
+										{
+											xtype: 'checkbox',
+											name: 'chequeTerceros',
+											itemId: 'chequeTerceros',
+											fieldLabel: 'Cheque de Terceros',
+											labelWidth: 120,
+											uncheckedValue: 0
+										},
+										{
+											xtype: 'checkbox',
+											name: 'esChequePropio',
+											itemId: 'esChequePropio',
+											fieldLabel: 'Cheque Propio',
+											labelWidth: 120,
+											uncheckedValue: 0
+										},
+									]
+								},
+								{
+									xtype: 'combobox',
+									margin: '0 0 0 5',
+									store: 'MetApp.store.Bancos.ConceptosBancoStore',
+									name: 'conceptoMov',
+									itemId: 'conceptoMov',
+									fieldLabel: 'Movimiento bancario',
+									displayField: 'concepto',
+									labelWidth: 130,									
+									valueField: 'id',
+									allowBlank: false,
+									readOnly: true,
+									disabledCls: 'myDisabledClass',
+								},										
+							]
+						},																
 						{
 							xtype: 'grid',
 							height: 200,
