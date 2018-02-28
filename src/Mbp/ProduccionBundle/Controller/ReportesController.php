@@ -825,7 +825,8 @@ class ReportesController extends Controller
 				WHERE ot.`fechaProg` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql'
 				AND sectores_A.`id` = $sectorId
 				ORDER BY
-				     sectores_A.`id` ASC,
+				     sectores_A.`id` ASC,				     
+				     ot.`estado` ASC,
 				     ot.`fechaProg` ASC
 				
 			";

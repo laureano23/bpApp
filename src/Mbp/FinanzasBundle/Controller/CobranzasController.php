@@ -52,6 +52,7 @@ class CobranzasController extends Controller
 			$repoTipoPago = $em->getRepository('MbpFinanzasBundle:FormasPagos');
 			$repoFacturas = $em->getRepository('MbpFinanzasBundle:Facturas');
 			$repoTransaccion = $em->getRepository('MbpFinanzasBundle:TransaccionCobranzaFactura');
+			$repoCuentas = $em->getRepository('MbpFinanzasBundle:CuentasBancarias');
 			
 			$decodeData = json_decode($data);			
 					
@@ -65,16 +66,27 @@ class CobranzasController extends Controller
 			
 			foreach($decodeData as $data){
 				$detalleCob = new CobranzasDetalle();
-				$formaPago = $repoTipoPago->findByDescripcion($data->formaPago);
+				$formaPago = $repoTipoPago->findOneByDescripcion($data->formaPago);
+				
+				if($formaPago->getConceptoBancoId()){
+					$cuenta = $repoCuentas->find($data->cuenta);
+					
+					if(!$cuenta) throw new \Exception("Debe asignar una cuenta bancaria al concepto ".$formaPago->getDescripcion(), 1);
+					
+				}
 				
 				$detalleCob->setImporte($data->importe);
 				$detalleCob->setNumero($data->numero);
 				$detalleCob->setBanco($data->banco);
 				$detalleCob->setVencimiento(\DateTime::createFromFormat('d/m/Y', $data->diferido));
-				$detalleCob->setFormaPagoId($formaPago[0]);
+				$detalleCob->setFormaPagoId($formaPago);
 				
 				$cobranza->addCobranzaDetalleId($detalleCob);
 			}
+			
+			if(count($cobranza->getCobranzaDetalleId()) == 0) throw new \Exception("No es posible guardar una cobranza vacía", 1);
+			
+			
 			$em->persist($cobranza);
 			
 			
@@ -153,7 +165,7 @@ class CobranzasController extends Controller
 			
 			$em->flush();
 		}catch(\Exception $e){
-			throw $e;
+			//throw $e;
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(
 				json_encode(array(

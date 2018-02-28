@@ -157,6 +157,11 @@ class Ot
      * @var smallint
      *
      * @ORM\Column(name="estado", type="smallint")
+	 * 		
+	 * 		0: no comenzado
+	 * 		1: en proceso
+	 * 		2: terminado
+	 * 		3: generado
      */
     private $estado=0;
 	

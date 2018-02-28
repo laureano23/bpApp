@@ -6,6 +6,7 @@ Ext.define('MetApp.model.Finanzas.GrillaPagosModel',{
 		{ name: 'formaPago', type: 'string'},
 		{ name: 'numero', type: 'string'},
 		{ name: 'banco', type: 'string'},
+		{ name: 'cuenta', type: 'string'},
 		{ name: 'importe', type: 'float' },
 		{ 
 			name: 'diferido',

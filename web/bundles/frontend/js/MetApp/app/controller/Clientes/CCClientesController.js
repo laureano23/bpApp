@@ -8,7 +8,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		'MetApp.store.Finanzas.GrillaFacturacionStore',
 		'MetApp.store.Finanzas.TiposPagoStore',
 		'Finanzas.GridImputaFcStore',
-		'MetApp.store.Articulos.RemitosPendientesStore'
+		'MetApp.store.Articulos.RemitosPendientesStore',
 	],
 	views: [
 		'CCClientes.CCClientes',
@@ -673,7 +673,6 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var viewCC = this.getCCClientes();
 		
 		
-		
 		store.each(function(rec){
 			arrayData.push(rec.getData());
 		});
@@ -727,7 +726,9 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 										storeCC.load();
 										formDatosCob.getForm().reset();
 										win.queryById('totalCobrar').setValue(0);
-										win.queryById('totalImputado').setValue(0);										
+										win.queryById('totalImputado').setValue(0);	
+										
+										win.down('form').getForm().reset();									
 									}
 								}
 							});
@@ -757,6 +758,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 							win.queryById('totalCobrar').setValue(0);
 							win.queryById('totalImputado').setValue(0);
 							
+							win.down('form').getForm().reset();	
 						}
 					}
 				});

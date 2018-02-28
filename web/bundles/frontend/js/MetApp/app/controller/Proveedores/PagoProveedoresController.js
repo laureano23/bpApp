@@ -139,7 +139,6 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 	},
 	
 	GuardarPago: function(btn){
-		console.log("hola");
 		var win = btn.up('window');
 		var grid = win.down('grid');
 		var store = grid.getStore();
@@ -200,6 +199,8 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 										buttons: Ext.Msg.OK,
 									});
 									
+									win.down('form').getForm().reset();
+									
 									//MOSTRAMOS LA OP
 									Ext.Ajax.request({
 										url: Routing.generate('mbp_proveedores_reporteDetallePago'),
@@ -217,6 +218,15 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 										}
 									});
 								}
+							},
+							
+							failure: function(resp){
+								var status = Ext.JSON.decode(resp.responseText);
+								Ext.Msg.show({
+									title: 'Atencion',
+									msg: status.msg,
+									buttons: Ext.Msg.OK,
+								});
 							}
 						});
 					}

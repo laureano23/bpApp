@@ -47,7 +47,6 @@ Ext.define('MetApp.view.CCProveedores.PagoProveedores' ,{
 							store: 'MetApp.store.Proveedores.PagoProveedoresStore',
 							height: 150,
 							itemId: 'gridPP',
-							//region: 'center',	
 							columns: {
 								defaults: {
 									sortable: false
@@ -58,6 +57,7 @@ Ext.define('MetApp.view.CCProveedores.PagoProveedores' ,{
 									{ text: 'Forma de pago', dataIndex: 'formaPago', flex: 1 },
 									{ text: 'Numero', dataIndex: 'numero', flex: 1 },
 									{ text: 'Banco', dataIndex: 'banco', flex: 1 },
+									{ text: 'Cuenta', dataIndex: 'cuenta', flex: 1 },
 									{ text: 'Importe', dataIndex: 'importe', flex: 1 },
 									{ text: 'Diferido', dataIndex: 'diferido', flex: 1 },							
 								]
@@ -96,7 +96,7 @@ Ext.define('MetApp.view.CCProveedores.PagoProveedores' ,{
 									fieldLabel: 'Cuenta',
 									itemId: 'cuenta',
 									valueField: 'id',
-									allowBlank: false,
+									allowBlank: true,
 									forceSelection: true,
 									width: 400
 								},

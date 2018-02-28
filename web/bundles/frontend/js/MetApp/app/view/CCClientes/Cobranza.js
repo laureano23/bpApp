@@ -1,7 +1,7 @@
 Ext.define('MetApp.view.CCClientes.Cobranza' ,{
 	extend: 'Ext.window.Window',
 	height: 550,
-	width: 900,
+	width: 1100,
 	modal: true,
 	autoShow: true,
 	alias: 'widget.cobranza',
@@ -83,7 +83,7 @@ Ext.define('MetApp.view.CCClientes.Cobranza' ,{
 						{
 							xtype: 'grid',
 							height: 200,
-							width: 900,
+							width: 1100,
 							border: false,
 							frame: false,
 							plugins: [
@@ -99,6 +99,7 @@ Ext.define('MetApp.view.CCClientes.Cobranza' ,{
 								},
 								{ text: 'Numero', dataIndex: 'numero', flex: 1 },
 								{ text: 'Banco', dataIndex: 'banco', flex: 1 },
+								{ text: 'Cuenta', dataIndex: 'cuenta', flex: 1 },
 								{ 
 									text: 'Importe',
 									dataIndex: 'importe',
@@ -155,6 +156,27 @@ Ext.define('MetApp.view.CCClientes.Cobranza' ,{
 									name: 'banco'
 								},
 								{
+									xtype: 'combo',
+									name: 'cuenta',
+									store: 'MetApp.store.Bancos.CuentasBancoStore',
+									displayField: 'cuenta',						
+									fieldLabel: 'Cuenta',
+									itemId: 'cuenta',
+									valueField: 'id',
+									allowBlank: true,
+									forceSelection: true,
+									width: 400
+								},
+							]
+						},
+						{
+							xtype: 'container',
+							layout: 'hbox',
+							defaults: {
+								margins: '5 0 5 5',
+							},
+							items: [
+								{
 									xtype: 'numberfield',
 									allowBlank: false,
 									labelWidth: 50,
@@ -163,13 +185,7 @@ Ext.define('MetApp.view.CCClientes.Cobranza' ,{
 									name: 'importe',
 									itemId: 'importe',
 									fieldLabel: 'Importe'
-								}
-							]
-						},
-						{
-							xtype: 'container',
-							layout: 'hbox',
-							items: [
+								},
 								{
 									xtype: 'datefield',
 									format:'d/m/Y',
@@ -177,7 +193,9 @@ Ext.define('MetApp.view.CCClientes.Cobranza' ,{
 									fieldLabel: 'Diferido',
 									name: 'diferido',
 									itemId: 'diferido',
-									margins: '5 5 5 5'
+									margins: '5 5 5 5',
+									width: 180,
+									labelWidth: 60
 								},
 								{
 									xtype: 'button',

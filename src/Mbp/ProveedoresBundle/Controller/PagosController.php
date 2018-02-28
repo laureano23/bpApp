@@ -112,17 +112,13 @@ class PagosController extends Controller
 					$pago->setBanco($rec->banco);
 					empty($tipoPago) ? "" : $pago->setIdFormaPagos($tipoPago[0]);
 					
-					//SI ES UN CHEQUE PROPIO DEBO REGISTRAR LA OPERACION COMO MOVIMIENTO BANCARIO, funciona un listener
-					/*$rec->conceptoBancario = true;
-					if($rec->conceptoBancario == true){
-						$banco = $repoBancos->findByNombre($rec->banco);
-						$pago->setBancoChequePropioId($banco[0]);
-						
-						$this->NuevoChequePropio($rec, $proveedor);
-					}*/
 					
-					if($rec->cuenta > 0){
-						$pago->setCuentaId($repoCuentas->find($rec->cuenta));
+					if($pago->getIdFormaPago()->getConceptoBancoId() instanceof ConceptosBanco){
+						$cuenta = $repoCuentas->find($rec->cuenta);
+						
+						if(empty ($cuenta)) throw new \Exception("Debe asignar una cuenta bancaria al concepto ".$pago->getIdFormaPago()->getDescripcion(), 1);
+						
+						$pago->setCuentaId($cuenta);
 					}
 											
 					$ordenPago->addPagoDetalleId($pago);	
@@ -166,6 +162,8 @@ class PagosController extends Controller
 				$ordenPago->addPagoDetalleId($pago);
 			}
 			
+			if(count($ordenPago->getPagoDetalleId()) == 0) throw new \Exception("No se puede guardar una orden de pago vacía", 1);
+			
 				
 			$em->persist($ordenPago);
 			
@@ -190,7 +188,6 @@ class PagosController extends Controller
 			
 			return $response;
 		}catch(\Exception $e){
-			throw $e;
 			$response->setContent(
 				json_encode(array(
 					'success' => false,
@@ -222,35 +219,6 @@ class PagosController extends Controller
 			return number_format($importe, 2);;			
 		}
 		return $importe;
-	}
-
-	private function NuevoChequePropio($data, $proveedor)
-	{
-		$em = $this->getDoctrine()->getManager();
-		$repoBancos = $em->getRepository('MbpFinanzasBundle:Bancos');
-		$repoConceptos = $em->getRepository('MbpFinanzasBundle:ConceptosBanco');
-		
-		$banco = $repoBancos->findByNombre($data->banco);
-		$conceptoMov = $repoConceptos->find($data->conceptoBancario);
-		
-		$movBancario = new MovimientosBancos;
-		$movBancario->setFechaMovimiento(new \DateTime);
-		$movBancario->setBanco($banco[0]);
-		$movBancario->setConceptoMovimiento($conceptoMov);
-		
-		$detalleMov = new DetalleMovimientosBancos;
-		$detalleMov->setNumComprobante($data->numero);
-		$detalleMov->setFechaDiferida(\DateTime::createFromFormat('d/m/Y', $data->diferido));
-		$detalleMov->setImporte($data->importe);
-		$detalleMov->setProveedorId($proveedor);
-		
-		
-		$movBancario->addDetallesMovimiento($detalleMov);
-		
-		$em->persist($movBancario);
-		$em->flush();
-		
-		return;
 	}
 }
 

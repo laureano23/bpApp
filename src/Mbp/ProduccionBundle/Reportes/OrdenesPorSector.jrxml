@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OrdenesPorSector2" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9c56db6d-e34e-471e-a0fa-3c43960748b0">
-	<property name="ireport.zoom" value="1.3310000000000006"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OrdenesPorSector2" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9c56db6d-e34e-471e-a0fa-3c43960748b0">
+	<property name="ireport.zoom" value="1.4641000000000013"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="no comenzado" forecolor="#000000" backcolor="#FFFFFF" pattern="">
@@ -147,7 +147,7 @@ WHERE ot.`fechaProg` BETWEEN $P{desde} AND $P{hasta}
 		<groupHeader>
 			<band height="50">
 				<rectangle>
-					<reportElement x="0" y="0" width="555" height="50" uuid="4bfabdd6-44a7-42c5-901d-67e187de4ea2"/>
+					<reportElement x="0" y="0" width="802" height="50" uuid="4bfabdd6-44a7-42c5-901d-67e187de4ea2"/>
 				</rectangle>
 				<staticText>
 					<reportElement x="0" y="0" width="69" height="20" uuid="ccb2f3e7-265e-42b4-ab5a-15718082b64f"/>
@@ -165,47 +165,70 @@ WHERE ot.`fechaProg` BETWEEN $P{desde} AND $P{hasta}
 					<text><![CDATA[Codigo]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="100" y="30" width="242" height="20" uuid="17d75232-3cf4-49c3-b71c-313d89cb9094"/>
+					<reportElement x="100" y="30" width="354" height="20" uuid="17d75232-3cf4-49c3-b71c-313d89cb9094"/>
 					<text><![CDATA[Descripcion]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="342" y="30" width="44" height="20" uuid="d8737edb-a704-42b5-ab0b-603c83b1302e"/>
+					<reportElement x="454" y="30" width="44" height="20" uuid="d8737edb-a704-42b5-ab0b-603c83b1302e"/>
 					<text><![CDATA[Cantidad]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="386" y="30" width="68" height="20" uuid="83fa6db0-d0f0-4d3c-b888-e48580d50a24"/>
+					<reportElement x="498" y="30" width="68" height="20" uuid="83fa6db0-d0f0-4d3c-b888-e48580d50a24"/>
 					<text><![CDATA[Entrega]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="454" y="30" width="52" height="20" uuid="4bd1dc7a-0a39-458d-b4b4-838a332b00c2"/>
+					<reportElement x="701" y="30" width="52" height="20" uuid="4bd1dc7a-0a39-458d-b4b4-838a332b00c2"/>
 					<text><![CDATA[OT]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="273" y="0" width="69" height="20" uuid="af50d817-4416-49a8-9e29-9a2d0cfa0633"/>
+					<reportElement x="532" y="0" width="69" height="20" uuid="af50d817-4416-49a8-9e29-9a2d0cfa0633"/>
 					<box topPadding="3" leftPadding="3"/>
 					<textElement textAlignment="Right"/>
 					<text><![CDATA[Desde:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="408" y="0" width="69" height="20" uuid="d4015458-85fb-4817-a593-d479279d40aa"/>
+					<reportElement x="667" y="0" width="69" height="20" uuid="d4015458-85fb-4817-a593-d479279d40aa"/>
 					<box topPadding="3" leftPadding="3"/>
 					<textElement textAlignment="Right"/>
 					<text><![CDATA[Hasta:]]></text>
 				</staticText>
 				<textField evaluationTime="Report" pattern="dd/MM/yyyy" isBlankWhenNull="true">
-					<reportElement x="342" y="0" width="66" height="20" uuid="162e38ed-ff9f-4597-89bc-e532b7a580cf"/>
+					<reportElement x="601" y="0" width="66" height="20" uuid="162e38ed-ff9f-4597-89bc-e532b7a580cf"/>
 					<box topPadding="3" leftPadding="3"/>
 					<textFieldExpression><![CDATA[$P{desde}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report" pattern="dd/MM/yyyy" isBlankWhenNull="true">
-					<reportElement x="477" y="0" width="66" height="20" uuid="adf4f017-61d8-4b42-b849-15000aae039d"/>
+					<reportElement x="736" y="0" width="66" height="20" uuid="adf4f017-61d8-4b42-b849-15000aae039d"/>
 					<box topPadding="3" leftPadding="3"/>
 					<textFieldExpression><![CDATA[$P{hasta}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="506" y="30" width="49" height="20" uuid="2556ee7e-ce49-4467-8326-7f03cf639935"/>
+					<reportElement x="753" y="30" width="49" height="20" uuid="2556ee7e-ce49-4467-8326-7f03cf639935"/>
 					<text><![CDATA[Estado]]></text>
 				</staticText>
+				<staticText>
+					<reportElement x="566" y="30" width="68" height="20" uuid="a14428a0-133f-479a-ae15-30557bc13b29"/>
+					<text><![CDATA[Aprobado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="634" y="30" width="68" height="20" uuid="66355998-e036-4940-9afa-c179cdda1880"/>
+					<text><![CDATA[NC]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="estado">
+		<groupExpression><![CDATA[$F{ot_estado}]]></groupExpression>
+		<groupHeader>
+			<band height="50">
+				<staticText>
+					<reportElement x="0" y="0" width="51" height="20" uuid="be36d38d-52a0-498d-a03c-b82c2f060b25"/>
+					<text><![CDATA[Estado:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="51" y="0" width="100" height="20" uuid="507d31e9-4c71-4141-8554-90823d6862bf"/>
+					<textFieldExpression><![CDATA[$F{ot_estado}]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupHeader>
 	</group>
@@ -226,7 +249,7 @@ WHERE ot.`fechaProg` BETWEEN $P{desde} AND $P{hasta}
 	<pageHeader>
 		<band height="48" splitType="Stretch">
 			<staticText>
-				<reportElement x="454" y="0" width="100" height="45" uuid="4d11fe34-896f-497e-93e7-1cec1043ccbb"/>
+				<reportElement x="702" y="3" width="100" height="45" uuid="4d11fe34-896f-497e-93e7-1cec1043ccbb"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -245,42 +268,50 @@ G: Generada]]></text>
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="20">
+		<band height="22">
 			<textField isStretchWithOverflow="true">
 				<reportElement x="0" y="0" width="100" height="20" uuid="6d11f92e-a6f0-4f03-9439-520cfa7ceedd"/>
 				<textFieldExpression><![CDATA[$F{articulos_codigo}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="100" y="0" width="242" height="20" uuid="3f7017ff-704a-46fd-9f63-380d4820a0fa"/>
+				<reportElement x="100" y="0" width="354" height="20" uuid="3f7017ff-704a-46fd-9f63-380d4820a0fa"/>
 				<textFieldExpression><![CDATA[$F{articulos_descripcion}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="342" y="0" width="44" height="20" uuid="df1ee130-9763-4494-9125-9a54d60d0286"/>
+				<reportElement x="454" y="0" width="44" height="20" uuid="df1ee130-9763-4494-9125-9a54d60d0286"/>
 				<textFieldExpression><![CDATA[$F{ot_cantidad}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="386" y="0" width="68" height="20" uuid="34ce5525-3d34-4f6c-9627-5759d4ab2e96"/>
+				<reportElement x="498" y="0" width="68" height="20" uuid="34ce5525-3d34-4f6c-9627-5759d4ab2e96"/>
 				<textFieldExpression><![CDATA[$F{ot_fechaProg}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="454" y="0" width="52" height="20" uuid="9607c96d-1b0c-450e-8752-80428225cbae"/>
+				<reportElement x="701" y="0" width="52" height="20" uuid="9607c96d-1b0c-450e-8752-80428225cbae"/>
 				<textFieldExpression><![CDATA[$F{ot_ot}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement style="no comenzado" x="506" y="0" width="49" height="20" backcolor="#FF3333" uuid="dae67bcf-cc75-4981-b86e-519dc5093942"/>
+				<reportElement style="no comenzado" x="753" y="0" width="49" height="20" backcolor="#FF3333" uuid="dae67bcf-cc75-4981-b86e-519dc5093942"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{ot_estado} == 0 ? "N" : $F{ot_estado} == 1 ? "P" : $F{ot_estado} == 3 ? "G" : "T"]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="566" y="0" width="68" height="20" uuid="c407a91e-a013-4218-9c65-a31a6a599ddb"/>
+				<textFieldExpression><![CDATA[$F{ot_aprobado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="634" y="0" width="68" height="20" uuid="69771062-9d5b-4c31-8c1a-0a7a4d97dcf5"/>
+				<textFieldExpression><![CDATA[$F{ot_rechazado}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<pageFooter>
 		<band height="33" splitType="Stretch">
 			<textField evaluationTime="Report">
-				<reportElement x="492" y="13" width="63" height="20" uuid="b8074adb-092e-46bb-a2df-f32af06b389f"/>
+				<reportElement x="739" y="13" width="63" height="20" uuid="b8074adb-092e-46bb-a2df-f32af06b389f"/>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="424" y="13" width="68" height="20" uuid="895289ec-8161-4aec-a521-2098e4a6a5e1"/>
+				<reportElement x="671" y="13" width="68" height="20" uuid="895289ec-8161-4aec-a521-2098e4a6a5e1"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA["Pág. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>
