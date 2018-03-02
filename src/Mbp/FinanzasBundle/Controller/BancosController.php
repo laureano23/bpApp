@@ -194,7 +194,9 @@ class BancosController extends Controller
 		
 		try{
 			$qb = $repo->createQueryBuilder('c')
-				->select('')
+				->select("c.id, c.concepto, 
+					CASE WHEN c.imputaDebe = true THEN 'Debe' ELSE 'Haber' END AS imputaDebe,
+					c.inactivo")
 				->where('c.inactivo = 0')
 				->getQuery()
 				->getArrayResult();
@@ -231,7 +233,7 @@ class BancosController extends Controller
 		
 		try{			
 			$data = $this->getRequest()->request->get('concepto');
-			$contabiliza = $this->getRequest()->request->get('contabiliza');
+			$contabiliza = $this->getRequest()->request->get('imputaDebe');
 			$id = $this->getRequest()->request->get('id');
 			$concepto;
 			
@@ -243,7 +245,7 @@ class BancosController extends Controller
 			}
 			
 			$concepto->setConcepto($data);
-			$concepto->setImputaDebe($concepto == 'Debe' ? true:false);
+			$concepto->setImputaDebe($contabiliza == 'Debe' ? true:false);
 			
 			$em->persist($concepto);
 			$em->flush();

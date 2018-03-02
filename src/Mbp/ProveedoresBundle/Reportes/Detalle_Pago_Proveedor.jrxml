@@ -2,12 +2,12 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Detalle_Pago_Proveedor" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="890e90cc-cf89-4202-bb29-76354a7dbc5d">
 	<property name="ireport.zoom" value="1.3310000000000035"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="48"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="ordenPagoId" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["\\\\192.168.0.123\\metbp-test\\Metbp\\src\\Mbp\\ProveedoresBundle\\Reportes\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["\\\\192.168.0.123\\proyectos\\bpDev\\mbp\\src\\Mbp\\ProveedoresBundle\\Reportes\\"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
@@ -29,22 +29,30 @@
      Proveedor.`direccion` AS Proveedor_direccion,
      Proveedor.`cuit` AS Proveedor_cuit,
      Proveedor.`cPostal` AS Proveedor_cPostal,
-     provincias.`id` AS provincias_id,
-     provincias.`nombre` AS provincias_nombre,
-     FormasPago.`id` AS FormasPago_id,
-     FormasPago.`descripcion` AS FormasPago_descripcion,
      OrdenPago.`fechaEmision` AS OrdenPago_fechaEmision,
-     departamentos.`id` AS departamentos_id,
-     departamentos.`provincia_id` AS departamentos_provincia_id,
-     departamentos.`nombre` AS departamentos_nombre,
-     Proveedor.`departamento` AS Proveedor_departamento
+     Proveedor.`departamento` AS Proveedor_departamento,
+     localidades.`id` AS localidades_id,
+     localidades.`departamento_id` AS localidades_departamento_id,
+     localidades.`provincia_id` AS localidades_provincia_id,
+     localidades.`nombre` AS localidades_nombre,
+     Proveedor.`localidad` AS Proveedor_localidad,
+     provincia.`id` AS provincia_id,
+     provincia.`nombre` AS provincia_nombre,
+     FormasPagos.`id` AS FormasPagos_id,
+     FormasPagos.`descripcion` AS FormasPagos_descripcion,
+     FormasPagos.`inactivo` AS FormasPagos_inactivo,
+     FormasPagos.`retencionIIBB` AS FormasPagos_retencionIIBB,
+     FormasPagos.`retencionIVA21` AS FormasPagos_retencionIVA21,
+     FormasPagos.`chequeTerceros` AS FormasPagos_chequeTerceros,
+     FormasPagos.`esChequePropio` AS FormasPagos_esChequePropio,
+     FormasPagos.`ceonceptoBancoId` AS FormasPagos_ceonceptoBancoId
 FROM
      `Pago` Pago INNER JOIN `OrdenDePago_detallesPagos` OrdenDePago_detallesPagos ON Pago.`id` = OrdenDePago_detallesPagos.`pago_id`
      INNER JOIN `OrdenPago` OrdenPago ON OrdenDePago_detallesPagos.`ordenPago_id` = OrdenPago.`id`
      INNER JOIN `Proveedor` Proveedor ON OrdenPago.`proveedorId` = Proveedor.`id`
-     LEFT OUTER JOIN `provincias` provincias ON Proveedor.`provincia` = provincias.`id`
-     LEFT OUTER JOIN `departamentos` departamentos ON Proveedor.`departamento` = departamentos.`id`
-     INNER JOIN `FormasPago` FormasPago ON Pago.`idFormaPago` = FormasPago.`id`
+     LEFT OUTER JOIN `localidades` localidades ON Proveedor.`localidad` = localidades.`id`
+     INNER JOIN `provincia` provincia ON localidades.`provincia_id` = provincia.`id`
+     INNER JOIN `FormasPagos` FormasPagos ON Pago.`idFormaPago` = FormasPagos.`id`
 WHERE
      OrdenDePago_detallesPagos.`ordenPago_id` = $P{ordenPagoId}]]>
 	</queryString>
@@ -66,15 +74,23 @@ WHERE
 	<field name="Proveedor_direccion" class="java.lang.String"/>
 	<field name="Proveedor_cuit" class="java.lang.String"/>
 	<field name="Proveedor_cPostal" class="java.lang.String"/>
-	<field name="provincias_id" class="java.lang.Integer"/>
-	<field name="provincias_nombre" class="java.lang.String"/>
-	<field name="FormasPago_id" class="java.lang.Integer"/>
-	<field name="FormasPago_descripcion" class="java.lang.String"/>
 	<field name="OrdenPago_fechaEmision" class="java.sql.Timestamp"/>
-	<field name="departamentos_id" class="java.lang.Integer"/>
-	<field name="departamentos_provincia_id" class="java.lang.String"/>
-	<field name="departamentos_nombre" class="java.lang.String"/>
 	<field name="Proveedor_departamento" class="java.lang.Integer"/>
+	<field name="localidades_id" class="java.lang.Integer"/>
+	<field name="localidades_departamento_id" class="java.lang.Integer"/>
+	<field name="localidades_provincia_id" class="java.lang.String"/>
+	<field name="localidades_nombre" class="java.lang.String"/>
+	<field name="Proveedor_localidad" class="java.lang.Integer"/>
+	<field name="provincia_id" class="java.lang.String"/>
+	<field name="provincia_nombre" class="java.lang.String"/>
+	<field name="FormasPagos_id" class="java.lang.Integer"/>
+	<field name="FormasPagos_descripcion" class="java.lang.String"/>
+	<field name="FormasPagos_inactivo" class="java.lang.Boolean"/>
+	<field name="FormasPagos_retencionIIBB" class="java.lang.Boolean"/>
+	<field name="FormasPagos_retencionIVA21" class="java.lang.Boolean"/>
+	<field name="FormasPagos_chequeTerceros" class="java.lang.Boolean"/>
+	<field name="FormasPagos_esChequePropio" class="java.lang.Boolean"/>
+	<field name="FormasPagos_ceonceptoBancoId" class="java.lang.Integer"/>
 	<variable name="totalImporte" class="java.lang.Float" calculation="Sum">
 		<variableExpression><![CDATA[$F{Pago_importe}]]></variableExpression>
 	</variable>
@@ -168,7 +184,7 @@ Tel/Fax: 4484-2416]]></text>
 			<staticText>
 				<reportElement x="263" y="44" width="59" height="20" uuid="01dcea6d-b142-49e0-b45f-8034cfbe4fe2"/>
 				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[Partido:]]></text>
+				<text><![CDATA[Localidad:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="71" y="24" width="192" height="20" uuid="ff6e470c-0dd8-415b-b4f3-f0389d38b97e"/>
@@ -188,7 +204,7 @@ Tel/Fax: 4484-2416]]></text>
 			<textField isBlankWhenNull="true">
 				<reportElement x="322" y="44" width="192" height="20" uuid="a92319f1-01d0-4985-a999-893cbb73ee1e"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{departamentos_nombre}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{localidades_nombre}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
@@ -261,7 +277,7 @@ Tel/Fax: 4484-2416]]></text>
 			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="140" height="20" uuid="12a581e2-09d2-41b0-a773-31ecaf77c317"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{FormasPago_descripcion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{FormasPagos_descripcion}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

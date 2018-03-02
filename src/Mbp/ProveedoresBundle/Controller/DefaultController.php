@@ -174,7 +174,6 @@ class DefaultController extends Controller
 			}
 			
 			$formaPago->setDescripcion($data->descripcion);
-			$data->esBancario === "on" ? $formaPago->setEsBancario(TRUE) : $formaPago->setEsBancario(FALSE);
 			$data->retencionIIBB === "on" ? $formaPago->setRetencionIIBB(TRUE) : $formaPago->setRetencionIIBB(FALSE);
 			$data->retencionIVA21 === "on" ? $formaPago->setRetencionIVA21(TRUE) : $formaPago->setRetencionIVA21(FALSE);
 			$data->chequeTerceros === "on" ? $formaPago->setChequeTerceros(TRUE) : $formaPago->setChequeTerceros(FALSE);

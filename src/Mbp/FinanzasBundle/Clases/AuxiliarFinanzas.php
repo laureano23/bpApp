@@ -47,7 +47,7 @@ class AuxiliarFinanzas extends Controller
 		
 		foreach ($resulFacturas as $factura) {
 			foreach ($factura->getfacturaDetalleId() as $detalleFc) {
-				$subTotal[$i] = $detalleFc->getPrecio() * $detalleFc->getCantidad() + $aux;
+				$subTotal[$i] = $detalleFc->getPrecio() * $detalleFc->getCantidad()  + $aux;
 				$aux = $subTotal[$i];
 			}	
 			$i++;

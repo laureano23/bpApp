@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b7fbe4cc-9642-4a30-b319-1f1509ec7bd0">
-	<property name="ireport.zoom" value="1.0000000000000036"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="1.7715610000000075"/>
+	<property name="ireport.x" value="491"/>
+	<property name="ireport.y" value="136"/>
 	<parameter name="rutaLogo" class="java.lang.String"/>
 	<parameter name="facturaId" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -58,7 +58,8 @@
      RemitosClientesDetalles.`oc` AS RemitosClientesDetalles_oc,
      RemitosClientesDetalles.`articuloId` AS RemitosClientesDetalles_articuloId,
      RemitosClientesDetalles.`pedidoDetalleId` AS RemitosClientesDetalles_pedidoDetalleId,
-     RemitosClientesDetalles.`facturado` AS RemitosClientesDetalles_facturado
+     RemitosClientesDetalles.`facturado` AS RemitosClientesDetalles_facturado,
+     Facturas.`moneda` AS Facturas_moneda
 FROM
      `Facturas` Facturas LEFT OUTER JOIN `factura_detallesFacturas` factura_detallesFacturas ON Facturas.`id` = factura_detallesFacturas.`factura_id`
      INNER JOIN `FacturaDetalle` FacturaDetalle ON factura_detallesFacturas.`facturadetalle_id` = FacturaDetalle.`id`
@@ -118,6 +119,7 @@ WHERE
 	<field name="RemitosClientesDetalles_articuloId" class="java.lang.Integer"/>
 	<field name="RemitosClientesDetalles_pedidoDetalleId" class="java.lang.Integer"/>
 	<field name="RemitosClientesDetalles_facturado" class="java.lang.Boolean"/>
+	<field name="Facturas_moneda" class="java.lang.Boolean"/>
 	<variable name="subTotal" class="java.lang.Float" calculation="Sum">
 		<variableExpression><![CDATA[$F{FacturaDetalle_cantidad} * $F{FacturaDetalle_precio}]]></variableExpression>
 	</variable>
@@ -314,7 +316,7 @@ PARTIDA MUNICIPAL N° 070-039139]]></text>
 				<textFieldExpression><![CDATA[$F{Facturas_departamento}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="354" y="191" width="55" height="40" uuid="df65f1ec-a58a-46ec-b054-35997a48ef2a"/>
+				<reportElement x="354" y="191" width="55" height="20" uuid="df65f1ec-a58a-46ec-b054-35997a48ef2a"/>
 				<box leftPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -325,7 +327,7 @@ PARTIDA MUNICIPAL N° 070-039139]]></text>
 				<text><![CDATA[C.U.I.T.]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="409" y="191" width="146" height="40" uuid="2707afc9-89c9-4168-932b-091fa1c63b1e"/>
+				<reportElement x="409" y="191" width="146" height="20" uuid="2707afc9-89c9-4168-932b-091fa1c63b1e"/>
 				<box leftPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -399,6 +401,28 @@ $F{Facturas_tipo} == 3 ? "A" : ""]]></textFieldExpression>
 			<line>
 				<reportElement x="453" y="44" width="5" height="1" uuid="b3db02f5-df1a-4bf4-8ff0-f2fe0357efeb"/>
 			</line>
+			<staticText>
+				<reportElement x="354" y="211" width="55" height="20" uuid="54046bcc-3ad2-4955-ae21-e66221b01aed"/>
+				<box leftPadding="3">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Moneda]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="409" y="211" width="146" height="20" uuid="1e9dcb50-f8f0-4921-b4d8-d0ea9af7032c"/>
+				<box leftPadding="3">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Facturas_moneda} == false ? "Pesos" : "Dólares"]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>

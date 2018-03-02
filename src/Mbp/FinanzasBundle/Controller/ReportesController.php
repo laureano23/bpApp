@@ -109,7 +109,8 @@ class ReportesController extends Controller
 		     RemitosClientesDetalles.`oc` AS RemitosClientesDetalles_oc,
 		     RemitosClientesDetalles.`articuloId` AS RemitosClientesDetalles_articuloId,
 		     RemitosClientesDetalles.`pedidoDetalleId` AS RemitosClientesDetalles_pedidoDetalleId,
-		     RemitosClientesDetalles.`facturado` AS RemitosClientesDetalles_facturado
+		     RemitosClientesDetalles.`facturado` AS RemitosClientesDetalles_facturado,
+     		 Facturas.`moneda` AS Facturas_moneda
 		FROM
 		     `Facturas` Facturas LEFT OUTER JOIN `factura_detallesFacturas` factura_detallesFacturas ON Facturas.`id` = factura_detallesFacturas.`factura_id`
 		     INNER JOIN `FacturaDetalle` FacturaDetalle ON factura_detallesFacturas.`facturadetalle_id` = FacturaDetalle.`id`
@@ -619,6 +620,142 @@ class ReportesController extends Controller
 		$response = new BinaryFileResponse($basePath);
         $response->trustXSendfileTypeHeader();
 		$filename = 'InteresesResarcitorios.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+		
+		return $response;
+	}
+	
+	/**
+     * @Route("/Reportes/Bancos/MovimientosBancos", name="mbp_Reportes_MovimientosBancos", options={"expose"=true})
+     */	
+    public function MovimientosBancos()
+	{
+		$response = new Response;
+				
+		try{
+			/*
+			 * PARAMETROS
+			 */
+			$desde = $this->get('request')->get('fecha1');
+			$hasta = $this->get('request')->get('fecha2');
+			$cuenta1 = $this->get('request')->get('cuenta1');
+			$cuenta2 = $this->get('request')->get('cuenta2');
+			$concepto1 = $this->get('request')->get('concepto1');
+			$concepto2 = $this->get('request')->get('concepto2');
+							
+			$reporteador = $this->get('reporteador');
+			$kernel = $this->get('kernel');
+			
+			/*
+			 * Configuro reporte
+			 */
+			$jru = $reporteador->jru();
+			
+			/*
+			 * Ruta archivo Jasper
+			 */				
+					
+			$ruta = $kernel->locateResource('@MbpFinanzasBundle/Reportes/MovimientosBancarios.jrxml');
+			$rutaLogo = $reporteador->getRutaLogo($kernel);
+			
+			/*
+			 * Ruta de destino del PDF
+			 */
+			$destino = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'MovimientosBancarios.pdf';		
+			
+			//Parametros HashMap
+			$param = $reporteador->getJava('java.util.HashMap');
+			$rutaLogo = $reporteador->getRutaLogo($kernel);
+						
+			$param->put('CONCEPTO_DESDE', $concepto1);
+			$param->put('CONCEPTO_HASTA', $concepto2);
+			$param->put('CUENTA_DESDE', $cuenta1);
+			$param->put('CUENTA_HASTA', $cuenta2);
+			
+			$conn = $reporteador->getJdbc();
+			
+			$desde = \DateTime::createFromFormat('d/m/Y', $desde);
+			$hasta = \DateTime::createFromFormat('d/m/Y', $hasta);
+			$param->put('DESDE', $desde->format('d/m/Y'));
+			$param->put('HASTA', $hasta->format('d/m/Y'));	
+			//$param->put('rutaLogo', $rutaLogo);
+			
+			
+			$desde = $desde->format('Y-m-d');
+			$hasta = $hasta->format('Y-m-d');
+									
+			
+			$sql = "SELECT
+			     MovimientosBancos.`id` AS MovimientosBancos_id,
+			     MovimientosBancos.`fechaMovimiento` AS MovimientosBancos_fechaMovimiento,
+			     MovimientosBancos.`ceonceptoBancoId` AS MovimientosBancos_ceonceptoBancoId,
+			     MovimientoBanco_Detalle.`detallemovimientosbancos_id` AS MovimientoBanco_Detalle_detallemovimientosbancos_id,
+			     MovimientoBanco_Detalle.`Movimiento_id` AS MovimientoBanco_Detalle_Movimiento_id,
+			     DetalleMovimientosBancos.`id` AS DetalleMovimientosBancos_id,
+			     DetalleMovimientosBancos.`numComprobante` AS DetalleMovimientosBancos_numComprobante,
+			     DetalleMovimientosBancos.`fechaDiferida` AS DetalleMovimientosBancos_fechaDiferida,
+			     DetalleMovimientosBancos.`importe` AS DetalleMovimientosBancos_importe,
+			     DetalleMovimientosBancos.`observaciones` AS DetalleMovimientosBancos_observaciones,
+			     DetalleMovimientosBancos.`ChequeTerceros_id` AS DetalleMovimientosBancos_ChequeTerceros_id,
+			     DetalleMovimientosBancos.`Proveedor_id` AS DetalleMovimientosBancos_Proveedor_id,
+			     ConceptosBanco.`id` AS ConceptosBanco_id,
+			     ConceptosBanco.`concepto` AS ConceptosBanco_concepto,
+			     ConceptosBanco.`imputaDebe` AS ConceptosBanco_imputaDebe,
+			     ConceptosBanco.`inactivo` AS ConceptosBanco_inactivo,
+			     DetalleMovimientosBancos.`idCliente` AS DetalleMovimientosBancos_idCliente,
+			     cliente.`idCliente` AS cliente_idCliente,
+			     cliente.`rsocial` AS cliente_rsocial,
+			     Proveedor.`rsocial` AS Proveedor_rsocial,
+			     Proveedor.`id` AS Proveedor_id,
+			     MovimientosBancos.`cuentaId` AS MovimientosBancos_cuentaId,
+			     CuentasBancarias.`id` AS CuentasBancarias_id,
+			     CuentasBancarias.`tipo` AS CuentasBancarias_tipo,
+			     CuentasBancarias.`numero` AS CuentasBancarias_numero,
+			     CuentasBancarias.`cbu` AS CuentasBancarias_cbu,
+			     CuentasBancarias.`bancoId` AS CuentasBancarias_bancoId,
+			     Bancos.`id` AS Bancos_id,
+			     Bancos.`nombre` AS Bancos_nombre
+			FROM
+			     `MovimientosBancos` MovimientosBancos INNER JOIN `MovimientoBanco_Detalle` MovimientoBanco_Detalle ON MovimientosBancos.`id` = MovimientoBanco_Detalle.`Movimiento_id`
+			     INNER JOIN `DetalleMovimientosBancos` DetalleMovimientosBancos ON MovimientoBanco_Detalle.`detallemovimientosbancos_id` = DetalleMovimientosBancos.`id`
+			     LEFT JOIN `Proveedor` Proveedor ON DetalleMovimientosBancos.`Proveedor_id` = Proveedor.`id`
+			     LEFT JOIN `cliente` cliente ON DetalleMovimientosBancos.`idCliente` = cliente.`idCliente`
+			     LEFT JOIN `ConceptosBanco` ConceptosBanco ON MovimientosBancos.`ceonceptoBancoId` = ConceptosBanco.`id`
+			     LEFT JOIN `CuentasBancarias` CuentasBancarias ON MovimientosBancos.`cuentaId` = CuentasBancarias.`id`
+			     LEFT JOIN `Bancos` Bancos ON CuentasBancarias.`bancoId` = Bancos.`id`
+			WHERE CAST(MovimientosBancos.`fechaMovimiento` AS DATE) BETWEEN '$desde' AND '$hasta'
+				AND ConceptosBanco.`id` BETWEEN $concepto1 AND $concepto2
+				AND CuentasBancarias.`id` BETWEEN $cuenta1 AND $cuenta2
+			     ";
+			
+			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	
+		}catch(\Exception $e){
+			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(
+				json_encode(array('success' => false, 'msg' => $e->getMessage()))
+				);
+		}
+		
+		return $response->setContent(
+			json_encode(array('success' => true))
+			);
+	}
+	
+	/**
+     * @Route("/Reportes/Bancos/VerReporteMovBancos", name="mbp_Reportes_VerReporteMovBancos", options={"expose"=true})
+     */	
+    public function VerReporteMovBancos()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'MovimientosBancarios.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'MovimientosBancarios.pdf';
         $response->setContentDisposition(
             ResponseHeaderBag::DISPOSITION_INLINE,
             $filename,

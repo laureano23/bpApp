@@ -205,7 +205,7 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 			params: {
 				id: win.queryById('id').getValue(),
 				concepto: win.queryById('concepto').getValue(),
-				contabiliza: win.queryById('condicion').getValue(),
+				imputaDebe: win.queryById('imputaDebe').getValue(),
 			},
 			
 			success: function(resp){
@@ -217,6 +217,7 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 					win.query('field').forEach(function(field){
 						field.setReadOnly(true);
 					});
+					win.down('grid').getSelectionModel().deselectAll();
 				}				
 			}
 		})
@@ -225,10 +226,12 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 	EditarConcepto: function(btn){
 		var win = btn.up('window');
 		var form = win.down('form');
-		var selection = form.down('grid').getSelectionModel().getSelection()[0];
+		var selection = win.down('grid').getSelectionModel().getSelection()[0];
 		var botonera = win.queryById('botonera');
 		
-		form.queryById('concepto').setReadOnly(false);
+		form.query('field').forEach(function(field){
+			field.setReadOnly(false);
+		});
 		form.loadRecord(selection);
 		botonera.editarItem(botonera);
 	},

@@ -4,7 +4,8 @@ Ext.define('MetApp.model.Bancos.ConceptosBancoModel',{
 	fields: [
 		{name: 'id', type: 'int'},
 		{name: 'concepto', type: 'string'},
-		{name: 'conceptoBancarioId', type: 'string'},		
+		{name: 'conceptoBancarioId', type: 'string'},
+		{name: 'imputaDebe', type: 'string'},	
 	]
 });
 

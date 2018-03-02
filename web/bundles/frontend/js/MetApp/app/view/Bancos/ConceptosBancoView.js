@@ -41,8 +41,8 @@ Ext.define('MetApp.view.Bancos.ConceptosBancoView',{
 						},
 						{
 							xtype: 'combobox',
-							name: 'condicion',
-							itemId: 'condicion',
+							name: 'imputaDebe',
+							itemId: 'imputaDebe',
 							fieldLabel: 'Contabiliza',
 							store: Ext.create('Ext.data.Store', {
 								fields: ['descripcion'],
@@ -53,6 +53,7 @@ Ext.define('MetApp.view.Bancos.ConceptosBancoView',{
 							}),
 							queryMode: 'local',
 							displayField: 'descripcion',
+							valueField: 'descripcion',
 							width: 450
 						},
 						{
@@ -63,7 +64,8 @@ Ext.define('MetApp.view.Bancos.ConceptosBancoView',{
 							disabled: false,
 							columns: [
 								{ text: 'Id', dataIndex: 'id' },
-								{ text: 'Concepto', dataIndex: 'concepto', flex: 1 }
+								{ text: 'Concepto', dataIndex: 'concepto', flex: 1 },
+								{ text: 'Imputa Debe', dataIndex: 'imputaDebe', flex: 1 }
 							],
 							itemId: 'gridFamilia',
 							width: 450

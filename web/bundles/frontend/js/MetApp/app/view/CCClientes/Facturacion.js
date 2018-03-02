@@ -114,6 +114,24 @@ Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 									fieldLabel: 'Fecha',
 									width: 200,
 									labelWidth: 35,
+								},
+								{
+									xtype: 'combobox',
+									labelWidth: 60,
+									value: 0,
+									name: 'moneda',
+									itemId: 'moneda',
+									queryMode: 'local',
+									displayField: 'moneda',
+									valueField: 'id',
+									fieldLabel: 'Moneda',
+									store:{
+										fields: ['id', 'moneda'],
+										data: [
+											{ id: 0, moneda: 'Pesos ARS' },
+											{ id: 1, moneda: 'Dólares U$D' },
+										]
+									}
 								}
 							]
 						}					

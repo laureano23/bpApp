@@ -74,6 +74,7 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 		var win = btn.up('window');
 		var form = win.down('form');
 		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
+		myMask.show();
 		
 		if(form.isValid()){
 			var values = form.getForm().getValues();

@@ -73,22 +73,30 @@ class ReportesController extends Controller
 			     Proveedor.`direccion` AS Proveedor_direccion,
 			     Proveedor.`cuit` AS Proveedor_cuit,
 			     Proveedor.`cPostal` AS Proveedor_cPostal,
-			     provincias.`id` AS provincias_id,
-			     provincias.`nombre` AS provincias_nombre,
-			     FormasPago.`id` AS FormasPago_id,
-			     FormasPago.`descripcion` AS FormasPago_descripcion,
 			     OrdenPago.`fechaEmision` AS OrdenPago_fechaEmision,
-			     departamentos.`id` AS departamentos_id,
-			     departamentos.`provincia_id` AS departamentos_provincia_id,
-			     departamentos.`nombre` AS departamentos_nombre,
-			     Proveedor.`departamento` AS Proveedor_departamento
+			     Proveedor.`departamento` AS Proveedor_departamento,
+			     localidades.`id` AS localidades_id,
+			     localidades.`departamento_id` AS localidades_departamento_id,
+			     localidades.`provincia_id` AS localidades_provincia_id,
+			     localidades.`nombre` AS localidades_nombre,
+			     Proveedor.`localidad` AS Proveedor_localidad,
+			     provincia.`id` AS provincia_id,
+			     provincia.`nombre` AS provincia_nombre,
+			     FormasPagos.`id` AS FormasPagos_id,
+			     FormasPagos.`descripcion` AS FormasPagos_descripcion,
+			     FormasPagos.`inactivo` AS FormasPagos_inactivo,
+			     FormasPagos.`retencionIIBB` AS FormasPagos_retencionIIBB,
+			     FormasPagos.`retencionIVA21` AS FormasPagos_retencionIVA21,
+			     FormasPagos.`chequeTerceros` AS FormasPagos_chequeTerceros,
+			     FormasPagos.`esChequePropio` AS FormasPagos_esChequePropio,
+			     FormasPagos.`ceonceptoBancoId` AS FormasPagos_ceonceptoBancoId
 			FROM
 			     `Pago` Pago INNER JOIN `OrdenDePago_detallesPagos` OrdenDePago_detallesPagos ON Pago.`id` = OrdenDePago_detallesPagos.`pago_id`
 			     INNER JOIN `OrdenPago` OrdenPago ON OrdenDePago_detallesPagos.`ordenPago_id` = OrdenPago.`id`
 			     INNER JOIN `Proveedor` Proveedor ON OrdenPago.`proveedorId` = Proveedor.`id`
-			     LEFT OUTER JOIN `provincias` provincias ON Proveedor.`provincia` = provincias.`id`
-			     LEFT OUTER JOIN `departamentos` departamentos ON Proveedor.`departamento` = departamentos.`id`
-			     INNER JOIN `FormasPago` FormasPago ON Pago.`idFormaPago` = FormasPago.`id`
+			     LEFT OUTER JOIN `localidades` localidades ON Proveedor.`localidad` = localidades.`id`
+			     INNER JOIN `provincia` provincia ON localidades.`provincia_id` = provincia.`id`
+			     INNER JOIN `FormasPagos` FormasPagos ON Pago.`idFormaPago` = FormasPagos.`id`
 			WHERE
 			     OrdenDePago_detallesPagos.`ordenPago_id` = $idOp";		     
 		   	$param->put('SUBREPORT_DIR', $kernel->locateResource('@MbpProveedoresBundle/Reportes/'));

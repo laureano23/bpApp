@@ -16,6 +16,7 @@ security:
                 target: login                    
             remember_me:
                 key: prueba123
+                lifetime: 604800 # 7 * 24 * 3600 = 604.800 = 1 semana
             
 
     access_control:

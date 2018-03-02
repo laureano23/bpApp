@@ -368,9 +368,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 				winFacturacion.queryById('descripcion').focus(true, 50);
 			}else{
 				winFacturacion.queryById('cantidad').focus(true, 50);	
-			}
-			console.log(selection);
-			
+			}			
 			
 		});
 	},
@@ -448,7 +446,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var ccView = this.getCCClientes();
 
 		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-		myMask.show();
+		//myMask.show();
 		
 		if(store.data.items.length == 0){
 			Ext.Msg.show({
@@ -484,7 +482,9 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 				fcData: Ext.JSON.encode(valuesDatosFc),	
 			},
 			
+			
 			success: function(resp){
+				console.log(resp);
 				var decodeResp = Ext.JSON.decode(resp.responseText);
 				if(decodeResp.success == true){
 					store.removeAll();

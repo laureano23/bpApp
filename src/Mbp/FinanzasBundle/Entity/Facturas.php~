@@ -182,10 +182,8 @@ class Facturas
      * @var \decimal
      *
      * @ORM\Column(name="tipoCambio", type="decimal", precision=8, scale=2, nullable=false)
-	 * 
-	 * para pesos tc=1, para dolares consultar servicio AFIP
      */
-    private $tipoCambio=1;
+    private $tipoCambio=0;
 
 
     /**
@@ -743,29 +741,5 @@ class Facturas
     public function getMoneda()
     {
         return $this->moneda;
-    }
-
-    /**
-     * Set tipoCambio
-     *
-     * @param string $tipoCambio
-     *
-     * @return Facturas
-     */
-    public function setTipoCambio($tipoCambio)
-    {
-        $this->tipoCambio = $tipoCambio;
-
-        return $this;
-    }
-
-    /**
-     * Get tipoCambio
-     *
-     * @return string
-     */
-    public function getTipoCambio()
-    {
-        return $this->tipoCambio;
     }
 }

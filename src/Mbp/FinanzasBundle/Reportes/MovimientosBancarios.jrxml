@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MovimientosBancarios" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="709b51c8-5f4d-4b2d-a677-76deaca708e6">
-	<property name="ireport.zoom" value="1.6105100000000012"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="3"/>
+	<property name="ireport.zoom" value="1.3310000000000033"/>
+	<property name="ireport.x" value="180"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="DESDE" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="HASTA" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CONCEPTO_DESDE" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CONCEPTO_HASTA" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CUENTA_DESDE" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CUENTA_HASTA" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
      MovimientosBancos.`id` AS MovimientosBancos_id,
@@ -41,7 +59,11 @@ FROM
      LEFT JOIN `cliente` cliente ON DetalleMovimientosBancos.`idCliente` = cliente.`idCliente`
      LEFT JOIN `ConceptosBanco` ConceptosBanco ON MovimientosBancos.`ceonceptoBancoId` = ConceptosBanco.`id`
      LEFT JOIN `CuentasBancarias` CuentasBancarias ON MovimientosBancos.`cuentaId` = CuentasBancarias.`id`
-     LEFT JOIN `Bancos` Bancos ON CuentasBancarias.`bancoId` = Bancos.`id`]]>
+     LEFT JOIN `Bancos` Bancos ON CuentasBancarias.`bancoId` = Bancos.`id`
+WHERE CAST(MovimientosBancos.`fechaMovimiento` AS DATE) BETWEEN $P{DESDE} AND $P{HASTA}
+	AND ConceptosBanco.`id` BETWEEN $P{CONCEPTO_DESDE} AND $P{CONCEPTO_HASTA}
+	AND CuentasBancarias.`id` BETWEEN $P{CUENTA_DESDE} AND $P{CUENTA_HASTA}
+     ]]>
 	</queryString>
 	<field name="MovimientosBancos_id" class="java.lang.Integer"/>
 	<field name="MovimientosBancos_fechaMovimiento" class="java.sql.Timestamp"/>
@@ -72,57 +94,182 @@ FROM
 	<field name="CuentasBancarias_bancoId" class="java.lang.Integer"/>
 	<field name="Bancos_id" class="java.lang.Integer"/>
 	<field name="Bancos_nombre" class="java.lang.String"/>
+	<variable name="SUBTOTAL_DEBE" class="java.math.BigDecimal" resetType="Group" resetGroup="CUENTAS_BANCARIAS" calculation="Sum">
+		<variableExpression><![CDATA[$F{ConceptosBanco_imputaDebe} == true ? $F{DetalleMovimientosBancos_importe} : 0]]></variableExpression>
+	</variable>
+	<variable name="SUBTOTAL_HABER" class="java.math.BigDecimal" resetType="Group" resetGroup="CUENTAS_BANCARIAS" calculation="Sum">
+		<variableExpression><![CDATA[$F{ConceptosBanco_imputaDebe} == false ? $F{DetalleMovimientosBancos_importe} : 0]]></variableExpression>
+	</variable>
 	<group name="CUENTAS_BANCARIAS">
 		<groupExpression><![CDATA[$F{CuentasBancarias_id}]]></groupExpression>
 		<groupHeader>
-			<band height="50">
+			<band height="22">
 				<textField>
-					<reportElement x="0" y="30" width="414" height="20" uuid="b189b7a6-b356-46ea-99fb-5928a3126985"/>
-					<textFieldExpression><![CDATA[$F{CuentasBancarias_tipo}+$F{CuentasBancarias_numero}+$F{Bancos_nombre}]]></textFieldExpression>
+					<reportElement x="0" y="0" width="802" height="20" uuid="b189b7a6-b356-46ea-99fb-5928a3126985"/>
+					<box leftPadding="2">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["Cuenta: "+$F{CuentasBancarias_tipo}+$F{CuentasBancarias_numero}+" "+$F{Bancos_nombre}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="50"/>
+			<band height="50">
+				<staticText>
+					<reportElement x="0" y="0" width="655" height="20" uuid="0339f88d-8071-44e3-a134-e7ce6827ac23"/>
+					<box leftPadding="2" rightPadding="2">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Sub Total:]]></text>
+				</staticText>
+				<textField evaluationTime="Group" evaluationGroup="CUENTAS_BANCARIAS" pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement x="655" y="0" width="71" height="20" uuid="cdf8dfd5-73e1-4b9f-bb7a-27d4876f965f"/>
+					<box leftPadding="2">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SUBTOTAL_DEBE}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="CUENTAS_BANCARIAS" pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement x="726" y="0" width="76" height="20" uuid="8b5b5a83-f93d-4738-b5cb-23767204893b"/>
+					<box leftPadding="2">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SUBTOTAL_HABER}]]></textFieldExpression>
+				</textField>
+			</band>
 		</groupFooter>
 	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch"/>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="802" height="35" uuid="f181f6d6-483d-494b-8064-a7aaa115a434"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="15" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Libro Bancos]]></text>
+			</staticText>
+		</band>
 	</title>
-	<pageHeader>
-		<band height="35" splitType="Stretch"/>
-	</pageHeader>
 	<columnHeader>
 		<band height="20" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="0" width="71" height="20" uuid="91e0b724-27eb-40b7-90ad-16f282873ed2"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Emisión]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="71" y="0" width="142" height="20" uuid="c4be852a-76e1-45c3-9000-9a8840c85210"/>
+				<reportElement x="71" y="0" width="185" height="20" uuid="c4be852a-76e1-45c3-9000-9a8840c85210"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Concepto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="213" y="0" width="71" height="20" uuid="d87b83b6-1820-498a-9fd9-908c22dec0b8"/>
+				<reportElement x="256" y="0" width="71" height="20" uuid="d87b83b6-1820-498a-9fd9-908c22dec0b8"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[N° Comp.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="284" y="0" width="100" height="20" uuid="d6a9c49b-9e26-4051-87d8-86d8560f250e"/>
+				<reportElement x="327" y="0" width="100" height="20" uuid="d6a9c49b-9e26-4051-87d8-86d8560f250e"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Fecha Acreditación]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="384" y="0" width="271" height="20" uuid="b76f5cc6-d255-43bc-a89c-59cbe00532a2"/>
+				<reportElement x="427" y="0" width="228" height="20" uuid="b76f5cc6-d255-43bc-a89c-59cbe00532a2"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Proveedor / Cliente]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="655" y="0" width="71" height="20" uuid="52b2c50b-d998-424b-b20d-8ff27ee014e0"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Debe]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="726" y="0" width="76" height="20" uuid="16fd8c8a-3535-4bef-8bb6-0a049ddfa0a9"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Haber]]></text>
 			</staticText>
 		</band>
@@ -131,23 +278,45 @@ FROM
 		<band height="20" splitType="Stretch">
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="0" y="0" width="71" height="20" uuid="b0c0d519-1e49-4e1b-8d7a-5e5992a6f505"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{MovimientosBancos_fechaMovimiento}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="71" y="0" width="142" height="20" uuid="101f6414-244c-41cb-b426-ad90ae2eb83b"/>
+				<reportElement x="71" y="0" width="185" height="20" isPrintWhenDetailOverflows="true" uuid="101f6414-244c-41cb-b426-ad90ae2eb83b"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{ConceptosBanco_concepto}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="213" y="0" width="71" height="20" uuid="b934da17-ab10-4589-9e11-9fb4405c3ca8"/>
+				<reportElement x="256" y="0" width="71" height="20" uuid="b934da17-ab10-4589-9e11-9fb4405c3ca8"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{DetalleMovimientosBancos_numComprobante}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="284" y="0" width="100" height="20" uuid="fde55d9a-8962-4b66-8f08-0d8d24cb31b3"/>
+				<reportElement x="327" y="0" width="100" height="20" uuid="fde55d9a-8962-4b66-8f08-0d8d24cb31b3"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{DetalleMovimientosBancos_fechaDiferida}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="384" y="0" width="271" height="20" uuid="4dc8ffa7-3e37-4622-ab04-30f337dd0b49"/>
+				<reportElement x="427" y="0" width="228" height="20" isPrintWhenDetailOverflows="true" uuid="4dc8ffa7-3e37-4622-ab04-30f337dd0b49"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{Proveedor_rsocial} != null ? $F{Proveedor_rsocial} : $F{cliente_rsocial}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="655" y="0" width="71" height="20" uuid="7cf84161-ab15-4258-87d5-fb7d236d035b"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ConceptosBanco_imputaDebe} == true ? $F{DetalleMovimientosBancos_importe} : ""]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="726" y="0" width="76" height="20" uuid="002c9a7a-0147-4849-8b3c-257b9ca28ddd"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ConceptosBanco_imputaDebe} == false ? $F{DetalleMovimientosBancos_importe} : ""]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -155,7 +324,17 @@ FROM
 		<band height="45" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="671" y="0" width="68" height="20" uuid="ec489c1c-6079-491b-864f-2576eb7b2998"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Pág. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="739" y="0" width="63" height="20" uuid="c165e93d-2494-4d0b-8433-a2ff8f9aeb0b"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageFooter>
 	<summary>
 		<band height="42" splitType="Stretch"/>

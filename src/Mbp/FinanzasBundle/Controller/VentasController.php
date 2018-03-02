@@ -79,7 +79,7 @@ class VentasController extends Controller
 				$resp[$i]['emision'] = $factura->getFecha()->format('d-m-Y');
 				$resp[$i]['concepto'] = $factura->getConcepto()." N° ".$factura->getfcNro();
 				$resp[$i]['vencimiento'] = $factura->getVencimiento()->format('d-m-Y'); 
-				$resp[$i]['debe'] = $factura->getTipo() == 1 ? $subTotal[$i] : "";
+				$resp[$i]['debe'] = $factura->getTipo() == 1 ? $subTotal[$i] * $factura->getTipoCambio() : "";
 				$resp[$i]['haber'] = $factura->getTipo() != 1 ? $subTotal[$i] : "";
 				$resp[$i]['tipo'] = $factura->getTipo();
 				$i++;
@@ -225,7 +225,9 @@ class VentasController extends Controller
 				$percepcionIIBB = number_format($percepcionIIBB, 2);
 			}	
 			
-			
+			/*$monedas = $faele->FEParamGetCotizacion('DOL');
+			print_r($monedas);
+			exit;*/
 
 			//REDONDEO IMPORTES A 2 DECIMALES
 			$netoGrabado = number_format($netoGrabado, 2, ".", "");
@@ -247,8 +249,19 @@ class VentasController extends Controller
 			$regfe['FchServDesde']=null;	// solo concepto 2 o 3
 			$regfe['FchServHasta']=null;	// solo concepto 2 o 3
 			$regfe['FchVtoPago']=null;		// solo concepto 2 o 3
-			$regfe['MonId']='PES'; 			// Id de moneda 'PES'
-			$regfe['MonCotiz']=1;			// Cotizacion moneda. Solo exportacion
+			
+			//evaluamos moneda a facturar
+			if($decodefcData->moneda == 0){
+				$regfe['MonId']='PES'; 			// Id de moneda 'PES'-------para dolares 'DOL'	
+			}else{
+				$regfe['MonId']='DOL';
+				
+				//cotizacion de moneda
+				$coti = $faele->FEParamGetCotizacion('DOL');
+				$regfe['MonCotiz'] = $coti->FEParamGetCotizacionResult->ResultGet->MonCotiz;
+			}
+			
+			//$regfe['MonCotiz']=1;			// Cotizacion moneda. Solo exportacion
 			
 			// Comprobantes asociados (solo notas de crédito y débito):
 			$regfeasoc['Tipo'] = 91; //91; //tipo 91|5			
@@ -293,8 +306,10 @@ class VentasController extends Controller
 			$factura->setTotal($regfe['ImpTotal']);
 			$factura->setIva21($ivaLiquidado);
 			$factura->setporcentajeIIBB($alicuotaPercepcion);			
+			$decodefcData->moneda == 0 ? $factura->setMoneda(0) : $factura->setMoneda(1);
+			$decodefcData->moneda == 0 ? $factura->setTipoCambio(1) : $factura->setTipoCambio($regfe['MonCotiz']);
 			
-				
+			
 			$em->persist($factura);
 			$em->flush();	
 			$cae["idFc"] = $factura->getId();
@@ -304,8 +319,9 @@ class VentasController extends Controller
 			return $response;
 
 		}catch(\Exception $e){
+			throw $e;
 			$response->setContent(json_encode(array("success"=>false, "msg"=>$e->getMessage())));
-			return new Response;
+			return $response;
 		}
 	}
 

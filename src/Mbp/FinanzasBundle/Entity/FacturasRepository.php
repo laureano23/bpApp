@@ -42,8 +42,8 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 		try{
 			$qbFacturas = $repoFacturas->createQueryBuilder('fac')
 				->select('
-					fac.fecha, fac.vencimiento, fac.concepto, fac.tipo,
-					CASE fac.tipo WHEN 1 THEN item.cantidad * item.precio ELSE 0 END AS debe,
+					fac.fecha, fac.vencimiento, fac.concepto, fac.tipo, fac.tipoCambio
+					CASE fac.tipo WHEN 1 THEN item.cantidad * item.precio * tipoCambio ELSE 0 END AS debe,
 					CASE fac.tipo WHEN 3 THEN item.cantidad * item.precio ELSE 0 END AS haber
 				')
 				->join('fac.clienteId', 'cliente')	

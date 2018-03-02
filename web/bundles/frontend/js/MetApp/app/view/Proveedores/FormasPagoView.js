@@ -53,14 +53,6 @@ Ext.define('MetApp.view.Proveedores.FormasPagoView',{
 									items: [
 										{
 											xtype: 'checkbox',
-											name: 'esBancario',
-											itemId: 'conceptoBancario',
-											fieldLabel: 'Concepto bancario',
-											labelWidth: 120,
-											uncheckedValue: 0
-										},
-										{
-											xtype: 'checkbox',
 											name: 'retencionIIBB',
 											itemId: 'retencionIIBB',
 											fieldLabel: 'Retención IIBB',

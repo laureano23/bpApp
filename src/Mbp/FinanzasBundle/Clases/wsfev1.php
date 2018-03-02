@@ -245,6 +245,21 @@ class wsfev1 {
 							'Cuit' => self::CUIT)));
 	}
 	
+	public function FEParamGetTiposMonedas(){
+		return $this->client->FEParamGetTiposMonedas(
+		array('Auth'=>array('Token' => $this->TA->credentials->token,
+							'Sign' => $this->TA->credentials->sign,
+							'Cuit' => self::CUIT)));
+	}
+
+	public function FEParamGetCotizacion($monedaId){
+		return $this->client->FEParamGetCotizacion(
+		array('Auth'=>array('Token' => $this->TA->credentials->token,
+							'Sign' => $this->TA->credentials->sign,
+							'Cuit' => self::CUIT),
+				'MonId' => $monedaId));
+	}
+	
 } // class
 
 ?>

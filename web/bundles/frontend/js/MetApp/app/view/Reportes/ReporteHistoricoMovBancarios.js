@@ -54,11 +54,11 @@ Ext.define('MetApp.view.Reportes.ReporteHistoricoMovBancarios', {
 										},
 										{
 											xtype: 'combobox',
-											store: 'MetApp.store.Personal.BancosStore',
-											fieldLabel: 'Banco',
-											displayField: 'nombre',
-											itemId: 'banco1',
-											name: 'banco1',
+											store: 'MetApp.store.Bancos.CuentasBancoStore',
+											fieldLabel: 'Cuenta',
+											displayField: 'cuenta',
+											itemId: 'cuenta1',
+											name: 'cuenta1',
 											valueField: 'id',
 											forceSelection: true
 										}
@@ -70,7 +70,9 @@ Ext.define('MetApp.view.Reportes.ReporteHistoricoMovBancarios', {
 									items: [
 										{
 											xtype: 'datefield',
-											fieldLabel: 'Fecha'
+											fieldLabel: 'Fecha',
+											itemId: 'fecha2',
+											name: 'fecha2'
 										},
 										{
 											xtype: 'combobox',
@@ -85,11 +87,11 @@ Ext.define('MetApp.view.Reportes.ReporteHistoricoMovBancarios', {
 										},
 										{
 											xtype: 'combobox',
-											store: 'MetApp.store.Personal.BancosStore',
-											fieldLabel: 'Banco',
-											displayField: 'nombre',
-											itemId: 'banco2',
-											name: 'banco2',
+											store: 'MetApp.store.Bancos.CuentasBancoStore',
+											fieldLabel: 'Cuenta',
+											displayField: 'cuenta',
+											itemId: 'cuenta2',
+											name: 'cuenta2',
 											valueField: 'id',
 											forceSelection: true
 										}
