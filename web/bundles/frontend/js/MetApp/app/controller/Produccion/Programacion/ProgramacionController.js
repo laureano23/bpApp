@@ -246,52 +246,88 @@ Ext.define('MetApp.controller.Produccion.Programacion.ProgramacionController', {
 	},
 	
 	EliminarOT: function(grid, colIndex, rowIndex){
-		
-		Ext.Msg.prompt('Anular OT', 'Ingrese el motivo de anulación de la OT:', function(btn, text){
-			if(btn == "ok"){
+		var store = grid.getStore();
+		var selection = store.getAt(rowIndex);
+		var win = grid.up('window');
+		//var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
+		//myMask.show();
 				
-				if(text == ""){
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_produccion_validarAnulacionOT'),
+			
+			params: {
+				ot: selection.data.otNum,
+				
+			},
+			
+			success: function(resp){
+				var jsonResp = Ext.JSON.decode(resp.responseText);
+				var res = "";
+				Ext.Array.each(jsonResp.data, function(row, index, itself){
+    				res+="OT: "+row.otNum+"   Código: "+row.codigo+"</br>";
+    			})
+				if(jsonResp.data != ""){
 					Ext.Msg.show({
-						title: 'Atencion',
-						msg: 'Debe ingresar un motivo de anulación'
-					})
-					return;
+		    			title: 'Atención',
+		    			msg: "Se anularán las siguientes órdenes asociadas: </br>"+res,
+		    			buttons: Ext.Msg.OKCANCEL,
+		    			icon: Ext.Msg.INFO,
+		    			fn: function(btn2){		    				
+		    				if(btn2 == "ok"){	
+		    					Ext.defer(function(){
+		    						Ext.Msg.prompt('Anular OT', 'Ingrese el motivo de anulación de la OT:', function(btn, text){
+		    						
+										if(btn == "ok"){									
+											if(text == ""){
+												Ext.Msg.show({
+													title: 'Atencion',
+													msg: 'Debe ingresar un motivo de anulación'
+												})
+												return;
+											}
+					    					Ext.Ajax.request({
+												url: Routing.generate('mbp_produccion_eliminarOT'),
+												
+												params: {
+													ot: selection.data.otNum,
+													observacion: text	
+												},
+												
+												success: function(resp){
+													Ext.Msg.show({
+										    			title: 'Info',
+										    			msg: "La OT fué eliminada correctamente",
+										    			buttons: Ext.Msg.OK,
+										    			icon: Ext.Msg.INFO
+										    		});
+										    		
+										    		store.remove(selection);
+										    		//myMask.hide();
+												},
+												
+												failure: function(resp){
+													
+												}
+												
+											});
+										}
+				    				});
+		    					}, 100);
+		    					
+		    				}
+				    		
+		    			}
+		    		});	
 				}
+			},
+			
+			failure: function(resp){
 				
-				
-				var store = grid.getStore();
-				var selection = store.getAt(rowIndex);
-				var win = grid.up('window');
-				var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-				myMask.show();
-						
-				Ext.Ajax.request({
-					url: Routing.generate('mbp_produccion_eliminarOT'),
-					
-					params: {
-						ot: selection.data.otNum,
-						observacion: text	
-					},
-					
-					success: function(resp){
-						Ext.Msg.show({
-			    			title: 'Formula',
-			    			msg: "La OT fué eliminada correctamente",
-			    			buttons: Ext.Msg.OK,
-			    			icon: Ext.Msg.INFO
-			    		});
-			    		
-			    		myMask.hide();
-			    		store.remove(selection);
-					},
-					
-					failure: function(resp){
-						
-					}
-				})
 			}
-		})	
+		})
 	}
+			
+	
 });
 
 

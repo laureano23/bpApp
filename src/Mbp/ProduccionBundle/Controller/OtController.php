@@ -521,6 +521,60 @@ class OtController extends Controller
      * @Route("/eliminarOT", name="mbp_produccion_eliminarOT", options={"expose"=true})
      */
     public function eliminarOT()
+    {    	
+		$em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+		$response = new Response;
+		
+		try{
+			$ot = $request->request->get('ot');
+			$obs = $request->request->get('observacion');
+			$repo = $em->getRepository('MbpProduccionBundle:Ot');
+			
+			
+			$resp = $repo->findByOt($ot);
+			
+			$arrayResp = array();
+			
+			$this->otRecursiva($resp, $arrayResp);
+			
+			
+			$pusher = $this->container->get('lopi_pusher.pusher');//NOTIFICADOR
+			
+		    
+			
+			foreach ($arrayResp as $orden) {
+				$o = $repo->find($orden['otNum']);
+				$o->setAnulada(TRUE);
+				$o->setObservaciones($o->getObservaciones()."----------MOTIVO DE ANULACIÓN: ".$obs);
+				
+				$data=array(
+					'message' => 'Se ANULO la OT: '.$o->getOt(),
+					'sectorReceptor' => $o->getSectorId()->getDescripcion()
+				);
+				
+			    $pusher->trigger('my-channel', 'my-event', json_encode($data));
+			}
+			
+			
+			$em->flush();
+			
+			
+			return $response->setContent(json_encode(array('success' => true)));
+		}catch(\Exception $e){
+			$response->setContent(json_encode(array(
+				'success' => false,
+				'msg' => $e->getMessage())
+			));
+			
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+    }
+	
+	/**
+     * @Route("/validarAnulacionOT", name="mbp_produccion_validarAnulacionOT", options={"expose"=true})
+     */
+    public function validarAnulacionOT()
     {
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
@@ -532,13 +586,14 @@ class OtController extends Controller
 			$repo = $em->getRepository('MbpProduccionBundle:Ot');
 			
 			
-			$resp = $repo->find($ot);
-			$resp->setAnulada(TRUE);
-			$resp->setObservaciones($resp->getObservaciones()."----------MOTIVO DE ANULACIÓN: ".$obs);
-			$em->flush();
+			$resp = $repo->findByOt($ot);
+			
+			$arrayResp = array();
 			
 			
-			return $response->setContent(json_encode(array('success' => true)));
+			$this->otRecursiva($resp, $arrayResp);			
+						
+			return $response->setContent(json_encode(array('success' => true, 'data' => $arrayResp)));
 		}catch(\Exception $e){
 			$response->setContent(json_encode(array(
 				'success' => false,
