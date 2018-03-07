@@ -87,11 +87,11 @@ FROM
      RIGHT OUTER JOIN `cliente` cliente ON ot.`clienteId` = cliente.`idCliente`
 WHERE
      ot.`fechaProg` BETWEEN $P{desde} AND $P{hasta} AND
-     ot.`clienteId`  BETWEEN $P{idCliente} AND $P{idCliente2}
+     ot.`clienteId`  BETWEEN $P{idCliente} AND $P{idCliente2} AND
+     ot.`anulada` = 0
 ORDER BY
      cliente.`idCliente` ASC,
-     ot.`fechaProg` ASC
-]]>
+     ot.`fechaProg` ASC]]>
 	</queryString>
 	<field name="ot_ot" class="java.lang.Integer"/>
 	<field name="ot_cantidad" class="java.math.BigDecimal"/>

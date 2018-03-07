@@ -24,7 +24,7 @@ class FormasPagos
     /**
      * @var string
      *
-     * @ORM\Column(name="descripcion", type="string", length=35)
+     * @ORM\Column(name="descripcion", type="string", length=35, nullable=false)
      */
     private $descripcion;
 
@@ -52,13 +52,6 @@ class FormasPagos
 	/**
      * @var boolean
      *
-     * @ORM\Column(name="esBancario", type="boolean")
-     */
-    private $esBancario=0; 
-	
-	/**
-     * @var boolean
-     *
      * @ORM\Column(name="chequeTerceros", type="boolean")
      */
     private $chequeTerceros=0; 
@@ -69,6 +62,13 @@ class FormasPagos
      * @ORM\Column(name="esChequePropio", type="boolean")
      */
     private $esChequePropio=0; 
+	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="depositaEnCuenta", type="boolean")
+     */
+    private $depositaEnCuenta=0; 
 	
 	/**
 	  * @ORM\ManyToOne(targetEntity="Mbp\FinanzasBundle\Entity\ConceptosBanco")
@@ -183,30 +183,7 @@ class FormasPagos
         return $this->retencionIVA21;
     }
 
-    /**
-     * Set esBancario
-     *
-     * @param boolean $esBancario
-     *
-     * @return FormasPago
-     */
-    public function setEsBancario($esBancario)
-    {
-        $this->esBancario = $esBancario;
-
-        return $this;
-    }
-
-    /**
-     * Get esBancario
-     *
-     * @return boolean
-     */
-    public function getEsBancario()
-    {
-        return $this->esBancario;
-    }
-
+    
     /**
      * Set chequeTerceros
      *
@@ -253,5 +230,29 @@ class FormasPagos
     public function getEsChequePropio()
     {
         return $this->esChequePropio;
+    }
+
+    /**
+     * Set conceptoBancoId
+     *
+     * @param \Mbp\FinanzasBundle\Entity\ConceptosBanco $conceptoBancoId
+     *
+     * @return FormasPagos
+     */
+    public function setConceptoBancoId(\Mbp\FinanzasBundle\Entity\ConceptosBanco $conceptoBancoId = null)
+    {
+        $this->conceptoBancoId = $conceptoBancoId;
+
+        return $this;
+    }
+
+    /**
+     * Get conceptoBancoId
+     *
+     * @return \Mbp\FinanzasBundle\Entity\ConceptosBanco
+     */
+    public function getConceptoBancoId()
+    {
+        return $this->conceptoBancoId;
     }
 }

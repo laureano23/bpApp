@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OT" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="701769ed-d3de-4a78-92fe-e21c0125043d">
 	<property name="ireport.zoom" value="1.1000000000000036"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="399"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -228,7 +228,7 @@ WHERE
 				</textElement>
 				<text><![CDATA[Cantidad:]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="437" y="0" width="118" height="20" uuid="7fd6df9f-dcf5-4703-bc4c-e8ce9776c086"/>
 				<textElement textAlignment="Right">
 					<font isBold="false"/>

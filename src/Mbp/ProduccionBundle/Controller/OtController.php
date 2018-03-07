@@ -615,6 +615,7 @@ class OtController extends Controller
 		
 		try{
 			$ot = $request->request->get('ot');
+			$cantidad = $request->request->get('cantidad');
 			$fecha = $request->request->get('fecha');
 			$repo = $em->getRepository('MbpProduccionBundle:Ot');
 			
@@ -622,6 +623,7 @@ class OtController extends Controller
 			$row = $repo->find($ot);
 			
 			$row->setFechaProg(\DateTime::createFromFormat('d/m/Y', $fecha));
+			$row->setCantidad($cantidad);
 			$em->persist($row);
 			$em->flush(); 
 			

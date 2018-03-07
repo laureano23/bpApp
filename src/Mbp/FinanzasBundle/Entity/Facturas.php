@@ -79,6 +79,14 @@ class Facturas
      *      min = 1,
      *      max = 100,
      * )
+	 * 
+	    { 'tipo': 1, 'descripcion': 'Factura A' },
+		{ 'tipo': 2, 'descripcion': 'Nota de debito A' },
+		{ 'tipo': 3, 'descripcion': 'Nota de credito A' },
+		{ 'tipo': 6, 'descripcion': 'Factura B' },
+		{ 'tipo': 7, 'descripcion': 'Nota de debito B' },
+		{ 'tipo': 8, 'descripcion': 'Nota de credito B' },
+		{ 'tipo': 99, 'descripcion': 'Presupuesto' },
 	 */
 	private $tipo;
 	

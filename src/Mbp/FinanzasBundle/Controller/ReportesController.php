@@ -329,14 +329,16 @@ class ReportesController extends Controller
 				     Facturas.`clienteId` AS Facturas_clienteId,
 				     Facturas.`tipo` AS Facturas_tipo,
 				     Facturas.`ptoVta` AS Facturas_ptoVta,
-				     Facturas.`perIIBB` AS Facturas_perIIBB,
-				     Facturas.`iva21` AS Facturas_iva21,
+				     CASE WHEN Facturas.`moneda` = 1 THEN Facturas.`perIIBB` * Facturas.`tipoCambio` ELSE Facturas.`perIIBB` END AS Facturas_perIIBB,
+				     CASE WHEN Facturas.`moneda` = 1 THEN Facturas.`iva21` * Facturas.`tipoCambio` ELSE Facturas.`iva21` END  AS Facturas_iva21,
 				     Facturas.`fcNro` AS Facturas_fcNro,
 				     Facturas.`rSocial` AS Facturas_rSocial,
 				     Facturas.`cuit` AS Facturas_cuit,
 				     Facturas.`ivaCond` AS Facturas_ivaCond,
-				     Facturas.`total` AS Facturas_total,
-				     Facturas.`porcentajeIIBB` AS Facturas_porcentajeIIBB
+				     CASE WHEN Facturas.`moneda` = 1 THEN Facturas.`total` * Facturas.`tipoCambio` ELSE Facturas.`total` END AS Facturas_total,
+				     Facturas.`porcentajeIIBB` AS Facturas_porcentajeIIBB,
+				     Facturas.`moneda` AS Facturas_moneda,
+				     Facturas.`tipoCambio` AS Facturas_tipoCambio
 				FROM
 				     `cliente` cliente INNER JOIN `Facturas` Facturas ON cliente.`idCliente` = Facturas.`clienteId`
 				WHERE

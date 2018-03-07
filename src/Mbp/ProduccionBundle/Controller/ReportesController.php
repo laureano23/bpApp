@@ -824,6 +824,7 @@ class ReportesController extends Controller
 				     LEFT OUTER JOIN `Sectores` sectores_A ON ot.`sectorId` = sectores_A.`id`
 				WHERE ot.`fechaProg` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql'
 				AND sectores_A.`id` = $sectorId
+				AND ot.`anulada` = 0
 				ORDER BY
 				     sectores_A.`id` ASC,				     
 				     ot.`estado` ASC,
@@ -982,7 +983,8 @@ class ReportesController extends Controller
 			     RIGHT OUTER JOIN `cliente` cliente ON ot.`clienteId` = cliente.`idCliente`
 			WHERE
 			     ot.`fechaProg` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql' AND
-			     ot.`clienteId`  BETWEEN '$clienteId1' AND '$clienteId2'
+			     ot.`clienteId`  BETWEEN '$clienteId1' AND '$clienteId2' AND
+				 ot.`anulada` = 0
 			ORDER BY
 			     cliente.`idCliente` ASC,
 			     ot.`fechaProg` ASC     

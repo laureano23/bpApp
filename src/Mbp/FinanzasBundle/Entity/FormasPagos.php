@@ -64,6 +64,13 @@ class FormasPagos
     private $esChequePropio=0; 
 	
 	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="depositaEnCuenta", type="boolean")
+     */
+    private $depositaEnCuenta=0; 
+	
+	/**
 	  * @ORM\ManyToOne(targetEntity="Mbp\FinanzasBundle\Entity\ConceptosBanco")
 	  * @ORM\JoinColumn(name="ceonceptoBancoId", referencedColumnName="id", nullable=true)
 	  */
@@ -247,5 +254,29 @@ class FormasPagos
     public function getConceptoBancoId()
     {
         return $this->conceptoBancoId;
+    }
+
+    /**
+     * Set depositaEnCuenta
+     *
+     * @param boolean $depositaEnCuenta
+     *
+     * @return FormasPagos
+     */
+    public function setDepositaEnCuenta($depositaEnCuenta)
+    {
+        $this->depositaEnCuenta = $depositaEnCuenta;
+
+        return $this;
+    }
+
+    /**
+     * Get depositaEnCuenta
+     *
+     * @return boolean
+     */
+    public function getDepositaEnCuenta()
+    {
+        return $this->depositaEnCuenta;
     }
 }

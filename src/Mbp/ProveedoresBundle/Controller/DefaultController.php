@@ -178,6 +178,7 @@ class DefaultController extends Controller
 			$data->retencionIVA21 === "on" ? $formaPago->setRetencionIVA21(TRUE) : $formaPago->setRetencionIVA21(FALSE);
 			$data->chequeTerceros === "on" ? $formaPago->setChequeTerceros(TRUE) : $formaPago->setChequeTerceros(FALSE);
 			$data->esChequePropio === "on" ? $formaPago->setEsChequePropio(TRUE) : $formaPago->setEsChequePropio(FALSE);
+			$data->depositaEnCuenta === "on" ? $formaPago->setDepositaEnCuenta(TRUE) : $formaPago->setDepositaEnCuenta(FALSE);
 			
 			if(!empty($data->conceptoMov)){
 				$repoConceptosBanco = $em->getRepository('MbpFinanzasBundle:ConceptosBanco');

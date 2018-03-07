@@ -21,7 +21,7 @@ class CobranzasController extends Controller
 		$em = $this->getDoctrine()->getEntityManager();		
 		$repo = $em->getRepository('MbpFinanzasBundle:FormasPagos');
 		$resu = $repo->createQueryBuilder('t')
-			->select('t.id, t.descripcion, t.inactivo, t.retencionIIBB, t.retencionIVA21, t.chequeTerceros, t.esChequePropio, cb.concepto, cb.id as conceptoMov')
+			->select('t.id, t.descripcion, t.inactivo, t.retencionIIBB, t.retencionIVA21, t.chequeTerceros, t.esChequePropio, t.depositaEnCuenta, cb.concepto, cb.id as conceptoMov')
 			->leftJoin('t.conceptoBancoId', 'cb')
 			->where('t.inactivo = 0')
 			->getQuery()

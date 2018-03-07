@@ -249,6 +249,7 @@ class VentasController extends Controller
 			$regfe['FchServDesde']=null;	// solo concepto 2 o 3
 			$regfe['FchServHasta']=null;	// solo concepto 2 o 3
 			$regfe['FchVtoPago']=null;		// solo concepto 2 o 3
+			$regfe['MonCotiz'] = 1; //solo si la operacion es en otra moneda diferente al peso ARS
 			
 			//evaluamos moneda a facturar
 			if($decodefcData->moneda == 0){
@@ -257,8 +258,9 @@ class VentasController extends Controller
 				$regfe['MonId']='DOL';
 				
 				//cotizacion de moneda
-				$coti = $faele->FEParamGetCotizacion('DOL');
-				$regfe['MonCotiz'] = $coti->FEParamGetCotizacionResult->ResultGet->MonCotiz;
+				//$coti = $faele->FEParamGetCotizacion('DOL');
+				//$regfe['MonCotiz'] = $coti->FEParamGetCotizacionResult->ResultGet->MonCotiz;
+				$regfe['MonCotiz'] = $decodefcData->tipoCambio;
 			}
 			
 			//$regfe['MonCotiz']=1;			// Cotizacion moneda. Solo exportacion
@@ -319,7 +321,6 @@ class VentasController extends Controller
 			return $response;
 
 		}catch(\Exception $e){
-			throw $e;
 			$response->setContent(json_encode(array("success"=>false, "msg"=>$e->getMessage())));
 			return $response;
 		}

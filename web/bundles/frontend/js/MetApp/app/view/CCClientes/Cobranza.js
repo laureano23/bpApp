@@ -161,10 +161,13 @@ Ext.define('MetApp.view.CCClientes.Cobranza' ,{
 									store: 'MetApp.store.Bancos.CuentasBancoStore',
 									displayField: 'cuenta',						
 									fieldLabel: 'Cuenta',
+									readOnly: true,
+									disabledCls: 'myDisabledCls',
 									itemId: 'cuenta',
+									labelWidth: 70,
 									valueField: 'id',
 									allowBlank: true,
-									forceSelection: true,
+									forceSelection: false,
 									width: 400
 								},
 							]

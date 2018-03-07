@@ -39,7 +39,16 @@ Ext.define('MetApp.view.Reportes.ReporteHistoricoMovBancarios', {
 											xtype: 'datefield',
 											fieldLabel: 'Fecha',
 											itemId: 'fecha1',
-											name: 'fecha1'
+											name: 'fecha1',
+											listeners: {
+												blur: {
+													fn: function(txt){
+														if(txt.getValue() == null){
+															txt.setValue(new Date('01/01/2000'));
+														}
+													}, 
+												}	
+											},
 										},
 										{
 											xtype: 'combobox',
@@ -50,7 +59,7 @@ Ext.define('MetApp.view.Reportes.ReporteHistoricoMovBancarios', {
 											displayField: 'concepto',
 											valueField: 'id',
 											forceSelection: true,
-											width: 350
+											width: 350,
 										},
 										{
 											xtype: 'combobox',
@@ -72,7 +81,16 @@ Ext.define('MetApp.view.Reportes.ReporteHistoricoMovBancarios', {
 											xtype: 'datefield',
 											fieldLabel: 'Fecha',
 											itemId: 'fecha2',
-											name: 'fecha2'
+											name: 'fecha2',
+											listeners: {
+												blur: {
+													fn: function(txt){
+														if(txt.getValue() == null){
+															txt.setValue(new Date('01/01/2030'));
+														}
+													}, 
+												}	
+											},
 										},
 										{
 											xtype: 'combobox',

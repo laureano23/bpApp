@@ -43,22 +43,24 @@ Ext.define('MetApp.controller.Produccion.Programacion.ProgramacionController', {
 				click: this.EliminarOT
 			},
 			'programacion grid[itemId=gridMisPedidos]': {
-				gridcellchanging: this.CambiarFechaEntrega
+				edit: this.CambiarFechaEntrega
 			},
 								
 		});
 	},	
 	
 	CambiarFechaEntrega: function(field, row){
-		var selection = field.up('grid').getSelectionModel().getSelection()[0];
-		var date = Ext.Date.format(field.getValue(), 'd/m/Y');
+		console.log(field);
+		console.log(row);
+		var date = Ext.Date.format(row.record.data.programado, 'd/m/Y');
 		console.log(date);
 		Ext.Ajax.request({
 			url: Routing.generate('mbp_produccion_cambiarFechaEntrega'),
 			
 			params: {
 				fecha: date,
-				ot: selection.data.otNum
+				cantidad: row.record.data.totalOt,
+				ot: row.record.data.otNum
 			}
 		})
 	},
@@ -249,8 +251,8 @@ Ext.define('MetApp.controller.Produccion.Programacion.ProgramacionController', {
 		var store = grid.getStore();
 		var selection = store.getAt(rowIndex);
 		var win = grid.up('window');
-		//var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-		//myMask.show();
+		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
+		myMask.show();
 				
 		Ext.Ajax.request({
 			url: Routing.generate('mbp_produccion_validarAnulacionOT'),
@@ -302,7 +304,7 @@ Ext.define('MetApp.controller.Produccion.Programacion.ProgramacionController', {
 										    		});
 										    		
 										    		store.remove(selection);
-										    		//myMask.hide();
+										    		myMask.hide();
 												},
 												
 												failure: function(resp){
@@ -313,9 +315,7 @@ Ext.define('MetApp.controller.Produccion.Programacion.ProgramacionController', {
 										}
 				    				});
 		    					}, 100);
-		    					
 		    				}
-				    		
 		    			}
 		    		});	
 				}

@@ -83,6 +83,14 @@ Ext.define('MetApp.view.Proveedores.FormasPagoView',{
 											labelWidth: 120,
 											uncheckedValue: 0
 										},
+										{
+											xtype: 'checkbox',
+											name: 'depositaEnCuenta',
+											itemId: 'depositaEnCuenta',
+											fieldLabel: 'Deposita en cuenta',
+											labelWidth: 120,
+											uncheckedValue: 0
+										},
 									]
 								},
 								{

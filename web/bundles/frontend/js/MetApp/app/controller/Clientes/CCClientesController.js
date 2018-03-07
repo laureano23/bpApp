@@ -91,8 +91,23 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			},
 			'cobranza button[itemId=imputar]': {
 				click: this.ImputarFacturas
+			},
+			'cobranza combobox[itemId=formaPago]': {
+				select: this.SetReadOnlyCuenta
 			}
 		});
+	},
+	
+	SetReadOnlyCuenta: function(combo, rec){
+		var win = combo.up('window');
+		var cuenta = win.queryById('cuenta');
+		if(rec[0].data.depositaEnCuenta == 1){
+			cuenta.setReadOnly(false);
+			cuenta.allowBlank = false;
+		}else{
+			cuenta.setReadOnly(true);
+			cuenta.allowBlank = true;
+		}
 	},
 		
 	AddCCClientesTb: function(btn){
@@ -446,7 +461,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var ccView = this.getCCClientes();
 
 		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-		//myMask.show();
+		myMask.show();
 		
 		if(store.data.items.length == 0){
 			Ext.Msg.show({
@@ -472,50 +487,102 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 	        arrayRecords.push(rec.getData());		    
 		});
 		
+		var comboMoneda = win.queryById('moneda');
+		var moneda = comboMoneda.getValue();
 		valuesDatosFc.idCliente = ccView.queryById('id').getValue();
-				
-		Ext.Ajax.request({
-			url: Routing.generate('mbp_CCClientes_guardarFc'),
-			
-			params: {
-				data: Ext.JSON.encode(arrayRecords),
-				fcData: Ext.JSON.encode(valuesDatosFc),	
-			},
-			
-			
-			success: function(resp){
-				console.log(resp);
-				var decodeResp = Ext.JSON.decode(resp.responseText);
-				if(decodeResp.success == true){
-					store.removeAll();
-					var grid = ccView.down('grid');
-					var storeCC = grid.getStore();
-					storeCC.load({
-						callback: function(){
-							var lastRecord = storeCC.count() - 1;	
-							console.log(lastRecord);						
-							grid.getSelectionModel().select(lastRecord);
-							win.close();
-							var btnCC = ccView.queryById('nuevaFc');
-							me.DetalleComprobante(btnCC);
-						}
-					});
-					
+		
+		if(moneda == 1){
+			Ext.Msg.prompt('Tipo de cambio', 'Ingrese tipo de cambio', function(btn, value){
+				if(btn == 'ok'){
+					valuesDatosFc.tipoCambio = value;
+				}else{ 
+					myMask.hide();
+					return; 
 				}
-				myMask.hide();
-			},
-			
-			failure: function(resp){
-				var decodeResp = Ext.JSON.decode(resp.responseText);
-				myMask.hide();
-				Ext.Msg.show({
-				    title:'Atencion',
-				    msg: 'Codigo: '+decodeResp.msg.code+'<br/>Error: '+decodeResp.msg.msg,
-				    buttons: Ext.Msg.OK,
-				    icon: Ext.Msg.INFO
+				
+				Ext.Ajax.request({
+					url: Routing.generate('mbp_CCClientes_guardarFc'),
+					
+					params: {
+						data: Ext.JSON.encode(arrayRecords),
+						fcData: Ext.JSON.encode(valuesDatosFc),	
+					},
+					
+					
+					success: function(resp){
+						var decodeResp = Ext.JSON.decode(resp.responseText);
+						if(decodeResp.success == true){
+							store.removeAll();
+							var grid = ccView.down('grid');
+							var storeCC = grid.getStore();
+							storeCC.load({
+								callback: function(){
+									var lastRecord = storeCC.count() - 1;						
+									grid.getSelectionModel().select(lastRecord);
+									win.close();
+									var btnCC = ccView.queryById('nuevaFc');
+									me.DetalleComprobante(btnCC);
+								}
+							});
+							
+						}
+						myMask.hide();
+					},
+					
+					failure: function(resp){
+						var decodeResp = Ext.JSON.decode(resp.responseText);
+						myMask.hide();
+						Ext.Msg.show({
+						    title:'Atencion',
+						    msg: 'Codigo: '+decodeResp.msg.code+'<br/>Error: '+decodeResp.msg.msg,
+						    buttons: Ext.Msg.OK,
+						    icon: Ext.Msg.INFO
+						});
+					}
 				});
-			}
-		});
+			})
+		}else{
+			Ext.Ajax.request({
+				url: Routing.generate('mbp_CCClientes_guardarFc'),
+				
+				params: {
+					data: Ext.JSON.encode(arrayRecords),
+					fcData: Ext.JSON.encode(valuesDatosFc),	
+				},
+				
+				
+				success: function(resp){
+					var decodeResp = Ext.JSON.decode(resp.responseText);
+					if(decodeResp.success == true){
+						store.removeAll();
+						var grid = ccView.down('grid');
+						var storeCC = grid.getStore();
+						storeCC.load({
+							callback: function(){
+								var lastRecord = storeCC.count() - 1;						
+								grid.getSelectionModel().select(lastRecord);
+								win.close();
+								var btnCC = ccView.queryById('nuevaFc');
+								me.DetalleComprobante(btnCC);
+							}
+						});
+						
+					}
+					myMask.hide();
+				},
+				
+				failure: function(resp){
+					var decodeResp = Ext.JSON.decode(resp.responseText);
+					myMask.hide();
+					Ext.Msg.show({
+					    title:'Atencion',
+					    msg: 'Codigo: '+decodeResp.msg.code+'<br/>Error: '+decodeResp.msg.msg,
+					    buttons: Ext.Msg.OK,
+					    icon: Ext.Msg.INFO
+					});
+				}
+			});
+		}
 	},
 	
 	RemitosPendientes: function(btn){

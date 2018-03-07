@@ -165,6 +165,9 @@ Ext.define('MetApp.view.Produccion.Programacion.Programacion',{
 									header: 'Cantidad',
 									dataIndex: 'totalOt',
 									width: 75,
+									editor: {
+						                xtype: 'numberfield',
+						            },
 								},
 								{
 									header: 'Fecha de entrega',
