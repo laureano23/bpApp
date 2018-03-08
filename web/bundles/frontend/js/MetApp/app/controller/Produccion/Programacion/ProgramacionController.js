@@ -365,8 +365,8 @@ Ext.define('MetApp.controller.Produccion.Programacion.ProgramacionController', {
 										}
 				    				});
 		    					}, 100);
-		    				}
-		    			}	
+		    				}else{ myMask.hide(); }	
+		    			}
 		    		})
 				}
 			},
