@@ -1,7 +1,7 @@
 Ext.define('MetApp.view.Bancos.FormBancosView' ,{
 	extend: 'Ext.window.Window',
-	height: 520,
-	width: 810,
+	height: 535,
+	width: 850,
 	modal: true,
 	autoShow: true,
 	alias: 'widget.FormBancosView',
@@ -108,35 +108,48 @@ Ext.define('MetApp.view.Bancos.FormBancosView' ,{
 							] 
 						},
 						{
-							xtype: 'fieldset',
-							title: 'Cuentas',
-							defaultType: 'textfield',
-        					layout: 'hbox',
-        					defaults: {
-        						margin: '0 0 5 0',
-        						readOnly: true,
-        					},
+							xtype: 'form',
+							border: false,
+							itemId: 'formCuentas',
 							items: [
 								{
-									fieldLabel: 'Cuenta tipo',
-									name: 'cuentaTipoNuevo',
-									labelWidth:80,
+									xtype: 'fieldset',
+									title: 'Cuentas',
+									defaultType: 'textfield',
+		        					layout: 'hbox',
+		        					defaults: {
+		        						margin: '0 0 5 5',
+		        						readOnly: true,      						
+		        					},
+									items: [
+										{
+											fieldLabel: 'Cuenta tipo',
+											name: 'cuentaTipo',
+											labelWidth:80,
+										},
+										{
+											fieldLabel: 'Cuenta N°',
+											name: 'cuentaNro',
+											labelWidth:80,
+										},
+										{
+											fieldLabel: 'CBU',
+											name: 'cbu',
+											labelWidth:40,
+										},
+										{
+											xtype: 'button',
+											iconCls: 'add2',
+											itemId: 'nuevaCuenta'
+										},										
+									]
 								},
-								{
-									fieldLabel: 'Cuenta N°',
-									name: 'cuentaNumeroNuevo',
-									labelWidth:80,
-								},
-								{
-									fieldLabel: 'CBU',
-									name: 'cbuNuevo',
-									labelWidth:40,
-								}
 							]
-						},
+						},								
 						{
 							xtype: 'grid',
-							width: 700,
+							width: 700,							
+        					height: 120,
 							store: {
 								fields: ['cuentaNro', 'cuentaTipo', 'cbu'],
 								proxy: {
@@ -147,6 +160,12 @@ Ext.define('MetApp.view.Bancos.FormBancosView' ,{
 								{ text: 'Tipo', dataIndex: 'cuentaTipo', flex: 1 },
 								{ text: 'N°', dataIndex: 'cuentaNro', flex: 1 },
 								{ text: 'CBU', dataIndex: 'cbu', flex: 1 },
+								{ 
+									header: 'Eliminar',
+									itemId: 'eliminar',
+									xtype: 'actioncolumn',
+									iconCls: 'delete'
+								},
 							]
 						},
 						{

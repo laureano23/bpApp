@@ -154,7 +154,25 @@ Ext.define('MetApp.view.Produccion.Programacion.Programacion',{
 				        		enableTextSelection: true,
 					    	},			        	
 				        	columns: [
-								{text: 'OT', hidden: false, dataIndex: 'otNum', width: 50},		
+								{text: 'OT', hidden: false, dataIndex: 'otNum', width: 50},	
+								{ 
+									header: 'Ver',
+									itemId: 'otImprimir',
+									xtype: 'actioncolumn',
+									items: [
+										{ iconCls: 'reportes2' }										
+									],
+									flex: 1
+								},
+								{ 
+									header: 'Borrar',
+									itemId: 'otEliminar',
+									xtype: 'actioncolumn',
+									items: [
+										{ iconCls: 'delete' }										
+									],
+									flex: 1
+								},	
 								{text: 'Codigo', hidden: false, dataIndex: 'codigo', autoSizeColumn: true },
 								{ 
 									header: 'Descripcion',
@@ -214,24 +232,6 @@ Ext.define('MetApp.view.Produccion.Programacion.Programacion',{
 									header: 'Sector receptor',
 									width: 150,
 									dataIndex: 'sectorReceptor',
-								},
-								{ 
-									header: 'OT',
-									itemId: 'otImprimir',
-									xtype: 'actioncolumn',
-									items: [
-										{ iconCls: 'reportes2' }										
-									],
-									flex: 1
-								},
-								{ 
-									header: 'Borrar',
-									itemId: 'otEliminar',
-									xtype: 'actioncolumn',
-									items: [
-										{ iconCls: 'delete' }										
-									],
-									flex: 1
 								},
 							]
 						},

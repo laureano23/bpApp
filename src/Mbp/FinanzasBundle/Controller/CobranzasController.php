@@ -72,7 +72,7 @@ class CobranzasController extends Controller
 					$cuenta = $repoCuentas->find($data->cuenta);
 					
 					if(!$cuenta) throw new \Exception("Debe asignar una cuenta bancaria al concepto ".$formaPago->getDescripcion(), 1);
-					
+					$detalleCob->setCuentaId($cuenta);
 				}
 				
 				$detalleCob->setImporte($data->importe);

@@ -94,6 +94,38 @@ class BancosController extends Controller
 	} 
 	
 	/**
+     * @Route("/bancos/EliminarCuenta", name="mbp_bancos_EliminarCuenta", options={"expose"=true})
+     */
+    public function eliminarCuenta()
+	{
+		
+		$idBanco = $this->getRequest()->request->get('idBanco');
+		$em = $this->getDoctrine()->getEntityManager();		
+		$repo = $em->getRepository('MbpFinanzasBundle:Bancos');
+		
+		try{
+			$res = $repo->listarDatosBanco($idBanco);
+			
+			$response->setContent(
+				json_encode(array(
+					'success' => true,
+					'data' => $res
+				))
+			);
+			
+			return $response;
+		}catch(\Exception $e){
+			$response->setContent(
+				json_encode(array(
+					'success' => false
+				))
+			);
+			
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	/**
      * @Route("/bancos/NuevoBanco", name="mbp_bancos_NuevoBanco", options={"expose"=true})
      */
     public function NuevoBanco()
@@ -105,7 +137,9 @@ class BancosController extends Controller
 		
 		try{
 			$data = $this->getRequest()->request->get('data');
+			$cuentas = $this->getRequest()->request->get('cuentas');
 			$data = json_decode($data);
+			$cuentas = json_decode($cuentas);
 			
 			$banco = $repo->find($data->idBanco);
 			
@@ -126,11 +160,11 @@ class BancosController extends Controller
 			$banco->setEmailContacto($data->emailContacto);
 			
 			$cuenta = 0;
-			if(!empty($data->cuentaNumeroNuevo) && !empty($data->cuentaTipoNuevo) && !empty($data->cbuNuevo)){
+			foreach ($cuentas as $c) {
 				$cuenta = new CuentasBancarias;
-				$cuenta->setTipo($data->cuentaTipoNuevo);
-				$cuenta->setNumero($data->cuentaNumeroNuevo);
-				$cuenta->setCbu($data->cbuNuevo); 
+				$cuenta->setTipo($c->cuentaTipo);
+				$cuenta->setNumero($c->cuentaNro);
+				$cuenta->setCbu($c->cbu); 
 				$cuenta->setBanco($banco);
 				
 				$banco->addCuentasBancaria($cuenta);

@@ -70,6 +70,12 @@ class Pago
 	 * */
 	private $cuentaId;
 	
+	/**
+	 * @ORM\OneToOne(targetEntity="Mbp\FinanzasBundle\Entity\DetalleMovimientosBancos", cascade={"remove"})
+	 * @ORM\JoinColumn(name="movBancoId", referencedColumnName="id", nullable=true)
+	 * */
+	private $movBancoId;
+	
 	
 
 
@@ -274,5 +280,29 @@ class Pago
     public function getCuentaId()
     {
         return $this->cuentaId;
+    }
+
+    /**
+     * Set movBancoId
+     *
+     * @param \Mbp\FinanzasBundle\Entity\DetalleMovimientosBancos $movBancoId
+     *
+     * @return Pago
+     */
+    public function setMovBancoId(\Mbp\FinanzasBundle\Entity\DetalleMovimientosBancos $movBancoId = null)
+    {
+        $this->movBancoId = $movBancoId;
+
+        return $this;
+    }
+
+    /**
+     * Get movBancoId
+     *
+     * @return \Mbp\FinanzasBundle\Entity\DetalleMovimientosBancos
+     */
+    public function getMovBancoId()
+    {
+        return $this->movBancoId;
     }
 }

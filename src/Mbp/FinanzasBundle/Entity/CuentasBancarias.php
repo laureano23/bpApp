@@ -48,6 +48,13 @@ class CuentasBancarias
      * @ORM\JoinColumn(name="bancoId", referencedColumnName="id", nullable=false)
      */
     private $banco;
+	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="inactivo", type="boolean")
+     */
+    private $inactivo=0;
 
 
     /**

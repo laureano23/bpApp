@@ -438,7 +438,9 @@ class OtController extends Controller
 				
 			}
 			
-			$this->otRecursiva($resp, $arrayResp);
+			$otParam = $resp[0]->getOt();
+			$this->otRecursiva($resp, $arrayResp, $otParam);
+			$this->otRecursivaInversa($resp, $arrayResp, $otParam);
 			
 			return $response->setContent(json_encode(
 				array('success' => true, 'data' => $arrayResp, 'datosOt' => $datosOt)
@@ -453,24 +455,50 @@ class OtController extends Controller
 		}
 	}
 	
-	private function otRecursiva($ot, &$arrayResp){
+	private function otRecursiva($ot, &$arrayResp, &$otParam){
+		
+		if(empty($ot)) return;		
+		foreach ($ot as $orden) {			
+			
+			if($orden->getOt() != $otParam){
+				$raw['otNum'] = $orden->getOt();
+				$raw['codigo'] = $orden->getIdCodigo()->getCodigo();
+				$raw['descripcion'] = $orden->getIdCodigo()->getDescripcion();
+				$raw['totalOt'] = $orden->getCantidad();
+				$raw['programado'] = $orden->getFechaProg()->format('d/m/Y');
+				$raw['aprobado'] = $orden->getAprobado();
+				$raw['rechazado'] = $orden->getRechazado();
+				$raw['estado'] = $orden->getEstado();
+				$raw['sectorEmisor'] = $orden->getSectorEmisor()->getDescripcion();
+				array_push($arrayResp, $raw);
+			}	
+			
+			$this->otRecursiva($orden->getOrdenesConmigo(), $arrayResp, $otParam);		
+		
+		}
+	}
+
+	private function otRecursivaInversa($ot, &$arrayResp, &$otParam){
 		
 		if(empty($ot)) return;
 		foreach ($ot as $orden) {			
 			
-			$raw['otNum'] = $orden->getOt();
-			$raw['codigo'] = $orden->getIdCodigo()->getCodigo();
-			$raw['descripcion'] = $orden->getIdCodigo()->getDescripcion();
-			$raw['totalOt'] = $orden->getCantidad();
-			$raw['programado'] = $orden->getFechaProg()->format('d/m/Y');
-			$raw['aprobado'] = $orden->getAprobado();
-			$raw['rechazado'] = $orden->getRechazado();
-			$raw['estado'] = $orden->getEstado();
-			$raw['sectorEmisor'] = $orden->getSectorEmisor()->getDescripcion();
-			array_push($arrayResp, $raw);
+			if($orden->getOt() != $otParam){
+				$raw['otNum'] = $orden->getOt();
+				$raw['codigo'] = $orden->getIdCodigo()->getCodigo();
+				$raw['descripcion'] = $orden->getIdCodigo()->getDescripcion();
+				$raw['totalOt'] = $orden->getCantidad();
+				$raw['programado'] = $orden->getFechaProg()->format('d/m/Y');
+				$raw['aprobado'] = $orden->getAprobado();
+				$raw['rechazado'] = $orden->getRechazado();
+				$raw['estado'] = $orden->getEstado();
+				$raw['sectorEmisor'] = $orden->getSectorEmisor()->getDescripcion();
+				array_push($arrayResp, $raw);
+			}	
 			
-			
-			$this->otRecursiva($orden->getOrdenesConmigo(), $arrayResp);	
+			//$this->otRecursiva($orden->getOrdenesConmigo(), $arrayResp);
+			$this->otRecursiva($orden->getMisOrdenes(), $arrayResp, $otParam);		
+		
 		}
 	}
 	
@@ -536,14 +564,17 @@ class OtController extends Controller
 			
 			$arrayResp = array();
 			
-			$this->otRecursiva($resp, $arrayResp);
-			
+			$otParam = $resp[0]->getOt();
+			$this->otRecursiva($resp, $arrayResp, $otParam);			
 			
 			$pusher = $this->container->get('lopi_pusher.pusher');//NOTIFICADOR
 			
-		    
-			
+			$flag = 0;
 			foreach ($arrayResp as $orden) {
+				if($flag == 0){
+					$resp[0]->setAnulada(TRUE);
+					$resp[0]->setObservaciones($resp[0]->getObservaciones()."----------MOTIVO DE ANULACIÓN: ".$obs);
+				}
 				$o = $repo->find($orden['otNum']);
 				$o->setAnulada(TRUE);
 				$o->setObservaciones($o->getObservaciones()."----------MOTIVO DE ANULACIÓN: ".$obs);
@@ -554,6 +585,7 @@ class OtController extends Controller
 				);
 				
 			    $pusher->trigger('my-channel', 'my-event', json_encode($data));
+				$flag = 1;
 			}
 			
 			
@@ -590,8 +622,8 @@ class OtController extends Controller
 			
 			$arrayResp = array();
 			
-			
-			$this->otRecursiva($resp, $arrayResp);			
+			$otParam = $resp[0]->getOt();
+			$this->otRecursiva($resp, $arrayResp, $otParam);			
 						
 			return $response->setContent(json_encode(array('success' => true, 'data' => $arrayResp)));
 		}catch(\Exception $e){

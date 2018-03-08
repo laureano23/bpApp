@@ -94,7 +94,7 @@ class VentasController extends Controller
 				$respPagos['id'] = $pagos->getId(); 
 				$respPagos['emisionCalc'] = $pagos->getEmision();//SOLO PARA ORDENAMIENTO POSTERIOR
 				$respPagos['emision'] = $pagos->getEmision()->format('d-m-Y');
-				$respPagos['concepto'] = 'PAGO N° '.$pagos->getId();
+				$respPagos['concepto'] = 'COBRANZA N° '.$pagos->getId();
 				$respPagos['vencimiento'] = $pagos->getEmision()->format('d-m-Y'); 
 				$respPagos['debe'] = '';
 				$respPagos['haber'] = $subTotalCobranza[$i];

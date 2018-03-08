@@ -315,9 +315,59 @@ Ext.define('MetApp.controller.Produccion.Programacion.ProgramacionController', {
 										}
 				    				});
 		    					}, 100);
-		    				}
+		    				}else{ myMask.hide(); }
 		    			}
 		    		});	
+				}else{
+					Ext.Msg.show({
+		    			title: 'Atención',
+		    			msg: "Desea anular la OT?",
+		    			buttons: Ext.Msg.YESNO,
+		    			icon: Ext.Msg.INFO,
+		    			fn: function(btn2){
+		    				if(btn2 == "yes"){
+		    					Ext.defer(function(){
+		    						Ext.Msg.prompt('Anular OT', 'Ingrese el motivo de anulación de la OT:', function(btn, text){
+		    						
+										if(btn == "ok"){									
+											if(text == ""){
+												Ext.Msg.show({
+													title: 'Atencion',
+													msg: 'Debe ingresar un motivo de anulación'
+												})
+												return;
+											}
+					    					Ext.Ajax.request({
+												url: Routing.generate('mbp_produccion_eliminarOT'),
+												
+												params: {
+													ot: selection.data.otNum,
+													observacion: text	
+												},
+												
+												success: function(resp){
+													Ext.Msg.show({
+										    			title: 'Info',
+										    			msg: "La OT fué eliminada correctamente",
+										    			buttons: Ext.Msg.OK,
+										    			icon: Ext.Msg.INFO
+										    		});
+										    		
+										    		store.remove(selection);
+										    		myMask.hide();
+												},
+												
+												failure: function(resp){
+													
+												}
+												
+											});
+										}
+				    				});
+		    					}, 100);
+		    				}
+		    			}	
+		    		})
 				}
 			},
 			

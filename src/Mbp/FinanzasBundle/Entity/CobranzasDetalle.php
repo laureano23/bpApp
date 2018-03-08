@@ -67,6 +67,12 @@ class CobranzasDetalle
      * @ORM\Column(name="estado", type="smallint")
      */
     private $estado=0;
+	
+	/**
+	 * @ORM\ManyToOne(targetEntity="Mbp\FinanzasBundle\Entity\CuentasBancarias")
+	 * @ORM\JoinColumn(name="cuentaId", referencedColumnName="id")
+	 * */
+	private $cuentaId;
 
 
     /**
@@ -78,6 +84,12 @@ class CobranzasDetalle
     {
         return $this->id;
     }
+	
+	/**
+	 * @ORM\OneToOne(targetEntity="Mbp\FinanzasBundle\Entity\DetalleMovimientosBancos", cascade={"remove"})
+	 * @ORM\JoinColumn(name="movBancoId", referencedColumnName="id", nullable=true)
+	 * */
+	private $movBancoId;
     
 
     /**
@@ -222,5 +234,53 @@ class CobranzasDetalle
     public function getEstado()
     {
         return $this->estado;
+    }
+	
+	/**
+     * Set cuentaId
+     *
+     * @param \Mbp\FinanzasBundle\Entity\CuentasBancarias $cuentaId
+     *
+     * @return Pago
+     */
+    public function setCuentaId(\Mbp\FinanzasBundle\Entity\CuentasBancarias $cuentaId = null)
+    {
+        $this->cuentaId = $cuentaId;
+
+        return $this;
+    }
+
+    /**
+     * Get cuentaId
+     *
+     * @return \Mbp\FinanzasBundle\Entity\CuentasBancarias
+     */
+    public function getCuentaId()
+    {
+        return $this->cuentaId;
+    }
+	
+	/**
+     * Set movBancoId
+     *
+     * @param \Mbp\FinanzasBundle\Entity\DetalleMovimientosBancos $movBancoId
+     *
+     * @return Pago
+     */
+    public function setMovBancoId(\Mbp\FinanzasBundle\Entity\DetalleMovimientosBancos $movBancoId = null)
+    {
+        $this->movBancoId = $movBancoId;
+
+        return $this;
+    }
+
+    /**
+     * Get movBancoId
+     *
+     * @return \Mbp\FinanzasBundle\Entity\DetalleMovimientosBancos
+     */
+    public function getMovBancoId()
+    {
+        return $this->movBancoId;
     }
 }

@@ -10,7 +10,9 @@ use Mbp\ProveedoresBundle\Entity\TransaccionOPFC;
 class EliminarOPListener
 {	
 	public function preRemove(LifecycleEventArgs $args)
-	{		
+	{
+		
+		//para modificar el estado de los cheques de terceros y devolverlos a cartera		
 		$ordenPago = $args->getEntity();
 		if (!$ordenPago instanceof OrdenPago) {
             return;
@@ -20,22 +22,14 @@ class EliminarOPListener
 		$repoChequeTerceros = $entityManager->getRepository('MbpFinanzasBundle:CobranzasDetalle');
 		$detalleImputados = $ordenPago->getPagoDetalleId();
 		
-		//\Doctrine\Common\Util\Debug::dump($detalleImputados);
 		foreach ($detalleImputados as $detalle) {
-			if($detalle->getIdFormaPago()->getDescripcion() == "CHEQUE DE TERCEROS"){
+			if($detalle->getIdFormaPago()->getChequeTerceros()){
 				$cheque = $repoChequeTerceros->findOneBy(
 					array('banco' => $detalle->getBanco(), 'numero' => $detalle->getNumero())
 				);
 				$cheque->setEstado(0);
 			}
 		}
-		
-		/*$repo = $entityManager->getRepository('MbpProveedoresBundle:TransaccionOPFC');
-		$entity = $repo->findByOrdenPagoImputada($ordenPago);
-		
-		for ($i=0; $i < count($entity); $i++) { 
-			$entityManager->remove($entity[$i]);			
-		}*/
 		
 		$entityManager->flush();
 	}

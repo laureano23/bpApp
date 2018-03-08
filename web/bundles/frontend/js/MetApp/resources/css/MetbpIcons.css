@@ -31,6 +31,10 @@
 		width:72px!important; height:26px!important;		 		
 	 }
 
+.add2{
+        background: url(../imagenes/add.png) 0px no-repeat !important;              
+     }
+
 .commit{
 		background: url(../imagenes/commit.png) 0px no-repeat !important;
 		width:72px!important; height:44px!important;		 		

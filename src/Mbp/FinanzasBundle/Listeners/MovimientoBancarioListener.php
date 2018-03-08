@@ -17,17 +17,14 @@ class MovimientoBancarioListener
 	{
 		$entity = $args->getEntity();
 		$entityManager = $args->getEntityManager();
-		$repoBanco = $entityManager->getRepository('MbpFinanzasBundle:CuentasBancarias');
 		$repoProveedor = $entityManager->getRepository('MbpProveedoresBundle:Proveedor');
         if ($entity instanceof OrdenPago) {
            foreach ($entity->getPagoDetalleId() as $detalle) {
 	        	if(($detalle->getIdFormaPagos()->getConceptoBancoId())){
 	        		$movBancario = new MovimientosBancos;
 					$detalleMovBrio = new DetalleMovimientosBancos;        		
-	        		
-					$banco = $repoBanco->find(1);//arreglar esto
-					
-					$movBancario->setCuentaBancaria($banco);
+	        							
+					$movBancario->setCuentaBancaria($detalle->getCuentaId());
 					$movBancario->setConceptoBancoId($detalle->getIdFormaPagos()->getConceptoBancoId());
 					$movBancario->setFechaMovimiento(new \DateTime);
 					
@@ -38,8 +35,11 @@ class MovimientoBancarioListener
 					$proveedor = $repoProveedor->find($entity->getProveedorId());
 					$detalleMovBrio->setProveedorId($proveedor);
 					
+					$detalle->setMovBancoId($detalleMovBrio);
+					
 					$movBancario->addDetallesMovimiento($detalleMovBrio);
 	        		$entityManager->persist($movBancario);
+					$entityManager->persist($detalle);
 					$entityManager->flush();
 	        	}	
 	        } 
@@ -48,16 +48,13 @@ class MovimientoBancarioListener
 	    if($entity instanceof Cobranzas){
 	    	$entity = $args->getEntity();
 			$entityManager = $args->getEntityManager();
-			$repoBanco = $entityManager->getRepository('MbpFinanzasBundle:CuentasBancarias');
 			$repoCliente = $entityManager->getRepository('MbpClientesBundle:Cliente');
 	    	foreach ($entity->getCobranzaDetalleId() as $detalle) {
 	        	if(($detalle->getFormaPagoId()->getConceptoBancoId())){
 	        		$movBancario = new MovimientosBancos;
-					$detalleMovBrio = new DetalleMovimientosBancos;        		
-	        		
-					$banco = $repoBanco->find(1);//arreglar esto
+					$detalleMovBrio = new DetalleMovimientosBancos;
 					
-					$movBancario->setCuentaBancaria($banco);
+					$movBancario->setCuentaBancaria($detalle->getCuentaId());
 					$movBancario->setConceptoBancoId($detalle->getFormaPagoId()->getConceptoBancoId());
 					$movBancario->setFechaMovimiento(new \DateTime);
 					
@@ -68,8 +65,11 @@ class MovimientoBancarioListener
 					$cliente = $repoCliente->find($entity->getClienteId());
 					$detalleMovBrio->setIdCliente($cliente);
 					
+					$detalle->setMovBancoId($detalleMovBrio);
+					
 					$movBancario->addDetallesMovimiento($detalleMovBrio);
 	        		$entityManager->persist($movBancario);
+					$entityManager->persist($detalle);
 					$entityManager->flush();
 	        	}	
 	        } 

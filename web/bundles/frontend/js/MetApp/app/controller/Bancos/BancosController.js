@@ -38,6 +38,12 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 				'FormBancosView button[itemId=btnEdit]': {
 					click: this.EditarBanco
 				},
+				'FormBancosView button[itemId=nuevaCuenta]': {
+					click: this.NuevaCuenta
+				},
+				'FormBancosView actioncolumn[itemId=eliminar]': {
+					click: this.EliminarCuenta
+				},
 				'#conceptoBancos': {
 					click: this.FormConceptoBancos
 				},
@@ -77,6 +83,34 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 		});		
 	},
 	
+	EliminarCuenta: function(grid, colIndex, rowIndex){
+		var selection = grid.getStore().getAt(rowIndex);
+		console.log(selection);
+		console.log(row);
+		
+		Ext.Ajax.request({
+			url: Routing.generate(''),
+			
+			params: Ext.JSON.encode(selection.data),
+			
+			success: function(resp){
+				
+			}
+		})
+	},
+	
+	NuevaCuenta: function(btn){
+		var win = btn.up('window');
+		var form = win.queryById('formCuentas');
+		
+		if(!form.isValid()) return;
+		
+		var values = form.getForm().getValues();
+		var store = win.down('grid').getStore();
+		store.loadRawData(values, 1);
+		form.getForm().reset();
+	},
+	
 	NewWinBancos: function(btn){
 		var win = Ext.widget('FormBancosView');
 		var store = win.queryById('banco').getStore();
@@ -109,6 +143,9 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 		var win = btn.up('window');
 		var form = win.down('form');
 		var botonera = win.queryById('botonera');
+		var store = win.down('grid').getStore();
+		
+		store.removeAll();
 		
 		form.getForm().reset();
 		form.query('field').forEach(function(field){
@@ -125,16 +162,28 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 		var form = win.down('form');
 		var botonera = win.queryById('botonera');
 		var values = form.getForm().getValues();
+		var storeCuentas = win.down('grid').getStore();
 		
-		if(!form.isValid()){
-			return;
-		}
+		
+		var cuentas = [];
+		var cuenta = { cbu: '', cuentaNro: '', cuentaTipo: '' };
+		storeCuentas.each(function(rec){
+			
+			cuenta.cbu = rec.data.cbu;
+			cuenta.cuentaNro = rec.data.cuentaNro;
+			cuenta.cuentaTipo = rec.data.cuentaTipo;
+			cuentas.push(rec.data);
+		})
+		
+		
+		if(!form.isValid()) return;
 		
 		Ext.Ajax.request({
 			url: Routing.generate('mbp_bancos_NuevoBanco'),
 			
 			params: {
-				data: Ext.JSON.encode(values)
+				data: Ext.JSON.encode(values),
+				cuentas: Ext.JSON.encode(cuentas),
 			},
 			
 			success: function(resp){
@@ -165,6 +214,9 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 		var form = win.down('form');
 		var botonera = win.queryById('botonera');		
 		var values = form.getForm().getValues();
+		var store = win.down('grid').getStore();
+		
+		store.removeAll();
 		
 		botonera.editarItem(botonera);
 		
