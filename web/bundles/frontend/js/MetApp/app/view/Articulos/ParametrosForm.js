@@ -3,7 +3,6 @@ Ext.define('MetApp.view.Articulos.ParametrosForm', {
 	alias: 'widget.ParametrosForm',
 	itemId: 'ParametrosForm',
 	width: 800,
-	height: 250,
 	layout: 'fit',
 	autoShow: true,
 	title: 'Tabla de Parámetros',
@@ -87,7 +86,29 @@ Ext.define('MetApp.view.Articulos.ParametrosForm', {
 							fieldLabel: 'Tope Percepción IIBB'
 						},
 						{
+							xtype: 'container',
+							layout: 'hbox',
+							items: [
+								{
+									xtype: 'textfield',
+									name: 'indiceCorrelativos',
+									itemId: 'topePercepcionIIBB',
+									fieldLabel: 'Indice correlativos'
+								},
+								{
+									xtype: 'label',
+									margin: '5 0 0 5',	
+									forId: 'iva',
+									text: 'Parámetro de control de calidad RG-014',
+									style: {
+										'font-weight': 'bold' 
+									}
+								},
+							]
+						},								
+						{
 							xtype: 'button',
+							margin: '0 0 5 0',
 							text: 'Guardar',
 							itemId: 'guardar',
 							name: 'guardar'

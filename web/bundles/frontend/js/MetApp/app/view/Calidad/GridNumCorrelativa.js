@@ -5,7 +5,7 @@
 	store: 'Calidad.Correlativos',
 	multiSelect: true,
 	idProperty: 'idCorrelativos',
-	height: 300,
+	height: 200,
     //width: 1240,
     plugins: {
 	    ptype: 'bufferedrenderer',

@@ -514,6 +514,7 @@ class ReportesController extends Controller
 			
 			$conn = $repo->getJdbc();
 			
+			
 						
 			$sql = "
 				SELECT
@@ -568,6 +569,79 @@ class ReportesController extends Controller
 		$response = new BinaryFileResponse($basePath);
         $response->trustXSendfileTypeHeader();
 		$filename = 'ReporteGraficoEstanqueidad.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+
+        return $response;
+   } 
+   
+   public function generateRepoRG014Action()
+   {
+   		$repo = $this->get('reporteador');		
+		$kernel = $this->get('kernel');	
+		$em = $this->getDoctrine()->getManager();
+		$repoParametros = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
+										
+		$jru = $repo->jru();
+		$ruta = $kernel->locateResource('@MbpCalidadBundle/Reportes/RG-014 Numeracion Correlativa.jrxml');		
+		
+		//Ruta de destino
+		$destino = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'RG-014 Numeracion Correlativa.pdf';
+		
+		//Parametros HashMap
+		$param = $repo->getJava('java.util.HashMap');
+		$rutaLogo = $repo->getRutaLogo($kernel);
+		$param->put('RUTA_LOGO', $rutaLogo);
+		
+		
+		try{
+			$conn = $repo->getJdbc();
+			$indice = $repoParametros->find(1);
+						
+			$sql = "
+				SELECT p.indiceCorrelativos
+				FROM ParametrosFinanzas p
+				    JOIN Indices
+				        ON p.indiceCorrelativos+100 >= Indices.id
+				LIMIT 33		
+			";
+						
+			//Exportamos el reporte
+			$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
+			
+			$indice->setIndiceCorrelativos($indice->getIndiceCorrelativos() + 33);
+			$em->persist($indice);
+			$em->flush();
+			
+			echo json_encode(
+					array(
+						'success'=> true,
+						'reporte' => $destino,		
+					)
+				);
+			
+			return new Response();		
+		}catch(JavaException $ex){
+			$trace = new Java('java.io.ByteArrayOutputStream');
+			$ex->printStackTrace(new Java('java.io.PrintStream', $trace));
+			return array(
+						'success'=> false,
+						'msg' => 'Error al generar el reporte',		
+					);
+		}	
+   }
+
+	public function showRepoRG014Action()
+   {
+   		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'RG-014 Numeracion Correlativa.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'RG-014 Numeracion Correlativa.pdf';
         $response->setContentDisposition(
             ResponseHeaderBag::DISPOSITION_INLINE,
             $filename,

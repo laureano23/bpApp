@@ -158,13 +158,6 @@ Ext.define('MetApp.view.Principal.MyViewport', {
 				text: 'RG-010 Estanqueidad',
 				menu: [
 					{
-						text: 'RG-010',
-						itemId: 'rg010Estanqueidad',
-                        listeners : {
-                            render : dragZone
-                        },					
-					},
-					{
 						text: 'Formulario',
 						itemId: 'controlEstanqueidad',
                         listeners : {
@@ -627,6 +620,30 @@ Ext.define('MetApp.view.Principal.MyViewport', {
         				listeners : {
 		                    render : dragZone,
 		                }, 
+        			}
+        		]
+        	},
+        	{
+        		text: 'Calidad',
+        		menu: [
+        			{
+        				text: 'RG',
+        				menu: [
+        					{
+        						text: 'RG-010 Control Final de Estanqueidad',
+        						itemId: 'rg010Estanqueidad',
+		        				listeners : {
+				                    render : dragZone,
+				                }, 
+        					},
+        					{
+        						text: 'RG-014 Numeración Correlativa de Radiadores',
+        						itemId: 'rg014',
+		        				listeners : {
+				                    render : dragZone,
+				                }, 
+        					}
+        				]		        				
         			}
         		]
         	}

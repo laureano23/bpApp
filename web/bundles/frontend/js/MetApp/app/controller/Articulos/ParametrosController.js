@@ -56,7 +56,7 @@ Ext.define('MetApp.controller.Articulos.ParametrosController',{
 				var jsonResp = Ext.JSON.decode(action.response.responseText);
 				
 				if(jsonResp.tipo == "validacion"){
-					form.markAsInvalid(jsonResp.errors);
+					form.markInvalid(jsonResp.errors);
 				}else{
 					Ext.Msg.show({
 						title: 'Atención',

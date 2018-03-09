@@ -85,6 +85,14 @@ class ParametrosFinanzas
 	 * )
      */
     private $topePercepcionIIBB;
+	
+	/**
+     * @var integer
+     *
+     * @ORM\Column(name="indiceCorrelativos", type="integer", nullable=false, options={"unsigned"=true})
+	 * @Assert\NotNull()
+     */
+    private $indiceCorrelativos;
 
     /**
      * Get id
@@ -262,5 +270,29 @@ class ParametrosFinanzas
     public function getTopePercepcionIIBB()
     {
         return $this->topePercepcionIIBB;
+    }
+
+    /**
+     * Set indiceCorrelativos
+     *
+     * @param integer $indiceCorrelativos
+     *
+     * @return ParametrosFinanzas
+     */
+    public function setIndiceCorrelativos($indiceCorrelativos)
+    {
+        $this->indiceCorrelativos = $indiceCorrelativos;
+
+        return $this;
+    }
+
+    /**
+     * Get indiceCorrelativos
+     *
+     * @return integer
+     */
+    public function getIndiceCorrelativos()
+    {
+        return $this->indiceCorrelativos;
     }
 }

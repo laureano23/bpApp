@@ -117,3 +117,15 @@ mbp_calidad_showRepoAcumuladoOpe:
     defaults: { _controller: MbpCalidadBundle:Reportes:showRepoAcumuladoOpe }
     options:
        expose: true
+
+mbp_calidad_generateRepoRG014:
+    path:     /generateRepoRG014
+    defaults: { _controller: MbpCalidadBundle:Reportes:generateRepoRG014 }
+    options:
+       expose: true
+
+mbp_calidad_showRepoRG014:
+    path:     /showRepoRG014
+    defaults: { _controller: MbpCalidadBundle:Reportes:showRepoRG014 }
+    options:
+       expose: true

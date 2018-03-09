@@ -31,6 +31,7 @@ class ParametrosController extends Controller
 			$res->setRemitoNum($req->request->get('remitoNum'));
 			$res->setTopeRetencionIIBB($req->request->get('topeRetencionIIBB'));
 			$res->setTopePercepcionIIBB($req->request->get('topePercepcionIIBB'));
+			$res->setIndiceCorrelativos($req->request->get('indiceCorrelativos'));
 			
 			$validador = $this->get('validator');
 			$errors = $validador->validate($res);
@@ -67,7 +68,7 @@ class ParametrosController extends Controller
 		
 		try{
 			$qb = $repo->createQueryBuilder('p')
-				->select('p.iva, p.dolarOficial, p.remitoNum, p.topeRetencionIIBB, p.topePercepcionIIBB, prov.id as provincia')
+				->select('p.iva, p.dolarOficial, p.remitoNum, p.topeRetencionIIBB, p.topePercepcionIIBB, prov.id as provincia, p.indiceCorrelativos')
 				->join('p.provincia', 'prov')
 				->getQuery()
 				->getArrayResult();	

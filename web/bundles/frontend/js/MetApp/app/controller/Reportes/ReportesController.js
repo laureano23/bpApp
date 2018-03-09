@@ -67,7 +67,22 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 			'ReporteHistoricoMov button[itemId=printDateReport]': {
 				click: this.PrintHistoricoMovReporte
 			},
+			'viewport menuitem[itemId=rg014]': {
+				click: this.ReporteRG014
+			},
 		});
+	},
+	
+	ReporteRG014: function(btn){
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_calidad_generateRepoRG014'),
+			
+			success: function(resp){
+				var ruta = Routing.generate('mbp_calidad_showRepoRG014');
+						
+				window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+			}
+		})
 	},
 	
 	PrintHistoricoMovReporte: function(btn){

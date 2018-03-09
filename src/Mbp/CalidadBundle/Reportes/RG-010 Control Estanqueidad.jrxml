@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RG-010 Control Estanqueidad" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="faabb94c-b32d-4f38-913c-e824ee7dd96c">
-	<property name="ireport.zoom" value="1.7715610000000022"/>
-	<property name="ireport.x" value="348"/>
+	<property name="ireport.zoom" value="1.2100000000000013"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#1E90FF">
@@ -77,7 +77,7 @@
 					</textElement>
 					<text><![CDATA[CONTROL FINAL DE ESTANQUEIDAD DE ENFRIADORES]]></text>
 				</staticText>
-				<image scaleImage="FillFrame">
+				<image scaleImage="FillFrame" onErrorType="Blank">
 					<reportElement x="0" y="0" width="101" height="49" uuid="c8e2b17d-450c-40eb-8888-be98dbcf8c63"/>
 					<imageExpression><![CDATA["logo.jpg"]]></imageExpression>
 				</image>

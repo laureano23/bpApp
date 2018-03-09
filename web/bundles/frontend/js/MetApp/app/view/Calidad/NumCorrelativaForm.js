@@ -2,7 +2,7 @@ Ext.define('MetApp.view.Calidad.NumCorrelativaForm',{
 	extend: 'Ext.window.Window',
 	alias: 'widget.correlativoForm',
 	id: 'correlativoForm',
-	height: 600,
+	height: 500,
 	width: 1000,
 	autoShow: true,
 	title: 'Numeracion correlativa',
@@ -10,6 +10,9 @@ Ext.define('MetApp.view.Calidad.NumCorrelativaForm',{
 	widget: 'correlativoForm',	
 	frame: true,
 	layout: 'border',
+	bodyStyle: {
+		'background-color': 'white'
+	},
 	
 	initComponent: function(){
 		var me = this;		
@@ -22,8 +25,7 @@ Ext.define('MetApp.view.Calidad.NumCorrelativaForm',{
 					xtype: 'form',
 					border: false,
 					region: 'north',
-					layout: 'column',			
-					frame: true,							
+					layout: 'column',						
 					bodyPadding: 10,					
 					fieldDefaults: {						
 						msgTarget: 'side',
@@ -131,6 +133,9 @@ Ext.define('MetApp.view.Calidad.NumCorrelativaForm',{
 					xtype: 'container',
 					height: 20,
 					region: 'center',
+					bodyStyle: {
+						'background-color': 'white'
+					},
 					layout: 'hbox',
 					items:[
 						botonera
