@@ -36,6 +36,8 @@ class BancosRepository extends \Doctrine\ORM\EntityRepository
 				c.cbu')
 			->leftJoin('b.cuentasBancarias', 'c')
 			->where('b.id = :idBanco')
+			->andWhere('c.inactivo = 0')
+			->andWhere('b.inactivo = 0')
 			->setParameter('idBanco', $idBanco)
 			->getQuery()
 			->getArrayResult();

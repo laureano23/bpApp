@@ -871,15 +871,19 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.controller.Articulos.FamiliaController": [],
   "MetApp.controller.Articulos.FormulasController": [],
   "MetApp.controller.Articulos.ListaDePreciosController": [],
+  "MetApp.controller.Articulos.ParametrosController": [],
   "MetApp.controller.Articulos.RemitosController": [],
   "MetApp.controller.Articulos.StockController": [],
   "MetApp.controller.Articulos.SubFamiliaController": [],
   "MetApp.controller.Bancos.BancosController": [],
+  "MetApp.controller.Bancos.ReportesController": [],
   "MetApp.controller.Calidad.CalidadController": [],
   "MetApp.controller.Calidad.CalidadReportesController": [],
   "MetApp.controller.Clientes.CCClientesController": [],
   "MetApp.controller.Clientes.ClientesController": [],
+  "MetApp.controller.Clientes.TransportesController": [],
   "MetApp.controller.Compras.OrdenDeCompraController": [],
+  "MetApp.controller.Compras.PedidosInternosController": [],
   "MetApp.controller.Compras.ReportesCompraController": [],
   "MetApp.controller.Produccion.CalculoRadiadores.CalculoController": [],
   "MetApp.controller.Produccion.CalculoRadiadores.CalculoSeleccionController": [],
@@ -918,10 +922,12 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.model.Articulos.RemitosModel": [],
   "MetApp.model.Articulos.SubFamilia": [],
   "MetApp.model.Bancos.ConceptosBancoModel": [],
+  "MetApp.model.Bancos.CuentasBancoModel": [],
   "MetApp.model.Bancos.MovimientosBancoModel": [],
   "MetApp.model.Calidad.Correlativos": [],
   "MetApp.model.Calidad.Estanqueidad": [],
   "MetApp.model.Clientes.ClientesModel": [],
+  "MetApp.model.Clientes.TransportesModel": [],
   "MetApp.model.Compras.OrdenCompraModel": [],
   "MetApp.model.Finanzas.BancosModel": [],
   "MetApp.model.Finanzas.CCClientesModel": [],
@@ -978,10 +984,12 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.store.Articulos.RemitosPendientesStore": [],
   "MetApp.store.Articulos.SubFamiliaStore": [],
   "MetApp.store.Bancos.ConceptosBancoStore": [],
+  "MetApp.store.Bancos.CuentasBancoStore": [],
   "MetApp.store.Bancos.MovimientosBancoStore": [],
   "MetApp.store.Calidad.Correlativos": [],
   "MetApp.store.Calidad.Estanqueidad": [],
   "MetApp.store.Clientes.Clientes": [],
+  "MetApp.store.Clientes.TransportesStore": [],
   "MetApp.store.Compras.HistoricoCompraStore": [],
   "MetApp.store.Compras.OrdenCompraStore": [],
   "MetApp.store.Finanzas.BancosStore": [],
@@ -1033,9 +1041,11 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.view.Articulos.EnfriadoresFormView": [],
   "MetApp.view.Articulos.FamiliaView": [],
   "MetApp.view.Articulos.ListaDePrecios.ReporteListaMaestra": [],
+  "MetApp.view.Articulos.ParametrosForm": [],
   "MetApp.view.Articulos.Stock.EntradaSalidaArticulos": [],
   "MetApp.view.Articulos.Stock.Remitos.ArticulosOrdenCompraView": [],
   "MetApp.view.Articulos.Stock.Remitos.RemitoClienteView": [],
+  "MetApp.view.Articulos.Stock.Remitos.RemitosListadoView": [],
   "MetApp.view.Articulos.Stock.Remitos.RemitosPendientesView": [],
   "MetApp.view.Articulos.SubFamiliaView": [],
   "MetApp.view.Articulos.WinArticuloSearch": [],
@@ -1045,6 +1055,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.view.CCClientes.CCClientes": [],
   "MetApp.view.CCClientes.Cobranza": [],
   "MetApp.view.CCClientes.Facturacion": [],
+  "MetApp.view.CCProveedores.BalanceView": [],
   "MetApp.view.CCProveedores.CCProveedores": [],
   "MetApp.view.CCProveedores.ChequeTerceros": [],
   "MetApp.view.CCProveedores.FacturaProveedor": [],
@@ -1058,8 +1069,10 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.view.Calidad.Reportes.RepoRG010-1": [],
   "MetApp.view.Clientes.FormClientes": [],
   "MetApp.view.Clientes.SearchGridClientes": [],
+  "MetApp.view.Clientes.TransportesView": [],
   "MetApp.view.Compras.HistoricoArticuloCompras": [],
   "MetApp.view.Compras.ListaOcView": [],
+  "MetApp.view.Compras.ListaPedidosInternosView": [],
   "MetApp.view.Compras.OrdenCompraView": [],
   "MetApp.view.Compras.PedidosInternosView": [],
   "MetApp.view.Compras.PendienteArticuloComprasView": [],
@@ -1080,7 +1093,9 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.view.Produccion.OrdenesTrabajo.SeguimientoOTView": [],
   "MetApp.view.Produccion.OrdenesTrabajo.VerCodigoOTView": [],
   "MetApp.view.Produccion.OrdenesTrabajo.VerOTView": [],
+  "MetApp.view.Produccion.Pedidos.ModificacionPedidosView": [],
   "MetApp.view.Produccion.Pedidos.NuevoPedidoForm": [],
+  "MetApp.view.Produccion.Pedidos.PedidosPendientesView": [],
   "MetApp.view.Produccion.Pedidos.Reportes.ReportePedidos": [],
   "MetApp.view.Produccion.Programacion.FormProgramacion": [],
   "MetApp.view.Produccion.Programacion.FormulasMo": [],
@@ -1090,6 +1105,8 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.view.Produccion.Programacion.Sectores": [],
   "MetApp.view.Produccion.Programacion.SectoresBusqueda": [],
   "MetApp.view.Produccion.RadiadoresAgua.CalculoSeleccionWin": [],
+  "MetApp.view.Produccion.Reportes.ReporteHistoricoProduccion": [],
+  "MetApp.view.Produccion.Reportes.ReporteOrdenesPorCliente": [],
   "MetApp.view.Produccion.Reportes.ReporteOrdenesPorSector": [],
   "MetApp.view.Produccion.Soldadura.ControlProduccionView": [],
   "MetApp.view.Proveedores.FormProveedores": [],
@@ -1118,7 +1135,11 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.view.RRHH.TablaReliquidacion": [],
   "MetApp.view.RRHH.TablaSindicatos": [],
   "MetApp.view.Reportes.RepoIVACompras": [],
-  "MetApp.view.Reportes.RepoIVAVentas": []
+  "MetApp.view.Reportes.RepoIVAVentas": [],
+  "MetApp.view.Reportes.ReporteArtVendidos": [],
+  "MetApp.view.Reportes.ReporteHistoricoMov": [],
+  "MetApp.view.Reportes.ReporteHistoricoMovBancarios": [],
+  "MetApp.view.Reportes.ReporteIntResarcitorios": []
 });
 Ext.ClassManager.addNameAliasMappings({
   "Ext.AbstractComponent": [],
@@ -2132,15 +2153,19 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.controller.Articulos.FamiliaController": [],
   "MetApp.controller.Articulos.FormulasController": [],
   "MetApp.controller.Articulos.ListaDePreciosController": [],
+  "MetApp.controller.Articulos.ParametrosController": [],
   "MetApp.controller.Articulos.RemitosController": [],
   "MetApp.controller.Articulos.StockController": [],
   "MetApp.controller.Articulos.SubFamiliaController": [],
   "MetApp.controller.Bancos.BancosController": [],
+  "MetApp.controller.Bancos.ReportesController": [],
   "MetApp.controller.Calidad.CalidadController": [],
   "MetApp.controller.Calidad.CalidadReportesController": [],
   "MetApp.controller.Clientes.CCClientesController": [],
   "MetApp.controller.Clientes.ClientesController": [],
+  "MetApp.controller.Clientes.TransportesController": [],
   "MetApp.controller.Compras.OrdenDeCompraController": [],
+  "MetApp.controller.Compras.PedidosInternosController": [],
   "MetApp.controller.Compras.ReportesCompraController": [],
   "MetApp.controller.Produccion.CalculoRadiadores.CalculoController": [],
   "MetApp.controller.Produccion.CalculoRadiadores.CalculoSeleccionController": [],
@@ -2179,10 +2204,12 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.model.Articulos.RemitosModel": [],
   "MetApp.model.Articulos.SubFamilia": [],
   "MetApp.model.Bancos.ConceptosBancoModel": [],
+  "MetApp.model.Bancos.CuentasBancoModel": [],
   "MetApp.model.Bancos.MovimientosBancoModel": [],
   "MetApp.model.Calidad.Correlativos": [],
   "MetApp.model.Calidad.Estanqueidad": [],
   "MetApp.model.Clientes.ClientesModel": [],
+  "MetApp.model.Clientes.TransportesModel": [],
   "MetApp.model.Compras.OrdenCompraModel": [],
   "MetApp.model.Finanzas.BancosModel": [],
   "MetApp.model.Finanzas.CCClientesModel": [],
@@ -2263,6 +2290,9 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.store.Bancos.ConceptosBancoStore": [
     "ConceptosBancoStore"
   ],
+  "MetApp.store.Bancos.CuentasBancoStore": [
+    "CuentasBancoStore"
+  ],
   "MetApp.store.Bancos.MovimientosBancoStore": [
     "store.MovimientosBancosStore"
   ],
@@ -2270,6 +2300,9 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.store.Calidad.Estanqueidad": [],
   "MetApp.store.Clientes.Clientes": [
     "clientesStore"
+  ],
+  "MetApp.store.Clientes.TransportesStore": [
+    "TrasnportesStore"
   ],
   "MetApp.store.Compras.HistoricoCompraStore": [
     "store.HistoricoCompraStore"
@@ -2424,6 +2457,9 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.view.Articulos.ListaDePrecios.ReporteListaMaestra": [
     "widget.ReporteListaMaestra"
   ],
+  "MetApp.view.Articulos.ParametrosForm": [
+    "widget.ParametrosForm"
+  ],
   "MetApp.view.Articulos.Stock.EntradaSalidaArticulos": [
     "widget.EntradaSalidaArticulos"
   ],
@@ -2432,6 +2468,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "MetApp.view.Articulos.Stock.Remitos.RemitoClienteView": [
     "widget.RemitoClienteView"
+  ],
+  "MetApp.view.Articulos.Stock.Remitos.RemitosListadoView": [
+    "widget.RemitosListadoView"
   ],
   "MetApp.view.Articulos.Stock.Remitos.RemitosPendientesView": [
     "widget.RemitosPendientesView"
@@ -2459,6 +2498,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "MetApp.view.CCClientes.Facturacion": [
     "widget.facturacion"
+  ],
+  "MetApp.view.CCProveedores.BalanceView": [
+    "widget.BalanceView"
   ],
   "MetApp.view.CCProveedores.CCProveedores": [
     "widget.CCProveedores"
@@ -2499,11 +2541,17 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.view.Clientes.SearchGridClientes": [
     "widget.clientesSearchGrid"
   ],
+  "MetApp.view.Clientes.TransportesView": [
+    "widget.TransportesView"
+  ],
   "MetApp.view.Compras.HistoricoArticuloCompras": [
     "widget.HistoricoArticuloCompras"
   ],
   "MetApp.view.Compras.ListaOcView": [
     "widget.ListaOcView"
+  ],
+  "MetApp.view.Compras.ListaPedidosInternosView": [
+    "widget.ListaPedidosInternosView"
   ],
   "MetApp.view.Compras.OrdenCompraView": [
     "widget.OrdenCompraView"
@@ -2565,8 +2613,14 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.view.Produccion.OrdenesTrabajo.VerOTView": [
     "widget.VerOTView"
   ],
+  "MetApp.view.Produccion.Pedidos.ModificacionPedidosView": [
+    "widget.ModificacionPedidosView"
+  ],
   "MetApp.view.Produccion.Pedidos.NuevoPedidoForm": [
     "widget.nuevoPedidoForm"
+  ],
+  "MetApp.view.Produccion.Pedidos.PedidosPendientesView": [
+    "widget.PedidosPendientesView"
   ],
   "MetApp.view.Produccion.Pedidos.Reportes.ReportePedidos": [
     "widget.repoPedidos"
@@ -2594,6 +2648,12 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "MetApp.view.Produccion.RadiadoresAgua.CalculoSeleccionWin": [
     "widget.calculoSeleccion"
+  ],
+  "MetApp.view.Produccion.Reportes.ReporteHistoricoProduccion": [
+    "widget.ReporteHistoricoProduccion"
+  ],
+  "MetApp.view.Produccion.Reportes.ReporteOrdenesPorCliente": [
+    "widget.ReporteOrdenesPorCliente"
   ],
   "MetApp.view.Produccion.Reportes.ReporteOrdenesPorSector": [
     "widget.ReporteOrdenesPorSector"
@@ -2681,6 +2741,18 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "MetApp.view.Reportes.RepoIVAVentas": [
     "widget.RepoIVAVentas"
+  ],
+  "MetApp.view.Reportes.ReporteArtVendidos": [
+    "widget.ReporteArtVendidos"
+  ],
+  "MetApp.view.Reportes.ReporteHistoricoMov": [
+    "widget.ReporteHistoricoMov"
+  ],
+  "MetApp.view.Reportes.ReporteHistoricoMovBancarios": [
+    "widget.ReporteHistoricoMovBancarios"
+  ],
+  "MetApp.view.Reportes.ReporteIntResarcitorios": [
+    "widget.ReporteIntResarcitorios"
   ]
 });
 Ext.setVersion("ext-locale-es", "4.2.0");

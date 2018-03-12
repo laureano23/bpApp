@@ -439,7 +439,7 @@ class OtController extends Controller
 			}
 			
 			$otParam = $resp[0]->getOt();
-			//$this->otRecursiva($resp, $arrayResp, $otParam);
+			$this->otRecursiva($resp, $arrayResp, $otParam);
 			$this->otRecursivaInversa($resp, $arrayResp, $otParam);
 			
 			return $response->setContent(json_encode(
