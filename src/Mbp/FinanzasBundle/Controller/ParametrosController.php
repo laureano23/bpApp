@@ -69,7 +69,7 @@ class ParametrosController extends Controller
 		try{
 			$qb = $repo->createQueryBuilder('p')
 				->select('p.iva, p.dolarOficial, p.remitoNum, p.topeRetencionIIBB, p.topePercepcionIIBB, prov.id as provincia, p.indiceCorrelativos')
-				->join('p.provincia', 'prov')
+				->leftjoin('p.provincia', 'prov')
 				->getQuery()
 				->getArrayResult();	
 		}catch(\Exception $e){

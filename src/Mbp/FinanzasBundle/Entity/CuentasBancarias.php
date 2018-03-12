@@ -162,4 +162,28 @@ class CuentasBancarias
     {
         return $this->banco;
     }
+	
+	/**
+     * Set inactivo
+     *
+     * @param boolean $inactivo
+     *
+     * @return Bancos
+     */
+    public function setInactivo($inactivo)
+    {
+        $this->inactivo = $inactivo;
+
+        return $this;
+    }
+
+    /**
+     * Get inactivo
+     *
+     * @return boolean
+     */
+    public function getInactivo()
+    {
+        return $this->inactivo;
+    }
 }

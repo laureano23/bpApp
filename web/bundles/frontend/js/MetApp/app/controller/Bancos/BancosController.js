@@ -86,15 +86,17 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 	EliminarCuenta: function(grid, colIndex, rowIndex){
 		var selection = grid.getStore().getAt(rowIndex);
 		console.log(selection);
-		console.log(row);
 		
 		Ext.Ajax.request({
-			url: Routing.generate(''),
+			url: Routing.generate('mbp_bancos_EliminarCuenta'),
 			
-			params: Ext.JSON.encode(selection.data),
+			params: {
+				cuentaNro: selection.data.cuentaNro
+			},
 			
 			success: function(resp){
-				
+				var store = grid.getStore();
+				store.remove(selection);
 			}
 		})
 	},

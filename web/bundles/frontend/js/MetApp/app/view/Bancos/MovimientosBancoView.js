@@ -1,6 +1,6 @@
 Ext.define('MetApp.view.Bancos.MovimientosBancoView',{
 	extend: 'Ext.window.Window',
-	width: 820,
+	width: 840,
 	modal: true,
 	layout: 'anchor',
 	alias: 'widget.MovimientosBancoView',
@@ -123,7 +123,7 @@ Ext.define('MetApp.view.Bancos.MovimientosBancoView',{
 								{ text: 'N° comprobante', dataIndex: 'numCbte' },
 								{ text: 'Banco', dataIndex: 'banco', flex: 1 },
 								{ text: 'Fecha diferida', dataIndex: 'fechaDiferida', flex: 1 },
-								{ text: 'Importe', dataIndex: 'importe', flex: 1 },
+								{ text: 'Importe', dataIndex: 'importe', flex: 1, xtype: 'numbercolumn', format: '0.00' },
 								{ text: 'Observacion', dataIndex: 'obsCbte', flex: 1 },
 								{ text: 'Cheque terceros', dataIndex: 'idChequeTerceros', flex: 1, hidden:true },
 							],
@@ -143,6 +143,7 @@ Ext.define('MetApp.view.Bancos.MovimientosBancoView',{
 								{
 									xtype: 'textfield',
 									name: 'numCbte',
+									labelWidth: 110,
 									fieldLabel: 'Comprobante N°'	
 								},
 								{
@@ -155,6 +156,7 @@ Ext.define('MetApp.view.Bancos.MovimientosBancoView',{
 									xtype: 'numberfield',
 									labelWidth: 60,
 									name: 'importe',
+									decimalSeparator: '.',
 									fieldLabel: 'Importe'
 								},
 								{

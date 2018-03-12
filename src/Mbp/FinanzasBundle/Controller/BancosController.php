@@ -99,17 +99,21 @@ class BancosController extends Controller
     public function eliminarCuenta()
 	{
 		
-		$idBanco = $this->getRequest()->request->get('idBanco');
+		$cuentaNro = $this->getRequest()->request->get('cuentaNro');
 		$em = $this->getDoctrine()->getEntityManager();		
-		$repo = $em->getRepository('MbpFinanzasBundle:Bancos');
+		$repo = $em->getRepository('MbpFinanzasBundle:CuentasBancarias');
+		$response = new Response;
 		
 		try{
-			$res = $repo->listarDatosBanco($idBanco);
+			$res = $repo->findOneByNumero($cuentaNro);
+			
+			$res->setInactivo(TRUE);
+			$em->persist($res);
+			$em->flush();
 			
 			$response->setContent(
 				json_encode(array(
 					'success' => true,
-					'data' => $res
 				))
 			);
 			
@@ -117,7 +121,8 @@ class BancosController extends Controller
 		}catch(\Exception $e){
 			$response->setContent(
 				json_encode(array(
-					'success' => false
+					'success' => false,
+					'error' => $e->getMessage()
 				))
 			);
 			
