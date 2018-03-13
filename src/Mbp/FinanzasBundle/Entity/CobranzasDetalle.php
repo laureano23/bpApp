@@ -24,7 +24,7 @@ class CobranzasDetalle
     /**
      * @var string
      *
-     * @ORM\Column(name="importe", type="decimal", precision=8, scale=4)
+     * @ORM\Column(name="importe", type="decimal", precision=10, scale=2)
      */
     private $importe;
 	

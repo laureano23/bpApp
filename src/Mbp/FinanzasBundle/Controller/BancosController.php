@@ -43,19 +43,18 @@ class BancosController extends Controller
     {
     	$em = $this->getDoctrine()->getManager();
 		$repo = $em->getRepository('MbpFinanzasBundle:Bancos');
-		$res = $repo->findAll();
 		
-		$resu = array();
 		
-		$i=0;
-		foreach ($res as $reg) {
-			$resu[$i]['id'] = $reg->getId();
-			$resu[$i]['nombre'] = $reg->getNombre();
-			$i++;
-		}
+		$qb = $repo->createQueryBuilder('b')
+			->select('')
+			->where('b.inactivo = 0')
+			->getQuery()
+			->getArrayResult();
+			
+		
 		echo json_encode(array(
 			'success' => true,
-			'items' => $resu
+			'items' => $qb
 		));
 		
         return new Response();
@@ -94,20 +93,63 @@ class BancosController extends Controller
 	} 
 	
 	/**
+     * @Route("/bancos/EliminarBanco", name="mbp_bancos_EliminarBanco", options={"expose"=true})
+     */
+    public function eliminarBanco()
+	{
+		
+		$idBanco = $this->getRequest()->request->get('idBanco');
+		$em = $this->getDoctrine()->getEntityManager();		
+		$repo = $em->getRepository('MbpFinanzasBundle:Bancos');
+		$response = new Response;
+		
+		try{
+			$res = $repo->find($idBanco);
+			
+			$res->setInactivo(true);
+			
+			foreach ($res->getCuentasBancarias() as $cuenta) {
+				$cuenta->setInactivo(TRUE);
+				$em->persist($cuenta);
+			}
+			
+			$em->persist($res);
+			$em->flush();
+			
+			$response->setContent(
+				json_encode(array(
+					'success' => true,
+				))
+			);
+			
+			return $response;
+		}catch(\Exception $e){
+			$response->setContent(
+				json_encode(array(
+					'success' => false,
+					'error' => $e->getMessage()
+				))
+			);
+			
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	/**
      * @Route("/bancos/EliminarCuenta", name="mbp_bancos_EliminarCuenta", options={"expose"=true})
      */
     public function eliminarCuenta()
 	{
 		
-		$cuentaNro = $this->getRequest()->request->get('cuentaNro');
+		$idCuenta = $this->getRequest()->request->get('idCuenta');
 		$em = $this->getDoctrine()->getEntityManager();		
 		$repo = $em->getRepository('MbpFinanzasBundle:CuentasBancarias');
 		$response = new Response;
 		
 		try{
-			$res = $repo->findOneByNumero($cuentaNro);
+			$res = $repo->find($idCuenta);
 			
-			$res->setInactivo(TRUE);
+			$res->setInactivo(true);
 			$em->persist($res);
 			$em->flush();
 			

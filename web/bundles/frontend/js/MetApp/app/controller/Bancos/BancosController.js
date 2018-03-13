@@ -44,6 +44,9 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 				'FormBancosView actioncolumn[itemId=eliminar]': {
 					click: this.EliminarCuenta
 				},
+				'FormBancosView button[itemId=btnDelete]': {
+					click: this.EliminarBanco
+				},
 				'#conceptoBancos': {
 					click: this.FormConceptoBancos
 				},
@@ -83,6 +86,37 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 		});		
 	},
 	
+	EliminarBanco: function(btn){
+		var win = btn.up('window');
+		var idBanco = win.queryById('banco').getValue();
+		
+		console.log(idBanco);
+		Ext.Msg.show({
+			title: 'Atención',
+			msg: 'Desea eliminar el banco?',
+			buttons: Ext.Msg.YESNO,
+			fn: function(resp){
+				if(resp == 'yes'){
+					Ext.Ajax.request({
+						url: Routing.generate('mbp_bancos_EliminarBanco'),
+						
+						params: {
+							idBanco: idBanco
+						},
+						
+						success: function(resp){
+							var form = win.down('form');
+							form.getForm().reset();
+							var storeBancos = win.queryById('banco').getStore();
+							storeBancos.load();
+						}
+					})
+				}
+			}
+		})
+					
+	},
+	
 	EliminarCuenta: function(grid, colIndex, rowIndex){
 		var selection = grid.getStore().getAt(rowIndex);
 		console.log(selection);
@@ -91,7 +125,7 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 			url: Routing.generate('mbp_bancos_EliminarCuenta'),
 			
 			params: {
-				cuentaNro: selection.data.cuentaNro
+				idCuenta: selection.data.idCuenta
 			},
 			
 			success: function(resp){

@@ -433,6 +433,24 @@ class OtController extends Controller
 			if(!empty($resp)){
 				$datosOt['descripcion'] = $resp[0]->getIdCodigo()->getDescripcion();
 				$datosOt['cantidad'] = $resp[0]->getCantidad();	
+				switch ($resp[0]->getEstado()) {
+					case 0:
+						$datosOt['estado'] = "No comenzada";
+						break;
+					case 1:
+						$datosOt['estado'] = "En proceso";
+						break;
+					case 2:
+						$datosOt['estado'] = "Terminada";
+						break;
+					case 2:
+						$datosOt['estado'] = "Generada";
+						break;
+					default:
+						
+						break;
+				}
+				$datosOt['fechaEntrega'] = $resp[0]->getFechaProg()->format('d/m/Y');	
 			}else{
 				throw new \Exception("No existe la OT ingresada", 1);
 				

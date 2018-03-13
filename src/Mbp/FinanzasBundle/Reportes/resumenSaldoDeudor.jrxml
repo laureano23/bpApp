@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="resumenSaldoDeudor" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e6fd67a9-ff78-4c8a-b52c-98e9126621d0">
+	<property name="ireport.zoom" value="1.3310000000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="VENCIMIENTO" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT *, SUM(Facturas_total) AS SALDO
+FROM (SELECT
+     Facturas.`id` AS Facturas_id,
+     Facturas.`vencimiento` AS Facturas_vencimiento,
+     Facturas.`clienteId` AS Facturas_clienteId,
+     Facturas.`tipo` AS Facturas_tipo,
+     Facturas.`tipoCambio` AS Facturas_tipoCambio,
+     CASE WHEN Facturas.`tipo` != 1 && Facturas.`tipo` != 2 THEN
+	Facturas.`total` * -1 ELSE
+	Facturas.`total` END AS Facturas_total,
+     cliente.`idCliente` AS cliente_idCliente,
+     cliente.`rsocial` AS cliente_rsocial
+FROM
+     `cliente` cliente INNER JOIN `Facturas` Facturas ON cliente.`idCliente` = Facturas.`clienteId`
+WHERE Facturas.`vencimiento` <= $P{VENCIMIENTO}
+UNION
+SELECT
+     Cobranzas.`id` AS Cobranzas_id,
+     Cobranzas.`fechaRecibo` AS Cobranzas_fechaRecibo,
+     Cobranzas.`clienteId` AS Cobranzas_clienteId,
+     Cobranzas.`clienteId`=NULL AS DUMMY_FC_TIPO,
+     Cobranzas.`totalCobranza`=NULL AS DUMMY_TIPO_CAMBIO,
+     Cobranzas.`totalCobranza` * -1 AS Cobranzas_totalCobranza,
+     cliente.`idCliente` AS cliente_idCliente,
+     cliente.`rsocial` AS cliente_rsocial
+FROM
+     `cliente` cliente INNER JOIN `Cobranzas` Cobranzas ON cliente.`idCliente` = Cobranzas.`clienteId`
+WHERE Cobranzas.`fechaRecibo` <= $P{VENCIMIENTO}
+) AS SUB
+GROUP BY cliente_idCliente
+ORDER BY SALDO DESC]]>
+	</queryString>
+	<field name="Facturas_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Facturas_vencimiento" class="java.sql.Date"/>
+	<field name="Facturas_clienteId" class="java.lang.Integer"/>
+	<field name="Facturas_tipo" class="java.lang.Long"/>
+	<field name="Facturas_tipoCambio" class="java.math.BigDecimal"/>
+	<field name="Facturas_total" class="java.math.BigDecimal"/>
+	<field name="cliente_idCliente" class="java.lang.Integer"/>
+	<field name="cliente_rsocial" class="java.lang.String"/>
+	<field name="SALDO" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement x="88" y="0" width="228" height="20" uuid="a7203cba-4c8a-426f-9307-591e301c0e01"/>
+				<textElement verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Resumen de saldos vencidos al]]></text>
+			</staticText>
+			<textField evaluationTime="Auto" pattern="dd/MM/yyyy">
+				<reportElement x="316" y="0" width="100" height="20" uuid="032cfaa7-bcbc-4355-82b0-d16b53313640"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{VENCIMIENTO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="73" height="20" uuid="d64f16e3-06fb-49f3-8694-b12ca4363fae"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[N° Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="73" y="0" width="409" height="20" uuid="2d55cbd9-8fc6-41ea-ae1b-14593627393d"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Razón Social]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="482" y="0" width="73" height="20" uuid="7d9fd5a9-1e4c-4dfd-83c9-427694fecf27"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Saldo]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="73" height="20" uuid="a7ad94c9-cefa-4c14-940e-0ad04757452f"/>
+				<box leftPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cliente_idCliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="73" y="0" width="409" height="20" uuid="a1d8a4fc-2c43-4782-95ee-d428d13f8b29"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cliente_rsocial}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="482" y="0" width="73" height="20" uuid="770b3651-9fae-4508-a1d1-931e2c174b42"/>
+				<box leftPadding="0" rightPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{SALDO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="15" splitType="Stretch">
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="515" y="0" width="40" height="13" backcolor="#E6E6E6" uuid="cc29cc93-0ffb-4c6c-ae4e-edd14da06656"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="0" y="0" width="515" height="13" backcolor="#E6E6E6" uuid="73802bc6-b619-4da1-a6b1-253d297ab1ea"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -30,11 +30,11 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.SeguimientoOTController'
 			'SeguimientoOTView button[itemId=buscarArt]': {
 				click: this.BuscarArt
 			},
-			'SeguimientoOTView button[itemId=buscarArt]': {
-				click: this.BuscarArt
-			},
 			'SeguimientoOTView actioncolumn[itemId=otImprimir]': {
 				click: this.ImprimirOT
+			},
+			'SeguimientoOTView button[itemId=ver]': {
+				click: this.VerOT
 			},
 			'VerCodigoOTView textfield[itemId=filtroCodigo]': {
 				keyup: this.FiltrarCodigo
@@ -46,6 +46,39 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.SeguimientoOTController'
 				close: this.CerrarWin
 			}
 		});
+	},
+	
+	VerOT: function(btn){
+		var win = btn.up('window');
+		var form = win.down('form');
+		if(!form.isValid()) return;
+		var ot = win.queryById('otNum').getValue();
+		
+		
+		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
+		myMask.show();
+
+
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_produccion_generarOt'),
+			
+			params: {
+				ot: ot
+			},
+			
+			success: function(resp){
+				var jResp = Ext.JSON.decode(resp.responseText);
+				if(jResp.success == true){
+					var ruta = Routing.generate('mbp_produccion_verOt');
+					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');		
+				}
+				myMask.hide();
+			},
+			
+			failure: function(resp){
+				myMask.hide();
+			}
+		})
 	},
 	
 	CerrarWin: function(win){
@@ -77,6 +110,8 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.SeguimientoOTController'
 				store.loadRawData(jsonResp.data);
 				win.queryById('descripcion').setValue(jsonResp.datosOt.descripcion);
 				win.queryById('cantidad').setValue(jsonResp.datosOt.cantidad);
+				win.queryById('estado').setValue(jsonResp.datosOt.estado);
+				win.queryById('fechaEntrega').setValue(jsonResp.datosOt.fechaEntrega);
 			},
 			
 		})

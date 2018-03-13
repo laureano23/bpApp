@@ -11,29 +11,6 @@ use Mbp\FinanzasBundle\Entity\FacturaDetalle;
 
 class VentasController extends Controller
 {		
-    /**
-     * @Route("/bancos/listar", name="mbp_finanzas_listaBancos", options={"expose"=true})
-     */
-    public function listaBancosAction()
-    {
-    	$em = $this->getDoctrine()->getManager();
-		$repo = $em->getRepository('MbpFinanzasBundle:Bancos');
-		$res = $repo->findAll();
-		
-		$res = $repo->createQueryBuilder('b')
-			->select('')
-			->getQuery()
-			->getArrayResult();
-		
-		
-		echo json_encode(array(
-			'success' => true,
-			'items' => $res
-		));
-		
-        return new Response();
-    }
-	
 	/**
      * @Route("/CCClientes/listar", name="mbp_CCClientes_listar", options={"expose"=true})
      */
@@ -79,8 +56,8 @@ class VentasController extends Controller
 				$resp[$i]['emision'] = $factura->getFecha()->format('d-m-Y');
 				$resp[$i]['concepto'] = $factura->getConcepto()." N° ".$factura->getfcNro();
 				$resp[$i]['vencimiento'] = $factura->getVencimiento()->format('d-m-Y'); 
-				$resp[$i]['debe'] = $factura->getTipo() == 1 ? $subTotal[$i] * $factura->getTipoCambio() : "";
-				$resp[$i]['haber'] = $factura->getTipo() != 1 ? $subTotal[$i] : "";
+				$resp[$i]['debe'] = $factura->getTipo() == 1 || $factura->getTipo() == 2 ? $factura->getTotal() : ""; //SI ES FC O ND
+				$resp[$i]['haber'] = $factura->getTipo() != 1 && $factura->getTipo() != 2 ? $factura->getTotal() : "";//SI NO ES FC NI ND
 				$resp[$i]['tipo'] = $factura->getTipo();
 				$i++;
 			}	

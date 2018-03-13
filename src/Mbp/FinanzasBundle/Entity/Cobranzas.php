@@ -64,6 +64,12 @@ class Cobranzas
 	 */
 	private $cobranzaDetalleId;	
 	
+	/**
+     * @var decimal
+     *
+     * @ORM\Column(name="totalCobranza", type="decimal", precision=10, scale=2)
+     */
+    private $importe;
 	
     /**
      * Get id
@@ -235,5 +241,29 @@ class Cobranzas
     public function getFechaRecibo()
     {
         return $this->fechaRecibo;
+    }
+	
+	/**
+     * Set importe
+     *
+     * @param string $importe
+     *
+     * @return CobranzasDetalle
+     */
+    public function setImporte($importe)
+    {
+        $this->importe = $importe;
+
+        return $this;
+    }
+
+    /**
+     * Get importe
+     *
+     * @return string
+     */
+    public function getImporte()
+    {
+        return $this->importe;
     }
 }

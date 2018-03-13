@@ -8,7 +8,8 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 		'MetApp.view.Reportes.RepoIVACompras',
 		'MetApp.view.Reportes.ReporteArtVendidos',
 		'MetApp.view.Reportes.ReporteIntResarcitorios',
-		'MetApp.view.Reportes.ReporteHistoricoMov'
+		'MetApp.view.Reportes.ReporteHistoricoMov',
+		'MetApp.view.Reportes.RepoSaldoDeudor'
 	],
 	refs:[
 	],
@@ -70,7 +71,49 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 			'viewport menuitem[itemId=rg014]': {
 				click: this.ReporteRG014
 			},
+			'viewport menuitem[itemId=reporteSaldoDeudor]': {
+				click: this.reporteSaldoDeudor
+			},
+			'RepoSaldoDeudor button[itemId=printDateReport]': {
+				click: this.imprimirSaldoDeudor
+			},
 		});
+	},
+	
+	imprimirSaldoDeudor: function(btn){
+		var win = btn.up('window');
+		var form = win.down('form');
+		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
+		myMask.show();
+		
+		if(form.isValid()){
+			var values = form.getForm().getValues();
+			
+			Ext.Ajax.request({
+				url: Routing.generate('mbp_Reportes_SaldoDeudor'),
+				
+				params: {
+					vencimiento: values.vencimiento
+				},
+				
+				success: function(resp){					
+					var jsonResp = Ext.JSON.decode(resp.responseText);
+					if(jsonResp.success == true){
+						var ruta = Routing.generate('mbp_Reportes_VerReporteSaldoDeudor');						
+						window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+					}
+					myMask.hide();
+				},
+				
+				failure: function(resp){
+					myMask.hide();
+				}
+			});	
+		}
+	},
+	
+	reporteSaldoDeudor: function(btn){
+		Ext.widget('RepoSaldoDeudor');
 	},
 	
 	ReporteRG014: function(btn){

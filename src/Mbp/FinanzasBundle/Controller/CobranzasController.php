@@ -64,6 +64,7 @@ class CobranzasController extends Controller
 			$cobranza->setPtoVenta((int)$datosRecibo->ptoVta);
 			$cobranza->setNumRecibo((int)$datosRecibo->reciboNum);
 			
+			$importeTotal = 0;
 			foreach($decodeData as $data){
 				$detalleCob = new CobranzasDetalle();
 				$formaPago = $repoTipoPago->findOneByDescripcion($data->formaPago);
@@ -82,7 +83,10 @@ class CobranzasController extends Controller
 				$detalleCob->setFormaPagoId($formaPago);
 				
 				$cobranza->addCobranzaDetalleId($detalleCob);
+				$importeTotal += $detalleCob->getImporte();
 			}
+			
+			$cobranza->setImporte($importeTotal);
 			
 			if(count($cobranza->getCobranzaDetalleId()) == 0) throw new \Exception("No es posible guardar una cobranza vacía", 1);
 			

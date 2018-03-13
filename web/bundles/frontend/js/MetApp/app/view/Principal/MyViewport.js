@@ -585,6 +585,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
 		                    render : dragZone,
 		                }, 
         			},
+        			{
+        				text: 'Resumen Saldo Deudor',
+        				itemId: 'reporteSaldoDeudor',
+        				listeners : {
+		                    render : dragZone,
+		                }, 
+        			},
         		]        		
         	},
         	{

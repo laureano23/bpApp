@@ -151,12 +151,13 @@ Ext.define('MetApp.view.Bancos.FormBancosView' ,{
 							width: 700,							
         					height: 120,
 							store: {
-								fields: ['cuentaNro', 'cuentaTipo', 'cbu'],
+								fields: ['cuentaNro', 'cuentaTipo', 'cbu', 'idCuenta'],
 								proxy: {
 									type: 'memory'
 								}
 							},
 							columns: [
+								{ text: 'Id Cuenta', dataIndex: 'idCuenta', flex: 1, hidden: true },
 								{ text: 'Tipo', dataIndex: 'cuentaTipo', flex: 1 },
 								{ text: 'N°', dataIndex: 'cuentaNro', flex: 1 },
 								{ text: 'CBU', dataIndex: 'cbu', flex: 1 },

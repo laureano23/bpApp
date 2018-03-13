@@ -767,6 +767,117 @@ class ReportesController extends Controller
 		
 		return $response;
 	}
+	
+	/**
+     * @Route("/Reportes/Reportes/SaldoDeudor", name="mbp_Reportes_SaldoDeudor", options={"expose"=true})
+     */	
+    public function SaldoDeudor()
+	{
+		$response = new Response;
+				
+		try{
+			/*
+			 * PARAMETROS
+			 */
+			$vencimiento = $this->get('request')->get('vencimiento');
+							
+			$reporteador = $this->get('reporteador');
+			$kernel = $this->get('kernel');
+			
+			/*
+			 * Configuro reporte
+			 */
+			$jru = $reporteador->jru();
+			
+			/*
+			 * Ruta archivo Jasper
+			 */				
+					
+			$ruta = $kernel->locateResource('@MbpFinanzasBundle/Reportes/resumenSaldoDeudor.jrxml');
+			$rutaLogo = $reporteador->getRutaLogo($kernel);
+			
+			/*
+			 * Ruta de destino del PDF
+			 */
+			$destino = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'resumenSaldoDeudor.pdf';		
+			
+			//Parametros HashMap
+			$param = $reporteador->getJava('java.util.HashMap');
+			$rutaLogo = $reporteador->getRutaLogo($kernel);
+						
+			$param->put('VENCIMIENTO', $vencimiento);
+			
+			$conn = $reporteador->getJdbc();
+			
+			$vencimiento = \DateTime::createFromFormat('d/m/Y', $vencimiento);
+			$vencimiento = $vencimiento->format('Y-m-d');
+									
+			
+			$sql = "SELECT *, SUM(Facturas_total) AS SALDO
+				FROM (SELECT
+				     Facturas.`id` AS Facturas_id,
+				     Facturas.`vencimiento` AS Facturas_vencimiento,
+				     Facturas.`clienteId` AS Facturas_clienteId,
+				     Facturas.`tipo` AS Facturas_tipo,
+				     Facturas.`tipoCambio` AS Facturas_tipoCambio,
+				     CASE WHEN Facturas.`tipo` != 1 && Facturas.`tipo` != 2 THEN
+					Facturas.`total` * -1 ELSE
+					Facturas.`total` END AS Facturas_total,
+				     cliente.`idCliente` AS cliente_idCliente,
+				     cliente.`rsocial` AS cliente_rsocial
+				FROM
+				     `cliente` cliente INNER JOIN `Facturas` Facturas ON cliente.`idCliente` = Facturas.`clienteId`
+				WHERE Facturas.`vencimiento` <= '$vencimiento'
+				UNION
+				SELECT
+				     Cobranzas.`id` AS Cobranzas_id,
+				     Cobranzas.`fechaRecibo` AS Cobranzas_fechaRecibo,
+				     Cobranzas.`clienteId` AS Cobranzas_clienteId,
+				     Cobranzas.`clienteId`=NULL AS DUMMY_FC_TIPO,
+				     Cobranzas.`totalCobranza`=NULL AS DUMMY_TIPO_CAMBIO,
+				     Cobranzas.`totalCobranza` * -1 AS Cobranzas_totalCobranza,
+				     cliente.`idCliente` AS cliente_idCliente,
+				     cliente.`rsocial` AS cliente_rsocial
+				FROM
+				     `cliente` cliente INNER JOIN `Cobranzas` Cobranzas ON cliente.`idCliente` = Cobranzas.`clienteId`
+				WHERE Cobranzas.`fechaRecibo` <= '$vencimiento'
+				) AS SUB
+				GROUP BY cliente_idCliente
+				ORDER BY SALDO DESC
+			     ";
+			
+			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	
+		}catch(\Exception $e){
+			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(
+				json_encode(array('success' => false, 'msg' => $e->getMessage()))
+				);
+		}
+		
+		return $response->setContent(
+			json_encode(array('success' => true))
+			);
+	}
+	
+	/**
+     * @Route("/Reportes/Bancos/VerReporteSaldoDeudor", name="mbp_Reportes_VerReporteSaldoDeudor", options={"expose"=true})
+     */	
+    public function VerReporteSaldoDeudor()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'resumenSaldoDeudor.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'resumenSaldoDeudor.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+		
+		return $response;
+	}
 }
 
 

@@ -33,61 +33,102 @@ Ext.define('MetApp.view.Produccion.OrdenesTrabajo.SeguimientoOTView', {
 							layout: 'hbox',
 							items: [
 								{
-									xtype: 'numberfield',
-									fieldLabel: 'OT numero:',	
-									itemId: 'otNum',
-									readOnly: false						
+									xtype: 'container',
+									layout: 'vbox',
+									items: [
+										{
+											xtype: 'numberfield',
+											fieldLabel: 'OT numero:',	
+											allowBlank: false,
+											itemId: 'otNum',
+											readOnly: false						
+										},
+										{
+											xtype: 'button',
+											margins: '5 0 0 5',									
+											text: 'Buscar',
+											itemId: 'buscar'
+										},
+									],
 								},
 								{
-									xtype: 'button',
-									margins: '5 0 0 0',									
-									text: 'Buscar',
-									itemId: 'buscar'
+									xtype: 'fieldset',
+									layout: 'vbox',
+									margins: '5 0 0 0',
+									items: [
+										{
+											xtype: 'container',
+											layout: 'hbox',
+											items: [
+												{
+													xtype: 'textfield',
+													name: 'codigo',
+													fieldLabel: 'Código',
+													readOnly: true,
+													itemId: 'codigo',
+												},
+												{
+													xtype: 'button',
+													margin: '5 0 0 0',
+													iconCls: 'search',
+													itemId: 'buscarArt',
+												},
+												{
+													xtype: 'textfield',
+													name: 'estado',
+													fieldLabel: 'Estado',
+													readOnly: true,
+													itemId: 'estado',
+												},	
+												{
+													xtype: 'datefield',
+													name: 'fechaEntrega',
+													fieldLabel: 'Entrega',
+													readOnly: true,
+													itemId: 'fechaEntrega',
+												},	
+											]
+										},
+										{
+											xtype: 'container',
+											layout: 'hbox',
+											items: [
+												{
+													xtype: 'textfield',
+													name: 'descripcion',
+													itemId: 'descripcion',
+													width: 600,
+													fieldLabel: 'Descripcion',
+													readOnly: true,
+													disableCls: 'myDisableCls',
+												},
+												{
+													xtype: 'numberfield',
+													name: 'cantidad',
+													itemId: 'cantidad',
+													fieldLabel: 'Cantidad',
+													labelWidth: 70,
+													readOnly: true,
+													disableCls: 'myDisableCls',
+													width: 250
+												},
+												{
+													xtype: 'button',
+													margins: '5 0 0 0',
+													itemId: 'ver',
+													text: 'Ver OT'
+												}
+											]
+										}
+									]
 								},
-								{
-									xtype: 'textfield',
-									name: 'descripcion',
-									itemId: 'descripcion',
-									width: 600,
-									fieldLabel: 'Descripcion',
-									readOnly: true,
-									disableCls: 'myDisableCls',
-								},
-								{
-									xtype: 'numberfield',
-									name: 'cantidad',
-									itemId: 'cantidad',
-									fieldLabel: 'cantidad',
-									readOnly: true,
-									disableCls: 'myDisableCls',
-									width: 250
-								}
 							]
-						},
-						{
-							xtype: 'container',
-							layout: 'hbox',
-							items: [
-								{
-									xtype: 'textfield',
-									name: 'codigo',
-									fieldLabel: 'Código',
-									readOnly: true,
-									itemId: 'codigo',
-								},
-								{
-									xtype: 'button',
-									margin: '5 0 0 0',
-									iconCls: 'search',
-									itemId: 'buscarArt',
-								}
-							]
-						},
+						},								
 						{
 				        	xtype: 'grid',
 				        	itemId: 'gridMisPendientes',
 				        	height: 200,
-				        	width: 1200,
+				        	width: 1300,
 				        	store: 'MetApp.store.Produccion.OrdenesTrabajo.OTStore',
 				        	columns: [
 								{text: 'OT', hidden: false, dataIndex: 'otNum', autoSizeColumn: true},		
