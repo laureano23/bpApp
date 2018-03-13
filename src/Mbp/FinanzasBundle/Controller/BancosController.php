@@ -27,6 +27,8 @@ class BancosController extends Controller
 			$qb = $repo->createQueryBuilder('b')
 				->select("c.id, CONCAT(c.tipo, c.numero, '----',b.nombre) AS cuenta")
 				->join('b.cuentasBancarias', 'c')
+				->where('b.inactivo = 0')
+				->andWhere('c.inactivo = 0')
 				->getQuery()
 				->getArrayResult();
 				

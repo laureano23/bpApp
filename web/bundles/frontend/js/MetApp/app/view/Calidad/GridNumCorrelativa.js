@@ -14,7 +14,14 @@
     },
 	columns: [	
 		{text: 'Id', dataIndex: 'idCorrelativos', hidden: true},		
-		{text: 'N° Corr.', dataIndex: 'numCorrelativo', flex: 1},		
+		{text: 'N° Corr.', dataIndex: 'numCorrelativo', flex: 1,
+			 renderer: function(val, metadata){
+			 	if(val >= 88706 && val <= 88760){
+			 		metadata.style += 'color:red;';
+			 	}	
+			 	return val;
+			 }
+		},		
 		{text: 'Cant.', dataIndex: 'cant', flex: 1},
 		{text: 'Fecha', dataIndex: 'fecha.date', type: 'datecolumn', renderer: Ext.util.Format.dateRenderer('d-m-Y'), flex: 1},			
 		{text: 'OT enf.', dataIndex: 'otEnf', flex: 1},					
