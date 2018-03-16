@@ -7,6 +7,14 @@ Ext.define('MetApp.store.Proveedores.CCProveedoresStore',{
 	remoteFilter: false,	  
     pageSize: 1000,
     storeId: 'CCProveedoresStore',
+    listeners: {
+    	remove: {
+    		fn: function(st){
+    			var response = st.getProxy().getReader();
+    			console.log(response);//st.load();
+    		}
+    	}
+    },
 	
 	proxy: {
 		type: 'ajax',

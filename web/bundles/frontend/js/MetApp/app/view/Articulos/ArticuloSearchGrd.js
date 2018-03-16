@@ -82,7 +82,13 @@ Ext.define('MetApp.view.Articulos.ArticuloSearchGrd', {
 					xtype: 'radiofield',
 					boxLabel: 'Descripcion',
 					name: 'busqueda',
-					inputValue: 'descripcion'
+					inputValue: 'descripcion',
+					listeners: {
+						'change': function(radio){
+							var win = radio.up('window');
+							win.queryById('searchField').focus();
+						}
+					}
 				}
 			]
 		},

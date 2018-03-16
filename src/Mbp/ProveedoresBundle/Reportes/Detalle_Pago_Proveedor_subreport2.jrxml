@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Detalle_Pago_Proveedor_subreport2" language="groovy" pageWidth="200" pageHeight="200" whenNoDataType="AllSectionsNoDetail" columnWidth="200" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="1c6be5ce-024f-40aa-b242-4ee6fda9b39d">
-	<property name="ireport.zoom" value="2.8531167061100033"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Detalle_Pago_Proveedor_subreport2" language="groovy" pageWidth="400" pageHeight="100" whenNoDataType="BlankPage" columnWidth="400" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="1c6be5ce-024f-40aa-b242-4ee6fda9b39d">
+	<property name="ireport.zoom" value="1.4641000000000013"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="OpId" class="java.lang.String">
@@ -8,6 +8,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
+     SUM(TransaccionOPFC.`aplicado`) AS aplicado,
      TransaccionOPFC.`id` AS TransaccionOPFC_id,
      TransaccionOPFC.`aplicado` AS TransaccionOPFC_aplicado,
      TransaccionOPFC.`facturaId` AS TransaccionOPFC_facturaId,
@@ -17,19 +18,28 @@
      OrdenPago.`proveedorId` AS OrdenPago_proveedorId,
      FacturaProveedor.`id` AS FacturaProveedor_id,
      FacturaProveedor.`fechaEmision` AS FacturaProveedor_fechaEmision,
-     FacturaProveedor.`tipo` AS FacturaProveedor_tipo,
      FacturaProveedor.`sucursal` AS FacturaProveedor_sucursal,
      FacturaProveedor.`numFc` AS FacturaProveedor_numFc,
      FacturaProveedor.`totalFc` AS FacturaProveedor_totalFc,
      FacturaProveedor.`imputado` AS FacturaProveedor_imputado,
-     SUM(TransaccionOPFC.`aplicado`) as aplicado
+     FacturaProveedor.`tipoId` AS FacturaProveedor_tipoId,
+     TipoComprobante.`id` AS TipoComprobante_id,
+     TipoComprobante.`esFactura` AS TipoComprobante_esFactura,
+     TipoComprobante.`esNotaCredito` AS TipoComprobante_esNotaCredito,
+     TipoComprobante.`esNotaDebito` AS TipoComprobante_esNotaDebito,
+     TipoComprobante.`descripcion` AS TipoComprobante_descripcion
 FROM
      `OrdenPago` OrdenPago INNER JOIN `TransaccionOPFC` TransaccionOPFC ON OrdenPago.`id` = TransaccionOPFC.`ordenPagoId`
      INNER JOIN `FacturaProveedor` FacturaProveedor ON TransaccionOPFC.`facturaId` = FacturaProveedor.`id`
+     INNER JOIN `TipoComprobante` TipoComprobante ON FacturaProveedor.`tipoId` = TipoComprobante.`id`
 WHERE
      OrdenPago.`id` = $P{OpId}
-GROUP BY TransaccionOPFC.`facturaId`]]>
+GROUP BY
+     TransaccionOPFC.`facturaId`]]>
 	</queryString>
+	<field name="aplicado" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="TransaccionOPFC_id" class="java.lang.Integer"/>
 	<field name="TransaccionOPFC_aplicado" class="java.math.BigDecimal"/>
 	<field name="TransaccionOPFC_facturaId" class="java.lang.Integer"/>
@@ -39,21 +49,35 @@ GROUP BY TransaccionOPFC.`facturaId`]]>
 	<field name="OrdenPago_proveedorId" class="java.lang.Integer"/>
 	<field name="FacturaProveedor_id" class="java.lang.Integer"/>
 	<field name="FacturaProveedor_fechaEmision" class="java.sql.Timestamp"/>
-	<field name="FacturaProveedor_tipo" class="java.lang.String"/>
 	<field name="FacturaProveedor_sucursal" class="java.lang.Integer"/>
 	<field name="FacturaProveedor_numFc" class="java.lang.Integer"/>
 	<field name="FacturaProveedor_totalFc" class="java.math.BigDecimal"/>
 	<field name="FacturaProveedor_imputado" class="java.math.BigDecimal"/>
-	<field name="aplicado" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="FacturaProveedor_tipoId" class="java.lang.Integer"/>
+	<field name="TipoComprobante_id" class="java.lang.Integer"/>
+	<field name="TipoComprobante_esFactura" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_esNotaCredito" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_esNotaDebito" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_descripcion" class="java.lang.String"/>
 	<background>
-		<band splitType="Stretch"/>
+		<band height="100" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="400" height="100" uuid="90f8158b-ac7d-4851-86a1-ef23aaa9f1fc"/>
+				<box>
+					<pen lineWidth="2.0"/>
+					<topPen lineWidth="2.0"/>
+					<leftPen lineWidth="2.0"/>
+					<bottomPen lineWidth="2.0"/>
+					<rightPen lineWidth="2.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
 	</background>
 	<title>
 		<band height="20" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="200" height="20" uuid="9ac49b46-0e92-4af8-8cfa-047928d4a2b9"/>
+				<reportElement x="0" y="0" width="400" height="20" uuid="9ac49b46-0e92-4af8-8cfa-047928d4a2b9"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -61,17 +85,17 @@ GROUP BY TransaccionOPFC.`facturaId`]]>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center">
-					<font size="14" isBold="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Liquidacion]]></text>
+				<text><![CDATA[LIQUIDACION]]></text>
 			</staticText>
 		</band>
 	</title>
 	<columnHeader>
 		<band height="20">
 			<staticText>
-				<reportElement x="0" y="0" width="65" height="20" uuid="7898f30b-0af1-431f-8910-ba6bcca0714d"/>
+				<reportElement x="0" y="0" width="240" height="20" uuid="7898f30b-0af1-431f-8910-ba6bcca0714d"/>
 				<box leftPadding="3">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -80,12 +104,12 @@ GROUP BY TransaccionOPFC.`facturaId`]]>
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font size="10" isBold="false"/>
 				</textElement>
 				<text><![CDATA[FC N°]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="65" y="0" width="69" height="20" uuid="c4947951-1801-4f5e-bf42-d68d236ecf88"/>
+				<reportElement x="240" y="0" width="80" height="20" uuid="c4947951-1801-4f5e-bf42-d68d236ecf88"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -94,12 +118,12 @@ GROUP BY TransaccionOPFC.`facturaId`]]>
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
+					<font isBold="false"/>
 				</textElement>
 				<text><![CDATA[Importe]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="134" y="0" width="66" height="20" uuid="737df409-5b68-45a0-935c-d14a62a0120e"/>
+				<reportElement x="320" y="0" width="80" height="20" uuid="737df409-5b68-45a0-935c-d14a62a0120e"/>
 				<box rightPadding="3">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -108,7 +132,7 @@ GROUP BY TransaccionOPFC.`facturaId`]]>
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
+					<font isBold="false"/>
 				</textElement>
 				<text><![CDATA[Imputado]]></text>
 			</staticText>
@@ -117,17 +141,17 @@ GROUP BY TransaccionOPFC.`facturaId`]]>
 	<detail>
 		<band height="20">
 			<textField>
-				<reportElement x="0" y="0" width="65" height="20" uuid="3448f6e3-5e53-4a1a-9165-2610631b6b1c"/>
+				<reportElement x="0" y="0" width="240" height="20" uuid="3448f6e3-5e53-4a1a-9165-2610631b6b1c"/>
 				<box leftPadding="3"/>
-				<textFieldExpression><![CDATA[$F{FacturaProveedor_numFc}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{TipoComprobante_descripcion}+"  "+$F{FacturaProveedor_sucursal}+"-"+$F{FacturaProveedor_numFc}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="65" y="0" width="69" height="20" uuid="dcfd3a28-2652-44fb-be30-3213a4025e79"/>
+				<reportElement x="240" y="0" width="80" height="20" uuid="dcfd3a28-2652-44fb-be30-3213a4025e79"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{FacturaProveedor_totalFc}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="134" y="0" width="66" height="20" uuid="0f8fb90d-6933-43b8-8b04-642e10e40c86"/>
+				<reportElement x="320" y="0" width="80" height="20" uuid="0f8fb90d-6933-43b8-8b04-642e10e40c86"/>
 				<box rightPadding="3"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{aplicado}]]></textFieldExpression>

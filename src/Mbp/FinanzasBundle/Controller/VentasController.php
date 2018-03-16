@@ -10,7 +10,31 @@ use Mbp\FinanzasBundle\Entity\Facturas;
 use Mbp\FinanzasBundle\Entity\FacturaDetalle;
 
 class VentasController extends Controller
-{		
+{
+	/**
+     * @Route("/CCClientes/listarTiposComprobantes", name="mbp_CCClientes_listarTiposComprobantes", options={"expose"=true})
+     */
+    public function listarTiposComprobantes()
+    {
+    	$em = $this->getDoctrine()->getManager();
+		$repo = $em->getRepository('MbpFinanzasBundle:TipoComprobante');
+		$response = new Response;
+		
+		try{
+			$res = $repo->createQueryBuilder('t')
+				->select('')
+				->getQuery()
+				->getArrayResult();
+			
+			
+		return $response->setContent(json_encode(array('success' => true, 'data' => $res)));	
+				
+		}catch(\Exception $e){
+			$response->setContent(json_encode(array("success"=>false, "msg"=>$e->getMessage())));
+			return $response;
+		}
+    }
+			
 	/**
      * @Route("/CCClientes/listar", name="mbp_CCClientes_listar", options={"expose"=true})
      */
@@ -199,12 +223,8 @@ class VentasController extends Controller
 				&& $netoGrabado > $parametrosFinanzas->getTopePercepcionIIBB())
 			{
 				$percepcionIIBB = $netoGrabado * $alicuotaPercepcion / 100; 
-				$percepcionIIBB = number_format($percepcionIIBB, 2);
+				$percepcionIIBB = number_format($percepcionIIBB, 2, ".", "");
 			}	
-			
-			/*$monedas = $faele->FEParamGetCotizacion('DOL');
-			print_r($monedas);
-			exit;*/
 
 			//REDONDEO IMPORTES A 2 DECIMALES
 			$netoGrabado = number_format($netoGrabado, 2, ".", "");
@@ -253,6 +273,7 @@ class VentasController extends Controller
 			$regfetrib['BaseImp'] = $netoGrabado;
 			$regfetrib['Alic'] = $alicuotaPercepcion; 
 			$regfetrib['Importe'] = $percepcionIIBB;
+			
 			 
 			// Detalle de iva
 			$regfeiva['Id'] = 5; //5 codigo IVA 21...4 codigo IVA 10.5

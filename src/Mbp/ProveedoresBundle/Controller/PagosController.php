@@ -11,6 +11,7 @@ use Mbp\ProveedoresBundle\Entity\Factura;
 use Mbp\ProveedoresBundle\Entity\Pago;
 use Mbp\ProveedoresBundle\Entity\OrdenPago;
 use Mbp\ProveedoresBundle\Entity\TransaccionOPFC;
+use Mbp\ProveedoresBundle\Entity\CCProv;
 use Mbp\FinanzasBundle\Entity\MovimientosBancos;
 use Mbp\FinanzasBundle\Entity\DetalleMovimientosBancos;
 use Mbp\FinanzasBundle\Entity\FormasPago;
@@ -59,7 +60,6 @@ class PagosController extends Controller
 			}
 			
 		}catch(\Exception $e){
-			//throw $e;
 			$response->setContent(
 				json_encode(array(
 					'success' => false,
@@ -101,6 +101,7 @@ class PagosController extends Controller
 				$ordenPago->setProveedorId($proveedor);	
 				
 				
+				$totalImporte = 0;
 				foreach ($decData as $rec) {
 					if($rec->retencionIIBB == true) continue;
 					$tipoPago = $repoTipoPago->findByDescripcion($rec->formaPago);
@@ -122,7 +123,9 @@ class PagosController extends Controller
 					}
 											
 					$ordenPago->addPagoDetalleId($pago);	
+					$totalImporte += $pago->getImporte();
 				}
+				$ordenPago->setImporteTotal($totalImporte);
 			}else{
 				$ordenPago = $repoOP->find($idOP);
 			}
@@ -164,6 +167,14 @@ class PagosController extends Controller
 			
 			if(count($ordenPago->getPagoDetalleId()) == 0) throw new \Exception("No se puede guardar una orden de pago vacía", 1);
 			
+			//Alta en CC
+			$cc = new CCProv;
+			$cc->setDebe($ordenPago->getImporteTotal());
+			$cc->setFechaEmision($ordenPago->getEmision());
+			$cc->setFechaVencimiento($ordenPago->getEmision());
+			$cc->setOrdenPagoId($ordenPago);
+			
+			$ordenPago->setCcId($cc);
 				
 			$em->persist($ordenPago);
 			

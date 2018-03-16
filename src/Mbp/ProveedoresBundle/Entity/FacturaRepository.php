@@ -21,15 +21,16 @@ class FacturaRepository extends \Doctrine\ORM\EntityRepository
 									DATE_FORMAT(f.fechaEmision, '%d-%m-%Y %H:%i:%s') as fechaEmision,
 									f.numFc,
 									DATE_FORMAT(f.vencimiento, '%d-%m-%Y') AS vencimiento,
-									CASE WHEN f.totalFc > 0 THEN f.totalFc ELSE 0 END AS haber,
-									CASE WHEN f.totalFc < 0 THEN f.totalFc*-1 ELSE 0 END AS debe,
-									CASE WHEN f.esBalance = 0 THEN CONCAT('FACTURA NUM ', f.numFc) ELSE 'BALANCE' END as concepto,
+									CASE WHEN tipo.esNotaCredito = false THEN f.totalFc ELSE 0 END AS haber,
+									CASE WHEN tipo.esNotaCredito != false THEN f.totalFc ELSE 0 END AS debe,
+									CASE WHEN f.esBalance = 0 THEN CONCAT(tipo.descripcion, '-',f.numFc) ELSE 'BALANCE' END as concepto,
 									CASE WHEN f.id > 0 THEN false ELSE false END as detalle,
 									CASE WHEN f.id > 0 THEN true ELSE true END as imputado,
 									t.id AS idT,
 									SUM(t.aplicado) AS valorImputado")
 				->from('MbpProveedoresBundle:Factura', 'f')
 				->leftJoin('MbpProveedoresBundle:TransaccionOPFC', 't', 'WITH', 't.facturaImputada = f.id')
+				->leftJoin('f.tipoId', 'tipo')
 				->where('f.proveedorId = :provId')								
 				->setParameter('provId', $idPRov)
 				->groupBy('f.id')		
@@ -38,6 +39,49 @@ class FacturaRepository extends \Doctrine\ORM\EntityRepository
 			
 		return $res2;
 		
+	}
+	
+	public function listarCCProveedores($idProveedor)
+	{
+		$em = $this->getEntityManager();
+		$connection = $em->getConnection();
+		
+		$query = $connection->prepare("
+		SELECT sub.concepto, sub.fechaEmision, sub.numFc, sub.vencimiento, SUM(fp2.haber) - SUM(fp2.debe) AS saldo   
+				FROM (SELECT 
+					f.id as idF,
+					DATE_FORMAT(f.fechaEmision, '%d-%m-%Y %H:%i:%s') as fechaEmision,
+					f.numFc,
+					CONCAT(tipo.descripcion, '-',f.numFc) AS concepto,
+					DATE_FORMAT(f.vencimiento, '%d-%m-%Y') AS vencimiento,
+					CASE WHEN tipo.esNotaCredito = false THEN f.totalFc ELSE 0 END AS haber,
+					CASE WHEN tipo.esNotaCredito != false THEN f.totalFc ELSE 0 END AS debe
+				FROM FacturaProveedor as f			
+				LEFT JOIN TipoComprobante AS tipo ON f.tipoId = tipo.id
+				WHERE f.proveedorId = $idProveedor
+				 
+				UNION
+				
+				SELECT
+					op.id AS idOP,
+					DATE_FORMAT(op.fechaEmision, '%d-%m-%Y %H:%i:%s') as fechaEmision,
+					op.id AS numOP,
+					CONCAT('ORDEN DE PAGO', '-',op.id) AS concepto,
+					DATE_FORMAT(op.fechaEmision, '%d-%m-%Y') AS vencimiento,
+					op.importe=0 AS debe,
+					op.importe AS haber
+				FROM OrdenPago AS op
+				WHERE op.proveedorId = $idProveedor
+				) AS sub			
+			LEFT JOIN FacturaProveedor AS fp2 ON sub.idF >= fp2.id
+			GROUP BY idF, fechaEmision, numFc, concepto
+			ORDER BY sub.fechaEmision ASC
+		");
+		
+		$query->execute();
+		$result = $query->fetchAll();
+		
+		return $result;
 	}
 	
 	/*

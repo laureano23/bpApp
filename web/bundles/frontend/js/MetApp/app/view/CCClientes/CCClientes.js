@@ -131,11 +131,12 @@ Ext.define('MetApp.view.CCClientes.CCClientes' ,{
 							},
 							{ text: 'Concepto', dataIndex: 'concepto' },
 							{ text: 'Vencimiento', dataIndex: 'vencimiento' },
-							{ text: 'Debe', dataIndex: 'debe' },
-							{ text: 'Haber', dataIndex: 'haber' },
+							{ text: 'Debe', dataIndex: 'debe', xtype: 'numbercolumn' },
+							{ text: 'Haber', dataIndex: 'haber', xtype: 'numbercolumn' },
 							{
 								text: 'Saldo',
-								dataIndex: 'saldo'
+								dataIndex: 'saldo',
+								xtype: 'numbercolumn'
 							},
 							{ 
 								header: 'Detalle',

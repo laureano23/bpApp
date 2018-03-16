@@ -11,6 +11,7 @@ use Mbp\ProveedoresBundle\Entity\Factura;
 use Mbp\ProveedoresBundle\Entity\Pago;
 use Mbp\ProveedoresBundle\Entity\OrdenPago;
 use Mbp\ProveedoresBundle\Entity\TransaccionOPFC;
+use Mbp\ProveedoresBundle\Entity\CCProv;
 use Mbp\FinanzasBundle\Entity\MovimientosBancos;
 use Mbp\FinanzasBundle\Entity\DetalleMovimientosBancos;
 use Mbp\FinanzasBundle\Entity\FormasPago;
@@ -32,6 +33,8 @@ class CuentaCorrienteController extends Controller
 		$provRepo = $em->getRepository('MbpProveedoresBundle:Proveedor');
 		$repoFc = $em->getRepository('MbpProveedoresBundle:Factura');
 		$repoTipoGasto = $em->getRepository('MbpProveedoresBundle:ImputacionGastos');
+		$repoTipoCbpte = $em->getRepository('MbpFinanzasBundle:TipoComprobante');
+		
 		
 		try{
 			$fcProveedor;
@@ -47,7 +50,9 @@ class CuentaCorrienteController extends Controller
 			$fcProveedor->setproveedorId($proveedor);
 			$fcProveedor->setfechaCarga(\DateTime::createFromFormat('d/m/Y', $objData->fechaCarga));
 			$fcProveedor->setfechaEmision(\DateTime::createFromFormat('d/m/Y', $objData->fechaEmision));
-			$fcProveedor->settipo($objData->tipo);
+			
+			$tipo = $repoTipoCbpte->find($objData->tipo);
+			$fcProveedor->setTipoId($tipo);
 			$fcProveedor->setsucursal($objData->sucursal);
 			$fcProveedor->setnumFc($objData->numFc);
 			$fcProveedor->setneto($objData->neto);
@@ -63,6 +68,20 @@ class CuentaCorrienteController extends Controller
 			$fcProveedor->setconcepto($objData->concepto);
 			$fcProveedor->setTotalFc();
 			$fcProveedor->setImputacionGasto($tipoGasto);
+			
+			//nuevo mov de cc
+			$cc = new CCProv;
+			if($fcProveedor->getTipoId()->getEsNotaCredito()){
+				$cc->setDebe($fcProveedor->getTotalFc());
+			}else{
+				$cc->setHaber($fcProveedor->getTotalFc());
+			}
+			
+			$cc->setFechaEmision($fcProveedor->getFechaEmision());
+			$cc->setFechaVencimiento($fcProveedor->getVencimiento());
+			$cc->setFacturaId($fcProveedor);
+			
+			$fcProveedor->setCcId($cc);
 			
 			$em->persist($fcProveedor);
 			$em->flush();
@@ -87,32 +106,15 @@ class CuentaCorrienteController extends Controller
     	$req = $this->getRequest();
 		$idProv = $req->query->get('idProv');
 		$em = $this->getDoctrine()->getManager();
-		$repo = $em->getRepository('MbpProveedoresBundle:Factura');
-		$repoPagos = $em->getRepository('MbpProveedoresBundle:Pago');
-		
+		$repo = $em->getRepository('MbpProveedoresBundle:CCProv');		
+				
 		try{
 			//CONSULTO EN CADA REPOSITORIO POR LOS PAGOS Y FACTURAS RESPECTIVAMENTE
-			$fc = $repo->listarFacturasCC($idProv);
-			$pagos = $repoPagos->listarPagos($idProv);
+			$res = $repo->listarCCProv($idProv);
 			
-			/*RESPUESTA*/
-			if(!empty($pagos)){
-				foreach ($pagos as $rec) {
-					array_push($fc, $rec);	
-				}	
-			}
-			
-			if(!empty($fc)){
-				//ORDENO LA SALIDA DEL ARRAY PARA MOSTRARLA POR FECHA DE EMISION DEL COMPROBANTE
-				usort($fc, array($this, 'ordenar'));
-				
-				//UTILIZO ESTA CLASE AUXILIAR PARA CALCULAR EL SALDO DE LA CUENTA
-				$calculoClass = $this->get('AuxiliarFinanzas');	
-				$calculoClass->calculaSaldo($fc, $haber='haber', $debe='debe');	
-			}	
 			
 			echo json_encode(array(
-				'data' => $fc
+				'data' => $res
 			));
 			
 		}catch(\Exception $e){

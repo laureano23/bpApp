@@ -8,7 +8,8 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 		'MetApp.store.Proveedores.PagoProveedoresStore',
 		'MetApp.store.Proveedores.CCProveedoresStore',
 		'MetApp.store.Proveedores.GridChequeTercerosStore',
-		'MetApp.store.Proveedores.GridImputaFcStore'
+		'MetApp.store.Proveedores.GridImputaFcStore',
+		'MetApp.store.Finanzas.TiposComprobantesStore'
 	],
 	views: [
 		'MetApp.view.CCProveedores.CCProveedores',
@@ -153,15 +154,23 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 	NuevaFactura: function(btn){
 		var me = this;
 		var win = Ext.widget('FacturaProveedor');
-		var comboTipoGasto = win.queryById('tipoGasto');		
+		var comboTipoGasto = win.queryById('tipoGasto');
+		var comboTipoCbte = win.queryById('tipo');		
 		var store = comboTipoGasto.getStore();
+		var storeTipo = comboTipoCbte.getStore();
 		
+		var ccProv = me.getCCProveedores();
 		win.queryById('fechaEmision').focus(10, true);
 		store.load({
-			callback: function(records, operation, success) {
-			    var ccProv = me.getCCProveedores();
+			callback: function(records, operation, success) {			    
 				var idTipoGasto = ccProv.queryById('tipoGasto').getValue();								
 				comboTipoGasto.select(idTipoGasto);				
+		    }
+		});
+		
+		storeTipo.load({
+			callback: function(records, operation, success) {						
+				comboTipoCbte.select(1);				
 		    }
 		});
 	},
@@ -267,7 +276,7 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 		     icon: Ext.Msg.QUESTION,
 		     fn: function(btn){
 		     	if(btn=="yes"){
-		     		store.remove(selection);	
+		     		store.remove(selection);
 		     	}
 		     }
 		});		
@@ -280,7 +289,7 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 		var proveedorId = win.queryById('id').getValue();
 		
 		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-		myMask.show();
+		//myMask.show();
 		Ext.Ajax.request({
 			url: Routing.generate('mbp_proveedores_reporteImputacionAfc'),
 			params: {
@@ -294,6 +303,10 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 					myMask.hide();	
 				}
+			},
+			
+			failure: function(resp){
+				myMask.hide();
 			}
 		})
 	},

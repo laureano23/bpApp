@@ -147,7 +147,7 @@ Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 							{ 
 								text: 'Concepto',
 								dataIndex: 'concepto',
-								width:300,
+								width:180,
 								renderer: function(value, metaData, record, row, col, store, gridView){
 									if(record.get('valorImputado') != record.get('haber')){
 										return '<span style="color:red;">'+value+'</span>';
@@ -157,12 +157,13 @@ Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 								},
 							},
 							{ text: 'Vencimiento', dataIndex: 'vencimiento', width:100 },
-							{ text: 'Debe', dataIndex: 'debe', flex: 1 },
-							{ text: 'Haber', dataIndex: 'haber', flex: 1 },
+							{ text: 'Debe', dataIndex: 'debe', flex: 1, xtype: 'numbercolumn' },
+							{ text: 'Haber', dataIndex: 'haber', flex: 1, xtype: 'numbercolumn' },
 							{
 								text: 'Saldo',
 								dataIndex: 'saldo',
-								flex: 1
+								flex: 1,
+								xtype: 'numbercolumn'
 							},
 							{ 
 								header: 'Detalle',
@@ -177,6 +178,7 @@ Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 									{ 
 										iconCls: 'search',
 										getClass: function(value,metadata,record){
+											console.log(record);
 											var debe = record.get('detalle');
 											if (debe == 0 ) {
 											    return 'x-hide-display'; 

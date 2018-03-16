@@ -48,6 +48,21 @@ class OrdenPago
      * @ORM\Column(name="fechaEmision", type="datetime")
      */
     private $emision;
+    
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="importe", type="decimal", precision=11, scale=2, nullable=false)
+     */
+    private $importeTotal;
+	
+	/**
+	 * @ORM\OneToOne(targetEntity="Mbp\ProveedoresBundle\Entity\CCProv", mappedBy="factura", cascade={"remove", "persist"})
+	 * @ORM\JoinColumn(name="ccId", referencedColumnName="id", onDelete="SET NULL")
+	 */
+	private $ccId;
+	
+	
 
     public function __construct() {
         $this->facturasImputadas = new ArrayCollection();
@@ -178,5 +193,53 @@ class OrdenPago
     public function getFacturasImputadas()
     {
         return $this->facturasImputadas;
+    }
+
+    /**
+     * Set importeTotal
+     *
+     * @param string $importeTotal
+     *
+     * @return OrdenPago
+     */
+    public function setImporteTotal($importeTotal)
+    {
+        $this->importeTotal = $importeTotal;
+
+        return $this;
+    }
+
+    /**
+     * Get importeTotal
+     *
+     * @return string
+     */
+    public function getImporteTotal()
+    {
+        return $this->importeTotal;
+    }
+
+    /**
+     * Set ccId
+     *
+     * @param \Mbp\ProveedoresBundle\Entity\CCProv $ccId
+     *
+     * @return OrdenPago
+     */
+    public function setCcId(\Mbp\ProveedoresBundle\Entity\CCProv $ccId = null)
+    {
+        $this->ccId = $ccId;
+
+        return $this;
+    }
+
+    /**
+     * Get ccId
+     *
+     * @return \Mbp\ProveedoresBundle\Entity\CCProv
+     */
+    public function getCcId()
+    {
+        return $this->ccId;
     }
 }

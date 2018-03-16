@@ -49,11 +49,10 @@ class Factura
     private $fechaEmision;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="tipo", type="string", length=1, nullable=true)
-     */
-    private $tipo;
+	 * @ORM\ManyToOne(targetEntity="Mbp\FinanzasBundle\Entity\TipoComprobante")
+	 * @ORM\JoinColumn(name="tipoId", referencedColumnName="id", nullable=false)
+	 */
+    private $tipoId;
 
     /**
      * @var integer
@@ -171,6 +170,12 @@ class Factura
      * @ORM\Column(name="esBalance", type="boolean", nullable=true)
      */
     private $esBalance=0;
+	
+	/**
+	 * @ORM\OneToOne(targetEntity="Mbp\ProveedoresBundle\Entity\CCProv", mappedBy="factura", cascade={"remove", "persist"})
+	 * @ORM\JoinColumn(name="ccId", referencedColumnName="id", onDelete="SET NULL")
+	 */
+	private $ccId;
 
     public function __construct() {
         $this->ordenPago = new ArrayCollection();
@@ -234,30 +239,7 @@ class Factura
         return $this->fechaEmision;
     }
 
-    /**
-     * Set tipo
-     *
-     * @param string $tipo
-     *
-     * @return Factura
-     */
-    public function setTipo($tipo)
-    {
-        $this->tipo = $tipo;
-
-        return $this;
-    }
-
-    /**
-     * Get tipo
-     *
-     * @return string
-     */
-    public function getTipo()
-    {
-        return $this->tipo;
-    }
-
+   
     /**
      * Set sucursal
      *
@@ -722,5 +704,53 @@ class Factura
     public function getEsBalance()
     {
         return $this->esBalance;
+    }
+
+    /**
+     * Set tipoId
+     *
+     * @param \Mbp\FinanzasBundle\Entity\TipoComprobante $tipoId
+     *
+     * @return Factura
+     */
+    public function setTipoId(\Mbp\FinanzasBundle\Entity\TipoComprobante $tipoId)
+    {
+        $this->tipoId = $tipoId;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoId
+     *
+     * @return \Mbp\FinanzasBundle\Entity\TipoComprobante
+     */
+    public function getTipoId()
+    {
+        return $this->tipoId;
+    }
+
+    /**
+     * Set ccId
+     *
+     * @param \Mbp\ProveedoresBundle\Entity\CCProv $ccId
+     *
+     * @return Factura
+     */
+    public function setCcId(\Mbp\ProveedoresBundle\Entity\CCProv $ccId = null)
+    {
+        $this->ccId = $ccId;
+
+        return $this;
+    }
+
+    /**
+     * Get ccId
+     *
+     * @return \Mbp\ProveedoresBundle\Entity\CCProv
+     */
+    public function getCcId()
+    {
+        return $this->ccId;
     }
 }

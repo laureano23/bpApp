@@ -18,7 +18,7 @@ Ext.define('MetApp.view.CCProveedores.FacturaProveedor',{
 					store: 'MetApp.store.Proveedores.FacturaProveedoresStore',
 					itemId: 'formFc',
 					border: false,
-					items: [
+					items: [						
 						{
 							xtype: 'container',
 							margin: '5 0 0 5',
@@ -33,6 +33,17 @@ Ext.define('MetApp.view.CCProveedores.FacturaProveedor',{
 									itemId: 'id',
 									fieldLabel: 'idF',
 									hidden: true
+								},
+								{
+									xtype: 'combo',
+									labelWidth: 30,
+									fieldLabel: 'Tipo',
+									store: 'MetApp.store.Finanzas.TiposComprobantesStore',
+									//queryMode: 'local',
+									displayField: 'descripcion',
+									valueField: 'id',
+									name: 'tipo',
+									itemId: 'tipo'
 								},
 								{
 									xtype: 'datefield',	
@@ -52,40 +63,7 @@ Ext.define('MetApp.view.CCProveedores.FacturaProveedor',{
 									fieldLabel: 'Emision',
 									name: 'fechaEmision',
 									itemId: 'fechaEmision'
-								},
-								{
-									xtype: 'fieldcontainer',
-									fieldLabel: 'Tipo',
-									labelWidth: 40,
-									defaultType: 'radiofield',
-									layout: 'hbox',
-									itemId: 'tipo',
-									defaults: {
-										flex: 1,
-										margins: '0 5 0 0'
-									},
-									items: [
-										{
-											boxLabel: 'A',											
-											checked: true,
-											name: 'tipo',
-											inputValue: 'a',
-											itemId: 'radio1'
-										},
-										{
-											boxLabel: 'B',
-											name: 'tipo',
-											inputValue: 'b',
-											itemId: 'radio2'
-										},
-										{
-											boxLabel: 'C',
-											name: 'tipo',
-											inputValue: 'c',
-											itemId: 'radio3'
-										},
-									]
-								},
+								},								
 								{
 									xtype: 'numberfield',
 									allowBlank: false,

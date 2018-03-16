@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Detalle_Pago_Proveedor" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="890e90cc-cf89-4202-bb29-76354a7dbc5d">
-	<property name="ireport.zoom" value="1.3310000000000035"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Detalle_Pago_Proveedor" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="890e90cc-cf89-4202-bb29-76354a7dbc5d">
+	<property name="ireport.zoom" value="3.138428376721011"/>
+	<property name="ireport.x" value="19"/>
+	<property name="ireport.y" value="1705"/>
 	<parameter name="ordenPagoId" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -282,36 +282,61 @@ Tel/Fax: 4484-2416]]></text>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="200" splitType="Stretch">
+		<band height="300" splitType="Immediate">
 			<subreport>
-				<reportElement x="0" y="100" width="200" height="100" uuid="aab1638e-bc61-4981-99ce-12033e4df880"/>
+				<reportElement x="0" y="24" width="200" height="100" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="aab1638e-bc61-4981-99ce-12033e4df880"/>
 				<subreportParameter name="OpId">
 					<subreportParameterExpression><![CDATA[$P{ordenPagoId}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "Detalle_Pago_Proveedor_subreport2.jasper"]]></subreportExpression>
 			</subreport>
+			<subreport>
+				<reportElement x="0" y="161" width="200" height="139" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="bb42951b-b710-4398-a5b0-d836f3f46dfd"/>
+				<subreportParameter name="OP_ID">
+					<subreportParameterExpression><![CDATA[$F{OrdenPago_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "Detalle_Pago_Proveedor_subreport4.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch">
-			<textField pattern="#,##0.00">
-				<reportElement x="356" y="34" width="93" height="20" uuid="59920641-4cc2-446b-9f23-08d353ffb98f"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font isBold="true"/>
+		<band height="65" splitType="Stretch">
+			<textField evaluationTime="Report" pattern="#,##0.00">
+				<reportElement x="427" y="32" width="128" height="22" uuid="59920641-4cc2-446b-9f23-08d353ffb98f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{totalImporte}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="256" y="34" width="100" height="20" uuid="879ddaa8-88d0-41fa-8f09-23ca498c691f"/>
+				<reportElement x="334" y="32" width="93" height="22" uuid="879ddaa8-88d0-41fa-8f09-23ca498c691f"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font isBold="true" isItalic="true" isUnderline="false"/>
+					<font size="14" isBold="true" isItalic="true" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[Total:]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="57" height="25" uuid="7947b8f0-1ea5-49f5-8297-290c50dcfe9b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Firma:                            ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="57" height="25" uuid="b7ceac8c-9065-4e6e-aa61-ba2480f9e9a7"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Aclaración: ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="71" y="25" width="146" height="1" uuid="cfceb2b1-2d76-40f3-9e05-c17ef5c2c3a6"/>
+			</line>
+			<line>
+				<reportElement x="71" y="59" width="146" height="1" uuid="30a5e9c9-bef0-48b3-a1b0-1d8684668a40"/>
+			</line>
 		</band>
 	</pageFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
-	</summary>
 </jasperReport>
