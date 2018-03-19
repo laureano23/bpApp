@@ -325,6 +325,7 @@ class CuentaCorrienteController extends Controller
     	$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
 		$repo = $em->getRepository('MbpProveedoresBundle:Proveedor');
+		$repoTipo = $em->getRepository('MbpFinanzasBundle:TipoComprobante');
 		$response = new Response;
 		
 		try{
@@ -344,6 +345,23 @@ class CuentaCorrienteController extends Controller
 			$balance->setProveedorId($proveedor);
 			$balance->setVencimiento(new \DateTime);
 			$balance->setTotalFc($neto);
+			
+			$tipo = $repoTipo->findOneByEsBalance(true);
+			$balance->setTipoId($tipo);
+			
+			//nuevo mov de cc
+			$cc = new CCProv;
+			if($neto >= 0){
+				$cc->setHaber($neto);
+			}else{
+				$cc->setDebe($neto*-1);
+			}
+			
+			$cc->setFechaEmision($balance->getFechaEmision());
+			$cc->setFechaVencimiento($balance->getVencimiento());
+			$cc->setFacturaId($balance);
+			$balance->setCcId($cc);
+			
 			
 			$em->persist($balance);
 			$em->flush();

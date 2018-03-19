@@ -178,7 +178,6 @@ Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 									{ 
 										iconCls: 'search',
 										getClass: function(value,metadata,record){
-											console.log(record);
 											var debe = record.get('detalle');
 											if (debe == 0 ) {
 											    return 'x-hide-display'; 
@@ -227,15 +226,30 @@ Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 							},
 							{ 
 								header: 'Editar',
+								renderer: function(val, met, rec){
+									console.log(rec);
+									if(rec.data.idOP==0){
+										this.removeCls('edit');
+									}
+								},
 								itemId: 'editarComp',
 								xtype: 'actioncolumn',								
 								items: [
 									{ 
 										iconCls: 'edit',
+										getClass: function(value,metadata,record){
+											console.log(record);
+											var idF = record.get('idF');
+											if (idF == 0 ) {
+											    return 'x-hide-display'; 
+											} else {
+											    return 'edit';               
+											}
+										},
 									}										
 								],
 								flex: 1,
-								dataIndex: 'imputado'
+								dataIndex: 'editable'
 							},
 							{ text: 'tipo', dataIndex: 'tipo', hidden: true },
 							{ text: 'valorIm', dataIndex: 'valorImputado', hidden: true }

@@ -95,40 +95,36 @@ class PagosController extends Controller
 		try{
 			$proveedor = $repoProv->find($idProv); //PROVEEDOR ASOCIADO
 			$ordenPago = 0;
-			if($idOP == 0){
-				$ordenPago = new OrdenPago(); //CREO UNA NUEVA ORDEN DE PAGO
-				$ordenPago->setEmision(new \DateTime());
-				$ordenPago->setProveedorId($proveedor);	
+			$ordenPago = new OrdenPago(); //CREO UNA NUEVA ORDEN DE PAGO
+			$ordenPago->setEmision(new \DateTime());
+			$ordenPago->setProveedorId($proveedor);	
+			
+			
+			$totalImporte = 0;
+			foreach ($decData as $rec) {
+				if($rec->retencionIIBB == true) continue;
+				$tipoPago = $repoTipoPago->findByDescripcion($rec->formaPago);
+				$pago = new Pago(); //NUEVO DETALLE DE PAGO
+				$pago->setEmision(new \DateTime());
+				$pago->setNumero($rec->numero);
+				$pago->setImporte($rec->importe);
+				empty($rec->diferido) ? $pago->setDiferido(new \DateTime) : $pago->setDiferido(\DateTime::createFromFormat('d/m/Y', $rec->diferido));
+				$pago->setBanco($rec->banco);
+				empty($tipoPago) ? "" : $pago->setIdFormaPagos($tipoPago[0]);
 				
 				
-				$totalImporte = 0;
-				foreach ($decData as $rec) {
-					if($rec->retencionIIBB == true) continue;
-					$tipoPago = $repoTipoPago->findByDescripcion($rec->formaPago);
-					$pago = new Pago(); //NUEVO DETALLE DE PAGO
-					$pago->setEmision(new \DateTime());
-					$pago->setNumero($rec->numero);
-					$pago->setImporte($rec->importe);
-					empty($rec->diferido) ? $pago->setDiferido(new \DateTime) : $pago->setDiferido(\DateTime::createFromFormat('d/m/Y', $rec->diferido));
-					$pago->setBanco($rec->banco);
-					empty($tipoPago) ? "" : $pago->setIdFormaPagos($tipoPago[0]);
+				if($pago->getIdFormaPago()->getConceptoBancoId() instanceof ConceptosBanco){
+					$cuenta = $repoCuentas->find($rec->cuenta);
 					
+					if(empty ($cuenta)) throw new \Exception("Debe asignar una cuenta bancaria al concepto ".$pago->getIdFormaPago()->getDescripcion(), 1);
 					
-					if($pago->getIdFormaPago()->getConceptoBancoId() instanceof ConceptosBanco){
-						$cuenta = $repoCuentas->find($rec->cuenta);
-						
-						if(empty ($cuenta)) throw new \Exception("Debe asignar una cuenta bancaria al concepto ".$pago->getIdFormaPago()->getDescripcion(), 1);
-						
-						$pago->setCuentaId($cuenta);
-					}
-											
-					$ordenPago->addPagoDetalleId($pago);	
-					$totalImporte += $pago->getImporte();
+					$pago->setCuentaId($cuenta);
 				}
-				$ordenPago->setImporteTotal($totalImporte);
-			}else{
-				$ordenPago = $repoOP->find($idOP);
+										
+				$ordenPago->addPagoDetalleId($pago);	
+				$totalImporte += $pago->getImporte();
 			}
+			$ordenPago->setImporteTotal($totalImporte);
 
 
 			

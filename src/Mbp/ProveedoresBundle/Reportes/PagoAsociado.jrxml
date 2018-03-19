@@ -13,7 +13,6 @@
 		<![CDATA[SELECT
      FacturaProveedor.`id` AS FacturaProveedor_id,
      FacturaProveedor.`fechaEmision` AS FacturaProveedor_fechaEmision,
-     FacturaProveedor.`tipo` AS FacturaProveedor_tipo,
      FacturaProveedor.`sucursal` AS FacturaProveedor_sucursal,
      FacturaProveedor.`numFc` AS FacturaProveedor_numFc,
      FacturaProveedor.`totalFc` AS FacturaProveedor_totalFc,
@@ -34,7 +33,6 @@ WHERE
 	</queryString>
 	<field name="FacturaProveedor_id" class="java.lang.Integer"/>
 	<field name="FacturaProveedor_fechaEmision" class="java.sql.Timestamp"/>
-	<field name="FacturaProveedor_tipo" class="java.lang.String"/>
 	<field name="FacturaProveedor_sucursal" class="java.lang.Integer"/>
 	<field name="FacturaProveedor_numFc" class="java.lang.Integer"/>
 	<field name="FacturaProveedor_totalFc" class="java.math.BigDecimal"/>
@@ -61,17 +59,28 @@ WHERE
 		</band>
 	</title>
 	<pageHeader>
-		<band height="35" splitType="Stretch">
+		<band height="50" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="15" width="61" height="20" uuid="24c7ab10-ddaf-4a7a-a232-09e4c9ab8f93"/>
+				<reportElement x="0" y="0" width="61" height="20" uuid="24c7ab10-ddaf-4a7a-a232-09e4c9ab8f93"/>
 				<text><![CDATA[Factura N°:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="61" y="15" width="186" height="20" uuid="60c5c775-1238-437f-8af1-e4f014e90625"/>
+				<reportElement x="61" y="0" width="186" height="20" uuid="60c5c775-1238-437f-8af1-e4f014e90625"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{FacturaProveedor_sucursal} + "-" + $F{FacturaProveedor_numFc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="20" width="61" height="20" uuid="5980b5e1-4987-4709-b993-1c84505c8e0c"/>
+				<text><![CDATA[Monto total:]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="61" y="20" width="186" height="20" uuid="dd509bbe-466c-4a10-a9fe-5903d82a4632"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FacturaProveedor_totalFc}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
@@ -126,6 +135,7 @@ WHERE
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{OrdenPago_id}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
@@ -137,6 +147,7 @@ WHERE
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{OrdenPago_fechaEmision}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
@@ -148,7 +159,7 @@ WHERE
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{TransaccionOPFC_aplicado}]]></textFieldExpression>
 			</textField>
 		</band>

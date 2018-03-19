@@ -26,7 +26,8 @@ Ext.define('MetApp.view.CCProveedores.BalanceView' ,{
 							xtype: 'numberfield',
 							itemId: 'neto',
 							name: 'neto',
-							fieldLabel: 'Neto'
+							fieldLabel: 'Neto',
+							decimalSeparator: '.'
 						},
 						{
 							xtype: 'textareafield',

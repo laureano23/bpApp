@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Detalle_Pago_Proveedor_subreport4" language="groovy" pageWidth="430" pageHeight="150" columnWidth="430" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b40a1cec-ce24-4945-931a-31bcc2cb171b">
+	<property name="ireport.zoom" value="1.1000000000000003"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="OP_ID" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     Pago.`id` AS Pago_id,
+     Pago.`banco` AS Pago_banco,
+     Pago.`emision` AS Pago_emision,
+     Pago.`numero` AS Pago_numero,
+     Pago.`importe` AS Pago_importe,
+     Pago.`diferido` AS Pago_diferido,
+     Pago.`idFormaPago` AS Pago_idFormaPago,
+     Pago.`cuentaId` AS Pago_cuentaId,
+     Pago.`movBancoId` AS Pago_movBancoId,
+     FormasPagos.`id` AS FormasPagos_id,
+     FormasPagos.`descripcion` AS FormasPagos_descripcion,
+     FormasPagos.`inactivo` AS FormasPagos_inactivo,
+     FormasPagos.`retencionIIBB` AS FormasPagos_retencionIIBB,
+     FormasPagos.`retencionIVA21` AS FormasPagos_retencionIVA21,
+     FormasPagos.`chequeTerceros` AS FormasPagos_chequeTerceros,
+     FormasPagos.`esChequePropio` AS FormasPagos_esChequePropio,
+     FormasPagos.`ceonceptoBancoId` AS FormasPagos_ceonceptoBancoId,
+     FormasPagos.`depositaEnCuenta` AS FormasPagos_depositaEnCuenta,
+     OrdenDePago_detallesPagos.`pago_id` AS OrdenDePago_detallesPagos_pago_id,
+     OrdenDePago_detallesPagos.`ordenPago_id` AS OrdenDePago_detallesPagos_ordenPago_id,
+     OrdenPago.`id` AS OrdenPago_id,
+     OrdenPago.`fechaEmision` AS OrdenPago_fechaEmision,
+     OrdenPago.`proveedorId` AS OrdenPago_proveedorId,
+     TransaccionOPFC.`id` AS TransaccionOPFC_id,
+     TransaccionOPFC.`aplicado` AS TransaccionOPFC_aplicado,
+     TransaccionOPFC.`facturaId` AS TransaccionOPFC_facturaId,
+     TransaccionOPFC.`ordenPagoId` AS TransaccionOPFC_ordenPagoId,
+     FacturaProveedor.`id` AS FacturaProveedor_id,
+     FacturaProveedor.`fechaEmision` AS FacturaProveedor_fechaEmision,
+     FacturaProveedor.`sucursal` AS FacturaProveedor_sucursal,
+     FacturaProveedor.`numFc` AS FacturaProveedor_numFc,
+     FacturaProveedor.`neto` AS FacturaProveedor_neto,
+     FacturaProveedor.`tipoId` AS FacturaProveedor_tipoId,
+     TipoComprobante.`id` AS TipoComprobante_id,
+     TipoComprobante.`esFactura` AS TipoComprobante_esFactura,
+     TipoComprobante.`esNotaCredito` AS TipoComprobante_esNotaCredito,
+     TipoComprobante.`esNotaDebito` AS TipoComprobante_esNotaDebito,
+     TipoComprobante.`descripcion` AS TipoComprobante_descripcion
+FROM
+     `FormasPagos` FormasPagos INNER JOIN `Pago` Pago ON FormasPagos.`id` = Pago.`idFormaPago`
+     INNER JOIN `OrdenDePago_detallesPagos` OrdenDePago_detallesPagos ON Pago.`id` = OrdenDePago_detallesPagos.`pago_id`
+     INNER JOIN `OrdenPago` OrdenPago ON OrdenDePago_detallesPagos.`ordenPago_id` = OrdenPago.`id`
+     INNER JOIN `TransaccionOPFC` TransaccionOPFC ON OrdenPago.`id` = TransaccionOPFC.`ordenPagoId`
+     INNER JOIN `FacturaProveedor` FacturaProveedor ON TransaccionOPFC.`facturaId` = FacturaProveedor.`id`
+     INNER JOIN `TipoComprobante` TipoComprobante ON FacturaProveedor.`tipoId` = TipoComprobante.`id`
+WHERE
+     OrdenPago.`id` = $P{OP_ID}
+ AND FormasPagos.`retencionIIBB` = TRUE]]>
+	</queryString>
+	<field name="Pago_id" class="java.lang.Integer"/>
+	<field name="Pago_banco" class="java.lang.String"/>
+	<field name="Pago_emision" class="java.sql.Timestamp"/>
+	<field name="Pago_numero" class="java.lang.String"/>
+	<field name="Pago_importe" class="java.math.BigDecimal"/>
+	<field name="Pago_diferido" class="java.sql.Timestamp"/>
+	<field name="Pago_idFormaPago" class="java.lang.Integer"/>
+	<field name="Pago_cuentaId" class="java.lang.Integer"/>
+	<field name="Pago_movBancoId" class="java.lang.Integer"/>
+	<field name="FormasPagos_id" class="java.lang.Integer"/>
+	<field name="FormasPagos_descripcion" class="java.lang.String"/>
+	<field name="FormasPagos_inactivo" class="java.lang.Boolean"/>
+	<field name="FormasPagos_retencionIIBB" class="java.lang.Boolean"/>
+	<field name="FormasPagos_retencionIVA21" class="java.lang.Boolean"/>
+	<field name="FormasPagos_chequeTerceros" class="java.lang.Boolean"/>
+	<field name="FormasPagos_esChequePropio" class="java.lang.Boolean"/>
+	<field name="FormasPagos_ceonceptoBancoId" class="java.lang.Integer"/>
+	<field name="FormasPagos_depositaEnCuenta" class="java.lang.Boolean"/>
+	<field name="OrdenDePago_detallesPagos_pago_id" class="java.lang.Integer"/>
+	<field name="OrdenDePago_detallesPagos_ordenPago_id" class="java.lang.Integer"/>
+	<field name="OrdenPago_id" class="java.lang.Integer"/>
+	<field name="OrdenPago_fechaEmision" class="java.sql.Timestamp"/>
+	<field name="OrdenPago_proveedorId" class="java.lang.Integer"/>
+	<field name="TransaccionOPFC_id" class="java.lang.Integer"/>
+	<field name="TransaccionOPFC_aplicado" class="java.math.BigDecimal"/>
+	<field name="TransaccionOPFC_facturaId" class="java.lang.Integer"/>
+	<field name="TransaccionOPFC_ordenPagoId" class="java.lang.Integer"/>
+	<field name="FacturaProveedor_id" class="java.lang.Integer"/>
+	<field name="FacturaProveedor_fechaEmision" class="java.sql.Timestamp"/>
+	<field name="FacturaProveedor_sucursal" class="java.lang.Integer"/>
+	<field name="FacturaProveedor_numFc" class="java.lang.Integer"/>
+	<field name="FacturaProveedor_neto" class="java.math.BigDecimal"/>
+	<field name="FacturaProveedor_tipoId" class="java.lang.Integer"/>
+	<field name="TipoComprobante_id" class="java.lang.Integer"/>
+	<field name="TipoComprobante_esFactura" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_esNotaCredito" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_esNotaDebito" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_descripcion" class="java.lang.String"/>
+	<background>
+		<band height="150" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="0" width="430" height="150" uuid="04b07be3-3d46-4e29-bfe9-6a1d3b768bd9"/>
+				<box>
+					<pen lineWidth="2.0"/>
+					<topPen lineWidth="2.0"/>
+					<leftPen lineWidth="2.0"/>
+					<bottomPen lineWidth="2.0"/>
+					<rightPen lineWidth="2.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</background>
+	<title>
+		<band height="40" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="430" height="40" uuid="62f35ff2-1795-40f0-96bd-bc521cb524e0"/>
+				<box>
+					<pen lineWidth="2.0"/>
+					<topPen lineWidth="2.0"/>
+					<leftPen lineWidth="2.0"/>
+					<bottomPen lineWidth="2.0"/>
+					<rightPen lineWidth="2.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RETENCION SOBRE LOS INGRESOS BRUTOS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="130" height="20" uuid="32b8047b-905d-4e7a-9741-7f11ece92d59"/>
+				<box leftPadding="3">
+					<pen lineWidth="2.0"/>
+					<topPen lineWidth="2.0"/>
+					<leftPen lineWidth="2.0"/>
+					<bottomPen lineWidth="2.0"/>
+					<rightPen lineWidth="2.0"/>
+				</box>
+				<text><![CDATA[Comprobante]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="0" width="100" height="20" uuid="52c91575-14d0-4e8b-a207-8beb95babcc9"/>
+				<box leftPadding="3">
+					<pen lineWidth="2.0"/>
+					<topPen lineWidth="2.0"/>
+					<leftPen lineWidth="2.0"/>
+					<bottomPen lineWidth="2.0"/>
+					<rightPen lineWidth="2.0"/>
+				</box>
+				<text><![CDATA[Base Imponible]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="230" y="0" width="100" height="20" uuid="8e750de2-91d8-4617-8cde-35cbf8b68c76"/>
+				<box leftPadding="3">
+					<pen lineWidth="2.0"/>
+					<topPen lineWidth="2.0"/>
+					<leftPen lineWidth="2.0"/>
+					<bottomPen lineWidth="2.0"/>
+					<rightPen lineWidth="2.0"/>
+				</box>
+				<text><![CDATA[Alícuota]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="0" width="100" height="20" uuid="aa2526a1-1adb-4efe-94ff-3f36988a5e80"/>
+				<box leftPadding="3">
+					<pen lineWidth="2.0"/>
+					<topPen lineWidth="2.0"/>
+					<leftPen lineWidth="2.0"/>
+					<bottomPen lineWidth="2.0"/>
+					<rightPen lineWidth="2.0"/>
+				</box>
+				<text><![CDATA[Importe Retenido]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="130" height="20" uuid="6309ec56-707c-4923-83c6-4312177697a5"/>
+				<box leftPadding="3"/>
+				<textFieldExpression><![CDATA[$F{TipoComprobante_descripcion}+"  "+$F{FacturaProveedor_sucursal}+"-"+$F{FacturaProveedor_numFc}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="130" y="0" width="100" height="20" uuid="cf45ad84-ad17-498b-af39-f0f6ebc78701"/>
+				<box leftPadding="3"/>
+				<textFieldExpression><![CDATA[$F{TransaccionOPFC_aplicado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00 %">
+				<reportElement x="230" y="0" width="100" height="20" uuid="55c402aa-058d-4868-ba61-18774f3abb3f"/>
+				<box leftPadding="3"/>
+				<textFieldExpression><![CDATA[$F{Pago_importe} / $F{FacturaProveedor_neto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="330" y="0" width="100" height="20" uuid="77541385-a50f-42ef-abcd-a9c14c65cc00"/>
+				<box leftPadding="3"/>
+				<textFieldExpression><![CDATA[$F{Pago_importe}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

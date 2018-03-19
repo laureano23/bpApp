@@ -144,6 +144,7 @@ class ReportesController extends Controller
     	//RECIBO PARAMETROS
 		$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
+		$response = new Response;
 		
 		try{
 			/*
@@ -183,7 +184,6 @@ class ReportesController extends Controller
 			$sql = "SELECT
 			     FacturaProveedor.`id` AS FacturaProveedor_id,
 			     FacturaProveedor.`fechaEmision` AS FacturaProveedor_fechaEmision,
-			     FacturaProveedor.`tipo` AS FacturaProveedor_tipo,
 			     FacturaProveedor.`sucursal` AS FacturaProveedor_sucursal,
 			     FacturaProveedor.`numFc` AS FacturaProveedor_numFc,
 			     FacturaProveedor.`totalFc` AS FacturaProveedor_totalFc,
@@ -210,12 +210,12 @@ class ReportesController extends Controller
 				)
 			);
 			
-	    	return new Response();	
+	    	return $response;	
 		}catch(\Exception $e){
-			echo json_encode(array(
-				'success' => false,
-				'msg' => $e->getMessage()
-			));
+			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(
+				json_encode(array('success' => false, 'msg' => $e->getMessage()))
+				);
 		}		
     }
     

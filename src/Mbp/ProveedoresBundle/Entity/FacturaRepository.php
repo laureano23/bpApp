@@ -103,45 +103,26 @@ class FacturaRepository extends \Doctrine\ORM\EntityRepository
 		$repoTrans =  $em->getRepository('MbpProveedoresBundle:TransaccionOPFC');
 		
 		try{
-			$qb = $repo->createQueryBuilder('f');
-			$query = $qb->select('')
-					->where('f.proveedorId = :idProv')
-					->setParameter('idProv', $idProv)
-					->getQuery();
-			$res = $query->getResult();
 			
-			
-			$qb2 = $repoTrans->createQueryBuilder('t');			
-			$query2 = $qb2->select('fc.id, SUM(t.aplicado) AS aplicado')
-					->join('t.facturaImputada', 'fc')
+			$qb2 = $repo->createQueryBuilder('fc');			
+			$query2 = $qb2->select("
+						fc.id,
+						SUM(t.aplicado) AS valorAplicado,
+						DATE_FORMAT(fc.fechaEmision, '%d-%m-%Y') AS fechaEmision,
+						fc.numFc AS numFc,
+						DATE_FORMAT(fc.vencimiento, '%d-%m-%Y') As vencimiento,
+						fc.totalFc AS haber
+						")
+					->leftJoin('MbpProveedoresBundle:TransaccionOPFC', 't', 'WITH', 't.facturaImputada = fc.id')
+					->leftJoin('fc.tipoId', 'tipo')
 					->where('fc.proveedorId = :idProv')
-					->groupBy('t.facturaImputada')
+					->andWhere('tipo.esNotaCredito != 1')
+					->groupBy('fc.id, t.facturaImputada')
 					->setParameter('idProv',$idProv)
-					->getQuery();
-			$res2 = $query2->getResult();
+					->getQuery()
+					->getArrayResult();
 			
-			$i=0;
-			$resp = array();
-			foreach ($res as $rec) {
-				$resp[$i]['id'] = $rec->getId();				
-				$resp[$i]['fechaEmision'] = $rec->getfechaEmision()->format('d-m-Y H:i:s');
-				$resp[$i]['concepto'] = "FACTURA N° ".$rec->getNumFc();
-				$resp[$i]['numFc'] = $rec->getNumFc();
-				$resp[$i]['vencimiento'] = $rec->getvencimiento()->format('d/m/Y');
-				$resp[$i]['haber'] = $this->getTotalFactura($rec);								
-				$resp[$i]['pendiente'] = 0;
-				$i++;
-			}
-			
-			for($i=0; $i<count($res2); $i++){
-				for ($j=0; $j < count($res); $j++) { 
-					if(array_key_exists($i, $res2) && $res2[$i]['id'] == $res[$j]->getId()){					
-						$resp[$j]['valorAplicado'] = $res2[$i]['aplicado'];									
-					}
-				}
-			}
-			
-			return $resp;
+			return $query2;
 			
 		}catch(\Exception $e){
 			echo json_encode(array(
@@ -160,16 +141,28 @@ class FacturaRepository extends \Doctrine\ORM\EntityRepository
 		$repo = $em->getRepository('MbpProveedoresBundle:Factura');
 		
 		$qb = $repo->createQueryBuilder('f');			
-		$query = $qb->select('f.id, f.fechaCarga, f.fechaEmision, f.tipo, f.sucursal, f.numFc, f.neto, f.netoNoGrabado, f.iva21, f.iva27, f.iva105, f.perIva5, f.perIva3, f.iibbCf, f.vencimiento, f.concepto, f.totalFc, f.imputado, i.id AS tipoGasto')
-				->join('f.imputacionGasto', 'i')
+		$query = $qb->select("f.id, 
+			DATE_FORMAT(f.fechaCarga, '%d-%m-%Y') AS fechaCarga,
+			DATE_FORMAT(f.fechaEmision, '%d-%m-%Y') AS fechaEmision,
+			t.id AS tipo, f.sucursal,
+			f.numFc, f.neto, f.netoNoGrabado,
+			f.iva21,
+			f.iva27,
+			f.iva105,
+			f.perIva5,
+			f.perIva3,
+			f.iibbCf,
+			f.vencimiento,
+			f.concepto,
+			f.totalFc,
+			f.imputado,
+			i.id AS tipoGasto")
+				->leftJoin('f.imputacionGasto', 'i')
+				->leftJoin('f.tipoId', 't')
 				->where('f.id = :idF')
 				->setParameter('idF', $idF)
 				->getQuery()				
 				->getArrayResult();
-		
-		$query[0]['fechaCarga'] = $query[0]['fechaCarga']->format('d/m/Y');
-		$query[0]['fechaEmision'] = $query[0]['fechaEmision']->format('d/m/Y');
-		$query[0]['vencimiento'] = $query[0]['vencimiento']->format('d/m/Y');
 		
 		return $query;
 	}
