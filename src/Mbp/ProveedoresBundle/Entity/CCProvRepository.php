@@ -18,7 +18,7 @@ class CCProvRepository extends \Doctrine\ORM\EntityRepository
 		$res = $repo->createQueryBuilder('cc')
 			->select(
 				"DATE_FORMAT(cc.fechaEmision, '%d-%m-%Y %H:%i:%s') as fechaEmision,
-				CASE WHEN cc.OrdenPagoId IS NOT NULL THEN 'ORDEN DE PAGO' ELSE tipo.descripcion END AS concepto, 
+				CASE WHEN cc.OrdenPagoId IS NOT NULL THEN CONCAT('ORDEN DE PAGO N° ', op.id) ELSE CONCAT(tipo.descripcion, ' N° ', fc.sucursal, '-', fc.numFc) END AS concepto, 
 				CASE WHEN cc.OrdenPagoId IS NOT NULL THEN true ELSE false END AS detalle,
 				DATE_FORMAT(cc.fechaVencimiento, '%d-%m-%Y %H:%i:%s') as fechaVencimiento,
 				cc.debe,
@@ -40,7 +40,6 @@ class CCProvRepository extends \Doctrine\ORM\EntityRepository
 			->getQuery()
 			->getArrayResult();
 		
-		//print_r($res);
 		return $res;
 	}
 }

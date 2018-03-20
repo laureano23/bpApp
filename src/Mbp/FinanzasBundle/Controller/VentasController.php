@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Mbp\FinanzasBundle\Entity\Facturas;
 use Mbp\FinanzasBundle\Entity\FacturaDetalle;
+use Mbp\FinanzasBundle\Entity\CCClientes;
+use Mbp\FinanzasBundle\Entity\TipoComprobante;
 
 class VentasController extends Controller
 {
@@ -41,13 +43,20 @@ class VentasController extends Controller
     public function listarAction()
     {	
     	$em = $this->getDoctrine()->getManager();
+		$repo = $em->getRepository('MbpFinanzasBundle:CCClientes');
+		
+		$req = $this->getRequest();
+		$idCliente = $req->query->get('idCliente');
+		
+		$resp = $repo->listarCCClientes($idCliente);
+		/*
 		$repo = $em->getRepository('MbpFinanzasBundle:FacturaDetalle');
 		$repoFacturas = $em->getRepository('MbpFinanzasBundle:Facturas');
 		$repoCobranzas = $em->getRepository('MbpFinanzasBundle:Cobranzas');
 		$repoClientes = $em->getRepository('MbpClientesBundle:Cliente');
 		$req = $this->getRequest();
 		
-		/* RECIBO PARAMETROS */
+		
 		$idCliente = $req->query->get('idCliente');
 
 		$clienteObj = $repoClientes->find($idCliente);
@@ -56,20 +65,20 @@ class VentasController extends Controller
 			return new Response;
 		}
 		
-		/* CONSULTA POR FACTURACION */
+		
 		$resulFacturas = $repoFacturas->listaFacturasClientes($idCliente);
 				
 		//METODO AUXILIAR PARA CALCULAR EL SUBTOTAL DE LAS FACTURAS
 		$auxFinanzas = $this->get('AuxiliarFinanzas');		
 		$subTotal = $auxFinanzas->SubTotalFacturaAction($resulFacturas);
 		
-		/* CONSULTA POR PAGOS */
+		
 		$resulPagos = $repoCobranzas->listaPagosClientes($idCliente);		
 		
 		//METODO AUXILIAR PARA CALCULAR EL TOTAL DE LAS COBRANZAS
 		$subTotalCobranza = $auxFinanzas->SubTotalCobranzaAction($resulPagos);
 		
-		/*RESPUESTA*/
+		
 		$resp = array();
 		$i=0;
 		
@@ -103,7 +112,7 @@ class VentasController extends Controller
 				$i++;
 			}	
 		}		
-		/*EOF RESPUESTA*/
+		
 		
 		if(!empty($resp)){
 			//ORDENO LA SALIDA DEL ARRAY PARA MOSTRARLA POR FECHA DE EMISION DEL COMPROBANTE
@@ -111,7 +120,7 @@ class VentasController extends Controller
 			
 			//UTILIZO ESTA CLASE AUXILIAR PARA CALCULAR EL SALDO DE LA CUENTA
 			$auxFinanzas->calculaSaldo($resp, $haber='haber', $debe='debe');	
-		}		
+		}		*/
 		
 		echo json_encode(array(
 			'items' => $resp
@@ -147,6 +156,8 @@ class VentasController extends Controller
 		
 			//CREO OBJETO FACTURA
 			$factura = new Facturas();
+			//Creo obj cc
+			$cc = new CCClientes;
 			$fechaFc = new \DateTime;
 			$vencimiento = new \DateTime;
 			
@@ -169,7 +180,11 @@ class VentasController extends Controller
 			$factura->setConcepto($auxFinanzas->TipoDeComprobante($decodefcData->tipo));
 			$factura->setVencimiento($vencimiento->add(new \DateInterval('P'.$cliente->getVencimientoFc().'D'))); //ES LA FECHA DE FC + LA CONDICION DE VENTA DEL CLIENTE
 			$factura->setClienteId($cliente);
-			$factura->setTipo($decodefcData->tipo);
+			
+			//tipo
+			$repoTipo = $em->getRepository('MbpFinanzasBundle:TipoComprobante');
+			$tipo = $repoTipo->find($decodefcData->tipo);		
+			$factura->setTipoId($tipo);
 			
 			$netoGrabado = 0;
 			$ivaLiquidado = 0;
@@ -309,6 +324,19 @@ class VentasController extends Controller
 			$decodefcData->moneda == 0 ? $factura->setMoneda(0) : $factura->setMoneda(1);
 			$decodefcData->moneda == 0 ? $factura->setTipoCambio(1) : $factura->setTipoCambio($regfe['MonCotiz']);
 			
+			//cc
+			if($tipo->getEsNotaCredito()){
+				$cc->setHaber($factura->getTotal());	
+			}else{
+				$cc->setDebe($factura->getTotal());
+			}
+			$cc->setFechaEmision($factura->getFecha());
+			$cc->setFechaVencimiento($factura->getVencimiento());
+			$cc->setFacturaId($factura);
+			
+			$factura->setCcId($cc);
+			
+			
 			
 			$em->persist($factura);
 			$em->flush();	
@@ -319,6 +347,7 @@ class VentasController extends Controller
 			return $response;
 
 		}catch(\Exception $e){
+			throw $e;
 			$response->setContent(json_encode(array("success"=>false, "msg"=>$e->getMessage())));
 			return $response;
 		}

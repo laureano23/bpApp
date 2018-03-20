@@ -120,23 +120,22 @@ Ext.define('MetApp.view.CCClientes.CCClientes' ,{
 						},
 						items: [
 							{ text: 'Id', dataIndex: 'id', hidden: true },
+							{ text: 'IdF', dataIndex: 'idF', hidden: true },
+							{ text: 'IdCob', dataIndex: 'idCob', hidden: true },
 							{ 
 								text: 'Emision',
 								dataIndex: 'emision',
-								renderer: function(val){
-									var date = Ext.Date.parse(val, 'd-m-Y');
-									return Ext.Date.format(date, 'd-m-Y');
-									
-								} 
+								flex: 1
 							},
-							{ text: 'Concepto', dataIndex: 'concepto' },
-							{ text: 'Vencimiento', dataIndex: 'vencimiento' },
-							{ text: 'Debe', dataIndex: 'debe', xtype: 'numbercolumn' },
-							{ text: 'Haber', dataIndex: 'haber', xtype: 'numbercolumn' },
+							{ text: 'Concepto', dataIndex: 'concepto', width: 170 },
+							{ text: 'Vencimiento', dataIndex: 'vencimiento', flex: 1 },
+							{ text: 'Debe', dataIndex: 'debe', xtype: 'numbercolumn', flex: 1 },
+							{ text: 'Haber', dataIndex: 'haber', xtype: 'numbercolumn', flex: 1 },
 							{
 								text: 'Saldo',
 								dataIndex: 'saldo',
-								xtype: 'numbercolumn'
+								xtype: 'numbercolumn', 
+								flex: 1
 							},
 							{ 
 								header: 'Detalle',
@@ -144,7 +143,8 @@ Ext.define('MetApp.view.CCClientes.CCClientes' ,{
 								xtype: 'actioncolumn',
 								items: [
 									{ iconCls: 'search' }										
-								] 
+								],
+								flex: 1 
 							},
 							{ 
 								header: 'Mail',
@@ -152,7 +152,8 @@ Ext.define('MetApp.view.CCClientes.CCClientes' ,{
 								xtype: 'actioncolumn',
 								items: [
 									{ iconCls: 'mail' }										
-								] 
+								],
+								flex: 1 
 							},
 							{ 
 								header: 'Eliminar',
@@ -164,7 +165,8 @@ Ext.define('MetApp.view.CCClientes.CCClientes' ,{
 									}else{
 										this.disabledAction(rec.index);
 									}
-								}
+								}, 
+								flex: 1
 							},
 							{ text: 'tipo', dataIndex: 'tipo', hidden: true }
 						]

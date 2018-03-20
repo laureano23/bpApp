@@ -75,7 +75,6 @@ Ext.define('MetApp.controller.Proveedores.FacturaProveedoresController',{
 		var storeCC = formCC.down('grid').getStore();
 		var idProv = formCC.queryById('id').getValue();
 		
-		console.log(values);
 		values.idF = values.id;
 		values.id = 0;
 		fcModel.set(values);

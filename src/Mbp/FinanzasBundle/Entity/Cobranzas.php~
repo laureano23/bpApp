@@ -272,28 +272,4 @@ class Cobranzas
     {
         return $this->importe;
     }
-
-    /**
-     * Set ccId
-     *
-     * @param \Mbp\FinanzasBundle\Entity\CCClientes $ccId
-     *
-     * @return Cobranzas
-     */
-    public function setCcId(\Mbp\FinanzasBundle\Entity\CCClientes $ccId = null)
-    {
-        $this->ccId = $ccId;
-
-        return $this;
-    }
-
-    /**
-     * Get ccId
-     *
-     * @return \Mbp\FinanzasBundle\Entity\CCClientes
-     */
-    public function getCcId()
-    {
-        return $this->ccId;
-    }
 }

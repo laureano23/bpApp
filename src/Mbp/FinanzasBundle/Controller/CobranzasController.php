@@ -10,6 +10,7 @@ use Mbp\FinanzasBundle\Entity\Cobranzas;
 use Mbp\FinanzasBundle\Entity\CobranzasDetalle;
 use Mbp\FinanzasBundle\Entity\TransaccionCobranzaFactura;
 use Mbp\FinanzasBundle\Entity\InteresesResarcitorios;
+use Mbp\FinanzasBundle\Entity\CCClientes;
 
 class CobranzasController extends Controller
 {
@@ -90,6 +91,14 @@ class CobranzasController extends Controller
 			
 			if(count($cobranza->getCobranzaDetalleId()) == 0) throw new \Exception("No es posible guardar una cobranza vacía", 1);
 			
+			//cc
+			$cc = new CCClientes;
+			$cc->setHaber($cobranza->getImporte());
+			$cc->setFechaEmision($cobranza->getFechaRecibo());
+			$cc->setFechaVencimiento($cobranza->getFechaRecibo());
+			$cc->setCobranzaId($cobranza);
+			
+			$cobranza->setCcId($cc);
 			
 			$em->persist($cobranza);
 			

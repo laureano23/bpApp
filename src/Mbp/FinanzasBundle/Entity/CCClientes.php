@@ -1,16 +1,16 @@
 <?php
 
-namespace Mbp\ProveedoresBundle\Entity;
+namespace Mbp\FinanzasBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * CCProv
+ * CCClientes
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Mbp\ProveedoresBundle\Entity\CCProvRepository")
+ * @ORM\Entity(repositoryClass="Mbp\FinanzasBundle\Entity\CCClientesRepository")
  */
-class CCProv
+class CCClientes
 {
     /**
      * @var integer
@@ -24,42 +24,42 @@ class CCProv
     /**
      * @var string
      *
-     * @ORM\Column(name="debe", type="decimal", precision=11 , scale=2, nullable=false)
+     * @ORM\Column(name="debe", type="decimal")
      */
     private $debe=0;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="haber", type="decimal", precision=11 , scale=2, nullable=false)
+     * @ORM\Column(name="haber", type="decimal")
      */
     private $haber=0;
-	
-	/**
+
+    /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fechaEmision", type="datetime", nullable=false)
+     * @ORM\Column(name="fechaEmision", type="datetime")
      */
     private $fechaEmision;
-	
-	/**
+
+    /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fechaVencimiento", type="date", nullable=false)
+     * @ORM\Column(name="fechaVencimiento", type="date")
      */
     private $fechaVencimiento;
-    
-    /**
-	 * @ORM\OneToOne(targetEntity="Mbp\ProveedoresBundle\Entity\Factura", inversedBy="ccId")
+	
+	/**
+	 * @ORM\OneToOne(targetEntity="Mbp\FinanzasBundle\Entity\Facturas", inversedBy="ccId")
 	 * @ORM\JoinColumn(name="facturaId", referencedColumnName="id", onDelete="CASCADE")
 	 */
 	private $facturaId;
 	
 	/**
-	 * @ORM\OneToOne(targetEntity="Mbp\ProveedoresBundle\Entity\OrdenPago", inversedBy="ccId")
-	 * @ORM\JoinColumn(name="OrdenPagoId", referencedColumnName="id", onDelete="CASCADE")
+	 * @ORM\OneToOne(targetEntity="Mbp\FinanzasBundle\Entity\Cobranzas", inversedBy="ccId")
+	 * @ORM\JoinColumn(name="cobranzaId", referencedColumnName="id", onDelete="CASCADE")
 	 */
-	private $OrdenPagoId;
+	private $cobranzaId;
 
 
     /**
@@ -77,7 +77,7 @@ class CCProv
      *
      * @param string $debe
      *
-     * @return CCProv
+     * @return CCClientes
      */
     public function setDebe($debe)
     {
@@ -101,7 +101,7 @@ class CCProv
      *
      * @param string $haber
      *
-     * @return CCProv
+     * @return CCClientes
      */
     public function setHaber($haber)
     {
@@ -125,7 +125,7 @@ class CCProv
      *
      * @param \DateTime $fechaEmision
      *
-     * @return CCProv
+     * @return CCClientes
      */
     public function setFechaEmision($fechaEmision)
     {
@@ -149,7 +149,7 @@ class CCProv
      *
      * @param \DateTime $fechaVencimiento
      *
-     * @return CCProv
+     * @return CCClientes
      */
     public function setFechaVencimiento($fechaVencimiento)
     {
@@ -168,15 +168,14 @@ class CCProv
         return $this->fechaVencimiento;
     }
 
-    
     /**
      * Set facturaId
      *
-     * @param \Mbp\ProveedoresBundle\Entity\Factura $facturaId
+     * @param \Mbp\FinanzasBundle\Entity\Facturas $facturaId
      *
-     * @return CCProv
+     * @return CCClientes
      */
-    public function setFacturaId(\Mbp\ProveedoresBundle\Entity\Factura $facturaId = null)
+    public function setFacturaId(\Mbp\FinanzasBundle\Entity\Facturas $facturaId = null)
     {
         $this->facturaId = $facturaId;
 
@@ -186,7 +185,7 @@ class CCProv
     /**
      * Get facturaId
      *
-     * @return \Mbp\ProveedoresBundle\Entity\Factura
+     * @return \Mbp\FinanzasBundle\Entity\Facturas
      */
     public function getFacturaId()
     {
@@ -194,26 +193,26 @@ class CCProv
     }
 
     /**
-     * Set ordenPagoId
+     * Set cobranzaId
      *
-     * @param \Mbp\ProveedoresBundle\Entity\OrdenPago $ordenPagoId
+     * @param \Mbp\FinanzasBundle\Entity\Cobranzas $cobranzaId
      *
-     * @return CCProv
+     * @return CCClientes
      */
-    public function setOrdenPagoId(\Mbp\ProveedoresBundle\Entity\OrdenPago $ordenPagoId = null)
+    public function setCobranzaId(\Mbp\FinanzasBundle\Entity\Cobranzas $cobranzaId = null)
     {
-        $this->OrdenPagoId = $ordenPagoId;
+        $this->cobranzaId = $cobranzaId;
 
         return $this;
     }
 
     /**
-     * Get ordenPagoId
+     * Get cobranzaId
      *
-     * @return \Mbp\ProveedoresBundle\Entity\OrdenPago
+     * @return \Mbp\FinanzasBundle\Entity\Cobranzas
      */
-    public function getOrdenPagoId()
+    public function getCobranzaId()
     {
-        return $this->OrdenPagoId;
+        return $this->cobranzaId;
     }
 }

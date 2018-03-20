@@ -56,6 +56,27 @@ class TipoComprobante
      */
     private $descripcion;
 	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="subTipoA", type="boolean")
+     */
+    private $subTipoA=0;
+	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="subTipoB", type="boolean")
+     */
+    private $subTipoB=0;
+	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="subTipoE", type="boolean")
+     */
+    private $subTipoE=0;
+	
 
 
     /**
@@ -186,5 +207,77 @@ class TipoComprobante
     public function getEsBalance()
     {
         return $this->esBalance;
+    }
+
+    /**
+     * Set subTipoA
+     *
+     * @param boolean $subTipoA
+     *
+     * @return TipoComprobante
+     */
+    public function setSubTipoA($subTipoA)
+    {
+        $this->subTipoA = $subTipoA;
+
+        return $this;
+    }
+
+    /**
+     * Get subTipoA
+     *
+     * @return boolean
+     */
+    public function getSubTipoA()
+    {
+        return $this->subTipoA;
+    }
+
+    /**
+     * Set subTipoB
+     *
+     * @param boolean $subTipoB
+     *
+     * @return TipoComprobante
+     */
+    public function setSubTipoB($subTipoB)
+    {
+        $this->subTipoB = $subTipoB;
+
+        return $this;
+    }
+
+    /**
+     * Get subTipoB
+     *
+     * @return boolean
+     */
+    public function getSubTipoB()
+    {
+        return $this->subTipoB;
+    }
+
+    /**
+     * Set subTipoE
+     *
+     * @param boolean $subTipoE
+     *
+     * @return TipoComprobante
+     */
+    public function setSubTipoE($subTipoE)
+    {
+        $this->subTipoE = $subTipoE;
+
+        return $this;
+    }
+
+    /**
+     * Get subTipoE
+     *
+     * @return boolean
+     */
+    public function getSubTipoE()
+    {
+        return $this->subTipoE;
     }
 }

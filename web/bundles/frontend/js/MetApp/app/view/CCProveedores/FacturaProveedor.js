@@ -74,7 +74,7 @@ Ext.define('MetApp.view.CCProveedores.FacturaProveedor',{
 										{
 											xtype: 'numberfield',
 											allowBlank: false,
-											fieldLabel: 'N°',
+											fieldLabel: 'N° Cbte.',
 											name: 'numFc',
 											itemId: 'numFc'
 										},
@@ -119,8 +119,9 @@ Ext.define('MetApp.view.CCProveedores.FacturaProveedor',{
 								{
 									xtype: 'container',
 									columnWidth: 0.65,
+									layout: 'anchor',
 									defaults: {
-										labelWidth: 65,
+										labelWidth: 90,
 									},
 									items: [
 										{
@@ -167,7 +168,8 @@ Ext.define('MetApp.view.CCProveedores.FacturaProveedor',{
 											xtype: 'numberfield',
 											fieldLabel: 'Total',
 											itemId: 'total',
-											disabled: true,
+											name: 'totalFc',
+											readOnly: true,
 											disabledCls: 'myDisabledCls'					
 										},
 										{
@@ -190,6 +192,14 @@ Ext.define('MetApp.view.CCProveedores.FacturaProveedor',{
 											displayField: 'descripcion',
 											valueField: 'id',
 											forceSelection: true											
+										},
+										{
+											xtype: 'textareafield',
+											name: 'observaciones',
+											itemId: 'observaciones',
+											fieldLabel: 'Observaciones',
+											anchor: '100%',
+											margin: '0 5 0 0'
 										}
 										
 									]

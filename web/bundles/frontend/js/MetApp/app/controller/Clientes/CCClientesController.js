@@ -217,19 +217,11 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var values = selection.getData();
 		var reporte = '';
 		
-		switch(values.tipo){
-			case "1":
-				reporte = Routing.generate('mbp_CCClientes_generateFc');
-				break;
-			case "2":
-				reporte = Routing.generate('mbp_CCClientes_generateFc');
-				break;
-			case "3":
-				reporte = Routing.generate('mbp_CCClientes_generateFc');
-				break;
-			case '':
-				reporte = Routing.generate('mbp_CCClientes_generateCobranza');
-				break;
+		console.log(values);
+		if(values.idF > 0){
+			reporte = Routing.generate('mbp_CCClientes_generateFc');
+		}else{
+			reporte = Routing.generate('mbp_CCClientes_generateCobranza');
 		}
 		
 		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
@@ -237,7 +229,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		
 		var idCliente = win.queryById('id').getValue();
 		var ruta;
-		if(values.tipo == "1" || values.tipo == "2" || values.tipo == "3"){			
+		if(values.idF > 0){			
 			ruta = Routing.generate('mbp_CCClientes_verFc');
 			Ext.Ajax.request({
 				url: reporte,
@@ -245,7 +237,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 				params: {
 					tipo: values.tipo,
 					idCliente: idCliente,
-					idFactura: values.id
+					idFactura: values.idF
 				},
 				
 				success: function(resp){					
@@ -264,7 +256,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 				params: {
 					tipo: values.tipo,
 					idCliente: idCliente,
-					idCobranza: values.id
+					idCobranza: values.idCob
 				},
 				
 				success: function(resp){

@@ -56,6 +56,27 @@ class TipoComprobante
      */
     private $descripcion;
 	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="subTipoA", type="boolean")
+     */
+    private $subTipoA=0;
+	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="subTipoB", type="boolean")
+     */
+    private $subTipoB=0;
+	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="subTipoE", type="boolean")
+     */
+    private $subTipoE=0;
+	
 
 
     /**
@@ -163,5 +184,28 @@ class TipoComprobante
     {
         return $this->descripcion;
     }
-}
 
+    /**
+     * Set esBalance
+     *
+     * @param boolean $esBalance
+     *
+     * @return TipoComprobante
+     */
+    public function setEsBalance($esBalance)
+    {
+        $this->esBalance = $esBalance;
+
+        return $this;
+    }
+
+    /**
+     * Get esBalance
+     *
+     * @return boolean
+     */
+    public function getEsBalance()
+    {
+        return $this->esBalance;
+    }
+}

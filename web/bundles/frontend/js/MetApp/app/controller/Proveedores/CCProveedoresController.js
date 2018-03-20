@@ -277,6 +277,7 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 		     fn: function(btn){
 		     	if(btn=="yes"){
 		     		store.remove(selection);
+		     		store.load();
 		     	}
 		     }
 		});		

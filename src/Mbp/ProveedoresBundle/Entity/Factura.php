@@ -172,7 +172,7 @@ class Factura
     private $esBalance=0;
 	
 	/**
-	 * @ORM\OneToOne(targetEntity="Mbp\ProveedoresBundle\Entity\CCProv", mappedBy="factura", cascade={"remove", "persist"})
+	 * @ORM\OneToOne(targetEntity="Mbp\ProveedoresBundle\Entity\CCProv", mappedBy="facturaId", cascade={"remove", "persist"})
 	 * @ORM\JoinColumn(name="ccId", referencedColumnName="id", onDelete="SET NULL")
 	 */
 	private $ccId;

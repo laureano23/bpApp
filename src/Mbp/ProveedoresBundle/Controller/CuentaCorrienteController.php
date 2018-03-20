@@ -38,10 +38,14 @@ class CuentaCorrienteController extends Controller
 		
 		try{
 			$fcProveedor;
+			$cc;
 			if($objData->idF > 0){
 				$fcProveedor = $repoFc->find($objData->idF);
+				$cc = $fcProveedor->getCcId();
 			}else{
 				$fcProveedor = new Factura();	
+				//nuevo mov de cc
+				$cc = new CCProv;
 			}
 			
 			$proveedor = $provRepo->find($objData->idProv);
@@ -68,9 +72,9 @@ class CuentaCorrienteController extends Controller
 			$fcProveedor->setconcepto($objData->concepto);
 			$fcProveedor->setTotalFc();
 			$fcProveedor->setImputacionGasto($tipoGasto);
+			$fcProveedor->setObservaciones($objData->observaciones);
 			
-			//nuevo mov de cc
-			$cc = new CCProv;
+			
 			if($fcProveedor->getTipoId()->getEsNotaCredito()){
 				$cc->setDebe($fcProveedor->getTotalFc());
 			}else{
@@ -90,6 +94,7 @@ class CuentaCorrienteController extends Controller
 				'success' => true,				
 			));	
 		}catch(\Exception $e){
+			throw $e;
 			echo json_encode(array(
 				'success' => false,
 				'msg' => $e->getMessage()
@@ -107,25 +112,23 @@ class CuentaCorrienteController extends Controller
 		$idProv = $req->query->get('idProv');
 		$em = $this->getDoctrine()->getManager();
 		$repo = $em->getRepository('MbpProveedoresBundle:CCProv');		
+		$response = new Response;
 				
 		try{
 			//CONSULTO EN CADA REPOSITORIO POR LOS PAGOS Y FACTURAS RESPECTIVAMENTE
 			$res = $repo->listarCCProv($idProv);
 			
 			
-			echo json_encode(array(
+			return $response->setContent(json_encode(array(
+				'success' => true,
 				'data' => $res
-			));
-			
+			)));
 		}catch(\Exception $e){
-			throw $e;
-			echo json_encode(array(
+			return $response->setContent(json_encode(array(
 				'success' => false,
-				'msg' => $e->getMessage()
-			));
+				'data' => $e->getMessage()
+			)));
 		}
-		
-		return new Response();
     }
 	
 	function ordenar($a, $b) {
@@ -289,13 +292,19 @@ class CuentaCorrienteController extends Controller
 		$repo = $em->getRepository('MbpProveedoresBundle:Factura');
 		$req = $this->getRequest();
 		$idFc = $req->request->get('idFc');
-				
-		$fc = $repo->buscarFcPorId($idFc);
-		echo json_encode(array(
-			'data' => $fc,			
-		));
+		$response = new Response;
 		
-		return new Response();
+		try{
+			$fc = $repo->buscarFcPorId($idFc);
+			return $response->setContent(
+				 json_encode(array(
+				 		'success' => true,
+						'data' => $fc,			
+					))
+				);	
+		}catch(\Exception $e){
+			return $response->setContent(json_encode(array('success' => FALSE, 'msg' => $e->getMessage())));
+		}
 	}
 
 	/**

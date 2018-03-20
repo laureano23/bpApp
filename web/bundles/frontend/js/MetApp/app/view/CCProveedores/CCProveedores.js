@@ -227,7 +227,6 @@ Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 							{ 
 								header: 'Editar',
 								renderer: function(val, met, rec){
-									console.log(rec);
 									if(rec.data.idOP==0){
 										this.removeCls('edit');
 									}
@@ -238,7 +237,6 @@ Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 									{ 
 										iconCls: 'edit',
 										getClass: function(value,metadata,record){
-											console.log(record);
 											var idF = record.get('idF');
 											if (idF == 0 ) {
 											    return 'x-hide-display'; 

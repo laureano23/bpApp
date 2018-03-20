@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b7fbe4cc-9642-4a30-b319-1f1509ec7bd0">
 	<property name="ireport.zoom" value="1.7715610000000075"/>
-	<property name="ireport.x" value="491"/>
-	<property name="ireport.y" value="136"/>
+	<property name="ireport.x" value="453"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="rutaLogo" class="java.lang.String"/>
 	<parameter name="facturaId" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -18,7 +18,6 @@
      Facturas.`concepto` AS Facturas_concepto,
      Facturas.`vencimiento` AS Facturas_vencimiento,
      Facturas.`clienteId` AS Facturas_clienteId,
-     Facturas.`tipo` AS Facturas_tipo,
      FacturaDetalle.`id` AS FacturaDetalle_id,
      FacturaDetalle.`descripcion` AS FacturaDetalle_descripcion,
      FacturaDetalle.`cantidad` AS FacturaDetalle_cantidad,
@@ -59,7 +58,16 @@
      RemitosClientesDetalles.`articuloId` AS RemitosClientesDetalles_articuloId,
      RemitosClientesDetalles.`pedidoDetalleId` AS RemitosClientesDetalles_pedidoDetalleId,
      RemitosClientesDetalles.`facturado` AS RemitosClientesDetalles_facturado,
-     Facturas.`moneda` AS Facturas_moneda
+     Facturas.`moneda` AS Facturas_moneda,
+     TipoComprobante.`id` AS TipoComprobante_id,
+     TipoComprobante.`esFactura` AS TipoComprobante_esFactura,
+     TipoComprobante.`esNotaCredito` AS TipoComprobante_esNotaCredito,
+     TipoComprobante.`esNotaDebito` AS TipoComprobante_esNotaDebito,
+     TipoComprobante.`descripcion` AS TipoComprobante_descripcion,
+     TipoComprobante.`esBalance` AS TipoComprobante_esBalance,
+     TipoComprobante.`subTipoA` AS TipoComprobante_subTipoA,
+     TipoComprobante.`subTipoB` AS TipoComprobante_subTipoB,
+     TipoComprobante.`subTipoE` AS TipoComprobante_subTipoE
 FROM
      `Facturas` Facturas LEFT OUTER JOIN `factura_detallesFacturas` factura_detallesFacturas ON Facturas.`id` = factura_detallesFacturas.`factura_id`
      INNER JOIN `FacturaDetalle` FacturaDetalle ON factura_detallesFacturas.`facturadetalle_id` = FacturaDetalle.`id`
@@ -68,6 +76,7 @@ FROM
      LEFT OUTER JOIN `RemitoClientes_detalle` RemitoClientes_detalle ON RemitosClientesDetalles.`id` = RemitoClientes_detalle.`remitosclientesdetalles_id`
      LEFT OUTER JOIN `RemitosClientes` RemitosClientes ON RemitoClientes_detalle.`remitosclientes_id` = RemitosClientes.`id`
      LEFT OUTER JOIN `cliente` cliente ON Facturas.`clienteId` = cliente.`idCliente`
+     INNER JOIN `TipoComprobante` TipoComprobante ON Facturas.`tipoId` = TipoComprobante.`id`
 WHERE
      Facturas.`id` = $P{facturaId}]]>
 	</queryString>
@@ -79,7 +88,6 @@ WHERE
 	<field name="Facturas_concepto" class="java.lang.String"/>
 	<field name="Facturas_vencimiento" class="java.sql.Date"/>
 	<field name="Facturas_clienteId" class="java.lang.Integer"/>
-	<field name="Facturas_tipo" class="java.lang.Integer"/>
 	<field name="FacturaDetalle_id" class="java.lang.Integer"/>
 	<field name="FacturaDetalle_descripcion" class="java.lang.String"/>
 	<field name="FacturaDetalle_cantidad" class="java.math.BigDecimal"/>
@@ -120,6 +128,15 @@ WHERE
 	<field name="RemitosClientesDetalles_pedidoDetalleId" class="java.lang.Integer"/>
 	<field name="RemitosClientesDetalles_facturado" class="java.lang.Boolean"/>
 	<field name="Facturas_moneda" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_id" class="java.lang.Integer"/>
+	<field name="TipoComprobante_esFactura" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_esNotaCredito" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_esNotaDebito" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_descripcion" class="java.lang.String"/>
+	<field name="TipoComprobante_esBalance" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_subTipoA" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_subTipoB" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_subTipoE" class="java.lang.Boolean"/>
 	<variable name="subTotal" class="java.lang.Float" calculation="Sum">
 		<variableExpression><![CDATA[$F{FacturaDetalle_cantidad} * $F{FacturaDetalle_precio}]]></variableExpression>
 	</variable>
@@ -342,9 +359,9 @@ PARTIDA MUNICIPAL N° 070-039139]]></text>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="28"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Facturas_tipo} == 1 ? "A" :
-$F{Facturas_tipo} == 2 ? "A" :
-$F{Facturas_tipo} == 3 ? "A" : ""]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{TipoComprobante_subTipoA} == true ? "A" :
+$F{TipoComprobante_subTipoB} == true ? "B" :
+$F{TipoComprobante_subTipoE} == true ? "C" : ""]]></textFieldExpression>
 			</textField>
 			<image scaleImage="FillFrame" onErrorType="Blank">
 				<reportElement x="0" y="0" width="72" height="50" uuid="df02c744-dcbd-4b17-8f58-262804f8c098"/>
@@ -365,7 +382,7 @@ $F{Facturas_tipo} == 3 ? "A" : ""]]></textFieldExpression>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Facturas_tipo} == 1 ? "X" : ""]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{TipoComprobante_esFactura} == true ? "X" : ""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="436" y="3" width="27" height="20" uuid="2b97a1a6-dbe6-4aa3-9905-8b89c0e71842"/>
@@ -378,7 +395,7 @@ $F{Facturas_tipo} == 3 ? "A" : ""]]></textFieldExpression>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Facturas_tipo} == 2 ? "X" : ""]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{TipoComprobante_esNotaDebito} == true ? "X" : ""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="528" y="3" width="27" height="20" uuid="f98a5113-470c-4e62-8e5c-c9ca05e28bfd"/>
@@ -391,7 +408,7 @@ $F{Facturas_tipo} == 3 ? "A" : ""]]></textFieldExpression>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Facturas_tipo} == 3 ? "X" : ""]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == true ? "X" : ""]]></textFieldExpression>
 			</textField>
 			<textField pattern="#0000" isBlankWhenNull="true">
 				<reportElement x="403" y="34" width="50" height="20" uuid="63846302-6ee3-4407-ade6-947614dba2f2"/>
