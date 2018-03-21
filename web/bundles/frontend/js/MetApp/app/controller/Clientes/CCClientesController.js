@@ -16,6 +16,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		'MetApp.view.CCClientes.Cobranza',
 		'MetApp.resources.ux.MailerWindow',
 		'Articulos.Stock.Remitos.RemitosPendientesView',
+		'MetApp.view.CCProveedores.BalanceView'
 	],
 	refs:[
 		{
@@ -37,6 +38,9 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			},
 			'#CCClientes button[itemId=buscaCliente]': {
 				click: this.AddTablaClientes
+			},
+			'CCClientes button[itemId=balance]': {
+				click: this.CrearBalance
 			},
 			'CCClientes button[itemId=nuevaFc]': {
 				click: this.AddNuevoFactura
@@ -96,6 +100,38 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 				select: this.SetReadOnlyCuenta
 			}
 		});
+	},
+	
+		
+	CrearBalance: function(btn){
+		var win = Ext.widget('BalanceView');
+		var form = win.down('form');
+		var ccView = btn.up('window');
+		var idCliente = ccView.queryById('id').getValue();
+		var btnSave = win.queryById('guardar');
+		
+		
+		btnSave.on('click', function(){
+			if(!form.isValid()) return;
+			var values = form.getForm().getValues();
+			Ext.Ajax.request({
+				url: Routing.generate('mbp_CCClientes_CrearBalance'),
+				
+				params: {
+					neto: values.neto,
+					obs: values.observaciones,
+					idCliente: idCliente
+				},
+				
+				success: function(resp){
+					var jsonResp = Ext.JSON.decode(resp.responseText);
+					if(jsonResp.success == true){
+						win.close();
+						ccView.down('grid').getStore().load();
+					}
+				}
+			})
+		})
 	},
 	
 	SetReadOnlyCuenta: function(combo, rec){
@@ -287,8 +323,9 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var selection = grid.getSelectionModel().getSelection()[0];
 		var adjunto = win.queryById('adjunto');
 		
+		console.log(selection);
 		//SETEO ADJUNTO
-		adjunto.setValue(selection.data.concepto+selection.data.id);
+		adjunto.setValue(selection.data.concepto);
 	},
 	
 	EliminarComprobante: function(btn){
@@ -306,23 +343,12 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 					var selection = grid.getSelectionModel().getSelection()[0];
 					var data = selection.getData();
 					
-					var tipo;
-					if(data.haber > 0){
-						tipo = 'cobranza';
-					}else{
-						tipo = 'factura'
-					}
-					
-					var aData = {
-						tipo: tipo,
-						id: data.id
-					}
 					
 					Ext.Ajax.request({
 						url: Routing.generate('mbp_CCClientes_EliminarComprobante'),
 						
 						params: {
-							data: Ext.JSON.encode(aData)
+							idCobranza: data.idCob
 						},
 						
 						success: function(resp){
@@ -340,6 +366,9 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 	
 	EnviarMail: function(btn){
 		var form = btn.up('form');
+		
+		if(!form.isValid()) return;
+		
 		var values = form.getValues();		
 		var ccView = this.getCCClientes();
 		var grid = ccView.down('grid');
@@ -350,21 +379,42 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var idCliente = ccView.queryById('id').getValue();
 		var idFactura;
 		var idCobranza;
-		tipo == 'fa' ? idFactura = selection.data.id : idCobranza = selection.data.id;
 		//AGREGO DATOS 
 		values.tipo = tipo;
 		values.idCliente = idCliente;
-		values.idFactura = idFactura;
-		values.idCobranza = idCobranza;
+		values.idFactura = selection.data.idF;
+		values.idCobranza = selection.data.idCob;
+		
+		var myMask = new Ext.LoadMask(form, {msg:"Enviando..."});
+		myMask.show();
 		
 		Ext.Ajax.request({
-			url: Routing.generate('mbp_CCClientes_MailComprobante'),
+			url: Routing.generate('mbp_CCClientes_generateFc'),
 			
 			params: values,
 			
+			failure: function(resp){
+				myMask.hide();
+			},
+			
 			success: function(resp){
+				Ext.Ajax.request({
+					url: Routing.generate('mbp_CCClientes_MailComprobante'),
+					
+					params: values,
+					
+					success: function(resp){
+						myMask.hide();
+					},
+					
+					failure: function(resp){
+						myMask.hide();
+					}
+				});
 			}
-		});
+		})
+		
+				
 	},
 		
 	BuscaArticulos: function(btn){
@@ -461,7 +511,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var valuesDatosFc = formDatosFc.getValues();
 		var ccView = this.getCCClientes();
 
-		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
+		var myMask = new Ext.LoadMask(grid, {msg:"Cargando..."});
 		myMask.show();
 		
 		if(store.data.items.length == 0){

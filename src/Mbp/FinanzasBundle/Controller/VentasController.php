@@ -49,78 +49,6 @@ class VentasController extends Controller
 		$idCliente = $req->query->get('idCliente');
 		
 		$resp = $repo->listarCCClientes($idCliente);
-		/*
-		$repo = $em->getRepository('MbpFinanzasBundle:FacturaDetalle');
-		$repoFacturas = $em->getRepository('MbpFinanzasBundle:Facturas');
-		$repoCobranzas = $em->getRepository('MbpFinanzasBundle:Cobranzas');
-		$repoClientes = $em->getRepository('MbpClientesBundle:Cliente');
-		$req = $this->getRequest();
-		
-		
-		$idCliente = $req->query->get('idCliente');
-
-		$clienteObj = $repoClientes->find($idCliente);
-		if($clienteObj->getCuentaCerrada() == 1){
-			echo json_encode(array("success"=>false, "msg"=>"El cliente tiene la cuenta cerrada"));
-			return new Response;
-		}
-		
-		
-		$resulFacturas = $repoFacturas->listaFacturasClientes($idCliente);
-				
-		//METODO AUXILIAR PARA CALCULAR EL SUBTOTAL DE LAS FACTURAS
-		$auxFinanzas = $this->get('AuxiliarFinanzas');		
-		$subTotal = $auxFinanzas->SubTotalFacturaAction($resulFacturas);
-		
-		
-		$resulPagos = $repoCobranzas->listaPagosClientes($idCliente);		
-		
-		//METODO AUXILIAR PARA CALCULAR EL TOTAL DE LAS COBRANZAS
-		$subTotalCobranza = $auxFinanzas->SubTotalCobranzaAction($resulPagos);
-		
-		
-		$resp = array();
-		$i=0;
-		
-		if(!empty($resulFacturas)){
-			foreach ($resulFacturas as $factura) {
-				$resp[$i]['id'] = $factura->getId();
-				$resp[$i]['emisionCalc'] = $factura->getFecha();//SOLO PARA ORDENAMIENTO POSTERIOR
-				$resp[$i]['emision'] = $factura->getFecha()->format('d-m-Y');
-				$resp[$i]['concepto'] = $factura->getConcepto()." N° ".$factura->getfcNro();
-				$resp[$i]['vencimiento'] = $factura->getVencimiento()->format('d-m-Y'); 
-				$resp[$i]['debe'] = $factura->getTipo() == 1 || $factura->getTipo() == 2 ? $factura->getTotal() : ""; //SI ES FC O ND
-				$resp[$i]['haber'] = $factura->getTipo() != 1 && $factura->getTipo() != 2 ? $factura->getTotal() : "";//SI NO ES FC NI ND
-				$resp[$i]['tipo'] = $factura->getTipo();
-				$i++;
-			}	
-		}
-		
-		$respPagos = array();
-		$i=0;
-		
-		if(!empty($resulPagos)){
-			foreach ($resulPagos as $pagos) {
-				$respPagos['id'] = $pagos->getId(); 
-				$respPagos['emisionCalc'] = $pagos->getEmision();//SOLO PARA ORDENAMIENTO POSTERIOR
-				$respPagos['emision'] = $pagos->getEmision()->format('d-m-Y');
-				$respPagos['concepto'] = 'COBRANZA N° '.$pagos->getId();
-				$respPagos['vencimiento'] = $pagos->getEmision()->format('d-m-Y'); 
-				$respPagos['debe'] = '';
-				$respPagos['haber'] = $subTotalCobranza[$i];
-				array_push($resp, $respPagos);
-				$i++;
-			}	
-		}		
-		
-		
-		if(!empty($resp)){
-			//ORDENO LA SALIDA DEL ARRAY PARA MOSTRARLA POR FECHA DE EMISION DEL COMPROBANTE
-			usort($resp, array($this, 'ordenar'));
-			
-			//UTILIZO ESTA CLASE AUXILIAR PARA CALCULAR EL SALDO DE LA CUENTA
-			$auxFinanzas->calculaSaldo($resp, $haber='haber', $debe='debe');	
-		}		*/
 		
 		echo json_encode(array(
 			'items' => $resp
@@ -347,7 +275,6 @@ class VentasController extends Controller
 			return $response;
 
 		}catch(\Exception $e){
-			throw $e;
 			$response->setContent(json_encode(array("success"=>false, "msg"=>$e->getMessage())));
 			return $response;
 		}
@@ -360,28 +287,43 @@ class VentasController extends Controller
      */	
     public function MailComprobanteAction()
 	{
-		$this->generarFcAction();
 		$req = $this->getRequest();
+		$kernel = $this->get('kernel');
+		$response = new Response;
 		
-		/* DEFINO SI BUSCAR UNA FACTURA O COBRANZA */
-		$tipoComprobante = $req->request->get('tipo');
-		$ruta;
-		$rootDir = $this->get('kernel')->getRootDir();
-		
-		$tipoComprobante == 'fa' ? $ruta = $rootDir.'/../src/Mbp/FinanzasBundle/Resources/public/pdf/factura.pdf' : $ruta =  $rootDir.'/../src/Mbp/FinanzasBundle/Resources/public/pdf/ReciboCobranzas.pdf';
-		
-		$mensaje = \Swift_Message::newInstance()
-			->setSubject($req->request->get('asunto'))
-			->setFrom('administracion@metalurgicabp.com.ar')
-			->setTo($req->request->get('destinatario'))
-			->setBody($req->request->get('mensaje'));
-		
-		$adjunto = \Swift_Attachment::fromPath($ruta);
-		$mensaje->attach($adjunto);
+		try{
+			/* DEFINO SI BUSCAR UNA FACTURA O COBRANZA */
+			$idFactura = $req->request->get('idFactura');
 			
-		$this->get('mailer')->send($mensaje);
+			$ruta="";
+			if($idFactura > 0){
+				$ruta = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'factura.pdf';
+			}else{
+				$ruta = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'ReciboCobranzas.pdf';
+			}
+			
+			$mensaje = \Swift_Message::newInstance()
+				->setSubject($req->request->get('asunto'))
+				->setFrom('administracion@metalurgicabp.com.ar')
+				->setTo($req->request->get('destinatario'))
+				->setBody($req->request->get('mensaje'));
+			
+			$adjunto = \Swift_Attachment::fromPath($ruta);
+			$mensaje->attach($adjunto);
+				
+			$this->get('mailer')->send($mensaje);
+			
+			return $response->setContent(
+				json_encode(array('success' => true))
+			);
+		}catch(\Exception $e){
+			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(
+				json_encode(array('success' => false, 'msg' => $e->getMessage()))
+				);
+		}
 		
-		return new Response();
+			
 	}	
 	
 
@@ -394,13 +336,12 @@ class VentasController extends Controller
 		$em = $this->getDoctrine()->getManager();
 		$response = new Response();
 		
-		$data = $req->request->get('data');
-		$decData = json_decode($data);
+		$idCobranza = $req->request->get('idCobranza');
 		
 		$repo = $em->getRepository('MbpFinanzasBundle:Cobranzas');
 				
 		try{
-			$record = $repo->find($decData->id);
+			$record = $repo->find($idCobranza);
 			if(empty($record)){
 				throw new \Exception("No se encontró el registro", 1);			
 			}	
@@ -461,6 +402,84 @@ class VentasController extends Controller
 			'msg' => 'Este recibo pertenece al cliente '.$resu[0]->getClienteId()->getRsocial()
 		));
 		return new Response();
+	}
+	
+	/**
+     * @Route("/adm/CCClientes/CrearBalance", name="mbp_CCClientes_CrearBalance", options={"expose"=true})
+     */	
+    public function CrearBalance()
+	{
+		
+		//RECIBO PARAMETROS
+		$em = $this->getDoctrine()->getManager();
+		$req = $this->getRequest();
+		$response = new Response;
+		$repoTipos = $em->getRepository('MbpFinanzasBundle:TipoComprobante');
+		$repoCliente = $em->getRepository('MbpClientesBundle:Cliente');
+
+		try{
+			$neto = $req->request->get('neto');
+			$obs = $req->request->get('obs');
+			$idCliente = $req->request->get('idCliente');	
+		
+			//CREO OBJETO FACTURA
+			$factura = new Facturas;
+			//Creo obj cc
+			$cc = new CCClientes;
+			$fechaFc = new \DateTime;
+			
+			$total;
+			if($neto < 0){
+				$total = $neto * -1;
+			}else{
+				$total = $neto;
+			}
+			
+			$factura->setTotal($total);
+			$factura->setFecha($fechaFc);
+			$factura->setVencimiento($fechaFc);
+			$factura->setConcepto("BALANCE");
+			$factura->setPtoVta(0);
+			$factura->setFcNro(0);
+			$factura->setCae(0);
+			$factura->setVtoCae($fechaFc);
+			$factura->setRSocial("BALANCE");
+			$factura->setDomicilio("BALANCE");
+			$factura->setCuit(0);
+			$factura->setIvaCond("BALANCE");
+			
+			$cliente = $repoCliente->find($idCliente);
+			$factura->setClienteId($cliente);
+			
+			
+			$tipo = $repoTipos->findOneByEsBalance(true);
+			if(empty($tipo)) throw new \Exception("No existe el tipo de comprobante balance en la BD", 1);
+			$factura->setTipoId($tipo);
+						
+			//cc
+			if($neto < 0){
+				$cc->setHaber($factura->getTotal());	
+			}else{
+				$cc->setDebe($factura->getTotal());
+			}
+			$cc->setFechaEmision($factura->getFecha());
+			$cc->setFechaVencimiento($factura->getVencimiento());
+			$cc->setFacturaId($factura);
+			
+			$factura->setCcId($cc);
+			
+			$em->persist($factura);
+			$em->flush();
+			
+			return $response->setContent(
+				json_encode(array('success' => true))
+			);
+			
+		}catch(\Exception $e){
+			$response->setContent(json_encode(array("success" => false, "msg" => $e->getMessage())));
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response;
+		}
 	}
 }
 

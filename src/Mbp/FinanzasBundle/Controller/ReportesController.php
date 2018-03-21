@@ -27,7 +27,6 @@ class ReportesController extends Controller
 		/*
 		 * PARAMETROS
 		 */
-		$tipo = $req->request->get('tipo');
 		$idCliente = $req->request->get('idCliente');		
 		$idFactura = $req->request->get('idFactura');	
 						
@@ -54,7 +53,6 @@ class ReportesController extends Controller
 		$param = $reporteador->getJava('java.util.HashMap');
 		$rutaLogo = $reporteador->getRutaLogo($kernel);
 		
-		$param->put('tipo', $tipo);
 		$param->put('rutaLogo', $rutaLogo);
 		$param->put('idFactura', $idFactura);
 		
@@ -248,8 +246,7 @@ class ReportesController extends Controller
 			     Cobranzas.`id` = $idCobranza";
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	
-		}catch(\JavaException $e){
-			//print_r($e->getLine());
+		}catch(\Exception $e){
 			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(
 				json_encode(array('success' => false, 'msg' => $e->getMessage()))

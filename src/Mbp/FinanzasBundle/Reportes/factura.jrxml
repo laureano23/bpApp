@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b7fbe4cc-9642-4a30-b319-1f1509ec7bd0">
-	<property name="ireport.zoom" value="1.7715610000000075"/>
-	<property name="ireport.x" value="453"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="rutaLogo" class="java.lang.String"/>
 	<parameter name="facturaId" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
-	<parameter name="tipo" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
      CASE WHEN Facturas.`vtoCae`=0 THEN NULL ELSE Facturas.`vtoCae` END AS Facturas_vtoCae,

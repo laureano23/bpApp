@@ -26,13 +26,15 @@ Ext.define('MetApp.resources.ux.MailerWindow',{
 					xtype: 'textfield',
 					name: 'destinatario',
 					anchor    : '100%',
-					fieldLabel: 'Destinatario',			
+					fieldLabel: 'Destinatario',		
+					allowBlank: false	
 				},
 				{
 					xtype: 'textfield',
 					name: 'asunto',
 					anchor    : '100%',
 					fieldLabel: 'Asunto',
+					allowBlank: false
 				},
 				{
 					xtype: 'textfield',

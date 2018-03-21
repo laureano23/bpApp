@@ -1,7 +1,7 @@
 Ext.define('MetApp.view.CCClientes.CCClientes' ,{
 	extend: 'Ext.window.Window',
 	height: 450,
-	width: 900,
+	width: 1000,
 	modal: true,
 	autoShow: true,
 	alias: 'widget.CCClientes',
@@ -127,7 +127,7 @@ Ext.define('MetApp.view.CCClientes.CCClientes' ,{
 								dataIndex: 'emision',
 								flex: 1
 							},
-							{ text: 'Concepto', dataIndex: 'concepto', width: 170 },
+							{ text: 'Concepto', dataIndex: 'concepto', width: 240 },
 							{ text: 'Vencimiento', dataIndex: 'vencimiento', flex: 1 },
 							{ text: 'Debe', dataIndex: 'debe', xtype: 'numbercolumn', flex: 1 },
 							{ text: 'Haber', dataIndex: 'haber', xtype: 'numbercolumn', flex: 1 },
@@ -160,7 +160,7 @@ Ext.define('MetApp.view.CCClientes.CCClientes' ,{
 								itemId: 'eliminar',
 								xtype: 'actioncolumn',
 								renderer: function(val, met, rec){
-									if(!rec.data.tipo){
+									if(rec.data.idCob != 0){
 										this.items[0].iconCls = 'delete';
 									}else{
 										this.disabledAction(rec.index);
@@ -201,8 +201,8 @@ Ext.define('MetApp.view.CCClientes.CCClientes' ,{
 						},
 						{
 							xtype: 'button',
-							itemId: 'notas',
-							text: 'Notas (F5)',
+							itemId: 'balance',
+							text: 'Balance (F5)',
 						}
 					]
 				}
