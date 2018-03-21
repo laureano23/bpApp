@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReciboCobranzas" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c33ce8c6-1a4c-46bd-9270-7b87efd587d4">
-	<property name="ireport.zoom" value="1.6105100000000014"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReciboCobranzas" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="c33ce8c6-1a4c-46bd-9270-7b87efd587d4">
+	<property name="ireport.zoom" value="1.2100000000000002"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="150"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="cobranzaId" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -151,7 +151,7 @@ WHERE
 				<text><![CDATA[Diferido]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="5" width="179" height="20" uuid="f61bebee-f7b5-4116-b8ab-a273127c92d1"/>
+				<reportElement x="0" y="5" width="180" height="20" uuid="f61bebee-f7b5-4116-b8ab-a273127c92d1"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -207,13 +207,7 @@ WHERE
 	<columnFooter>
 		<band height="200">
 			<subreport>
-				<reportElement x="0" y="54" width="306" height="146" isPrintWhenDetailOverflows="true" uuid="ee9b83f6-db1d-4222-9240-cd27c1bd14d9"/>
-				<subreportParameter name="SUBREPORT_DIR">
-					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="rutaLogo">
-					<subreportParameterExpression><![CDATA[$P{rutaLogo}]]></subreportParameterExpression>
-				</subreportParameter>
+				<reportElement x="83" y="82" width="200" height="100" uuid="f67859e7-b15d-4071-9665-8548ab5a56dd"/>
 				<subreportParameter name="cobranzaId">
 					<subreportParameterExpression><![CDATA[$P{cobranzaId}]]></subreportParameterExpression>
 				</subreportParameter>

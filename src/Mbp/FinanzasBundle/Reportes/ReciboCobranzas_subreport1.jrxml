@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Detalle_Pago_Proveedor_subreport3" language="groovy" pageWidth="150" pageHeight="50" columnWidth="150" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="be8623b4-7f48-4aa7-8dd3-f0fa455b8495">
-	<property name="ireport.zoom" value="3.797498335832415"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReciboCobranzas_subreport1" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="26bccf02-ac25-4f90-9c3c-ed9b55570f4e">
+	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="cobranzaId" class="java.lang.String">
-		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
-	</parameter>
-	<queryString>
+	<queryString language="SQL">
 		<![CDATA[SELECT
      TransaccionCobranzaFactura.`id` AS TransaccionCobranzaFactura_id,
      TransaccionCobranzaFactura.`aplicado` AS TransaccionCobranzaFactura_aplicado,
@@ -14,12 +11,11 @@
      TransaccionCobranzaFactura.`cobranzaId` AS TransaccionCobranzaFactura_cobranzaId,
      Facturas.`id` AS Facturas_id,
      Facturas.`fecha` AS Facturas_fecha,
-     Facturas.`vencimiento` AS Facturas_vencimiento,
-     Facturas.`total` AS Facturas_total,
+     Facturas.`concepto` AS Facturas_concepto,
+     Facturas.`ptoVta` AS Facturas_ptoVta,
      Facturas.`fcNro` AS Facturas_fcNro
 FROM
-     `Facturas` Facturas INNER JOIN `TransaccionCobranzaFactura` TransaccionCobranzaFactura ON Facturas.`id` = TransaccionCobranzaFactura.`facturaId`
-WHERE TransaccionCobranzaFactura.`cobranzaId` = $P{cobranzaId}]]>
+     `Facturas` Facturas INNER JOIN `TransaccionCobranzaFactura` TransaccionCobranzaFactura ON Facturas.`id` = TransaccionCobranzaFactura.`facturaId`]]>
 	</queryString>
 	<field name="TransaccionCobranzaFactura_id" class="java.lang.Integer"/>
 	<field name="TransaccionCobranzaFactura_aplicado" class="java.math.BigDecimal"/>
@@ -27,104 +23,31 @@ WHERE TransaccionCobranzaFactura.`cobranzaId` = $P{cobranzaId}]]>
 	<field name="TransaccionCobranzaFactura_cobranzaId" class="java.lang.Integer"/>
 	<field name="Facturas_id" class="java.lang.Integer"/>
 	<field name="Facturas_fecha" class="java.sql.Timestamp"/>
-	<field name="Facturas_vencimiento" class="java.sql.Date"/>
-	<field name="Facturas_total" class="java.math.BigDecimal"/>
+	<field name="Facturas_concepto" class="java.lang.String"/>
+	<field name="Facturas_ptoVta" class="java.lang.Integer"/>
 	<field name="Facturas_fcNro" class="java.lang.Integer"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="20" splitType="Stretch">
-			<staticText>
-				<reportElement x="0" y="0" width="150" height="20" uuid="7f686652-cf56-423a-ad51-20d9ebb0be2f"/>
-				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center"/>
-				<text><![CDATA[Liquidacion]]></text>
-			</staticText>
-		</band>
+		<band height="79" splitType="Stretch"/>
 	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
 	<columnHeader>
-		<band height="20" splitType="Stretch">
-			<staticText>
-				<reportElement x="41" y="0" width="58" height="20" uuid="889d4352-71a9-4dd1-9100-3e10ade929bd"/>
-				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center"/>
-				<text><![CDATA[Importe]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="99" y="0" width="51" height="20" uuid="e211c2a8-34f0-4ac1-bf92-1da0ad269496"/>
-				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center"/>
-				<text><![CDATA[Imputado]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="0" width="41" height="20" uuid="b59cc2ce-f468-4511-ae21-115f2f4b6621"/>
-				<box leftPadding="2">
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<text><![CDATA[FC N°]]></text>
-			</staticText>
-		</band>
+		<band height="61" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="20" splitType="Stretch">
-			<textField>
-				<reportElement x="0" y="0" width="41" height="20" uuid="5935995b-bcf7-48f8-a43a-f2a1ae130b42"/>
-				<box leftPadding="2">
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textFieldExpression><![CDATA[$F{Facturas_fcNro}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="41" y="0" width="58" height="20" uuid="cfee83c5-e84b-4bf8-a6ed-a86cdc73033d"/>
-				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$F{Facturas_total}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="99" y="0" width="51" height="20" uuid="119a17d1-d3c0-4821-a373-794693540c3d"/>
-				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$F{TransaccionCobranzaFactura_aplicado}]]></textFieldExpression>
-			</textField>
-		</band>
+		<band height="125" splitType="Stretch"/>
 	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
 </jasperReport>

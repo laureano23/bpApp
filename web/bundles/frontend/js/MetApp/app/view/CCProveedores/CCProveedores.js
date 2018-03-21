@@ -147,7 +147,7 @@ Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 							{ 
 								text: 'Concepto',
 								dataIndex: 'concepto',
-								width:180,
+								width:220,
 								renderer: function(value, metaData, record, row, col, store, gridView){
 									if(record.get('valorImputado') != record.get('haber')){
 										return '<span style="color:red;">'+value+'</span>';

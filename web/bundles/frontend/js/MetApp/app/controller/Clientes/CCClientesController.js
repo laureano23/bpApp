@@ -168,6 +168,15 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var me = this;
 		var winFact = Ext.create('MetApp.view.CCClientes.Facturacion');
 		var store = winFact.down('grid').getStore();	
+		var comboTipo = winFact.queryById('tipo');
+		var storeTipo = comboTipo.getStore();
+		
+		storeTipo.load({
+			callback: function(){
+				comboTipo.select(1);		
+			}
+		})
+		
 		
 		var subTotal=0;
 		

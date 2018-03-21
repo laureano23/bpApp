@@ -87,25 +87,13 @@ Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 							items: [
 								{
 									xtype: 'combo',
-									labelWidth: 150,
-									fieldLabel: 'Tipo de comprobante',
-									store: {
-										fields: ['tipo', 'descripcion'],
-										data: [
-											{ 'tipo': 1, 'descripcion': 'Factura A' },
-											{ 'tipo': 2, 'descripcion': 'Nota de debito A' },
-											{ 'tipo': 3, 'descripcion': 'Nota de credito A' },
-											{ 'tipo': 6, 'descripcion': 'Factura B' },
-											{ 'tipo': 7, 'descripcion': 'Nota de debito B' },
-											{ 'tipo': 8, 'descripcion': 'Nota de credito B' },
-											{ 'tipo': 99, 'descripcion': 'Presupuesto' },
-										]
-									},
-									queryMode: 'local',
+									fieldLabel: 'Tipo',
+									store: 'MetApp.store.Finanzas.TiposComprobantesStore',
 									displayField: 'descripcion',
-									valueField: 'tipo',
+									valueField: 'id',
 									name: 'tipo',
-									value: 1
+									itemId: 'tipo',
+									forceSelection: true
 								},
 								{
 									xtype: 'datefield',																		

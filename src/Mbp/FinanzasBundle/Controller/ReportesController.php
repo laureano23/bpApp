@@ -248,7 +248,8 @@ class ReportesController extends Controller
 			     Cobranzas.`id` = $idCobranza";
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	
-		}catch(\Exception $e){
+		}catch(\JavaException $e){
+			//print_r($e->getLine());
 			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(
 				json_encode(array('success' => false, 'msg' => $e->getMessage()))
