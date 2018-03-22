@@ -7,16 +7,18 @@ El siguiente codigo fuente es una adaptacion de ejemplos encontrados en la web.
 2015 Pablo <pablin.php@gmail.com>
 */
 class wsfev1 {
-	const CUIT 	= 20086082293;                 		# CUIT del emisor de las facturas. Solo numeros sin comillas.
-
+	//const CUIT 	= 20086082293;                 		# CUIT del emisor de las facturas. Solo numeros sin comillas.
+	//const CUIT = 33678767439;
+	public static $CUIT;
+	
 	const TA 	= "/xml/TA.xml";        				# Archivo con el Token y Sign
 	//https://wswhomo.afip.gov.ar/wsfev1/service.asmx // Funciones
 	//https://wswhomo.afip.gov.ar/wsfev1/service.asmx?WSDL // para obtener WSDL
 	const WSDL = "/wsfev1.wsdl";                   	# The WSDL corresponding to WSFEV1	
 	const LOG_XMLS = true;                     		# For debugging purposes
-	const WSFEURL = "https://wswhomo.afip.gov.ar/wsfev1/service.asmx"; // homologacion wsfev1 (testing)
+	public static $WSFEURL; // homologacion wsfev1 (testing)
 	//const WSFEURL = "?????????/wsfev1/service.asmx"; // produccion  
-
+	
 	/*
 	* path del directorio donde esta wsaa.php
 	*/	
@@ -43,8 +45,10 @@ class wsfev1 {
 	/*
 	* Constructor
 	*/
-	public function __construct()
+	public function __construct($wsfeUrl, $cuit)
 	{
+		self::$WSFEURL = $wsfeUrl;
+		self::$CUIT = $cuit;
     
 	    // seteos en php
 	    ini_set("soap.wsdl_cache_enabled", "0");    
@@ -59,10 +63,10 @@ class wsfev1 {
 		
 	    $this->client = new \SoapClient($this->path.self::WSDL, array( 
 					'soap_version' => SOAP_1_2,
-					'location'     => self::WSFEURL,
+					'location'     => self::$WSFEURL,
 					'exceptions'   => 0,
 					'trace'        => 1)
-	    ); 
+	    );
 	}
   
 	/*
@@ -133,7 +137,7 @@ class wsfev1 {
 	$results = $this->client->FECompUltimoAutorizado(
 		array('Auth'=>array('Token' => $this->TA->credentials->token,
 							'Sign' => $this->TA->credentials->sign,
-							'Cuit' => self::CUIT),
+							'Cuit' => self::$CUIT),
 			'PtoVta' => $ptovta,
 			'CbteTipo' => $tipo_cbte));
     $e = $this->_checkErrors($results, 'FECompUltimoAutorizado');
@@ -148,7 +152,7 @@ class wsfev1 {
 	$results = $this->client->FERecuperaLastCMPRequest(
 		array('argAuth' =>  array('Token' => $this->TA->credentials->token,
 								'Sign' => $this->TA->credentials->sign,
-								'cuit' => self::CUIT),
+								'cuit' => self::$CUIT),
 			'argTCMP' => array('PtoVta' => $ptovta,
 								'TipoCbte' => $tipo_cbte)));
 	$e = $this->_checkErrors($results, 'FERecuperaLastCMPRequest');
@@ -166,7 +170,7 @@ class wsfev1 {
 		'Auth' => 
 		array( 'Token' => $this->TA->credentials->token,
 				'Sign' => $this->TA->credentials->sign,
-				'Cuit' => self::CUIT ), 
+				'Cuit' => self::$CUIT ), 
 		'FeCAEReq' => 
 		array( 'FeCabReq' => 
 			array( 'CantReg' => 1,
@@ -234,7 +238,7 @@ class wsfev1 {
 		return $this->client->FEParamGetTiposCbte(
 		array('Auth'=>array('Token' => $this->TA->credentials->token,
 							'Sign' => $this->TA->credentials->sign,
-							'Cuit' => self::CUIT)));
+							'Cuit' => self::$CUIT)));
 	}
 
 	public function FEParamGetTiposTributos()
@@ -242,21 +246,21 @@ class wsfev1 {
 		return $this->client->FEParamGetTiposTributos(
 		array('Auth'=>array('Token' => $this->TA->credentials->token,
 							'Sign' => $this->TA->credentials->sign,
-							'Cuit' => self::CUIT)));
+							'Cuit' => self::$CUIT)));
 	}
 	
 	public function FEParamGetTiposMonedas(){
 		return $this->client->FEParamGetTiposMonedas(
 		array('Auth'=>array('Token' => $this->TA->credentials->token,
 							'Sign' => $this->TA->credentials->sign,
-							'Cuit' => self::CUIT)));
+							'Cuit' => self::$CUIT)));
 	}
 
 	public function FEParamGetCotizacion($monedaId){
 		return $this->client->FEParamGetCotizacion(
 		array('Auth'=>array('Token' => $this->TA->credentials->token,
 							'Sign' => $this->TA->credentials->sign,
-							'Cuit' => self::CUIT),
+							'Cuit' => self::$CUIT),
 				'MonId' => $monedaId));
 	}
 	

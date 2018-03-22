@@ -52,3 +52,6 @@ services:
    reporteador:
      class: Mbp\SenchaBundle\Librerias\Reporteador
      arguments: ['%driver%', '%database_name_dev%', '%database_user2%', '%database_password2%']
+   mbp.faele:
+        class: Mbp\FinanzasBundle\Clases\Faele
+        arguments: [%ptoVta_test%, %docTipo%, %cert_test%, %privateKey_test%, %url_test%, %wsfeUrl_test%, %cuit_test%]

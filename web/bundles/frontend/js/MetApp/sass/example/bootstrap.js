@@ -935,6 +935,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.model.Finanzas.GridImputaFcModel": [],
   "MetApp.model.Finanzas.GrillaFacturacionModel": [],
   "MetApp.model.Finanzas.GrillaPagosModel": [],
+  "MetApp.model.Finanzas.TiposComprobantesModel": [],
   "MetApp.model.Finanzas.TiposPagoModel": [],
   "MetApp.model.Parametros.CentroCostosModel": [],
   "MetApp.model.Parametros.UserParamsModel": [],
@@ -997,6 +998,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.store.Finanzas.GridImputaFcStore": [],
   "MetApp.store.Finanzas.GrillaFacturacionStore": [],
   "MetApp.store.Finanzas.GrillaPagosStore": [],
+  "MetApp.store.Finanzas.TiposComprobantesStore": [],
   "MetApp.store.Finanzas.TiposPagoStore": [],
   "MetApp.store.Parametros.CentroCostosStore": [],
   "MetApp.store.Parametros.UserParamsStore": [],
@@ -1136,6 +1138,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.view.RRHH.TablaSindicatos": [],
   "MetApp.view.Reportes.RepoIVACompras": [],
   "MetApp.view.Reportes.RepoIVAVentas": [],
+  "MetApp.view.Reportes.RepoSaldoDeudor": [],
   "MetApp.view.Reportes.ReporteArtVendidos": [],
   "MetApp.view.Reportes.ReporteHistoricoMov": [],
   "MetApp.view.Reportes.ReporteHistoricoMovBancarios": [],
@@ -2217,6 +2220,7 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.model.Finanzas.GridImputaFcModel": [],
   "MetApp.model.Finanzas.GrillaFacturacionModel": [],
   "MetApp.model.Finanzas.GrillaPagosModel": [],
+  "MetApp.model.Finanzas.TiposComprobantesModel": [],
   "MetApp.model.Finanzas.TiposPagoModel": [],
   "MetApp.model.Parametros.CentroCostosModel": [],
   "MetApp.model.Parametros.UserParamsModel": [],
@@ -2324,6 +2328,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "MetApp.store.Finanzas.GrillaPagosStore": [
     "store.GrillaPagosStore"
+  ],
+  "MetApp.store.Finanzas.TiposComprobantesStore": [
+    "store.TiposComprobantesStore"
   ],
   "MetApp.store.Finanzas.TiposPagoStore": [
     "store.TiposPagoStore"
@@ -2741,6 +2748,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "MetApp.view.Reportes.RepoIVAVentas": [
     "widget.RepoIVAVentas"
+  ],
+  "MetApp.view.Reportes.RepoSaldoDeudor": [
+    "widget.RepoSaldoDeudor"
   ],
   "MetApp.view.Reportes.ReporteArtVendidos": [
     "widget.ReporteArtVendidos"

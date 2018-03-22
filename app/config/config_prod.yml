@@ -23,3 +23,8 @@ monolog:
             level: debug
         console:
             type:  console
+
+services:
+    mbp.faele:
+        class: Mbp\FinanzasBundle\Clases\Faele
+        arguments: [%ptoVta_prod%, %docTipo%, %cert_prod%, %privateKey_prod%, %url_prod%, %wsfeUrl_prod%, %cuit_prod%]

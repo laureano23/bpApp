@@ -8,35 +8,37 @@ class Faele extends wsfev1
 	private $wsaa;
 	public $docTipo;
 	public $ptoVta;
+	public $cert;
+	public $key;
+	public $url;
 	
-	public function __construct($ptoVta, $docTipo){
-		parent::__construct();
+	public function __construct($ptoVta, $docTipo, $cert, $key, $url, $wsfeUrl, $cuit){
+		parent::__construct($wsfeUrl, $cuit);
 		$this->docTipo = $docTipo;
 		$this->ptoVta = $ptoVta;	
-		$this->wsaa = new wsaa(); 		
+		$this->wsaa = new wsaa($cert, $key, $url); 		
+				
 
 		// Carga el archivo TA.xml
 		if($this->openTA() == false) return array(
 			'success' => false,
 			'msg' => 'Error al abrir el ticket xml TA'
 		);
+		
+		
 		//VERIFICO QUE EL WSAA 
 		$time = strtotime($this->wsaa->get_expiration());
+		
 		$newTime = \DateTime::createFromFormat('U', $time);
-		if($newTime < new \DateTime) {
+		$this->wsaa->generar_TA();
+		/*if($newTime < new \DateTime) {
 			if ($this->wsaa->generar_TA()) {				
 			} else {
-				return array(
-					'success' => false,
-					'msg' => 'Error al obtener el TA'
-				);
+				throw new \Exception("Error al obtener el TA", 1);
 			}
 		} else {
-			return array(
-				'success' => false,
-				'msg' => 'TA expiracion '. $this->wsaa->get_expiration()
-			);
-		}
+			throw new \Exception("TA expiracion ".$this->wsaa->get_expiration(), 1);
+		}*/
 		
 	}
 	

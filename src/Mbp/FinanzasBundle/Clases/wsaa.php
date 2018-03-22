@@ -7,12 +7,12 @@ El siguiente codigo fuente es una adaptacion de ejemplos encontrados en la web.
 2015 Pablo <pablin.php@gmail.com>
 */
 class wsaa {
-	const CERT = "/keys/prueba.pem";        	# The X.509 certificate in PEM format. Importante setear variable $path
-	const PRIVATEKEY = "/keys/ombu38bp65.key";  	# The private key correspoding to CERT (PEM). Importante setear variable $path
-	const PASSPHRASE = "";         				# The passphrase (if any) to sign
-	const PROXY_ENABLE = false;
+	public static $CERT;        	# The X.509 certificate in PEM format. Importante setear variable $path
+	public static $PRIVATEKEY;  	# The private key correspoding to CERT (PEM). Importante setear variable $path
+	public static $PASSPHRASE = "";         				# The passphrase (if any) to sign
+	public static $PROXY_ENABLE = false;
 	//https://wsaahomo.afip.gov.ar/ws/services/LoginCms?WSDL // para obtener WSDL
-	const URL = "https://wsaahomo.afip.gov.ar/ws/services/LoginCms"; // homologacion (testing)
+	public static $URL; // homologacion (testing)
 	// CONST URL = "https://wsaa.afip.gov.ar/ws/services/LoginCms"; // produccion 
 	
 	const TA 	= "/xml/TA.xml";        			# Archivo con el Token y Sign
@@ -43,16 +43,20 @@ class wsaa {
 	/*
 	* Constructor
 	*/
-	public function __construct($service = 'wsfe') 
+	public function __construct($cert, $key, $url) 
 	{
-	    $this->service = $service;    
+		self::$CERT = $cert;
+		self::$PRIVATEKEY = $key;
+		self::$URL = $url;
+		
+	    $this->service = 'wsfe';    
 	    
 	    // seteos en php
 	    ini_set("soap.wsdl_cache_enabled", "0");    
 	    
 	    // validar archivos necesarios
-	    if (!file_exists($this->path.self::CERT)) $this->error .= " Failed to open ".self::CERT;
-	    if (!file_exists($this->path.self::PRIVATEKEY)) $this->error .= " Failed to open ".self::PRIVATEKEY;
+	    if (!file_exists($this->path."/keys/".self::$CERT)) $this->error .= " Failed to open ".self::$CERT;
+	    if (!file_exists($this->path."/keys/".self::$PRIVATEKEY)) $this->error .= " Failed to open ".self::$PRIVATEKEY;
 	    if (!file_exists($this->path.self::WSDL)) $this->error .= " Failed to open ".self::WSDL;
 	    
 	    if(!empty($this->error)) {
@@ -61,7 +65,7 @@ class wsaa {
 	    
 	    $this->client = new \SoapClient($this->path.self::WSDL, array(
 			'soap_version'   => SOAP_1_2,
-			'location'       => self::URL,
+			'location'       => self::$URL,
 			'trace'          => 1,
 			'exceptions'     => 0
 			)
@@ -93,15 +97,18 @@ class wsaa {
 	* devuelve el CMS
 	*/
 	private function sign_TRA()
-	{
-    $STATUS = openssl_pkcs7_sign($this->path . "/xml/TRA.xml", $this->path . "/xml/TRA.tmp", "file://" . $this->path.self::CERT,
-		array("file://" . $this->path.self::PRIVATEKEY, self::PASSPHRASE),
+	{		
+	
+    $STATUS = openssl_pkcs7_sign($this->path . "/xml/TRA.xml", $this->path . "/xml/TRA.tmp", "file://" . $this->path."/keys/".self::$CERT,
+		array("file://" . $this->path."/keys/".self::$PRIVATEKEY, self::$PASSPHRASE),
 		array(),
 		!PKCS7_DETACHED
     );
+	
+	
     
     if (!$STATUS)
-		throw new Exception("ERROR generating PKCS#7 signature");
+		throw new \Exception("ERROR generating PKCS#7 signature");
       
     $inf = fopen($this->path."/xml/TRA.tmp", "r");
     $i = 0;

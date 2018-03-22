@@ -1,14 +1,14 @@
-parameters:
-    ptoVta: 1
-    docTipo: 80    
-    userArba: 33678767439
-    passArba: 336787
-    urlArba: 'http://dfe.arba.gov.ar/DomicilioElectronico/SeguridadCliente/dfeServicioConsulta.do'
+#parameters:
+ #   ptoVta: 1
+  #  docTipo: 80    
+   # userArba: 33678767439
+    #passArba: 336787
+    #urlArba: 'http://dfe.arba.gov.ar/DomicilioElectronico/SeguridadCliente/dfeServicioConsulta.do'
 
 services:
-    mbp.faele:
-        class: Mbp\FinanzasBundle\Clases\Faele
-        arguments: [%ptoVta%, %docTipo%]
+    #mbp.faele:
+        #class: Mbp\FinanzasBundle\Clases\Faele
+        #arguments: [%ptoVta%, %docTipo%]
         
     tipo_cambio:
        class: Mbp\FinanzasBundle\Clases\TipoCambio

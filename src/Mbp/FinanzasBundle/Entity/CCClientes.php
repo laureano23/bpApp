@@ -24,14 +24,14 @@ class CCClientes
     /**
      * @var string
      *
-     * @ORM\Column(name="debe", type="decimal")
+     * @ORM\Column(name="debe", type="decimal", precision=11, scale=2)
      */
     private $debe=0;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="haber", type="decimal")
+     * @ORM\Column(name="haber", type="decimal", precision=11, scale=2)
      */
     private $haber=0;
 
