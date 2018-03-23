@@ -689,7 +689,7 @@ $F{TipoComprobante_subTipoE} == true ? "C" : ""]]></textFieldExpression>
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$V{subTotal} + ($V{subTotal} * 0.21)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{subTotal} + ($V{subTotal} * 0.21) + $F{Facturas_perIIBB}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="1" y="45" width="51" height="20" uuid="6b179f87-0e7c-4b25-ad40-d89fa81923e8"/>
