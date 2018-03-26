@@ -16,6 +16,55 @@ use Mbp\ArticulosBundle\Entity\DetalleMovArt;
 class StockController extends Controller
 {
 	/**
+     * @Route("/listarIngresos", name="mbp_articulos_listarIngresos", options={"expose"=true})
+     */
+    public function listarIngresos()
+	{
+		$em = $this->getDoctrine()->getManager();
+		$response = new Response;
+		$req = $this->get('request');
+		
+		try{
+			$rep = $em->getRepository('MbpArticulosBundle:MovimientosArticulos');
+			$id = $req->request->get('idOrigen');
+			$origen = $req->request->get('origen2');
+			
+			
+			
+				
+			$qb = $rep->createQueryBuilder('m');
+			
+			
+			$data = $qb->select('art.codigo, d.descripcion, d.id, d.cantidad AS cant, d.loteNum AS lote, oc.id AS idOc')
+				->join('m.movDetalleId', 'd')
+				->leftJoin('m.proveedorId', 'prov')
+				->leftJoin('m.clienteId', 'cliente')
+				->leftJoin('d.articuloId', 'art')
+				->leftJoin('d.ordenCompraId', 'oc')
+				->where('prov.id = :id')
+				->orWhere('cliente = :id')
+				->setParameter('id', $id)
+				->orderBy('m.fechaMovimiento', 'DESC')
+				->getQuery()
+				->getArrayResult();	
+		
+			
+				
+			return $response->setContent(
+				json_encode(array('success' => true, 'data' => $data))
+			);
+			
+		}catch(\Exception $e){
+			$msg = json_encode(array(
+				'success' => false,
+				'msg' => $e->getMessage()
+			));
+			
+			return new Response($msg, 500);
+		}	
+	}
+	
+	/**
      * @Route("/listarConceptosStock", name="mbp_articulos_listarConceptosStock", options={"expose"=true})
      */
     public function listarConceptosStock()

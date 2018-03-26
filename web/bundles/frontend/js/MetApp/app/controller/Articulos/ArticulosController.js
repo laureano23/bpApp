@@ -123,7 +123,7 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 				success: function(resp){
 					jsonResp = Ext.JSON.decode(resp.responseText);
 					var formArt = Ext.getCmp('articulosForm');
-							
+					
 					formArt = Ext.getCmp('articulosForm').down('form');	
 					formArt.getForm().setValues(jsonResp.data[0]);
 					var nombreImagen = win.queryById('imagen');
@@ -249,7 +249,7 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 						fields.setReadOnly(false);
 					});
 		    	}
-		    	}
+		    }
 			});	
 		}
 	},
@@ -265,10 +265,13 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 		var proxy = store.getProxy();
 		var record;
 		proxy.addListener('exception', function(st, response, operation, eOpts){	//CAPTURA ERRORES DEL SERVER
+			console.log(st);
+			console.log(operation);
 			jsonResp = Ext.JSON.decode(response.responseText);
 			form.getForm().markInvalid(jsonResp.errors);
-			store.removeAll();
 			me.EditArt(button);
+			store.rejectChanges();
+			
 		});
 		
 		store.on('write', function(st, op){
@@ -306,29 +309,31 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 	
 	DeleteArt: function(button){
 		var form = button.up('form');
-		var record = form.getRecord();
+		var record = form.getForm().getRecord();
 		var store = this.getArticulosArticulosStore();
-		if(record===undefined){
-			Ext.Msg.show({
-				title: 'Atencion',
-				msg: 'Debe seleccionar un Articulo',
-				buttons: Ext.Msg.OK,
-				icon: Ext.Msg.WARNING
-			});
-		}else{
-			Ext.Msg.show({
-				title: 'Atencion',
-				msg: 'Desea eliminar el articulo?',
-				buttons: Ext.Msg.YESNO,
-				icon: Ext.Msg.WARNING,
-				fn:function(btn){
-					if(btn == 'yes'){
-						store.remove(record);
-						form.getForm().reset();
-					}
+		var id = form.queryById('idCodigo').getValue();
+		var model = store.findRecord('id', id);
+		
+		var proxy = store.getProxy();
+		proxy.addListener('exception', function(st, response, operation, eOpts){	//CAPTURA ERRORES DEL SERVER
+			me.EditArt(button);
+			store.rejectChanges();			
+		});
+		
+		
+		Ext.Msg.show({
+			title: 'Atencion',
+			msg: 'Desea eliminar el articulo?',
+			buttons: Ext.Msg.YESNO,
+			icon: Ext.Msg.WARNING,
+			fn:function(btn){
+				if(btn == 'yes'){
+					store.remove(model);
+					form.getForm().reset();
 				}
-			});			
-		}
+			}
+		});	
+		
 	},
 	/*
 	 * Termina el ABMC de articulos

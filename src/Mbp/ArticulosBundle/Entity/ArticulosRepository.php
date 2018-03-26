@@ -8,7 +8,7 @@ class ArticulosRepository extends EntityRepository
 	public function listarArticulos()
 	{
 		$em = $this->getEntityManager();
-		$dql = 'SELECT a FROM MbpArticulosBundle:Articulos a';
+		$dql = 'SELECT a FROM MbpArticulosBundle:Articulos a WHERE a.inactivo=0';
 		$q = $em->createQuery($dql);
 		$res = $q->getArrayResult();
 		$total = count($res);
@@ -40,6 +40,7 @@ class ArticulosRepository extends EntityRepository
 						->leftJoin('a.familiaId', 'f')
 						->leftJoin('a.subFamiliaId', 'sf')
 						->where('a.id = :art')
+						->andWhere('a.inactivo = 0')
 						->setParameter('art', $idArt)
 						->getQuery()
 						->getResult();
@@ -171,8 +172,9 @@ class ArticulosRepository extends EntityRepository
 		$id = $data->id;
 		
 		$res = $em->getRepository('MbpArticulosBundle:Articulos')->find($id);
+		$res->setInactivo(1);
 				
-		$em->remove($res);
+		$em->persist($res);
 		$em->flush();		
 	}
 		

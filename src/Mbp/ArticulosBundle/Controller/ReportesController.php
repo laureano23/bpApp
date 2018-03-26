@@ -12,7 +12,119 @@ use Mbp\ArticulosBundle\Entity\Formulas;
 
 
 class ReportesController extends Controller
-{	
+{
+	 /**
+     * @Route("/etiquetaIngresoMaterial", name="mbp_formulas_etiquetaIngresoMaterial", options={"expose"=true})
+     */
+	public function etiquetaIngresoMaterial()
+	{
+		$repo = $this->get('reporteador');		
+		$kernel = $this->get('kernel');	
+		$em = $this->getDoctrine()->getManager();
+		$req = $this->getRequest();
+		$response = new Response;
+		
+		try{
+			/*
+			 * Recibo parametros del request 
+			 */
+			
+			$id = $req->request->get('id');
+			$jru = $repo->jru();
+					
+			$ruta = $kernel->locateResource('@MbpArticulosBundle/Reportes/IngresoStock.jrxml');
+			
+			//Ruta de destino
+			$destino = $kernel->locateResource('@MbpArticulosBundle/Resources/public/pdf/').'IngresoStock.pdf';
+			
+			//Parametros HashMap
+			$param = $repo->getJava('java.util.HashMap');
+			$param->put('ID_DETALLE_MOV', $id);
+					
+			$conn = $repo->getJdbc();
+			
+			/*
+			 * SQL
+			 * 
+			 */
+			$sql = "
+				SELECT
+			     movimientos_detalles.`movimientosarticulos_id` AS movimientos_detalles_movimientosarticulos_id,
+			     movimientos_detalles.`detallemovart_id` AS movimientos_detalles_detallemovart_id,
+			     MovimientosArticulos.`id` AS MovimientosArticulos_id,
+			     MovimientosArticulos.`fechaMovimiento` AS MovimientosArticulos_fechaMovimiento,
+			     MovimientosArticulos.`tipoMovimiento` AS MovimientosArticulos_tipoMovimiento,
+			     MovimientosArticulos.`observaciones` AS MovimientosArticulos_observaciones,
+			     MovimientosArticulos.`comprobanteNum` AS MovimientosArticulos_comprobanteNum,
+			     MovimientosArticulos.`conceptoId` AS MovimientosArticulos_conceptoId,
+			     MovimientosArticulos.`proveedorId` AS MovimientosArticulos_proveedorId,
+			     MovimientosArticulos.`clienteId` AS MovimientosArticulos_clienteId,
+			     MovimientosArticulos.`depositoId` AS MovimientosArticulos_depositoId,
+			     DetalleMovArt.`id` AS DetalleMovArt_id,
+			     DetalleMovArt.`cantidad` AS DetalleMovArt_cantidad,
+			     DetalleMovArt.`loteNum` AS DetalleMovArt_loteNum,
+			     DetalleMovArt.`descripcion` AS DetalleMovArt_descripcion,
+			     DetalleMovArt.`ordenCompraId` AS DetalleMovArt_ordenCompraId,
+			     DetalleMovArt.`articuloId` AS DetalleMovArt_articuloId,
+			     cliente.`idCliente` AS cliente_idCliente,
+			     cliente.`rsocial` AS cliente_rsocial,
+			     cliente.`denominacion` AS cliente_denominacion,
+			     Proveedor.`id` AS Proveedor_id,
+			     Proveedor.`provincia` AS Proveedor_provincia,
+			     Proveedor.`rsocial` AS Proveedor_rsocial,
+			     articulos.`idArticulos` AS articulos_idArticulos,
+			     articulos.`codigo` AS articulos_codigo
+			FROM
+			     `MovimientosArticulos` MovimientosArticulos LEFT OUTER JOIN `movimientos_detalles` movimientos_detalles ON MovimientosArticulos.`id` = movimientos_detalles.`movimientosarticulos_id`
+			     RIGHT OUTER JOIN `DetalleMovArt` DetalleMovArt ON movimientos_detalles.`detallemovart_id` = DetalleMovArt.`id`
+			     INNER JOIN `articulos` articulos ON DetalleMovArt.`articuloId` = articulos.`idArticulos`
+			     LEFT OUTER JOIN `cliente` cliente ON MovimientosArticulos.`clienteId` = cliente.`idCliente`
+			     LEFT OUTER JOIN `Proveedor` Proveedor ON MovimientosArticulos.`proveedorId` = Proveedor.`id`
+			WHERE
+			     DetalleMovArt.`id` = $id
+			";
+			
+			//Exportamos el reporte
+			$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
+						
+			return $response->setContent(
+				json_encode(array(
+					'success' => true,
+					'reporte' => $destino,	
+				))
+			);
+		}catch(\Exception $e){
+			return $response->setContent(
+				json_encode(array(
+					'success' => false,
+					'msg' => $e->getMessage(),	
+				))
+			);
+		}
+			
+	}
+	
+	/**
+     * @Route("/etiquetaIngresoMaterial_pdf", name="mbp_formulas_etiquetaIngresoMaterial_pdf", options={"expose"=true})
+     */
+	public function etiquetaIngresoMaterial_pdf()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpArticulosBundle/Resources/public/pdf/').'IngresoStock.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'IngresoStock.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+
+        return $response;
+	}
+	
+		
 	 /**
      * @Route("/extranet/generaReporteEstructura", name="mbp_formulas_generaReporte", options={"expose"=true})
      */

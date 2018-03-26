@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IngresoStock" language="groovy" pageWidth="155" pageHeight="322" whenNoDataType="AllSectionsNoDetail" columnWidth="153" leftMargin="1" rightMargin="1" topMargin="1" bottomMargin="1" isSummaryWithPageHeaderAndFooter="true" uuid="a53167e1-af4e-451d-b80c-4314fb21d831">
+	<property name="ireport.zoom" value="2.593742460100007"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="332"/>
+	<property name="com.jaspersoft.studio.unit." value="mm"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="ID_DETALLE_MOV" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     movimientos_detalles.`movimientosarticulos_id` AS movimientos_detalles_movimientosarticulos_id,
+     movimientos_detalles.`detallemovart_id` AS movimientos_detalles_detallemovart_id,
+     MovimientosArticulos.`id` AS MovimientosArticulos_id,
+     MovimientosArticulos.`fechaMovimiento` AS MovimientosArticulos_fechaMovimiento,
+     MovimientosArticulos.`tipoMovimiento` AS MovimientosArticulos_tipoMovimiento,
+     MovimientosArticulos.`observaciones` AS MovimientosArticulos_observaciones,
+     MovimientosArticulos.`comprobanteNum` AS MovimientosArticulos_comprobanteNum,
+     MovimientosArticulos.`conceptoId` AS MovimientosArticulos_conceptoId,
+     MovimientosArticulos.`proveedorId` AS MovimientosArticulos_proveedorId,
+     MovimientosArticulos.`clienteId` AS MovimientosArticulos_clienteId,
+     MovimientosArticulos.`depositoId` AS MovimientosArticulos_depositoId,
+     DetalleMovArt.`id` AS DetalleMovArt_id,
+     DetalleMovArt.`cantidad` AS DetalleMovArt_cantidad,
+     DetalleMovArt.`loteNum` AS DetalleMovArt_loteNum,
+     DetalleMovArt.`descripcion` AS DetalleMovArt_descripcion,
+     DetalleMovArt.`ordenCompraId` AS DetalleMovArt_ordenCompraId,
+     DetalleMovArt.`articuloId` AS DetalleMovArt_articuloId,
+     cliente.`idCliente` AS cliente_idCliente,
+     cliente.`rsocial` AS cliente_rsocial,
+     cliente.`denominacion` AS cliente_denominacion,
+     Proveedor.`id` AS Proveedor_id,
+     Proveedor.`provincia` AS Proveedor_provincia,
+     Proveedor.`rsocial` AS Proveedor_rsocial,
+     articulos.`idArticulos` AS articulos_idArticulos,
+     articulos.`codigo` AS articulos_codigo
+FROM
+     `MovimientosArticulos` MovimientosArticulos LEFT OUTER JOIN `movimientos_detalles` movimientos_detalles ON MovimientosArticulos.`id` = movimientos_detalles.`movimientosarticulos_id`
+     RIGHT OUTER JOIN `DetalleMovArt` DetalleMovArt ON movimientos_detalles.`detallemovart_id` = DetalleMovArt.`id`
+     INNER JOIN `articulos` articulos ON DetalleMovArt.`articuloId` = articulos.`idArticulos`
+     LEFT OUTER JOIN `cliente` cliente ON MovimientosArticulos.`clienteId` = cliente.`idCliente`
+     LEFT OUTER JOIN `Proveedor` Proveedor ON MovimientosArticulos.`proveedorId` = Proveedor.`id`
+WHERE
+     DetalleMovArt.`id` = $P{ID_DETALLE_MOV}]]>
+	</queryString>
+	<field name="movimientos_detalles_movimientosarticulos_id" class="java.lang.Integer"/>
+	<field name="movimientos_detalles_detallemovart_id" class="java.lang.Integer"/>
+	<field name="MovimientosArticulos_id" class="java.lang.Integer"/>
+	<field name="MovimientosArticulos_fechaMovimiento" class="java.sql.Date"/>
+	<field name="MovimientosArticulos_tipoMovimiento" class="java.lang.Boolean"/>
+	<field name="MovimientosArticulos_observaciones" class="java.lang.String"/>
+	<field name="MovimientosArticulos_comprobanteNum" class="java.lang.String"/>
+	<field name="MovimientosArticulos_conceptoId" class="java.lang.Integer"/>
+	<field name="MovimientosArticulos_proveedorId" class="java.lang.Integer"/>
+	<field name="MovimientosArticulos_clienteId" class="java.lang.Integer"/>
+	<field name="MovimientosArticulos_depositoId" class="java.lang.Integer"/>
+	<field name="DetalleMovArt_id" class="java.lang.Integer"/>
+	<field name="DetalleMovArt_cantidad" class="java.math.BigDecimal"/>
+	<field name="DetalleMovArt_loteNum" class="java.lang.Integer"/>
+	<field name="DetalleMovArt_descripcion" class="java.lang.String"/>
+	<field name="DetalleMovArt_ordenCompraId" class="java.lang.Integer"/>
+	<field name="DetalleMovArt_articuloId" class="java.lang.Integer"/>
+	<field name="cliente_idCliente" class="java.lang.Integer"/>
+	<field name="cliente_rsocial" class="java.lang.String"/>
+	<field name="cliente_denominacion" class="java.lang.String"/>
+	<field name="Proveedor_id" class="java.lang.Integer"/>
+	<field name="Proveedor_provincia" class="java.lang.String"/>
+	<field name="Proveedor_rsocial" class="java.lang.String"/>
+	<field name="articulos_idArticulos" class="java.lang.Integer"/>
+	<field name="articulos_codigo" class="java.lang.String"/>
+	<columnHeader>
+		<band height="320">
+			<staticText>
+				<reportElement x="4" y="173" width="53" height="15" uuid="7cba30a1-2973-4642-a8eb-7ec735d8cf9c"/>
+				<box leftPadding="2"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ingreso:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="188" width="45" height="15" uuid="5ed6acab-31f7-41f5-b771-e5ca0420b3da"/>
+				<box leftPadding="2"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OC N°:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="203" width="79" height="15" uuid="9857cdb2-3366-4ea8-a067-13cfc52efd77"/>
+				<box leftPadding="2"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Observaciones:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="4" y="218" width="121" height="30" uuid="768f39ad-5623-4b8d-9d18-2eea66b7b222"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MovimientosArticulos_observaciones}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="6" y="4" width="147" height="15" uuid="85f0bcf5-6b0c-4ee9-afea-691b45cd9c4c"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Recepción de Materiales]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="24" width="42" height="15" uuid="1e71de8d-8a04-4bfa-8503-d9660fc97b29"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Left">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Código:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="39" width="66" height="15" uuid="fdd3bf55-1b9d-4a33-9923-027feb99e115"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Left">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripción:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="85" width="52" height="15" uuid="e2f9623a-d34b-431b-84f7-42ff461b424d"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Left">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="100" width="66" height="15" uuid="28157a17-e34a-414e-9846-2b00a96099ab"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Left">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Proveedor:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="143" width="54" height="15" uuid="450e2b87-8c54-4d03-a76f-6bc929818312"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Left">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[N° de Lote:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="158" width="66" height="15" uuid="7b230629-1376-439f-a428-2b810d68d6fd"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Left">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[N° de Remito:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="248" width="54" height="15" uuid="9f0368ae-baf9-453e-b82c-8dd64f475499"/>
+				<box leftPadding="2"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Informe N°:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="263" width="54" height="15" uuid="b0d2e26b-a214-4cf6-9eb1-b7388a8272d6"/>
+				<box leftPadding="2"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Aprobado:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="278" width="64" height="15" uuid="42cb8e28-31e8-4e41-b344-c83bb249c71c"/>
+				<box leftPadding="2"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rechazado:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="52" y="24" width="98" height="15" uuid="4e66aa64-805e-4962-aa63-b8c3d0ec4817"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{articulos_codigo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="6" y="54" width="144" height="30" uuid="ac9338a2-7a3e-483a-845e-57b67bb7a213"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DetalleMovArt_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="63" y="85" width="87" height="15" uuid="bdfa3d32-24c2-43c5-838c-4a0d65df382d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DetalleMovArt_cantidad}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="6" y="113" width="144" height="30" uuid="6cdeac86-2770-4cbd-8662-eeefad945c19"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Proveedor_rsocial} == null ? $F{cliente_rsocial} : $F{Proveedor_rsocial}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="62" y="143" width="88" height="15" uuid="c11005c1-7567-426b-b3f0-a49decfd163e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DetalleMovArt_loteNum}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="73" y="158" width="77" height="15" uuid="83ed15c5-5f03-41b8-837f-0c20561bb512"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MovimientosArticulos_comprobanteNum}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="63" y="173" width="87" height="15" uuid="d77eeabf-64bd-45b4-81fe-79733d07c019"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MovimientosArticulos_fechaMovimiento}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="52" y="188" width="98" height="15" uuid="1adeac5b-af94-4b67-9f45-90da5dbaa55d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DetalleMovArt_ordenCompraId}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="6" y="298" width="147" height="17" uuid="3be3c36e-38cf-4ee7-aa18-5a3053061c05"/>
+				<box leftPadding="0" bottomPadding="2" rightPadding="8"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[RG-053 rev.03 25/11/2011]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+</jasperReport>

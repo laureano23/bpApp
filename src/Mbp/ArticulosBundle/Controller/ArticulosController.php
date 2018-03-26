@@ -78,40 +78,59 @@ class ArticulosController extends Controller
 	{
 		$em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
-		
+		$response = new Response();
 		$data = $request->request->get('data');
 		
-		
-				
-		$rep = $em->getRepository('MbpArticulosBundle:Articulos');
-		$validator = $this->get('validator');
-		$res = $rep->crearArticulo($data, $validator);
-		
-		$response = new Response();
-		$response->setContent(json_encode($res));
-		
-		if(array_key_exists('tipo', $res)){
-			$response->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);
-		}elseif($res['success'] == false){
-			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
-		}else{
-			$response->setStatusCode(Response::HTTP_OK);
+		try{
+			//throw new \Exception("Error Processing Request", 1);	
+			
+			$rep = $em->getRepository('MbpArticulosBundle:Articulos');
+			$validator = $this->get('validator');
+			$res = $rep->crearArticulo($data, $validator);
+			
+			
+			$response->setContent(json_encode($res));
+			
+			if(array_key_exists('tipo', $res)){
+				$response->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);
+			}elseif($res['success'] == false){
+				$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			}else{
+				$response->setStatusCode(Response::HTTP_OK);
+			}
+			
+			return $response;
+		}catch(\Exception $e){
+			
+			return $response->setContent(
+				json_encode(array('success' => false, 'msg' => $e->getMessage()))
+			);
 		}
 		
-		return $response;
 	}
 	
 	public function articulosdestroyAction()
 	{
 		$em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
+		$response = new Response;
 		
-		$data = $request->request->get('data');
-		
-		$rep = $em->getRepository('MbpArticulosBundle:Articulos');
-		$res = $rep->deleteArticulo($data);
-		
-		return new Response();
+		try{
+			$data = $request->request->get('data');
+			
+			$rep = $em->getRepository('MbpArticulosBundle:Articulos');
+			$res = $rep->deleteArticulo($data);
+			
+			return $response->setContent(
+				json_encode(array('success' => true))
+			);	
+		}catch(\Exception $e){
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(
+				json_encode(array('success' => false, 'msg' => $e->getMessage()))
+			);
+		}
+			
 	}	
 	
 	public function validartAction()

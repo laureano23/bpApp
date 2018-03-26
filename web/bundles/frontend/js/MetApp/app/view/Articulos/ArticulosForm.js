@@ -198,7 +198,7 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 							items: [
 								{
 									xtype: 'form',
-									store: 'Articulos.Articulos',
+									store: 'MetApp.store.Articulos.Articulos',
 									itemId: 'artForm',	
 									border: false,						
 									fieldDefaults: {						

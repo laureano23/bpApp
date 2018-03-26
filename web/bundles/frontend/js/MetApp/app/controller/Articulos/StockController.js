@@ -6,7 +6,8 @@ Ext.define('MetApp.controller.Articulos.StockController',{
 		'MetApp.view.Proveedores.SearchGridProveedores',
 		'MetApp.view.Clientes.SearchGridClientes',
 		'MetApp.view.Articulos.WinArticuloSearch',
-		'MetApp.view.Compras.PendienteArticuloComprasView'	
+		'MetApp.view.Compras.PendienteArticuloComprasView',
+		'MetApp.view.Articulos.Stock.ListadoIngresosView'
 		],
 		
 	stores: [
@@ -49,7 +50,98 @@ Ext.define('MetApp.controller.Articulos.StockController',{
 				'EntradaSalidaArticulos button[itemId=guardar]': {
 					click: this.GuardarMovimiento
 				},
+				'viewport menuitem[itemId=listadoIngresos]': {
+					click: this.ListadoIngresos
+				},
+				'ListadoIngresosView button[itemId=buscarOrigen]': {
+					click: this.BuscarOrigenStock
+				},
+				'ListadoIngresosView actioncolumn[itemId=imprimir]': {
+					click: this.ImprimirEtiqueta
+				},
 		});		
+	},
+	
+	ImprimirEtiqueta: function(grid, colIndex, rowIndex){
+		var selection = grid.getStore().getAt(rowIndex);
+		console.log(selection);
+		
+		var myMask = new Ext.LoadMask(grid, {msg:"Cargando..."});
+		myMask.show();
+		
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_formulas_etiquetaIngresoMaterial'),
+			
+			params: {
+				id: selection.data.id
+			},
+			
+			success: function(resp){
+				var ruta = Routing.generate('mbp_formulas_etiquetaIngresoMaterial_pdf');						
+				window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+				
+				myMask.hide();
+			},
+			
+			failure: function(resp){
+				myMask.hide();
+			}
+		});
+	},
+	
+	BuscarOrigenStock: function(btn){
+		console.log("entramos");
+		var win = btn.up('window');
+		var values = win.down('form').getForm().getValues();
+		
+		var store;
+		var winSearch;
+		if(values.origen[0] == "proveedor"){
+			winSearch = Ext.widget('ProveedoresSearchGrid');
+			store = winSearch.down('grid').getStore();
+		}else{
+			winSearch = Ext.widget('clientesSearchGrid');
+			store = winSearch.down('grid').getStore();
+		}
+		
+		store.load();
+		var btnOk = winSearch.down('button');
+		btnOk.on('click', function(){
+			var selection = winSearch.down('grid').getSelectionModel().getSelection();
+			selection = selection[0];
+			
+			win.queryById('origen').setValue(selection.data.rsocial);
+			win.queryById('idOrigen').setValue(selection.data.id);
+			console.log(selection);
+			
+			var form = win.down('form');
+			
+			form.submit({
+				url: Routing.generate('mbp_articulos_listarIngresos'),
+				
+				params: {
+					origen2: values.origen[0],
+					idOrigen: values.idOrigen
+				},
+				
+				success: function(form, action){
+					console.log(action);
+					var jsonResp = Ext.JSON.decode(action.response.responseText);
+					var storeIngresos = win.down('grid').getStore();
+					console.log(jsonResp);
+					storeIngresos.loadRawData(jsonResp.data);
+					winSearch.close();
+				},
+				
+				failure: function(resp){
+					
+				}
+			});
+		});
+	},
+	
+	ListadoIngresos: function(btn){
+		Ext.widget('ListadoIngresosView'); 
 	},
 	
 	ListenerClose: function(win, cond){
