@@ -50,6 +50,12 @@ Ext.define('MetApp.controller.Articulos.StockController',{
 				'EntradaSalidaArticulos button[itemId=guardar]': {
 					click: this.GuardarMovimiento
 				},
+				'EntradaSalidaArticulos actioncolumn[itemId=editar]': {
+					click: this.EditarItem
+				},
+				'EntradaSalidaArticulos actioncolumn[itemId=eliminar]': {
+					click: this.EliminarItem
+				},
 				'viewport menuitem[itemId=listadoIngresos]': {
 					click: this.ListadoIngresos
 				},
@@ -62,9 +68,26 @@ Ext.define('MetApp.controller.Articulos.StockController',{
 		});		
 	},
 	
+	EliminarItem: function(grid, colIndex, rowIndex){
+		var win = grid.up('window');
+		var form = win.queryById('formArticulo');
+		var store = grid.getStore();
+		var selection = store.getAt(rowIndex);
+		store.remove(selection);
+	},
+	
+	EditarItem: function(grid, colIndex, rowIndex){
+		var win = grid.up('window');
+		var form = win.queryById('formArticulo');
+		var store = grid.getStore();
+		var selection = store.getAt(rowIndex);
+		
+		form.getForm().setValues(selection.data);
+		store.remove(selection);
+	},
+	
 	ImprimirEtiqueta: function(grid, colIndex, rowIndex){
 		var selection = grid.getStore().getAt(rowIndex);
-		console.log(selection);
 		
 		var myMask = new Ext.LoadMask(grid, {msg:"Cargando..."});
 		myMask.show();
@@ -90,7 +113,6 @@ Ext.define('MetApp.controller.Articulos.StockController',{
 	},
 	
 	BuscarOrigenStock: function(btn){
-		console.log("entramos");
 		var win = btn.up('window');
 		var values = win.down('form').getForm().getValues();
 		
@@ -112,7 +134,6 @@ Ext.define('MetApp.controller.Articulos.StockController',{
 			
 			win.queryById('origen').setValue(selection.data.rsocial);
 			win.queryById('idOrigen').setValue(selection.data.id);
-			console.log(selection);
 			
 			var form = win.down('form');
 			
@@ -125,10 +146,8 @@ Ext.define('MetApp.controller.Articulos.StockController',{
 				},
 				
 				success: function(form, action){
-					console.log(action);
 					var jsonResp = Ext.JSON.decode(action.response.responseText);
 					var storeIngresos = win.down('grid').getStore();
-					console.log(jsonResp);
 					storeIngresos.loadRawData(jsonResp.data);
 					winSearch.close();
 				},
@@ -166,7 +185,8 @@ Ext.define('MetApp.controller.Articulos.StockController',{
 	
 	addEntradaSalidaWin: function(btn){
 		var win = Ext.widget('EntradaSalidaArticulos');
-		var conceptoStore = win.queryById('concepto').getStore();		
+		var conceptoStore = win.queryById('concepto').getStore();
+		conceptoStore.removeAll();		
 	},
 	
 	BuscarOrigen: function(btn){
@@ -185,7 +205,6 @@ Ext.define('MetApp.controller.Articulos.StockController',{
 		
 		fuente.down('button').on('click', function(btn){
 			var selection = fuente.down('grid').getSelectionModel().getSelection()[0];
-			console.log(selection);
 			win.queryById('idOrigen').setValue(selection.data.id);
 			win.queryById('fuente').setValue(selection.data.rsocial);
 			fuente.close();
@@ -296,7 +315,6 @@ Ext.define('MetApp.controller.Articulos.StockController',{
 				
 				success: function(resp){
 					var jsonResp = Ext.JSON.decode(resp.responseText);
-					console.log(jsonResp);
 					if(jsonResp.success == true){
 						form.getForm().reset();
 						store.removeAll();

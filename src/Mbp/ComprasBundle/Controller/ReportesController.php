@@ -52,38 +52,51 @@ class ReportesController extends Controller
 			
 			$conn = $reporteador->getJdbc();
 			
-			$sql = "SELECT
-			     OrdenCompra.`id` AS OrdenCompra_id,
-			     OrdenCompra.`fechaEmision` AS OrdenCompra_fechaEmision,
-			     OrdenCompra.`condicionCompra` AS OrdenCompra_condicionCompra,
-			     OrdenCompra.`lugarEntrega` AS OrdenCompra_lugarEntrega,
-			     OrdenCompra.`observaciones` AS OrdenCompra_observaciones,
-			     OrdenCompra.`descuentoGral` AS OrdenCompra_descuentoGral,
-			     OrdenCompra.`proveedorId` AS OrdenCompra_proveedorId,
-			     OrdenCompra.`usuario` AS OrdenCompra_usuario,
-			     OrdenCompraDetalle.`id` AS OrdenCompraDetalle_id,
-			     OrdenCompraDetalle.`unidad` AS OrdenCompraDetalle_unidad,
-			     OrdenCompraDetalle.`precio` AS OrdenCompraDetalle_precio,
-			     OrdenCompraDetalle.`cant` AS OrdenCompraDetalle_cant,
-			     OrdenCompraDetalle.`fechaEntrega` AS OrdenCompraDetalle_fechaEntrega,
-			     OrdenCompraDetalle.`iva` AS OrdenCompraDetalle_iva,
-			     OrdenCompraDetalle.`moneda` AS OrdenCompraDetalle_moneda,
-			     OrdenCompraDetalle.`articuloId` AS OrdenCompraDetalle_articuloId,
-			     ordenCompra_detallesOrdenCompra.`orden_id` AS ordenCompra_detallesOrdenCompra_orden_id,
-			     ordenCompra_detallesOrdenCompra.`ordencompradetalle_id` AS ordenCompra_detallesOrdenCompra_ordencompradetalle_id,
-			     articulos.`idArticulos` AS articulos_idArticulos,
-			     articulos.`codigo` AS articulos_codigo,
-			     articulos.`descripcion` AS articulos_descripcion,
-			     OrdenCompra.`monedaOC` AS OrdenCompra_monedaOC,
-			     OrdenCompra.`tc` AS OrdenCompra_tc,
-			     OrdenCompraDetalle.`ivaCalculado` AS OrdenCompraDetalle_ivaCalculado,
-			     OrdenCompraDetalle.`descripcion` AS OrdenCompraDetalle_descripcion
-			FROM
-			     `OrdenCompraDetalle` OrdenCompraDetalle INNER JOIN `ordenCompra_detallesOrdenCompra` ordenCompra_detallesOrdenCompra ON OrdenCompraDetalle.`id` = ordenCompra_detallesOrdenCompra.`ordencompradetalle_id`
-			     INNER JOIN `OrdenCompra` OrdenCompra ON ordenCompra_detallesOrdenCompra.`orden_id` = OrdenCompra.`id`
-			     INNER JOIN `articulos` articulos ON OrdenCompraDetalle.`articuloId` = articulos.`idArticulos`
-			WHERE
-			     OrdenCompra.`id` = $idOC";
+			$sql = "
+			SELECT
+		     OrdenCompra.`id` AS OrdenCompra_id,
+		     OrdenCompra.`fechaEmision` AS OrdenCompra_fechaEmision,
+		     OrdenCompra.`condicionCompra` AS OrdenCompra_condicionCompra,
+		     OrdenCompra.`lugarEntrega` AS OrdenCompra_lugarEntrega,
+		     OrdenCompra.`observaciones` AS OrdenCompra_observaciones,
+		     OrdenCompra.`descuentoGral` AS OrdenCompra_descuentoGral,
+		     OrdenCompra.`proveedorId` AS OrdenCompra_proveedorId,
+		     OrdenCompra.`usuario` AS OrdenCompra_usuario,
+		     OrdenCompraDetalle.`id` AS OrdenCompraDetalle_id,
+		     OrdenCompraDetalle.`unidad` AS OrdenCompraDetalle_unidad,
+		     OrdenCompraDetalle.`precio` AS OrdenCompraDetalle_precio,
+		     OrdenCompraDetalle.`cant` AS OrdenCompraDetalle_cant,
+		     OrdenCompraDetalle.`fechaEntrega` AS OrdenCompraDetalle_fechaEntrega,
+		     OrdenCompraDetalle.`iva` AS OrdenCompraDetalle_iva,
+		     OrdenCompraDetalle.`moneda` AS OrdenCompraDetalle_moneda,
+		     OrdenCompraDetalle.`articuloId` AS OrdenCompraDetalle_articuloId,
+		     ordenCompra_detallesOrdenCompra.`orden_id` AS ordenCompra_detallesOrdenCompra_orden_id,
+		     ordenCompra_detallesOrdenCompra.`ordencompradetalle_id` AS ordenCompra_detallesOrdenCompra_ordencompradetalle_id,
+		     articulos.`idArticulos` AS articulos_idArticulos,
+		     articulos.`codigo` AS articulos_codigo,
+		     articulos.`descripcion` AS articulos_descripcion,
+		     OrdenCompra.`monedaOC` AS OrdenCompra_monedaOC,
+		     OrdenCompra.`tc` AS OrdenCompra_tc,
+		     OrdenCompraDetalle.`ivaCalculado` AS OrdenCompraDetalle_ivaCalculado,
+		     OrdenCompraDetalle.`descripcion` AS OrdenCompraDetalle_descripcion,
+		     Proveedor.`id` AS Proveedor_id,
+		     Proveedor.`provincia` AS Proveedor_provincia,
+		     Proveedor.`rsocial` AS Proveedor_rsocial,
+		     provincia.`id` AS provincia_id,
+		     provincia.`nombre` AS provincia_nombre,
+		     localidades.`id` AS localidades_id,
+		     localidades.`departamento_id` AS localidades_departamento_id,
+		     localidades.`provincia_id` AS localidades_provincia_id,
+		     localidades.`nombre` AS localidades_nombre
+		FROM
+		     `OrdenCompraDetalle` OrdenCompraDetalle INNER JOIN `ordenCompra_detallesOrdenCompra` ordenCompra_detallesOrdenCompra ON OrdenCompraDetalle.`id` = ordenCompra_detallesOrdenCompra.`ordencompradetalle_id`
+		     INNER JOIN `OrdenCompra` OrdenCompra ON ordenCompra_detallesOrdenCompra.`orden_id` = OrdenCompra.`id`
+		     LEFT OUTER JOIN `Proveedor` Proveedor ON OrdenCompra.`proveedorId` = Proveedor.`id`
+		     INNER JOIN `provincia` provincia ON Proveedor.`provincia` = provincia.`id`
+		     INNER JOIN `localidades` localidades ON Proveedor.`localidad` = localidades.`id`
+		     INNER JOIN `articulos` articulos ON OrdenCompraDetalle.`articuloId` = articulos.`idArticulos`
+		WHERE
+		     OrdenCompra.`id` = $idOC";
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 

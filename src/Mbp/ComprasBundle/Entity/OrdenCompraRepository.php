@@ -31,7 +31,7 @@ class OrdenCompraRepository extends \Doctrine\ORM\EntityRepository
 				->leftJoin('MbpArticulosBundle:DetalleMovArt', 'det', 'WITH', 'det.ordenCompraId = oc.id')
 				->leftJoin('det.movimientoId', 'mov')			
 				->where('detalleOc.articuloId = :idArt')
-				->andWhere('det.articuloId = :idArt')
+				->orWhere('det.articuloId = :idArt')
 				->having('pendiente > 0')				
 				->setParameter('idArt', $art->getId())
 				->groupBy('oc.id')

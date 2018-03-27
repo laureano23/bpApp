@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OrdenDeCompra" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="b20991a6-8da8-4cf2-8ac6-123176886f03">
-	<property name="ireport.zoom" value="1.6105100000000068"/>
+	<property name="ireport.zoom" value="1.210000000000005"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="rutaLogo" class="java.lang.String"/>
@@ -33,10 +33,22 @@
      OrdenCompra.`monedaOC` AS OrdenCompra_monedaOC,
      OrdenCompra.`tc` AS OrdenCompra_tc,
      OrdenCompraDetalle.`ivaCalculado` AS OrdenCompraDetalle_ivaCalculado,
-     OrdenCompraDetalle.`descripcion` AS OrdenCompraDetalle_descripcion
+     OrdenCompraDetalle.`descripcion` AS OrdenCompraDetalle_descripcion,
+     Proveedor.`id` AS Proveedor_id,
+     Proveedor.`provincia` AS Proveedor_provincia,
+     Proveedor.`rsocial` AS Proveedor_rsocial,
+     provincia.`id` AS provincia_id,
+     provincia.`nombre` AS provincia_nombre,
+     localidades.`id` AS localidades_id,
+     localidades.`departamento_id` AS localidades_departamento_id,
+     localidades.`provincia_id` AS localidades_provincia_id,
+     localidades.`nombre` AS localidades_nombre
 FROM
      `OrdenCompraDetalle` OrdenCompraDetalle INNER JOIN `ordenCompra_detallesOrdenCompra` ordenCompra_detallesOrdenCompra ON OrdenCompraDetalle.`id` = ordenCompra_detallesOrdenCompra.`ordencompradetalle_id`
      INNER JOIN `OrdenCompra` OrdenCompra ON ordenCompra_detallesOrdenCompra.`orden_id` = OrdenCompra.`id`
+     LEFT OUTER JOIN `Proveedor` Proveedor ON OrdenCompra.`proveedorId` = Proveedor.`id`
+     INNER JOIN `provincia` provincia ON Proveedor.`provincia` = provincia.`id`
+     INNER JOIN `localidades` localidades ON Proveedor.`localidad` = localidades.`id`
      INNER JOIN `articulos` articulos ON OrdenCompraDetalle.`articuloId` = articulos.`idArticulos`
 WHERE
      OrdenCompra.`id` = $P{ordenId}]]>
@@ -66,6 +78,15 @@ WHERE
 	<field name="OrdenCompra_tc" class="java.math.BigDecimal"/>
 	<field name="OrdenCompraDetalle_ivaCalculado" class="java.math.BigDecimal"/>
 	<field name="OrdenCompraDetalle_descripcion" class="java.lang.String"/>
+	<field name="Proveedor_id" class="java.lang.Integer"/>
+	<field name="Proveedor_provincia" class="java.lang.String"/>
+	<field name="Proveedor_rsocial" class="java.lang.String"/>
+	<field name="provincia_id" class="java.lang.String"/>
+	<field name="provincia_nombre" class="java.lang.String"/>
+	<field name="localidades_id" class="java.lang.Integer"/>
+	<field name="localidades_departamento_id" class="java.lang.Integer"/>
+	<field name="localidades_provincia_id" class="java.lang.String"/>
+	<field name="localidades_nombre" class="java.lang.String"/>
 	<variable name="subtotal" class="java.lang.Float" calculation="Sum">
 		<variableExpression><![CDATA[$F{OrdenCompra_monedaOC} == true &&
  $F{OrdenCompraDetalle_moneda} == true ?
@@ -114,7 +135,7 @@ $F{OrdenCompraDetalle_precio}: 0]]></variableExpression>
 		<band/>
 	</background>
 	<pageHeader>
-		<band height="103">
+		<band height="155">
 			<image onErrorType="Blank">
 				<reportElement x="0" y="0" width="115" height="72" uuid="499dc7ad-d1c3-4e56-89fe-62f346701eb1"/>
 				<imageExpression><![CDATA[$P{rutaLogo}]]></imageExpression>
@@ -190,6 +211,45 @@ Tel: 4484-2416]]></text>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{OrdenCompra_monedaOC} == true ? $F{OrdenCompra_tc} : ""]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="0" y="72" width="65" height="20" uuid="74779ff4-e7b7-4717-834e-2d3a3dc9a1aa"/>
+				<box leftPadding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Proveedor:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="92" width="65" height="20" uuid="c5ecf06b-61bf-403e-97ec-27f9b31b6057"/>
+				<box leftPadding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Domicilio:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="112" width="115" height="20" uuid="99b35298-6963-44bc-b0f6-c9740eed6ac7"/>
+				<box leftPadding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lugar de entrega: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="117" y="112" width="228" height="20" uuid="21d5e5a1-31ea-4421-81ec-6067a34cba26"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Ombu 3865 San Justo Bs. As.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="65" y="72" width="364" height="20" uuid="14375b87-9fe2-4650-8517-7a90f51024da"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Proveedor_rsocial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="65" y="92" width="364" height="20" uuid="8642324d-fc31-475a-b992-13d25a78cbb9"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{localidades_nombre}+" "+$F{provincia_nombre}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -259,7 +319,7 @@ Tel: 4484-2416]]></text>
 			<textField>
 				<reportElement x="296" y="0" width="48" height="20" uuid="064cd2b7-7f3d-4cf4-932d-1714cd29d72a"/>
 				<box leftPadding="3"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{OrdenCompraDetalle_unidad}]]></textFieldExpression>
 			</textField>
 			<textField>

@@ -110,7 +110,7 @@ Ext.define('MetApp.view.Reportes.ReporteHistoricoMov', {
 										blur: {
 											fn: function(txt){
 												if(txt.getValue() == ""){
-													txt.setValue(99999);
+													txt.setValue("ZZZ");
 												}
 											}, 
 										}	

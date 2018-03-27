@@ -311,58 +311,51 @@ class ReportesController extends Controller
 		 * 
 		 */
 		$sql = "
-			SELECT
-				RemitosClientes.fecha AS fechaRemito,
-				RemitosClientes.remitoNum AS remitoNum,
-				RemitosClientesDetalles.cantidad AS remitoCant,
-				RemitosClientesDetalles.descripcion AS detalleRem,
-				ProveedorRem.rsocial AS proveedorRem,
-				ClienteRem.rsocial AS clienteRem,
-			
-				MovimientosArticulos.fechaMovimiento,
-				MovimientosArticulos.comprobanteNum AS movimientoNum,
-				MovimientosArticulos.tipoMovimiento,
-				ConceptosStock.concepto AS conceptoMovimiento,
-				ProveedorMov.rsocial AS proveedorMov,
-				ClienteMov.rsocial AS clienteMov,
-				DetalleMovArt.cantidad AS cantMov,
-				DetalleMovArt.descripcion AS descripcionMov,
-			
-				articulos.codigo,
-				articulos.descripcion AS descArt
-			FROM (SELECT
-			     DetalleMovArt.`id` AS MOVIMIENTO_REMITO_ID,
-			     DetalleMovArt.`descripcion` AS DESCRIPCION_MOV,
-			     DetalleMovArt.`articuloId` AS ARTICULO_ID
+			SELECT fechaMov, numComprobante, concepto,
+				CASE WHEN TIPO_MOV = 0 THEN DetalleMovArt.cantidad ELSE null END AS entrada,
+				CASE WHEN TIPO_MOV = 1 OR ISNULL(concepto) THEN RemitosClientesDetalles.cantidad ELSE null END AS salida,
+				Proveedor.rsocial AS proveedorNombre,
+				cliente.rsocial AS clienteNombre,
+				CASE WHEN ISNULL(concepto) THEN articulosRem.codigo ELSE articulosMov.codigo END AS codigo,
+				CASE WHEN ISNULL(concepto) THEN RemitosClientesDetalles.descripcion ELSE DetalleMovArt.descripcion END AS descripcion,
+				CASE WHEN ISNULL(concepto) THEN RemitosClientesDetalles.id ELSE CONCAT('m', DetalleMovArt.id) END AS idFila
 			FROM
-			     `DetalleMovArt` DetalleMovArt
+			(SELECT
+			     RemitosClientes.`id` AS remId,
+			     RemitosClientes.`fecha` AS fechaMov,
+			     RemitosClientes.`remitoNum` AS numComprobante,
+			     RemitosClientes.`proveedorId` AS RemitosClientes_proveedorId,
+			     RemitosClientes.`clienteId` AS RemitosClientes_clienteId,
+			     RemitosClientes.`id` AS TIPO_MOV,
+			     RemitosClientes.`id`=0 AS CONCEPTO_MOV
+			FROM
+			     `RemitosClientes` RemitosClientes
 			UNION
 			SELECT
-			     RemitosClientesDetalles.`id` AS RemitosClientesDetalles_id,
-			     RemitosClientesDetalles.`descripcion` AS RemitosClientesDetalles_descripcion,
-			     RemitosClientesDetalles.`articuloId` AS RemitosClientesDetalles_articuloId
+			     MovimientosArticulos.`id` AS MovimientosArticulos_id,
+			     MovimientosArticulos.`fechaMovimiento` AS MovimientosArticulos_fechaMovimiento,
+			     MovimientosArticulos.`comprobanteNum` AS MovimientosArticulos_comprobanteNum,
+			     MovimientosArticulos.`proveedorId` AS MovimientosArticulos_proveedorId,
+			     MovimientosArticulos.`clienteId` AS MovimientosArticulos_clienteId,
+			     MovimientosArticulos.`tipoMovimiento` AS MovimientosArticulos_tipoMovimiento,
+			     MovimientosArticulos.`conceptoId` AS MovimientosArticulos_conceptoId
 			FROM
-			     `RemitosClientesDetalles` RemitosClientesDetalles) AS SUB
-			LEFT JOIN movimientos_detalles ON MOVIMIENTO_REMITO_ID = movimientos_detalles.detallemovart_id
-			LEFT JOIN MovimientosArticulos ON movimientos_detalles.movimientosarticulos_id = MovimientosArticulos.id
-			LEFT JOIN Proveedor AS ProveedorMov ON ProveedorMov.id = MovimientosArticulos.proveedorId
-			LEFT JOIN cliente AS ClienteMov ON ClienteMov.idCliente = MovimientosArticulos.clienteId
-			LEFT JOIN ConceptosStock ON ConceptosStock.id = MovimientosArticulos.conceptoId
+			     `MovimientosArticulos` MovimientosArticulos) AS sub
+			LEFT JOIN movimientos_detalles ON movimientos_detalles.movimientosarticulos_id = remId
 			LEFT JOIN DetalleMovArt ON DetalleMovArt.id = movimientos_detalles.detallemovart_id
-			
-			LEFT JOIN RemitoClientes_detalle ON RemitoClientes_detalle.remitosclientes_id = MOVIMIENTO_REMITO_ID
-			LEFT JOIN RemitosClientes ON RemitosClientes.id = RemitoClientes_detalle.remitosclientes_id
-			LEFT JOIN RemitosClientesDetalles ON RemitosClientesDetalles.id = RemitoClientes_detalle.remitosclientesdetalles_id
-			LEFT JOIN Proveedor AS ProveedorRem ON ProveedorRem.id = RemitosClientes.proveedorId
-			LEFT JOIN cliente AS ClienteRem ON ClienteRem.idCliente = RemitosClientes.clienteId
-			
-			LEFT JOIN articulos ON articulos.idArticulos = ARTICULO_ID
-			
-			WHERE			
-				RemitosClientes.fecha BETWEEN '$desde' AND '$hasta' AND
-				codigo BETWEEN '$cod1' AND '$cod2' OR
-				fechaMovimiento BETWEEN '$desde' AND '$hasta' AND
-				codigo BETWEEN '$cod1' AND '$cod2'
+			LEFT JOIN RemitoClientes_detalle AS RemDetalle ON RemDetalle.remitosclientes_id = remId
+			LEFT JOIN RemitosClientesDetalles ON RemDetalle.remitosclientesdetalles_id = RemitosClientesDetalles.id
+			LEFT JOIN cliente ON cliente.idCliente = RemitosClientes_clienteId
+			LEFT JOIN Proveedor ON Proveedor.id = RemitosClientes_proveedorId
+			LEFT JOIN ConceptosStock ON ConceptosStock.id = CONCEPTO_MOV
+			LEFT JOIN articulos AS articulosMov ON articulosMov.idArticulos = DetalleMovArt.articuloId
+			LEFT JOIN articulos AS articulosRem ON articulosRem.idArticulos = RemitosClientesDetalles.articuloId
+			WHERE fechaMov BETWEEN '$desde' AND '$hasta'
+			AND articulosMov.codigo BETWEEN '$cod1' AND '$cod2' OR
+			fechaMov BETWEEN '$desde' AND '$hasta' AND
+			articulosRem.codigo BETWEEN '$cod1' AND '$cod2' AND ISNULL(concepto)
+			GROUP BY idFila
+			ORDER BY codigo
 		";
 		 /*
 		  * FIN SQL
