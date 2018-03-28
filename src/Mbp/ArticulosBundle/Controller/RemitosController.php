@@ -185,13 +185,21 @@ class RemitosController extends Controller
 			     Proveedor.`rsocial` AS Proveedor_rsocial,
 			     Proveedor.`denominacion` AS Proveedor_denominacion,
 			     Proveedor.`direccion` AS Proveedor_direccion,
-			     Proveedor.`cuit` AS Proveedor_cuit
+			     Proveedor.`cuit` AS Proveedor_cuit,
+			     PedidoClientes.`id` AS PedidoClientes_id,
+			     PedidoClientes.`oc` AS PedidoClientes_oc,
+			     PedidoClientes.`autEntrega` AS PedidoClientes_autEntrega,
+			     pedidoId_detalleId.`pedidoId` AS pedidoId_detalleId_pedidoId,
+			     pedidoId_detalleId.`detalleId` AS pedidoId_detalleId_detalleId,
+			     PedidoClientes.`inactivo` AS PedidoClientes_inactivo
 			FROM
 			     `RemitosClientesDetalles` RemitosClientesDetalles INNER JOIN `RemitoClientes_detalle` RemitoClientes_detalle ON RemitosClientesDetalles.`id` = RemitoClientes_detalle.`remitosclientesdetalles_id`
 			     INNER JOIN `RemitosClientes` RemitosClientes ON RemitoClientes_detalle.`remitosclientes_id` = RemitosClientes.`id`
 			     LEFT OUTER JOIN `cliente` cliente ON RemitosClientes.`clienteId` = cliente.`idCliente`
 			     LEFT OUTER JOIN `Proveedor` Proveedor ON RemitosClientes.`proveedorId` = Proveedor.`id`
 			     LEFT OUTER JOIN `PedidoClientesDetalle` PedidoClientesDetalle ON RemitosClientesDetalles.`pedidoDetalleId` = PedidoClientesDetalle.`id`
+			     LEFT JOIN `pedidoId_detalleId` pedidoId_detalleId ON PedidoClientesDetalle.`id` = pedidoId_detalleId.`detalleId`
+			     LEFT JOIN `PedidoClientes` PedidoClientes ON pedidoId_detalleId.`pedidoId` = PedidoClientes.`id`
 			WHERE
 			     RemitosClientes.`id` = $idRemito";
 			

@@ -60,6 +60,12 @@ class CCClientes
 	 * @ORM\JoinColumn(name="cobranzaId", referencedColumnName="id", onDelete="CASCADE")
 	 */
 	private $cobranzaId;
+	
+	/**
+	 * @ORM\ManyToOne(targetEntity="Mbp\ClientesBundle\Entity\Cliente")
+	 * @ORM\JoinColumn(name="clienteId", referencedColumnName="idCliente", nullable=false)
+	 */
+	private $clienteId;
 
 
     /**
@@ -214,5 +220,29 @@ class CCClientes
     public function getCobranzaId()
     {
         return $this->cobranzaId;
+    }
+
+    /**
+     * Set clienteId
+     *
+     * @param \Mbp\ClientesBundle\Entity\Cliente $clienteId
+     *
+     * @return CCClientes
+     */
+    public function setClienteId(\Mbp\ClientesBundle\Entity\Cliente $clienteId)
+    {
+        $this->clienteId = $clienteId;
+
+        return $this;
+    }
+
+    /**
+     * Get clienteId
+     *
+     * @return \Mbp\ClientesBundle\Entity\Cliente
+     */
+    public function getClienteId()
+    {
+        return $this->clienteId;
     }
 }

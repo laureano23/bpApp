@@ -60,6 +60,12 @@ class CCProv
 	 * @ORM\JoinColumn(name="OrdenPagoId", referencedColumnName="id", onDelete="CASCADE")
 	 */
 	private $OrdenPagoId;
+	
+	/**
+	 * @ORM\ManyToOne(targetEntity="Mbp\ProveedoresBundle\Entity\Proveedor")
+	 * @ORM\JoinColumn(name="proveedorId", referencedColumnName="id", nullable=false)
+	 */
+	private $proveedorId;
 
 
     /**
@@ -215,5 +221,29 @@ class CCProv
     public function getOrdenPagoId()
     {
         return $this->OrdenPagoId;
+    }
+
+    /**
+     * Set proveedorId
+     *
+     * @param \Mbp\ProveedoresBundle\Entity\Proveedor $proveedorId
+     *
+     * @return CCProv
+     */
+    public function setProveedorId(\Mbp\ProveedoresBundle\Entity\Proveedor $proveedorId = null)
+    {
+        $this->proveedorId = $proveedorId;
+
+        return $this;
+    }
+
+    /**
+     * Get proveedorId
+     *
+     * @return \Mbp\ProveedoresBundle\Entity\Proveedor
+     */
+    public function getProveedorId()
+    {
+        return $this->proveedorId;
     }
 }

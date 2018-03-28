@@ -9,15 +9,16 @@ namespace Mbp\FinanzasBundle\Entity;
  * repository methods below.
  */
 class CCClientesRepository extends \Doctrine\ORM\EntityRepository
-{
+{	
 	public function listarCCClientes($idCliente){
 		$em = $this->getEntityManager();
 		$repo = $em->getRepository('MbpFinanzasBundle:CCClientes');
 		
-				
+		$qb = $this->createQueryBuilder('c');
+		
 		$res = $repo->createQueryBuilder('cc')
-			->select(
-				"DATE_FORMAT(cc.fechaEmision, '%d-%m-%Y') as emision,
+			->select("
+				DATE_FORMAT(cc.fechaEmision, '%d-%m-%Y') as emision,
 				CASE WHEN cc.cobranzaId IS NOT NULL THEN CONCAT('COBRANZA N° ', cob.id) ELSE CONCAT(tipo.descripcion, ' N° ', fc.ptoVta, '-', fc.fcNro) END AS concepto, 
 				CASE WHEN cc.cobranzaId IS NOT NULL THEN true ELSE false END AS detalle,
 				DATE_FORMAT(cc.fechaVencimiento, '%d-%m-%Y') as vencimiento,
@@ -27,14 +28,15 @@ class CCClientesRepository extends \Doctrine\ORM\EntityRepository
 				fc.id as idF,
 				cob.id as idCob
 				")
-			->leftJoin('cc.facturaId', 'fc')
-			->leftJoin('fc.tipoId', 'tipo')
-			->leftJoin('cc.cobranzaId', 'cob')//op x cob
-			->leftJoin('fc.clienteId', 'clienteFc') //provFc x clienteFc
-			->leftJoin('cob.clienteId', 'clienteCob') //provOP x clienteCob
-			->leftJoin('Mbp\FinanzasBundle\Entity\CCClientes', 'cc2', \Doctrine\ORM\Query\Expr\Join::WITH, 'cc.id >= cc2.id')
-			->where('clienteFc.id = :idCliente')
-			->orWhere('clienteCob.id = :idCliente')
+			->leftjoin('cc.facturaId', 'fc', 'WITH', 'fc.clienteId = :idCliente')
+			->leftjoin('cc.cobranzaId', 'cob', 'WITH', 'cob.clienteId = :idCliente')
+			->leftjoin('fc.tipoId', 'tipo')		
+			->innerjoin('Mbp\FinanzasBundle\Entity\CCClientes', 'cc2',
+				 \Doctrine\ORM\Query\Expr\Join::LEFT_JOIN, 
+				 $qb->expr()->andX(
+				 	'cc2.clienteId = :idCliente',
+				 	'cc.id >= cc2.id'
+				 ))
 			->setParameter('idCliente', $idCliente)	
 			->groupBy('cc.id')		
 			->getQuery()

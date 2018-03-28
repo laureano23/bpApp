@@ -67,18 +67,18 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 	},
 	
 	WinBalance: function(btn){
-		var win = Ext.widget('BalanceView');
+		var win2 = Ext.widget('BalanceView');
 		
-		var btnSave = win.queryById('guardar');
-		
-		btnSave.on('click', function(){
-			var me = this;
+		var btnSave = win2.queryById('guardar');
+		var me = this;
+		btnSave.on('click', function(btn){
 			var win = btn.up('window');
 			var form = btn.up('form');
 			var values = form.getForm().getValues();
 			var cc = me.getCCProveedores();
 			
 			if(!form.isValid()) return;
+			
 			
 			Ext.Ajax.request({
 				url: Routing.generate('mbp_proveedores_balance'),
@@ -96,7 +96,7 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 						cc.down('grid').getStore().load();
 					}
 					
-					win.close();
+					win2.close();
 				}
 			});
 		})

@@ -13,7 +13,7 @@ class CCProvRepository extends \Doctrine\ORM\EntityRepository
 	public function listarCCProv($idProveedor){
 		$em = $this->getEntityManager();
 		$repo = $em->getRepository('MbpProveedoresBundle:CCProv');
-		
+		$qb = $this->createQueryBuilder('c');
 				
 		$res = $repo->createQueryBuilder('cc')
 			->select(
@@ -27,15 +27,18 @@ class CCProvRepository extends \Doctrine\ORM\EntityRepository
 				fc.id as idF,
 				op.id as idOP
 				")
-			->leftJoin('cc.facturaId', 'fc')
+			->leftJoin('cc.facturaId', 'fc', 'WITH', 'fc.proveedorId = :idProv')
 			->leftJoin('fc.tipoId', 'tipo')
-			->leftJoin('cc.OrdenPagoId', 'op')
-			->leftJoin('fc.proveedorId', 'provFc')
-			->leftJoin('op.proveedorId', 'provOP')
-			->leftJoin('Mbp\ProveedoresBundle\Entity\CCProv', 'cc2', \Doctrine\ORM\Query\Expr\Join::WITH, 'cc.id >= cc2.id')
-			->where('provFc.id = :idProv')
-			->orWhere('provOP.id = :idProv')
+			->leftJoin('cc.OrdenPagoId', 'op', 'WITH', 'op.proveedorId = :idProv')
+			->leftJoin('Mbp\ProveedoresBundle\Entity\CCProv', 'cc2',				 
+				 \Doctrine\ORM\Query\Expr\Join::LEFT_JOIN, 
+				 $qb->expr()->andX(
+				 	'cc2.proveedorId = :idProv',
+				 	'cc.id >= cc2.id'
+				 ))
 			->setParameter('idProv', $idProveedor)	
+			->where('fc.proveedorId = :idProv')
+			->orWhere('op.proveedorId = :idProv')
 			->groupBy('cc.id')		
 			->getQuery()
 			->getArrayResult();

@@ -50,16 +50,22 @@ class CCProv
     private $fechaVencimiento;
     
     /**
-	 * @ORM\OneToOne(targetEntity="Mbp\ProveedoresBundle\Entity\Factura", inversedBy="ccProv")
+	 * @ORM\OneToOne(targetEntity="Mbp\ProveedoresBundle\Entity\Factura", inversedBy="ccId")
 	 * @ORM\JoinColumn(name="facturaId", referencedColumnName="id", onDelete="CASCADE")
 	 */
 	private $facturaId;
 	
 	/**
-	 * @ORM\OneToOne(targetEntity="Mbp\ProveedoresBundle\Entity\OrdenPago", inversedBy="ccProv")
+	 * @ORM\OneToOne(targetEntity="Mbp\ProveedoresBundle\Entity\OrdenPago", inversedBy="ccId")
 	 * @ORM\JoinColumn(name="OrdenPagoId", referencedColumnName="id", onDelete="CASCADE")
 	 */
 	private $OrdenPagoId;
+	
+	/**
+	 * @ORM\ManyToOne(targetEntity="Mbp\ProveedoresBundle\Entity\Proveedor")
+	 * @ORM\JoinColumn(name="proveedorId", referencedColumnName="id")
+	 */
+	private $proveedorId;
 
 
     /**
@@ -191,5 +197,29 @@ class CCProv
     public function getFacturaId()
     {
         return $this->facturaId;
+    }
+
+    /**
+     * Set ordenPagoId
+     *
+     * @param \Mbp\ProveedoresBundle\Entity\OrdenPago $ordenPagoId
+     *
+     * @return CCProv
+     */
+    public function setOrdenPagoId(\Mbp\ProveedoresBundle\Entity\OrdenPago $ordenPagoId = null)
+    {
+        $this->OrdenPagoId = $ordenPagoId;
+
+        return $this;
+    }
+
+    /**
+     * Get ordenPagoId
+     *
+     * @return \Mbp\ProveedoresBundle\Entity\OrdenPago
+     */
+    public function getOrdenPagoId()
+    {
+        return $this->OrdenPagoId;
     }
 }

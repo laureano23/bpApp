@@ -261,6 +261,7 @@ class VentasController extends Controller
 			$cc->setFechaEmision($factura->getFecha());
 			$cc->setFechaVencimiento($factura->getVencimiento());
 			$cc->setFacturaId($factura);
+			$cc->setClienteId($cliente);
 			
 			$factura->setCcId($cc);
 			
@@ -465,6 +466,7 @@ class VentasController extends Controller
 			$cc->setFechaEmision($factura->getFecha());
 			$cc->setFechaVencimiento($factura->getVencimiento());
 			$cc->setFacturaId($factura);
+			$cc->setClienteId($cliente);
 			
 			$factura->setCcId($cc);
 			

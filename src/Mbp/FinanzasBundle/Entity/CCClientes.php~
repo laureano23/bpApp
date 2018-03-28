@@ -24,14 +24,14 @@ class CCClientes
     /**
      * @var string
      *
-     * @ORM\Column(name="debe", type="decimal")
+     * @ORM\Column(name="debe", type="decimal", precision=11, scale=2)
      */
     private $debe=0;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="haber", type="decimal")
+     * @ORM\Column(name="haber", type="decimal", precision=11, scale=2)
      */
     private $haber=0;
 
@@ -60,6 +60,12 @@ class CCClientes
 	 * @ORM\JoinColumn(name="cobranzaId", referencedColumnName="id", onDelete="CASCADE")
 	 */
 	private $cobranzaId;
+	
+	/**
+	 * @ORM\ManyToOne(targetEntity="Mbp\ClientesBundle\Entity\Cliente")
+	 * @ORM\JoinColumn(name="clienteId", referencedColumnName="idCliente", nullable=false)
+	 */
+	private $clienteId;
 
 
     /**
@@ -190,5 +196,29 @@ class CCClientes
     public function getFacturaId()
     {
         return $this->facturaId;
+    }
+
+    /**
+     * Set cobranzaId
+     *
+     * @param \Mbp\FinanzasBundle\Entity\Cobranzas $cobranzaId
+     *
+     * @return CCClientes
+     */
+    public function setCobranzaId(\Mbp\FinanzasBundle\Entity\Cobranzas $cobranzaId = null)
+    {
+        $this->cobranzaId = $cobranzaId;
+
+        return $this;
+    }
+
+    /**
+     * Get cobranzaId
+     *
+     * @return \Mbp\FinanzasBundle\Entity\Cobranzas
+     */
+    public function getCobranzaId()
+    {
+        return $this->cobranzaId;
     }
 }

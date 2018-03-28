@@ -84,6 +84,7 @@ class CuentaCorrienteController extends Controller
 			$cc->setFechaEmision($fcProveedor->getFechaEmision());
 			$cc->setFechaVencimiento($fcProveedor->getVencimiento());
 			$cc->setFacturaId($fcProveedor);
+			$cc->setProveedorId($proveedor);
 			
 			$fcProveedor->setCcId($cc);
 			
@@ -355,6 +356,7 @@ class CuentaCorrienteController extends Controller
 			$balance->setVencimiento(new \DateTime);
 			$balance->setTotalFc($neto);
 			
+			
 			$tipo = $repoTipo->findOneByEsBalance(true);
 			$balance->setTipoId($tipo);
 			
@@ -369,6 +371,7 @@ class CuentaCorrienteController extends Controller
 			$cc->setFechaEmision($balance->getFechaEmision());
 			$cc->setFechaVencimiento($balance->getVencimiento());
 			$cc->setFacturaId($balance);
+			$cc->setProveedorId($proveedor);
 			$balance->setCcId($cc);
 			
 			

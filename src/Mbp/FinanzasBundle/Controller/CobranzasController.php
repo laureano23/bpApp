@@ -97,6 +97,7 @@ class CobranzasController extends Controller
 			$cc->setFechaEmision($cobranza->getFechaRecibo());
 			$cc->setFechaVencimiento($cobranza->getFechaRecibo());
 			$cc->setCobranzaId($cobranza);
+			$cc->setClienteId($cliente);
 			
 			$cobranza->setCcId($cc);
 			

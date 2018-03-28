@@ -169,6 +169,7 @@ class PagosController extends Controller
 			$cc->setFechaEmision($ordenPago->getEmision());
 			$cc->setFechaVencimiento($ordenPago->getEmision());
 			$cc->setOrdenPagoId($ordenPago);
+			$cc->setProveedorId($proveedor);
 			
 			$ordenPago->setCcId($cc);
 				

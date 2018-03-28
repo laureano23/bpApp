@@ -72,7 +72,7 @@ XML;
 
 		$respuesta=$objCurlFileUploader->UploadFile();
 		
-
+		
 		$this->response = json_decode(json_encode((array)simplexml_load_string($respuesta)),1);
 		$str = simplexml_load_string($respuesta, NULL, LIBXML_NOCDATA);
 		$parse =  str_replace("<![CDATA[","",$str->mensajeError);
