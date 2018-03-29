@@ -20,6 +20,37 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class DefaultController extends Controller
 {
+	/**
+     * @Route("/proveedores/eliminarProveedor", name="mbp_proveedores_eliminarProveedor", options={"expose"=true})
+     */
+    public function eliminarProveedor()
+    {
+    	$em = $this->getDoctrine()->getManager();
+		$repo = $em->getRepository('MbpProveedoresBundle:Proveedor');
+		$req = $this->getRequest();
+		$response = new Response;
+		
+		try{
+			$idProv = $req->request->get('id');
+			$proveedor = $repo->find($idProv);
+			$proveedor->setCuentaCerrada(TRUE);
+			
+			$em->persist($proveedor);
+			$em->flush();
+			
+			
+	        return $response->setContent(
+				json_encode(array('success' => true))
+			);	
+		}catch(\Exception $e){
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(json_encode(array(
+				'success' => false,
+				'msg' => $e->getMessage()
+			)));
+		}		
+    }
+	
     /**
      * @Route("/proveedores/listar", name="mbp_proveedores_listar", options={"expose"=true})
      */

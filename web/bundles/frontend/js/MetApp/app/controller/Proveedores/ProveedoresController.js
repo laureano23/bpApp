@@ -30,8 +30,47 @@ Ext.define('MetApp.controller.Proveedores.ProveedoresController',{
 			},
 			'ProveedoresWin button[itemId=btnEdit]': {
 				click: this.EditarProveedor
+			},
+			'ProveedoresWin button[itemId=btnDelete]': {
+				click: this.EliminarProveedor
 			}
 		});
+	},
+	
+	EliminarProveedor: function(btn){
+		var win = btn.up('window');
+		var form = win.down('form');
+		var idProv = win.queryById('id').getValue();
+		
+		var botonera = win.queryById('botonera');
+	
+		Ext.Msg.show({
+			title: 'Atención',
+			msg: 'Desea eliminar este proveedor?',
+			buttons: Ext.Msg.YESNO,
+ 			icon: Ext.Msg.ALERT,
+ 			fn: function(resp){
+ 				if(resp=='yes'){
+ 					Ext.Ajax.request({
+						url: Routing.generate('mbp_proveedores_eliminarProveedor'),
+						
+						params:{
+							id: idProv
+						},
+						
+						success: function(resp){
+							var jsonResp = Ext.JSON.decode(resp.responseText);
+							if(jsonResp.success == true){
+								win.queryById('id').setValue(jsonResp.id);
+								form.query('.field').forEach(function(c){c.setReadOnly(true);}); //HABILITO TODOS LOS CAMPOS
+								form.getForm().reset();
+								botonera.resetFn(botonera);		
+							}
+						}
+					})
+ 				}
+ 			}
+		})
 	},
 	
 	FilterLocalidad: function(combo){
