@@ -34,6 +34,7 @@ class CCProvRepository extends \Doctrine\ORM\EntityRepository
 				 \Doctrine\ORM\Query\Expr\Join::LEFT_JOIN, 
 				 $qb->expr()->andX(
 				 	'cc2.proveedorId = :idProv',
+				 	'cc.proveedorId = :idProv',
 				 	'cc.id >= cc2.id'
 				 ))
 			->setParameter('idProv', $idProveedor)	

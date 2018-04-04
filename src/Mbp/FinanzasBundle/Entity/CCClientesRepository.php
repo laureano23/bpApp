@@ -35,6 +35,7 @@ class CCClientesRepository extends \Doctrine\ORM\EntityRepository
 				 \Doctrine\ORM\Query\Expr\Join::LEFT_JOIN, 
 				 $qb->expr()->andX(
 				 	'cc2.clienteId = :idCliente',
+				 	'cc.clienteId = :idCliente',
 				 	'cc.id >= cc2.id'
 				 ))
 			->setParameter('idCliente', $idCliente)	
