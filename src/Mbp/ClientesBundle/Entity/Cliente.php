@@ -176,6 +176,13 @@ class Cliente
 	 * @ORM\JoinColumn(name="transporteId", referencedColumnName="id", nullable=true)
      */
     private $transporteId;
+	
+	/**
+     * @var decimal
+     *
+     * @ORM\Column(name="descuentoFijo", type="decimal", precision=5, scale=2, nullable=false)
+     */
+    private $descuentoFijo;
 
     /**
      * Set rsocial
@@ -700,5 +707,29 @@ class Cliente
     public function getLocalidad()
     {
         return $this->localidad;
+    }
+
+    /**
+     * Set descuentoFijo
+     *
+     * @param string $descuentoFijo
+     *
+     * @return Cliente
+     */
+    public function setDescuentoFijo($descuentoFijo)
+    {
+        $this->descuentoFijo = $descuentoFijo;
+
+        return $this;
+    }
+
+    /**
+     * Get descuentoFijo
+     *
+     * @return string
+     */
+    public function getDescuentoFijo()
+    {
+        return $this->descuentoFijo;
     }
 }

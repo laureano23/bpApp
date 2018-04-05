@@ -90,6 +90,12 @@ Ext.define('MetApp.controller.Proveedores.FacturaProveedoresController',{
 				win.close();
 			}			
 		});
+		
+		var proxy = store.getProxy();
+		proxy.on('exception', function(proxy, response, operation){
+			store.rejectChanges();
+		});
+		
 		if(form.isValid()==true){			
 			store.add(fcModel);
 			var idTipoGasto = formCC.queryById('tipoGasto').getValue();				

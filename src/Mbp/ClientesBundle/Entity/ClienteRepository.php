@@ -28,6 +28,7 @@ class ClienteRepository extends  EntityRepository
 							c.cuentaCerrada,
 							c.intereses,
 							c.tasaInt as tasa,
+							c.descuentoFijo,
 							prov.id as provincia,
 							dep.id as departamento,
 							l.id as localidad,

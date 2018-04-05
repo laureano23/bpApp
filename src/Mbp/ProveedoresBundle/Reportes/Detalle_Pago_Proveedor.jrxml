@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Detalle_Pago_Proveedor" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="890e90cc-cf89-4202-bb29-76354a7dbc5d">
-	<property name="ireport.zoom" value="3.138428376721011"/>
-	<property name="ireport.x" value="19"/>
-	<property name="ireport.y" value="1705"/>
+	<property name="ireport.zoom" value="1.1000000000000036"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="9"/>
 	<parameter name="ordenPagoId" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -51,8 +51,8 @@ FROM
      INNER JOIN `OrdenPago` OrdenPago ON OrdenDePago_detallesPagos.`ordenPago_id` = OrdenPago.`id`
      INNER JOIN `Proveedor` Proveedor ON OrdenPago.`proveedorId` = Proveedor.`id`
      LEFT OUTER JOIN `localidades` localidades ON Proveedor.`localidad` = localidades.`id`
-     INNER JOIN `provincia` provincia ON localidades.`provincia_id` = provincia.`id`
-     INNER JOIN `FormasPagos` FormasPagos ON Pago.`idFormaPago` = FormasPagos.`id`
+     LEFT JOIN `provincia` provincia ON localidades.`provincia_id` = provincia.`id`
+     LEFT JOIN `FormasPagos` FormasPagos ON Pago.`idFormaPago` = FormasPagos.`id`
 WHERE
      OrdenDePago_detallesPagos.`ordenPago_id` = $P{ordenPagoId}]]>
 	</queryString>

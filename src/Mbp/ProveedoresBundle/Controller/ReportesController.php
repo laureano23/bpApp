@@ -95,8 +95,8 @@ class ReportesController extends Controller
 			     INNER JOIN `OrdenPago` OrdenPago ON OrdenDePago_detallesPagos.`ordenPago_id` = OrdenPago.`id`
 			     INNER JOIN `Proveedor` Proveedor ON OrdenPago.`proveedorId` = Proveedor.`id`
 			     LEFT OUTER JOIN `localidades` localidades ON Proveedor.`localidad` = localidades.`id`
-			     INNER JOIN `provincia` provincia ON localidades.`provincia_id` = provincia.`id`
-			     INNER JOIN `FormasPagos` FormasPagos ON Pago.`idFormaPago` = FormasPagos.`id`
+			     LEFT JOIN `provincia` provincia ON localidades.`provincia_id` = provincia.`id`
+			     LEFT JOIN `FormasPagos` FormasPagos ON Pago.`idFormaPago` = FormasPagos.`id`
 			WHERE
 			     OrdenDePago_detallesPagos.`ordenPago_id` = $idOp";		     
 		   	$param->put('SUBREPORT_DIR', $kernel->locateResource('@MbpProveedoresBundle/Reportes/'));

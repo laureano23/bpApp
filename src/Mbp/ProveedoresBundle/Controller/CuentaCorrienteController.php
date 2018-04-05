@@ -34,9 +34,11 @@ class CuentaCorrienteController extends Controller
 		$repoFc = $em->getRepository('MbpProveedoresBundle:Factura');
 		$repoTipoGasto = $em->getRepository('MbpProveedoresBundle:ImputacionGastos');
 		$repoTipoCbpte = $em->getRepository('MbpFinanzasBundle:TipoComprobante');
-		
+		$response = new Response;
+			
 		
 		try{
+			throw new \Exception("Error Processing Request", 1);
 			$fcProveedor;
 			$cc;
 			if($objData->idF > 0){
@@ -49,6 +51,9 @@ class CuentaCorrienteController extends Controller
 			}
 			
 			$proveedor = $provRepo->find($objData->idProv);
+			
+			if($proveedor->getCuentaCerrada() == TRUE) throw new \Exception("El proveedor tiene la cuenta cerrada", 1);
+			
 			$tipoGasto = $repoTipoGasto->find($objData->tipoGasto);
 			
 			$fcProveedor->setproveedorId($proveedor);
@@ -91,17 +96,20 @@ class CuentaCorrienteController extends Controller
 			$em->persist($fcProveedor);
 			$em->flush();
 			
-			echo json_encode(array(
-				'success' => true,				
-			));	
+			return $response->setContent(
+				json_encode(array(
+					'success' => true,				
+				))
+			); 
 		}catch(\Exception $e){
-			throw $e;
-			echo json_encode(array(
-				'success' => false,
-				'msg' => $e->getMessage()
-			));
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(
+				json_encode(array(
+					'success' => false,
+					'msg' => $e->getMessage()
+				))
+			);
 		}
-    	return new Response();
 	}
 
 	/**
@@ -132,10 +140,6 @@ class CuentaCorrienteController extends Controller
 		}
     }
 	
-	function ordenar($a, $b) {
-	    return strtotime($a['fechaEmision']) - strtotime($b['fechaEmision']);
-	}
-	
 	/**
      * @Route("/proveedores/cc/eliminarComprobante", name="mbp_proveedores_eliminarComprobante", options={"expose"=true})
      */
@@ -157,6 +161,9 @@ class CuentaCorrienteController extends Controller
 				$repo = $em->getRepository("MbpProveedoresBundle:Factura");	
 				$repoTr = $em->getRepository("MbpProveedoresBundle:TransaccionOPFC");	
 				$comprobante = $repo->find($id);
+				
+				if($comprobante->getProveedorId()->getCuentaCerrada() == TRUE) throw new \Exception("El proveedor tiene la cuenta cerrada", 1);
+				
 
 				$transacciones = $repoTr->createQueryBuilder("tr")
 					->select()
@@ -172,6 +179,11 @@ class CuentaCorrienteController extends Controller
 				$em->remove($comprobante);	
 			}else{
 				$id = $data->idOP;
+				$repoOP = $em->getRepository("MbpProveedoresBundle:OrdenPago");
+				$ordenPago = $repoOP->find($id);
+				
+				if($ordenPago->getProveedorId()->getCuentaCerrada() == TRUE) throw new \Exception("El proveedor tiene la cuenta cerrada", 1);
+				
 				$repo = $em->getRepository("MbpProveedoresBundle:TransaccionOPFC");
 				$comprobante = $repo->createQueryBuilder("tr")
 					->select()
@@ -184,9 +196,7 @@ class CuentaCorrienteController extends Controller
 					$em->remove($comp);								
 				}	
 
-				//ELIMINO LA ORDEN DE PAGO CON TODOS LOS DETALLES ASOCIADOS
-				$repoOP = $em->getRepository("MbpProveedoresBundle:OrdenPago");
-				$ordenPago = $repoOP->find($id);
+				//ELIMINO LA ORDEN DE PAGO CON TODOS LOS DETALLES ASOCIADOS				
 				$em->remove($ordenPago);
 			}
 			
@@ -341,6 +351,9 @@ class CuentaCorrienteController extends Controller
 		try{
 			$neto = $req->request->get('neto');
 			$proveedorId = $req->request->get('proveedorId');
+			
+			if($proveedorId->getCuentaCerrada() == TRUE) throw new \Exception("El proveedor tiene la cuenta cerrada", 1);
+			
 			$obs = $req->request->get('observaciones');
 			
 			$balance = new Factura;

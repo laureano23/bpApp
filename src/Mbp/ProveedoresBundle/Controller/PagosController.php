@@ -94,6 +94,7 @@ class PagosController extends Controller
 		
 		try{
 			$proveedor = $repoProv->find($idProv); //PROVEEDOR ASOCIADO
+			if($proveedor->getCuentaCerrada() == TRUE) throw new \Exception("El proveedor tiene la cuenta cerrada", 1);
 			$ordenPago = 0;
 			$ordenPago = new OrdenPago(); //CREO UNA NUEVA ORDEN DE PAGO
 			$ordenPago->setEmision(new \DateTime());

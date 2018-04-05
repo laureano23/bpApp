@@ -167,6 +167,13 @@ class Proveedor
      * @ORM\Column(name="cuentaCerrada", type="boolean")
      */
     private $cuentaCerrada;
+	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="inactivo", type="boolean", nullable=false)
+     */
+    private $inactivo=false;
 
 
     /**
@@ -682,5 +689,29 @@ class Proveedor
     public function getLocalidad()
     {
         return $this->localidad;
+    }
+
+    /**
+     * Set inactivo
+     *
+     * @param boolean $inactivo
+     *
+     * @return Proveedor
+     */
+    public function setInactivo($inactivo)
+    {
+        $this->inactivo = $inactivo;
+
+        return $this;
+    }
+
+    /**
+     * Get inactivo
+     *
+     * @return boolean
+     */
+    public function getInactivo()
+    {
+        return $this->inactivo;
     }
 }

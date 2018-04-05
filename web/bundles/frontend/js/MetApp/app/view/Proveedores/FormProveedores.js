@@ -384,7 +384,7 @@ Ext.define('MetApp.view.Proveedores.FormProveedores' ,{
 														},
 														{
 															xtype: 'checkbox',
-															name: 'estadoCuenta',
+															name: 'cuentaCerrada',
 															uncheckedValue: false,
 															fieldLabel: 'Cuenta Cerrada:',
 															width: 200,

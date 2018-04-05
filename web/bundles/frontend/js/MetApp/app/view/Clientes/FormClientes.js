@@ -1,6 +1,6 @@
 Ext.define('MetApp.view.Clientes.FormClientes' ,{
 	extend: 'Ext.window.Window',
-	height: 565,
+	height: 600,
 	width: 900,
 	modal: true,
 	autoShow: true,
@@ -332,6 +332,13 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 											width: 570,
 											labelWidth: 120,
 											readOnly: true,
+											disabledCls: 'myDisabledClass'
+										},
+										{
+											xtype: 'textfield',
+											name: 'descuentoFijo',
+											itemId: 'descuentoFijo',
+											fieldLabel: 'Descuento Fijo',
 											disabledCls: 'myDisabledClass'
 										},
 										{

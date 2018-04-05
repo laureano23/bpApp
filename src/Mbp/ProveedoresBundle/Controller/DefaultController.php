@@ -33,7 +33,7 @@ class DefaultController extends Controller
 		try{
 			$idProv = $req->request->get('id');
 			$proveedor = $repo->find($idProv);
-			$proveedor->setCuentaCerrada(TRUE);
+			$proveedor->setInactivo(TRUE);
 			
 			$em->persist($proveedor);
 			$em->flush();
@@ -73,6 +73,7 @@ class DefaultController extends Controller
 					->leftjoin('p.provincia', 'prov')
 					->leftjoin('p.localidad', 'loc')
 					->leftjoin('p.imputacionGastos', 'imputacion')
+					->where('p.inactivo = 0')
 					->getQuery();
 					
 			$res = $query->getArrayResult();
@@ -161,7 +162,7 @@ class DefaultController extends Controller
 			$proveedor->setPorcentajeRetencion($decData->vencimientoFc);
 			$proveedor->setAplicaRetencion($decData->aplicaRetencion == 'on' ? true : false);
 			$proveedor->setPorcentajeRetencion($decData->porcentajeRetencion);
-			$proveedor->setCuentaCerrada($decData->estadoCuenta == 'on' ? true : false);
+			$proveedor->setCuentaCerrada($decData->cuentaCerrada == 'on' ? true : false);
 			
 			$em->persist($proveedor);
 			$em->flush();

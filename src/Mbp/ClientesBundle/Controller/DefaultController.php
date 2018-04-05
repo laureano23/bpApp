@@ -76,6 +76,7 @@ class DefaultController extends Controller
 			$cliente->setCuentaCerrada($estadoCuenta);
 			$cliente->setIntereses($intereses);
 			$cliente->setTasaInt($request->request->get('tasa'));
+			$cliente->setDescuentoFijo($request->request->get('descuentoFijo'));
 			
 			$transporte = $repoTransporte->find($request->request->get('transporte'));
 			if(!empty($transporte)) $cliente->setTransporteId($transporte);

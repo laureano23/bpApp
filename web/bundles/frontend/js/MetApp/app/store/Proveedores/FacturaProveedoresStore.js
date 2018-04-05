@@ -26,6 +26,6 @@ Ext.define('MetApp.store.Proveedores.FacturaProveedoresStore',{
 			type: 'json',
 			root: 'data',
 			encode: true
-		}
-	}
+		},		
+	},
 });

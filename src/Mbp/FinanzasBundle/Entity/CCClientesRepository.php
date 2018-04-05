@@ -19,7 +19,7 @@ class CCClientesRepository extends \Doctrine\ORM\EntityRepository
 		$res = $repo->createQueryBuilder('cc')
 			->select("
 				DATE_FORMAT(cc.fechaEmision, '%d-%m-%Y') as emision,
-				CASE WHEN cc.cobranzaId IS NOT NULL THEN CONCAT('COBRANZA N° ', cob.id) ELSE CONCAT(tipo.descripcion, ' N° ', fc.ptoVta, '-', fc.fcNro) END AS concepto, 
+				CASE WHEN cc.cobranzaId IS NOT NULL THEN CONCAT('COBRANZA N° ', cob.numRecibo) ELSE CONCAT(tipo.descripcion, ' N° ', fc.ptoVta, '-', fc.fcNro) END AS concepto, 
 				CASE WHEN cc.cobranzaId IS NOT NULL THEN true ELSE false END AS detalle,
 				DATE_FORMAT(cc.fechaVencimiento, '%d-%m-%Y') as vencimiento,
 				cc.debe,
