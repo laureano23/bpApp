@@ -201,6 +201,8 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 	},
 	
 	AddNuevoFactura: function(btn){
+		var cc = btn.up('window');
+		var descuento = cc.queryById('descuentoFijo').getValue();
 		var me = this;
 		var winFact = Ext.create('MetApp.view.CCClientes.Facturacion');
 		var store = winFact.down('grid').getStore();	
@@ -212,6 +214,8 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 				comboTipo.select(1);		
 			}
 		})
+		
+		winFact.queryById('descuentoFijo').setValue(descuento);
 		
 		
 		var subTotal=0;
@@ -236,6 +240,10 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 					subTotal = data.parcial + aux;
 					aux = subTotal;
 				});
+				
+				//restamos el descuento
+				var descuento = win.queryById('descuentoFijo').getValue();
+				subTotal -= subTotal * descuento / 100;
 				
 				fieldSub.setValue(subTotal);
 				fieldIva.setValue(MetApp.resources.ux.ParametersSingleton.getIva() * fieldSub.getValue())
@@ -426,8 +434,15 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			var grid = winArt.down('grid');
 			var selection = grid.getSelectionModel().getSelection()[0];
 			var formArt = winFacturacion.queryById('formArticulos');
+			var monedaFc = winFacturacion.queryById('moneda').getValue();
+			
+			var precio=selection.data.precio;
+			if(selection.data.monedaPrecio == "true" && monedaFc==0){
+				precio = selection.data.precio*winFacturacion.queryById('tipoCambio').getValue();
+			}
 			
 			formArt.loadRecord(selection);
+			formArt.queryById('precio').setValue(precio);
 			winArt.close();
 			
 			if(selection.data.codigo == 'ZZZ'){
@@ -450,6 +465,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		record.set('codigo', articulo.codigo);
 		record.set('descripcion', articulo.descripcion);
 		record.set('cantidad', articulo.cantidad);
+				
 		record.set('precio', articulo.precio);
 		record.set('costo', articulo.costo);
 		record.set('parcial', articulo.precio * articulo.cantidad);
@@ -541,6 +557,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var comboMoneda = win.queryById('moneda');
 		var moneda = comboMoneda.getValue();
 		valuesDatosFc.idCliente = ccView.queryById('id').getValue();
+		var descuento = win.queryById('descuentoFijo').getValue();
 		
 		if(moneda == 1){
 			Ext.Msg.prompt('Tipo de cambio', 'Ingrese tipo de cambio', function(btn, value){
@@ -557,6 +574,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 					params: {
 						data: Ext.JSON.encode(arrayRecords),
 						fcData: Ext.JSON.encode(valuesDatosFc),	
+						descuentoFijo: descuento
 					},
 					
 					
@@ -599,6 +617,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 				params: {
 					data: Ext.JSON.encode(arrayRecords),
 					fcData: Ext.JSON.encode(valuesDatosFc),	
+					descuentoFijo: descuento
 				},
 				
 				

@@ -122,6 +122,14 @@ Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 									}
 								}
 							]
+						},
+						{
+							xtype: 'textfield',
+							margins: '0 0 0 5',
+							name: 'tipoCambio',
+							itemId: 'tipoCambio',
+							fieldLabel: 'Tipo cambio',
+							value: 0
 						}					
 					]
 				},
@@ -252,9 +260,16 @@ Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 										},
 										botonera
 									]
-								},								
+								},					
 							]
 						},
+						{
+							xtype: 'textfield',
+							name: 'descuentoFijo',
+							itemId: 'descuentoFijo',
+							fieldLabel: 'Descuento (%)',
+							margin: '0 0 0 5'									
+						},	
 						{
 							xtype: 'container',									
 							margin: '5 0 5 5',

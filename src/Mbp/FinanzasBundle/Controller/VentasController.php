@@ -78,6 +78,7 @@ class VentasController extends Controller
 						
 			$data = $req->request->get('data');
 			$fcData = $req->request->get('fcData');
+			$descuento = $req->request->get('descuentoFijo');
 			$decodeData = json_decode($data);
 			$decodefcData = json_decode($fcData);
 		
@@ -140,6 +141,13 @@ class VentasController extends Controller
 								
 			}
 			
+			//CALCULO LOS DESCUENTOS ANTES DE CALCULAR IMPUESTOS
+			$descuentoTotal = $netoGrabado * $descuento / 100; 
+			//print_r($descuentoTotal);
+			$netoGrabado -= $descuentoTotal;
+			
+			$factura->setDtoTotal($descuentoTotal);
+			
 			$ivaLiquidado = $netoGrabado * 0.21;			
 			$ultimoComp = $faele->ultimoNroComp($decodefcData->tipo);
 
@@ -149,6 +157,7 @@ class VentasController extends Controller
 			$alicuotaPercepcion = $iibbService->getAlicuotaPercepcion();			
 			$percepcionIIBB=0;
 			
+					
 			
 			$repoFinanzas = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
 			$parametrosFinanzas = $repoFinanzas->find(1);
@@ -168,10 +177,15 @@ class VentasController extends Controller
 				$percepcionIIBB = $netoGrabado * $alicuotaPercepcion / 100; 
 				$percepcionIIBB = number_format($percepcionIIBB, 2, ".", "");
 			}	
+			
+			
 
 			//REDONDEO IMPORTES A 2 DECIMALES
 			$netoGrabado = number_format($netoGrabado, 2, ".", "");
 			$ivaLiquidado = number_format($ivaLiquidado, 2, ".", "");
+			
+			
+			
 
 			$regfe['CbteTipo']=$decodefcData->tipo;
 			$regfe['Concepto']=1;//ESTE DATO DEBE VENIR DEL CLIENTE 1=PRODUCTOS, 2=SERVICIOS, 3=PRODUCTOS Y SERVICIOS
@@ -224,6 +238,8 @@ class VentasController extends Controller
 			
 			//print_r($netoGrabado);
 			$regfeiva['Importe'] = $ivaLiquidado;
+			
+			
 			
 			$cae = $faele->generarFc($regfe, $regfeasoc, $regfetrib, $regfeiva);	//GENERO FC ELECTRONICA
 			

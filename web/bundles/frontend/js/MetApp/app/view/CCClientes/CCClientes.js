@@ -72,6 +72,13 @@ Ext.define('MetApp.view.CCClientes.CCClientes' ,{
 									fieldLabel: 'Cliente',						
 								},
 								{
+									xtype: 'textfield',
+									name: 'descuentoFijo',
+									fieldLabel: 'descuento',
+									itemId: 'descuentoFijo',
+									hidden: true
+								},
+								{
 									xtype: 'button',
 									iconCls: 'search',
 									itemId: 'buscaCliente'
