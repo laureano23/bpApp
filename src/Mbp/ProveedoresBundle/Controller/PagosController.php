@@ -42,6 +42,12 @@ class PagosController extends Controller
 			$alicuotaRetencion = $iibbService->getAlicuotaRetencion();
 			
 			$resp = array();
+			
+			if($proveedor->getProvincia() == ""){
+				throw new \Exception("Debe cargar la provincia del proveedor, para calcular retención", 1);
+			} 
+			
+			
 			if($proveedor->getProvincia()->getId() == $parametrosFinanzas->getProvincia()->getId()
 			 && $alicuotaRetencion > 0
 			 && $parametrosFinanzas->getTopeRetencionIIBB() <= $imputado){
