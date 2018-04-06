@@ -38,7 +38,6 @@ class CuentaCorrienteController extends Controller
 			
 		
 		try{
-			throw new \Exception("Error Processing Request", 1);
 			$fcProveedor;
 			$cc;
 			if($objData->idF > 0){
