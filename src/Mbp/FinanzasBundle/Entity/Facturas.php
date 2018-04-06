@@ -95,7 +95,7 @@ class Facturas
 	/**
      * @var \Decimal
      *
-     * @ORM\Column(name="dtoTotal", type="decimal", precision=4, scale=2)
+     * @ORM\Column(name="dtoTotal", type="decimal", precision=11, scale=2)
 	 * @Assert\Range(
      *      min = 0,
      *      max = 99

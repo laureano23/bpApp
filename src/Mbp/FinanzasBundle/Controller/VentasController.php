@@ -143,7 +143,7 @@ class VentasController extends Controller
 			
 			//CALCULO LOS DESCUENTOS ANTES DE CALCULAR IMPUESTOS
 			$descuentoTotal = $netoGrabado * $descuento / 100; 
-			//print_r($descuentoTotal);
+			
 			$netoGrabado -= $descuentoTotal;
 			
 			$factura->setDtoTotal($descuentoTotal);
