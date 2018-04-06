@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Pedidos" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="faabb94c-b32d-4f38-913c-e824ee7dd96c">
-	<property name="ireport.zoom" value="1.4641000000000006"/>
-	<property name="ireport.x" value="46"/>
+	<property name="ireport.zoom" value="1.2100000000000006"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="codigoDesde" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["1"]]></defaultValueExpression>
@@ -47,12 +47,14 @@
      articulos.`costo` AS articulos_costo,
      articulos.`precio` AS articulos_precio,
      articulos.`moneda` AS articulos_moneda,
-     PedidoClientesDetalle.`descripcion` AS PedidoClientesDetalle_descripcion
+     PedidoClientesDetalle.`descripcion` AS PedidoClientesDetalle_descripcion,
+     ParametrosFinanzas.dolarOficial
 FROM
      `PedidoClientesDetalle` PedidoClientesDetalle INNER JOIN `pedidoId_detalleId` pedidoId_detalleId ON PedidoClientesDetalle.`id` = pedidoId_detalleId.`detalleId`
      INNER JOIN `PedidoClientes` PedidoClientes ON pedidoId_detalleId.`pedidoId` = PedidoClientes.`id`
      INNER JOIN `cliente` cliente ON PedidoClientes.`cliente` = cliente.`idCliente`
-     INNER JOIN `articulos` articulos ON PedidoClientesDetalle.`codigo` = articulos.`idArticulos`
+     INNER JOIN `articulos` articulos ON PedidoClientesDetalle.`codigo` = articulos.`idArticulos`,
+     ParametrosFinanzas
 WHERE
      PedidoClientes.`cliente` BETWEEN $P{clienteDesde} AND $P{clienteHasta}
  AND articulos.`codigo` BETWEEN $P{codigoDesde} AND $P{codigoHasta}
@@ -84,6 +86,15 @@ WHERE
 	<field name="articulos_precio" class="java.math.BigDecimal"/>
 	<field name="articulos_moneda" class="java.lang.Boolean"/>
 	<field name="PedidoClientesDetalle_descripcion" class="java.lang.String"/>
+	<field name="dolarOficial" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="TOTAL_GRAL" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{articulos_moneda} == 1 ? $F{articulos_precio}*$F{dolarOficial}*($F{PedidoClientesDetalle_cantidad}-$F{PedidoClientesDetalle_entregado}):$F{articulos_precio}*($F{PedidoClientesDetalle_cantidad}-$F{PedidoClientesDetalle_entregado})]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_CLIENTE" class="java.lang.Double" resetType="Group" resetGroup="PedidosPorCliente" calculation="Sum">
+		<variableExpression><![CDATA[$F{articulos_moneda} == 1 ? $F{articulos_precio}*$F{dolarOficial}*($F{PedidoClientesDetalle_cantidad}-$F{PedidoClientesDetalle_entregado}):$F{articulos_precio}*($F{PedidoClientesDetalle_cantidad}-$F{PedidoClientesDetalle_entregado})]]></variableExpression>
+	</variable>
 	<group name="PedidosPorCliente">
 		<groupExpression><![CDATA[$F{PedidoClientes_cliente}]]></groupExpression>
 		<groupHeader>
@@ -101,6 +112,31 @@ WHERE
 				</textField>
 			</band>
 		</groupHeader>
+		<groupFooter>
+			<band height="35">
+				<staticText>
+					<reportElement x="0" y="15" width="802" height="20" uuid="7a5d3ab1-417f-4822-8f4a-1d50e0829318"/>
+					<box leftPadding="2">
+						<pen lineWidth="2.0"/>
+						<topPen lineWidth="2.0"/>
+						<leftPen lineWidth="2.0"/>
+						<bottomPen lineWidth="2.0"/>
+						<rightPen lineWidth="2.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total Por Cliente:]]></text>
+				</staticText>
+				<textField evaluationTime="Group" evaluationGroup="PedidosPorCliente" pattern="#,##0.00">
+					<reportElement x="708" y="15" width="94" height="20" uuid="9fd5a1ff-a950-4929-af41-d24163b3ef26"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{TOTAL_CLIENTE}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
 	</group>
 	<background>
 		<band splitType="Stretch"/>
@@ -160,7 +196,7 @@ WHERE
 				<text><![CDATA[Codigo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="100" y="0" width="390" height="20" uuid="f0425b4a-b5c8-4dcf-aa2f-506effb82f50"/>
+				<reportElement x="100" y="0" width="276" height="20" uuid="f0425b4a-b5c8-4dcf-aa2f-506effb82f50"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -171,7 +207,7 @@ WHERE
 				<text><![CDATA[Descripcion]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="490" y="0" width="53" height="20" uuid="d9f72297-8c01-4c0e-851f-ed1d26f68363"/>
+				<reportElement x="376" y="0" width="53" height="20" uuid="d9f72297-8c01-4c0e-851f-ed1d26f68363"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -182,7 +218,7 @@ WHERE
 				<text><![CDATA[OC]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="543" y="0" width="57" height="20" uuid="a6c65b39-157c-4934-9eb0-312a0dd09e92"/>
+				<reportElement x="429" y="0" width="57" height="20" uuid="a6c65b39-157c-4934-9eb0-312a0dd09e92"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -193,7 +229,7 @@ WHERE
 				<text><![CDATA[Cantidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="709" y="0" width="93" height="20" uuid="7dcab7bb-210e-4d93-a3b4-dd1a0d132a18"/>
+				<reportElement x="595" y="0" width="60" height="20" uuid="7dcab7bb-210e-4d93-a3b4-dd1a0d132a18"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -204,7 +240,7 @@ WHERE
 				<text><![CDATA[Fecha Programada]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="600" y="0" width="57" height="20" uuid="55287d05-00cf-41c1-819f-a806dad50294"/>
+				<reportElement x="486" y="0" width="57" height="20" uuid="55287d05-00cf-41c1-819f-a806dad50294"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -215,7 +251,7 @@ WHERE
 				<text><![CDATA[Entregado]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="657" y="0" width="52" height="20" uuid="c5ef9536-ee27-4424-b3cb-91ddf44bc90a"/>
+				<reportElement x="543" y="0" width="52" height="20" uuid="c5ef9536-ee27-4424-b3cb-91ddf44bc90a"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -224,6 +260,28 @@ WHERE
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Saldo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="655" y="0" width="52" height="20" uuid="9fdde553-075f-49ae-81d8-0b37b7d3e250"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Precio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="707" y="0" width="95" height="20" uuid="65312843-fa64-4def-ab2b-ead502aed345"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[SubTotal]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -244,7 +302,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{articulos_codigo}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="100" y="0" width="390" height="20" uuid="eda36d26-bfcf-4f60-bb81-c476766dbf04"/>
+				<reportElement x="100" y="0" width="276" height="20" uuid="eda36d26-bfcf-4f60-bb81-c476766dbf04"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -255,7 +313,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{PedidoClientesDetalle_descripcion}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="543" y="0" width="57" height="20" uuid="5d9787f4-248e-43a5-98f5-def87db5d6b9"/>
+				<reportElement x="429" y="0" width="57" height="20" uuid="5d9787f4-248e-43a5-98f5-def87db5d6b9"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -269,7 +327,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{PedidoClientesDetalle_cantidad}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="709" y="0" width="93" height="20" uuid="e9685f59-f47f-4bf0-b4b2-338c32bd443f"/>
+				<reportElement x="595" y="0" width="60" height="20" uuid="e9685f59-f47f-4bf0-b4b2-338c32bd443f"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -283,7 +341,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{PedidoClientesDetalle_fechaProg}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="490" y="0" width="53" height="20" uuid="df5db287-17aa-4a62-93ab-4ab5f628d9e8"/>
+				<reportElement x="376" y="0" width="53" height="20" uuid="df5db287-17aa-4a62-93ab-4ab5f628d9e8"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -297,7 +355,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{PedidoClientes_oc}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="600" y="0" width="57" height="20" uuid="4b54da41-5f9d-4eff-8b53-d3b31db9b032"/>
+				<reportElement x="486" y="0" width="57" height="20" uuid="4b54da41-5f9d-4eff-8b53-d3b31db9b032"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -311,7 +369,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{PedidoClientesDetalle_entregado}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="657" y="0" width="52" height="20" uuid="d4f865ba-0f3a-49e3-8997-0d01be133c08"/>
+				<reportElement x="543" y="0" width="52" height="20" uuid="d4f865ba-0f3a-49e3-8997-0d01be133c08"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -323,6 +381,34 @@ WHERE
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{PedidoClientesDetalle_cantidad} - $F{PedidoClientesDetalle_entregado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="655" y="0" width="53" height="20" uuid="eb012842-5c71-489f-8bfe-9d9bc42ea9ad"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{articulos_moneda} == 1 ? $F{articulos_precio}*$F{dolarOficial}:$F{articulos_precio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="707" y="0" width="95" height="20" uuid="d3f5b4b4-3600-4882-8328-9044a3d64484"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{articulos_moneda} == 1 ? $F{articulos_precio}*$F{dolarOficial}*($F{PedidoClientesDetalle_cantidad}-$F{PedidoClientesDetalle_entregado}):$F{articulos_precio}*($F{PedidoClientesDetalle_cantidad}-$F{PedidoClientesDetalle_entregado})]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -339,4 +425,30 @@ WHERE
 			</textField>
 		</band>
 	</pageFooter>
+	<summary>
+		<band height="50">
+			<staticText>
+				<reportElement x="0" y="30" width="802" height="20" uuid="5032be9e-7f05-4a7f-b233-c755d0839b4d"/>
+				<box leftPadding="2">
+					<pen lineWidth="2.0"/>
+					<topPen lineWidth="2.0"/>
+					<leftPen lineWidth="2.0"/>
+					<bottomPen lineWidth="2.0"/>
+					<rightPen lineWidth="2.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total General:]]></text>
+			</staticText>
+			<textField evaluationTime="Report" pattern="#,##0.00">
+				<reportElement x="702" y="30" width="100" height="20" uuid="ed6268a2-5a87-49f0-a370-6fba422b4790"/>
+				<box rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL_GRAL}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
 </jasperReport>

@@ -599,6 +599,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
 		                    render : dragZone,
 		                }, 
         			},
+        			{
+        				text: 'Comprobantes No Pagados',
+        				itemId: 'reporteCbteNoPagado',
+        				listeners : {
+		                    render : dragZone,
+		                }, 
+        			},
         		]        		
         	},
         	{

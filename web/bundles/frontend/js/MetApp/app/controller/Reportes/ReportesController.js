@@ -9,7 +9,8 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 		'MetApp.view.Reportes.ReporteArtVendidos',
 		'MetApp.view.Reportes.ReporteIntResarcitorios',
 		'MetApp.view.Reportes.ReporteHistoricoMov',
-		'MetApp.view.Reportes.RepoSaldoDeudor'
+		'MetApp.view.Reportes.RepoSaldoDeudor',
+		'MetApp.view.Reportes.ReporteCbteNoPagodos'
 	],
 	refs:[
 	],
@@ -77,7 +78,52 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 			'RepoSaldoDeudor button[itemId=printDateReport]': {
 				click: this.imprimirSaldoDeudor
 			},
+			'viewport menuitem[itemId=reporteCbteNoPagado]': {
+				click: this.AddReporteCbteNoPagado
+			},
+			'ReporteCbteNoPagodos button[itemId=printDateReport]': {
+				click: this.ImprimirCbteNoPagados
+			},
 		});
+	},
+	
+	AddReporteCbteNoPagado: function(btn){
+		Ext.widget('ReporteCbteNoPagodos');
+	},
+	
+	ImprimirCbteNoPagados: function(btn){
+		var win = btn.up('window');
+		var form = win.down('form');
+		var myMask = new Ext.LoadMask(form, {msg:"Cargando..."});
+		myMask.show();
+		
+		if(form.isValid()){
+			var values = form.getForm().getValues();
+			
+			Ext.Ajax.request({
+				url: Routing.generate('mbp_Reportes_CbtesNoPagados'),
+				
+				params: {
+					desde: values.desde,
+					hasta: values.hasta,
+					cliente1: values.cliente1,
+					cliente2: values.cliente2
+				},
+				
+				success: function(resp){					
+					var jsonResp = Ext.JSON.decode(resp.responseText);
+					if(jsonResp.success == true){
+						var ruta = Routing.generate('mbp_Reportes_VerCbptesNoPagados');						
+						window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+					}
+					myMask.hide();
+				},
+				
+				failure: function(resp){
+					myMask.hide();
+				}
+			});	
+		}
 	},
 	
 	imprimirSaldoDeudor: function(btn){

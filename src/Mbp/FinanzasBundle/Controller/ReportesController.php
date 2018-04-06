@@ -902,6 +902,133 @@ class ReportesController extends Controller
 		
 		return $response;
 	}
+	
+	/**
+     * @Route("/Reportes/Reportes/CbtesNoPagados", name="mbp_Reportes_CbtesNoPagados", options={"expose"=true})
+     */	
+    public function CbtesNoPagados()
+	{
+		$response = new Response;
+				
+		try{
+			/*
+			 * PARAMETROS
+			 */
+			$request = $this->get('request');
+			$desde = $request->get('desde');
+			$hasta = $request->get('hasta');
+			$cliente1 = $request->get('cliente1');
+			$cliente2 = $request->get('cliente2');
+							
+			$reporteador = $this->get('reporteador');
+			$kernel = $this->get('kernel');
+			
+			/*
+			 * Configuro reporte
+			 */
+			$jru = $reporteador->jru();
+			
+			/*
+			 * Ruta archivo Jasper
+			 */				
+					
+			$ruta = $kernel->locateResource('@MbpFinanzasBundle/Reportes/ComprobantesPendientesPago.jrxml');
+			$rutaLogo = $reporteador->getRutaLogo($kernel);
+			
+			/*
+			 * Ruta de destino del PDF
+			 */
+			$destino = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'ComprobantesPendientesPago.pdf';		
+			
+			//Parametros HashMap
+			$param = $reporteador->getJava('java.util.HashMap');
+			$rutaLogo = $reporteador->getRutaLogo($kernel);
+						
+			
+			$param->put('CLIENTE_DESDE', $cliente1);
+			$param->put('CLIENTE_HASTA', $cliente2);
+			$param->put('FECHA_DESDE', $desde);
+			$param->put('FECHA_HASTA', $hasta);
+			$conn = $reporteador->getJdbc();
+			
+			$desde = \DateTime::createFromFormat('d/m/Y', $desde);
+			$hasta = \DateTime::createFromFormat('d/m/Y', $hasta);
+			
+			
+			$desde = $desde->format('Y-m-d');
+			$hasta = $hasta->format('Y-m-d');
+									
+			
+			$sql = "SELECT * FROM(
+			SELECT
+			     CASE WHEN TransaccionCobranzaFactura.`aplicado` IS NULL THEN 0 ELSE SUM(TransaccionCobranzaFactura.`aplicado`) END AS TransaccionCobranzaFactura_aplicado,
+			     Cobranzas.`id` AS Cobranzas_id,
+			     Cobranzas.`emision` AS Cobranzas_emision,
+			     TransaccionCobranzaFactura.`id` AS TransaccionCobranzaFactura_id,
+			     TransaccionCobranzaFactura.`facturaId` AS TransaccionCobranzaFactura_facturaId,
+			     TransaccionCobranzaFactura.`cobranzaId` AS TransaccionCobranzaFactura_cobranzaId,
+			     Facturas.`id` AS Facturas_id,
+			     Facturas.`fecha` AS Facturas_fecha,
+			     Facturas.`concepto` AS Facturas_concepto,
+			     Facturas.`fcNro` AS fcNro,
+			     Facturas.`vencimiento` AS Facturas_vencimiento,
+			     Facturas.`clienteId` AS Facturas_clienteId,
+			     Facturas.`ptoVta` AS Facturas_ptoVta,
+			     Facturas.`total` AS Facturas_total,
+			     Facturas.`moneda` AS Facturas_moneda,
+			     Facturas.`tipoCambio` AS Facturas_tipoCambio,
+			     cliente.`rsocial` AS cliente_rsocial,
+			     cliente.`idCliente` AS cliente_idCliente,
+			     tipo.esFactura as esFactura,
+			     tipo.esNotaDebito as esNotaDebito
+			FROM
+			     `Cobranzas` Cobranzas INNER JOIN `TransaccionCobranzaFactura` TransaccionCobranzaFactura ON Cobranzas.`id` = TransaccionCobranzaFactura.`cobranzaId`
+			     RIGHT JOIN `Facturas` Facturas ON TransaccionCobranzaFactura.`facturaId` = Facturas.`id`
+			     INNER JOIN `cliente` cliente ON Facturas.`clienteId` = cliente.`idCliente`
+			     INNER JOIN `TipoComprobante` tipo ON tipo.`id` = Facturas.`tipoId`
+			WHERE
+				cliente.`idCliente` BETWEEN $cliente1 AND $cliente2 AND
+				Facturas.`fecha` BETWEEN '$desde' AND '$hasta'
+			GROUP BY Facturas.`id`, TransaccionCobranzaFactura.`facturaId`) AS sub
+			WHERE
+				Facturas_total > TransaccionCobranzaFactura_aplicado AND
+				esFactura = true OR
+				Facturas_total > TransaccionCobranzaFactura_aplicado AND
+				esNotaDebito = true
+			     ";
+			
+			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	
+		}catch(\Exception $e){
+			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(
+				json_encode(array('success' => false, 'msg' => $e->getMessage()))
+				);
+		}
+		
+		return $response->setContent(
+			json_encode(array('success' => true))
+			);
+	}
+	
+	/**
+     * @Route("/Reportes/Bancos/VerCbptesNoPagados", name="mbp_Reportes_VerCbptesNoPagados", options={"expose"=true})
+     */	
+    public function VerCbptesNoPagados()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'ComprobantesPendientesPago.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'resumenSaldoDeudor.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+		
+		return $response;
+	}
 }
 
 

@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ComprobantesPendientesPago" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4d8680e4-d4be-4382-90bd-b80c9deb1571">
+	<property name="ireport.zoom" value="1.2100000000000009"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="CLIENTE_DESDE" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CLIENTE_HASTA" class="java.lang.String"/>
+	<parameter name="FECHA_DESDE" class="java.lang.String"/>
+	<parameter name="FECHA_HASTA" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT * FROM(
+SELECT
+     CASE WHEN TransaccionCobranzaFactura.`aplicado` IS NULL THEN 0 ELSE SUM(TransaccionCobranzaFactura.`aplicado`) END AS TransaccionCobranzaFactura_aplicado,
+     Cobranzas.`id` AS Cobranzas_id,
+     Cobranzas.`emision` AS Cobranzas_emision,
+     TransaccionCobranzaFactura.`id` AS TransaccionCobranzaFactura_id,
+     TransaccionCobranzaFactura.`facturaId` AS TransaccionCobranzaFactura_facturaId,
+     TransaccionCobranzaFactura.`cobranzaId` AS TransaccionCobranzaFactura_cobranzaId,
+     Facturas.`id` AS Facturas_id,
+     Facturas.`fecha` AS Facturas_fecha,
+     Facturas.`concepto` AS Facturas_concepto,
+     Facturas.`fcNro` AS fcNro,
+     Facturas.`vencimiento` AS Facturas_vencimiento,
+     Facturas.`clienteId` AS Facturas_clienteId,
+     Facturas.`ptoVta` AS Facturas_ptoVta,
+     Facturas.`total` AS Facturas_total,
+     Facturas.`moneda` AS Facturas_moneda,
+     Facturas.`tipoCambio` AS Facturas_tipoCambio,
+     cliente.`rsocial` AS cliente_rsocial,
+     cliente.`idCliente` AS cliente_idCliente,
+     tipo.esFactura as esFactura,
+     tipo.esNotaDebito as esNotaDebito
+FROM
+     `Cobranzas` Cobranzas INNER JOIN `TransaccionCobranzaFactura` TransaccionCobranzaFactura ON Cobranzas.`id` = TransaccionCobranzaFactura.`cobranzaId`
+     RIGHT JOIN `Facturas` Facturas ON TransaccionCobranzaFactura.`facturaId` = Facturas.`id`
+     INNER JOIN `cliente` cliente ON Facturas.`clienteId` = cliente.`idCliente`
+     INNER JOIN `TipoComprobante` tipo ON tipo.`id` = Facturas.`tipoId`
+WHERE
+	cliente.`idCliente` BETWEEN $P{CLIENTE_DESDE} AND $P{CLIENTE_HASTA} AND
+	Facturas.`fecha` BETWEEN $P{FECHA_DESDE} AND $P{FECHA_HASTA}
+GROUP BY Facturas.`id`, TransaccionCobranzaFactura.`facturaId`) AS sub
+WHERE
+	Facturas_total > TransaccionCobranzaFactura_aplicado AND
+	esFactura = true OR
+	Facturas_total > TransaccionCobranzaFactura_aplicado AND
+	esNotaDebito = true]]>
+	</queryString>
+	<field name="TransaccionCobranzaFactura_aplicado" class="java.math.BigDecimal"/>
+	<field name="Cobranzas_id" class="java.lang.Integer"/>
+	<field name="Cobranzas_emision" class="java.sql.Timestamp"/>
+	<field name="TransaccionCobranzaFactura_id" class="java.lang.Integer"/>
+	<field name="TransaccionCobranzaFactura_facturaId" class="java.lang.Integer"/>
+	<field name="TransaccionCobranzaFactura_cobranzaId" class="java.lang.Integer"/>
+	<field name="Facturas_id" class="java.lang.Integer"/>
+	<field name="Facturas_fecha" class="java.sql.Timestamp"/>
+	<field name="Facturas_concepto" class="java.lang.String"/>
+	<field name="fcNro" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Facturas_vencimiento" class="java.sql.Date"/>
+	<field name="Facturas_clienteId" class="java.lang.Integer"/>
+	<field name="Facturas_ptoVta" class="java.lang.Integer"/>
+	<field name="Facturas_total" class="java.math.BigDecimal"/>
+	<field name="Facturas_moneda" class="java.lang.Boolean"/>
+	<field name="Facturas_tipoCambio" class="java.math.BigDecimal"/>
+	<field name="cliente_rsocial" class="java.lang.String"/>
+	<field name="cliente_idCliente" class="java.lang.Integer"/>
+	<field name="esFactura" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="esNotaDebito" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="TOTAL_FC" class="java.lang.Double" resetType="Group" resetGroup="CLIENTE" calculation="Sum">
+		<variableExpression><![CDATA[$F{Facturas_total} * $F{Facturas_tipoCambio}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_GRAL" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{Facturas_total}*$F{Facturas_tipoCambio} - $F{TransaccionCobranzaFactura_aplicado}]]></variableExpression>
+	</variable>
+	<group name="CLIENTE">
+		<groupExpression><![CDATA[$F{cliente_idCliente}]]></groupExpression>
+		<groupHeader>
+			<band height="40">
+				<staticText>
+					<reportElement x="0" y="0" width="555" height="20" uuid="6b381a3e-a54b-421e-93e5-80381d3c4fde"/>
+					<box leftPadding="2">
+						<pen lineWidth="2.0"/>
+						<topPen lineWidth="2.0"/>
+						<leftPen lineWidth="2.0"/>
+						<bottomPen lineWidth="2.0"/>
+						<rightPen lineWidth="2.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Cliente: ]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="43" y="0" width="100" height="20" uuid="220d6104-0ae4-40f5-87df-ac1217a2eb95"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{cliente_rsocial}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="20" width="60" height="20" uuid="8ebcadf5-f09c-4c1a-8eb8-f8ba218d2e26"/>
+					<box leftPadding="2">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Emision]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="60" y="20" width="83" height="20" uuid="3adfd8ca-3f95-4b52-a3c8-5dc54a73cad3"/>
+					<box leftPadding="2">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Comprobante]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="143" y="20" width="78" height="20" uuid="1eab6a64-a369-4733-8147-2cb00aee455b"/>
+					<box leftPadding="2">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Vencimiento]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="221" y="20" width="111" height="20" uuid="a6c7f020-c29e-4606-8bd6-44abde2d2d9c"/>
+					<box leftPadding="2">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Total]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="332" y="20" width="110" height="20" uuid="27dd7a68-5b7a-4526-9bcd-3a27e672e3a7"/>
+					<box leftPadding="2">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Aplicado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="442" y="20" width="113" height="20" uuid="d990ac52-777b-450a-96e4-2f6343443029"/>
+					<box leftPadding="2">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Pendiente]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="50">
+				<staticText>
+					<reportElement x="0" y="0" width="555" height="20" uuid="d15d635b-657f-4ae3-9c6f-810b5279627c"/>
+					<box leftPadding="2">
+						<pen lineWidth="2.0"/>
+						<topPen lineWidth="2.0"/>
+						<leftPen lineWidth="2.0"/>
+						<bottomPen lineWidth="2.0"/>
+						<rightPen lineWidth="2.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Total por Cliente:]]></text>
+				</staticText>
+				<textField evaluationTime="Group" evaluationGroup="CLIENTE" pattern="#,##0.00">
+					<reportElement x="221" y="0" width="100" height="20" uuid="a913f791-dc82-4e6c-92c5-6c357c8177c0"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{TOTAL_FC}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="35" uuid="c55a9f05-4e56-41bc-af13-88ce9262f236"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Comprobantes no Pagados]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="0" y="0" width="60" height="20" uuid="da112072-548e-4f66-9ddb-837c2090ff1d"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Facturas_fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="60" y="0" width="83" height="20" uuid="f3cd3609-0fd5-4e8b-a97d-7d58bf63889c"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Facturas_concepto}+" "+$F{Facturas_ptoVta}+"-"+$F{fcNro}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="143" y="0" width="78" height="20" uuid="79018bb8-c38a-4c06-8bde-a400e6b7fc77"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Facturas_vencimiento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="221" y="0" width="111" height="20" uuid="4e55f2a0-3323-4eff-80a6-003aa9e5bd8d"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Facturas_total} * $F{Facturas_tipoCambio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="332" y="0" width="110" height="20" uuid="0f30a21c-97e5-434d-8c93-9e1fbb2bf77c"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{TransaccionCobranzaFactura_aplicado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="442" y="0" width="110" height="20" uuid="19f5800a-e422-4d43-b9de-92768ec39693"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Facturas_total}*$F{Facturas_tipoCambio}-$F{TransaccionCobranzaFactura_aplicado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="20" uuid="5f7e48f9-ecca-492b-8e01-0dea6a2ab19b"/>
+				<box leftPadding="2">
+					<pen lineWidth="2.0"/>
+					<topPen lineWidth="2.0"/>
+					<leftPen lineWidth="2.0"/>
+					<bottomPen lineWidth="2.0"/>
+					<rightPen lineWidth="2.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total General:]]></text>
+			</staticText>
+			<textField evaluationTime="Report" pattern="#,##0.00">
+				<reportElement x="455" y="0" width="100" height="20" uuid="011cfb97-1d95-43c2-958d-b29843c8cf1d"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{TOTAL_GRAL}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

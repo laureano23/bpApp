@@ -200,12 +200,14 @@ class PedidoClientesController extends Controller
 			     articulos.`costo` AS articulos_costo,
 			     articulos.`precio` AS articulos_precio,
 			     articulos.`moneda` AS articulos_moneda,
-			     PedidoClientesDetalle.`descripcion` AS PedidoClientesDetalle_descripcion
+			     PedidoClientesDetalle.`descripcion` AS PedidoClientesDetalle_descripcion,
+			     ParametrosFinanzas.dolarOficial
 			FROM
 			     `PedidoClientesDetalle` PedidoClientesDetalle INNER JOIN `pedidoId_detalleId` pedidoId_detalleId ON PedidoClientesDetalle.`id` = pedidoId_detalleId.`detalleId`
 			     INNER JOIN `PedidoClientes` PedidoClientes ON pedidoId_detalleId.`pedidoId` = PedidoClientes.`id`
 			     INNER JOIN `cliente` cliente ON PedidoClientes.`cliente` = cliente.`idCliente`
-			     INNER JOIN `articulos` articulos ON PedidoClientesDetalle.`codigo` = articulos.`idArticulos`
+			     INNER JOIN `articulos` articulos ON PedidoClientesDetalle.`codigo` = articulos.`idArticulos`,
+			     ParametrosFinanzas
 			WHERE
 			     PedidoClientes.`cliente` BETWEEN $clienteDesde AND $clienteHasta
 			 AND articulos.`codigo` BETWEEN '$codigoDesde' AND '$codigoHasta'
