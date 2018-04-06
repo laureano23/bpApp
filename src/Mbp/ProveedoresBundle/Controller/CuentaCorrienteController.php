@@ -352,12 +352,12 @@ class CuentaCorrienteController extends Controller
 			$neto = $req->request->get('neto');
 			$proveedorId = $req->request->get('proveedorId');
 			
-			if($proveedorId->getCuentaCerrada() == TRUE) throw new \Exception("El proveedor tiene la cuenta cerrada", 1);
-			
+						
 			$obs = $req->request->get('observaciones');
 			
 			$balance = new Factura;
-			$proveedor = $repo->find($proveedorId);			
+			$proveedor = $repo->find($proveedorId);
+			if($proveedor->getCuentaCerrada() == TRUE) throw new \Exception("El proveedor tiene la cuenta cerrada", 1);			
 			$balance->setFechaCarga(new \DateTime);
 			$balance->setFechaEmision(new \DateTime);
 			$balance->setEsBalance(true);

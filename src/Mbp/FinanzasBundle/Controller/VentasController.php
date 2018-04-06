@@ -292,6 +292,7 @@ class VentasController extends Controller
 			return $response;
 
 		}catch(\Exception $e){
+			throw $e;
 			$response->setContent(json_encode(array("success"=>false, "msg"=>$e->getMessage())));
 			return $response;
 		}
