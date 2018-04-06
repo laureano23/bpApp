@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RemitoClientes" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b2a08521-8f54-4c4a-9e6b-a0cbf483e6eb">
-	<property name="ireport.zoom" value="1.2100000000000057"/>
+	<property name="ireport.zoom" value="1.1000000000000054"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="remitoId" class="java.lang.String">
@@ -50,15 +50,18 @@
      PedidoClientes.`autEntrega` AS PedidoClientes_autEntrega,
      pedidoId_detalleId.`pedidoId` AS pedidoId_detalleId_pedidoId,
      pedidoId_detalleId.`detalleId` AS pedidoId_detalleId_detalleId,
-     PedidoClientes.`inactivo` AS PedidoClientes_inactivo
+     PedidoClientes.`inactivo` AS PedidoClientes_inactivo,
+     articulos.`idArticulos` AS articulos_idArticulos,
+     articulos.`codigo` AS articulos_codigo
 FROM
      `RemitosClientesDetalles` RemitosClientesDetalles INNER JOIN `RemitoClientes_detalle` RemitoClientes_detalle ON RemitosClientesDetalles.`id` = RemitoClientes_detalle.`remitosclientesdetalles_id`
      INNER JOIN `RemitosClientes` RemitosClientes ON RemitoClientes_detalle.`remitosclientes_id` = RemitosClientes.`id`
      LEFT OUTER JOIN `cliente` cliente ON RemitosClientes.`clienteId` = cliente.`idCliente`
      LEFT OUTER JOIN `Proveedor` Proveedor ON RemitosClientes.`proveedorId` = Proveedor.`id`
      LEFT OUTER JOIN `PedidoClientesDetalle` PedidoClientesDetalle ON RemitosClientesDetalles.`pedidoDetalleId` = PedidoClientesDetalle.`id`
-     LEFT JOIN `pedidoId_detalleId` pedidoId_detalleId ON PedidoClientesDetalle.`id` = pedidoId_detalleId.`detalleId`
-     LEFT JOIN `PedidoClientes` PedidoClientes ON pedidoId_detalleId.`pedidoId` = PedidoClientes.`id`
+     LEFT OUTER JOIN `articulos` articulos ON RemitosClientesDetalles.`articuloId` = articulos.`idArticulos`
+     LEFT OUTER JOIN  pedidoId_detalleId ON PedidoClientesDetalle.`id` = pedidoId_detalleId.`detalleId`
+     LEFT OUTER JOIN  PedidoClientes ON pedidoId_detalleId.`pedidoId` = PedidoClientes.`id`
 WHERE
      RemitosClientes.`id` = $P{remitoId}]]>
 	</queryString>
@@ -105,29 +108,31 @@ WHERE
 	<field name="pedidoId_detalleId_pedidoId" class="java.lang.Integer"/>
 	<field name="pedidoId_detalleId_detalleId" class="java.lang.Integer"/>
 	<field name="PedidoClientes_inactivo" class="java.lang.Boolean"/>
+	<field name="articulos_idArticulos" class="java.lang.Integer"/>
+	<field name="articulos_codigo" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="290" splitType="Stretch">
+		<band height="295" splitType="Stretch">
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="340" y="98" width="100" height="20" uuid="cde82118-ed32-4e3b-9ef3-d2decfb7ce49"/>
-				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+				<reportElement x="340" y="104" width="100" height="20" uuid="cde82118-ed32-4e3b-9ef3-d2decfb7ce49"/>
+				<textFieldExpression><![CDATA[$F{RemitosClientes_fecha}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="85" y="167" width="100" height="20" uuid="3a9c0566-214c-4f69-8755-dc8b461b0d34"/>
+				<reportElement x="85" y="173" width="470" height="20" uuid="3a9c0566-214c-4f69-8755-dc8b461b0d34"/>
 				<textFieldExpression><![CDATA[$F{cliente_rsocial} == null ? $F{Proveedor_rsocial}: $F{cliente_rsocial}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="70" y="184" width="100" height="20" uuid="1565a06d-4507-4f0c-9622-363ba44abe5f"/>
+				<reportElement x="70" y="190" width="288" height="20" uuid="1565a06d-4507-4f0c-9622-363ba44abe5f"/>
 				<textFieldExpression><![CDATA[$F{cliente_direccion} == null ? $F{Proveedor_direccion} : $F{cliente_direccion}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="340" y="210" width="100" height="20" uuid="31230d50-7007-4148-b4fb-117e061cbffd"/>
+				<reportElement x="340" y="218" width="100" height="20" uuid="31230d50-7007-4148-b4fb-117e061cbffd"/>
 				<textFieldExpression><![CDATA[$F{cliente_cuit} == null ? $F{Proveedor_cuit} : $F{cliente_cuit}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="127" y="213" width="30" height="20" uuid="0d9e45f5-939b-40ab-8cc7-8eef08abd8b4"/>
+				<reportElement x="127" y="218" width="30" height="20" uuid="0d9e45f5-939b-40ab-8cc7-8eef08abd8b4"/>
 				<textFieldExpression><![CDATA[$F{cliente_iva} == "Responsable Inscripto" ? "X" : ""]]></textFieldExpression>
 			</textField>
 		</band>
@@ -138,10 +143,10 @@ WHERE
 				<reportElement x="34" y="0" width="51" height="20" uuid="63dee9c9-4438-45c7-9f6e-a63c0494cf0e"/>
 				<textFieldExpression><![CDATA[$F{RemitosClientesDetalles_cantidad}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="85" y="0" width="470" height="20" uuid="c0976ea3-9fe6-4a56-b607-04e1db3b59b3"/>
-				<textFieldExpression><![CDATA[$F{PedidoClientes_oc} == null ? $F{RemitosClientesDetalles_descripcion} :
-$F{RemitosClientesDetalles_descripcion} + " OC N°: " + $F{PedidoClientes_oc}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{PedidoClientes_oc} == null ? $F{articulos_codigo}+" "+$F{RemitosClientesDetalles_descripcion} :
+$F{articulos_codigo}+" "+$F{RemitosClientesDetalles_descripcion} + " OC N°: " + $F{PedidoClientes_oc}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
