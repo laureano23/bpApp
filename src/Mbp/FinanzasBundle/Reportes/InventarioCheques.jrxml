@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="InventarioCheques" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="614c1295-2fdb-4850-97d1-c65bc2acdad4">
+	<property name="ireport.zoom" value="0.7513148009015789"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="FECHA_DESDE" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FECHA_HASTA" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     Cobranzas.`id` AS Cobranzas_id,
+     Cobranzas.`emision` AS Cobranzas_emision,
+     Cobranzas.`clienteId` AS Cobranzas_clienteId,
+     Cobranzas.`ptoVenta` AS Cobranzas_ptoVenta,
+     Cobranzas.`numRecibo` AS Cobranzas_numRecibo,
+     Cobranzas.`fechaRecibo` AS Cobranzas_fechaRecibo,
+     Cobranzas.`totalCobranza` AS Cobranzas_totalCobranza,
+     Cobranzas.`ccId` AS Cobranzas_ccId,
+     CobranzasDetalle.`id` AS CobranzasDetalle_id,
+     CobranzasDetalle.`importe` AS CobranzasDetalle_importe,
+     CobranzasDetalle.`numero` AS CobranzasDetalle_numero,
+     CobranzasDetalle.`banco` AS CobranzasDetalle_banco,
+     CobranzasDetalle.`vencimiento` AS CobranzasDetalle_vencimiento,
+     CobranzasDetalle.`estado` AS CobranzasDetalle_estado,
+     CobranzasDetalle.`formaPagoId` AS CobranzasDetalle_formaPagoId,
+     CobranzasDetalle.`cuentaId` AS CobranzasDetalle_cuentaId,
+     CobranzasDetalle.`movBancoId` AS CobranzasDetalle_movBancoId,
+     cobranza_detallesCobranzas.`cobranza_id` AS cobranza_detallesCobranzas_cobranza_id,
+     cobranza_detallesCobranzas.`cobranzasdetalle_id` AS cobranza_detallesCobranzas_cobranzasdetalle_id,
+     FormasPagos.`id` AS FormasPagos_id,
+     FormasPagos.`descripcion` AS FormasPagos_descripcion,
+     FormasPagos.`inactivo` AS FormasPagos_inactivo,
+     FormasPagos.`retencionIIBB` AS FormasPagos_retencionIIBB,
+     FormasPagos.`retencionIVA21` AS FormasPagos_retencionIVA21,
+     FormasPagos.`chequeTerceros` AS FormasPagos_chequeTerceros,
+     FormasPagos.`esChequePropio` AS FormasPagos_esChequePropio,
+     FormasPagos.`ceonceptoBancoId` AS FormasPagos_ceonceptoBancoId,
+     FormasPagos.`depositaEnCuenta` AS FormasPagos_depositaEnCuenta,
+     cliente.`idCliente` AS cliente_idCliente,
+     cliente.`rsocial` AS cliente_rsocial,
+     cliente.`denominacion` AS cliente_denominacion
+FROM
+     `CobranzasDetalle` CobranzasDetalle INNER JOIN `cobranza_detallesCobranzas` cobranza_detallesCobranzas ON CobranzasDetalle.`id` = cobranza_detallesCobranzas.`cobranzasdetalle_id`
+     INNER JOIN `Cobranzas` Cobranzas ON cobranza_detallesCobranzas.`cobranza_id` = Cobranzas.`id`
+     INNER JOIN `cliente` cliente ON Cobranzas.`clienteId` = cliente.`idCliente`
+     INNER JOIN `FormasPagos` FormasPagos ON CobranzasDetalle.`formaPagoId` = FormasPagos.`id`
+WHERE
+     FormasPagos.`chequeTerceros` = 1
+ AND CobranzasDetalle.`estado` = 0
+ AND CobranzasDetalle.`vencimiento` BETWEEN $P{FECHA_DESDE} AND $P{FECHA_HASTA}
+ORDER BY CobranzasDetalle.`vencimiento` ASC]]>
+	</queryString>
+	<field name="Cobranzas_id" class="java.lang.Integer"/>
+	<field name="Cobranzas_emision" class="java.sql.Timestamp"/>
+	<field name="Cobranzas_clienteId" class="java.lang.Integer"/>
+	<field name="Cobranzas_ptoVenta" class="java.lang.Integer"/>
+	<field name="Cobranzas_numRecibo" class="java.lang.Integer"/>
+	<field name="Cobranzas_fechaRecibo" class="java.sql.Date"/>
+	<field name="Cobranzas_totalCobranza" class="java.math.BigDecimal"/>
+	<field name="Cobranzas_ccId" class="java.lang.Integer"/>
+	<field name="CobranzasDetalle_id" class="java.lang.Integer"/>
+	<field name="CobranzasDetalle_importe" class="java.math.BigDecimal"/>
+	<field name="CobranzasDetalle_numero" class="java.lang.String"/>
+	<field name="CobranzasDetalle_banco" class="java.lang.String"/>
+	<field name="CobranzasDetalle_vencimiento" class="java.sql.Date"/>
+	<field name="CobranzasDetalle_estado" class="java.lang.Integer"/>
+	<field name="CobranzasDetalle_formaPagoId" class="java.lang.Integer"/>
+	<field name="CobranzasDetalle_cuentaId" class="java.lang.Integer"/>
+	<field name="CobranzasDetalle_movBancoId" class="java.lang.Integer"/>
+	<field name="cobranza_detallesCobranzas_cobranza_id" class="java.lang.Integer"/>
+	<field name="cobranza_detallesCobranzas_cobranzasdetalle_id" class="java.lang.Integer"/>
+	<field name="FormasPagos_id" class="java.lang.Integer"/>
+	<field name="FormasPagos_descripcion" class="java.lang.String"/>
+	<field name="FormasPagos_inactivo" class="java.lang.Boolean"/>
+	<field name="FormasPagos_retencionIIBB" class="java.lang.Boolean"/>
+	<field name="FormasPagos_retencionIVA21" class="java.lang.Boolean"/>
+	<field name="FormasPagos_chequeTerceros" class="java.lang.Boolean"/>
+	<field name="FormasPagos_esChequePropio" class="java.lang.Boolean"/>
+	<field name="FormasPagos_ceonceptoBancoId" class="java.lang.Integer"/>
+	<field name="FormasPagos_depositaEnCuenta" class="java.lang.Boolean"/>
+	<field name="cliente_idCliente" class="java.lang.Integer"/>
+	<field name="cliente_rsocial" class="java.lang.String"/>
+	<field name="cliente_denominacion" class="java.lang.String"/>
+	<variable name="TOTAL" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{CobranzasDetalle_importe}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="802" height="30" uuid="4935fccb-02c3-4119-a954-6477d2216b5f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INVENTARIO CHEQUE DE TERCEROS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="34" height="20" uuid="6280b66a-ecc4-471f-b655-c91f0963f7cd"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="34" y="0" width="303" height="20" uuid="5f66ab43-032b-4a87-bf27-49b04c0a4478"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Librador]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="0" width="93" height="20" uuid="71135862-2d46-418a-a794-d7626bd61897"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="0" width="93" height="20" uuid="a0c672fe-e013-47ca-9835-160c39014baa"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[N° Cheque]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="523" y="0" width="93" height="20" uuid="32fb91f5-fb5c-442a-9208-6cdb999e7780"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Banco]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="616" y="0" width="93" height="20" uuid="f17c1547-a366-4668-abc6-b04bdd990ecc"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Diferido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="709" y="0" width="93" height="20" uuid="01518179-44b9-444b-9e33-7f07479c8810"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Importe]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="34" height="20" uuid="8477cbfc-1b1e-499c-a37a-b043fa825c11"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{CobranzasDetalle_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="34" y="0" width="303" height="20" uuid="4a06be1c-fcf7-4d48-ab15-f01b9e2beaba"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cliente_rsocial}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="337" y="0" width="93" height="20" uuid="c4339c06-efca-4adb-b7f3-f75cad449f6e"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Cobranzas_emision}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="430" y="0" width="93" height="20" uuid="3c7fa0e5-e512-4792-a21d-567490899293"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{CobranzasDetalle_numero}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="523" y="0" width="93" height="20" uuid="16c7903b-bea9-4f82-8a84-ec34c9bd7bce"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{CobranzasDetalle_banco}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="616" y="0" width="93" height="20" uuid="2f70c9aa-6b25-4155-82fb-2450b67a1055"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{CobranzasDetalle_vencimiento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="709" y="0" width="93" height="20" uuid="ed896c58-fcd9-49aa-9ef2-656a39fb66f7"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{CobranzasDetalle_importe}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="671" y="0" width="68" height="20" uuid="f26221a4-4793-44ad-9a7f-8d4ab1a7ef53"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Pág. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="739" y="0" width="63" height="20" uuid="2c9d2e80-504f-4141-95c3-637fcfe7facb"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="20" splitType="Stretch">
+			<textField pattern="#,##0.00">
+				<reportElement x="709" y="0" width="93" height="20" uuid="24bdc8bc-6c40-4cbe-b113-9d2d4cf3a5ed"/>
+				<box>
+					<pen lineWidth="2.0"/>
+					<topPen lineWidth="2.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="2.0"/>
+					<rightPen lineWidth="2.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="709" height="20" uuid="a135cc5b-1f36-4874-8552-cd026565b3da"/>
+				<box>
+					<pen lineWidth="2.0"/>
+					<topPen lineWidth="2.0"/>
+					<leftPen lineWidth="2.0"/>
+					<bottomPen lineWidth="2.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total:]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>
