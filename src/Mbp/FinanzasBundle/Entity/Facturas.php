@@ -184,6 +184,15 @@ class Facturas
     private $tipoCambio=1;
 	
 	/**
+     * @var \decimal
+     *
+     * @ORM\Column(name="tipoCambioRefFac", type="decimal", precision=8, scale=2, nullable=false)
+	 * 
+	 * para referencia al pie de la factura
+     */
+    private $tipoCambioRefFac=1;
+	
+	/**
 	 * @ORM\OneToOne(targetEntity="Mbp\FinanzasBundle\Entity\CCClientes", mappedBy="facturaId", cascade={"remove", "persist"})
 	 * @ORM\JoinColumn(name="ccId", referencedColumnName="id", onDelete="SET NULL")
 	 */
@@ -793,5 +802,29 @@ class Facturas
     public function getCcId()
     {
         return $this->ccId;
+    }
+
+    /**
+     * Set tipoCambioRefFac
+     *
+     * @param string $tipoCambioRefFac
+     *
+     * @return Facturas
+     */
+    public function setTipoCambioRefFac($tipoCambioRefFac)
+    {
+        $this->tipoCambioRefFac = $tipoCambioRefFac;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoCambioRefFac
+     *
+     * @return string
+     */
+    public function getTipoCambioRefFac()
+    {
+        return $this->tipoCambioRefFac;
     }
 }

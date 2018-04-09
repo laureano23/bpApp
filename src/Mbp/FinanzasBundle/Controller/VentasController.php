@@ -98,8 +98,8 @@ class VentasController extends Controller
 				echo json_encode(array("success"=>false, "msg"=>"Cuenta cerrada, no se puede realizar la operacion"));
 				return new Response;
 			}
-
-    					
+			
+			    					
 			//ARTICULO
 			$repoArticulo = $em->getRepository('MbpArticulosBundle:Articulos');
 			
@@ -268,6 +268,10 @@ class VentasController extends Controller
 			$decodefcData->moneda == 0 ? $factura->setMoneda(0) : $factura->setMoneda(1);
 			$decodefcData->moneda == 0 ? $factura->setTipoCambio(1) : $factura->setTipoCambio($regfe['MonCotiz']);
 			
+			if($decodefcData->tipoCambio > 0){
+				$factura->setTipoCambioRefFac($decodefcData->tipoCambio);
+			}
+			
 			//cc
 			if($tipo->getEsNotaCredito()){
 				$cc->setHaber($factura->getTotal());	
@@ -292,6 +296,7 @@ class VentasController extends Controller
 			return $response;
 
 		}catch(\Exception $e){
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			$response->setContent(json_encode(array("success"=>false, "msg"=>$e->getMessage())));
 			return $response;
 		}

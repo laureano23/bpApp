@@ -10,7 +10,8 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 		'MetApp.view.Reportes.ReporteIntResarcitorios',
 		'MetApp.view.Reportes.ReporteHistoricoMov',
 		'MetApp.view.Reportes.RepoSaldoDeudor',
-		'MetApp.view.Reportes.ReporteCbteNoPagodos'
+		'MetApp.view.Reportes.ReporteCbteNoPagodos',
+		'MetApp.view.Reportes.RepoChequeTerceros'
 	],
 	refs:[
 	],
@@ -84,7 +85,50 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 			'ReporteCbteNoPagodos button[itemId=printDateReport]': {
 				click: this.ImprimirCbteNoPagados
 			},
+			'viewport menuitem[itemId=reporteChequeTerceros]': {
+				click: this.AddReporteChequeTerceros
+			},
+			'RepoChequeTerceros button[itemId=printReport]': {
+				click: this.ImprimirRepoChequeTerceros
+			},
 		});
+	},
+	
+	ImprimirRepoChequeTerceros: function(btn){
+		var win = btn.up('window');
+		var form = win.down('form');
+		var myMask = new Ext.LoadMask(form, {msg:"Cargando..."});
+		myMask.show();
+		
+		if(form.isValid()){
+			var values = form.getForm().getValues();
+			
+			Ext.Ajax.request({
+				url: Routing.generate('mbp_Reportes_InventarioCheques'),
+				
+				params: {
+					desde: values.desde,
+					hasta: values.hasta,
+				},
+				
+				success: function(resp){					
+					var jsonResp = Ext.JSON.decode(resp.responseText);
+					if(jsonResp.success == true){
+						var ruta = Routing.generate('mbp_Reportes_VerInventarioCheques');						
+						window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+					}
+					myMask.hide();
+				},
+				
+				failure: function(resp){
+					myMask.hide();
+				}
+			});	
+		}
+	},
+	
+	AddReporteChequeTerceros: function(btn){
+		Ext.widget('RepoChequeTerceros');
 	},
 	
 	AddReporteCbteNoPagado: function(btn){

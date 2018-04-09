@@ -617,6 +617,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
         				listeners : {
 		                    render : dragZone,
 		                }, 
+        			},
+        			{
+        				text: 'Inventario Cheques de Terceros',
+        				itemId: 'reporteChequeTerceros',
+        				listeners : {
+		                    render : dragZone,
+		                }, 
         			}
         		]
         	},

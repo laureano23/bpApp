@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b7fbe4cc-9642-4a30-b319-1f1509ec7bd0">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
-	<property name="ireport.x" value="123"/>
-	<property name="ireport.y" value="1"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="63"/>
 	<parameter name="rutaLogo" class="java.lang.String"/>
 	<parameter name="facturaId" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -33,6 +33,7 @@
      Facturas.`tipoCambio` AS Facturas_tipoCambio,
      Facturas.`tipoId` AS Facturas_tipoId,
      Facturas.`ccId` AS Facturas_ccId,
+     Facturas.`tipoCambioRefFac` AS Facturas_tipoCambioRefFac,
      FacturaDetalle.`id` AS FacturaDetalle_id,
      FacturaDetalle.`descripcion` AS FacturaDetalle_descripcion,
      FacturaDetalle.`cantidad` AS FacturaDetalle_cantidad,
@@ -120,6 +121,7 @@ WHERE Facturas.`id` = $P{facturaId}]]>
 	<field name="Facturas_tipoCambio" class="java.math.BigDecimal"/>
 	<field name="Facturas_tipoId" class="java.lang.Integer"/>
 	<field name="Facturas_ccId" class="java.lang.Integer"/>
+	<field name="Facturas_tipoCambioRefFac" class="java.math.BigDecimal"/>
 	<field name="FacturaDetalle_id" class="java.lang.Integer"/>
 	<field name="FacturaDetalle_descripcion" class="java.lang.String"/>
 	<field name="FacturaDetalle_cantidad" class="java.math.BigDecimal"/>
@@ -594,11 +596,8 @@ $F{FacturaDetalle_descripcion}+" OC N°: "+$F{PedidoClientes_oc}]]></textFieldEx
 	</detail>
 	<columnFooter>
 		<band height="87" splitType="Stretch">
-			<rectangle>
-				<reportElement x="0" y="40" width="555" height="47" uuid="a8b71016-5574-453c-b5cd-49ebfce816d3"/>
-			</rectangle>
 			<staticText>
-				<reportElement x="0" y="0" width="75" height="20" uuid="74ddc59c-14c1-4d85-968e-65359e6e7602"/>
+				<reportElement x="0" y="47" width="75" height="20" uuid="74ddc59c-14c1-4d85-968e-65359e6e7602"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -611,7 +610,7 @@ $F{FacturaDetalle_descripcion}+" OC N°: "+$F{PedidoClientes_oc}]]></textFieldEx
 				<text><![CDATA[SUBTOTAL]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="75" y="0" width="75" height="20" uuid="97ba1f51-8072-41fa-97ce-af878e5106a2"/>
+				<reportElement x="75" y="47" width="75" height="20" uuid="97ba1f51-8072-41fa-97ce-af878e5106a2"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -624,7 +623,7 @@ $F{FacturaDetalle_descripcion}+" OC N°: "+$F{PedidoClientes_oc}]]></textFieldEx
 				<text><![CDATA[DESCUENTO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="150" y="0" width="129" height="20" uuid="f04753c8-a935-423a-ac98-c97ac99febb5"/>
+				<reportElement x="150" y="47" width="129" height="20" uuid="f04753c8-a935-423a-ac98-c97ac99febb5"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -637,7 +636,7 @@ $F{FacturaDetalle_descripcion}+" OC N°: "+$F{PedidoClientes_oc}]]></textFieldEx
 				<text><![CDATA[NETO SUBTOTAL]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="354" y="0" width="75" height="20" uuid="5ebd57af-9a1a-46e8-87fe-3928905130f3"/>
+				<reportElement x="354" y="47" width="75" height="20" uuid="5ebd57af-9a1a-46e8-87fe-3928905130f3"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -650,7 +649,7 @@ $F{FacturaDetalle_descripcion}+" OC N°: "+$F{PedidoClientes_oc}]]></textFieldEx
 				<text><![CDATA[IVA 21%]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="429" y="0" width="126" height="20" uuid="83dcd057-9722-4870-9bdd-a588b5b31602"/>
+				<reportElement x="429" y="47" width="126" height="20" uuid="83dcd057-9722-4870-9bdd-a588b5b31602"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -663,7 +662,7 @@ $F{FacturaDetalle_descripcion}+" OC N°: "+$F{PedidoClientes_oc}]]></textFieldEx
 				<text><![CDATA[TOTAL]]></text>
 			</staticText>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="0" y="20" width="75" height="20" uuid="645f1fe3-d3f6-48dc-9828-0a06bf541ee3"/>
+				<reportElement x="0" y="67" width="75" height="20" uuid="645f1fe3-d3f6-48dc-9828-0a06bf541ee3"/>
 				<box leftPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -674,7 +673,7 @@ $F{FacturaDetalle_descripcion}+" OC N°: "+$F{PedidoClientes_oc}]]></textFieldEx
 				<textFieldExpression><![CDATA[$V{subTotal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="75" y="20" width="75" height="20" uuid="99273d1f-12c6-410f-a892-a3cf633cf38e"/>
+				<reportElement x="75" y="67" width="75" height="20" uuid="99273d1f-12c6-410f-a892-a3cf633cf38e"/>
 				<box leftPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -685,7 +684,7 @@ $F{FacturaDetalle_descripcion}+" OC N°: "+$F{PedidoClientes_oc}]]></textFieldEx
 				<textFieldExpression><![CDATA[$F{Facturas_dtoTotal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="150" y="20" width="129" height="20" uuid="8e94f87a-f8a3-4ed9-99fe-dccba26c4ac2"/>
+				<reportElement x="150" y="67" width="129" height="20" uuid="8e94f87a-f8a3-4ed9-99fe-dccba26c4ac2"/>
 				<box leftPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -696,7 +695,7 @@ $F{FacturaDetalle_descripcion}+" OC N°: "+$F{PedidoClientes_oc}]]></textFieldEx
 				<textFieldExpression><![CDATA[$V{subTotal}-$F{Facturas_dtoTotal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="279" y="20" width="75" height="20" uuid="27c6e01f-f6e6-4fcb-b877-0cf174e40b8a"/>
+				<reportElement x="279" y="67" width="75" height="20" uuid="27c6e01f-f6e6-4fcb-b877-0cf174e40b8a"/>
 				<box leftPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -707,7 +706,7 @@ $F{FacturaDetalle_descripcion}+" OC N°: "+$F{PedidoClientes_oc}]]></textFieldEx
 				<textFieldExpression><![CDATA[$F{Facturas_perIIBB}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="354" y="20" width="75" height="20" uuid="495df883-17dd-4852-968e-251c8630c573"/>
+				<reportElement x="354" y="67" width="75" height="20" uuid="495df883-17dd-4852-968e-251c8630c573"/>
 				<box leftPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -718,7 +717,7 @@ $F{FacturaDetalle_descripcion}+" OC N°: "+$F{PedidoClientes_oc}]]></textFieldEx
 				<textFieldExpression><![CDATA[$F{Facturas_iva21}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="429" y="20" width="126" height="20" uuid="622932e3-155a-407e-980d-8034cabc3462"/>
+				<reportElement x="429" y="67" width="126" height="20" uuid="622932e3-155a-407e-980d-8034cabc3462"/>
 				<box leftPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -728,40 +727,8 @@ $F{FacturaDetalle_descripcion}+" OC N°: "+$F{PedidoClientes_oc}]]></textFieldEx
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$V{subTotal} - $F{Facturas_dtoTotal} + $F{Facturas_iva21} + $F{Facturas_perIIBB}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="1" y="45" width="51" height="20" uuid="6b179f87-0e7c-4b25-ad40-d89fa81923e8"/>
-				<box leftPadding="3"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[CAE N°:]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="52" y="45" width="155" height="20" uuid="30759bbc-81b2-4534-88ed-4631e56e3fee"/>
-				<textFieldExpression><![CDATA[$F{Facturas_cae}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="207" y="45" width="98" height="20" uuid="de6648fb-4702-46ca-b6d1-73b612ff76be"/>
-				<box leftPadding="3"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Fecha de Vto.:]]></text>
-			</staticText>
-			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="305" y="45" width="139" height="20" uuid="ea1c6822-a6a2-4999-a13c-d238cbc534b9"/>
-				<textFieldExpression><![CDATA[$F{Facturas_vtoCae}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="493" y="67" width="62" height="20" uuid="0e540b8c-3843-4893-a3a5-bef17c7a8df8"/>
-				<box rightPadding="3"/>
-				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[ORIGINAL]]></text>
-			</staticText>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="320" y="0" width="34" height="20" uuid="258f01f9-9cd0-4958-8f53-9475ab221b39"/>
+				<reportElement x="320" y="47" width="34" height="20" uuid="258f01f9-9cd0-4958-8f53-9475ab221b39"/>
 				<box leftPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -772,7 +739,7 @@ $F{FacturaDetalle_descripcion}+" OC N°: "+$F{PedidoClientes_oc}]]></textFieldEx
 				<textFieldExpression><![CDATA[$F{Facturas_perIIBB}*100/$V{subTotal}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="279" y="0" width="41" height="20" uuid="0c0558b4-cdc2-4b88-989c-c66e50330bad"/>
+				<reportElement x="279" y="47" width="41" height="20" uuid="0c0558b4-cdc2-4b88-989c-c66e50330bad"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -784,6 +751,50 @@ $F{FacturaDetalle_descripcion}+" OC N°: "+$F{PedidoClientes_oc}]]></textFieldEx
 				</textElement>
 				<text><![CDATA[IIBB]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="0" y="27" width="375" height="20" uuid="28bf5944-d0b5-4d9d-9f5c-ab659cb12f8c"/>
+				<textFieldExpression><![CDATA[$F{Facturas_tipoCambioRefFac} > 1 ? "Tipo de Cambio vendedor Banco Nacion \$ "
++$F{Facturas_tipoCambioRefFac} : ""]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnFooter>
+	<pageFooter>
+		<band height="47">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="47" uuid="a8b71016-5574-453c-b5cd-49ebfce816d3"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="1" y="0" width="51" height="20" uuid="6b179f87-0e7c-4b25-ad40-d89fa81923e8"/>
+				<box leftPadding="3"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CAE N°:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="52" y="0" width="155" height="20" uuid="30759bbc-81b2-4534-88ed-4631e56e3fee"/>
+				<textFieldExpression><![CDATA[$F{Facturas_cae}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="207" y="0" width="98" height="20" uuid="de6648fb-4702-46ca-b6d1-73b612ff76be"/>
+				<box leftPadding="3"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Vto.:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="305" y="0" width="139" height="20" uuid="ea1c6822-a6a2-4999-a13c-d238cbc534b9"/>
+				<textFieldExpression><![CDATA[$F{Facturas_vtoCae}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="493" y="22" width="62" height="20" uuid="0e540b8c-3843-4893-a3a5-bef17c7a8df8"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ORIGINAL]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
 </jasperReport>

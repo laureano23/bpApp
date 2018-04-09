@@ -78,6 +78,9 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			'facturacion button[itemId=btnRemito]': {
 				click: this.RemitosPendientes
 			},
+			'facturacion textfield[itemId=descuentoFijo]': {
+				change: this.CalcularDescuento
+			},
 			'cobranza button[itemId=btnEdit]': {
 				click: this.EditaItemCob
 			},
@@ -100,6 +103,28 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 				select: this.SetReadOnlyCuenta
 			}
 		});
+	},
+	
+	CalcularDescuento: function(txt){
+		var win = txt.up('window');
+		var desc = txt.getValue();		
+		var subTotal = win.queryById('subTotal');
+		var iva = win.queryById('iva');
+		var total = win.queryById('total');
+		var store = win.down('grid').getStore();
+		var aux=0;
+		var sub=0;
+		
+		store.each(function(rec){
+			rec.data.parcial = rec.data.cantidad * rec.data.precio;
+			var data = rec.getData();									
+			sub = data.parcial + aux;
+			aux = sub;
+		});
+		
+		subTotal.setValue(sub * (100-desc)/100);
+		iva.setValue(subTotal.getValue() * MetApp.resources.ux.ParametersSingleton.getIva());
+		total.setValue(iva.getValue() + subTotal.getValue());
 	},
 	
 		
@@ -461,11 +486,12 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var store = grid.getStore();		
 		var record = Ext.create('MetApp.model.Finanzas.GrillaFacturacionModel');
 		var formArt = winFacturacion.queryById('formArticulos');
-		var articulo = formArt.getValues('','','',true);
+		var articulo = formArt.getValues('','','',true);		
 						
 		record.set('codigo', articulo.codigo);
 		record.set('descripcion', articulo.descripcion);
 		record.set('cantidad', articulo.cantidad);
+		
 				
 		record.set('precio', articulo.precio);
 		record.set('costo', articulo.costo);
@@ -602,9 +628,10 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 					failure: function(resp){
 						var decodeResp = Ext.JSON.decode(resp.responseText);
 						myMask.hide();
+						console.log(decodeResp);
 						Ext.Msg.show({
 						    title:'Atencion',
-						    msg: 'Codigo: '+decodeResp.msg.code+'<br/>Error: '+decodeResp.msg.msg,
+						    msg: 'Codigo: '+decodeResp.msg.code+'<br/>Error: '+decodeResp.msg+decodeResp.msg.msg,
 						    buttons: Ext.Msg.OK,
 						    icon: Ext.Msg.INFO
 						});
@@ -644,10 +671,11 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 				
 				failure: function(resp){
 					var decodeResp = Ext.JSON.decode(resp.responseText);
+					console.log(decodeResp);
 					myMask.hide();
 					Ext.Msg.show({
 					    title:'Atencion',
-					    msg: 'Codigo: '+decodeResp.msg.code+'<br/>Error: '+decodeResp.msg.msg,
+					    msg: 'Codigo: '+decodeResp.msg.code+'<br/>Error: '+decodeResp.msg+decodeResp.msg.msg,
 					    buttons: Ext.Msg.OK,
 					    icon: Ext.Msg.INFO
 					});
@@ -660,6 +688,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var viewFacturacion = btn.up('window');
 		var ccView = this.getCCClientes();
 		var view = Ext.widget('RemitosPendientesView');
+		var tc = viewFacturacion.queryById('tipoCambio').getValue();
 		
 		var grid = view.down('grid');
 		var store = grid.getStore();
@@ -688,6 +717,9 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			var data={'items': []};
 			store.each(function(rec){
 				if(rec.data.facturado == true){
+					if(tc > 0){
+						rec.data.precio = rec.data.precio * tc; 
+					}
 					rec.data.parcial = rec.data.cantidad * rec.data.precio;
 					data.items.push(rec.data);	
 				}				

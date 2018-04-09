@@ -82,7 +82,8 @@ class ReportesController extends Controller
 			     Facturas.`moneda` AS Facturas_moneda,
 			     Facturas.`tipoCambio` AS Facturas_tipoCambio,
 			     Facturas.`tipoId` AS Facturas_tipoId,
-			     Facturas.`ccId` AS Facturas_ccId,
+			     Facturas.`ccId` AS Facturas_ccId,			     
+     			 Facturas.`tipoCambioRefFac` AS Facturas_tipoCambioRefFac,
 			     FacturaDetalle.`id` AS FacturaDetalle_id,
 			     FacturaDetalle.`descripcion` AS FacturaDetalle_descripcion,
 			     FacturaDetalle.`cantidad` AS FacturaDetalle_cantidad,
@@ -1020,6 +1021,133 @@ class ReportesController extends Controller
 		$response = new BinaryFileResponse($basePath);
         $response->trustXSendfileTypeHeader();
 		$filename = 'resumenSaldoDeudor.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+		
+		return $response;
+	}
+	
+	/**
+     * @Route("/Reportes/InventarioCheques", name="mbp_Reportes_InventarioCheques", options={"expose"=true})
+     */	
+    public function InventarioCheques()
+	{
+		$response = new Response;
+				
+		try{
+			/*
+			 * PARAMETROS
+			 */
+			$request = $this->get('request');
+			$desde = $request->get('desde');
+			$hasta = $request->get('hasta');
+							
+			$reporteador = $this->get('reporteador');
+			$kernel = $this->get('kernel');
+			
+			/*
+			 * Configuro reporte
+			 */
+			$jru = $reporteador->jru();
+			
+			/*
+			 * Ruta archivo Jasper
+			 */				
+					
+			$ruta = $kernel->locateResource('@MbpFinanzasBundle/Reportes/InventarioCheques.jrxml');
+			$rutaLogo = $reporteador->getRutaLogo($kernel);
+			
+			/*
+			 * Ruta de destino del PDF
+			 */
+			$destino = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'InventarioCheques.pdf';		
+			
+			//Parametros HashMap
+			$param = $reporteador->getJava('java.util.HashMap');
+					
+			
+			$param->put('FECHA_DESDE', $desde);
+			$param->put('FECHA_HASTA', $hasta);
+			$conn = $reporteador->getJdbc();
+			
+			$desde = \DateTime::createFromFormat('d/m/Y', $desde);
+			$hasta = \DateTime::createFromFormat('d/m/Y', $hasta);
+			
+			
+			$desde = $desde->format('Y-m-d');
+			$hasta = $hasta->format('Y-m-d');
+									
+			
+			$sql = "SELECT
+			     Cobranzas.`id` AS Cobranzas_id,
+			     Cobranzas.`emision` AS Cobranzas_emision,
+			     Cobranzas.`clienteId` AS Cobranzas_clienteId,
+			     Cobranzas.`ptoVenta` AS Cobranzas_ptoVenta,
+			     Cobranzas.`numRecibo` AS Cobranzas_numRecibo,
+			     Cobranzas.`fechaRecibo` AS Cobranzas_fechaRecibo,
+			     Cobranzas.`totalCobranza` AS Cobranzas_totalCobranza,
+			     Cobranzas.`ccId` AS Cobranzas_ccId,
+			     CobranzasDetalle.`id` AS CobranzasDetalle_id,
+			     CobranzasDetalle.`importe` AS CobranzasDetalle_importe,
+			     CobranzasDetalle.`numero` AS CobranzasDetalle_numero,
+			     CobranzasDetalle.`banco` AS CobranzasDetalle_banco,
+			     CobranzasDetalle.`vencimiento` AS CobranzasDetalle_vencimiento,
+			     CobranzasDetalle.`estado` AS CobranzasDetalle_estado,
+			     CobranzasDetalle.`formaPagoId` AS CobranzasDetalle_formaPagoId,
+			     CobranzasDetalle.`cuentaId` AS CobranzasDetalle_cuentaId,
+			     CobranzasDetalle.`movBancoId` AS CobranzasDetalle_movBancoId,
+			     cobranza_detallesCobranzas.`cobranza_id` AS cobranza_detallesCobranzas_cobranza_id,
+			     cobranza_detallesCobranzas.`cobranzasdetalle_id` AS cobranza_detallesCobranzas_cobranzasdetalle_id,
+			     FormasPagos.`id` AS FormasPagos_id,
+			     FormasPagos.`descripcion` AS FormasPagos_descripcion,
+			     FormasPagos.`inactivo` AS FormasPagos_inactivo,
+			     FormasPagos.`retencionIIBB` AS FormasPagos_retencionIIBB,
+			     FormasPagos.`retencionIVA21` AS FormasPagos_retencionIVA21,
+			     FormasPagos.`chequeTerceros` AS FormasPagos_chequeTerceros,
+			     FormasPagos.`esChequePropio` AS FormasPagos_esChequePropio,
+			     FormasPagos.`ceonceptoBancoId` AS FormasPagos_ceonceptoBancoId,
+			     FormasPagos.`depositaEnCuenta` AS FormasPagos_depositaEnCuenta,
+			     cliente.`idCliente` AS cliente_idCliente,
+			     cliente.`rsocial` AS cliente_rsocial,
+			     cliente.`denominacion` AS cliente_denominacion
+			FROM
+			     `CobranzasDetalle` CobranzasDetalle INNER JOIN `cobranza_detallesCobranzas` cobranza_detallesCobranzas ON CobranzasDetalle.`id` = cobranza_detallesCobranzas.`cobranzasdetalle_id`
+			     INNER JOIN `Cobranzas` Cobranzas ON cobranza_detallesCobranzas.`cobranza_id` = Cobranzas.`id`
+			     INNER JOIN `cliente` cliente ON Cobranzas.`clienteId` = cliente.`idCliente`
+			     INNER JOIN `FormasPagos` FormasPagos ON CobranzasDetalle.`formaPagoId` = FormasPagos.`id`
+			WHERE
+			     FormasPagos.`chequeTerceros` = 1
+			 AND CobranzasDetalle.`estado` = 0
+			 AND CobranzasDetalle.`vencimiento` BETWEEN '$desde' AND '$hasta'
+			ORDER BY CobranzasDetalle.`vencimiento` ASC";
+			
+			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	
+		}catch(\Exception $e){
+			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(
+				json_encode(array('success' => false, 'msg' => $e->getMessage()))
+				);
+		}
+		
+		return $response->setContent(
+			json_encode(array('success' => true))
+			);
+	}
+	
+	/**
+     * @Route("/Reportes/VerInventarioCheques", name="mbp_Reportes_VerInventarioCheques", options={"expose"=true})
+     */	
+    public function VerInventarioCheques()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'InventarioCheques.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'InventarioCheques.pdf';
         $response->setContentDisposition(
             ResponseHeaderBag::DISPOSITION_INLINE,
             $filename,

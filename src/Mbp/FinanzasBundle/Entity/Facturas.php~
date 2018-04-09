@@ -95,7 +95,7 @@ class Facturas
 	/**
      * @var \Decimal
      *
-     * @ORM\Column(name="dtoTotal", type="decimal", precision=4, scale=2)
+     * @ORM\Column(name="dtoTotal", type="decimal", precision=12, scale=2)
 	 * @Assert\Range(
      *      min = 0,
      *      max = 99
@@ -182,6 +182,15 @@ class Facturas
 	 * para pesos tc=1, para dolares consultar servicio AFIP
      */
     private $tipoCambio=1;
+	
+	/**
+     * @var \decimal
+     *
+     * @ORM\Column(name="tipoCambioRefFac", type="decimal", precision=8, scale=2, nullable=false)
+	 * 
+	 * para referencia al pie de la factura
+     */
+    private $tipoCambioRefFac=1;
 	
 	/**
 	 * @ORM\OneToOne(targetEntity="Mbp\FinanzasBundle\Entity\CCClientes", mappedBy="facturaId", cascade={"remove", "persist"})
@@ -745,5 +754,53 @@ class Facturas
     public function getTipoCambio()
     {
         return $this->tipoCambio;
+    }
+
+    /**
+     * Set tipoId
+     *
+     * @param \Mbp\FinanzasBundle\Entity\TipoComprobante $tipoId
+     *
+     * @return Facturas
+     */
+    public function setTipoId(\Mbp\FinanzasBundle\Entity\TipoComprobante $tipoId)
+    {
+        $this->tipoId = $tipoId;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoId
+     *
+     * @return \Mbp\FinanzasBundle\Entity\TipoComprobante
+     */
+    public function getTipoId()
+    {
+        return $this->tipoId;
+    }
+
+    /**
+     * Set ccId
+     *
+     * @param \Mbp\FinanzasBundle\Entity\CCClientes $ccId
+     *
+     * @return Facturas
+     */
+    public function setCcId(\Mbp\FinanzasBundle\Entity\CCClientes $ccId = null)
+    {
+        $this->ccId = $ccId;
+
+        return $this;
+    }
+
+    /**
+     * Get ccId
+     *
+     * @return \Mbp\FinanzasBundle\Entity\CCClientes
+     */
+    public function getCcId()
+    {
+        return $this->ccId;
     }
 }
