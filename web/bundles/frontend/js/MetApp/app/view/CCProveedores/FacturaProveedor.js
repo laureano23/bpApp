@@ -140,18 +140,21 @@ Ext.define('MetApp.view.CCProveedores.FacturaProveedor',{
 													xtype: 'numberfield',
 													fieldLabel: 'IVA 5%',	
 													name: 'perIva5',
-													itemId: 'perIva5'						
+													itemId: 'perIva5',
+													decimalSeparator: '.',						
 												},
 												{
 													xtype: 'numberfield',
 													fieldLabel: 'IVA 3%',	
 													name: 'perIva3',
-													itemId: 'perIva3'						
+													itemId: 'perIva3',
+													decimalSeparator: '.',						
 												},
 												{
 													xtype: 'numberfield',
 													fieldLabel: 'IIBB CF',	
 													name: 'iibbCf',
+													decimalSeparator: '.',
 													itemId: 'iibbCf'						
 												},					
 											

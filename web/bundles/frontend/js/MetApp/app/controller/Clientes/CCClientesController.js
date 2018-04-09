@@ -351,19 +351,20 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 					var selection = grid.getSelectionModel().getSelection()[0];
 					var data = selection.getData();
 					
-					
 					Ext.Ajax.request({
 						url: Routing.generate('mbp_CCClientes_EliminarComprobante'),
 						
 						params: {
-							idCobranza: data.idCob
+							idCobranza: data.idCob,
+							idBalance: data.idF
 						},
 						
 						success: function(resp){
 							var jsonResp = Ext.JSON.decode(resp.responseText);
 							if(jsonResp.success == true){
 								var store = grid.getStore();
-								store.remove(selection);	
+								//store.remove(selection);
+								store.load();	
 							}
 						}	
 					});
@@ -657,6 +658,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 	
 	RemitosPendientes: function(btn){
 		var viewFacturacion = btn.up('window');
+		var ccView = this.getCCClientes();
 		var view = Ext.widget('RemitosPendientesView');
 		
 		var grid = view.down('grid');
@@ -664,6 +666,10 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		
 		Ext.Ajax.request({
 			url: Routing.generate('mbp_articulos_remitosPendientesFacturacion'),
+			
+			params: {
+				idCliente: ccView.queryById('id').getValue() 
+			},
 			
 			success: function(resp){
 				var jsonResp = Ext.JSON.decode(resp.responseText);

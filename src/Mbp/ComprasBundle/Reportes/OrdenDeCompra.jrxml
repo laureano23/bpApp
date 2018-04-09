@@ -47,8 +47,8 @@ FROM
      `OrdenCompraDetalle` OrdenCompraDetalle INNER JOIN `ordenCompra_detallesOrdenCompra` ordenCompra_detallesOrdenCompra ON OrdenCompraDetalle.`id` = ordenCompra_detallesOrdenCompra.`ordencompradetalle_id`
      INNER JOIN `OrdenCompra` OrdenCompra ON ordenCompra_detallesOrdenCompra.`orden_id` = OrdenCompra.`id`
      LEFT OUTER JOIN `Proveedor` Proveedor ON OrdenCompra.`proveedorId` = Proveedor.`id`
-     INNER JOIN `provincia` provincia ON Proveedor.`provincia` = provincia.`id`
-     INNER JOIN `localidades` localidades ON Proveedor.`localidad` = localidades.`id`
+     LEFT JOIN `provincia` provincia ON Proveedor.`provincia` = provincia.`id`
+     LEFT JOIN `localidades` localidades ON Proveedor.`localidad` = localidades.`id`
      INNER JOIN `articulos` articulos ON OrdenCompraDetalle.`articuloId` = articulos.`idArticulos`
 WHERE
      OrdenCompra.`id` = $P{ordenId}]]>
@@ -171,14 +171,14 @@ Tel: 4484-2416]]></text>
 				</textElement>
 				<text><![CDATA[Emision:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="515" y="0" width="61" height="20" uuid="42227515-21eb-45d0-9ed6-a18a7a8dd3ee"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{OrdenCompra_id}]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd/MM/yyyy">
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement x="515" y="20" width="61" height="20" uuid="5a6d99ae-ff04-4e39-ab9e-20e060d20ef6"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" isBold="false"/>
@@ -192,7 +192,7 @@ Tel: 4484-2416]]></text>
 				</textElement>
 				<text><![CDATA[Moneda:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="515" y="40" width="60" height="20" uuid="4ee47ea4-a7e1-4dd7-8c91-94f527c7f581"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{OrdenCompra_monedaOC} == false ? "ARS" : "U\$D"]]></textFieldExpression>
@@ -206,7 +206,7 @@ Tel: 4484-2416]]></text>
 				</textElement>
 				<text><![CDATA[TC:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="515" y="60" width="60" height="20" uuid="4a3bc058-c385-4eee-a140-8a1e34a555c6"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{OrdenCompra_monedaOC} == true ? $F{OrdenCompra_tc} : ""]]></textFieldExpression>
@@ -240,12 +240,12 @@ Tel: 4484-2416]]></text>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Ombu 3865 San Justo Bs. As.]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="65" y="72" width="364" height="20" uuid="14375b87-9fe2-4650-8517-7a90f51024da"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{Proveedor_rsocial}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="65" y="92" width="364" height="20" uuid="8642324d-fc31-475a-b992-13d25a78cbb9"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{localidades_nombre}+" "+$F{provincia_nombre}]]></textFieldExpression>
@@ -310,31 +310,31 @@ Tel: 4484-2416]]></text>
 	</columnHeader>
 	<detail>
 		<band height="20">
-			<textField isStretchWithOverflow="true">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="81" y="0" width="215" height="20" uuid="b89cb5e4-9cc2-4eaf-b428-1c1ac5b3dacd"/>
 				<box leftPadding="3"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{OrdenCompraDetalle_descripcion}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="296" y="0" width="48" height="20" uuid="064cd2b7-7f3d-4cf4-932d-1714cd29d72a"/>
 				<box leftPadding="3"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{OrdenCompraDetalle_unidad}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="344" y="0" width="57" height="20" uuid="06b6e52e-e35b-4b06-a26d-a12f14bc4d3b"/>
 				<box leftPadding="3"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{OrdenCompraDetalle_cant}]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd/MM/yyyy">
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement x="401" y="0" width="72" height="20" uuid="873abca5-66ac-454a-bb00-62cbadfcf7e6"/>
 				<box leftPadding="3"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{OrdenCompraDetalle_fechaEntrega}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="473" y="0" width="50" height="20" uuid="110102a7-6ed1-4b52-93aa-19e3cdd295c3"/>
 				<box leftPadding="3"/>
 				<textElement verticalAlignment="Middle"/>
@@ -349,7 +349,7 @@ $F{OrdenCompraDetalle_moneda} == false ?
 $F{OrdenCompraDetalle_precio} / $F{OrdenCompra_tc}:
 $F{OrdenCompraDetalle_precio}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="523" y="0" width="52" height="20" uuid="58b2b0ae-1a36-438c-83e7-df29aea46690"/>
 				<box leftPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
@@ -364,7 +364,7 @@ $F{OrdenCompraDetalle_moneda} == false ?
 $F{OrdenCompraDetalle_precio} / $F{OrdenCompra_tc} * $F{OrdenCompraDetalle_cant} :
 $F{OrdenCompraDetalle_precio} * $F{OrdenCompraDetalle_cant}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="81" height="20" uuid="87b1f2ab-49ce-44f8-88ee-cd08566e8569"/>
 				<box leftPadding="3"/>
 				<textElement verticalAlignment="Middle"/>
@@ -434,7 +434,7 @@ $F{OrdenCompraDetalle_precio} * $F{OrdenCompraDetalle_cant}]]></textFieldExpress
 				</textElement>
 				<textFieldExpression><![CDATA[$V{subtotal} + $V{iva10} + $V{iva21}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="73" width="381" height="80" uuid="31ffbb83-6689-4e89-9f2b-1be93962ee7e"/>
 				<textFieldExpression><![CDATA[$F{OrdenCompra_observaciones}]]></textFieldExpression>
 			</textField>

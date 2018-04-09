@@ -73,6 +73,13 @@ class PedidoClientes
      * )
      */
     private $detalleId; 
+	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="esRepuesto", type="boolean")
+     */ 
+    private $esRepuesto=0;
 
     /**
      * Get id
@@ -267,5 +274,29 @@ class PedidoClientes
     public function getAutEntrega()
     {
         return $this->autEntrega;
+    }
+
+    /**
+     * Set esRepuesto
+     *
+     * @param boolean $esRepuesto
+     *
+     * @return PedidoClientes
+     */
+    public function setEsRepuesto($esRepuesto)
+    {
+        $this->esRepuesto = $esRepuesto;
+
+        return $this;
+    }
+
+    /**
+     * Get esRepuesto
+     *
+     * @return boolean
+     */
+    public function getEsRepuesto()
+    {
+        return $this->esRepuesto;
     }
 }

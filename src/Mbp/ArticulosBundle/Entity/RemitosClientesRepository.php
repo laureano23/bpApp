@@ -10,7 +10,7 @@ namespace Mbp\ArticulosBundle\Entity;
  */
 class RemitosClientesRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function listarRemitosPendientesFacturacion(){
+	public function listarRemitosPendientesFacturacion($idCliente){
 		$em = $this->getEntityManager();
 		
 		$repo = $em->getRepository('MbpArticulosBundle:RemitosClientes');
@@ -24,6 +24,8 @@ class RemitosClientesRepository extends \Doctrine\ORM\EntityRepository
 			->leftjoin('d.pedidoDetalleId', 'p')
 			->where('d.facturado = 0')
 			->andWhere($qb->expr()->isNotNull('r.clienteId'))
+			->andWhere('r.clienteId = :clienteId')
+			->setParameter('clienteId', $idCliente)
 			->getQuery()
 			->getResult();
 		

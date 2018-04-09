@@ -26,7 +26,8 @@ class CCClientesRepository extends \Doctrine\ORM\EntityRepository
 				cc.haber,
 				SUM(cc2.debe) - SUM(cc2.haber) AS saldo,
 				fc.id as idF,
-				cob.id as idCob
+				cob.id as idCob,
+				CASE WHEN tipo.esBalance = 1 THEN 'balance' ELSE '' AS tipoCbte
 				")
 			->leftjoin('cc.facturaId', 'fc', 'WITH', 'fc.clienteId = :idCliente')
 			->leftjoin('cc.cobranzaId', 'cob', 'WITH', 'cob.clienteId = :idCliente')

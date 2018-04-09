@@ -46,7 +46,7 @@ class PedidoClientes
 	/**
      * @var string
      *
-     * @ORM\Column(name="autEntrega", type="string", length=25)
+     * @ORM\Column(name="autEntrega", type="string", length=25, nullable=true)
      */
     private $autEntrega;
 
@@ -73,6 +73,13 @@ class PedidoClientes
      * )
      */
     private $detalleId; 
+	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="esRepuesto", type="boolean")
+     */ 
+    private $esRepuesto=0;
 
     /**
      * Get id
@@ -243,5 +250,29 @@ class PedidoClientes
     public function getDetalleId()
     {
         return $this->detalleId;
+    }
+
+    /**
+     * Set autEntrega
+     *
+     * @param string $autEntrega
+     *
+     * @return PedidoClientes
+     */
+    public function setAutEntrega($autEntrega)
+    {
+        $this->autEntrega = $autEntrega;
+
+        return $this;
+    }
+
+    /**
+     * Get autEntrega
+     *
+     * @return string
+     */
+    public function getAutEntrega()
+    {
+        return $this->autEntrega;
     }
 }

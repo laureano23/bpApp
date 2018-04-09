@@ -59,7 +59,9 @@ WHERE
      PedidoClientes.`cliente` BETWEEN $P{clienteDesde} AND $P{clienteHasta}
  AND articulos.`codigo` BETWEEN $P{codigoDesde} AND $P{codigoHasta}
  AND PedidoClientes.`fechaPedido` BETWEEN $P{fechaDesde} AND $P{fechaHasta}
- AND PedidoClientesDetalle.`inactivo` = 0]]>
+ AND PedidoClientesDetalle.`inactivo` = 0
+ORDER BY
+	cliente.`idCliente`]]>
 	</queryString>
 	<field name="PedidoClientes_id" class="java.lang.Integer"/>
 	<field name="PedidoClientes_fechaPedido" class="java.sql.Date"/>

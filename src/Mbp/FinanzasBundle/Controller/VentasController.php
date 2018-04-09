@@ -292,7 +292,6 @@ class VentasController extends Controller
 			return $response;
 
 		}catch(\Exception $e){
-			throw $e;
 			$response->setContent(json_encode(array("success"=>false, "msg"=>$e->getMessage())));
 			return $response;
 		}
@@ -355,22 +354,29 @@ class VentasController extends Controller
 		$response = new Response();
 		
 		$idCobranza = $req->request->get('idCobranza');
+		$idBalance = $req->request->get('idBalance');
 		
 		$repo = $em->getRepository('MbpFinanzasBundle:Cobranzas');
-				
+		$repoFc = $em->getRepository('MbpFinanzasBundle:Facturas');
+		$record="";
+			
 		try{
-			$record = $repo->find($idCobranza);
-			if(empty($record)){
-				throw new \Exception("No se encontró el registro", 1);			
-			}	
-			
-			//SI HAY INTERESES ASOCIADOS LOS BORRAMOS
-			$repoIntereses = $em->getRepository('MbpFinanzasBundle:InteresesResarcitorios');
-			$intereses = $repoIntereses->findByCobranzaId($record);
-			
-			foreach ($intereses as $i) {
-				$em->remove($i);
-			}
+			if($idBalance > 0){
+				$record = $repoFc->find($idBalance);
+			}else{
+				$record = $repo->find($idCobranza);
+				if(empty($record)){
+					throw new \Exception("No se encontró el registro", 1);			
+				}	
+				
+				//SI HAY INTERESES ASOCIADOS LOS BORRAMOS
+				$repoIntereses = $em->getRepository('MbpFinanzasBundle:InteresesResarcitorios');
+				$intereses = $repoIntereses->findByCobranzaId($record);
+				
+				foreach ($intereses as $i) {
+					$em->remove($i);
+				}
+			}				
 			
 			$em->remove($record);
 			$em->flush();

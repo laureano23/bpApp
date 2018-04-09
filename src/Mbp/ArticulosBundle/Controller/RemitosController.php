@@ -260,11 +260,13 @@ class RemitosController extends Controller
 	{
 		$response = new Response;
 		$em = $this->getDoctrine()->getManager();
+		$request = $this->getRequest();
 		
 		try{
 			$repo = $em->getRepository('MbpArticulosBundle:RemitosClientes');
+			$idCliente = $request->request->get('idCliente');
 		
-			$res = $repo->listarRemitosPendientesFacturacion();	
+			$res = $repo->listarRemitosPendientesFacturacion($idCliente);	
 		}catch(\Exception $e){
 			throw $e;
 			$response->setContent(json_encode(array('success' => false, 'msg' => $e->getMessage())));
