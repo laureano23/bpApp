@@ -180,6 +180,7 @@ class VentasController extends Controller
 			}
 						
 			$ultimoComp = $faele->ultimoNroComp($cbteTipo);
+			
 
 			//CONSULTA PERCEPCION DE IIBB
 			$iibbService = $this->get('ServiceIIBB');	//SERVICIO PARA ALICUOTAS DE IIBB
