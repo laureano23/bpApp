@@ -124,13 +124,28 @@ Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 							]
 						},
 						{
-							xtype: 'textfield',
-							margins: '0 0 0 5',
-							name: 'tipoCambio',
-							itemId: 'tipoCambio',
-							fieldLabel: 'Tipo cambio',
-							value: 0
-						}					
+							xtype: 'container',
+							layout: 'hbox',
+							items: [
+								{
+									xtype: 'textfield',
+									margins: '0 0 0 5',
+									name: 'tipoCambio',
+									itemId: 'tipoCambio',
+									fieldLabel: 'Tipo cambio',
+									value: 0
+								},
+								{
+									xtype: 'checkbox',
+									labelWidth: 55,
+									margins: '0 0 0 5',
+									fieldLabel: 'Sin IVA',
+									itemId: 'sinIva',
+									name: 'sinIva',
+									uncheckedValue: false
+								}
+							]
+						},												
 					]
 				},
 				{
@@ -264,12 +279,18 @@ Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 							]
 						},
 						{
-							xtype: 'textfield',
-							name: 'descuentoFijo',
-							itemId: 'descuentoFijo',
-							fieldLabel: 'Descuento (%)',
-							margin: '0 0 0 5'									
-						},	
+							xtype: 'container',
+							layout: 'hbox',
+							items: [
+								{
+									xtype: 'textfield',
+									name: 'descuentoFijo',
+									itemId: 'descuentoFijo',
+									fieldLabel: 'Descuento (%)',
+									margin: '0 0 0 5'									
+								},
+							]
+						},									
 						{
 							xtype: 'container',									
 							margin: '5 0 5 5',

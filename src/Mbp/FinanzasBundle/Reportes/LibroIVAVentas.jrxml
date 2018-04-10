@@ -11,47 +11,65 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
+     CASE WHEN Facturas.`moneda`=1 THEN Facturas.`perIIBB`*Facturas.`tipoCambio` ELSE Facturas.`perIIBB` END AS Facturas_perIIBB,
+     CASE WHEN Facturas.`moneda`=1 THEN Facturas.`iva21`*Facturas.`tipoCambio` ELSE Facturas.`iva21` END AS Facturas_iva21,
+     CASE WHEN Facturas.`moneda`=1 THEN Facturas.`total`*Facturas.`tipoCambio` ELSE Facturas.`total` END AS Facturas_total,
      cliente.`idCliente` AS cliente_idCliente,
      cliente.`rsocial` AS cliente_rsocial,
      Facturas.`id` AS Facturas_id,
      Facturas.`fecha` AS Facturas_fecha,
      Facturas.`concepto` AS Facturas_concepto,
      Facturas.`clienteId` AS Facturas_clienteId,
-     Facturas.`tipo` AS Facturas_tipo,
      Facturas.`ptoVta` AS Facturas_ptoVta,
-     CASE WHEN Facturas.`moneda` = 1 THEN Facturas.`perIIBB` * Facturas.`tipoCambio` ELSE Facturas.`perIIBB` END AS Facturas_perIIBB,
-     CASE WHEN Facturas.`moneda` = 1 THEN Facturas.`iva21` * Facturas.`tipoCambio` ELSE Facturas.`iva21` END  AS Facturas_iva21,
      Facturas.`fcNro` AS Facturas_fcNro,
      Facturas.`rSocial` AS Facturas_rSocial,
      Facturas.`cuit` AS Facturas_cuit,
      Facturas.`ivaCond` AS Facturas_ivaCond,
-     CASE WHEN Facturas.`moneda` = 1 THEN Facturas.`total` * Facturas.`tipoCambio` ELSE Facturas.`total` END AS Facturas_total,
      Facturas.`porcentajeIIBB` AS Facturas_porcentajeIIBB,
      Facturas.`moneda` AS Facturas_moneda,
-     Facturas.`tipoCambio` AS Facturas_tipoCambio
+     Facturas.`tipoCambio` AS Facturas_tipoCambio,
+     TipoComprobante.`id` AS TipoComprobante_id,
+     TipoComprobante.`esFactura` AS TipoComprobante_esFactura,
+     TipoComprobante.`esNotaCredito` AS TipoComprobante_esNotaCredito,
+     TipoComprobante.`esNotaDebito` AS TipoComprobante_esNotaDebito,
+     TipoComprobante.`esBalance` AS TipoComprobante_esBalance,
+     TipoComprobante.`descripcion` AS TipoComprobante_descripcion,
+     TipoComprobante.`subTipoA` AS TipoComprobante_subTipoA,
+     TipoComprobante.`subTipoB` AS TipoComprobante_subTipoB,
+     TipoComprobante.`subTipoE` AS TipoComprobante_subTipoE
 FROM
      `cliente` cliente INNER JOIN `Facturas` Facturas ON cliente.`idCliente` = Facturas.`clienteId`
+     INNER JOIN `TipoComprobante` TipoComprobante ON Facturas.`tipoId` = TipoComprobante.`id`
 WHERE
-     Facturas.`fecha` BETWEEN $P{fechaDesde}AND$P{fechaHasta}]]>
+     Facturas.`fecha` BETWEEN $P{fechaDesde} AND $P{fechaHasta}
+AND TipoComprobante.`esBalance` = 0]]>
 	</queryString>
+	<field name="Facturas_perIIBB" class="java.math.BigDecimal"/>
+	<field name="Facturas_iva21" class="java.math.BigDecimal"/>
+	<field name="Facturas_total" class="java.math.BigDecimal"/>
 	<field name="cliente_idCliente" class="java.lang.Integer"/>
 	<field name="cliente_rsocial" class="java.lang.String"/>
 	<field name="Facturas_id" class="java.lang.Integer"/>
 	<field name="Facturas_fecha" class="java.sql.Timestamp"/>
 	<field name="Facturas_concepto" class="java.lang.String"/>
 	<field name="Facturas_clienteId" class="java.lang.Integer"/>
-	<field name="Facturas_tipo" class="java.lang.Integer"/>
 	<field name="Facturas_ptoVta" class="java.lang.Integer"/>
-	<field name="Facturas_perIIBB" class="java.math.BigDecimal"/>
-	<field name="Facturas_iva21" class="java.math.BigDecimal"/>
 	<field name="Facturas_fcNro" class="java.lang.Integer"/>
 	<field name="Facturas_rSocial" class="java.lang.String"/>
 	<field name="Facturas_cuit" class="java.lang.String"/>
 	<field name="Facturas_ivaCond" class="java.lang.String"/>
-	<field name="Facturas_total" class="java.math.BigDecimal"/>
 	<field name="Facturas_porcentajeIIBB" class="java.math.BigDecimal"/>
 	<field name="Facturas_moneda" class="java.lang.Boolean"/>
 	<field name="Facturas_tipoCambio" class="java.math.BigDecimal"/>
+	<field name="TipoComprobante_id" class="java.lang.Integer"/>
+	<field name="TipoComprobante_esFactura" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_esNotaCredito" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_esNotaDebito" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_esBalance" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_descripcion" class="java.lang.String"/>
+	<field name="TipoComprobante_subTipoA" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_subTipoB" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_subTipoE" class="java.lang.Boolean"/>
 	<variable name="total" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{Facturas_total}]]></variableExpression>
 	</variable>

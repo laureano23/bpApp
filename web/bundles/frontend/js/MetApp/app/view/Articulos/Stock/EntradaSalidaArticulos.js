@@ -270,6 +270,7 @@ Ext.define('MetApp.view.Articulos.Stock.EntradaSalidaArticulos', {
 									width: 170,
 									fieldLabel: 'Cantidad',
 									name: 'cant',
+									decimalSeparator: '.',
 									itemId: 'cantidad',
 									margins: '0 0 0 5'
 								}

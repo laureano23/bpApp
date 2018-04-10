@@ -81,6 +81,9 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			'facturacion textfield[itemId=descuentoFijo]': {
 				change: this.CalcularDescuento
 			},
+			'facturacion checkbox[itemId=sinIva]': {
+				change: this.SacarIVA
+			},
 			'cobranza button[itemId=btnEdit]': {
 				click: this.EditaItemCob
 			},
@@ -103,6 +106,24 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 				select: this.SetReadOnlyCuenta
 			}
 		});
+	},
+	
+	SacarIVA: function(check){
+		var win = check.up('window');
+		var val = win.queryById('sinIva').getValue();
+		console.log(val);
+		var subTotal = win.queryById('subTotal');
+		var iva = win.queryById('iva');
+		var total = win.queryById('total');
+				
+		if(val == true){
+			iva.setValue(0);
+			total.setValue(subTotal.getValue());
+		}else{
+			iva.setValue(subTotal.getValue() * MetApp.resources.ux.ParametersSingleton.getIva());
+			total.setValue(subTotal.getValue() + iva.getValue());
+		}
+			
 	},
 	
 	CalcularDescuento: function(txt){
@@ -302,12 +323,12 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			reporte = Routing.generate('mbp_CCClientes_generateCobranza');
 		}
 		
-		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
+		var myMask = new Ext.LoadMask(grid, {msg:"Cargando..."});
 		myMask.show();
 		
 		var idCliente = win.queryById('id').getValue();
 		var ruta;
-		if(values.idF > 0){			
+		if(values.idF > 0){		
 			ruta = Routing.generate('mbp_CCClientes_verFc');
 			Ext.Ajax.request({
 				url: reporte,
@@ -318,7 +339,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 					idFactura: values.idF
 				},
 				
-				success: function(resp){					
+				success: function(resp){
 					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 					myMask.hide();	
 				},
@@ -554,9 +575,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var valuesDatosFc = formDatosFc.getValues();
 		var ccView = this.getCCClientes();
 
-		var myMask = new Ext.LoadMask(grid, {msg:"Cargando..."});
-		myMask.show();
-		
+				
 		if(store.data.items.length == 0){
 			Ext.Msg.show({
 			     title:'Atencion',
@@ -566,6 +585,8 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			});
 			return;
 		}
+		
+		
 		
 		if(formDatosFc.isValid() == false){
 			Ext.Msg.show({
@@ -585,6 +606,9 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var moneda = comboMoneda.getValue();
 		valuesDatosFc.idCliente = ccView.queryById('id').getValue();
 		var descuento = win.queryById('descuentoFijo').getValue();
+		
+		var myMask = new Ext.LoadMask(grid, {msg:"Cargando..."});
+		myMask.show();
 		
 		if(moneda == 1){
 			Ext.Msg.prompt('Tipo de cambio', 'Ingrese tipo de cambio', function(btn, value){
@@ -628,7 +652,6 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 					failure: function(resp){
 						var decodeResp = Ext.JSON.decode(resp.responseText);
 						myMask.hide();
-						console.log(decodeResp);
 						Ext.Msg.show({
 						    title:'Atencion',
 						    msg: 'Codigo: '+decodeResp.msg.code+'<br/>Error: '+decodeResp.msg+decodeResp.msg.msg,

@@ -75,47 +75,45 @@ class wsfev1 {
 	*/
 	private function _checkErrors($results, $method)
 	{		
-    if (self::LOG_XMLS) {
-		file_put_contents($this->path."/xml/request-".$method.".xml",$this->client->__getLastRequest());
-		file_put_contents($this->path."/xml/response-".$method.".xml",$this->client->__getLastResponse());
-    }
-    if (is_soap_fault($results)) {
-		throw new \Exception('WSFE class. FaultString: ' . $results->faultcode.' '.$results->faultstring);
-    }
-    
-    if ($method == 'FEDummy') {return;}
-	
-    
-    $XXX=$method.'Result';
-	if(property_exists($results->$XXX, 'Errors')){
-		if ($results->$XXX->Errors->Err->Code != 0) {
-			$this->error = "Method=$method errcode=".$results->$XXX->Errors->Err->Code." errmsg=".$results->$XXX->Errors->Err->Msg;
-		}	
-		array_push($this->Code, $results->$XXX->Errors->Err->Code);	
-	    array_push($this->Msg, utf8_decode($results->$XXX->Errors->Err->Msg));	
+	    if (self::LOG_XMLS) {
+			file_put_contents($this->path."/xml/request-".$method.".xml",$this->client->__getLastRequest());
+			file_put_contents($this->path."/xml/response-".$method.".xml",$this->client->__getLastResponse());
+	    }
+	    if (is_soap_fault($results)) {
+			throw new \Exception('WSFE class. FaultString: ' . $results->faultcode.' '.$results->faultstring);
+	    }
 	    
-	}	
-	//asigna error a variable
-	if ($method == 'FECAESolicitar' && property_exists($results->$XXX->FeDetResp->FECAEDetResponse, 'Observaciones')) {
+	    if ($method == 'FEDummy') {return;}
 		
-		if(is_array($results->$XXX->FeDetResp->FECAEDetResponse->Observaciones->Obs)){
-			foreach ($results->$XXX->FeDetResp->FECAEDetResponse->Observaciones->Obs as $obs) {
-				array_push($this->Code, $obs->Code);
-				array_push($this->Msg, $obs->Msg);
+	    
+	    $XXX=$method.'Result';
+		if(property_exists($results->$XXX, 'Errors')){
+			if ($results->$XXX->Errors->Err->Code != 0) {
+				$this->error = "Method=$method errcode=".$results->$XXX->Errors->Err->Code." errmsg=".$results->$XXX->Errors->Err->Msg;
 			}	
-		}else{
-			array_push($this->Code, $results->$XXX->FeDetResp->FECAEDetResponse->Observaciones->Obs->Code);
-			array_push($this->Msg, $results->$XXX->FeDetResp->FECAEDetResponse->Observaciones->Obs->Msg);
+			array_push($this->Code, $results->$XXX->Errors->Err->Code);	
+		    array_push($this->Msg, utf8_decode($results->$XXX->Errors->Err->Msg));	
+		    
+		}	
+		//asigna error a variable
+		if ($method == 'FECAESolicitar' && property_exists($results->$XXX->FeDetResp->FECAEDetResponse, 'Observaciones')) {
+			
+			if(is_array($results->$XXX->FeDetResp->FECAEDetResponse->Observaciones->Obs)){
+				foreach ($results->$XXX->FeDetResp->FECAEDetResponse->Observaciones->Obs as $obs) {
+					array_push($this->Code, $obs->Code);
+					array_push($this->Msg, $obs->Msg);
+				}	
+			}else{
+				array_push($this->Code, $results->$XXX->FeDetResp->FECAEDetResponse->Observaciones->Obs->Code);
+				array_push($this->Msg, $results->$XXX->FeDetResp->FECAEDetResponse->Observaciones->Obs->Msg);
+			}
 		}
-	}
-	
-	
-	
-	//fin asigna error a variable
-	if(!empty($this->Code)){
-		return true;
-	}
-	return false;
+		
+		//fin asigna error a variable
+		if(!empty($this->Code)){
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -262,6 +260,13 @@ class wsfev1 {
 							'Sign' => $this->TA->credentials->sign,
 							'Cuit' => self::$CUIT),
 				'MonId' => $monedaId));
+	}
+	
+	public function FEParamGetTiposIva(){
+		return $this->client->FEParamGetTiposIva(
+		array('Auth'=>array('Token' => $this->TA->credentials->token,
+							'Sign' => $this->TA->credentials->sign,
+							'Cuit' => self::$CUIT)));
 	}
 	
 } // class

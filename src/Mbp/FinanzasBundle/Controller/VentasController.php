@@ -81,6 +81,13 @@ class VentasController extends Controller
 			$descuento = $req->request->get('descuentoFijo');
 			$decodeData = json_decode($data);
 			$decodefcData = json_decode($fcData);
+			
+			//PARAMETROS FINANCIEROS
+			$repoFinanzas = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
+			$parametrosFinanzas = $repoFinanzas->find(1);
+			
+						
+			if(empty($parametrosFinanzas)) throw new \Exception("No estan definidos los parámetros financieros", 1);
 		
 		
 			//CREO OBJETO FACTURA
@@ -105,8 +112,7 @@ class VentasController extends Controller
 			
 			
 			$factura->setPtoVta($faele->ptoVta);
-			$factura->setFecha($fechaFc);
-			$factura->setConcepto($auxFinanzas->TipoDeComprobante($decodefcData->tipo));
+			$factura->setFecha($fechaFc);			
 			$factura->setVencimiento($vencimiento->add(new \DateInterval('P'.$cliente->getVencimientoFc().'D'))); //ES LA FECHA DE FC + LA CONDICION DE VENTA DEL CLIENTE
 			$factura->setClienteId($cliente);
 			
@@ -114,9 +120,11 @@ class VentasController extends Controller
 			$repoTipo = $em->getRepository('MbpFinanzasBundle:TipoComprobante');
 			$tipo = $repoTipo->find($decodefcData->tipo);		
 			$factura->setTipoId($tipo);
+			$factura->setConcepto($tipo->getDescripcion());
 			
 			$netoGrabado = 0;
 			$ivaLiquidado = 0;
+			$netoNoGrabado = 0;
 			foreach($decodeData as $items){
 				$detalleFc = new FacturaDetalle();
 				$detalleFc->setDescripcion($items->descripcion);
@@ -148,7 +156,15 @@ class VentasController extends Controller
 			
 			$factura->setDtoTotal($descuentoTotal);
 			
-			$ivaLiquidado = $netoGrabado * 0.21;			
+			//SIN IVA PARA EJ NOTA DE DEBITO DE CHEQUES RECHAZADOS
+			if($decodefcData->sinIva == "on"){
+				$ivaLiquidado = 0;
+				$netoNoGrabado = $netoGrabado;
+				$netoGrabado = 0;
+			}else{
+				$ivaLiquidado = $netoGrabado * $parametrosFinanzas->getIva();	
+			}
+						
 			$ultimoComp = $faele->ultimoNroComp($decodefcData->tipo);
 
 			//CONSULTA PERCEPCION DE IIBB
@@ -157,13 +173,6 @@ class VentasController extends Controller
 			$alicuotaPercepcion = $iibbService->getAlicuotaPercepcion();			
 			$percepcionIIBB=0;
 			
-					
-			
-			$repoFinanzas = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
-			$parametrosFinanzas = $repoFinanzas->find(1);
-			
-						
-			if(empty($parametrosFinanzas)) throw new \Exception("No estan definidos los parámetros financieros", 1);
 			
 			
 			if($cliente->getDepartamento() == NULL || $cliente->getDepartamento()->getProvinciaId() == NULL){
@@ -183,8 +192,7 @@ class VentasController extends Controller
 			//REDONDEO IMPORTES A 2 DECIMALES
 			$netoGrabado = number_format($netoGrabado, 2, ".", "");
 			$ivaLiquidado = number_format($ivaLiquidado, 2, ".", "");
-			
-			
+			$netoNoGrabado = number_format($netoNoGrabado, 2, ".", "");
 			
 
 			$regfe['CbteTipo']=$decodefcData->tipo;
@@ -195,11 +203,11 @@ class VentasController extends Controller
 			$regfe['CbteHasta']=$ultimoComp['nro'] + 1;	// nro de comprobante hasta (para cuando es lote)
 			$regfe['CbteFch']=\date('Ymd'); 	// fecha emision de factura
 			$regfe['ImpNeto']=$netoGrabado;			// neto gravado
-			$regfe['ImpTotConc']=0;			// no gravado
+			$regfe['ImpTotConc']=$netoNoGrabado;			// no gravado
 			$regfe['ImpIVA']=$ivaLiquidado;			// IVA liquidado
 			$regfe['ImpTrib']=$percepcionIIBB;			// otros tributos
 			$regfe['ImpOpEx']=0;			// operacion exentas
-			$regfe['ImpTotal']=$netoGrabado + $ivaLiquidado + $percepcionIIBB;// total de la factura. ImpNeto + ImpTotConc + ImpIVA + ImpTrib + ImpOpEx
+			$regfe['ImpTotal']=$netoGrabado + $netoNoGrabado + $ivaLiquidado + $percepcionIIBB;// total de la factura. ImpNeto + ImpTotConc + ImpIVA + ImpTrib + ImpOpEx
 			$regfe['FchServDesde']=null;	// solo concepto 2 o 3
 			$regfe['FchServHasta']=null;	// solo concepto 2 o 3
 			$regfe['FchVtoPago']=null;		// solo concepto 2 o 3
@@ -233,15 +241,17 @@ class VentasController extends Controller
 			
 			 
 			// Detalle de iva
-			$regfeiva['Id'] = 5; //5 codigo IVA 21...4 codigo IVA 10.5
-			$regfeiva['BaseImp'] = $netoGrabado; 
-			
-			//print_r($netoGrabado);
+			if($decodefcData->sinIva == "on"){
+				$regfeiva['Id'] = 3; //5 codigo IVA 21...4 codigo IVA 10.5	
+			}else{
+				$regfeiva['Id'] = 5; //5 codigo IVA 21...4 codigo IVA 10.5
+			}			
+			$regfeiva['BaseImp'] = $netoGrabado;
 			$regfeiva['Importe'] = $ivaLiquidado;
 			
-			
-			
+			exit;
 			$cae = $faele->generarFc($regfe, $regfeasoc, $regfetrib, $regfeiva);	//GENERO FC ELECTRONICA
+			
 			
 			if($cae['success'] == FALSE){
 				$response->setContent(json_encode($cae));

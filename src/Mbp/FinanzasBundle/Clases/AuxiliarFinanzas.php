@@ -8,6 +8,22 @@ use Mbp\FinanzasBundle\Entity\ParametrosFinanzas;
 class AuxiliarFinanzas extends Controller
 {
     /*
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * CLASE PARA ELIMINAR
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
 	 * CALCULA SALDO DE CUENTA CORRIENTE
 	 * @data | array de datos
 	 * @debe | string define el nombre que tiene la columna debe en el array

@@ -25,7 +25,7 @@ class DetalleMovArt
     /**
      * @var string
      *
-     * @ORM\Column(name="cantidad", type="decimal")
+     * @ORM\Column(name="cantidad", type="decimal", precision=9, scale=2)
 	 * @Assert\NotNull()
      */
     private $cantidad;

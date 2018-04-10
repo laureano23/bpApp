@@ -136,7 +136,7 @@ class wsaa {
 	file_put_contents($this->path."response-loginCms.xml", $this->client->__getLastResponse());
 
 	if (is_soap_fault($results)) 
-		throw new Exception("SOAP Fault: ".$results->faultcode.': '.$results->faultstring);
+		throw new \Exception("SOAP Fault: ".$results->faultcode.': '.$results->faultstring);
 
 	return $results->loginCmsReturn;
 	}

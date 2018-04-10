@@ -54,9 +54,12 @@ class ReportesController extends Controller
 		$rutaLogo = $reporteador->getRutaLogo($kernel);
 		
 		$param->put('rutaLogo', $rutaLogo);
-		$param->put('idFactura', $idFactura);
+		$param->put('facturaId', $idFactura);
 		
 		$conn = $reporteador->getJdbc();
+		
+		//print_r($idFactura);
+		//exit;
 		
 		$sql = "SELECT
 			     Facturas.`id` AS Facturas_id,

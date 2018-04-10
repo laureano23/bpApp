@@ -73,14 +73,12 @@ XML;
 		$respuesta=$objCurlFileUploader->UploadFile();
 		
 		
-		$this->response = json_decode(json_encode((array)simplexml_load_string($respuesta)),1);
-		$str = simplexml_load_string($respuesta, NULL, LIBXML_NOCDATA);
-		$parse =  str_replace("<![CDATA[","",$str->mensajeError);
-		$str->mensajeError = $parse;
-		$parse =  str_replace("]]/>","",$str->mensajeError);
-		$str->mensajeError = $parse;
-		$error = array_key_exists('codigoError', (array)$this->response);
 		
+		$this->response = json_decode(json_encode((array)simplexml_load_string($respuesta)),1);
+				
+		$this->response['mensajeError'] =  str_replace("<![CDATA[","", $this->response['mensajeError']);
+		$this->response['mensajeError'] =  str_replace("]]/>","", $this->response['mensajeError']);
+		$error = array_key_exists('codigoError', (array)$this->response);
 		
 		if($error){
 			throw new \Exception($this->response['mensajeError'], 1);			

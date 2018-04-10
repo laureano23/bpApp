@@ -8,7 +8,7 @@ Ext.define('MetApp.model.Compras.OrdenCompraModel',{
 		{ name: 'codigo', type: 'string' },
 		{ name: 'proveedor', type: 'string' },
 		{ name: 'descripcion', type: 'string'},
-		{ name: 'cant', type: 'int' },
+		{ name: 'cant', type: 'float' },
 		{ name: 'cumplido', type: 'int' },
 		{ name: 'unidad', type: 'string' },
 		{ name: 'precio', type: 'float' },
