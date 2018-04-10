@@ -82,7 +82,12 @@ class Faele extends wsfev1
 		
 		if($nro == false){ 
 			$msg = $this->Msg;
-			throw new \Exception($msg[0], 1);			
+			if(empty($msg)){
+				return 1;
+			}else{
+				throw new \Exception($msg[0], 1);	
+			}
+						
 		}
 		else{
 			return array(
