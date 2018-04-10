@@ -78,8 +78,8 @@ class Faele extends wsfev1
 	//OBTIENE EL ULTIMO NUMERO DE COMPROBANTE AUTOIRIZADO, POR ERROR DEVUELVE FALSE
 	public function ultimoNroComp($tipoCbte)
 	{
-		$nro = $this->FECompUltimoAutorizado($this->ptoVta, $tipoCbte);
-		
+		$nro = $this->FECompUltimoAutorizado($this->ptoVta, 1);
+				
 		if($nro == false){ 
 			$msg = $this->Msg;
 			if(empty($msg)){

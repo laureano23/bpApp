@@ -125,6 +125,20 @@ class VentasController extends Controller
 			$netoGrabado = 0;
 			$ivaLiquidado = 0;
 			$netoNoGrabado = 0;
+			$cbteTipo;
+			
+			if($tipo->getEsFactura() && $tipo->getSubTipoA()){
+				$cbteTipo=1;	
+			}
+			
+			if($tipo->getEsNotaDebito() && $tipo->getSubTipoA()){
+				$cbteTipo=2;	
+			}
+			
+			if($tipo->getEsNotaCredito() && $tipo->getSubTipoA()){
+				$cbteTipo=3;
+			}
+			
 			foreach($decodeData as $items){
 				$detalleFc = new FacturaDetalle();
 				$detalleFc->setDescripcion($items->descripcion);
@@ -165,14 +179,13 @@ class VentasController extends Controller
 				$ivaLiquidado = $netoGrabado * $parametrosFinanzas->getIva();	
 			}
 						
-			$ultimoComp = $faele->ultimoNroComp($decodefcData->tipo);
+			$ultimoComp = $faele->ultimoNroComp($cbteTipo);
 
 			//CONSULTA PERCEPCION DE IIBB
 			$iibbService = $this->get('ServiceIIBB');	//SERVICIO PARA ALICUOTAS DE IIBB
 			$iibbService->setOpts($cliente->getCuit());
 			$alicuotaPercepcion = $iibbService->getAlicuotaPercepcion();			
 			$percepcionIIBB=0;
-			
 			
 			
 			if($cliente->getDepartamento() == NULL || $cliente->getDepartamento()->getProvinciaId() == NULL){
@@ -194,8 +207,9 @@ class VentasController extends Controller
 			$ivaLiquidado = number_format($ivaLiquidado, 2, ".", "");
 			$netoNoGrabado = number_format($netoNoGrabado, 2, ".", "");
 			
-
-			$regfe['CbteTipo']=$decodefcData->tipo;
+			
+			
+			$regfe['CbteTipo']=$cbteTipo;		
 			$regfe['Concepto']=1;//ESTE DATO DEBE VENIR DEL CLIENTE 1=PRODUCTOS, 2=SERVICIOS, 3=PRODUCTOS Y SERVICIOS
 			$regfe['DocTipo']=$faele->docTipo; //80=CUIT
 			$regfe['DocNro']=$cliente->getCuit();
@@ -248,6 +262,7 @@ class VentasController extends Controller
 			}			
 			$regfeiva['BaseImp'] = $netoGrabado;
 			$regfeiva['Importe'] = $ivaLiquidado;
+			
 			
 			$cae = $faele->generarFc($regfe, $regfeasoc, $regfetrib, $regfeiva);	//GENERO FC ELECTRONICA
 			

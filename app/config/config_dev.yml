@@ -55,3 +55,4 @@ services:
    mbp.faele:
         class: Mbp\FinanzasBundle\Clases\Faele
         arguments: [%ptoVta_test%, %docTipo%, %cert_test%, %privateKey_test%, %url_test%, %wsfeUrl_test%, %cuit_test%]
+        #arguments: [%ptoVta_prod%, %docTipo%, %cert_prod%, %privateKey_prod%, %url_prod%, %wsfeUrl_prod%, %cuit_prod%]
