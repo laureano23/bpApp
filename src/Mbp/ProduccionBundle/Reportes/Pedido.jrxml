@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Pedidos" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="faabb94c-b32d-4f38-913c-e824ee7dd96c">
-	<property name="ireport.zoom" value="1.2100000000000006"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="1.7715610000000015"/>
+	<property name="ireport.x" value="832"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="codigoDesde" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["1"]]></defaultValueExpression>
@@ -48,20 +48,21 @@
      articulos.`precio` AS articulos_precio,
      articulos.`moneda` AS articulos_moneda,
      PedidoClientesDetalle.`descripcion` AS PedidoClientesDetalle_descripcion,
-     ParametrosFinanzas.dolarOficial
+     ParametrosFinanzas.`dolarOficial` AS dolarOficial,
+     articulos.`monedaPrecio` AS articulos_monedaPrecio
 FROM
      `PedidoClientesDetalle` PedidoClientesDetalle INNER JOIN `pedidoId_detalleId` pedidoId_detalleId ON PedidoClientesDetalle.`id` = pedidoId_detalleId.`detalleId`
      INNER JOIN `PedidoClientes` PedidoClientes ON pedidoId_detalleId.`pedidoId` = PedidoClientes.`id`
      INNER JOIN `cliente` cliente ON PedidoClientes.`cliente` = cliente.`idCliente`
      INNER JOIN `articulos` articulos ON PedidoClientesDetalle.`codigo` = articulos.`idArticulos`,
-     ParametrosFinanzas
+     `ParametrosFinanzas` ParametrosFinanzas
 WHERE
      PedidoClientes.`cliente` BETWEEN $P{clienteDesde} AND $P{clienteHasta}
  AND articulos.`codigo` BETWEEN $P{codigoDesde} AND $P{codigoHasta}
  AND PedidoClientes.`fechaPedido` BETWEEN $P{fechaDesde} AND $P{fechaHasta}
  AND PedidoClientesDetalle.`inactivo` = 0
 ORDER BY
-	cliente.`idCliente`]]>
+     cliente.`idCliente` ASC]]>
 	</queryString>
 	<field name="PedidoClientes_id" class="java.lang.Integer"/>
 	<field name="PedidoClientes_fechaPedido" class="java.sql.Date"/>
@@ -91,11 +92,14 @@ ORDER BY
 	<field name="dolarOficial" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="articulos_monedaPrecio" class="java.lang.Boolean"/>
 	<variable name="TOTAL_GRAL" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{articulos_moneda} == 1 ? $F{articulos_precio}*$F{dolarOficial}*($F{PedidoClientesDetalle_cantidad}-$F{PedidoClientesDetalle_entregado}):$F{articulos_precio}*($F{PedidoClientesDetalle_cantidad}-$F{PedidoClientesDetalle_entregado})]]></variableExpression>
+		<variableExpression><![CDATA[$F{articulos_monedaPrecio} == true
+? $F{articulos_precio}*$F{dolarOficial}*($F{PedidoClientesDetalle_cantidad}-$F{PedidoClientesDetalle_entregado}):$F{articulos_precio}*($F{PedidoClientesDetalle_cantidad}-$F{PedidoClientesDetalle_entregado})]]></variableExpression>
 	</variable>
 	<variable name="TOTAL_CLIENTE" class="java.lang.Double" resetType="Group" resetGroup="PedidosPorCliente" calculation="Sum">
-		<variableExpression><![CDATA[$F{articulos_moneda} == 1 ? $F{articulos_precio}*$F{dolarOficial}*($F{PedidoClientesDetalle_cantidad}-$F{PedidoClientesDetalle_entregado}):$F{articulos_precio}*($F{PedidoClientesDetalle_cantidad}-$F{PedidoClientesDetalle_entregado})]]></variableExpression>
+		<variableExpression><![CDATA[$F{articulos_monedaPrecio} == true
+? $F{articulos_precio}*$F{dolarOficial}*($F{PedidoClientesDetalle_cantidad}-$F{PedidoClientesDetalle_entregado}):$F{articulos_precio}*($F{PedidoClientesDetalle_cantidad}-$F{PedidoClientesDetalle_entregado})]]></variableExpression>
 	</variable>
 	<group name="PedidosPorCliente">
 		<groupExpression><![CDATA[$F{PedidoClientes_cliente}]]></groupExpression>
@@ -396,7 +400,7 @@ ORDER BY
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{articulos_moneda} == 1 ? $F{articulos_precio}*$F{dolarOficial}:$F{articulos_precio}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{articulos_monedaPrecio} == true ? $F{articulos_precio}*$F{dolarOficial}:$F{articulos_precio}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="707" y="0" width="95" height="20" uuid="d3f5b4b4-3600-4882-8328-9044a3d64484"/>
@@ -410,7 +414,8 @@ ORDER BY
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{articulos_moneda} == 1 ? $F{articulos_precio}*$F{dolarOficial}*($F{PedidoClientesDetalle_cantidad}-$F{PedidoClientesDetalle_entregado}):$F{articulos_precio}*($F{PedidoClientesDetalle_cantidad}-$F{PedidoClientesDetalle_entregado})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{articulos_monedaPrecio} == true
+? $F{articulos_precio}*$F{dolarOficial}*($F{PedidoClientesDetalle_cantidad}-$F{PedidoClientesDetalle_entregado}):$F{articulos_precio}*($F{PedidoClientesDetalle_cantidad}-$F{PedidoClientesDetalle_entregado})]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
