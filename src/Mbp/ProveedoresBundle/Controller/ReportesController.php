@@ -311,11 +311,21 @@ class ReportesController extends Controller
 			     FacturaProveedor.`iva27` AS FacturaProveedor_iva27,
 			     FacturaProveedor.`numFc` AS FacturaProveedor_numFc,
 			     FacturaProveedor.`sucursal` AS FacturaProveedor_sucursal,
-			     FacturaProveedor.`tipo` AS FacturaProveedor_tipo,
 			     FacturaProveedor.`fechaEmision` AS FacturaProveedor_fechaEmision,
-			     FacturaProveedor.`id` AS FacturaProveedor_id
+			     FacturaProveedor.`id` AS FacturaProveedor_id,
+			     TipoComprobante.`id` AS TipoComprobante_id,
+			     TipoComprobante.`esFactura` AS TipoComprobante_esFactura,
+			     TipoComprobante.`esNotaCredito` AS TipoComprobante_esNotaCredito,
+			     TipoComprobante.`esNotaDebito` AS TipoComprobante_esNotaDebito,
+			     TipoComprobante.`esBalance` AS TipoComprobante_esBalance,
+			     TipoComprobante.`descripcion` AS TipoComprobante_descripcion,
+			     TipoComprobante.`subTipoA` AS TipoComprobante_subTipoA,
+			     TipoComprobante.`subTipoB` AS TipoComprobante_subTipoB,
+			     TipoComprobante.`subTipoE` AS TipoComprobante_subTipoE,
+			     FacturaProveedor.`tipoId` AS FacturaProveedor_tipoId
 			FROM
 			     `Proveedor` Proveedor INNER JOIN `FacturaProveedor` FacturaProveedor ON Proveedor.`id` = FacturaProveedor.`proveedorId`
+			     INNER JOIN `TipoComprobante` TipoComprobante ON FacturaProveedor.`tipoId` = TipoComprobante.`id`
 			WHERE
 			     FacturaProveedor.`fechaEmision` BETWEEN '$desde' AND '$hasta'";		     
 			

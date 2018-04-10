@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LibroIVAVentas" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="c4b105ad-c9d2-4e6e-aab2-f046571798ae">
-	<property name="ireport.zoom" value="1.948717100000018"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="27"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LibroIVACompras" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="c4b105ad-c9d2-4e6e-aab2-f046571798ae">
+	<property name="ireport.zoom" value="1.3310000000000126"/>
+	<property name="ireport.x" value="368"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="fechaDesde" class="java.lang.String">
 		<defaultValueExpression><![CDATA[01/01/2001]]></defaultValueExpression>
 	</parameter>
@@ -33,11 +33,21 @@
      FacturaProveedor.`iva27` AS FacturaProveedor_iva27,
      FacturaProveedor.`numFc` AS FacturaProveedor_numFc,
      FacturaProveedor.`sucursal` AS FacturaProveedor_sucursal,
-     FacturaProveedor.`tipo` AS FacturaProveedor_tipo,
      FacturaProveedor.`fechaEmision` AS FacturaProveedor_fechaEmision,
-     FacturaProveedor.`id` AS FacturaProveedor_id
+     FacturaProveedor.`id` AS FacturaProveedor_id,
+     TipoComprobante.`id` AS TipoComprobante_id,
+     TipoComprobante.`esFactura` AS TipoComprobante_esFactura,
+     TipoComprobante.`esNotaCredito` AS TipoComprobante_esNotaCredito,
+     TipoComprobante.`esNotaDebito` AS TipoComprobante_esNotaDebito,
+     TipoComprobante.`esBalance` AS TipoComprobante_esBalance,
+     TipoComprobante.`descripcion` AS TipoComprobante_descripcion,
+     TipoComprobante.`subTipoA` AS TipoComprobante_subTipoA,
+     TipoComprobante.`subTipoB` AS TipoComprobante_subTipoB,
+     TipoComprobante.`subTipoE` AS TipoComprobante_subTipoE,
+     FacturaProveedor.`tipoId` AS FacturaProveedor_tipoId
 FROM
      `Proveedor` Proveedor INNER JOIN `FacturaProveedor` FacturaProveedor ON Proveedor.`id` = FacturaProveedor.`proveedorId`
+     INNER JOIN `TipoComprobante` TipoComprobante ON FacturaProveedor.`tipoId` = TipoComprobante.`id`
 WHERE
      FacturaProveedor.`fechaEmision` BETWEEN $P{fechaDesde} AND $P{fechaHasta}]]>
 	</queryString>
@@ -63,11 +73,20 @@ WHERE
 	<field name="FacturaProveedor_iva27" class="java.math.BigDecimal"/>
 	<field name="FacturaProveedor_numFc" class="java.lang.Integer"/>
 	<field name="FacturaProveedor_sucursal" class="java.lang.Integer"/>
-	<field name="FacturaProveedor_tipo" class="java.lang.String"/>
 	<field name="FacturaProveedor_fechaEmision" class="java.sql.Timestamp"/>
 	<field name="FacturaProveedor_id" class="java.lang.Integer"/>
+	<field name="TipoComprobante_id" class="java.lang.Integer"/>
+	<field name="TipoComprobante_esFactura" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_esNotaCredito" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_esNotaDebito" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_esBalance" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_descripcion" class="java.lang.String"/>
+	<field name="TipoComprobante_subTipoA" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_subTipoB" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_subTipoE" class="java.lang.Boolean"/>
+	<field name="FacturaProveedor_tipoId" class="java.lang.Integer"/>
 	<variable name="total" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{FacturaProveedor_tipo} == "NC" ? -1 * $F{FacturaProveedor_totalFc} : $F{FacturaProveedor_totalFc}]]></variableExpression>
+		<variableExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == 1 ? -1 * $F{FacturaProveedor_totalFc} : $F{FacturaProveedor_totalFc}]]></variableExpression>
 	</variable>
 	<variable name="sumaIVA" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{FacturaProveedor_iva21}+$F{FacturaProveedor_iva27}+$F{FacturaProveedor_iva10_5}]]></variableExpression>
@@ -345,7 +364,7 @@ WHERE
 				<reportElement x="56" y="0" width="31" height="20" uuid="ace9bdee-0f62-4627-a281-7f6b5911eeb1"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{FacturaProveedor_tipo}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{TipoComprobante_descripcion}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#00000000" isBlankWhenNull="true">
 				<reportElement x="130" y="0" width="53" height="20" uuid="01eb0648-1bd8-4519-b0bf-be9a310629d8"/>
@@ -471,7 +490,7 @@ WHERE
 				</textElement>
 				<text><![CDATA[Parciales]]></text>
 			</staticText>
-			<textField>
+			<textField pattern="#,##0.00">
 				<reportElement x="722" y="20" width="100" height="20" uuid="083d3250-c53a-4fa9-95ee-b7f22fd40aae"/>
 				<box rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -487,25 +506,34 @@ WHERE
 				</textElement>
 				<text><![CDATA[Total general:]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="459" y="0" width="47" height="20" uuid="2ad39750-5a66-4e96-a592-8e7a3a95791b"/>
-				<box leftPadding="2"/>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="391" y="0" width="63" height="20" uuid="2ad39750-5a66-4e96-a592-8e7a3a95791b"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="2.0"/>
+					<rightPen lineWidth="2.0"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumaNeto}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="506" y="0" width="137" height="20" uuid="24f1b63d-e31f-4a48-9c2a-49b36a70e4e2"/>
-				<box leftPadding="2"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="2.0"/>
+					<rightPen lineWidth="2.0"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumaIVA}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="643" y="0" width="107" height="20" uuid="58c197db-4c70-431e-8d1e-ba5af9e76e2a"/>
-				<box leftPadding="2"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="2.0"/>
+					<rightPen lineWidth="2.0"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>

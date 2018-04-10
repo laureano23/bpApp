@@ -349,28 +349,38 @@ class ReportesController extends Controller
 							
 			
 			$sql = "SELECT
-				     cliente.`idCliente` AS cliente_idCliente,
-				     cliente.`rsocial` AS cliente_rsocial,
-				     Facturas.`id` AS Facturas_id,
-				     Facturas.`fecha` AS Facturas_fecha,
-				     Facturas.`concepto` AS Facturas_concepto,
-				     Facturas.`clienteId` AS Facturas_clienteId,
-				     Facturas.`tipo` AS Facturas_tipo,
-				     Facturas.`ptoVta` AS Facturas_ptoVta,
-				     CASE WHEN Facturas.`moneda` = 1 THEN Facturas.`perIIBB` * Facturas.`tipoCambio` ELSE Facturas.`perIIBB` END AS Facturas_perIIBB,
-				     CASE WHEN Facturas.`moneda` = 1 THEN Facturas.`iva21` * Facturas.`tipoCambio` ELSE Facturas.`iva21` END  AS Facturas_iva21,
-				     Facturas.`fcNro` AS Facturas_fcNro,
-				     Facturas.`rSocial` AS Facturas_rSocial,
-				     Facturas.`cuit` AS Facturas_cuit,
-				     Facturas.`ivaCond` AS Facturas_ivaCond,
-				     CASE WHEN Facturas.`moneda` = 1 THEN Facturas.`total` * Facturas.`tipoCambio` ELSE Facturas.`total` END AS Facturas_total,
-				     Facturas.`porcentajeIIBB` AS Facturas_porcentajeIIBB,
-				     Facturas.`moneda` AS Facturas_moneda,
-				     Facturas.`tipoCambio` AS Facturas_tipoCambio
-				FROM
-				     `cliente` cliente INNER JOIN `Facturas` Facturas ON cliente.`idCliente` = Facturas.`clienteId`
+			     CASE WHEN Facturas.`moneda`=1 THEN Facturas.`perIIBB`*Facturas.`tipoCambio` ELSE Facturas.`perIIBB` END AS Facturas_perIIBB,
+			     CASE WHEN Facturas.`moneda`=1 THEN Facturas.`iva21`*Facturas.`tipoCambio` ELSE Facturas.`iva21` END AS Facturas_iva21,
+			     CASE WHEN Facturas.`moneda`=1 THEN Facturas.`total`*Facturas.`tipoCambio` ELSE Facturas.`total` END AS Facturas_total,
+			     cliente.`idCliente` AS cliente_idCliente,
+			     cliente.`rsocial` AS cliente_rsocial,
+			     Facturas.`id` AS Facturas_id,
+			     Facturas.`fecha` AS Facturas_fecha,
+			     Facturas.`concepto` AS Facturas_concepto,
+			     Facturas.`clienteId` AS Facturas_clienteId,
+			     Facturas.`ptoVta` AS Facturas_ptoVta,
+			     Facturas.`fcNro` AS Facturas_fcNro,
+			     Facturas.`rSocial` AS Facturas_rSocial,
+			     Facturas.`cuit` AS Facturas_cuit,
+			     Facturas.`ivaCond` AS Facturas_ivaCond,
+			     Facturas.`porcentajeIIBB` AS Facturas_porcentajeIIBB,
+			     Facturas.`moneda` AS Facturas_moneda,
+			     Facturas.`tipoCambio` AS Facturas_tipoCambio,
+			     TipoComprobante.`id` AS TipoComprobante_id,
+			     TipoComprobante.`esFactura` AS TipoComprobante_esFactura,
+			     TipoComprobante.`esNotaCredito` AS TipoComprobante_esNotaCredito,
+			     TipoComprobante.`esNotaDebito` AS TipoComprobante_esNotaDebito,
+			     TipoComprobante.`esBalance` AS TipoComprobante_esBalance,
+			     TipoComprobante.`descripcion` AS TipoComprobante_descripcion,
+			     TipoComprobante.`subTipoA` AS TipoComprobante_subTipoA,
+			     TipoComprobante.`subTipoB` AS TipoComprobante_subTipoB,
+			     TipoComprobante.`subTipoE` AS TipoComprobante_subTipoE
+			FROM
+			     `cliente` cliente INNER JOIN `Facturas` Facturas ON cliente.`idCliente` = Facturas.`clienteId`
+			     INNER JOIN `TipoComprobante` TipoComprobante ON Facturas.`tipoId` = TipoComprobante.`id`
 				WHERE
-				     Facturas.`fecha` BETWEEN '$desde' AND '$hasta'";
+				     Facturas.`fecha` BETWEEN '$desde' AND '$hasta'
+				     AND TipoComprobante.`esBalance` = 0";
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	
 		}catch(\Exception $e){
