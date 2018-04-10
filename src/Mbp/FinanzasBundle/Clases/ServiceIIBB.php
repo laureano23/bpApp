@@ -75,9 +75,12 @@ XML;
 		
 		
 		$this->response = json_decode(json_encode((array)simplexml_load_string($respuesta)),1);
-				
-		$this->response['mensajeError'] =  str_replace("<![CDATA[","", $this->response['mensajeError']);
-		$this->response['mensajeError'] =  str_replace("]]/>","", $this->response['mensajeError']);
+		
+		if(array_key_exists('mesajeError', $this->response)){
+			$this->response['mensajeError'] =  str_replace("<![CDATA[","", $this->response['mensajeError']);
+			$this->response['mensajeError'] =  str_replace("]]/>","", $this->response['mensajeError']);	
+		}				
+		
 		$error = array_key_exists('codigoError', (array)$this->response);
 		
 		if($error){
