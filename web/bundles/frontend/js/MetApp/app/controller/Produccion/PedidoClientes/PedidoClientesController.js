@@ -240,6 +240,7 @@ Ext.define('MetApp.controller.Produccion.PedidoClientes.PedidoClientesController
 					cliente: win.queryById('idCliente').getValue(),
 					oc: win.queryById('oc').getValue(),
 					autNum: win.queryById('autEntrega').getValue(),
+					esRepuesto: win.queryById('esRepuesto').getValue(),
 				},
 				
 				success: function(resp, opt){

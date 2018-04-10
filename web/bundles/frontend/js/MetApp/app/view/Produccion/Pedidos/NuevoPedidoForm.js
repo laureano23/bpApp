@@ -62,6 +62,13 @@ Ext.define('MetApp.view.Produccion.Pedidos.NuevoPedidoForm', {
 				labelWidth: 50,
 				name: 'autEntrega',
 				fieldLabel: 'Aut. N°:'
+			},
+			{
+				xtype: 'checkbox',
+				name: 'esRepuesto',
+				itemId: 'esRepuesto',
+				fieldLabel: 'Para Repuesto',
+				uncheckedValue: false
 			}
 		]
 		
