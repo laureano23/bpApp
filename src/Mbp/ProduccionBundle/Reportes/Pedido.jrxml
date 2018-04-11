@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Pedidos" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="faabb94c-b32d-4f38-913c-e824ee7dd96c">
-	<property name="ireport.zoom" value="1.7715610000000015"/>
-	<property name="ireport.x" value="832"/>
+	<property name="ireport.zoom" value="1.3310000000000008"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="codigoDesde" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["1"]]></defaultValueExpression>
@@ -59,7 +59,7 @@ FROM
 WHERE
      PedidoClientes.`cliente` BETWEEN $P{clienteDesde} AND $P{clienteHasta}
  AND articulos.`codigo` BETWEEN $P{codigoDesde} AND $P{codigoHasta}
- AND PedidoClientes.`fechaPedido` BETWEEN $P{fechaDesde} AND $P{fechaHasta}
+ AND PedidoClientesDetalle.`fechaProg` BETWEEN $P{fechaDesde} AND $P{fechaHasta}
  AND PedidoClientesDetalle.`inactivo` = 0
 ORDER BY
      cliente.`idCliente` ASC]]>

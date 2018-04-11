@@ -218,7 +218,7 @@ class PedidoClientesController extends Controller
 			WHERE
 			     PedidoClientes.`cliente` BETWEEN $clienteDesde AND $clienteHasta
 			 AND articulos.`codigo` BETWEEN '$codigoDesde' AND '$codigoHasta'
-			 AND PedidoClientes.`fechaPedido` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql'  
+			 AND PedidoClientesDetalle.`fechaProg` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql'  
 			 AND PedidoClientesDetalle.`inactivo` = 0
 			ORDER BY cliente.`idCliente`";
 			
