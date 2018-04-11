@@ -46,7 +46,10 @@ class PedidoClientesController extends Controller
 			$pedido->setFechaPedido(new \DateTime);
 			$pedido->setAutEntrega($autNum);
 			
-			if($esRepuesto == TRUE){
+			//print_r($esRepuesto);
+			//exit;
+			
+			if($esRepuesto == "true"){
 				$pedido->setEsRepuesto(TRUE);
 			}
 			
