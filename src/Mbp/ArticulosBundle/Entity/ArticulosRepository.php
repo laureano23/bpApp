@@ -8,12 +8,21 @@ class ArticulosRepository extends EntityRepository
 	public function listarArticulos()
 	{
 		$em = $this->getEntityManager();
-		$dql = 'SELECT a 
+		/*$dql = 'SELECT a 
 			FROM MbpArticulosBundle:Articulos a 
 			WHERE a.inactivo=0
 			ORDER BY a.id DESC';
 		$q = $em->createQuery($dql);
-		$res = $q->getArrayResult();
+		$res = $q->getArrayResult();*/
+		
+		$sql = "
+			SELECT * FROM articulos a WHERE a.inactivo=0 ORDER BY a.idArticulos DESC
+		";
+		
+		
+		$stmt = $em->getConnection()->prepare($sql);
+    	$stmt->execute();
+		$res = $stmt->fetchAll();
 		$total = count($res);
 				
 		if(!isset($res)){
