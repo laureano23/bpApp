@@ -16,7 +16,7 @@ class ArticulosRepository extends EntityRepository
 		$res = $q->getArrayResult();*/
 		
 		$sql = "
-			SELECT * FROM articulos a WHERE a.inactivo=0 ORDER BY a.idArticulos DESC
+			SELECT *, a.idArticulos as id FROM articulos a WHERE a.inactivo=0 ORDER BY a.idArticulos DESC
 		";
 		
 		
