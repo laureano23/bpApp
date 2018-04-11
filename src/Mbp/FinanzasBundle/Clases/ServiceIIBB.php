@@ -75,16 +75,15 @@ XML;
 		
 		
 		$this->response = json_decode(json_encode((array)simplexml_load_string($respuesta)),1);
-		
-		if(array_key_exists('mesajeError', $this->response)){
+		$error=false;
+		if(array_key_exists('mensajeError', $this->response)){
 			$this->response['mensajeError'] =  str_replace("<![CDATA[","", $this->response['mensajeError']);
-			$this->response['mensajeError'] =  str_replace("]]/>","", $this->response['mensajeError']);	
-		}				
-		
-		$error = array_key_exists('codigoError', (array)$this->response);
+			$this->response['mensajeError'] =  str_replace("]]/>","", $this->response['mensajeError']);
+			$error = TRUE;	
+		}
 		
 		if($error){
-			throw new \Exception($this->response['mensajeError'], 1);			
+			throw new \Exception($this->response['mensajeError'], $this->response['codigoError']);			
 		}
 
 		//UNA VEZ DEVUELTA LA RESPUESTA BORRAMOS EL ARCHIVO

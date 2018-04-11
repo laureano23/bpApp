@@ -188,8 +188,7 @@ class VentasController extends Controller
 			$alicuotaPercepcion = $iibbService->getAlicuotaPercepcion();			
 			$percepcionIIBB=0;
 			
-			
-			if($cliente->getDepartamento() == NULL || $cliente->getDepartamento()->getProvinciaId() == NULL){
+			if($cliente->getProvincia() == NULL){
 				throw new \Exception("El cliente debe tener cargados localidad y provincia para calcular IIBB", 1);				
 			}
 			
@@ -323,7 +322,7 @@ class VentasController extends Controller
 		}catch(\Exception $e){
 			//throw $e;
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
-			$response->setContent(json_encode(array("success"=>false, "msg"=>$e->getMessage())));
+			$response->setContent(json_encode(array("success"=>false, "msg"=>$e->getMessage(), 'code' => $e->getCode())));
 			return $response;
 		}
 	}

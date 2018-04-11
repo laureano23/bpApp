@@ -654,7 +654,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 						myMask.hide();
 						Ext.Msg.show({
 						    title:'Atencion',
-						    msg: 'Codigo: '+decodeResp.msg.code+'<br/>Error: '+decodeResp.msg+decodeResp.msg.msg,
+						    msg: 'Codigo: '+decodeResp.code+'<br/>Error: '+decodeResp.msg,
 						    buttons: Ext.Msg.OK,
 						    icon: Ext.Msg.INFO
 						});
@@ -698,7 +698,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 					myMask.hide();
 					Ext.Msg.show({
 					    title:'Atencion',
-					    msg: 'Codigo: '+decodeResp.msg.code+'<br/>Error: '+decodeResp.msg+decodeResp.msg.msg,
+					    msg: 'Codigo: '+decodeResp.code+'<br/>Error: '+decodeResp.msg,
 					    buttons: Ext.Msg.OK,
 					    icon: Ext.Msg.INFO
 					});
