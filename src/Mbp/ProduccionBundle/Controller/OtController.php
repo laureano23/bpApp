@@ -563,7 +563,7 @@ class OtController extends Controller
 			
 			
 			$resp = $repo->findByOt($ot);
-			
+			$resp[0]->setAnulada(TRUE);
 			$arrayResp = array();
 			
 			$otParam = $resp[0]->getOt();

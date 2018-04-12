@@ -37,7 +37,9 @@ class ArticulosRepository extends EntityRepository
 		$repoArt = $em->getRepository('MbpArticulosBundle:Articulos');
 		
 		$art = 	$repoArt->createQueryBuilder('a')
-						->select("a.id, a.descripcion, a.codigo, a.unidad, a.iva, f.id AS familia, sf.id AS subFamilia, a.precio, a.nombreImagen,
+						->select("a.id, a.descripcion, a.codigo, a.unidad, a.iva, f.id AS familia,
+						 sf.id AS subFamilia, a.precio, a.nombreImagen,
+						 a.rutaServer,
 						CASE WHEN a.moneda = false THEN 'p' ELSE 'd' END AS moneda,
 						CASE WHEN a.monedaPrecio = false THEN 'p' ELSE 'd' END AS monedaPrecio")
 						->leftJoin('a.familiaId', 'f')
