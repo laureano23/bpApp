@@ -38,6 +38,7 @@ class PersonalRepository extends EntityRepository
 			$qb = $repo->createQueryBuilder('p')
 					->select("	p.idP,
 								p.nombre,
+								p.apellido,
 								p.direccion,
 								p.telefonos,
 								p.cPostal,
