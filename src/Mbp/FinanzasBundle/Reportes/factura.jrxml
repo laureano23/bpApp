@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b7fbe4cc-9642-4a30-b319-1f1509ec7bd0">
 	<property name="ireport.zoom" value="1.2100000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="79"/>
+	<property name="ireport.y" value="62"/>
 	<parameter name="rutaLogo" class="java.lang.String"/>
 	<parameter name="facturaId" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -480,14 +480,6 @@ $F{TipoComprobante_subTipoE} == true ? "C" : ""]]></textFieldExpression>
 				</box>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{Facturas_moneda} == false ? "Pesos" : "Dólares"]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="186" y="128" width="272" height="20" uuid="22312581-b90c-41f8-8da9-f68217450944"/>
-				<textFieldExpression><![CDATA["33678767439"+String.format("%02d", $F{TipoComprobante_codigoAfip})
-+String.format("%04d", $F{Facturas_ptoVta})
-+$F{Facturas_cae}
-+$F{vtoCaeFormateado}
-+$F{Facturas_digitoVerificador}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
