@@ -68,7 +68,9 @@ class Faele extends wsfev1
 		 if($cae['success'] == false || $cae['cae'] <= 0) {
 			return $cae;
 		}
-		 
+		
+		$this->digitoVerificador($regfe['CbteTipo'], $cae['cae']['cae'], $cae['cae']['fecha_vencimiento']);
+		
 		 return array(
 		 	'cae' => $cae,
 		 	'success' => true
@@ -95,5 +97,44 @@ class Faele extends wsfev1
 				'nro' => $nro
 			);
 		}
+	}
+	
+	public function digitoVerificador($tipoCbte, $cae, $vtoCae){
+		
+		$cuit = str_split(parent::$CUIT);
+		$ptoVta = str_pad($this->ptoVta, 4, "0", STR_PAD_LEFT);
+		
+		
+		$palabra = $cuit.$tipoCbte.$cae.$vtoCae; 
+		
+		//Etapa 1: Comenzar desde la izquierda, sumar todos los caracteres ubicados en las posiciones impares y pares
+		$par=0;
+		$sumaPar=0;
+		$sumaImpar=0;
+		foreach ($cuit as $c) {
+			$resto = $par%2;
+			if($resto==0){
+				$sumaPar += $c;
+			}else{
+				$sumaImpar += $c;
+			}			
+			$par++;
+		}
+		
+		//Etapa 2: Multiplicar la suma obtenida en la etapa 1 por el número 3.
+		$sumaImpar = $sumaImpar*3;
+		//Etapa 4: Sumar los resultados obtenidos en las etapas 2 y 3.
+		$sumaTotal = $sumaImpar + $sumaPar;
+		
+		//Buscar el menor número que sumado al resultado obtenido en la etapa 4 dé un número múltiplo de 10. 
+		//Este será el valor del dígito verificador del módulo 10.
+		$numero=0;
+		for ($i=0; $i <= 9; $i++) {
+			 if((($sumaTotal + $i) % 10) == 0){
+			 	$numero += $i;
+			 }
+		}
+		
+		return $numero;
 	}	
 }

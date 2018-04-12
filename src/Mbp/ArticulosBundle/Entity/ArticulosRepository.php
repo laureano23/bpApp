@@ -124,7 +124,7 @@ class ArticulosRepository extends EntityRepository
 			if($data->id > 0){
 				$art = $repoArt->find($data->id);
 			}else{
-				$art = new Enfriadores();	
+				$art = new Articulos();	
 			}			
 			$art->setcodigo($data->codigo)
 			->setdescripcion($data->descripcion)

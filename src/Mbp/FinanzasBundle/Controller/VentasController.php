@@ -13,6 +13,18 @@ use Mbp\FinanzasBundle\Entity\TipoComprobante;
 
 class VentasController extends Controller
 {
+	
+	/**
+     * @Route("/CCClientes/digitoVerificador", name="mbp_CCClientes_digitoVerificador", options={"expose"=true})
+     */
+    public function digitoVerificador()
+    {
+    	$faele = $this->get('mbp.faele'); //FACTURA ELECTRONICA		
+    	
+    	$faele->digitoVerificador();
+		return new Response;
+    }
+	
 	/**
      * @Route("/CCClientes/listarTiposComprobantes", name="mbp_CCClientes_listarTiposComprobantes", options={"expose"=true})
      */
@@ -265,6 +277,7 @@ class VentasController extends Controller
 			
 			
 			$cae = $faele->generarFc($regfe, $regfeasoc, $regfetrib, $regfeiva);	//GENERO FC ELECTRONICA
+			
 			
 			
 			if($cae['success'] == FALSE){

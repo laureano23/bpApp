@@ -4,7 +4,7 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 	id: 'articulosForm',
 	itemId: 'articulosForm',
 	width: 800,
-	height: 370,
+	height: 390,
 	layout: 'fit',
 	autoShow: true,
 	title: 'Tabla de Articulos',
@@ -271,6 +271,27 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 											title: 'Precio',
 											items: autz.getAuthorizedElements(precio)
 										},
+										{
+											xtype: 'container',
+											layout: 'hbox',
+											items: [
+												{
+													xtype: 'textfield',
+													disabledCls: 'myDisabledClass',
+													fieldLabel: 'Ruta Server',
+													name: 'rutaServer',
+													itemId: 'rutaServer',
+													width: 700,
+													labelWidth: 100
+												},
+												{
+													xtype: 'button',
+													text: 'Copiar',
+													margin: '0 0 0 5',
+													itemId: 'copiarRuta'
+												}
+											]
+										},												
 										{
 											xtype: 'container',	
 											height: 55,

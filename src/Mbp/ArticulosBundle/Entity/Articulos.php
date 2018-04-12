@@ -171,6 +171,13 @@ class Articulos
      * @ORM\Column(name="inactivo", type="boolean", nullable=false)
      */
     private $inactivo=0;
+	
+	/**
+     * @var text
+     *
+     * @ORM\Column(name="rutaServer", type="text", nullable=true)
+     */
+    private $rutaServer;
 
 
     /**
