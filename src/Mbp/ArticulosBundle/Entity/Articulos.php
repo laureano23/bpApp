@@ -569,4 +569,28 @@ class Articulos
     {
         return $this->inactivo;
     }
+
+    /**
+     * Set rutaServer
+     *
+     * @param string $rutaServer
+     *
+     * @return Articulos
+     */
+    public function setRutaServer($rutaServer)
+    {
+        $this->rutaServer = $rutaServer;
+
+        return $this;
+    }
+
+    /**
+     * Get rutaServer
+     *
+     * @return string
+     */
+    public function getRutaServer()
+    {
+        return $this->rutaServer;
+    }
 }

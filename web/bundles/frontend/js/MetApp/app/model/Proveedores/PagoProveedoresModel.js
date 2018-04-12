@@ -2,6 +2,7 @@ Ext.define('MetApp.model.Proveedores.PagoProveedoresModel',{
 	extend: 'Ext.data.Model',
 	fields: [
 		{name: 'id', type: 'int'},
+		{name: 'fid', type: 'int'},
 		{name: 'idCheque', type: 'int'},
 		{name: 'formaPago', type: 'string'},
 		{name: 'numero', type: 'string'},

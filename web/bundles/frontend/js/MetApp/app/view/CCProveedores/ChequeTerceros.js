@@ -1,6 +1,6 @@
 Ext.define('MetApp.view.CCProveedores.ChequeTerceros' ,{
 	extend: 'Ext.window.Window',
-	height: 350,
+	height: 400,
 	width: 950,
 	modal: true,
 	autoShow: true,
@@ -19,12 +19,15 @@ Ext.define('MetApp.view.CCProveedores.ChequeTerceros' ,{
 					store: 'MetApp.store.Proveedores.GridChequeTercerosStore',
 					itemId: 'gridChequeTerceros',
 					anchorSize: '100%',	
+					scroll: true,
+					height: 300,
 					columns: {
 						defaults: {
 							sortable: false
 						},
 						items: [
-							{ text: 'Id', dataIndex: 'id', hidden: true, flex: 1 },
+							{ text: 'Id', dataIndex: 'id', hidden: true, flex: 1 },							
+							{ text: 'forma de pago Id', dataIndex: 'fid', hidden: false, flex: 1 },
 							{ text: 'Banco', dataIndex: 'banco', flex: 1 },
 							{ text: 'Emision', dataIndex: 'emision', flex: 1 },
 							{ text: 'Diferido', dataIndex: 'diferido', flex: 1 },

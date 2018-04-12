@@ -318,7 +318,8 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 						numero: data.numero,
 						banco: data.banco,
 						importe: data.importe,
-						diferido: data.diferido
+						diferido: data.diferido,
+						fid: data.fid
 					}				
 					i++;	
 				}			 

@@ -502,6 +502,7 @@ class VentasController extends Controller
 			$factura->setDomicilio("BALANCE");
 			$factura->setCuit(0);
 			$factura->setIvaCond("BALANCE");
+			$factura->setDigitoVerificador(0);
 			
 			$cliente = $repoCliente->find($idCliente);
 			$factura->setClienteId($cliente);

@@ -231,11 +231,12 @@ class CuentaCorrienteController extends Controller
     	$repo = $em->getRepository('MbpFinanzasBundle:Cobranzas');
 		
 		$qb = $repo->createQueryBuilder('c')
-			->select('c.emision, cl.rsocial AS librador, cd.id AS id, cd.importe, cd.numero, cd.banco, cd.vencimiento AS diferido, f.id AS fid')
+			->select('c.emision, cl.rsocial AS librador, cd.id AS id, cd.importe, cd.numero, cd.banco,
+			 	cd.vencimiento AS diferido, f.id AS fid')
 			->join('c.cobranzaDetalleId', 'cd')
 			->join('cd.formaPagoId', 'f')
 			->join('c.clienteId', 'cl')
-			->where('f.chequeTerceros = :chequeTerceros')	//EL ID 3 CORRESPONDE A CHEQUE DE TERCEROS
+			->where('f.chequeTerceros = :chequeTerceros')	
 			->andWhere('cd.estado = :estado')
 			->setParameter('chequeTerceros', true)
 			->setParameter('estado', 0)	//ESTADO QUE INDICA CHEQUE EN CARTERA

@@ -10,5 +10,6 @@ Ext.define('MetApp.model.Proveedores.GridChequeTercerosModel',{
 		{name: 'librador', type: 'string'},
 		{name: 'importe', type: 'float'},
 		{name: 'marca', type: 'boolean'},
+		{name: 'fid', type: 'int'},
 	]
 });

@@ -10,9 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="articulos")
  * @ORM\Entity
  * @ORM\Entity(repositoryClass="Mbp\ArticulosBundle\Entity\ArticulosRepository")
- * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap( {"enfriadores" = "Enfriadores", "articulos" = "Articulos"})
  */
 class Articulos
 {
@@ -173,6 +171,13 @@ class Articulos
      * @ORM\Column(name="inactivo", type="boolean", nullable=false)
      */
     private $inactivo=0;
+	
+	/**
+     * @var text
+     *
+     * @ORM\Column(name="rutaServer", type="text", nullable=true)
+     */
+    private $rutaServer;
 
 
     /**
@@ -539,5 +544,29 @@ class Articulos
     public function getNombreImagen()
     {
         return $this->nombreImagen;
+    }
+
+    /**
+     * Set inactivo
+     *
+     * @param boolean $inactivo
+     *
+     * @return Articulos
+     */
+    public function setInactivo($inactivo)
+    {
+        $this->inactivo = $inactivo;
+
+        return $this;
+    }
+
+    /**
+     * Get inactivo
+     *
+     * @return boolean
+     */
+    public function getInactivo()
+    {
+        return $this->inactivo;
     }
 }

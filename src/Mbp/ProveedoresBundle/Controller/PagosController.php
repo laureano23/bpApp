@@ -110,17 +110,17 @@ class PagosController extends Controller
 			$totalImporte = 0;
 			foreach ($decData as $rec) {
 				if($rec->retencionIIBB == true) continue;
-				$tipoPago = $repoTipoPago->findByDescripcion($rec->formaPago);
+				$tipoPago = $repoTipoPago->find($rec->fid); //buscamos por el ID de la forma de pago
 				$pago = new Pago(); //NUEVO DETALLE DE PAGO
 				$pago->setEmision(new \DateTime());
 				$pago->setNumero($rec->numero);
 				$pago->setImporte($rec->importe);
 				empty($rec->diferido) ? $pago->setDiferido(new \DateTime) : $pago->setDiferido(\DateTime::createFromFormat('d/m/Y', $rec->diferido));
 				$pago->setBanco($rec->banco);
-				empty($tipoPago) ? "" : $pago->setIdFormaPagos($tipoPago[0]);
+				empty($tipoPago) ? "" : $pago->setIdFormaPagos($tipoPago);
 				
 				
-				if($pago->getIdFormaPago()->getConceptoBancoId() instanceof ConceptosBanco){
+				if($pago->getIdFormaPago()->getConceptoBancoId() != null){
 					$cuenta = $repoCuentas->find($rec->cuenta);
 					
 					if(empty ($cuenta)) throw new \Exception("Debe asignar una cuenta bancaria al concepto ".$pago->getIdFormaPago()->getDescripcion(), 1);

@@ -53,6 +53,7 @@ Ext.define('MetApp.view.CCProveedores.PagoProveedores' ,{
 								},
 								items: [
 									{ text: 'Id', dataIndex: 'id', hidden: true, flex: 1 },
+									{ text: 'forma de pago ID', dataIndex: 'fid', hidden: false, flex: 1 },
 									{ text: 'Id Cheque', dataIndex: 'idCheque', hidden: true, flex: 1 },
 									{ text: 'Forma de pago', dataIndex: 'formaPago', flex: 1 },
 									{ text: 'Numero', dataIndex: 'numero', flex: 1 },
