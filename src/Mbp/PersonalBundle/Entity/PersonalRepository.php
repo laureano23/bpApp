@@ -166,6 +166,7 @@ class PersonalRepository extends EntityRepository
 			}
 									
 			$empleado->setNombre($data->nombre);
+			$empleado->setApellido($data->apellido);
 			$empleado->setSector($sector);
 			$empleado->setLocalidad($localidad);
 			$empleado->setCategoria($categoria);

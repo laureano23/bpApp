@@ -97,6 +97,7 @@ class ReportesController extends Controller
 		     Bancos.`nombre` AS Bancos_nombre,
 		     Personal.`idP` AS Personal_idP,
 		     Personal.`nombre` AS Personal_nombre,
+		     Personal.`apellido` AS Personal_apellido,
 		     Personal.`localidad` AS Personal_localidad,
 		     Personal.`categoria` AS Personal_categoria,
 		     Personal.`documentoNum` AS Personal_documentoNum,

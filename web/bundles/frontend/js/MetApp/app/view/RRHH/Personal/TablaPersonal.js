@@ -285,7 +285,18 @@ Ext.define('MetApp.view.RRHH.Personal.TablaPersonal', {
 									margin: '0 5 0 5'
 								},		
 							]	
-						},															
+						},	
+						{
+							xtype: 'textfield',
+							name: 'apellido',
+							itemId: 'apellido',
+							fieldLabel: 'Apellido',
+							allowBlank: false,
+							width: 400,
+							readOnly: true,
+							readOnlyCls: 'myDisabledClass',
+							margin: '5 0 0 0'
+						},														
 						{
 							xtype: 'fieldset',
 							defaults: {

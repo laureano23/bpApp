@@ -31,6 +31,13 @@ class Personal
     private $nombre;
 	
 	/**
+     * @var string
+     *
+     * @ORM\Column(name="apellido", type="string", length=50, nullable=true)
+     */
+    private $apellido;
+	
+	/**
 	 * @var \Mbp\ProduccionBundle\Entity\Sectores
 	 * @ORM\ManyToOne(targetEntity="Mbp\ProduccionBundle\Entity\Sectores", inversedBy="personal")
 	 * @ORM\JoinColumn(name="sector", referencedColumnName="id")
@@ -1070,5 +1077,29 @@ class Personal
     public function getLiquidaCalorias()
     {
         return $this->liquidaCalorias;
+    }
+
+    /**
+     * Set liquidaPremio
+     *
+     * @param boolean $liquidaPremio
+     *
+     * @return Personal
+     */
+    public function setLiquidaPremio($liquidaPremio)
+    {
+        $this->liquidaPremio = $liquidaPremio;
+
+        return $this;
+    }
+
+    /**
+     * Get liquidaPremio
+     *
+     * @return boolean
+     */
+    public function getLiquidaPremio()
+    {
+        return $this->liquidaPremio;
     }
 }
