@@ -167,6 +167,9 @@ class RemitosController extends Controller
 			     RemitosClientes.`remitoNum` AS RemitosClientes_remitoNum,
 			     RemitosClientes.`clienteId` AS RemitosClientes_clienteId,
 			     RemitosClientes.`proveedorId` AS RemitosClientes_proveedorId,
+			     RemitosClientes.`domicilio` AS RemitosClientes_domicilio,
+			     RemitosClientes.`provincia` AS RemitosClientes_provincia,
+			     RemitosClientes.`localidad` AS RemitosClientes_localidad,
 			     RemitosClientesDetalles.`id` AS RemitosClientesDetalles_id,
 			     RemitosClientesDetalles.`descripcion` AS RemitosClientesDetalles_descripcion,
 			     RemitosClientesDetalles.`cantidad` AS RemitosClientesDetalles_cantidad,
@@ -204,9 +207,9 @@ class RemitosController extends Controller
 			     PedidoClientes.`autEntrega` AS PedidoClientes_autEntrega,
 			     pedidoId_detalleId.`pedidoId` AS pedidoId_detalleId_pedidoId,
 			     pedidoId_detalleId.`detalleId` AS pedidoId_detalleId_detalleId,
-			     PedidoClientes.`inactivo` AS PedidoClientes_inactivo,			     
-				 articulos.`idArticulos` AS articulos_idArticulos,
-				 articulos.`codigo` AS articulos_codigo
+			     PedidoClientes.`inactivo` AS PedidoClientes_inactivo,
+			     articulos.`idArticulos` AS articulos_idArticulos,
+			     articulos.`codigo` AS articulos_codigo
 			FROM
 			     `RemitosClientesDetalles` RemitosClientesDetalles INNER JOIN `RemitoClientes_detalle` RemitoClientes_detalle ON RemitosClientesDetalles.`id` = RemitoClientes_detalle.`remitosclientesdetalles_id`
 			     INNER JOIN `RemitosClientes` RemitosClientes ON RemitoClientes_detalle.`remitosclientes_id` = RemitosClientes.`id`
@@ -214,8 +217,8 @@ class RemitosController extends Controller
 			     LEFT OUTER JOIN `Proveedor` Proveedor ON RemitosClientes.`proveedorId` = Proveedor.`id`
 			     LEFT OUTER JOIN `PedidoClientesDetalle` PedidoClientesDetalle ON RemitosClientesDetalles.`pedidoDetalleId` = PedidoClientesDetalle.`id`
 			     LEFT OUTER JOIN `articulos` articulos ON RemitosClientesDetalles.`articuloId` = articulos.`idArticulos`
-			     LEFT JOIN `pedidoId_detalleId` pedidoId_detalleId ON PedidoClientesDetalle.`id` = pedidoId_detalleId.`detalleId`
-			     LEFT JOIN `PedidoClientes` PedidoClientes ON pedidoId_detalleId.`pedidoId` = PedidoClientes.`id`
+			     LEFT OUTER JOIN  pedidoId_detalleId ON PedidoClientesDetalle.`id` = pedidoId_detalleId.`detalleId`
+			     LEFT OUTER JOIN  PedidoClientes ON pedidoId_detalleId.`pedidoId` = PedidoClientes.`id`
 			WHERE
 			     RemitosClientes.`id` = $idRemito";
 			
