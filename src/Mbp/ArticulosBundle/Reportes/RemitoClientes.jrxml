@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RemitoClientes" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b2a08521-8f54-4c4a-9e6b-a0cbf483e6eb">
-	<property name="ireport.zoom" value="1.1000000000000054"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="1.9487171000000103"/>
+	<property name="ireport.x" value="444"/>
+	<property name="ireport.y" value="155"/>
 	<parameter name="remitoId" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -13,6 +13,9 @@
      RemitosClientes.`remitoNum` AS RemitosClientes_remitoNum,
      RemitosClientes.`clienteId` AS RemitosClientes_clienteId,
      RemitosClientes.`proveedorId` AS RemitosClientes_proveedorId,
+     RemitosClientes.`domicilio` AS RemitosClientes_domicilio,
+     RemitosClientes.`provincia` AS RemitosClientes_provincia,
+     RemitosClientes.`localidad` AS RemitosClientes_localidad,
      RemitosClientesDetalles.`id` AS RemitosClientesDetalles_id,
      RemitosClientesDetalles.`descripcion` AS RemitosClientesDetalles_descripcion,
      RemitosClientesDetalles.`cantidad` AS RemitosClientesDetalles_cantidad,
@@ -70,6 +73,9 @@ WHERE
 	<field name="RemitosClientes_remitoNum" class="java.lang.String"/>
 	<field name="RemitosClientes_clienteId" class="java.lang.Integer"/>
 	<field name="RemitosClientes_proveedorId" class="java.lang.Integer"/>
+	<field name="RemitosClientes_domicilio" class="java.lang.String"/>
+	<field name="RemitosClientes_provincia" class="java.lang.String"/>
+	<field name="RemitosClientes_localidad" class="java.lang.String"/>
 	<field name="RemitosClientesDetalles_id" class="java.lang.Integer"/>
 	<field name="RemitosClientesDetalles_descripcion" class="java.lang.String"/>
 	<field name="RemitosClientesDetalles_cantidad" class="java.math.BigDecimal"/>
@@ -125,7 +131,7 @@ WHERE
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="70" y="190" width="288" height="20" uuid="1565a06d-4507-4f0c-9622-363ba44abe5f"/>
-				<textFieldExpression><![CDATA[$F{cliente_direccion} == null ? $F{Proveedor_direccion} : $F{cliente_direccion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{RemitosClientes_domicilio}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="340" y="218" width="100" height="20" uuid="31230d50-7007-4148-b4fb-117e061cbffd"/>
@@ -134,6 +140,10 @@ WHERE
 			<textField isBlankWhenNull="true">
 				<reportElement x="127" y="218" width="30" height="20" uuid="0d9e45f5-939b-40ab-8cc7-8eef08abd8b4"/>
 				<textFieldExpression><![CDATA[$F{cliente_iva} == "Responsable Inscripto" ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="424" y="190" width="131" height="20" uuid="d04b4a95-e958-4f8b-8da2-4631b2f97c25"/>
+				<textFieldExpression><![CDATA[$F{RemitosClientes_localidad}+" "+$F{RemitosClientes_provincia}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

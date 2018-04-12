@@ -62,6 +62,27 @@ class RemitosClientes
      *      inverseJoinConlumns={@ORM\JoinColumn(name="idDetalleRemito", referencedColumnName="id", unique=true)}
      */ 
     private $detalleRemito;
+	
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="domicilio", type="string", nullable=true)
+     */
+    private $domicilio;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="provincia", type="string", nullable=true)
+     */
+    private $provincia;
+	
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="localidad", type="string", nullable=true)
+     */
+    private $localidad;
 
     /**
      * Get id
@@ -210,5 +231,77 @@ class RemitosClientes
     public function getProveedorId()
     {
         return $this->proveedorId;
+    }
+
+    /**
+     * Set domicilio
+     *
+     * @param string $domicilio
+     *
+     * @return RemitosClientes
+     */
+    public function setDomicilio($domicilio)
+    {
+        $this->domicilio = $domicilio;
+
+        return $this;
+    }
+
+    /**
+     * Get domicilio
+     *
+     * @return string
+     */
+    public function getDomicilio()
+    {
+        return $this->domicilio;
+    }
+
+    /**
+     * Set provincia
+     *
+     * @param string $provincia
+     *
+     * @return RemitosClientes
+     */
+    public function setProvincia($provincia)
+    {
+        $this->provincia = $provincia;
+
+        return $this;
+    }
+
+    /**
+     * Get provincia
+     *
+     * @return string
+     */
+    public function getProvincia()
+    {
+        return $this->provincia;
+    }
+
+    /**
+     * Set localidad
+     *
+     * @param string $localidad
+     *
+     * @return RemitosClientes
+     */
+    public function setLocalidad($localidad)
+    {
+        $this->localidad = $localidad;
+
+        return $this;
+    }
+
+    /**
+     * Get localidad
+     *
+     * @return string
+     */
+    public function getLocalidad()
+    {
+        return $this->localidad;
     }
 }

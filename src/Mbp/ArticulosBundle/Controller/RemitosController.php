@@ -44,8 +44,19 @@ class RemitosController extends Controller
 			$remito = new RemitosClientes;
 			$remito->setFecha(new \DateTime);
 			$remito->setRemitoNum($param->getRemitoNum());
-			$req->get('origen') == "proveedor" ? $remito->setProveedorId($origen) : $remito->setClienteId($origen);
+			if($req->get('origen') == "proveedor"){
+				$remito->setProveedorId($origen); 
+			}else{
+				$remito->setClienteId($origen);
+			} 
 
+			$remito->setDomicilio($origen->getDireccion());
+			$prov = $origen->getProvincia();
+			$depto = $origen->getDepartamento();
+			if($prov == NULL || $depto == NULL) throw new \Exception("Se deben cargar provincia y localidad", 1);
+			
+			$remito->setProvincia($prov->getNombre());
+			$remito->setLocalidad($depto->getNombre());
 			
 
 			foreach ($items as $item) {
@@ -91,6 +102,8 @@ class RemitosController extends Controller
 
 					return $response;
 				}
+				
+				
 			
 				$em->persist($remito);
 				//SE EJECUTA UN LISTENER PARA DESCONTAR STOCK DE CADA ITEM				
