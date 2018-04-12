@@ -361,19 +361,17 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 		});
 	},
 
-	EliminarOc: function(btn){
+	EliminarOc: function(grid, colIndex, rowIndex){
 		Ext.Msg.show({
 		     title:'Atención',
 		     msg: 'Desea eliminar la orden de compra?',
 		     buttons: Ext.Msg.YESNOCANCEL,
 		     icon: Ext.Msg.QUESTION,
 		     fn:function(opt){
-				if(opt == 'yes'){					
-					var win = btn.up('window');
-					var myMask = new Ext.LoadMask(win, {msg:"Aguarde..."});
-					var grid = win.down('grid');
+				if(opt == 'yes'){				
+					var myMask = new Ext.LoadMask(grid, {msg:"Aguarde..."});
 					var store = grid.getStore();
-					var selection = grid.getSelectionModel().getSelection()[0];
+					var selection = store.getAt(rowIndex);
 					console.log(selection);
 					Ext.Ajax.request({
 						url: Routing.generate('mbp_compras_eliminarOrden'),

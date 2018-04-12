@@ -138,6 +138,7 @@ class ComprasController extends Controller
 				->select("oc.id idOc, p.rsocial proveedor, DATE_FORMAT(oc.fechaEmision, '%d/%m/%Y') fecha")
 				->join('oc.proveedorId', 'p')
 				->orderBy('fecha', 'DESC')
+				->where('oc.anulada = 0')
 				->getQuery()
 				->getResult();
 
@@ -165,8 +166,9 @@ class ComprasController extends Controller
 		try{
 			$ocId = $req->request->get('idOc');
 			$orden = $repo->find($ocId);
-
-			$em->remove($orden);
+			
+			$orden->setAnulada(TRUE);
+			$em->persist($orden);
 			$em->flush();			
 
 			return $response->setContent(

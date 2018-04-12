@@ -39,14 +39,14 @@ class OrdenCompraDetalle
     /**
      * @var string
      *
-     * @ORM\Column(name="precio", type="decimal")
+     * @ORM\Column(name="precio", type="decimal", precision=9, scale=2)
      */
     private $precio;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="cant", type="decimal")
+     * @ORM\Column(name="cant", type="decimal", precision=9, scale=2)
      */
     private $cant;
 
@@ -60,7 +60,7 @@ class OrdenCompraDetalle
     /**
      * @var string
      *
-     * @ORM\Column(name="iva", type="decimal", precision=4, scale=2,)
+     * @ORM\Column(name="iva", type="decimal", precision=4, scale=2)
      */
     private $iva;
 	

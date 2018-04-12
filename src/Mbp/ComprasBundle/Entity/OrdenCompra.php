@@ -95,6 +95,13 @@ class OrdenCompra
      * @ORM\Column(name="tc", type="decimal", precision=5, scale=2, nullable=true)
      */
     private $tc;
+	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="anulada", type="boolean")
+     */
+    private $anulada=0;
 
 
     /**
@@ -365,5 +372,29 @@ class OrdenCompra
     public function getTc()
     {
         return $this->tc;
+    }
+
+    /**
+     * Set anulada
+     *
+     * @param boolean $anulada
+     *
+     * @return OrdenCompra
+     */
+    public function setAnulada($anulada)
+    {
+        $this->anulada = $anulada;
+
+        return $this;
+    }
+
+    /**
+     * Get anulada
+     *
+     * @return boolean
+     */
+    public function getAnulada()
+    {
+        return $this->anulada;
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RG-014 Numeracion Correlativa" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="73abff81-0202-443e-973d-a9237ecf7de6">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RG-014 Numeracion Correlativa" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="11" bottomMargin="8" uuid="73abff81-0202-443e-973d-a9237ecf7de6">
 	<property name="ireport.zoom" value="1.4641000000000017"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -9,7 +9,7 @@
 FROM ParametrosFinanzas p
     JOIN Indices
         ON p.indiceCorrelativos+100 >= Indices.id
-LIMIT 33]]>
+LIMIT 34]]>
 	</queryString>
 	<field name="indiceCorrelativos" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -95,7 +95,7 @@ LIMIT 33]]>
 				<text><![CDATA[X]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="108" y="0" width="120" height="15" uuid="a9129ddf-c4ed-466c-9a12-e935b34718d9"/>
+				<reportElement x="108" y="0" width="160" height="15" uuid="a9129ddf-c4ed-466c-9a12-e935b34718d9"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -109,7 +109,7 @@ LIMIT 33]]>
 				<text><![CDATA[OT PANELES]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="108" y="15" width="30" height="20" uuid="e40ae909-d3be-4ebe-b324-8b533e30da1a"/>
+				<reportElement x="108" y="15" width="40" height="20" uuid="e40ae909-d3be-4ebe-b324-8b533e30da1a"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -123,7 +123,7 @@ LIMIT 33]]>
 				<text><![CDATA[1]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="138" y="15" width="30" height="20" uuid="eff981ef-6b85-4cd6-a118-d9374c0e7560"/>
+				<reportElement x="148" y="15" width="40" height="20" uuid="eff981ef-6b85-4cd6-a118-d9374c0e7560"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -137,7 +137,7 @@ LIMIT 33]]>
 				<text><![CDATA[2]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="168" y="15" width="30" height="20" uuid="83c61d90-481f-4245-9959-654f9eaf4c6f"/>
+				<reportElement x="188" y="15" width="40" height="20" uuid="83c61d90-481f-4245-9959-654f9eaf4c6f"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -151,7 +151,7 @@ LIMIT 33]]>
 				<text><![CDATA[3]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="198" y="15" width="30" height="20" uuid="a2591852-8afc-401b-bf0e-d70276c7c3c9"/>
+				<reportElement x="228" y="15" width="40" height="20" uuid="a2591852-8afc-401b-bf0e-d70276c7c3c9"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -165,7 +165,7 @@ LIMIT 33]]>
 				<text><![CDATA[4]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="228" y="0" width="76" height="35" uuid="26203d52-359d-448d-ba4e-45d6ed088019"/>
+				<reportElement x="268" y="0" width="55" height="35" uuid="26203d52-359d-448d-ba4e-45d6ed088019"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -179,7 +179,7 @@ LIMIT 33]]>
 				<text><![CDATA[OT RADIADOR]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="304" y="0" width="89" height="35" uuid="062bc7f9-e483-4997-83ef-7a62f2a54175"/>
+				<reportElement x="323" y="0" width="70" height="35" uuid="062bc7f9-e483-4997-83ef-7a62f2a54175"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -259,7 +259,7 @@ LIMIT 33]]>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="108" y="0" width="30" height="20" uuid="30250c99-2ef0-4a61-916e-b6b955a00ac0"/>
+				<reportElement x="108" y="0" width="40" height="20" uuid="30250c99-2ef0-4a61-916e-b6b955a00ac0"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -270,7 +270,7 @@ LIMIT 33]]>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="138" y="0" width="30" height="20" uuid="3bd186c5-d505-4414-9165-9640e1185a14"/>
+				<reportElement x="148" y="0" width="40" height="20" uuid="3bd186c5-d505-4414-9165-9640e1185a14"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -281,7 +281,7 @@ LIMIT 33]]>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="168" y="0" width="30" height="20" uuid="f9765c3c-9982-44b3-8452-34a4f9ee321e"/>
+				<reportElement x="188" y="0" width="40" height="20" uuid="f9765c3c-9982-44b3-8452-34a4f9ee321e"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -292,7 +292,7 @@ LIMIT 33]]>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="198" y="0" width="30" height="20" uuid="d6ea07e5-9268-411c-a3fe-c8cbb8f21003"/>
+				<reportElement x="228" y="0" width="40" height="20" uuid="d6ea07e5-9268-411c-a3fe-c8cbb8f21003"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -303,7 +303,7 @@ LIMIT 33]]>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="228" y="0" width="76" height="20" uuid="a7afd5a8-8c8e-465e-8e7c-355aff13ee7f"/>
+				<reportElement x="268" y="0" width="55" height="20" uuid="a7afd5a8-8c8e-465e-8e7c-355aff13ee7f"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -314,7 +314,7 @@ LIMIT 33]]>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="304" y="0" width="89" height="20" uuid="06788a3d-43fc-455b-82a0-cbbbc1517163"/>
+				<reportElement x="323" y="0" width="70" height="20" uuid="06788a3d-43fc-455b-82a0-cbbbc1517163"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -349,9 +349,9 @@ LIMIT 33]]>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="50">
+		<band height="25">
 			<staticText>
-				<reportElement x="391" y="30" width="164" height="20" uuid="6dc644a8-d324-42a7-820d-0f7e20d71c5a"/>
+				<reportElement x="393" y="5" width="164" height="20" uuid="6dc644a8-d324-42a7-820d-0f7e20d71c5a"/>
 				<box rightPadding="5"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<text><![CDATA[RG-014 Rev.04 09/03/2018]]></text>
