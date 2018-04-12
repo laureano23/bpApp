@@ -27,7 +27,7 @@ Ext.define('MetApp.view.CCProveedores.ChequeTerceros' ,{
 						},
 						items: [
 							{ text: 'Id', dataIndex: 'id', hidden: true, flex: 1 },							
-							{ text: 'forma de pago Id', dataIndex: 'fid', hidden: false, flex: 1 },
+							{ text: 'forma de pago Id', dataIndex: 'fid', hidden: true, flex: 1 },
 							{ text: 'Banco', dataIndex: 'banco', flex: 1 },
 							{ text: 'Emision', dataIndex: 'emision', flex: 1 },
 							{ text: 'Diferido', dataIndex: 'diferido', flex: 1 },
