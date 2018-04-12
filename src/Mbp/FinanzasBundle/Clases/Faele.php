@@ -69,11 +69,12 @@ class Faele extends wsfev1
 			return $cae;
 		}
 		
-		$this->digitoVerificador($regfe['CbteTipo'], $cae['cae']['cae'], $cae['cae']['fecha_vencimiento']);
+		$digito = $this->digitoVerificador($regfe['CbteTipo'], $cae['cae'], $cae['fecha_vencimiento']);
 		
 		 return array(
 		 	'cae' => $cae,
-		 	'success' => true
+		 	'success' => true,
+		 	'digitoVerificador' => $digito
 		 );
 	}
 	
@@ -103,17 +104,19 @@ class Faele extends wsfev1
 		
 		$cuit = str_split(parent::$CUIT);
 		$ptoVta = str_pad($this->ptoVta, 4, "0", STR_PAD_LEFT);
+		$tipoCbte = str_pad($tipoCbte, 2, "0", STR_PAD_LEFT);		
 		
+		$palabra = parent::$CUIT.$tipoCbte.$ptoVta.$cae.$vtoCae;
 		
-		$palabra = $cuit.$tipoCbte.$cae.$vtoCae; 
 		
 		//Etapa 1: Comenzar desde la izquierda, sumar todos los caracteres ubicados en las posiciones impares y pares
 		$par=0;
 		$sumaPar=0;
 		$sumaImpar=0;
-		foreach ($cuit as $c) {
+		$palabra = str_split($palabra);
+		foreach ($palabra as $c) {
 			$resto = $par%2;
-			if($resto==0){
+			if($resto!=0){
 				$sumaPar += $c;
 			}else{
 				$sumaImpar += $c;
@@ -134,7 +137,7 @@ class Faele extends wsfev1
 			 	$numero += $i;
 			 }
 		}
-		
+				
 		return $numero;
 	}	
 }

@@ -77,6 +77,13 @@ class TipoComprobante
      */
     private $subTipoE=0;
 	
+	/**
+     * @var smallint
+     *
+     * @ORM\Column(name="codigoAfip", type="smallint", nullable=true)
+     */
+    private $codigoAfip=0;
+	
 
 
     /**
@@ -279,5 +286,29 @@ class TipoComprobante
     public function getSubTipoE()
     {
         return $this->subTipoE;
+    }
+
+    /**
+     * Set codigoAfip
+     *
+     * @param smallint $codigoAfip
+     *
+     * @return TipoComprobante
+     */
+    public function setCodigoAfip($codigoAfip)
+    {
+        $this->codigoAfip = $codigoAfip;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoAfip
+     *
+     * @return smallint
+     */
+    public function getCodigoAfip()
+    {
+        return $this->codigoAfip;
     }
 }

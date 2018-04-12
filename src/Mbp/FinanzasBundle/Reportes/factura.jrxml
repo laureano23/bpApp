@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b7fbe4cc-9642-4a30-b319-1f1509ec7bd0">
-	<property name="ireport.zoom" value="1.3310000000000004"/>
+	<property name="ireport.zoom" value="1.2100000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="79"/>
 	<parameter name="rutaLogo" class="java.lang.String"/>
 	<parameter name="facturaId" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -17,6 +17,7 @@
      Facturas.`ptoVta` AS Facturas_ptoVta,
      Facturas.`cae` AS Facturas_cae,
      Facturas.`vtoCae` AS Facturas_vtoCae,
+     DATE_FORMAT(Facturas.`vtoCae`, "%Y%m%d") AS vtoCaeFormateado,
      Facturas.`dtoTotal` AS Facturas_dtoTotal,
      Facturas.`perIIBB` AS Facturas_perIIBB,
      Facturas.`iva21` AS Facturas_iva21,
@@ -34,6 +35,7 @@
      Facturas.`tipoId` AS Facturas_tipoId,
      Facturas.`ccId` AS Facturas_ccId,
      Facturas.`tipoCambioRefFac` AS Facturas_tipoCambioRefFac,
+     Facturas.`digitoVerificador` AS Facturas_digitoVerificador,
      FacturaDetalle.`id` AS FacturaDetalle_id,
      FacturaDetalle.`descripcion` AS FacturaDetalle_descripcion,
      FacturaDetalle.`cantidad` AS FacturaDetalle_cantidad,
@@ -78,6 +80,7 @@
      TipoComprobante.`subTipoA` AS TipoComprobante_subTipoA,
      TipoComprobante.`subTipoB` AS TipoComprobante_subTipoB,
      TipoComprobante.`subTipoE` AS TipoComprobante_subTipoE,
+     TipoComprobante.`codigoAfip` AS TipoComprobante_codigoAfip,
      articulos.`codigo` AS articulos_codigo,
      articulos.`descripcion` AS articulos_descripcion,
      articulos.`idArticulos` AS articulos_idArticulos,
@@ -105,6 +108,7 @@ WHERE Facturas.`id` = $P{facturaId}]]>
 	<field name="Facturas_ptoVta" class="java.lang.Integer"/>
 	<field name="Facturas_cae" class="java.lang.Long"/>
 	<field name="Facturas_vtoCae" class="java.sql.Date"/>
+	<field name="vtoCaeFormateado" class="java.lang.String"/>
 	<field name="Facturas_dtoTotal" class="java.math.BigDecimal"/>
 	<field name="Facturas_perIIBB" class="java.math.BigDecimal"/>
 	<field name="Facturas_iva21" class="java.math.BigDecimal"/>
@@ -122,6 +126,7 @@ WHERE Facturas.`id` = $P{facturaId}]]>
 	<field name="Facturas_tipoId" class="java.lang.Integer"/>
 	<field name="Facturas_ccId" class="java.lang.Integer"/>
 	<field name="Facturas_tipoCambioRefFac" class="java.math.BigDecimal"/>
+	<field name="Facturas_digitoVerificador" class="java.lang.Integer"/>
 	<field name="FacturaDetalle_id" class="java.lang.Integer"/>
 	<field name="FacturaDetalle_descripcion" class="java.lang.String"/>
 	<field name="FacturaDetalle_cantidad" class="java.math.BigDecimal"/>
@@ -166,6 +171,7 @@ WHERE Facturas.`id` = $P{facturaId}]]>
 	<field name="TipoComprobante_subTipoA" class="java.lang.Boolean"/>
 	<field name="TipoComprobante_subTipoB" class="java.lang.Boolean"/>
 	<field name="TipoComprobante_subTipoE" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_codigoAfip" class="java.lang.Integer"/>
 	<field name="articulos_codigo" class="java.lang.String"/>
 	<field name="articulos_descripcion" class="java.lang.String"/>
 	<field name="articulos_idArticulos" class="java.lang.Integer"/>
@@ -475,6 +481,14 @@ $F{TipoComprobante_subTipoE} == true ? "C" : ""]]></textFieldExpression>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{Facturas_moneda} == false ? "Pesos" : "Dólares"]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="186" y="128" width="272" height="20" uuid="22312581-b90c-41f8-8da9-f68217450944"/>
+				<textFieldExpression><![CDATA["33678767439"+String.format("%02d", $F{TipoComprobante_codigoAfip})
++String.format("%04d", $F{Facturas_ptoVta})
++$F{Facturas_cae}
++$F{vtoCaeFormateado}
++$F{Facturas_digitoVerificador}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -759,9 +773,9 @@ $F{FacturaDetalle_descripcion}+" OC N°: "+$F{PedidoClientes_oc}]]></textFieldEx
 		</band>
 	</columnFooter>
 	<pageFooter>
-		<band height="47">
+		<band height="75">
 			<rectangle>
-				<reportElement x="0" y="0" width="555" height="47" uuid="a8b71016-5574-453c-b5cd-49ebfce816d3"/>
+				<reportElement x="0" y="0" width="555" height="75" uuid="a8b71016-5574-453c-b5cd-49ebfce816d3"/>
 			</rectangle>
 			<staticText>
 				<reportElement x="1" y="0" width="51" height="20" uuid="6b179f87-0e7c-4b25-ad40-d89fa81923e8"/>
@@ -795,6 +809,20 @@ $F{FacturaDetalle_descripcion}+" OC N°: "+$F{PedidoClientes_oc}]]></textFieldEx
 				</textElement>
 				<text><![CDATA[ORIGINAL]]></text>
 			</staticText>
+			<componentElement>
+				<reportElement mode="Opaque" x="5" y="20" width="347" height="33" isPrintWhenDetailOverflows="true" uuid="4e44f3af-38f8-40bf-88ec-878ca12a12d7"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Int2of5" drawText="false" checksumRequired="false" barHeight="0" evaluationTime="Report">
+					<jr:codeExpression><![CDATA["33678767439"+String.format("%02d", $F{TipoComprobante_codigoAfip})
++String.format("%04d", $F{Facturas_ptoVta})
++$F{Facturas_cae}
++$F{vtoCaeFormateado}
++$F{Facturas_digitoVerificador}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<textField>
+				<reportElement x="5" y="53" width="448" height="20" uuid="95d2c63c-9a61-4084-a8bf-3c062968765c"/>
+				<textFieldExpression><![CDATA["33678767439"+String.format("%02d", $F{TipoComprobante_codigoAfip}) +String.format("%04d", $F{Facturas_ptoVta}) +$F{Facturas_cae} +$F{vtoCaeFormateado} +$F{Facturas_digitoVerificador}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 </jasperReport>

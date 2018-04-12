@@ -12,19 +12,7 @@ use Mbp\FinanzasBundle\Entity\CCClientes;
 use Mbp\FinanzasBundle\Entity\TipoComprobante;
 
 class VentasController extends Controller
-{
-	
-	/**
-     * @Route("/CCClientes/digitoVerificador", name="mbp_CCClientes_digitoVerificador", options={"expose"=true})
-     */
-    public function digitoVerificador()
-    {
-    	$faele = $this->get('mbp.faele'); //FACTURA ELECTRONICA		
-    	
-    	$faele->digitoVerificador();
-		return new Response;
-    }
-	
+{	
 	/**
      * @Route("/CCClientes/listarTiposComprobantes", name="mbp_CCClientes_listarTiposComprobantes", options={"expose"=true})
      */
@@ -286,7 +274,7 @@ class VentasController extends Controller
 				return $response;
 			}
 			
-			
+			$factura->setDigitoVerificador($cae['digitoVerificador']);
 			$factura->setCae($cae['cae']['cae']);
 			$factura->setVtoCae(new \DateTime($cae['cae']['fecha_vencimiento']));
 
@@ -333,7 +321,7 @@ class VentasController extends Controller
 			return $response;
 
 		}catch(\Exception $e){
-			//throw $e;
+			throw $e;
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			$response->setContent(json_encode(array("success"=>false, "msg"=>$e->getMessage(), 'code' => $e->getCode())));
 			return $response;

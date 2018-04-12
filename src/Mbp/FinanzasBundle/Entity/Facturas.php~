@@ -197,6 +197,12 @@ class Facturas
 	 * @ORM\JoinColumn(name="ccId", referencedColumnName="id", onDelete="SET NULL")
 	 */
 	private $ccId;
+	
+	/**
+     * @ORM\Column(name="digitoVerificador", type="smallint", nullable=false)
+     * @Assert\NotNull()
+     */
+    private $digitoVerificador;
 
     /**
      * Get id
@@ -802,5 +808,29 @@ class Facturas
     public function getCcId()
     {
         return $this->ccId;
+    }
+
+    /**
+     * Set tipoCambioRefFac
+     *
+     * @param string $tipoCambioRefFac
+     *
+     * @return Facturas
+     */
+    public function setTipoCambioRefFac($tipoCambioRefFac)
+    {
+        $this->tipoCambioRefFac = $tipoCambioRefFac;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoCambioRefFac
+     *
+     * @return string
+     */
+    public function getTipoCambioRefFac()
+    {
+        return $this->tipoCambioRefFac;
     }
 }
