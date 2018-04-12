@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LibroIVAVentas" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="c4b105ad-c9d2-4e6e-aab2-f046571798ae">
 	<property name="ireport.zoom" value="1.1000000000000052"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="253"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="fechaDesde" class="java.lang.String">
 		<defaultValueExpression><![CDATA[01/01/2001]]></defaultValueExpression>
@@ -71,13 +71,17 @@ AND TipoComprobante.`esBalance` = 0]]>
 	<field name="TipoComprobante_subTipoB" class="java.lang.Boolean"/>
 	<field name="TipoComprobante_subTipoE" class="java.lang.Boolean"/>
 	<variable name="total" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{Facturas_total}]]></variableExpression>
+		<variableExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == true ?
+$F{Facturas_total}*-1:
+$F{Facturas_total}]]></variableExpression>
 	</variable>
 	<variable name="sumaIVA" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{Facturas_iva21}]]></variableExpression>
 	</variable>
 	<variable name="sumaNeto" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{Facturas_total}-$F{Facturas_iva21}-$F{Facturas_perIIBB}]]></variableExpression>
+		<variableExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == true ?
+ ($F{Facturas_total}-$F{Facturas_iva21}-$F{Facturas_perIIBB})*-1:
+ $F{Facturas_total} -$F{Facturas_iva21}-$F{Facturas_perIIBB}]]></variableExpression>
 	</variable>
 	<variable name="sumaPer" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{Facturas_perIIBB}]]></variableExpression>
