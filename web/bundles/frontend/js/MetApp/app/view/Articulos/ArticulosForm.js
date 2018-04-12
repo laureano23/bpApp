@@ -279,6 +279,7 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 													xtype: 'textfield',
 													disabledCls: 'myDisabledClass',
 													fieldLabel: 'Ruta Server',
+													readOnly: true,
 													name: 'rutaServer',
 													itemId: 'rutaServer',
 													width: 700,

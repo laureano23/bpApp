@@ -41,8 +41,25 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 				},
 				'articulosform button[itemId=cargarImagen]': {
 					click: this.CargarImagen
-				}
+				},
+				'articulosform button[action=actBuscaArt]': {
+					click: this.SearchArt
+				},
+				'articulosform button[itemId=copiarRuta]': {
+					click: this.CopiarRuta
+				},
 		});		
+	},
+	
+	CopiarRuta: function(btn){
+		var win = btn.up('window');
+		var ruta = win.queryById('rutaServer');
+		
+		ruta.setReadOnly(false);
+		ruta.focus();
+		ruta.selectText();		
+		document.execCommand("Copy");
+		ruta.setReadOnly(true);
 	},
 	
 	/*
