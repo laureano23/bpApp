@@ -25,7 +25,7 @@ security:
         - { path: ^/web/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/articulos/extranet/*, roles: ROLE_EXTRANET }
-        - { path: ^/articulos/*, roles: ROLE_ADMINISTRACION }        
+        - { path: ^/articulos/*, roles: ROLE_CALIDAD }        
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/calidad, roles: ROLE_CALIDAD }
         - { path: ^/personal, roles: ROLE_CALIDAD }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OrdenDeCompra" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="b20991a6-8da8-4cf2-8ac6-123176886f03">
-	<property name="ireport.zoom" value="1.210000000000005"/>
+	<property name="ireport.zoom" value="1.1000000000000045"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="rutaLogo" class="java.lang.String"/>
@@ -372,82 +372,6 @@ $F{OrdenCompraDetalle_precio} * $F{OrdenCompraDetalle_cant}]]></textFieldExpress
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="153">
-			<staticText>
-				<reportElement x="401" y="133" width="86" height="20" uuid="e3195982-5e94-4cff-9e3f-027594c71839"/>
-				<textElement textAlignment="Right">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Total:]]></text>
-			</staticText>
-			<textField pattern="#,##0.00">
-				<reportElement x="487" y="73" width="88" height="20" uuid="d180237c-e18d-4eba-9fed-d026c0cd89ff"/>
-				<box leftPadding="3"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{subtotal}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="401" y="113" width="86" height="20" uuid="e2fd6ed7-2133-49d4-bfbd-dfd3e18e5aef"/>
-				<textElement textAlignment="Right">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[IVA (21%):]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="401" y="93" width="86" height="20" uuid="57e5e8c5-b292-4007-9873-620c5c3652b8"/>
-				<textElement textAlignment="Right">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[IVA (10,5%):]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="401" y="73" width="86" height="20" uuid="3295b0f7-0f22-4fca-85a0-4ef43cc3e942"/>
-				<textElement textAlignment="Right">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Sub-Total:]]></text>
-			</staticText>
-			<textField pattern="#,##0.00">
-				<reportElement x="487" y="93" width="88" height="20" uuid="e8e6aef0-8723-417e-bb66-59baaf6a2dd7"/>
-				<box leftPadding="3"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{iva10}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00">
-				<reportElement x="487" y="113" width="88" height="20" uuid="83ec5c80-25af-4976-b27a-a62c0eb15649"/>
-				<box leftPadding="3"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{iva21}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00">
-				<reportElement x="488" y="133" width="88" height="20" uuid="4a5ba6b4-eb33-4569-89b7-8b0f51135c00"/>
-				<box leftPadding="3"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{subtotal} + $V{iva10} + $V{iva21}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="73" width="381" height="80" uuid="31ffbb83-6689-4e89-9f2b-1be93962ee7e"/>
-				<textFieldExpression><![CDATA[$F{OrdenCompra_observaciones}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="0" y="53" width="122" height="20" uuid="c84bd3c5-d0d7-44b1-98a0-6d4948390388"/>
-				<box leftPadding="2"/>
-				<textElement>
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Observaciones:]]></text>
-			</staticText>
-		</band>
-	</columnFooter>
 	<pageFooter>
 		<band height="17">
 			<textField>
@@ -466,6 +390,79 @@ $F{OrdenCompraDetalle_precio} * $F{OrdenCompraDetalle_cant}]]></textFieldExpress
 		</band>
 	</pageFooter>
 	<summary>
-		<band/>
+		<band height="153">
+			<staticText>
+				<reportElement x="400" y="133" width="86" height="20" uuid="e3195982-5e94-4cff-9e3f-027594c71839"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="486" y="73" width="88" height="20" uuid="d180237c-e18d-4eba-9fed-d026c0cd89ff"/>
+				<box leftPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{subtotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="400" y="113" width="86" height="20" uuid="e2fd6ed7-2133-49d4-bfbd-dfd3e18e5aef"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[IVA (21%):]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="93" width="86" height="20" uuid="57e5e8c5-b292-4007-9873-620c5c3652b8"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[IVA (10,5%):]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="73" width="86" height="20" uuid="3295b0f7-0f22-4fca-85a0-4ef43cc3e942"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sub-Total:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="486" y="93" width="88" height="20" uuid="e8e6aef0-8723-417e-bb66-59baaf6a2dd7"/>
+				<box leftPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{iva10}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="486" y="113" width="88" height="20" uuid="83ec5c80-25af-4976-b27a-a62c0eb15649"/>
+				<box leftPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{iva21}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="487" y="133" width="88" height="20" uuid="4a5ba6b4-eb33-4569-89b7-8b0f51135c00"/>
+				<box leftPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{subtotal} + $V{iva10} + $V{iva21}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="73" width="381" height="80" uuid="31ffbb83-6689-4e89-9f2b-1be93962ee7e"/>
+				<textFieldExpression><![CDATA[$F{OrdenCompra_observaciones}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="53" width="122" height="20" uuid="c84bd3c5-d0d7-44b1-98a0-6d4948390388"/>
+				<box leftPadding="2"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Observaciones:]]></text>
+			</staticText>
+		</band>
 	</summary>
 </jasperReport>
