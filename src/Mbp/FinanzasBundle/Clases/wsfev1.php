@@ -87,6 +87,7 @@ class wsfev1 {
 		
 	    
 	    $XXX=$method.'Result';
+		
 		if(property_exists($results->$XXX, 'Errors')){
 			if ($results->$XXX->Errors->Err->Code != 0) {
 				$this->error = "Method=$method errcode=".$results->$XXX->Errors->Err->Code." errmsg=".$results->$XXX->Errors->Err->Msg;
@@ -108,7 +109,6 @@ class wsfev1 {
 				array_push($this->Msg, $results->$XXX->FeDetResp->FECAEDetResponse->Observaciones->Obs->Msg);
 			}
 		}
-		
 		//fin asigna error a variable
 		if(!empty($this->Code)){
 			return true;

@@ -269,9 +269,7 @@ class VentasController extends Controller
 			
 			
 			if($cae['success'] == FALSE){
-				$response->setContent(json_encode($cae));
-				$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR); 
-				return $response;
+				throw new \Exception($cae["msg"]["msg"][0], $cae["msg"]["code"][0]);
 			}
 			
 			$factura->setDigitoVerificador($cae['digitoVerificador']);
