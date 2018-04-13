@@ -298,10 +298,16 @@ class VentasController extends Controller
 			}
 			
 			//cc
-			if($tipo->getEsNotaCredito()){
-				$cc->setHaber($factura->getTotal());	
+			$totalCC=0;
+			if($decodefcData->moneda == 1){
+				$totalCC=$factura->getTotal()*$decodefcData->tipoCambio;
 			}else{
-				$cc->setDebe($factura->getTotal());
+				$totalCC=$factura->getTotal();
+			} 
+			if($tipo->getEsNotaCredito()){
+				$cc->setHaber($totalCC);	
+			}else{
+				$cc->setDebe($totalCC);
 			}
 			$cc->setFechaEmision($factura->getFecha());
 			$cc->setFechaVencimiento($factura->getVencimiento());
