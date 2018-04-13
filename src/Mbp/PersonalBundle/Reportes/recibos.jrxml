@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="recibos" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="807" leftMargin="15" rightMargin="20" topMargin="20" bottomMargin="20" uuid="faabb94c-b32d-4f38-913c-e824ee7dd96c">
 	<property name="ireport.zoom" value="1.610510000000055"/>
 	<property name="ireport.x" value="6"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="167"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -184,7 +184,7 @@ ORDER BY
 		<variableExpression><![CDATA[$V{sumRem} - $V{sumaDesc}]]></variableExpression>
 	</variable>
 	<group name="empleado">
-		<groupExpression><![CDATA[$F{Personal_nombre}]]></groupExpression>
+		<groupExpression><![CDATA[$F{Personal_apellido}]]></groupExpression>
 		<groupHeader>
 			<band height="216">
 				<rectangle radius="10">
