@@ -32,6 +32,26 @@ class RemitosClientesRepository extends \Doctrine\ORM\EntityRepository
 		return $res;
 	}
 	
+	public function listarRemitosPendientesTodos(){
+		$em = $this->getEntityManager();
+		
+		$repo = $em->getRepository('MbpArticulosBundle:RemitosClientes');
+		$qb = $repo->createQueryBuilder('r');
+		
+		$res =	$qb->select('r.id, d.id as remitoNum, d.descripcion, d.cantidad, d.unidad,
+			 	art.codigo, d.oc, p.id as pedido, d.facturado,
+			 	art.costo, art.precio')
+			->join('r.detalleRemito', 'd')
+			->join('d.articuloId', 'art')
+			->leftjoin('d.pedidoDetalleId', 'p')
+			->where('d.facturado = 0')
+			->andWhere($qb->expr()->isNotNull('r.clienteId'))
+			->getQuery()
+			->getResult();
+		
+		return $res;
+	}
+	
 	public function listarRemitos(){
 		$em = $this->getEntityManager();
 		

@@ -1045,6 +1045,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.view.Articulos.ListaDePrecios.ReporteListaMaestra": [],
   "MetApp.view.Articulos.ParametrosForm": [],
   "MetApp.view.Articulos.Stock.EntradaSalidaArticulos": [],
+  "MetApp.view.Articulos.Stock.ListadoIngresosView": [],
   "MetApp.view.Articulos.Stock.Remitos.ArticulosOrdenCompraView": [],
   "MetApp.view.Articulos.Stock.Remitos.RemitoClienteView": [],
   "MetApp.view.Articulos.Stock.Remitos.RemitosListadoView": [],
@@ -1136,10 +1137,12 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.view.RRHH.TablaLiquidacion": [],
   "MetApp.view.RRHH.TablaReliquidacion": [],
   "MetApp.view.RRHH.TablaSindicatos": [],
+  "MetApp.view.Reportes.RepoChequeTerceros": [],
   "MetApp.view.Reportes.RepoIVACompras": [],
   "MetApp.view.Reportes.RepoIVAVentas": [],
   "MetApp.view.Reportes.RepoSaldoDeudor": [],
   "MetApp.view.Reportes.ReporteArtVendidos": [],
+  "MetApp.view.Reportes.ReporteCbteNoPagodos": [],
   "MetApp.view.Reportes.ReporteHistoricoMov": [],
   "MetApp.view.Reportes.ReporteHistoricoMovBancarios": [],
   "MetApp.view.Reportes.ReporteIntResarcitorios": []
@@ -2470,6 +2473,9 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.view.Articulos.Stock.EntradaSalidaArticulos": [
     "widget.EntradaSalidaArticulos"
   ],
+  "MetApp.view.Articulos.Stock.ListadoIngresosView": [
+    "widget.ListadoIngresosView"
+  ],
   "MetApp.view.Articulos.Stock.Remitos.ArticulosOrdenCompraView": [
     "widget.ArticulosOrdenCompraView"
   ],
@@ -2743,6 +2749,9 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.view.RRHH.TablaSindicatos": [
     "widget.sindicatosTabla"
   ],
+  "MetApp.view.Reportes.RepoChequeTerceros": [
+    "widget.RepoChequeTerceros"
+  ],
   "MetApp.view.Reportes.RepoIVACompras": [
     "widget.RepoIVACompras"
   ],
@@ -2754,6 +2763,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "MetApp.view.Reportes.ReporteArtVendidos": [
     "widget.ReporteArtVendidos"
+  ],
+  "MetApp.view.Reportes.ReporteCbteNoPagodos": [
+    "widget.ReporteCbteNoPagodos"
   ],
   "MetApp.view.Reportes.ReporteHistoricoMov": [
     "widget.ReporteHistoricoMov"

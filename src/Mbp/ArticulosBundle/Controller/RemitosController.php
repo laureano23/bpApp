@@ -16,6 +16,41 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class RemitosController extends Controller
 {
+	
+	/**
+     * @Route("/anularRemitoPendienteFacturacion", name="mbp_articulos_anularRemitoPendienteFacturacion", options={"expose"=true})
+     */
+    public function anularRemitoPendienteFacturacion()
+    {
+    	$em = $this->getDoctrine()->getManager();
+        $req = $this->getRequest();
+    	$repo=$em->getRepository('MbpArticulosBundle:RemitosClientesDetalles');
+		$response=new Response;
+		
+		try{
+			$items = json_decode($req->request->get('remitos'));
+			
+			foreach ($items as $item) {
+				$remito=$repo->find($item->remitoNum);
+				$remito->setFacturado(1);
+				$em->persist($remito);
+			}
+			
+			$em->flush();
+			$response->setContent(
+				json_encode(array('success'=>true))
+			);
+			return $response;
+			
+		}catch(\Exception $e){
+			$response->setContent(
+				json_encode(array('success'=>false, 'msg'=>$e->getMessage()))
+			);
+			
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+    }
+	
     /**
      * @Route("/generarRemitoCliente", name="mbp_articulos_generarRemitoCliente", options={"expose"=true})
      */
@@ -281,8 +316,13 @@ class RemitosController extends Controller
 		try{
 			$repo = $em->getRepository('MbpArticulosBundle:RemitosClientes');
 			$idCliente = $request->request->get('idCliente');
-		
-			$res = $repo->listarRemitosPendientesFacturacion($idCliente);	
+			
+			if(empty($idCliente)){
+				$res=$repo->listarRemitosPendientesTodos();
+			}else{
+				$res = $repo->listarRemitosPendientesFacturacion($idCliente);	
+			}		
+				
 		}catch(\Exception $e){
 			throw $e;
 			$response->setContent(json_encode(array('success' => false, 'msg' => $e->getMessage())));

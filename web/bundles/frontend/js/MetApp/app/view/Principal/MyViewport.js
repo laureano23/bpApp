@@ -564,6 +564,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                     render : dragZone,
                 }, 
             },
+            {
+                text: 'Ver Remitos Pendientes de Facturación',
+                itemId: 'verRemitosPendientesFc',
+                listeners : {
+                    render : dragZone,
+                }, 
+            },
         ]
         
         var menuReportes = [

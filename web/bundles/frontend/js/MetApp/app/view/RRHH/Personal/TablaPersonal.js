@@ -295,7 +295,7 @@ Ext.define('MetApp.view.RRHH.Personal.TablaPersonal', {
 							width: 400,
 							readOnly: true,
 							readOnlyCls: 'myDisabledClass',
-							margin: '5 0 0 0'
+							margin: '5 0 0 0'  
 						},														
 						{
 							xtype: 'fieldset',

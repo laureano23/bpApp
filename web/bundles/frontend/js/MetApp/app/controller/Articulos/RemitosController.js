@@ -2,11 +2,12 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 	extend: 'Ext.app.Controller',	
 	views: [
 		'Articulos.Stock.Remitos.ArticulosOrdenCompraView',
-		'Articulos.Stock.Remitos.RemitoClienteView',		
+		'Articulos.Stock.Remitos.RemitoClienteView',
+		'Articulos.Stock.Remitos.RemitosPendientesView',		
 		'Clientes.SearchGridClientes',
 		'Articulos.WinArticuloSearch',
 		'Articulos.Stock.Remitos.RemitosListadoView',
-		'Produccion.Pedidos.PedidosPendientesView'
+		'Produccion.Pedidos.PedidosPendientesView'		
 		],
 	stores: [
 		'Articulos.RemitosPendientesStore'
@@ -48,7 +49,58 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 			'RemitosListadoView actioncolumn[itemId=verRemito]': {
 				click: this.VerRemito
 			},
+			'viewport menuitem[itemId=verRemitosPendientesFc]': {
+				click: this.VerRemitosPendientesFc
+			},
 		});
+	},
+	
+	VerRemitosPendientesFc: function(){
+		var view=Ext.widget('RemitosPendientesView');
+		var store=view.down('grid').getStore();
+		var button=view.down('button');
+		
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_articulos_remitosPendientesFacturacion'),
+			
+			params: {
+				idCliente: '', 
+			},
+			
+			success: function(resp){
+				var jsonResp = Ext.JSON.decode(resp.responseText);
+				store.loadRawData(jsonResp);
+			},
+			
+			failure: function(resp){
+				
+			}
+		});
+		
+		button.on('click', function(){
+			var grid=view.down('grid');
+			var selection = grid.getStore().findRecord('facturado', true, 0, true);			
+			var data={'items': []};
+			var recs=[];
+			store.each(function(rec){
+				if(rec.data.facturado == true){
+					data.items.push(rec.data);	
+					recs.push(rec);
+				}				
+			});
+			
+			Ext.Ajax.request({
+				url: Routing.generate('mbp_articulos_anularRemitoPendienteFacturacion'),
+				
+				params: {
+					remitos: Ext.JSON.encode(data.items)
+				},
+				
+				success: function(resp){
+					store.remove(recs);
+				}
+			})
+		})
 	},
 	
 	VerPedidos: function(btn){
