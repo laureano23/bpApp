@@ -113,7 +113,7 @@ WHERE
  AND Recibos.`periodo` = $P{periodo}
  AND Recibos.`compensatorio` = 0
 ORDER BY
-     Personal.`nombre` ASC,
+     Personal.`apellido` ASC,
      RecibosDetalle.`remunerativo` DESC,
      RecibosDetalle.`exento` DESC]]>
 	</queryString>

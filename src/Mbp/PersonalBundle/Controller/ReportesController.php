@@ -131,7 +131,7 @@ class ReportesController extends Controller
 		 AND Recibos.`periodo` = $periodo
 		 AND Recibos.`compensatorio` = 0
 		ORDER BY
-		     Personal.`nombre` ASC,
+		     Personal.`apellido` ASC,
 		     RecibosDetalle.`remunerativo` DESC,
 		     RecibosDetalle.`exento` DESC";
 		
@@ -205,7 +205,7 @@ class ReportesController extends Controller
 		 AND Recibos.`periodo` = $periodo
 		 AND Recibos.`compensatorio` = 1
 		ORDER BY
-		     Personal.`nombre` ASC,
+		     Personal.`apellido` ASC,
 		     RecibosDetalle.`remunerativo` DESC,
 		     RecibosDetalle.`exento` DESC";
 		     
