@@ -321,7 +321,7 @@ class VentasController extends Controller
 			return $response;
 
 		}catch(\Exception $e){
-			throw $e;
+			//throw $e;
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			$response->setContent(json_encode(array("success"=>false, "msg"=>$e->getMessage(), 'code' => $e->getCode())));
 			return $response;
