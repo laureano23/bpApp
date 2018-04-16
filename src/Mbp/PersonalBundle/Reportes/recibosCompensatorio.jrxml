@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="recibos" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="807" leftMargin="15" rightMargin="20" topMargin="20" bottomMargin="20" uuid="faabb94c-b32d-4f38-913c-e824ee7dd96c">
 	<property name="ireport.zoom" value="1.3310000000000288"/>
-	<property name="ireport.x" value="73"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
@@ -77,6 +77,7 @@
      Bancos.`nombre` AS Bancos_nombre,
      Personal.`idP` AS Personal_idP,
      Personal.`nombre` AS Personal_nombre,
+     Personal.`apellido` AS Personal_apellido,
      Personal.`localidad` AS Personal_localidad,
      Personal.`categoria` AS Personal_categoria,
      Personal.`documentoNum` AS Personal_documentoNum,
@@ -150,6 +151,7 @@ ORDER BY
 	<field name="Bancos_nombre" class="java.lang.String"/>
 	<field name="Personal_idP" class="java.lang.Integer"/>
 	<field name="Personal_nombre" class="java.lang.String"/>
+	<field name="Personal_apellido" class="java.lang.String"/>
 	<field name="Personal_localidad" class="java.lang.Integer"/>
 	<field name="Personal_categoria" class="java.lang.Integer"/>
 	<field name="Personal_documentoNum" class="java.lang.Integer"/>
