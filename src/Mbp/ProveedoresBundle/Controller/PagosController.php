@@ -130,9 +130,6 @@ class PagosController extends Controller
 				$ordenPago->addPagoDetalleId($pago);	
 				$totalImporte += $pago->getImporte();
 			}
-			$ordenPago->setImporteTotal($totalImporte);
-
-
 			
 			//FACTURAS A IMPUTAR
 			$factura;
@@ -164,8 +161,11 @@ class PagosController extends Controller
 				$pago->setIdFormaPago($tipoPago);
 				$pago->setEmision(new \DateTime);
 				$pago->setImporte($retencion);
-				$ordenPago->addPagoDetalleId($pago);
+				$ordenPago->addPagoDetalleId($pago);				
+				$totalImporte = $pago->getImporte();
 			}
+			
+			$ordenPago->setImporteTotal($totalImporte); //el importe de los valores + las retenciones
 			
 			if(count($ordenPago->getPagoDetalleId()) == 0) throw new \Exception("No se puede guardar una orden de pago vacía", 1);
 			
