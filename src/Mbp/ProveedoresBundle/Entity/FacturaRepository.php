@@ -99,30 +99,31 @@ class FacturaRepository extends \Doctrine\ORM\EntityRepository
 	public function listaFacturasImputadas($idProv)
 	{
 		$em = $this->getEntityManager();
-		$repo = $em->getRepository('MbpProveedoresBundle:Factura');
-		$repoTrans =  $em->getRepository('MbpProveedoresBundle:TransaccionOPFC');
 		
 		try{
-			
-			$qb2 = $repo->createQueryBuilder('fc');			
-			$query2 = $qb2->select("
+			$sql="
+				SELECT * FROM 
+					(SELECT 
 						fc.id,
-						SUM(t.aplicado) AS valorAplicado,
+						IFNULL(SUM(t.aplicado), 0) AS valorAplicado,
 						DATE_FORMAT(fc.fechaEmision, '%d-%m-%Y') AS fechaEmision,
 						fc.numFc AS numFc,
 						DATE_FORMAT(fc.vencimiento, '%d-%m-%Y') As vencimiento,
 						fc.totalFc AS haber
-						")
-					->leftJoin('MbpProveedoresBundle:TransaccionOPFC', 't', 'WITH', 't.facturaImputada = fc.id')
-					->leftJoin('fc.tipoId', 'tipo')
-					->where('fc.proveedorId = :idProv')
-					->andWhere('tipo.esNotaCredito != 1')
-					->groupBy('fc.id, t.facturaImputada')
-					->setParameter('idProv',$idProv)
-					->getQuery()
-					->getArrayResult();
+					FROM `FacturaProveedor` fc
+					LEFT JOIN TransaccionOPFC t ON fc.id = t.facturaId
+					LEFT JOIN TipoComprobante tipo ON fc.tipoId = tipo.id
+					WHERE fc.proveedorId = $idProv
+						AND tipo.esNotaCredito != 1
+					GROUP BY fc.id, t.facturaId) AS sub
+				WHERE sub.valorAplicado < sub.haber
+			";
 			
-			return $query2;
+			$stmt = $em->getConnection()->prepare($sql);
+	    	$stmt->execute();
+			$res = $stmt->fetchAll();	
+			
+			return $res;
 			
 		}catch(\Exception $e){
 			echo json_encode(array(

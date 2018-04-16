@@ -118,9 +118,8 @@ class PagosController extends Controller
 				empty($rec->diferido) ? $pago->setDiferido(new \DateTime) : $pago->setDiferido(\DateTime::createFromFormat('d/m/Y', $rec->diferido));
 				$pago->setBanco($rec->banco);
 				empty($tipoPago) ? "" : $pago->setIdFormaPagos($tipoPago);
-				
-				
-				if($pago->getIdFormaPago()->getConceptoBancoId() != null){
+
+				if($tipoPago->getConceptoBancoId() != null){
 					$cuenta = $repoCuentas->find($rec->cuenta);
 					
 					if(empty ($cuenta)) throw new \Exception("Debe asignar una cuenta bancaria al concepto ".$pago->getIdFormaPago()->getDescripcion(), 1);

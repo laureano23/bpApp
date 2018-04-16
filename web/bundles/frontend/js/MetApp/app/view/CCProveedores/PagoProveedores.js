@@ -87,7 +87,16 @@ Ext.define('MetApp.view.CCProveedores.PagoProveedores' ,{
 									allowBlank: false,
 									itemId: 'formaPago',
 									name: 'formaPago',
-									fieldLabel: 'Forma de pago',									
+									fieldLabel: 'Forma de pago',										
+									listeners: {
+										select: {
+											fn: function(el, rec, eOpts){
+												var win=el.up('window');
+												var idF=win.queryById('fid');
+												idF.setValue(rec[0].data.id);
+											}
+										}
+									}								
 								},						
 								{
 									xtype: 'combo',
@@ -101,6 +110,13 @@ Ext.define('MetApp.view.CCProveedores.PagoProveedores' ,{
 									forceSelection: true,
 									width: 400
 								},
+								{
+									xtype: 'textfield',
+									name: 'fid',
+									fieldLabel: 'id forma pago',
+									itemId: 'fid',
+									hidden: true
+								}
 							]
 						},
 						{
