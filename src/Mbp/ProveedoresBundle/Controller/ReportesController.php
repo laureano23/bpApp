@@ -362,6 +362,154 @@ class ReportesController extends Controller
 
         return $response;
 	}   
+	
+	/**
+     * @Route("/proveedores/ChequesTercerosEntregados", name="mbp_proveedores_ChequesTercerosEntregados", options={"expose"=true})
+     */
+    public function ChequesTercerosEntregados(){
+    	//RECIBO PARAMETROS
+		$em = $this->getDoctrine()->getManager();
+		$req = $this->getRequest();
+		$response = new Response;
+		
+		
+		try{
+			/*
+			 * PARAMETROS
+			 */
+			$desde = \DateTime::createFromFormat('d/m/Y', $req->request->get('desde'));		
+			$hasta = \DateTime::createFromFormat('d/m/Y', $req->request->get('hasta'));	
+			
+			$desde = $desde->format('Y-m-d');
+			$hasta = $hasta->format('Y-m-d');
+			
+			$reporteador = $this->get('reporteador');
+			$kernel = $this->get('kernel');
+			
+			/*
+			 * Configuro reporte
+			 */
+			$jru = $reporteador->jru();
+			
+			/*
+			 * Ruta archivo Jasper
+			 */				
+					
+			$ruta = $kernel->locateResource('@MbpProveedoresBundle/Reportes/ChequeTerceros_Entregados.jrxml');
+			
+			/*
+			 * Ruta de destino del PDF
+			 */
+			$destino = $kernel->locateResource('@MbpProveedoresBundle/Resources/public/pdf/').'ChequeTerceros_Entregados.pdf';		
+			
+			//Parametros HashMap
+			$param = $reporteador->getJava('java.util.HashMap');
+			$rutaLogo = $reporteador->getRutaLogo($kernel);
+			
+			$param->put('fechaDesde', $desde);
+			$param->put('fechaHasta', $hasta);
+			
+			
+			$conn = $reporteador->getJdbc();
+						
+			$sql = "SELECT
+			     Pago.`id` AS Pago_id,
+			     Pago.`banco` AS Pago_banco,
+			     Pago.`emision` AS Pago_emision,
+			     Pago.`numero` AS Pago_numero,
+			     Pago.`importe` AS Pago_importe,
+			     Pago.`diferido` AS Pago_diferido,
+			     Pago.`idFormaPago` AS Pago_idFormaPago,
+			     Pago.`cuentaId` AS Pago_cuentaId,
+			     Pago.`movBancoId` AS Pago_movBancoId,
+			     OrdenPago.`id` AS OrdenPago_id,
+			     OrdenPago.`fechaEmision` AS OrdenPago_fechaEmision,
+			     OrdenPago.`proveedorId` AS OrdenPago_proveedorId,
+			     OrdenPago.`importe` AS OrdenPago_importe,
+			     OrdenPago.`ccId` AS OrdenPago_ccId,
+			     OrdenDePago_detallesPagos.`pago_id` AS OrdenDePago_detallesPagos_pago_id,
+			     OrdenDePago_detallesPagos.`ordenPago_id` AS OrdenDePago_detallesPagos_ordenPago_id,
+			     FormasPagos.`id` AS FormasPagos_id,
+			     FormasPagos.`descripcion` AS FormasPagos_descripcion,
+			     FormasPagos.`inactivo` AS FormasPagos_inactivo,
+			     FormasPagos.`retencionIIBB` AS FormasPagos_retencionIIBB,
+			     FormasPagos.`retencionIVA21` AS FormasPagos_retencionIVA21,
+			     FormasPagos.`esChequePropio` AS FormasPagos_esChequePropio,
+			     FormasPagos.`chequeTerceros` AS FormasPagos_chequeTerceros,
+			     FormasPagos.`ceonceptoBancoId` AS FormasPagos_ceonceptoBancoId,
+			     FormasPagos.`depositaEnCuenta` AS FormasPagos_depositaEnCuenta,
+			     Proveedor.`id` AS Proveedor_id,
+			     Proveedor.`rsocial` AS Proveedor_rsocial,
+			     CobranzasDetalle.`id` AS CobranzasDetalle_id,
+			     CobranzasDetalle.`importe` AS CobranzasDetalle_importe,
+			     CobranzasDetalle.`numero` AS CobranzasDetalle_numero,
+			     CobranzasDetalle.`banco` AS CobranzasDetalle_banco,
+			     CobranzasDetalle.`vencimiento` AS CobranzasDetalle_vencimiento,
+			     CobranzasDetalle.`estado` AS CobranzasDetalle_estado,
+			     CobranzasDetalle.`formaPagoId` AS CobranzasDetalle_formaPagoId,
+			     CobranzasDetalle.`cuentaId` AS CobranzasDetalle_cuentaId,
+			     CobranzasDetalle.`movBancoId` AS CobranzasDetalle_movBancoId,
+			     Cobranzas.`id` AS Cobranzas_id,
+			     Cobranzas.`ptoVenta` AS Cobranzas_ptoVenta,
+			     Cobranzas.`numRecibo` AS Cobranzas_numRecibo,
+			     Cobranzas.`emision` AS Cobranzas_emision,
+			     Cobranzas.`fechaRecibo` AS Cobranzas_fechaRecibo,
+			     Cobranzas.`clienteId` AS Cobranzas_clienteId,
+			     Cobranzas.`totalCobranza` AS Cobranzas_totalCobranza,
+			     Cobranzas.`ccId` AS Cobranzas_ccId,
+			     cobranza_detallesCobranzas.`cobranza_id` AS cobranza_detallesCobranzas_cobranza_id,
+			     cobranza_detallesCobranzas.`cobranzasdetalle_id` AS cobranza_detallesCobranzas_cobranzasdetalle_id,
+			     cliente.`rsocial` AS cliente_rsocial,
+			     cliente.`idCliente` AS cliente_idCliente
+			FROM
+			     `Pago` Pago INNER JOIN `OrdenDePago_detallesPagos` OrdenDePago_detallesPagos ON Pago.`id` = OrdenDePago_detallesPagos.`pago_id`
+			     INNER JOIN `OrdenPago` OrdenPago ON OrdenDePago_detallesPagos.`ordenPago_id` = OrdenPago.`id`
+			     INNER JOIN `Proveedor` Proveedor ON OrdenPago.`proveedorId` = Proveedor.`id`
+			     LEFT OUTER JOIN `FormasPagos` FormasPagos ON Pago.`idFormaPago` = FormasPagos.`id`
+			     INNER JOIN `CobranzasDetalle` CobranzasDetalle ON Pago.`numero` = CobranzasDetalle.`numero`
+			     AND CobranzasDetalle.`banco` = Pago.`banco`
+			     AND FormasPagos.`id` = CobranzasDetalle.`formaPagoId`
+			     INNER JOIN `cobranza_detallesCobranzas` cobranza_detallesCobranzas ON CobranzasDetalle.`id` = cobranza_detallesCobranzas.`cobranzasdetalle_id`
+			     INNER JOIN `Cobranzas` Cobranzas ON cobranza_detallesCobranzas.`cobranza_id` = Cobranzas.`id`
+			     INNER JOIN `cliente` cliente ON Cobranzas.`clienteId` = cliente.`idCliente`
+			WHERE
+			     	FormasPagos.`chequeTerceros` = TRUE AND
+				Cobranzas.`emision` BETWEEN '$desde' AND '$hasta'
+			ORDER BY Pago.`diferido` ASC";		     
+			
+			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
+				
+		}catch(\Exception $e){
+			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(
+				json_encode(array('success' => false, 'msg' => $e->getMessage()))
+				);
+		}	
+		
+		return $response->setContent(
+			json_encode(array('success' => true))
+			);	
+    } 
+    
+    /**
+     * @Route("/proveedores/VerChequesTercerosEntregados", name="mbp_proveedores_VerChequesTercerosEntregados", options={"expose"=true})
+     */	    
+    public function VerChequesTercerosEntregados()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpProveedoresBundle/Resources/public/pdf/').'ChequeTerceros_Entregados.pdf';	
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'ChequeTerceros_Entregados.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+
+        return $response;
+	}   
 }
 
 
