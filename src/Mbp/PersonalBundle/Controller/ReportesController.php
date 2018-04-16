@@ -132,6 +132,7 @@ class ReportesController extends Controller
 		 AND Recibos.`compensatorio` = 0
 		ORDER BY
 		     Personal.`apellido` ASC,
+		     Personal.`idP` ASC,
 		     RecibosDetalle.`remunerativo` DESC,
 		     RecibosDetalle.`exento` DESC";
 		

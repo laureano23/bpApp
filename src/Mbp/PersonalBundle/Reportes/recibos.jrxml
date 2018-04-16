@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="recibos" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="807" leftMargin="15" rightMargin="20" topMargin="20" bottomMargin="20" uuid="faabb94c-b32d-4f38-913c-e824ee7dd96c">
 	<property name="ireport.zoom" value="1.610510000000055"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="426"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
@@ -721,7 +721,7 @@ ORDER BY
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{Personal_nombre}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{Personal_apellido}+" "+$F{Personal_nombre}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement mode="Opaque" x="443" y="91" width="172" height="15" forecolor="#000000" backcolor="#CCCCCC" uuid="66d1a90c-e7cc-4d0f-a9bc-c0cb6e1e8d5d"/>
