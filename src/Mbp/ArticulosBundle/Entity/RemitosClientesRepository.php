@@ -18,10 +18,12 @@ class RemitosClientesRepository extends \Doctrine\ORM\EntityRepository
 		
 		$res =	$qb->select('r.id, d.id as remitoNum, d.descripcion, d.cantidad, d.unidad,
 			 	art.codigo, d.oc, p.id as pedido, d.facturado,
-			 	art.costo, art.precio, art.monedaPrecio')
+			 	art.costo, art.precio, art.monedaPrecio,
+			 	c.rsocial AS cliente')
 			->join('r.detalleRemito', 'd')
 			->join('d.articuloId', 'art')
 			->leftjoin('d.pedidoDetalleId', 'p')
+			->leftjoin('r.clienteId', 'c')
 			->where('d.facturado = 0')
 			->andWhere($qb->expr()->isNotNull('r.clienteId'))
 			->andWhere('r.clienteId = :clienteId')
@@ -40,13 +42,16 @@ class RemitosClientesRepository extends \Doctrine\ORM\EntityRepository
 		
 		$res =	$qb->select('r.id, d.id as remitoNum, d.descripcion, d.cantidad, d.unidad,
 			 	art.codigo, d.oc, p.id as pedido, d.facturado,
-			 	art.costo, art.precio')
+			 	art.costo, art.precio,
+			 	c.rsocial AS cliente')
 			->join('r.detalleRemito', 'd')
 			->join('d.articuloId', 'art')
 			->leftjoin('d.pedidoDetalleId', 'p')
+			->leftjoin('r.clienteId', 'c')
 			->where('d.facturado = 0')
 			->andWhere($qb->expr()->isNotNull('r.clienteId'))
-			->getQuery()
+			->orderBy('r.clienteId', 'DESC')
+			->getQuery()			
 			->getResult();
 		
 		return $res;

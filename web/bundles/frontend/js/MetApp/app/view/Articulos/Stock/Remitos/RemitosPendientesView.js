@@ -21,7 +21,7 @@ Ext.define('MetApp.view.Articulos.Stock.Remitos.RemitosPendientesView' ,{
 						{
 							xtype: 'grid',
 							height: 400,
-							width: 800,
+							width: 1200,
 							itemId: 'gridRemitoPendiente',
 							store: 'MetApp.store.Articulos.RemitosPendientesStore',
 							columns: [						
@@ -29,6 +29,7 @@ Ext.define('MetApp.view.Articulos.Stock.Remitos.RemitosPendientesView' ,{
 								{header: 'Descripcion', dataIndex: 'descripcion', width: 400},
 								{header: 'Cantidad', dataIndex: 'cantidad', flex: 1},
 								{header: 'U', dataIndex: 'unidad', width: 50},
+								{header: 'Cliente', dataIndex: 'cliente', width: 300},
 								{header: 'OC', dataIndex: 'oc', flex: 1},
 								{header: 'Pedido N°', dataIndex: 'pedido', flex: 1},
 								{ xtype : 'checkcolumn', text : 'Marca', dataIndex: 'facturado' }

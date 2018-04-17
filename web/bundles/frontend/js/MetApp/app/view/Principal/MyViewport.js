@@ -565,7 +565,7 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                 }, 
             },
             {
-                text: 'Ver Remitos Pendientes de Facturación',
+                text: 'Anular Remitos Pendientes de Facturación',
                 itemId: 'verRemitosPendientesFc',
                 listeners : {
                     render : dragZone,
