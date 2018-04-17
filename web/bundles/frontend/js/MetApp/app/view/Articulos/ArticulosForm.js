@@ -4,7 +4,7 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 	id: 'articulosForm',
 	itemId: 'articulosForm',
 	width: 800,
-	height: 390,
+	height: 420,
 	layout: 'fit',
 	autoShow: true,
 	title: 'Tabla de Articulos',
@@ -252,6 +252,15 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 											width: 800,
 											padding: '0 5 5 5',
 											items: autz.getAuthorizedElements(familias)
+										},
+										{
+											xtype: 'textfield',
+											padding: '0 5 5 5',
+											name: 'peso',
+											itemId: 'peso',
+											fieldLabel: 'Peso (Kg.)',
+											readOnly: true,
+											disabledCls: 'myDisabledClass',
 										},
 										{
 											xtype: 'fieldset',

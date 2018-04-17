@@ -67,6 +67,16 @@ class Articulos
 	 * )
      */
     private $costo=0;
+    
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="peso", type="decimal", precision=11, scale=4, nullable=true)
+	 * @Assert\Range(
+     *      min = 0,
+	 * )
+     */
+    private $peso=0;
 	
 	/**
      * @var decimal
@@ -568,5 +578,29 @@ class Articulos
     public function getInactivo()
     {
         return $this->inactivo;
+    }
+
+    /**
+     * Set rutaServer
+     *
+     * @param string $rutaServer
+     *
+     * @return Articulos
+     */
+    public function setRutaServer($rutaServer)
+    {
+        $this->rutaServer = $rutaServer;
+
+        return $this;
+    }
+
+    /**
+     * Get rutaServer
+     *
+     * @return string
+     */
+    public function getRutaServer()
+    {
+        return $this->rutaServer;
     }
 }
