@@ -40,7 +40,13 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 				}				
 			},
 			{
-				xtype: 'textfield',				
+				xtype: 'textfield',		
+				fieldStyle : 'text-transform: uppercase',
+				listeners:{
+                    change: function(field, newValue, oldValue){
+                        field.setValue(newValue.toUpperCase());
+                    }
+                 },		
 				name: 'codigo',
 				readOnly: true,
 				itemId: 'codigo',
