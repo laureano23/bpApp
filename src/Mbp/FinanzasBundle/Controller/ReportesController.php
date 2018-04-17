@@ -854,37 +854,24 @@ class ReportesController extends Controller
 			$vencimiento = $vencimiento->format('Y-m-d');
 									
 			
-			$sql = "SELECT *, SUM(Facturas_total) AS SALDO
-				FROM (SELECT
-				     Facturas.`id` AS Facturas_id,
-				     Facturas.`vencimiento` AS Facturas_vencimiento,
-				     Facturas.`clienteId` AS Facturas_clienteId,
-				     Facturas.`tipo` AS Facturas_tipo,
-				     Facturas.`tipoCambio` AS Facturas_tipoCambio,
-				     CASE WHEN Facturas.`tipo` != 1 && Facturas.`tipo` != 2 THEN
-					Facturas.`total` * -1 ELSE
-					Facturas.`total` END AS Facturas_total,
-				     cliente.`idCliente` AS cliente_idCliente,
-				     cliente.`rsocial` AS cliente_rsocial
-				FROM
-				     `cliente` cliente INNER JOIN `Facturas` Facturas ON cliente.`idCliente` = Facturas.`clienteId`
-				WHERE Facturas.`vencimiento` <= '$vencimiento'
-				UNION
-				SELECT
-				     Cobranzas.`id` AS Cobranzas_id,
-				     Cobranzas.`fechaRecibo` AS Cobranzas_fechaRecibo,
-				     Cobranzas.`clienteId` AS Cobranzas_clienteId,
-				     Cobranzas.`clienteId`=NULL AS DUMMY_FC_TIPO,
-				     Cobranzas.`totalCobranza`=NULL AS DUMMY_TIPO_CAMBIO,
-				     Cobranzas.`totalCobranza` * -1 AS Cobranzas_totalCobranza,
-				     cliente.`idCliente` AS cliente_idCliente,
-				     cliente.`rsocial` AS cliente_rsocial
-				FROM
-				     `cliente` cliente INNER JOIN `Cobranzas` Cobranzas ON cliente.`idCliente` = Cobranzas.`clienteId`
-				WHERE Cobranzas.`fechaRecibo` <= '$vencimiento'
-				) AS SUB
-				GROUP BY cliente_idCliente
-				ORDER BY SALDO DESC
+			$sql = "SELECT
+			     SUM(CCClientes.`debe`)-SUM(CCClientes.`haber`) AS saldo,
+			     CCClientes.`id` AS CCClientes_id,
+			     CCClientes.`fechaEmision` AS CCClientes_fechaEmision,
+			     CCClientes.`fechaVencimiento` AS CCClientes_fechaVencimiento,
+			     CCClientes.`facturaId` AS CCClientes_facturaId,
+			     CCClientes.`cobranzaId` AS CCClientes_cobranzaId,
+			     CCClientes.`clienteId` AS CCClientes_clienteId,
+			     cliente.`idCliente` AS cliente_idCliente,
+			     cliente.`rsocial` AS cliente_rsocial
+			FROM
+			     `cliente` cliente INNER JOIN `CCClientes` CCClientes ON cliente.`idCliente` = CCClientes.`clienteId`
+			WHERE
+				CCClientes.`fechaEmision` <= '$vencimiento'
+			GROUP BY
+			     cliente.`idCliente`
+			ORDER BY
+			     saldo DESC
 			     ";
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	
