@@ -740,14 +740,13 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			var data={'items': []};
 			store.each(function(rec){
 				if(rec.data.facturado == true){
-					if(tc > 0){
+					if(tc > 0 && rec.data.monedaPrecio == true){ //si el tc es > 0 y el articulo está en U$D
 						rec.data.precio = rec.data.precio * tc; 
 					}
 					rec.data.parcial = rec.data.cantidad * rec.data.precio;
 					data.items.push(rec.data);	
 				}				
 			});
-			console.log(data);
 			storeFacturacion.loadRawData(data);
 			
 			view.close();

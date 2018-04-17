@@ -16,5 +16,6 @@ Ext.define('MetApp.model.Articulos.RemitosModel',{
 		{name: 'costo', type: 'float'},
 		{name: 'precio', type: 'float'},
 		{name: 'parcial', type: 'float'},
+		{name: 'monedaPrecio', type: 'bool'},
 	]
 });

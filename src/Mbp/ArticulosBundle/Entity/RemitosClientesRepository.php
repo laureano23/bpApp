@@ -18,7 +18,7 @@ class RemitosClientesRepository extends \Doctrine\ORM\EntityRepository
 		
 		$res =	$qb->select('r.id, d.id as remitoNum, d.descripcion, d.cantidad, d.unidad,
 			 	art.codigo, d.oc, p.id as pedido, d.facturado,
-			 	art.costo, art.precio')
+			 	art.costo, art.precio, art.monedaPrecio')
 			->join('r.detalleRemito', 'd')
 			->join('d.articuloId', 'art')
 			->leftjoin('d.pedidoDetalleId', 'p')
