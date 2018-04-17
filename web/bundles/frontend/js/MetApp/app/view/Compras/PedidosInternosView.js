@@ -123,7 +123,8 @@ Ext.define('MetApp.view.Compras.PedidosInternosView' ,{
 								background: 'white'
 							},
 							defaults: {
-								labelWidth: 90
+								labelWidth: 90,
+								allowBlank: false
 							},
 							margin: '0 0 5 0',
 							items: [
@@ -164,7 +165,8 @@ Ext.define('MetApp.view.Compras.PedidosInternosView' ,{
 									xtype: 'numberfield',
 									name: 'cant',
 									itemId: 'cantidad',
-									fieldLabel: 'Cantidad'
+									fieldLabel: 'Cantidad',
+									allowBlank: false
 								},
 								{
 									xtype: 'textfield',
@@ -177,7 +179,8 @@ Ext.define('MetApp.view.Compras.PedidosInternosView' ,{
 									fieldLabel: 'Fecha entrega',
 									itemId: 'fechaEntrega',
 									name: 'entrega',
-									dateFormat: 'd/m/Y'
+									dateFormat: 'd/m/Y',
+									allowBlank: false
 								},
 								{
 									xtype: 'button',

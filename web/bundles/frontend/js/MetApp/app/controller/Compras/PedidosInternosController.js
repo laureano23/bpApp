@@ -71,6 +71,18 @@ Ext.define('MetApp.controller.Compras.PedidosInternosController',{
 						
 				success: function(resp){
 					st.resumeEvents();
+					Ext.Ajax.request({
+						url: Routing.generate('mbp_pedidosInternos_listarPedidos'),
+						
+						success: function(resp){
+							var data = Ext.JSON.decode(resp.responseText);				
+							store.loadRawData(data.data);
+						},
+						
+						failure: function(resp){
+							
+						}
+					});
 				},
 				
 				failure: function(resp){
@@ -84,6 +96,8 @@ Ext.define('MetApp.controller.Compras.PedidosInternosController',{
 		var pedidoInterno = Ext.widget('PedidosInternosView');
 		var btnSearch = pedidoInterno.queryById('btnCodigo');
 		
+		var store=pedidoInterno.down('grid').getStore();
+		store.removeAll();
 		btnSearch.focus('', 10); 
 		
 		btnSearch.on('click', function(){
@@ -93,7 +107,7 @@ Ext.define('MetApp.controller.Compras.PedidosInternosController',{
 				var grid = winSearch.down('grid');
 				var sel = grid.getSelectionModel().getSelection()[0];
 				
-				var formArt = pedidoInterno.queryById('formaArt');
+				var formArt = pedidoInterno.queryById('formaArt');				
 				formArt.loadRecord(sel);
 				
 				winSearch.close();
@@ -110,7 +124,10 @@ Ext.define('MetApp.controller.Compras.PedidosInternosController',{
 	
 	InsertarArticulo: function(btn){
 		var win = btn.up('window');
-		var values = win.queryById('formaArt').getForm().getValues();
+		var form=win.queryById('formaArt');
+		var values = form.getForm().getValues();
+		
+		if(!form.isValid()) return;
 		
 		var model = Ext.create('MetApp.model.Compras.OrdenCompraModel');
 		model.set(values);

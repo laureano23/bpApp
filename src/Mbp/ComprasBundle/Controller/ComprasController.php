@@ -230,6 +230,7 @@ class ComprasController extends Controller
 			//CARGAMOS LOS DETALLES
 			foreach ($articulos as $art) {
 				$detalle = new PedidoInternoDetalle;
+				$detalle->setCodigo($art->codigo);
 				$detalle->setDescripcion($art->descripcion);
 				$detalle->setCantidad($art->cant);
 				$detalle->setUnidad($art->unidad);

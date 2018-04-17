@@ -27,25 +27,32 @@ class PedidoInternoDetalle
      * @ORM\Column(name="descripcion", type="string", length=255)
      */
     private $descripcion;
+	
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="codigo", type="string", length=255)
+     */
+    private $codigo;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="cantidad", type="decimal")
+     * @ORM\Column(name="cantidad", type="decimal", precision=10, scale=2)
      */
     private $cantidad;
 	
 	 /**
      * @var string
      *
-     * @ORM\Column(name="pedido", type="decimal")
+     * @ORM\Column(name="pedido", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $pedido;
 	
 	 /**
      * @var string
      *
-     * @ORM\Column(name="cumplido", type="decimal")
+     * @ORM\Column(name="cumplido", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $cumplido;
 
@@ -246,5 +253,29 @@ class PedidoInternoDetalle
     public function getCumplido()
     {
         return $this->cumplido;
+    }
+
+    /**
+     * Set codigo
+     *
+     * @param string $codigo
+     *
+     * @return PedidoInternoDetalle
+     */
+    public function setCodigo($codigo)
+    {
+        $this->codigo = $codigo;
+
+        return $this;
+    }
+
+    /**
+     * Get codigo
+     *
+     * @return string
+     */
+    public function getCodigo()
+    {
+        return $this->codigo;
     }
 }

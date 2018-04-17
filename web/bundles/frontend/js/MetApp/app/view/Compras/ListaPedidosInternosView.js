@@ -29,7 +29,7 @@ Ext.define('MetApp.view.Compras.ListaPedidosInternosView' ,{
 					region: 'center',
 					store: 'MetApp.store.Compras.OrdenCompraStore',
 					columns: [
-						{ text: 'id Detalle', dataIndex: 'id', width: 100 },
+						{ text: 'id Detalle', dataIndex: 'id', width: 100, hidden: true },
 						{ text: 'Emision', dataIndex: 'fecha', width: 100 },
 						{ text: 'Código', dataIndex: 'codigo', width: 150 },
 						{ text: 'Descripción', dataIndex: 'descripcion', width: 300 },
