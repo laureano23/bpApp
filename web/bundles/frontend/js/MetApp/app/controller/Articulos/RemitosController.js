@@ -49,10 +49,30 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 			'RemitosListadoView actioncolumn[itemId=verRemito]': {
 				click: this.VerRemito
 			},
+			'RemitosListadoView textfield[itemId=cliente]': {
+				change: this.FiltrarRemitosCliente
+			},
+			'RemitosListadoView textfield[itemId=proveedor]': {
+				change: this.FiltrarRemitosProveedor
+			},
 			'viewport menuitem[itemId=verRemitosPendientesFc]': {
 				click: this.VerRemitosPendientesFc
 			},
 		});
+	},
+	
+	FiltrarRemitosProveedor: function(el, newVal, oldVal){
+		var win=el.up('window');
+		var store=win.down('grid').getStore();
+		store.clearFilter(true);
+		store.filter('proveedor', newVal);
+	},
+	
+	FiltrarRemitosCliente: function(el, newVal, oldVal){
+		var win=el.up('window');
+		var store=win.down('grid').getStore();
+		store.clearFilter(true);
+		store.filter('cliente', newVal);
 	},
 	
 	VerRemitosPendientesFc: function(){
