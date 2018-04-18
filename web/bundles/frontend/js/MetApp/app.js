@@ -50,6 +50,7 @@ Ext.application({
 		'Articulos.SubFamiliaController',
 		'Articulos.ParametrosController',
 		'Compras.OrdenDeCompraController',
+		'Compras.PedidosInternosController',
 		'Articulos.ListaDePreciosController',
 		'Articulos.RemitosController',
 		'Security.UserParamsController',

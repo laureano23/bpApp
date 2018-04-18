@@ -509,7 +509,151 @@ class ReportesController extends Controller
 		$response->headers->set('Content-type', 'application/pdf');
 
         return $response;
-	}   
+	} 
+	
+	/**
+     * @Route("/proveedores/CertificadoRetencion", name="mbp_proveedores_CertificadoRetencion", options={"expose"=true})
+     */
+    public function CertificadoRetencion(){
+    	//RECIBO PARAMETROS
+		$em = $this->getDoctrine()->getManager();
+		$req = $this->getRequest();
+		$response = new Response;
+		
+		
+		try{
+			/*
+			 * PARAMETROS
+			 */
+			$idOp = (int)$req->request->get('idOp');
+			
+			$reporteador = $this->get('reporteador');
+			$kernel = $this->get('kernel');
+			
+			/*
+			 * Configuro reporte
+			 */
+			$jru = $reporteador->jru();
+			
+			/*
+			 * Ruta archivo Jasper
+			 */				
+					
+			$ruta = $kernel->locateResource('@MbpProveedoresBundle/Reportes/Comprobante_Retencion.jrxml');
+			
+			/*
+			 * Ruta de destino del PDF
+			 */
+			$destino = $kernel->locateResource('@MbpProveedoresBundle/Resources/public/pdf/').'Comprobante_Retencion.pdf';		
+			
+			//Parametros HashMap
+			$param = $reporteador->getJava('java.util.HashMap');
+			$rutaLogo = $reporteador->getRutaLogo($kernel);
+			
+			$param->put('OP_ID', $idOp);
+			$param->put('dirFirma', $kernel->locateResource('@MbpPersonalBundle/Reportes/rob.jpg'));
+			
+			
+			$conn = $reporteador->getJdbc();
+						
+			$sql = "SELECT
+			     Pago.`id` AS Pago_id,
+			     Pago.`banco` AS Pago_banco,
+			     Pago.`emision` AS Pago_emision,
+			     Pago.`numero` AS Pago_numero,
+			     Pago.`importe` AS Pago_importe,
+			     Pago.`diferido` AS Pago_diferido,
+			     Pago.`idFormaPago` AS Pago_idFormaPago,
+			     Pago.`cuentaId` AS Pago_cuentaId,
+			     Pago.`movBancoId` AS Pago_movBancoId,
+			     FormasPagos.`id` AS FormasPagos_id,
+			     FormasPagos.`descripcion` AS FormasPagos_descripcion,
+			     FormasPagos.`inactivo` AS FormasPagos_inactivo,
+			     FormasPagos.`retencionIIBB` AS FormasPagos_retencionIIBB,
+			     FormasPagos.`retencionIVA21` AS FormasPagos_retencionIVA21,
+			     FormasPagos.`chequeTerceros` AS FormasPagos_chequeTerceros,
+			     FormasPagos.`esChequePropio` AS FormasPagos_esChequePropio,
+			     FormasPagos.`ceonceptoBancoId` AS FormasPagos_ceonceptoBancoId,
+			     FormasPagos.`depositaEnCuenta` AS FormasPagos_depositaEnCuenta,
+			     OrdenDePago_detallesPagos.`pago_id` AS OrdenDePago_detallesPagos_pago_id,
+			     OrdenDePago_detallesPagos.`ordenPago_id` AS OrdenDePago_detallesPagos_ordenPago_id,
+			     OrdenPago.`id` AS OrdenPago_id,
+			     OrdenPago.`fechaEmision` AS OrdenPago_fechaEmision,
+			     OrdenPago.`proveedorId` AS OrdenPago_proveedorId,
+			     TransaccionOPFC.`id` AS TransaccionOPFC_id,
+			     TransaccionOPFC.`aplicado` AS TransaccionOPFC_aplicado,
+			     TransaccionOPFC.`facturaId` AS TransaccionOPFC_facturaId,
+			     TransaccionOPFC.`ordenPagoId` AS TransaccionOPFC_ordenPagoId,
+			     FacturaProveedor.`id` AS FacturaProveedor_id,
+			     FacturaProveedor.`fechaEmision` AS FacturaProveedor_fechaEmision,
+			     FacturaProveedor.`sucursal` AS FacturaProveedor_sucursal,
+			     FacturaProveedor.`numFc` AS FacturaProveedor_numFc,
+			     FacturaProveedor.`neto` AS FacturaProveedor_neto,
+			     FacturaProveedor.`tipoId` AS FacturaProveedor_tipoId,
+			     TipoComprobante.`id` AS TipoComprobante_id,
+			     TipoComprobante.`esFactura` AS TipoComprobante_esFactura,
+			     TipoComprobante.`esNotaCredito` AS TipoComprobante_esNotaCredito,
+			     TipoComprobante.`esNotaDebito` AS TipoComprobante_esNotaDebito,
+			     TipoComprobante.`descripcion` AS TipoComprobante_descripcion,
+			     Proveedor.`id` AS Proveedor_id,
+			     Proveedor.`rsocial` AS Proveedor_rsocial,
+			     Proveedor.`direccion` AS Proveedor_direccion,
+			     Proveedor.`localidad` AS Proveedor_localidad,
+			     Proveedor.`provincia` AS Proveedor_provincia,
+			     provincia.`id` AS provincia_id,
+			     provincia.`nombre` AS provincia_nombre,
+			     localidades.`id` AS localidades_id,
+			     localidades.`departamento_id` AS localidades_departamento_id,
+			     localidades.`provincia_id` AS localidades_provincia_id,
+			     localidades.`nombre` AS localidades_nombre
+			FROM
+			     `FormasPagos` FormasPagos INNER JOIN `Pago` Pago ON FormasPagos.`id` = Pago.`idFormaPago`
+			     INNER JOIN `OrdenDePago_detallesPagos` OrdenDePago_detallesPagos ON Pago.`id` = OrdenDePago_detallesPagos.`pago_id`
+			     INNER JOIN `OrdenPago` OrdenPago ON OrdenDePago_detallesPagos.`ordenPago_id` = OrdenPago.`id`
+			     INNER JOIN `TransaccionOPFC` TransaccionOPFC ON OrdenPago.`id` = TransaccionOPFC.`ordenPagoId`
+			     INNER JOIN `Proveedor` Proveedor ON OrdenPago.`proveedorId` = Proveedor.`id`
+			     INNER JOIN `FacturaProveedor` FacturaProveedor ON Proveedor.`id` = FacturaProveedor.`proveedorId`
+			     LEFT JOIN `provincia` provincia ON Proveedor.`provincia` = provincia.`id`
+			     LEFT JOIN `localidades` localidades ON Proveedor.`localidad` = localidades.`id`
+			     INNER JOIN `TipoComprobante` TipoComprobante ON FacturaProveedor.`tipoId` = TipoComprobante.`id`
+			WHERE
+			     OrdenPago.`id` = $idOp
+			          AND TransaccionOPFC.`facturaId` = FacturaProveedor.`id`
+			 AND FormasPagos.`retencionIIBB` = TRUE";		     
+			
+			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
+				
+		}catch(\Exception $e){
+			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(
+				json_encode(array('success' => false, 'msg' => $e->getMessage()))
+				);
+		}	
+		
+		return $response->setContent(
+			json_encode(array('success' => true))
+			);	
+    } 
+    
+    /**
+     * @Route("/proveedores/VerCertificadoRetencion", name="mbp_proveedores_VerCertificadoRetencion", options={"expose"=true})
+     */	    
+    public function VerCertificadoRetencion()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpProveedoresBundle/Resources/public/pdf/').'Comprobante_Retencion.pdf';	
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'Comprobante_Retencion.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+
+        return $response;
+	}     
 }
 
 

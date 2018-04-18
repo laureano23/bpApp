@@ -239,7 +239,7 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 		var data = selection.getData();
 		var idProv = win.queryById('id').getValue();
 		
-		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
+		var myMask = new Ext.LoadMask(grid, {msg:"Cargando..."});
 		myMask.show();
 		
 		Ext.Ajax.request({
@@ -256,6 +256,18 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 				if(jsonResp.success == true){
 					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 					myMask.hide();	
+					Ext.Ajax.request({
+						url: Routing.generate('mbp_proveedores_CertificadoRetencion'),
+						
+						params: {
+							idOp: data.idOP
+						},
+						
+						success: function(resp){
+							var ruta = Routing.generate('mbp_proveedores_VerCertificadoRetencion');
+							window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+						}
+					});
 				}
 			}
 		});

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Detalle_Pago_Proveedor" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="890e90cc-cf89-4202-bb29-76354a7dbc5d">
 	<property name="ireport.zoom" value="1.1000000000000036"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="9"/>
+	<property name="ireport.y" value="154"/>
 	<parameter name="ordenPagoId" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -290,14 +290,6 @@ Tel/Fax: 4484-2416]]></text>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "Detalle_Pago_Proveedor_subreport2.jasper"]]></subreportExpression>
-			</subreport>
-			<subreport>
-				<reportElement x="0" y="161" width="200" height="139" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="bb42951b-b710-4398-a5b0-d836f3f46dfd"/>
-				<subreportParameter name="OP_ID">
-					<subreportParameterExpression><![CDATA[$F{OrdenPago_id}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "Detalle_Pago_Proveedor_subreport4.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</columnFooter>

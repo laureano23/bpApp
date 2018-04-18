@@ -214,6 +214,19 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 											if(status.success == true){
 												var ruta = Routing.generate('mbp_proveedores_verReporteDetallePago');
 												window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+												
+												Ext.Ajax.request({
+													url: Routing.generate('mbp_proveedores_CertificadoRetencion'),
+													
+													params: {
+														idOp: status.idOrdenPago
+													},
+													
+													success: function(resp){
+														var ruta = Routing.generate('mbp_proveedores_VerCertificadoRetencion');
+														window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+													}
+												});
 											}
 										}
 									});
