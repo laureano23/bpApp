@@ -58,9 +58,16 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 				xtype: 'button',				
 				height: 25,				
 				width: 30,
+				margin: '0 0 0 5',
 				iconCls: 'search',
 				action: 'actBuscaArt',
 				itemId: 'buscarArt'
+			},
+			{
+				xtype: 'button',
+				text: 'Pedidos Pendientes',
+				itemId: 'pedidoPendiente',
+				margin: '0 0 0 5'				
 			}
 		]
 		
@@ -121,6 +128,7 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 				itemId: 'iva',
 				name: 'iva',
 				fieldLabel: 'Iva',
+				allowBlank: true,
 				value: 21
 			}
 		]
@@ -260,6 +268,7 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 											itemId: 'peso',
 											fieldLabel: 'Peso (Kg.)',
 											readOnly: true,
+											allowBlank: true,
 											disabledCls: 'myDisabledClass',
 										},
 										{

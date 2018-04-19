@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Pedidos" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="faabb94c-b32d-4f38-913c-e824ee7dd96c">
-	<property name="ireport.zoom" value="1.3310000000000008"/>
+	<property name="ireport.zoom" value="0.7513148009015781"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="codigoDesde" class="java.lang.String" isForPrompting="false">
@@ -29,6 +29,7 @@
      PedidoClientes.`cliente` AS PedidoClientes_cliente,
      PedidoClientes.`inactivo` AS PedidoClientes_inactivo,
      PedidoClientes.`usuarioId` AS PedidoClientes_usuarioId,
+     PedidoClientes.`esRepuesto` AS PedidoClientes_esRepuesto,
      PedidoClientesDetalle.`id` AS PedidoClientesDetalle_id,
      PedidoClientesDetalle.`codigo` AS PedidoClientesDetalle_codigo,
      PedidoClientesDetalle.`cantidad` AS PedidoClientesDetalle_cantidad,
@@ -62,7 +63,10 @@ WHERE
  AND PedidoClientesDetalle.`fechaProg` BETWEEN $P{fechaDesde} AND $P{fechaHasta}
  AND PedidoClientesDetalle.`inactivo` = 0
 ORDER BY
-     cliente.`idCliente` ASC]]>
+     PedidoClientes.`esRepuesto` ASC,
+    cliente.`idCliente` ASC
+
+]]>
 	</queryString>
 	<field name="PedidoClientes_id" class="java.lang.Integer"/>
 	<field name="PedidoClientes_fechaPedido" class="java.sql.Date"/>
@@ -70,6 +74,7 @@ ORDER BY
 	<field name="PedidoClientes_cliente" class="java.lang.Integer"/>
 	<field name="PedidoClientes_inactivo" class="java.lang.Boolean"/>
 	<field name="PedidoClientes_usuarioId" class="java.lang.Integer"/>
+	<field name="PedidoClientes_esRepuesto" class="java.lang.Boolean"/>
 	<field name="PedidoClientesDetalle_id" class="java.lang.Integer"/>
 	<field name="PedidoClientesDetalle_codigo" class="java.lang.Integer"/>
 	<field name="PedidoClientesDetalle_cantidad" class="java.math.BigDecimal"/>
@@ -144,6 +149,28 @@ ORDER BY
 			</band>
 		</groupFooter>
 	</group>
+	<group name="ES_REPUESTO">
+		<groupExpression><![CDATA[$F{PedidoClientes_esRepuesto}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField>
+					<reportElement x="0" y="0" width="802" height="20" uuid="34c49c76-01d9-44c0-ab9c-438c9a7e23a9"/>
+					<box leftPadding="2">
+						<pen lineWidth="2.0"/>
+						<topPen lineWidth="2.0"/>
+						<leftPen lineWidth="2.0"/>
+						<bottomPen lineWidth="2.0"/>
+						<rightPen lineWidth="2.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="15"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{PedidoClientes_esRepuesto} == true ? "Repuesto" : ""
+]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -202,7 +229,7 @@ ORDER BY
 				<text><![CDATA[Codigo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="100" y="0" width="276" height="20" uuid="f0425b4a-b5c8-4dcf-aa2f-506effb82f50"/>
+				<reportElement x="100" y="0" width="241" height="20" uuid="f0425b4a-b5c8-4dcf-aa2f-506effb82f50"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -289,6 +316,17 @@ ORDER BY
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[SubTotal]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="341" y="0" width="35" height="20" uuid="380915ff-d2ac-4423-976a-d6b30b62fc6a"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[r]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
@@ -308,7 +346,7 @@ ORDER BY
 				<textFieldExpression><![CDATA[$F{articulos_codigo}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="100" y="0" width="276" height="20" uuid="eda36d26-bfcf-4f60-bb81-c476766dbf04"/>
+				<reportElement x="100" y="0" width="241" height="20" uuid="eda36d26-bfcf-4f60-bb81-c476766dbf04"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -316,6 +354,7 @@ ORDER BY
 					<bottomPen lineWidth="0.0"/>
 					<rightPen lineWidth="0.0"/>
 				</box>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{PedidoClientesDetalle_descripcion}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -416,6 +455,20 @@ ORDER BY
 				</textElement>
 				<textFieldExpression><![CDATA[$F{articulos_monedaPrecio} == true
 ? $F{articulos_precio}*$F{dolarOficial}*($F{PedidoClientesDetalle_cantidad}-$F{PedidoClientesDetalle_entregado}):$F{articulos_precio}*($F{PedidoClientesDetalle_cantidad}-$F{PedidoClientesDetalle_entregado})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="341" y="0" width="35" height="20" uuid="c878b56b-9935-429a-8894-5bc16fbf4be2"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PedidoClientes_esRepuesto}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

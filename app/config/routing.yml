@@ -45,7 +45,7 @@ mbp_proveedores:
 mbp_finanzas:
     resource: "@MbpFinanzasBundle/Controller/"
     type:     annotation
-    prefix:   /
+    prefix:   /finanzas
 
 mbp_personal_sueldos:
     resource: "@MbpPersonalBundle/Controller/"

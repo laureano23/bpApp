@@ -48,7 +48,56 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 				'articulosform button[itemId=copiarRuta]': {
 					click: this.CopiarRuta
 				},
+				'articulosform button[itemId=pedidoPendiente]': {
+					click: this.PedidosPendientes
+				},
 		});		
+	},
+	
+	PedidosPendientes: function(btn){
+		var win=btn.up('window');
+		var form=win.down('form');
+		var myMask = new Ext.LoadMask(form, {msg:"Cargando..."});
+		myMask.show();
+		
+		
+		var codigo=form.queryById('codigo').getValue();
+		var data={
+			articuloDesde: codigo,
+			articuloHasta:codigo,
+			clienteDesde:1,
+			clienteHasta:999999,
+			fechaDesde:"01/01/2000",
+			fechaHasta:"01/01/2500"
+		};
+		
+		
+		console.log(data);
+		var values=Ext.JSON.encode(data);
+		
+		console.log(values);
+		
+		
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_produccion_reporte_pedido'),
+			
+			params: {
+				data: values
+			},
+			
+			success: function(resp, opt){
+			    var jsonResp = Ext.JSON.decode(resp.responseText);
+				if(jsonResp.success == true){
+					var ruta = Routing.generate('mbp_produccion_reporte_pedidoPdf');
+					window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+					myMask.hide();
+				}
+			},
+			
+			failure: function(res){
+				myMask.hide();
+			}
+		});
 	},
 	
 	CopiarRuta: function(btn){
@@ -281,6 +330,9 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 		var store = Ext.StoreManager.lookup('Articulos.Articulos');
 		var proxy = store.getProxy();
 		var record;
+		
+		if(!form.isValid()) return;
+		
 		proxy.addListener('exception', function(st, response, operation, eOpts){	//CAPTURA ERRORES DEL SERVER
 			console.log(st);
 			console.log(operation);

@@ -155,6 +155,8 @@ Ext.define('MetApp.controller.Produccion.PedidoClientes.PedidoClientesController
 		var ocValue = oc.getValue();
 		var autNum = form.queryById('autEntrega');
 		var autValue = autNum.getValue();
+		var esRepuesto=form.queryById('esRepuesto');
+		var esRepuestoVal=form.queryById('esRepuesto').getValue();
 		
 		if(form.isValid()){
 			values = form.getValues();
@@ -170,6 +172,7 @@ Ext.define('MetApp.controller.Produccion.PedidoClientes.PedidoClientesController
 			idCliente.setValue(idClienteValue); //VOLVEMOS A SETEAR EL CLIENTE
 			oc.setValue(ocValue); //VOLVEMOS A SETEAR EL VALOR DE LA OC
 			autNum.setValue(autValue); //VOLVEMOS A SETEAR EL VALOR DE NUM ENTREGA
+			esRepuesto.setValue(esRepuestoVal);
 			form.queryById('buscaArt').focus();
 			form.queryById('descripcion').setReadOnly(true);
 		}
