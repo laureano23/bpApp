@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OrdenesPorSector2" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9c56db6d-e34e-471e-a0fa-3c43960748b0">
 	<property name="ireport.zoom" value="1.6105100000000026"/>
-	<property name="ireport.x" value="475"/>
+	<property name="ireport.x" value="50"/>
 	<property name="ireport.y" value="0"/>
 	<style name="no comenzado" forecolor="#000000" backcolor="#FFFFFF" pattern="">
 		<conditionalStyle>
@@ -53,26 +53,6 @@
 				     articulos.`codigo` AS articulos_codigo,
 				     articulos.`descripcion` AS articulos_descripcion,
 				     articulos.`idArticulos` AS articulos_idArticulos,
-				     articulos.`unidad` AS articulos_unidad,
-				     articulos.`costo` AS articulos_costo,
-				     articulos.`precio` AS articulos_precio,
-				     articulos.`moneda` AS articulos_moneda,
-				     articulos.`iva` AS articulos_iva,
-				     articulos.`familiaId` AS articulos_familiaId,
-				     articulos.`subFamiliaId` AS articulos_subFamiliaId,
-				     articulos.`monedaPrecio` AS articulos_monedaPrecio,
-				     articulos.`stock` AS articulos_stock,
-				     articulos.`presentacion` AS articulos_presentacion,
-				     articulos.`utilidadPretendida` AS articulos_utilidadPretendida,
-				     articulos.`fechaPrecio` AS articulos_fechaPrecio,
-				     articulos.`type` AS articulos_type,
-				     articulos.`caudal` AS articulos_caudal,
-				     articulos.`peso` AS articulos_peso,
-				     articulos.`voltage` AS articulos_voltage,
-				     articulos.`corriente` AS articulos_corriente,
-				     articulos.`potencia` AS articulos_potencia,
-				     articulos.`presion` AS articulos_presion,
-				     articulos.`nombreImagen` AS articulos_nombreImagen,
 				     sectores_A.`id` AS sectores_A_id,
 				     sectores_A.`costoMin` AS sectores_A_costoMin,
 				     sectores_A.`descripcion` AS sectores_A_descripcion,
@@ -120,26 +100,6 @@ AND ot.`anulada` = 0
 	<field name="articulos_codigo" class="java.lang.String"/>
 	<field name="articulos_descripcion" class="java.lang.String"/>
 	<field name="articulos_idArticulos" class="java.lang.Integer"/>
-	<field name="articulos_unidad" class="java.lang.String"/>
-	<field name="articulos_costo" class="java.math.BigDecimal"/>
-	<field name="articulos_precio" class="java.math.BigDecimal"/>
-	<field name="articulos_moneda" class="java.lang.Boolean"/>
-	<field name="articulos_iva" class="java.math.BigDecimal"/>
-	<field name="articulos_familiaId" class="java.lang.Integer"/>
-	<field name="articulos_subFamiliaId" class="java.lang.Integer"/>
-	<field name="articulos_monedaPrecio" class="java.lang.Boolean"/>
-	<field name="articulos_stock" class="java.math.BigDecimal"/>
-	<field name="articulos_presentacion" class="java.lang.String"/>
-	<field name="articulos_utilidadPretendida" class="java.math.BigDecimal"/>
-	<field name="articulos_fechaPrecio" class="java.sql.Date"/>
-	<field name="articulos_type" class="java.lang.String"/>
-	<field name="articulos_caudal" class="java.math.BigDecimal"/>
-	<field name="articulos_peso" class="java.math.BigDecimal"/>
-	<field name="articulos_voltage" class="java.math.BigDecimal"/>
-	<field name="articulos_corriente" class="java.math.BigDecimal"/>
-	<field name="articulos_potencia" class="java.math.BigDecimal"/>
-	<field name="articulos_presion" class="java.math.BigDecimal"/>
-	<field name="articulos_nombreImagen" class="java.lang.String"/>
 	<field name="sectores_A_id" class="java.lang.Integer"/>
 	<field name="sectores_A_costoMin" class="java.math.BigDecimal"/>
 	<field name="sectores_A_descripcion" class="java.lang.String"/>

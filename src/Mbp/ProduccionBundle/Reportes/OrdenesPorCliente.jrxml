@@ -58,26 +58,6 @@
      articulos.`codigo` AS articulos_codigo,
      articulos.`descripcion` AS articulos_descripcion,
      articulos.`idArticulos` AS articulos_idArticulos,
-     articulos.`unidad` AS articulos_unidad,
-     articulos.`costo` AS articulos_costo,
-     articulos.`precio` AS articulos_precio,
-     articulos.`moneda` AS articulos_moneda,
-     articulos.`iva` AS articulos_iva,
-     articulos.`familiaId` AS articulos_familiaId,
-     articulos.`subFamiliaId` AS articulos_subFamiliaId,
-     articulos.`monedaPrecio` AS articulos_monedaPrecio,
-     articulos.`stock` AS articulos_stock,
-     articulos.`presentacion` AS articulos_presentacion,
-     articulos.`utilidadPretendida` AS articulos_utilidadPretendida,
-     articulos.`fechaPrecio` AS articulos_fechaPrecio,
-     articulos.`type` AS articulos_type,
-     articulos.`caudal` AS articulos_caudal,
-     articulos.`peso` AS articulos_peso,
-     articulos.`voltage` AS articulos_voltage,
-     articulos.`corriente` AS articulos_corriente,
-     articulos.`potencia` AS articulos_potencia,
-     articulos.`presion` AS articulos_presion,
-     articulos.`nombreImagen` AS articulos_nombreImagen,
      ot.`clienteId` AS ot_clienteId,
      cliente.`idCliente` AS cliente_idCliente,
      cliente.`rsocial` AS cliente_rsocial
@@ -116,26 +96,6 @@ ORDER BY
 	<field name="articulos_codigo" class="java.lang.String"/>
 	<field name="articulos_descripcion" class="java.lang.String"/>
 	<field name="articulos_idArticulos" class="java.lang.Integer"/>
-	<field name="articulos_unidad" class="java.lang.String"/>
-	<field name="articulos_costo" class="java.math.BigDecimal"/>
-	<field name="articulos_precio" class="java.math.BigDecimal"/>
-	<field name="articulos_moneda" class="java.lang.Boolean"/>
-	<field name="articulos_iva" class="java.math.BigDecimal"/>
-	<field name="articulos_familiaId" class="java.lang.Integer"/>
-	<field name="articulos_subFamiliaId" class="java.lang.Integer"/>
-	<field name="articulos_monedaPrecio" class="java.lang.Boolean"/>
-	<field name="articulos_stock" class="java.math.BigDecimal"/>
-	<field name="articulos_presentacion" class="java.lang.String"/>
-	<field name="articulos_utilidadPretendida" class="java.math.BigDecimal"/>
-	<field name="articulos_fechaPrecio" class="java.sql.Date"/>
-	<field name="articulos_type" class="java.lang.String"/>
-	<field name="articulos_caudal" class="java.math.BigDecimal"/>
-	<field name="articulos_peso" class="java.math.BigDecimal"/>
-	<field name="articulos_voltage" class="java.math.BigDecimal"/>
-	<field name="articulos_corriente" class="java.math.BigDecimal"/>
-	<field name="articulos_potencia" class="java.math.BigDecimal"/>
-	<field name="articulos_presion" class="java.math.BigDecimal"/>
-	<field name="articulos_nombreImagen" class="java.lang.String"/>
 	<field name="ot_clienteId" class="java.lang.Integer"/>
 	<field name="cliente_idCliente" class="java.lang.Integer"/>
 	<field name="cliente_rsocial" class="java.lang.String"/>
