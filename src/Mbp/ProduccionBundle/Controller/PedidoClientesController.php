@@ -188,6 +188,7 @@ class PedidoClientesController extends Controller
 			     PedidoClientes.`cliente` AS PedidoClientes_cliente,
 			     PedidoClientes.`inactivo` AS PedidoClientes_inactivo,
 			     PedidoClientes.`usuarioId` AS PedidoClientes_usuarioId,
+			     PedidoClientes.`esRepuesto` AS PedidoClientes_esRepuesto,
 			     PedidoClientesDetalle.`id` AS PedidoClientesDetalle_id,
 			     PedidoClientesDetalle.`codigo` AS PedidoClientesDetalle_codigo,
 			     PedidoClientesDetalle.`cantidad` AS PedidoClientesDetalle_cantidad,
@@ -220,7 +221,8 @@ class PedidoClientesController extends Controller
 			 AND articulos.`codigo` BETWEEN '$codigoDesde' AND '$codigoHasta'
 			 AND PedidoClientesDetalle.`fechaProg` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql'  
 			 AND PedidoClientesDetalle.`inactivo` = 0
-			ORDER BY cliente.`idCliente`";
+			ORDER BY PedidoClientes.`esRepuesto` ASC,
+    			cliente.`idCliente` ASC";
 			
 						
 			//Exportamos el reporte
