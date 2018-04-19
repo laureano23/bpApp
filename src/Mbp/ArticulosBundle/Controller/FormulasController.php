@@ -26,6 +26,7 @@ class FormulasController extends Controller
 		$tc = (float)$tipoCambio->getTipoCambio();
 		
 		$res = $repo->formulasList($req->query->get('art'), $tc);
+		//$res = $repo->estructuraCompleta(615, $tc);
 		
 		echo json_encode(array(
 			'success' => true,

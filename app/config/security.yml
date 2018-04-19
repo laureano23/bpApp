@@ -31,7 +31,8 @@ security:
         - { path: ^/personal, roles: ROLE_CALIDAD }
         - { path: ^/sueldos, roles: ROLE_ADMINISTRACION }
         - { path: ^/adm, roles: ROLE_ADMINISTRACION }
-        - { path: ^/clientes/*, roles: ROLE_CLIENTE }
+        - { path: ^/clientes/clientesearch/*, roles: ROLE_FABRICA }
+        - { path: ^/clientes/*, roles: ROLE_CLIENTE }        
         #- { path: ^/, roles: ROLE_USER }
         
     role_hierarchy:
