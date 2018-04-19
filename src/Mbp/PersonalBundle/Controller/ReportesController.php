@@ -351,13 +351,12 @@ class ReportesController extends Controller
 		     INNER JOIN `RecibosDetalles_CodigoSueldos` RecibosDetalles_CodigoSueldos ON RecibosDetalle.`id` = RecibosDetalles_CodigoSueldos.`recibosDetalles_id`
 		     INNER JOIN `CodigoSueldos` CodigoSueldos ON RecibosDetalles_CodigoSueldos.`codigoSueldos_id` = CodigoSueldos.`id`
 		     INNER JOIN `Personal` Personal ON RecibosPersonal.`personal_id` = Personal.`idP`
-		     INNER JOIN `Categorias` Categorias ON Personal.`categoria` = Categorias.`id`
 		WHERE
 		     Recibos.`mes` BETWEEN $mesDesde AND $mesHasta
 		 AND Recibos.`anio` BETWEEN $anioDesde AND $anioHasta
 		 AND Recibos.`periodo` BETWEEN $periodoDesde AND $periodoHasta
 		 AND Recibos.`compensatorio` = $compensatorio
-		ORDER BY Personal.`apellido` ASC,, RecibosDetalle.`remunerativo` DESC";
+		ORDER BY Personal.`apellido` ASC, RecibosDetalle.`remunerativo` DESC";
 		
 		$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 		
