@@ -20,6 +20,13 @@ class TipoComprobante
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="esNegro", type="boolean")
+     */
+    private $esNegro;
 
     /**
      * @var boolean
@@ -310,5 +317,29 @@ class TipoComprobante
     public function getCodigoAfip()
     {
         return $this->codigoAfip;
+    }
+
+    /**
+     * Set esNegro
+     *
+     * @param boolean $esNegro
+     *
+     * @return TipoComprobante
+     */
+    public function setEsNegro($esNegro)
+    {
+        $this->esNegro = $esNegro;
+
+        return $this;
+    }
+
+    /**
+     * Get esNegro
+     *
+     * @return boolean
+     */
+    public function getEsNegro()
+    {
+        return $this->esNegro;
     }
 }

@@ -20,6 +20,13 @@ class TipoComprobante
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="esNegro", type="boolean")
+     */
+    private $esNegro;
 
     /**
      * @var boolean
@@ -80,7 +87,7 @@ class TipoComprobante
 	/**
      * @var smallint
      *
-     * @ORM\Column(name="codigoAfip", type="boolean", nullable=true)
+     * @ORM\Column(name="codigoAfip", type="smallint", nullable=true)
      */
     private $codigoAfip=0;
 	
@@ -286,5 +293,29 @@ class TipoComprobante
     public function getSubTipoE()
     {
         return $this->subTipoE;
+    }
+
+    /**
+     * Set codigoAfip
+     *
+     * @param smallint $codigoAfip
+     *
+     * @return TipoComprobante
+     */
+    public function setCodigoAfip($codigoAfip)
+    {
+        $this->codigoAfip = $codigoAfip;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoAfip
+     *
+     * @return smallint
+     */
+    public function getCodigoAfip()
+    {
+        return $this->codigoAfip;
     }
 }
