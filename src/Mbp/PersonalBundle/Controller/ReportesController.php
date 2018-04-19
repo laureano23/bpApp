@@ -325,6 +325,7 @@ class ReportesController extends Controller
 		     recibo_detallesRecibos.`recibosdetalle_id` AS recibo_detallesRecibos_recibosdetalle_id,
 		     Personal.`idP` AS Personal_idP,
 		     Personal.`nombre` AS Personal_nombre,
+		     Personal.`apellido` AS Personal_apellido,
 		     Personal.`localidad` AS Personal_localidad,
 		     Personal.`documentoNum` AS Personal_documentoNum,
 		     Personal.`fechaIngreso` AS Personal_fechaIngreso,
@@ -356,7 +357,7 @@ class ReportesController extends Controller
 		 AND Recibos.`anio` BETWEEN $anioDesde AND $anioHasta
 		 AND Recibos.`periodo` BETWEEN $periodoDesde AND $periodoHasta
 		 AND Recibos.`compensatorio` = $compensatorio
-		ORDER BY Personal.`nombre` ASC, RecibosDetalle.`remunerativo` DESC";
+		ORDER BY Personal.`apellido` ASC,, RecibosDetalle.`remunerativo` DESC";
 		
 		$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 		
