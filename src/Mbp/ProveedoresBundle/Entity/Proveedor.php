@@ -24,7 +24,7 @@ class Proveedor
     /**
      * @var string
      *
-     * @ORM\Column(name="rsocial", type="string", length=35)
+     * @ORM\Column(name="rsocial", type="string")
      */
     private $rsocial;
 	
@@ -59,7 +59,7 @@ class Proveedor
     /**
      * @var string
      *
-     * @ORM\Column(name="denominacion", type="string", length=50, nullable=true)
+     * @ORM\Column(name="denominacion", type="string", nullable=true)
      */
     private $denominacion;
 

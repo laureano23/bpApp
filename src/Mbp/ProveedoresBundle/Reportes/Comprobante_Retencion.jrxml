@@ -308,7 +308,7 @@ San Justo, Buenos Aires]]></text>
 			<textField pattern="#,##0.00 %">
 				<reportElement x="355" y="0" width="100" height="20" uuid="ee6ddaf2-2473-41af-bccb-9f197453b073"/>
 				<box leftPadding="3"/>
-				<textFieldExpression><![CDATA[$F{Pago_importe} / $F{FacturaProveedor_neto}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Pago_importe} / $F{TransaccionOPFC_aplicado}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
 				<reportElement x="455" y="0" width="100" height="20" uuid="c6bd3121-2f17-4aee-95f7-2d1ea487a201"/>
