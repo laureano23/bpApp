@@ -331,11 +331,9 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 		var proxy = store.getProxy();
 		var record;
 		
-		if(!form.isValid()) return;
+		//if(!form.isValid()) return;
 		
 		proxy.addListener('exception', function(st, response, operation, eOpts){	//CAPTURA ERRORES DEL SERVER
-			console.log(st);
-			console.log(operation);
 			jsonResp = Ext.JSON.decode(response.responseText);
 			form.getForm().markInvalid(jsonResp.errors);
 			me.EditArt(button);

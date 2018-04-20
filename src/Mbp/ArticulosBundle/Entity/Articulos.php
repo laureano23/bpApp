@@ -72,9 +72,6 @@ class Articulos
      * @var decimal
      *
      * @ORM\Column(name="peso", type="decimal", precision=11, scale=4, nullable=true)
-	 * @Assert\Range(
-     *      min = 0,
-	 * )
      */
     private $peso=0;
 	

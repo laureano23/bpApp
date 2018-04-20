@@ -307,7 +307,8 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 													name: 'rutaServer',
 													itemId: 'rutaServer',
 													width: 700,
-													labelWidth: 100
+													labelWidth: 100,
+													allowBlank: true
 												},
 												{
 													xtype: 'button',
