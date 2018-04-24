@@ -35,7 +35,7 @@ Ext.define('MetApp.view.Utilitarios.TxtRetencionesView', {
 					fieldDefaults: {
 						allowBlank: false
 					},
-					items: [
+					items: [						
 						{
 							xtype: 'datefield',
 							allowBlank: false,
@@ -57,15 +57,43 @@ Ext.define('MetApp.view.Utilitarios.TxtRetencionesView', {
 							labelWidth: 40
 						},
 						{
-				            xtype      : 'fieldcontainer',
+				            xtype      : 'fieldset',
+				            collapsible: false,
 				            border: 1,
-				            fieldLabel : 'Periodo',
+				            title : 'Tipo',
+				            defaultType: 'radiofield',
+				            defaults: {
+				                flex: 1
+				            },
+				            layout: 'hbox',
+				            items: [
+				                {
+				                    boxLabel  : 'Retención',
+				                    name      : 'tipo',
+				                    inputValue: '0',
+				                    id        : 'radio3',
+				                    checked: true
+				                },
+				                {
+				                    boxLabel  : 'Percepción',
+				                    name      : 'tipo',
+				                    inputValue: '2',
+				                    id        : 'radio4'
+				                }
+				            ]
+				        },
+						{
+				            xtype      : 'fieldset',
+				            collapsible: false,
+				            border: 1,
+				            title : 'Periodo',
 				            defaultType: 'radiofield',
 				            defaults: {
 				                flex: 1
 				            },
 				            layout: 'vbox',
 				            items: [
+				            	
 				                {
 				                    boxLabel  : '1er Quincena',
 				                    name      : 'periodo',

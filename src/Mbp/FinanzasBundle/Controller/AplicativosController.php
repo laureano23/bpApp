@@ -13,6 +13,7 @@ class AplicativosController extends Controller
 {
 	public static $codigoRetencion=6;
 	public static $codigoPercepcion=7;
+	public static $periodoPercepcion=0; //para el periodo mensual el codigo es 0
 	/**
      * @Route("/aplicativos/txt_percepciones", name="mbp_finanzas_txt_percepciones", options={"expose"=true})
      */
@@ -56,20 +57,29 @@ class AplicativosController extends Controller
 				->getQuery()
 				->getArrayResult();
 			
-			print_r($res);
+			$nombreArchivo="AR"."-".$this->container->getParameter('cuit_prod')."-".$desde->format("Ym").self::$periodoPercepcion."-".self::$codigoPercepcion."-LOTE1";
 			
 			$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/txt/');
-			$file=fopen($basePath."percepciones.txt", "w");
+			$file=fopen($basePath.$nombreArchivo, "w");
 			
 			foreach ($res as $linea) {				
 				$str = $cuit.$linea['fecha'].$linea['tipoCbte'].$linea['subTipoCbte'].$linea['ptoVta'].$linea['fcNro'].$linea['subTotal'].$linea['perIIBB'].$linea['finLinea'].PHP_EOL;	
 				fwrite($file, $str);
 			}
-				
-			return $response->setContent(json_encode(array('success' => true)));		
-		}catch(\Exception $e){
 			
-			//throw $e;
+			$nombreZip=$nombreArchivo.md5($nombreArchivo).".zip";
+			$zip=new \ZipArchive;
+			
+			if($zip->open($basePath.$nombreZip, \ZipArchive::CREATE) !== TRUE){
+				throw new \Exception("Error al generar ZIP", 1);				
+			};
+			fclose($file);
+			
+			$zip->addFile($basePath.$nombreArchivo, $nombreArchivo.".txt");
+			$zip->close();			
+							
+			return $response->setContent(json_encode(array('success' => true, 'nombreArchivo' => $nombreZip)));
+		}catch(\Exception $e){
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(json_encode(array('success' => false, 'msg' => $e->getMessage())));
 		}
@@ -150,9 +160,9 @@ class AplicativosController extends Controller
     }
     
 	 /**
-     * @Route("/aplicativos/servir_txt_retenciones", name="mbp_finanzas_txt_retenciones_servir", options={"expose"=true})
+     * @Route("/aplicativos/servir_txt_retenciones_percepciones", name="mbp_finanzas_txt_retenciones_percepciones_servir", options={"expose"=true})
      */
-    public function servir_txt_retenciones()
+    public function servir_txt_retenciones_percepciones()
     {
     	$response = new Response;
 		$req = $this->getRequest();
