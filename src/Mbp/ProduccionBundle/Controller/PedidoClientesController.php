@@ -222,7 +222,8 @@ class PedidoClientesController extends Controller
 			 AND PedidoClientesDetalle.`fechaProg` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql'  
 			 AND PedidoClientesDetalle.`inactivo` = 0
 			ORDER BY PedidoClientes.`esRepuesto` ASC,
-    			cliente.`idCliente` ASC";
+    			cliente.`idCliente` ASC,
+    			articulos.`codigo`";
 			
 						
 			//Exportamos el reporte

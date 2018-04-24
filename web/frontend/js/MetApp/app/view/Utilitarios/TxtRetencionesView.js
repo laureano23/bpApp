@@ -70,7 +70,8 @@ Ext.define('MetApp.view.Utilitarios.TxtRetencionesView', {
 				                    boxLabel  : '1er Quincena',
 				                    name      : 'periodo',
 				                    inputValue: '1',
-				                    id        : 'radio1'
+				                    id        : 'radio1',
+				                    checked: true
 				                },
 				                {
 				                    boxLabel  : '2da Quincena',

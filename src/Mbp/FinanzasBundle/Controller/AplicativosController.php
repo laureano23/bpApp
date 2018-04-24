@@ -86,12 +86,15 @@ class AplicativosController extends Controller
 		$repo = $em->getRepository('MbpProveedoresBundle:TransaccionOPFC');
 		$response = new Response;
 		$kernel = $this->get('kernel');	
+		$req = $this->getRequest();
+		$desde=$req->request->get('desde');
+		$hasta=$req->request->get('hasta');
+		$quincena=$req->request->get('periodo');
 		
 		try{
 			//parametros del form
-			$desde= new \DateTime("2018-01-01");
-			$hasta= new \DateTime("2018-04-30");
-			$quincena=1;
+			$desde= \DateTime::createFromFormat('d/m/Y', $desde);
+			$hasta= \DateTime::createFromFormat('d/m/Y', $hasta);
 			//
 			
 			$cuit = $this->getCuitFormateado();
@@ -117,9 +120,6 @@ class AplicativosController extends Controller
 		
 			$nombreArchivo="AR"."-".$this->container->getParameter('cuit_prod')."-".$desde->format("Ym").$quincena."-".self::$codigoPercepcion."-LOTE1";
 			
-			
-					
-			
 			$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/txt/');
 			$file=fopen($basePath.$nombreArchivo, "w");
 			
@@ -138,22 +138,9 @@ class AplicativosController extends Controller
 			};
 			
 			$zip->addFile($basePath.$nombreArchivo, $nombreArchivo.".txt");
-			$zip->close();
-			
-			$response = new BinaryFileResponse($basePath.$nombreZip);
-	        $response->trustXSendfileTypeHeader();
-			$filename = $nombreZip;
-	        $response->setContentDisposition(
-	            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-	            $filename
-	        );
-			$response->headers->set('Content-type', 'application/zip');
-			$response->headers->set('Content-length', filesize($basePath.$nombreZip));
-	
-	        return $response;
-			
-				
-			return $response->setContent(json_encode(array('success' => true)));		
+			$zip->close();			
+							
+			return $response->setContent(json_encode(array('success' => true, 'nombreArchivo' => $nombreZip)));		
 		}catch(\Exception $e){
 			
 			throw $e;
@@ -162,6 +149,34 @@ class AplicativosController extends Controller
 		}
     }
     
+	 /**
+     * @Route("/aplicativos/servir_txt_retenciones", name="mbp_finanzas_txt_retenciones_servir", options={"expose"=true})
+     */
+    public function servir_txt_retenciones()
+    {
+    	$response = new Response;
+		$req = $this->getRequest();
+		$nombreArchivo=$req->query->get('nombreArchivo');
+				
+		$kernel = $this->get('kernel');
+		$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/txt/');
+		
+    	$response = new BinaryFileResponse($basePath.$nombreArchivo);
+        $response->trustXSendfileTypeHeader();
+		$filename = $nombreArchivo;
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $filename
+        );
+		$response->headers->set('Content-type', 'application/zip');
+		$response->headers->set('Content-length', filesize($basePath.$nombreArchivo));
+
+        return $response;
+		
+    }
+    
+	
+	
     private function getCuitFormateado()
     {
     	/* FORMATEAMOS EL CUIT */

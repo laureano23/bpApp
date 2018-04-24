@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ArtClientePeriodo" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="8ed8d7cf-2916-4fbb-8dcd-11d07462df1b">
 	<property name="ireport.zoom" value="1.1000000000000008"/>
-	<property name="ireport.x" value="144"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="DESDE" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -23,12 +23,12 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
+     CASE WHEN Facturas.`moneda`=1 THEN FacturaDetalle.`precio`*Facturas.`tipoCambio` ELSE FacturaDetalle.`precio` END AS FacturaDetalle_precio,
      Facturas.`id` AS Facturas_id,
      Facturas.`fecha` AS Facturas_fecha,
      Facturas.`concepto` AS Facturas_concepto,
      Facturas.`vencimiento` AS Facturas_vencimiento,
      Facturas.`clienteId` AS Facturas_clienteId,
-     Facturas.`tipo` AS Facturas_tipo,
      Facturas.`ptoVta` AS Facturas_ptoVta,
      Facturas.`cae` AS Facturas_cae,
      Facturas.`vtoCae` AS Facturas_vtoCae,
@@ -54,30 +54,44 @@
      FacturaDetalle.`id` AS FacturaDetalle_id,
      FacturaDetalle.`descripcion` AS FacturaDetalle_descripcion,
      FacturaDetalle.`cantidad` AS FacturaDetalle_cantidad,
-     CASE WHEN Facturas.`moneda` = 1 THEN FacturaDetalle.`precio` * Facturas.`tipoCambio` ELSE FacturaDetalle.`precio` END AS FacturaDetalle_precio,
      FacturaDetalle.`articuloId` AS FacturaDetalle_articuloId,
      FacturaDetalle.`remitoId` AS FacturaDetalle_remitoId,
      articulos.`idArticulos` AS articulos_idArticulos,
-     articulos.`codigo` AS articulos_codigo
+     articulos.`codigo` AS articulos_codigo,
+     TipoComprobante.`id` AS TipoComprobante_id,
+     TipoComprobante.`esFactura` AS TipoComprobante_esFactura,
+     TipoComprobante.`esNotaCredito` AS TipoComprobante_esNotaCredito,
+     TipoComprobante.`esNotaDebito` AS TipoComprobante_esNotaDebito,
+     TipoComprobante.`esBalance` AS TipoComprobante_esBalance,
+     TipoComprobante.`descripcion` AS TipoComprobante_descripcion,
+     TipoComprobante.`subTipoA` AS TipoComprobante_subTipoA,
+     TipoComprobante.`subTipoB` AS TipoComprobante_subTipoB,
+     TipoComprobante.`subTipoE` AS TipoComprobante_subTipoE,
+     TipoComprobante.`codigoAfip` AS TipoComprobante_codigoAfip,
+     TipoComprobante.`esNegro` AS TipoComprobante_esNegro,
+     Facturas.`tipoId` AS Facturas_tipoId
 FROM
      `cliente` cliente INNER JOIN `Facturas` Facturas ON cliente.`idCliente` = Facturas.`clienteId`
      INNER JOIN `factura_detallesFacturas` factura_detallesFacturas ON Facturas.`id` = factura_detallesFacturas.`factura_id`
+     INNER JOIN `TipoComprobante` TipoComprobante ON Facturas.`tipoId` = TipoComprobante.`id`
      INNER JOIN `FacturaDetalle` FacturaDetalle ON factura_detallesFacturas.`facturadetalle_id` = FacturaDetalle.`id`
      INNER JOIN `articulos` articulos ON FacturaDetalle.`articuloId` = articulos.`idArticulos`
 WHERE
      Facturas.`fecha` BETWEEN $P{DESDE} AND $P{HASTA}
  AND articulos.`codigo` BETWEEN $P{CODIGO1} AND $P{CODIGO2}
  AND cliente.`idCliente` BETWEEN $P{CLIENTE1} AND $P{CLIENTE2}
+ AND TipoComprobante.`esNegro`=false
+ AND TipoComprobante.`esBalance`=false
 ORDER BY
      cliente.`idCliente` ASC,
      Facturas.`fecha` ASC]]>
 	</queryString>
+	<field name="FacturaDetalle_precio" class="java.math.BigDecimal"/>
 	<field name="Facturas_id" class="java.lang.Integer"/>
 	<field name="Facturas_fecha" class="java.sql.Timestamp"/>
 	<field name="Facturas_concepto" class="java.lang.String"/>
 	<field name="Facturas_vencimiento" class="java.sql.Date"/>
 	<field name="Facturas_clienteId" class="java.lang.Integer"/>
-	<field name="Facturas_tipo" class="java.lang.Integer"/>
 	<field name="Facturas_ptoVta" class="java.lang.Integer"/>
 	<field name="Facturas_cae" class="java.lang.Long"/>
 	<field name="Facturas_vtoCae" class="java.sql.Date"/>
@@ -103,15 +117,26 @@ ORDER BY
 	<field name="FacturaDetalle_id" class="java.lang.Integer"/>
 	<field name="FacturaDetalle_descripcion" class="java.lang.String"/>
 	<field name="FacturaDetalle_cantidad" class="java.math.BigDecimal"/>
-	<field name="FacturaDetalle_precio" class="java.math.BigDecimal"/>
 	<field name="FacturaDetalle_articuloId" class="java.lang.Integer"/>
 	<field name="FacturaDetalle_remitoId" class="java.lang.Integer"/>
 	<field name="articulos_idArticulos" class="java.lang.Integer"/>
 	<field name="articulos_codigo" class="java.lang.String"/>
+	<field name="TipoComprobante_id" class="java.lang.Integer"/>
+	<field name="TipoComprobante_esFactura" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_esNotaCredito" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_esNotaDebito" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_esBalance" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_descripcion" class="java.lang.String"/>
+	<field name="TipoComprobante_subTipoA" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_subTipoB" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_subTipoE" class="java.lang.Boolean"/>
+	<field name="TipoComprobante_codigoAfip" class="java.lang.Integer"/>
+	<field name="TipoComprobante_esNegro" class="java.lang.Boolean"/>
+	<field name="Facturas_tipoId" class="java.lang.Integer"/>
 	<variable name="SUBTOTAL" class="java.lang.Float" resetType="Group" resetGroup="CLIENTE_GROUP" calculation="Sum">
-		<variableExpression><![CDATA[$F{Facturas_tipo} == 1 || $F{Facturas_tipo} == 2
-? $F{FacturaDetalle_precio} * $F{FacturaDetalle_cantidad} :
-$F{FacturaDetalle_precio} * $F{FacturaDetalle_cantidad} * -1]]></variableExpression>
+		<variableExpression><![CDATA[$F{TipoComprobante_esNotaCredito}==true
+? $F{FacturaDetalle_precio} * $F{FacturaDetalle_cantidad}*-1 :
+$F{FacturaDetalle_precio} * $F{FacturaDetalle_cantidad}]]></variableExpression>
 	</variable>
 	<variable name="TOTAL_GRAL" class="java.lang.Float" calculation="Sum">
 		<variableExpression><![CDATA[$F{FacturaDetalle_cantidad} * $F{FacturaDetalle_precio}]]></variableExpression>
@@ -356,9 +381,9 @@ $F{FacturaDetalle_precio} * $F{FacturaDetalle_cantidad} * -1]]></variableExpress
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{Facturas_tipo} == 1 || $F{Facturas_tipo} == 2
-? $F{FacturaDetalle_precio} * $F{FacturaDetalle_cantidad} :
-$F{FacturaDetalle_precio} * $F{FacturaDetalle_cantidad} * -1]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == true
+? $F{FacturaDetalle_precio} * $F{FacturaDetalle_cantidad} *-1:
+$F{FacturaDetalle_precio} * $F{FacturaDetalle_cantidad}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

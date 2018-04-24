@@ -25,7 +25,7 @@ class Facturas
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha", type="datetime")
+     * @ORM\Column(name="fecha", type="date")
 	 * @Assert\NotNull() 
      */
     private $fecha;

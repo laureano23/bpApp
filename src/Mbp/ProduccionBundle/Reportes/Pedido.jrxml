@@ -4,10 +4,10 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="codigoDesde" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["12200"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["1"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="codigoHasta" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["12200"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["ZZZ"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="fechaDesde" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -64,7 +64,8 @@ WHERE
  AND PedidoClientesDetalle.`inactivo` = 0
 ORDER BY
      PedidoClientes.`esRepuesto` ASC,
-    cliente.`idCliente` ASC]]>
+    cliente.`idCliente` ASC,
+    articulos.`codigo`]]>
 	</queryString>
 	<field name="PedidoClientes_id" class="java.lang.Integer"/>
 	<field name="PedidoClientes_fechaPedido" class="java.sql.Date"/>

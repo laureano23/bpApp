@@ -34,8 +34,10 @@ Ext.define('MetApp.controller.Utilitarios.UtilitariosController',{
 			method: 'POST',
 			url: Routing.generate('mbp_finanzas_txt_retenciones'),
 			
-			success: function(resp){
-				
+			success: function(form, action){
+				var jsonResp=Ext.JSON.decode(action.response.responseText);
+				var ruta = Routing.generate('mbp_finanzas_txt_retenciones_servir', {nombreArchivo: jsonResp.nombreArchivo});
+		    	window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 			},
 			
 			failure: function(res){

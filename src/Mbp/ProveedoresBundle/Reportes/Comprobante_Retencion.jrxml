@@ -52,6 +52,7 @@
      Proveedor.`direccion` AS Proveedor_direccion,
      Proveedor.`localidad` AS Proveedor_localidad,
      Proveedor.`provincia` AS Proveedor_provincia,
+     Proveedor.`cuit` AS Proveedor_cuit,
      provincia.`id` AS provincia_id,
      provincia.`nombre` AS provincia_nombre,
      localidades.`id` AS localidades_id,
@@ -115,6 +116,7 @@ WHERE
 	<field name="Proveedor_direccion" class="java.lang.String"/>
 	<field name="Proveedor_localidad" class="java.lang.Integer"/>
 	<field name="Proveedor_provincia" class="java.lang.String"/>
+	<field name="Proveedor_cuit" class="java.lang.String"/>
 	<field name="provincia_id" class="java.lang.String"/>
 	<field name="provincia_nombre" class="java.lang.String"/>
 	<field name="localidades_id" class="java.lang.Integer"/>
@@ -220,14 +222,14 @@ San Justo, Buenos Aires]]></text>
 				<text><![CDATA[Sujeto Pasible de Retención]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="302" y="159" width="181" height="20" uuid="86e5d648-39e5-4240-8a0d-10439b74e751"/>
+				<reportElement x="302" y="159" width="27" height="20" uuid="86e5d648-39e5-4240-8a0d-10439b74e751"/>
 				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[CUIT: 33-67876743-9]]></text>
+				<text><![CDATA[CUIT:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="302" y="139" width="181" height="20" uuid="250b10b3-9970-4f3e-b0c0-4606b60e81d0"/>
+				<reportElement x="302" y="139" width="27" height="20" uuid="250b10b3-9970-4f3e-b0c0-4606b60e81d0"/>
 				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[IIBB: 33-67876743-9]]></text>
+				<text><![CDATA[IIBB:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" pattern="MM/YY">
 				<reportElement x="67" y="139" width="218" height="20" uuid="838c3b0a-d7d5-47e5-b037-ffca4b1d1dec"/>
@@ -238,6 +240,16 @@ San Justo, Buenos Aires]]></text>
 				<reportElement x="86" y="159" width="199" height="20" uuid="d5e5c924-dd0b-40bd-8b92-a071e3a45403"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{Proveedor_direccion}+", "+$F{localidades_nombre}+", "+$F{provincia_nombre}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="MM/YY">
+				<reportElement x="329" y="139" width="154" height="20" uuid="1134b1db-c530-4f7a-a0af-4cda671a6803"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Proveedor_cuit}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="MM/YY">
+				<reportElement x="329" y="159" width="154" height="20" uuid="36128d8f-cd3e-44b4-b7a3-e01880ffc254"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Proveedor_cuit}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
