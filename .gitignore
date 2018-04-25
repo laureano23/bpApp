@@ -1,18 +1,18 @@
 #IGNORAMOS LA CARPETA COMPLETA
-/web/bundles/*
+/web/*
 
 #EXCLUIMOS FRONTEND
-!/web/bundles/frontend/
+!/web/frontend/
 
 #IGNORAMOS LA CARPETA COMPLETA
-/web/bundles/frontend/*
+/web/frontend/*
 #EXCLUIMOS FRONTEND
-!/web/bundles/frontend/js/
+!/web/frontend/js/
 
 #IGNORAMOS JS
-/web/bundles/frontend/js/*
+/web/frontend/js/*
 #EXCLUIMOS METAPP
-!/web/bundles/frontend/js/MetApp/
+!/web/frontend/js/MetApp/
 
 /app/bootstrap.php.cache
 
