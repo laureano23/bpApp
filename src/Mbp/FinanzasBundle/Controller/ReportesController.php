@@ -1244,10 +1244,10 @@ ORDER BY
 						ELSE '' END AS sclr_9,
 					cliente.rSocial
 				FROM CCClientes c0_
-				LEFT JOIN Facturas f3_ ON c0_.facturaId = f3_.id AND (f3_.clienteId = 1)
-				LEFT JOIN Cobranzas c1_ ON c0_.cobranzaId = c1_.id AND (c1_.clienteId = 1)
+				LEFT JOIN Facturas f3_ ON c0_.facturaId = f3_.id AND (f3_.clienteId = $idCliente)
+				LEFT JOIN Cobranzas c1_ ON c0_.cobranzaId = c1_.id AND (c1_.clienteId = $idCliente)
 				LEFT JOIN TipoComprobante t2_ ON f3_.tipoId = t2_.id
-				INNER JOIN CCClientes c4_ ON (c4_.clienteId = 1 AND c0_.clienteId = 1 AND c0_.id >= c4_.id)
+				INNER JOIN CCClientes c4_ ON (c4_.clienteId = $idCliente AND c0_.clienteId = $idCliente AND c0_.id >= c4_.id)
 				LEFT JOIN cliente ON cliente.idCliente = c0_.clienteId
 				GROUP BY c0_.id) AS sub
 				WHERE emision >= '$desdeSql'
