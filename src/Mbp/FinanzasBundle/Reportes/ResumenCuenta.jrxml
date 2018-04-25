@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ResumenCuenta" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4e5228fb-db98-4dd7-8b25-f2c19dafdbf4">
+	<property name="ireport.zoom" value="1.2100000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="FECHA_DESDE" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ID_CLIENTE" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT * FROM
+(SELECT
+	DATE_FORMAT(c0_.fechaEmision,'%d-%m-%Y') AS emision,
+	CASE WHEN c0_.cobranzaId IS NOT NULL THEN CONCAT('COBRANZA N° ', c1_.numRecibo)
+		ELSE CONCAT(t2_.descripcion, ' N° ', f3_.ptoVta, '-', f3_.fcNro) END AS concepto,
+	CASE WHEN c0_.cobranzaId IS NOT NULL THEN 1
+		ELSE 0 END AS sclr_2,
+	DATE_FORMAT(c0_.fechaVencimiento,'%d-%m-%Y') AS vencimiento,
+	c0_.debe AS debe,
+	c0_.haber AS haber,
+	SUM(c4_.debe) - SUM(c4_.haber) AS saldo,
+	f3_.id AS id_7,
+	c1_.id AS id_8,
+	CASE WHEN t2_.esBalance = 1 THEN 'balance'
+		ELSE '' END AS sclr_9,
+	cliente.rSocial
+FROM CCClientes c0_
+LEFT JOIN Facturas f3_ ON c0_.facturaId = f3_.id AND (f3_.clienteId = $P{ID_CLIENTE})
+LEFT JOIN Cobranzas c1_ ON c0_.cobranzaId = c1_.id AND (c1_.clienteId = $P{ID_CLIENTE})
+LEFT JOIN TipoComprobante t2_ ON f3_.tipoId = t2_.id
+INNER JOIN CCClientes c4_ ON (c4_.clienteId = $P{ID_CLIENTE} AND c0_.clienteId = $P{ID_CLIENTE} AND c0_.id >= c4_.id)
+LEFT JOIN cliente ON cliente.idCliente = c0_.clienteId
+GROUP BY c0_.id) AS sub
+WHERE emision >= $P{FECHA_DESDE}]]>
+	</queryString>
+	<field name="emision" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="concepto" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sclr_2" class="java.lang.Integer"/>
+	<field name="vencimiento" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="debe" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="haber" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="saldo" class="java.math.BigDecimal"/>
+	<field name="id_7" class="java.lang.Integer"/>
+	<field name="id_8" class="java.lang.Integer"/>
+	<field name="sclr_9" class="java.lang.String"/>
+	<field name="rSocial" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="35" uuid="6a3d2265-58d6-4000-9b74-11c959013ad1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Resumen de Cuenta]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="40" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20" uuid="d5f88fe7-ac1f-4449-b315-e034db00c693"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Cliente: "+$F{rSocial}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="20" width="44" height="20" uuid="f7e65ff3-52e7-454b-a1f6-d438dd5a5cd8"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Desde:]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="44" y="20" width="100" height="20" uuid="fbaeab11-16a2-4bdb-b60c-d53639b4d14e"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{FECHA_DESDE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="59" height="20" uuid="30e82ab8-384c-44f4-9a99-fd561a62a96e"/>
+				<box leftPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Emisión]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="59" y="0" width="217" height="20" uuid="965613b3-91a5-4dd8-8f5d-d09ec457d308"/>
+				<box leftPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Comprobante]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="0" width="93" height="20" uuid="02700846-a035-4e35-8722-d3a613e65020"/>
+				<box leftPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Debe]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="369" y="0" width="93" height="20" uuid="fa72b996-d195-4c4d-9169-4cf4575a7a21"/>
+				<box leftPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Haber]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="462" y="0" width="93" height="20" uuid="cb98970f-2554-42b2-9cf0-91edef4e7adf"/>
+				<box leftPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Saldo]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="0" y="0" width="59" height="20" uuid="a4d82970-ded9-4fe0-b5a4-ce3630bfe8c7"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{emision}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="59" y="0" width="217" height="20" uuid="06c087cb-fc3b-44f3-bc9f-4059f9377689"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{concepto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="276" y="0" width="93" height="20" uuid="887ae375-8c6f-43a8-b1b8-069caa3f4556"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{debe}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="369" y="0" width="93" height="20" uuid="12a2c23f-8462-416e-b138-f731ec6be0cc"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{haber}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="462" y="0" width="93" height="20" uuid="38feb4d1-b9c5-4da8-9107-648189dcbf44"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{saldo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="424" y="0" width="68" height="20" uuid="e54fbf61-6b6c-41a7-a9d5-71aeca67f605"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Pág. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="492" y="0" width="63" height="20" uuid="e044c242-5e08-4595-9e7d-672d4002c184"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

@@ -1177,6 +1177,124 @@ ORDER BY
 		
 		return $response;
 	}
+	
+	/**
+     * @Route("/CCClientes/Reportes/reporteCC", name="mbp_CCClientes_reporteCC", options={"expose"=true})
+     */	    
+    public function reporteCC()
+	{
+		//RECIBO PARAMETROS
+		$em = $this->getDoctrine()->getManager();
+		$req = $this->getRequest();
+		$response = new Response();	
+		
+		try{
+			/*
+			 * PARAMETROS
+			 */
+			$idCliente = $req->request->get('cliente1');
+			$desde = $req->request->get('desde');		
+							
+			$reporteador = $this->get('reporteador');
+			$kernel = $this->get('kernel');
+			
+			/*
+			 * Configuro reporte
+			 */
+			$jru = $reporteador->jru();
+			
+			/*
+			 * Ruta archivo Jasper
+			 */				
+					
+			$ruta = $kernel->locateResource('@MbpFinanzasBundle/Reportes/ResumenCuenta.jrxml');
+			
+			/*
+			 * Ruta de destino del PDF
+			 */
+			$destino = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'ccCliente.pdf';		
+			
+			//Parametros HashMap
+			$param = $reporteador->getJava('java.util.HashMap');
+			$rutaLogo = $reporteador->getRutaLogo($kernel);
+			
+			$desde=\DateTime::createFromFormat("d/m/Y", $desde);
+			$desdeSql=$desde->format("d-m-Y");
+			
+			$param->put('ID_CLIENTE', $idCliente);
+			$param->put('FECHA_DESDE', $desdeSql);
+			
+			$conn = $reporteador->getJdbc();
+			
+			$sql = "
+				SELECT * FROM
+				(SELECT
+					DATE_FORMAT(c0_.fechaEmision,'%d-%m-%Y') AS emision,
+					CASE WHEN c0_.cobranzaId IS NOT NULL THEN CONCAT('COBRANZA N° ', c1_.numRecibo)
+						ELSE CONCAT(t2_.descripcion, ' N° ', f3_.ptoVta, '-', f3_.fcNro) END AS concepto,
+					CASE WHEN c0_.cobranzaId IS NOT NULL THEN 1
+						ELSE 0 END AS sclr_2,
+					DATE_FORMAT(c0_.fechaVencimiento,'%d-%m-%Y') AS vencimiento,
+					c0_.debe AS debe,
+					c0_.haber AS haber,
+					SUM(c4_.debe) - SUM(c4_.haber) AS saldo,
+					f3_.id AS id_7,
+					c1_.id AS id_8,
+					CASE WHEN t2_.esBalance = 1 THEN 'balance'
+						ELSE '' END AS sclr_9,
+					cliente.rSocial
+				FROM CCClientes c0_
+				LEFT JOIN Facturas f3_ ON c0_.facturaId = f3_.id AND (f3_.clienteId = 1)
+				LEFT JOIN Cobranzas c1_ ON c0_.cobranzaId = c1_.id AND (c1_.clienteId = 1)
+				LEFT JOIN TipoComprobante t2_ ON f3_.tipoId = t2_.id
+				INNER JOIN CCClientes c4_ ON (c4_.clienteId = 1 AND c0_.clienteId = 1 AND c0_.id >= c4_.id)
+				LEFT JOIN cliente ON cliente.idCliente = c0_.clienteId
+				GROUP BY c0_.id) AS sub
+				WHERE emision >= '$desdeSql'
+			";
+			
+			$res = $jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
+			
+			//ARMO RESPUESTA	
+			$response->setContent(
+					json_encode(array(
+						'success' =>true,					
+						)
+					)
+				);
+			
+			return $response;
+		}catch(\Exception $e){
+			throw $e;
+			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(
+				json_encode(array('success' => false, 'msg' => $e->getMessage()))
+				);
+		}
+			
+	}
+	
+	/**
+     * @Route("/CCClientes/Reportes/verCCCliente", name="mbp_CCClientes_verCCCliente", options={"expose"=true})
+     */	    
+    public function verCCCliente()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'ccCliente.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'ccCliente.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+		
+		$response->deleteFileAfterSend(TRUE);
+		
+        return $response;
+	}
 }
 
 

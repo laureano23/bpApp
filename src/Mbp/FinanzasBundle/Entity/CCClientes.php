@@ -38,7 +38,7 @@ class CCClientes
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fechaEmision", type="datetime")
+     * @ORM\Column(name="fechaEmision", type="date")
      */
     private $fechaEmision;
 

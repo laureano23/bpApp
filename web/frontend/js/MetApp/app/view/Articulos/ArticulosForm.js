@@ -4,7 +4,7 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 	id: 'articulosForm',
 	itemId: 'articulosForm',
 	width: 800,
-	height: 420,
+	height: 470,
 	layout: 'fit',
 	autoShow: true,
 	title: 'Tabla de Articulos',
@@ -233,12 +233,12 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 											items: autz.getAuthorizedElements(itemsBox1)
 										},
 										{
-											xtype: 'textfield',
+											xtype: 'textarea',
 											name: 'descripcion',
 											margin: '5 5 5 5',
 											readOnly: true,
 											fieldLabel: 'Descripcion',
-											width: 550
+											width: 750
 										},
 										{
 											xtype: 'container',

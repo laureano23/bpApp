@@ -12,7 +12,8 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 		'MetApp.view.Reportes.RepoSaldoDeudor',
 		'MetApp.view.Reportes.ReporteCbteNoPagodos',
 		'MetApp.view.Reportes.RepoChequeTerceros',
-		'MetApp.view.Reportes.RepoChequesEntregados'
+		'MetApp.view.Reportes.RepoChequesEntregados',
+		'MetApp.view.Reportes.ReporteCCCliente'
 	],
 	refs:[
 	],
@@ -98,7 +99,51 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 			'RepoChequesEntregados button[itemId=printReport]': {
 				click: this.ImprimirChequeTercerosEntregados
 			},
+			'viewport menuitem[itemId=reporteResumenCCCliente]': {
+				click: this.AddResumenCCCliente
+			},
+			'ReporteCCCliente button[itemId=btnCliente1]': {
+				click: this.BuscarClienteCC
+			},
+			'ReporteCCCliente button[itemId=printDateReport]': {
+				click: this.SubmitCCForm
+			},
 		});
+	},
+	
+	SubmitCCForm: function(btn){
+		var win=btn.up('window');
+		var form=win.down('form');
+		
+		form.submit({
+			clientValidation: true,
+			url: Routing.generate('mbp_CCClientes_reporteCC'),
+			success: function(resp){
+				var ruta=Routing.generate('mbp_CCClientes_verCCCliente');
+				window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+			}
+		});
+	},
+	
+	BuscarClienteCC: function(btn){
+		var winReporte=btn.up('window');
+		var win=Ext.widget('clientesSearchGrid');
+		var grid=win.down('grid');
+		grid.getStore().load();
+		var btnOk=win.queryById('insertCliente');
+		
+		btnOk.on('click', function(btn){
+			var sel=grid.getSelectionModel().getSelection()[0];
+			console.log(sel);
+			winReporte.queryById('cliente1').setValue(sel.data.id);
+			
+			win.close();
+		})
+		
+	},
+	
+	AddResumenCCCliente: function(btn){
+		var win=Ext.widget('ReporteCCCliente');
 	},
 	
 	AddChequeTercerosEntregados: function(btn){

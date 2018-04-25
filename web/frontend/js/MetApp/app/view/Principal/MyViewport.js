@@ -613,6 +613,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
 		                    render : dragZone,
 		                }, 
         			},
+        			{
+        				text: 'Resumen Cuenta Corriente',
+        				itemId: 'reporteResumenCCCliente',
+        				listeners : {
+		                    render : dragZone,
+		                }, 
+        			},
         		]        		
         	},
         	{
@@ -721,17 +728,8 @@ Ext.define('MetApp.view.Principal.MyViewport', {
         
         var menuUtilitarios = [
         	{
-        		text: 'TXT',
-        		menu: [
-        			{
-        				text: 'TXT Percepciones por Ventas',
-        				itemId: 'tbPercepciones'
-        			},
-        			{
-        				text: 'TXT Retenciones por Pagos',
-        				itemId: 'tbRetenciones'
-        			}
-        		]
+        		text: 'TXT Retenciones/Percepciones',
+        		itemId: 'tbRetenciones'
         	},
         ]
     		    	

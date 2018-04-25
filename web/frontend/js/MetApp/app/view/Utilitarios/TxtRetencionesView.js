@@ -1,12 +1,12 @@
 Ext.define('MetApp.view.Utilitarios.TxtRetencionesView', {
 	extend: 'Ext.window.Window',
 	layout: 'fit',
-	width: 300,
+	width: 340,
 	autoShow: true,
 	modal: true,
 	alias: 'widget.TxtRetencionesView',
 	layout: 'vbox',
-	title: 'TXT Retenciones',
+	title: 'TXT Retenciones/Percepciones',
 	itemId: 'TxtRetencionesView',
 	listeners: {
 		render: {
@@ -21,9 +21,9 @@ Ext.define('MetApp.view.Utilitarios.TxtRetencionesView', {
 		Ext.applyIf(me, {
 			items: [
 				{
-					xtype: 'form',
+					xtype: 'form',					
 					itemId: 'fechaForm',
-					width: 295,
+					width: 340,
 					border: false,
 					layout: {
 						type: 'vbox',
@@ -114,6 +114,13 @@ Ext.define('MetApp.view.Utilitarios.TxtRetencionesView', {
 							text: 'Descargar',
 							itemId: 'descargar',
 							action: 'descargar',
+						},
+						{
+							html: 'Los archivos generados son TXT que deben</br>ser procesado con el aplicativo GenHash de ARBA</br>para poder ser subidos',
+							style: {
+								'font-weight': 'bold'
+							},
+							border: false
 						}
 					]
 				}		

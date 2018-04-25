@@ -23,10 +23,13 @@ class AplicativosController extends Controller
 		$repo = $em->getRepository('MbpFinanzasBundle:Facturas');
 		$response = new Response;
 		$kernel = $this->get('kernel');	
+		$req = $this->getRequest();
 		
 		try{
-			$desde= new \DateTime("2018-01-01");
-			$hasta= new \DateTime("2018-04-30");
+			$desde=$req->request->get('desde');
+			$hasta=$req->request->get('hasta');
+			$desde= \DateTime::createFromFormat('d/m/Y', $desde);
+			$hasta= \DateTime::createFromFormat('d/m/Y', $hasta);
 			$cuit = $this->container->getParameter('cuit_prod');
 			
 			$cuit=$cuit = $this->getCuitFormateado();
@@ -57,7 +60,7 @@ class AplicativosController extends Controller
 				->getQuery()
 				->getArrayResult();
 			
-			$nombreArchivo="AR"."-".$this->container->getParameter('cuit_prod')."-".$desde->format("Ym").self::$periodoPercepcion."-".self::$codigoPercepcion."-LOTE1";
+			$nombreArchivo="AR"."-".$this->container->getParameter('cuit_prod')."-".$desde->format("Ym").self::$periodoPercepcion."-".self::$codigoPercepcion."-LOTE1.txt";
 			
 			$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/txt/');
 			$file=fopen($basePath.$nombreArchivo, "w");
@@ -66,19 +69,9 @@ class AplicativosController extends Controller
 				$str = $cuit.$linea['fecha'].$linea['tipoCbte'].$linea['subTipoCbte'].$linea['ptoVta'].$linea['fcNro'].$linea['subTotal'].$linea['perIIBB'].$linea['finLinea'].PHP_EOL;	
 				fwrite($file, $str);
 			}
-			
-			$nombreZip=$nombreArchivo.md5($nombreArchivo).".zip";
-			$zip=new \ZipArchive;
-			
-			if($zip->open($basePath.$nombreZip, \ZipArchive::CREATE) !== TRUE){
-				throw new \Exception("Error al generar ZIP", 1);				
-			};
 			fclose($file);
-			
-			$zip->addFile($basePath.$nombreArchivo, $nombreArchivo.".txt");
-			$zip->close();			
 							
-			return $response->setContent(json_encode(array('success' => true, 'nombreArchivo' => $nombreZip)));
+			return $response->setContent(json_encode(array('success' => true, 'nombreArchivo' => $nombreArchivo)));
 		}catch(\Exception $e){
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(json_encode(array('success' => false, 'msg' => $e->getMessage())));
@@ -128,7 +121,7 @@ class AplicativosController extends Controller
 				->getArrayResult();
 			
 		
-			$nombreArchivo="AR"."-".$this->container->getParameter('cuit_prod')."-".$desde->format("Ym").$quincena."-".self::$codigoPercepcion."-LOTE1";
+			$nombreArchivo="AR"."-".$this->container->getParameter('cuit_prod')."-".$desde->format("Ym").$quincena."-".self::$codigoPercepcion."-LOTE1.txt";
 			
 			$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/txt/');
 			$file=fopen($basePath.$nombreArchivo, "w");
@@ -139,18 +132,8 @@ class AplicativosController extends Controller
 			}
 			
 			fclose($file);
-			
-			$nombreZip=$nombreArchivo.md5($nombreArchivo).".zip";
-			$zip=new \ZipArchive;
-			
-			if($zip->open($basePath.$nombreZip, \ZipArchive::CREATE) !== TRUE){
-				throw new \Exception("Error al generar ZIP", 1);				
-			};
-			
-			$zip->addFile($basePath.$nombreArchivo, $nombreArchivo.".txt");
-			$zip->close();			
 							
-			return $response->setContent(json_encode(array('success' => true, 'nombreArchivo' => $nombreZip)));		
+			return $response->setContent(json_encode(array('success' => true, 'nombreArchivo' => $nombreArchivo)));		
 		}catch(\Exception $e){
 			
 			throw $e;
@@ -180,6 +163,8 @@ class AplicativosController extends Controller
         );
 		$response->headers->set('Content-type', 'application/zip');
 		$response->headers->set('Content-length', filesize($basePath.$nombreArchivo));
+		
+		$response->deleteFileAfterSend(TRUE);
 
         return $response;
 		
