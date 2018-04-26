@@ -10,19 +10,24 @@ Ext.define('MetApp.store.Clientes.Clientes',{
 	
 	proxy: {
 		type: 'ajax',
-		filterParam: 'filter',		
+		filterParam: 'filter',	
 		api: {
-			read: Routing.generate('mbp_clientes_search')			
+			create: Routing.generate('mbp_clientes_new'),
+			read: Routing.generate('mbp_clientes_search'),			
+			update: Routing.generate('mbp_clientes_new'),
+			destroy: Routing.generate('mbp_clientes_new')			
 		},
 		
 		reader: {
 			type: 'json',
-			root: 'data'
+			root: 'data',
+			idProperty: 'id'
 		},
 		
 		writer: {
 			type: 'json',
-			root: 'data'
+			root: 'data',
+			encode: true
 		}
 	}
 });

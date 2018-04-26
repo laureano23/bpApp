@@ -168,22 +168,24 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 		var botonera = btn.up('window').queryById('botonera');
 		form = btn.up('form');
 		values = form.getForm().getValues();
+		var store = Ext.StoreManager.lookup('Clientes.Clientes');
+		
+		store.on('write', function(st, op){
+			var rec = op.getRecords();
+			form.loadRecord(rec[0]);
+			botonera.guardarItem(botonera);
+			form.query('.field').forEach(function(c){c.setReadOnly(true);});
+		});
 		
 		if(form.isValid() == true){
-			form.getForm().submit({
-				url: Routing.generate('mbp_clientes_new'),
-				
-				success: function(resp, act){
-					jsonResp = Ext.JSON.decode(act.response.responseText);
-					if(jsonResp.success == true){
-						form.query('.field').forEach(function(c){c.setReadOnly(true);});
-						form.queryById('id').setValue(jsonResp.id);
-					}
-					botonera.guardarItem(botonera);
-				},
-				
-				failure: ''
-			});
+			if(values.id > 0){
+				var model=Ext.create('MetApp.model.Clientes.ClientesModel');
+				model.set(values);
+				var newModel=store.add(model);				
+			}else{
+				var model=getRecord();
+				model.set(values);	
+			}	
 		}
 	},
 	

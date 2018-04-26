@@ -16,7 +16,8 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		'MetApp.view.CCClientes.Cobranza',
 		'MetApp.resources.ux.MailerWindow',
 		'Articulos.Stock.Remitos.RemitosPendientesView',
-		'MetApp.view.CCProveedores.BalanceView'
+		'MetApp.view.CCProveedores.BalanceView',
+		'MetApp.view.CCClientes.NotasCCView'
 	],
 	refs:[
 		{
@@ -47,6 +48,9 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			},
 			'CCClientes button[itemId=nuevoCobro]': {
 				click: this.AddNuevoCobro
+			},
+			'CCClientes button[itemId=notas]': {
+				click: this.NuevaNota
 			},
 			'CCClientes actioncolumn[itemId=detalle]': {
 				click: this.DetalleComprobante
@@ -104,7 +108,40 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			},
 			'cobranza combobox[itemId=formaPago]': {
 				select: this.SetReadOnlyCuenta
-			}
+			},
+		});
+	},
+	
+	
+	NuevaNota: function(btn){
+		var win=btn.up('window');
+		var winNota=Ext.widget('NotasCCView');
+		var btn=winNota.queryById('guardar');
+		var rec=win.down('form').getForm().getRecord();
+		var notas=winNota.queryById('notasCC');
+		
+		console.log(rec);
+		notas.setValue(rec.data.notasCC);
+		btn.on('click', function(btn){
+			//rec.set('notasCC', notas.getValue());
+			var form=winNota.down('form');
+			form.submit();
+			/*var form=winNota.down('form');
+			
+			
+			form.submit({
+				url: Routing.generate('mbp_clientes_cc_notas'),
+				
+				params:{
+					idCliente: win.queryById('id').getValue(),
+					notas: notas.getValue()
+				},
+				
+				success: function(form, action){
+					
+				}
+			})*/
+			
 		});
 	},
 	

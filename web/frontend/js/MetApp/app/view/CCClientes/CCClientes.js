@@ -210,6 +210,11 @@ Ext.define('MetApp.view.CCClientes.CCClientes' ,{
 							xtype: 'button',
 							itemId: 'balance',
 							text: 'Balance (F5)',
+						},
+						{
+							xtype: 'button',
+							itemId: 'notas',
+							text: 'Notas',
 						}
 					]
 				}

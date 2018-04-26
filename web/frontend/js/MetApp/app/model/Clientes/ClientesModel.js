@@ -26,6 +26,7 @@ Ext.define('MetApp.model.Clientes.ClientesModel',{
 		{name: 'transporte', type: 'int'},
 		{name: 'intereses', type: 'boolean'},
 		{name: 'tasa', type: 'string'},
-		{name: 'descuentoFijo', type: 'string'},			
+		{name: 'descuentoFijo', type: 'string'},
+		{name: 'notasCC', type: 'string'},			
 	]
 });

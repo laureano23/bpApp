@@ -31,6 +31,12 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 		$request = $this->getRequest();
+		
+		$data = json_decode($request->request->get('data'));
+		
+		
+		
+		
 		$response = new Response;
 		$repoDepto = $em->getRepository('MbpPersonalBundle:Departamentos');
 		$repoProvincia = $em->getRepository('MbpPersonalBundle:Provincia');
@@ -40,45 +46,47 @@ class DefaultController extends Controller
 		$repoTransporte = $em->getRepository('MbpClientesBundle:Transportes');
 		
 		try{
+			//throw new \Exception("Error Processing Request", 1);
 			$cliente = 0;
-			if($request->request->get('id') > 0){
-				$cliente = $repoClientes->find($request->request->get('id'));
+			if($data->id > 0){
+				$cliente = $repoClientes->find($data->id);
 			}else{
 				$cliente = new Cliente();	
 			}
-			$estadoCuenta = $request->request->get('cuentaCerrada') == 'on' ? 1 : 0;
-			$intereses = $request->request->get('intereses') == 'on' ? 1 : 0;
+			$estadoCuenta = $data->cuentaCerrada == 'on' ? 1 : 0;
+			$intereses = $data->intereses == 'on' ? 1 : 0;
 					
-			$cliente->setRsocial($request->request->get('rsocial'));
-			$cliente->setDenominacion($request->request->get('denominacion'));
-			$cliente->setDireccion($request->request->get('direccion'));
-			$cliente->setDepartamento($repoDepto->find($request->request->get('departamento')));
-			$cliente->setProvincia($repoProvincia->find($request->request->get('provincia')));
-			$cliente->setLocalidad($repoLocalidad->find($request->request->get('localidad')));
-			$cliente->setEmail($request->request->get('email'));
-			$cliente->setCuit($request->request->get('cuit'));
-			$cliente->setCPostal($request->request->get('cPostal'));
-			$iva = $repoIva->find($request->request->get('iva'));
+			$cliente->setRsocial($data->rsocial);
+			$cliente->setDenominacion($data->denominacion);
+			$cliente->setDireccion($data->direccion);
+			$cliente->setDepartamento($repoDepto->find($data->departamento));
+			$cliente->setProvincia($repoProvincia->find($data->provincia));
+			$cliente->setLocalidad($repoLocalidad->find($data->localidad));
+			$cliente->setEmail($data->email);
+			$cliente->setCuit($data->cuit);
+			$cliente->setCPostal($data->cPostal);
+			$iva = $repoIva->find($data->iva);
 			
 			if(empty($iva)){
 				throw new \Exception("No existe la posicion de IVA", 1); 
 			}
 			
 			$cliente->setIva($iva);
-			$cliente->setTelefono1($request->request->get('telefono1'));
-			$cliente->setContacto1($request->request->get('contacto1'));
-			$cliente->setTelefono2($request->request->get('telefono2'));
-			$cliente->setContacto2($request->request->get('contacto2'));
-			$cliente->setTelefono3($request->request->get('telefono3'));
-			$cliente->setContacto3($request->request->get('contacto3'));
-			$cliente->setCondVenta($request->request->get('condVenta'));
-			$cliente->setVencimientoFc($request->request->get('vencimientoFc'));
+			$cliente->setTelefono1($data->telefono1);
+			$cliente->setContacto1($data->contacto1);
+			$cliente->setTelefono2($data->telefono2);
+			$cliente->setContacto2($data->contacto2);
+			$cliente->setTelefono3($data->telefono3);
+			$cliente->setContacto3($data->contacto3);
+			$cliente->setCondVenta($data->condVenta);
+			$cliente->setVencimientoFc($data->vencimientoFc);
 			$cliente->setCuentaCerrada($estadoCuenta);
 			$cliente->setIntereses($intereses);
-			$cliente->setTasaInt($request->request->get('tasa'));
-			$cliente->setDescuentoFijo($request->request->get('descuentoFijo'));
+			$cliente->setTasaInt($data->tasa);
+			$cliente->setDescuentoFijo($data->descuentoFijo);
+			$cliente->setNotasCC($data->notasCC);
 			
-			$transporte = $repoTransporte->find($request->request->get('transporte'));
+			$transporte = $repoTransporte->find($data->transporte);
 			if(!empty($transporte)) $cliente->setTransporteId($transporte);
 			
 			$em->persist($cliente);
@@ -87,7 +95,7 @@ class DefaultController extends Controller
 			return $response->setContent(
 				json_encode(array(
 					'success' => true,
-					'id' => $cliente->getId()
+					'data' => array('id' => $cliente->getId())
 				))
 			);
 		}catch(\Exception $e){
@@ -121,6 +129,38 @@ class DefaultController extends Controller
 		));
 		
 		return new Response();
+	}
+	
+	/**
+     * @Route("/cc/notas", name="mbp_clientes_cc_notas", options={"expose"=true})
+     */ 
+	public function notas()
+	{
+		$em = $this->getDoctrine()->getManager();
+		$request = $this->getRequest();
+		$repo = $em->getRepository('MbpClientesBundle:Cliente');
+		$response=new Response();
+		
+		try{
+			$id = $request->request->get('idCliente');
+			$notas = $request->request->get('notas');
+			$cliente = $repo->find($id);
+			
+			$cliente->setNotasCC($notas);
+			
+			$em->persist($cliente);
+			$em->flush();
+			
+			return $response->setContent( json_encode(array(
+				'success' => true
+			)));
+		}catch(\Exception $e){
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent( json_encode(array(
+				'success' => false,
+				'msg' => $e->getMessage()
+			)));
+		}
 	}
 }
 

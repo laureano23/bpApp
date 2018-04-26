@@ -178,6 +178,14 @@ class Cliente
     private $transporteId;
 	
 	/**
+     * @var text
+     *
+     * @ORM\Column(name="notasCC", type="text", nullable=true)
+     */
+    private $notasCC;
+	
+	
+	/**
      * @var decimal
      *
      * @ORM\Column(name="descuentoFijo", type="decimal", precision=5, scale=2, nullable=false)
@@ -731,5 +739,29 @@ class Cliente
     public function getDescuentoFijo()
     {
         return $this->descuentoFijo;
+    }
+
+    /**
+     * Set notasCC
+     *
+     * @param string $notasCC
+     *
+     * @return Cliente
+     */
+    public function setNotasCC($notasCC)
+    {
+        $this->notasCC = $notasCC;
+
+        return $this;
+    }
+
+    /**
+     * Get notasCC
+     *
+     * @return string
+     */
+    public function getNotasCC()
+    {
+        return $this->notasCC;
     }
 }
