@@ -10,50 +10,31 @@ use Mbp\FinanzasBundle\Entity\DetalleMovimientosBancos;
 
 class PagosListener
 {
-	public $em;
-	
-	public function __construct(EntityManager $em)
+	//si la orden de pago consta de movimientos bancarios registramos los mismos
+	public function postPersist(LifecycleEventArgs $args)
 	{
-		$this->em = $em;	
-	}
-	
-	/*
-	 * LISTENER PARA QUE AL GENERAR UN PAGO CON CHEQUE DE TERCEROS QUEDE SETEADO CON CODIGO 1 COMO ENTREGADO A PROVEEDOR
-	 */	
-	public function onKernelRequest(GetResponseEvent $event)
-	{
-		$kernel    = $event->getKernel();
-        $request   = $event->getRequest();
+		$entity = $args->getEntity();
+		$entityManager = $args->getEntityManager();
 		
-		if(!$request->request->get('listener') && $request->request->get('listener') != 'nuevoPago'){
-			return;
-		}
-				
-		if(!json_decode($request->request->get('data'))){
-			return;
-		}
-		
-		$data = json_decode($request->request->get('data'));
-		
-		if(!is_array($data)){
-			return;
-		}
-		
-		$repoCobranzaDetalle = $this->em->getRepository('MbpFinanzasBundle:CobranzasDetalle');
-		$repoFormaPago = $this->em->getRepository('MbpFinanzasBundle:FormasPagos');
-		foreach ($data as $rec) {
-			/* SI EL CHEQUE TIENE ID = 0 ES PORQUE ES UN CHEQUE PROPIO */
-			if($rec->idCheque == 0){ return; }
+		//cuando genero la OP, debo buscar en las cobranzas los cheques de terceros que estoy entregando y marcarlos como estado=1
+		if ($entity instanceof OrdenPago) {
+			$repoCobranzas = $entityManager->getRepository('MbpFinanzasBundle:CobranzasDetalle');
+			$detalles = $entity->getPagoDetalleId();
 			
-			$formaPago = $repoFormaPago->findOneByDescripcion($rec->formaPago);
-			if(!empty($formaPago) && $formaPago->getChequeTerceros() == true){
-				$cheque = $repoCobranzaDetalle->find($rec->idCheque);
-				$cheque->setEstado(1);
-				$this->em->persist($cheque);
+			foreach ($detalles as $d) {
+				if($d->getIdFormaPago()->getChequeTerceros() == true){
+					$detalleCobranza=$repoCobranzas->findOneBy(array(
+						'importe' => $d->getImporte(),
+						'numero' => $d->getNumero(),
+						'banco' => $d->getBanco()
+						));
+					$detalleCobranza->setEstado(1);
+					$entityManager->persist($detalleCobranza);
+				}
 			}
+			$entityManager->flush();
 		}
 	}
-	
 }
 
 

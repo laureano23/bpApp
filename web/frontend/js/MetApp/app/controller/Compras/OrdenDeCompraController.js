@@ -393,9 +393,10 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 
 	VerOrdenDetalle: function(btn){
 		var win = btn.up('window');
+		var grid=win.down('grid');
 		var selection = win.down('grid').getSelectionModel().getSelection()[0];
 
-		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
+		var myMask = new Ext.LoadMask(grid, {msg:"Cargando..."});
 		myMask.show();
 		Ext.Ajax.request({
 			url: Routing.generate('mbp_compras_reporteOrden'),

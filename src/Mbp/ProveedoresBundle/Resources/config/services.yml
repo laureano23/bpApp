@@ -1,9 +1,4 @@
 services:
-    pago_cheque_terceros:
-        class: Mbp\ProveedoresBundle\Listener\PagosListener
-        arguments: [ @doctrine.orm.entity_manager ]
-        tags:
-          - { name: kernel.event_listener, event: kernel.request }
     eliminar_op:
         class: Mbp\ProveedoresBundle\Listener\EliminarOPListener
         tags:
@@ -14,6 +9,5 @@ services:
           - { name: doctrine.event_listener, event: preRemove }
     Pagos:
         class: Mbp\ProveedoresBundle\Listener\PagosListener
-        arguments: [ @doctrine.orm.entity_manager ]
         tags:
-          - { name: kernel.event_listener, event: kernel.request }
+          - { name: doctrine.event_listener, event: postPersist }
