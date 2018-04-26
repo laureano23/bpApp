@@ -32,7 +32,7 @@ class RemitosClientesDetalles
     /**
      * @var string
      *
-     * @ORM\Column(name="cantidad", type="decimal")
+     * @ORM\Column(name="cantidad", type="decimal", precision=9, scale=2)
      * @Assert\Range(
      *      min = 0.01,
      *      max = 1000000
