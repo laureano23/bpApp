@@ -117,7 +117,7 @@ class FormulasClass
 		$this->em->getConnection()->beginTransaction();
 		
 		try{
-			if($abuelo == 0 && $nodo_a_eliminar->getCant() == 0){
+			if($abuelo == 0 && $nodo_a_eliminar->getCant() > 0){
 				//SI ENTRA ACA ES PORQUE ESTAMOS EN LA FORMULA MADRE Y HAY QUE BORRAR EL ITEM DE TODAS LAS FORMULAS
 				$item = $repo->findByIdArt($art);
 				foreach ($item as $rec) {
@@ -140,7 +140,7 @@ class FormulasClass
 					$this->em->flush();
 					$this->orden_nodo_chld_abajo_delete($padre_nod_eliminar->getLft(), $padre_nod_eliminar->getRgt());
 				}
-			}elseif($this->es_formula($art[0]->getId()) == TRUE){
+			}elseif($this->es_formula($art[0]->getId()) == TRUE){//no estamos en una formula madre
 				$nodos = $repo->formulasEstrucutraMateriales($this->idNodoFormula);
 				foreach ($nodos as $nodo) {
 					$this->em->remove($nodo);

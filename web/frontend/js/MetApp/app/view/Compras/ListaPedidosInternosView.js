@@ -16,6 +16,9 @@ Ext.define('MetApp.view.Compras.ListaPedidosInternosView' ,{
 			items: [
 				{
 					xtype: 'grid',
+					viewConfig: {
+						enableTextSelection: true,
+					}, 
 					plugins: [
 	        			Ext.create('Ext.grid.plugin.CellEditing',{
 	        				clicksToEdit: 1,
@@ -34,6 +37,7 @@ Ext.define('MetApp.view.Compras.ListaPedidosInternosView' ,{
 						{ text: 'Código', dataIndex: 'codigo', width: 150 },
 						{ text: 'Descripción', dataIndex: 'descripcion', width: 300 },
 						{ text: 'Cantidad', dataIndex: 'cant', flex: 1 },
+						{ text: 'Cantidad', dataIndex: 'unidad', flex: 1 },
 						{ 
 							header: 'Cumplido',
 							dataIndex: 'cumplido',

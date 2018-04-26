@@ -11,7 +11,10 @@ Ext.define('MetApp.view.Articulos.ArticuloSearchGrd', {
 	loadMask: true,
 	width: 700,
     height: 500,
-    plugins: 'bufferedrenderer',    
+    plugins: ['bufferedrenderer'],
+    viewConfig: {
+		enableTextSelection: true,
+	},    
     multiSelect: true,
     listeners: {
     	cellkeydown: function(cell, td, cellIndex, record, tr, rowIndex, e, eOpts ){
@@ -104,7 +107,7 @@ Ext.define('MetApp.view.Articulos.ArticuloSearchGrd', {
 		this.columns = [
 			{xtype: 'rownumberer', width: 50, sortable: false},
 			{header: 'Id', dataIndex: 'id', flex: 1, hidden: true},
-			{header: 'Codigo', dataIndex: 'codigo', flex: 1},
+			{header: 'Codigo', dataIndex: 'codigo', width:170 },
 			{header: 'Descripcion', dataIndex: 'descripcion', flex: 1}
 		],
 		this.callParent();

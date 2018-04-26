@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ResumenCuenta" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4e5228fb-db98-4dd7-8b25-f2c19dafdbf4">
-	<property name="ireport.zoom" value="1.2100000000000006"/>
+	<property name="ireport.zoom" value="1.464100000000001"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="FECHA_DESDE" class="java.lang.String">
@@ -58,6 +58,12 @@ WHERE emision >= $P{FECHA_DESDE}]]>
 	<field name="rSocial" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<variable name="TOTAL_DEBE" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{debe}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_HABER" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{haber}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -169,11 +175,13 @@ WHERE emision >= $P{FECHA_DESDE}]]>
 			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="276" y="0" width="93" height="20" uuid="887ae375-8c6f-43a8-b1b8-069caa3f4556"/>
+				<box leftPadding="3"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{debe}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="369" y="0" width="93" height="20" uuid="12a2c23f-8462-416e-b138-f731ec6be0cc"/>
+				<box leftPadding="3"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{haber}]]></textFieldExpression>
 			</textField>
@@ -200,4 +208,38 @@ WHERE emision >= $P{FECHA_DESDE}]]>
 			</textField>
 		</band>
 	</pageFooter>
+	<summary>
+		<band height="20">
+			<textField evaluationTime="Report" pattern="#,##0.00">
+				<reportElement x="276" y="0" width="93" height="20" uuid="30a647a5-07b5-4297-ab31-5aa4eb5f804f"/>
+				<box leftPadding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL_DEBE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="20" uuid="4558f5ad-89dc-4ee1-890e-959ae26f6491"/>
+				<box leftPadding="3">
+					<pen lineWidth="2.0"/>
+					<topPen lineWidth="2.0"/>
+					<leftPen lineWidth="2.0"/>
+					<bottomPen lineWidth="2.0"/>
+					<rightPen lineWidth="2.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SubTotal:]]></text>
+			</staticText>
+			<textField evaluationTime="Report" pattern="#,##0.00">
+				<reportElement x="369" y="0" width="93" height="20" uuid="f4beeeb9-530a-424f-8e86-58f279e2ae29"/>
+				<box leftPadding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL_HABER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
 </jasperReport>

@@ -459,6 +459,7 @@ Ext.define('MetApp.view.Compras.OrdenCompraView' ,{
 													itemId: 'iva',
 													name: 'iva',
 													fieldLabel: 'Iva',
+													decimalSeparator: '.'
 												},	
 								                {
 								                	xtype: 'datefield',
