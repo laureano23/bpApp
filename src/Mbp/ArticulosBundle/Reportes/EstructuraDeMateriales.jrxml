@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EstructuraDeMateriales" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7c719db6-fefe-4fcb-914a-8c49a59a37f5">
-	<property name="ireport.zoom" value="2.14358881000002"/>
-	<property name="ireport.x" value="509"/>
+	<property name="ireport.zoom" value="1.2100000000000115"/>
+	<property name="ireport.x" value="177"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Prof1" mode="Opaque" forecolor="#000000" backcolor="#FFFFFF" fontSize="8" isItalic="false" isUnderline="false">
 		<conditionalStyle>
@@ -110,12 +110,18 @@ ORDER BY node.lft) AS y ON x.id = y.id]]>
 	<variable name="bool_style" class="java.lang.Boolean">
 		<variableExpression><![CDATA[$F{depth} == 1 ? 1 : 0]]></variableExpression>
 	</variable>
-	<variable name="total" class="java.lang.Integer" calculation="Sum">
-		<variableExpression><![CDATA[$F{moneda} == "1" && $F{depth} == 1 ? $F{sumCosto} * $P{tc} :
-$F{moneda} != "1" && $F{depth} == 1 ? $F{sumCosto} : 0]]></variableExpression>
+	<variable name="total" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{depth} == 1 ?
+$F{sumCostoPadre}
+:0
+]]></variableExpression>
 	</variable>
 	<variable name="COSTO_UNITARIO" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$F{costo} == 0 ? $F{sumCosto} : $F{costo}]]></variableExpression>
+	</variable>
+	<variable name="subtotal" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{moneda} == true ? $V{COSTO_UNITARIO} * $P{tc} *$F{cant}:
+$V{COSTO_UNITARIO} *$F{cant}]]></variableExpression>
 	</variable>
 	<group name="sub_rep">
 		<groupExpression><![CDATA[]]></groupExpression>
@@ -192,7 +198,9 @@ $F{moneda} != "1" && $F{depth} == 1 ? $F{sumCosto} : 0]]></variableExpression>
 				<text><![CDATA[Costo ($):]]></text>
 			</staticText>
 			<textField evaluationTime="Report" pattern="¤ #,##0.00" isBlankWhenNull="false">
-				<reportElement x="442" y="28" width="92" height="16" forecolor="#FFFFFF" uuid="e4f48c68-aeef-4443-960c-a6f10edc5c70"/>
+				<reportElement x="442" y="28" width="92" height="16" forecolor="#FFFFFF" uuid="e4f48c68-aeef-4443-960c-a6f10edc5c70">
+					<printWhenExpression><![CDATA[$F{depth}==0]]></printWhenExpression>
+				</reportElement>
 				<box>
 					<bottomPen lineWidth="0.0"/>
 				</box>
@@ -303,8 +311,7 @@ $F{moneda} != "1" && $F{depth} == 1 ? $F{sumCosto} : 0]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{moneda} == true ? $V{COSTO_UNITARIO} * $P{tc} :
-$V{COSTO_UNITARIO} *$F{cant}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{subtotal}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement x="539" y="0" width="51" height="18" uuid="b43fe537-40af-4d5f-a879-b173cedbc2f8">
@@ -344,9 +351,7 @@ $V{COSTO_UNITARIO} *$F{cant}]]></textFieldExpression>
 				</textField>
 			</frame>
 			<textField isBlankWhenNull="true">
-				<reportElement x="751" y="0" width="51" height="18" uuid="9193fc4d-84b8-4615-b12e-7bc1d33994f9">
-					<printWhenExpression><![CDATA[$F{depth} != 0]]></printWhenExpression>
-				</reportElement>
+				<reportElement x="751" y="0" width="51" height="18" uuid="9193fc4d-84b8-4615-b12e-7bc1d33994f9"/>
 				<box>
 					<bottomPen lineWidth="1.0"/>
 				</box>

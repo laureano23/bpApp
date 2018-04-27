@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EnQueFormulas" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="34ae39a7-cbfa-49a7-b1b1-e79224fec120">
+	<property name="ireport.zoom" value="1.2100000000000002"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="CODIGO" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT * FROM
+(SELECT
+     Formulas.`id` AS Formulas_id,
+     Formulas.`cant` AS Formulas_cant,
+     Formulas.`idArt` AS Formulas_idArt,
+     Formulas.`lft` AS Formulas_lft,
+     Formulas.`rgt` AS Formulas_rgt,
+     articulos.`idArticulos` AS articulos_idArticulos,
+     articulos.`descripcion` AS articulos_descripcion,
+     articulos.`codigo` AS articulos_codigo
+FROM
+     `Formulas` Formulas LEFT JOIN `articulos` articulos ON articulos.`idArticulos` = Formulas.`idArt`
+WHERE articulos.`codigo` = $P{CODIGO}) AS NODO,
+`Formulas` AS PARENT
+WHERE lft < PARENT.lft
+AND lft < PARENT.rgt]]>
+	</queryString>
+	<field name="Formulas_id" class="java.lang.Integer"/>
+	<field name="Formulas_cant" class="java.lang.Double"/>
+	<field name="Formulas_idArt" class="java.lang.Integer"/>
+	<field name="Formulas_lft" class="java.lang.Integer"/>
+	<field name="Formulas_rgt" class="java.lang.Integer"/>
+	<field name="articulos_idArticulos" class="java.lang.Integer"/>
+	<field name="articulos_descripcion" class="java.lang.String"/>
+	<field name="articulos_codigo" class="java.lang.String"/>
+	<field name="id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cant" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="idArt" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lft" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="rgt" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="140" height="20" uuid="d1a9287d-2f50-421e-b376-8137f93eb8c9"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Código]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="0" width="315" height="20" uuid="a2c42c1a-cf12-4311-8307-701dac4cec6e"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="455" y="0" width="100" height="20" uuid="6a7134cc-1295-4231-943d-920ffb44ea08"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="140" height="20" uuid="d2ab0917-e507-4390-b88a-dd3e22b93ce9"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{articulos_codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="140" y="0" width="315" height="20" uuid="cb691612-57a6-49e7-979e-e780d79b03d0"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{articulos_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="455" y="0" width="100" height="20" uuid="d984c470-0b7e-4bf1-9274-8c53da8dd2ce"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Formulas_cant}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -49,7 +49,16 @@ class ArticulosController extends Controller
 		if($existeEnFormula){
 			$tc=$tipoCambio->getTipoCambio();
 			$qb = $repoFormula->estructuraCompleta($existeEnFormula[0]['id'], $tc);
-			$costo=$qb[0]['sumCosto'];
+			
+			//print_r($qb);
+			foreach ($qb as $q) {
+				if($q['depth'] ==1){
+					$costo+=$q['sumCostoPadre'];	
+				}	
+			}
+			
+			
+			
 		}else{
 			$costo = $articulo->getCosto();
 		}
