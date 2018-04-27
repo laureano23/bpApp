@@ -88,10 +88,11 @@ class RemitosController extends Controller
 			$remito->setDomicilio($origen->getDireccion());
 			$prov = $origen->getProvincia();
 			$depto = $origen->getDepartamento();
+			$localidad=$origen->getLocalidad();
 			if($prov == NULL || $depto == NULL) throw new \Exception("Se deben cargar provincia y localidad", 1);
 			
 			$remito->setProvincia($prov->getNombre());
-			$remito->setLocalidad($depto->getNombre());
+			$remito->setLocalidad($localidad->getNombre());
 			
 
 			foreach ($items as $item) {
