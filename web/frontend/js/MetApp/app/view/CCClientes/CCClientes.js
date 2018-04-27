@@ -88,6 +88,11 @@ Ext.define('MetApp.view.CCClientes.CCClientes' ,{
 									name: 'rsocial',
 									itemId: 'rsocial',
 									width: 450
+								},
+								{
+									xtype: 'button',
+									text: 'Detalle',
+									itemId: 'detalleCliente',
 								}
 							]
 						},

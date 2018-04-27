@@ -179,12 +179,14 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 		
 		if(form.isValid() == true){
 			if(values.id > 0){
+				var model=form.getRecord();
+				model.set(values);	
+				model.save();		
+			}else{				
 				var model=Ext.create('MetApp.model.Clientes.ClientesModel');
 				model.set(values);
-				var newModel=store.add(model);				
-			}else{
-				var model=getRecord();
-				model.set(values);	
+				var newModel=store.add(model);
+				store.sync();	
 			}	
 		}
 	},

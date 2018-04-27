@@ -28,5 +28,27 @@ Ext.define('MetApp.model.Clientes.ClientesModel',{
 		{name: 'tasa', type: 'string'},
 		{name: 'descuentoFijo', type: 'string'},
 		{name: 'notasCC', type: 'string'},			
-	]
+	],
+	proxy: {
+		type: 'ajax',
+		filterParam: 'filter',	
+		api: {
+			create: Routing.generate('mbp_clientes_new'),
+			read: Routing.generate('mbp_clientes_search'),			
+			update: Routing.generate('mbp_clientes_new'),
+			destroy: Routing.generate('mbp_clientes_new')			
+		},
+		
+		reader: {
+			type: 'json',
+			root: 'data',
+			idProperty: 'id',
+		},
+		
+		writer: {
+			type: 'json',
+			root: 'data',
+			encode: true
+		}
+	}
 });

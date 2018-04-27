@@ -61,6 +61,9 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			'CCClientes actioncolumn[itemId=eliminar]': {
 				click: this.EliminarComprobante
 			},
+			'CCClientes button[itemId=detalleCliente]': {
+				click: this.DetalleCliente
+			},
 			'MailerWindow button[itemId=enviarMail]': {
 				click: this.EnviarMail
 			},
@@ -112,6 +115,13 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		});
 	},
 	
+	DetalleCliente: function(btn){
+		var winCC=btn.up('window');
+		var rec=winCC.down('form').getForm().getRecord();
+		var win=Ext.widget('clientestb');
+		
+		win.down('form').loadRecord(rec);
+	},
 	
 	NuevaNota: function(btn){
 		var win=btn.up('window');
@@ -120,28 +130,18 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var rec=win.down('form').getForm().getRecord();
 		var notas=winNota.queryById('notasCC');
 		
-		console.log(rec);
 		notas.setValue(rec.data.notasCC);
 		btn.on('click', function(btn){
-			//rec.set('notasCC', notas.getValue());
 			var form=winNota.down('form');
-			form.submit();
-			/*var form=winNota.down('form');
-			
-			
-			form.submit({
-				url: Routing.generate('mbp_clientes_cc_notas'),
-				
-				params:{
-					idCliente: win.queryById('id').getValue(),
-					notas: notas.getValue()
-				},
-				
-				success: function(form, action){
-					
-				}
-			})*/
-			
+			var values=form.getForm().getValues();
+			rec.set(values);
+			rec.save({
+				callback: function (records, operation, success) {
+	                if (operation.success) {
+	                    Ext.Msg.alert('Info', "Guardado exitosamente!");
+	                }
+	            }	
+			})			
 		});
 	},
 	
