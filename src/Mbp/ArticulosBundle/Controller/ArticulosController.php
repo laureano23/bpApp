@@ -47,23 +47,14 @@ class ArticulosController extends Controller
 		$costo = 0;
 		
 		if($existeEnFormula){
-			$qb = $repoFormula->costoArticuloConFormula($existeEnFormula);
-			
-			$costo=0.0;
-			foreach ($qb as $rec) {
-				if($rec['moneda'] == 1){
-					$dolar = $tipoCambio->getTipoCambio();
-				}else{
-					$dolar = 1;
-				}
-				$costo = $costo + (float)$rec['costo'] * (float)$rec['cantidad'] * $dolar;
-				
-			}			
+			$tc=$tipoCambio->getTipoCambio();
+			$qb = $repoFormula->estructuraCompleta($existeEnFormula[0]['id'], $tc);
+			$costo=$qb[0]['sumCosto'];
 		}else{
 			$costo = $articulo->getCosto();
 		}
 		
-		$art = 	$repoArt->detalleArticulo($idArt);
+		$art = 	$repoArt->detalleArticulo($idArt);;
 		
 		$art[0]['costo'] = $costo;
 		

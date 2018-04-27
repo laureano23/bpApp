@@ -337,7 +337,7 @@ class FormulasRepository extends \Doctrine\ORM\EntityRepository
 			        AND sub_parent.id = sub_tree.id
 			GROUP BY parent.id
 			ORDER BY node.lft ASC
-			LIMIT 1, 1000 /* PARA SACAR DEL RESULTADO EL NODO PADRE */
+			/*LIMIT 1, 1000  PARA SACAR DEL RESULTADO EL NODO PADRE */
 			) AS y ON x.id = y.id
 		";
 		

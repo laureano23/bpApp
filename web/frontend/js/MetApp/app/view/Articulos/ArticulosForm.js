@@ -68,6 +68,12 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 				text: 'Pedidos Pendientes',
 				itemId: 'pedidoPendiente',
 				margin: '0 0 0 5'				
+			},
+			{
+				xtype: 'button',
+				text: 'En que formulas',
+				itemId: 'enQueFormulas',
+				margin: '0 0 0 5'				
 			}
 		]
 		
