@@ -92,7 +92,7 @@ Ext.application({
 	    });
 	    
 	     // Enable pusher logging - don't include this in production
-	    //Pusher.logToConsole = true;
+	    Pusher.logToConsole = false;
 	
 	    var pusher = new Pusher('afe4f1c54cf0b11142f7', {
 	      cluster: 'us2',

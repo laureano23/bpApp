@@ -1,9 +1,9 @@
-Ext.define('MetApp.store.Clientes.Clientes',{
+Ext.define('MetApp.store.Clientes.CotizacionStore',{
 	extend: 'Ext.data.Store',
-	model: 'MetApp.model.Clientes.ClientesModel',
+	model: 'MetApp.model.Clientes.CotizacionModel',
 	alias: 'clientesStore',
 	autoSync: false,
-	autoLoad: true,
+	autoLoad: false,
 	remoteFilter: false,	  
     pageSize: 1000,
     storeId: 'clientesStore',

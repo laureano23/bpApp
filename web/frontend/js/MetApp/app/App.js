@@ -6,12 +6,16 @@ Ext.Loader.setConfig({
 });
 
 
+			
+
 Ext.application({
 	requires: [
 		'MetApp.resources.overrides.menu', //REQUIERE OVERRIDE DE ESTA CLASE PARA ARREGLAR UN BUG DE CHROME DONDE DESAPARECEN LOS SUB MENUES
 		'Ext.grid.plugin.DragDrop',
 		'MetApp.resources.ux.ParametersSingleton',
 	], 
+	
+	
 	
 	controllers: [
 		'Security.SecurityController',
@@ -92,7 +96,7 @@ Ext.application({
 	    });
 	    
 	     // Enable pusher logging - don't include this in production
-	    //Pusher.logToConsole = true;
+	    Pusher.logToConsole = false;
 	
 	    var pusher = new Pusher('afe4f1c54cf0b11142f7', {
 	      cluster: 'us2',
@@ -120,6 +124,9 @@ Ext.application({
 				}).show();
 		    }
 		});
+		
+		
+		
 	},
 	
 	

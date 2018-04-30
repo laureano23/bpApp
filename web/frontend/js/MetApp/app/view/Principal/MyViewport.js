@@ -731,6 +731,10 @@ Ext.define('MetApp.view.Principal.MyViewport', {
         		text: 'TXT Retenciones/Percepciones',
         		itemId: 'tbRetenciones'
         	},
+        	{
+        		text: 'Cotizaciones',
+        		itemId: 'tbCotizaciones'
+        	},
         ]
     		    	
     	var me = this;    	

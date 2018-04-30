@@ -221,7 +221,29 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 	},
 	
 	AddReporteCbteNoPagado: function(btn){
-		Ext.widget('ReporteCbteNoPagodos');
+		var win=Ext.widget('ReporteCbteNoPagodos');
+		var btn1=win.queryById('btnCliente1');
+		var btn2=win.queryById('btnCliente2');
+		
+		btn1.on('click', function(){
+			var viewCliente=Ext.widget('clientesSearchGrid');
+			var btnInsert=viewCliente.down('button');
+			btnInsert.on('click', function(){
+				var sel=viewCliente.down('grid').getSelectionModel().getSelection();
+				win.queryById('cliente1').setValue(sel[0].data.id);
+				viewCliente.close();
+			})
+		})
+		
+		btn2.on('click', function(){
+			var viewCliente=Ext.widget('clientesSearchGrid');
+			var btnInsert=viewCliente.down('button');
+			btnInsert.on('click', function(){
+				var sel=viewCliente.down('grid').getSelectionModel().getSelection();
+				win.queryById('cliente2').setValue(sel[0].data.id);
+				viewCliente.close();
+			})
+		})
 	},
 	
 	ImprimirCbteNoPagados: function(btn){

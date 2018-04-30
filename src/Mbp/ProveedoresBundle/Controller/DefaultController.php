@@ -153,10 +153,10 @@ class DefaultController extends Controller
 			$proveedor->setCPostal($decData->cPostal);
 			$proveedor->setTelefono1($decData->telefono1);
 			$proveedor->setContacto1($decData->contacto1);
-			$proveedor->setTelefono1($decData->telefono2);
-			$proveedor->setContacto1($decData->contacto2);
-			$proveedor->setTelefono1($decData->telefono3);
-			$proveedor->setContacto1($decData->contacto3);
+			$proveedor->setTelefono2($decData->telefono2);
+			$proveedor->setContacto2($decData->contacto2);
+			$proveedor->setTelefono3($decData->telefono3);
+			$proveedor->setContacto3($decData->contacto3);
 			$proveedor->setCondCompra($decData->condCompra);
 			$proveedor->setVencimientoFc($decData->vencimientoFc);
 			$proveedor->setPorcentajeRetencion($decData->vencimientoFc);

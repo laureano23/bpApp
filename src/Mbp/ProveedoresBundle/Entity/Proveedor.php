@@ -94,42 +94,42 @@ class Proveedor
     /**
      * @var string
      *
-     * @ORM\Column(name="telefono1", type="string", length=20, nullable=true)
+     * @ORM\Column(name="telefono1", type="string", length=50, nullable=true)
      */
     private $telefono1;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="contacto1", type="string", length=30, nullable=true)
+     * @ORM\Column(name="contacto1", type="string", length=50, nullable=true)
      */
     private $contacto1;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="telefono2", type="string", length=20, nullable=true)
+     * @ORM\Column(name="telefono2", type="string", length=50, nullable=true)
      */
     private $telefono2;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="contacto2", type="string", length=30, nullable=true)
+     * @ORM\Column(name="contacto2", type="string", length=50, nullable=true)
      */
     private $contacto2;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="telefono3", type="string", length=20, nullable=true)
+     * @ORM\Column(name="telefono3", type="string", length=50, nullable=true)
      */
     private $telefono3;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="contacto3", type="string", length=30, nullable=true)
+     * @ORM\Column(name="contacto3", type="string", length=50, nullable=true)
      */
     private $contacto3;
 
