@@ -28,7 +28,7 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 				fieldLabel: 'Id',				
 				width: 250,
 				text: 'id',
-				//hidden: true,
+				hidden: true,
 				listeners: {//PARA SETEAR EL ID EN LA TAB DE IMAGENES
 					change: {
 						fn: function(){
@@ -285,7 +285,8 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 											fieldLabel: 'Requiere control de calidad',
 											name: 'requiereControl',
 											itemId: 'requiereControl',
-											labelWidth: 170
+											labelWidth: 170,
+											uncheckedValue: false
 										},
 										{
 											xtype: 'fieldset',
@@ -325,12 +326,12 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 													width: 700,
 													labelWidth: 100,
 													allowBlank: true,
-													margins: '5 0 0 0',
+													margin: '5 0 0 5',
 												},
 												{
 													xtype: 'button',
 													text: 'Copiar',
-													margins: '0 0 0 5',
+													margins: '5 0 0 5',
 													itemId: 'copiarRuta'
 												}
 											]
@@ -338,7 +339,7 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 										{
 											xtype: 'container',	
 											height: 55,
-											margin: '5 0 0 1',
+											margin: '5 0 0 5',
 											layout: 'hbox',
 											cls: 'panelBtn',
 											width: 600,

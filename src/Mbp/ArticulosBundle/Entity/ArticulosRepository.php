@@ -41,7 +41,8 @@ class ArticulosRepository extends EntityRepository
 						 sf.id AS subFamilia, a.precio, a.nombreImagen,
 						 a.rutaServer,
 						CASE WHEN a.moneda = false THEN 'p' ELSE 'd' END AS moneda,
-						CASE WHEN a.monedaPrecio = false THEN 'p' ELSE 'd' END AS monedaPrecio")
+						CASE WHEN a.monedaPrecio = false THEN 'p' ELSE 'd' END AS monedaPrecio,
+						a.requiereControl")
 						->leftJoin('a.familiaId', 'f')
 						->leftJoin('a.subFamiliaId', 'sf')
 						->where('a.id = :art')

@@ -17,6 +17,7 @@ Ext.application({
 		'Security.SecurityController',
 		'Calidad.CalidadController',
 		'Calidad.CalidadReportesController',
+		'Calidad.RecepcionController',
 		'Clientes.ClientesController',
 		'Proveedores.ProveedoresController',
 		'Articulos.ArticulosController',

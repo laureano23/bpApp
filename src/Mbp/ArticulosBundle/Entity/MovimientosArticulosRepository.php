@@ -10,4 +10,27 @@ namespace Mbp\ArticulosBundle\Entity;
  */
 class MovimientosArticulosRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function listarPendientesVerificacion()
+	{
+		$em = $this->getEntityManager();
+		$repoMov = $em->getRepository('MbpArticulosBundle:MovimientosArticulos');
+		$qb = $repoMov->createQueryBuilder('mov')
+			->select('
+				mov.fechaMovimiento AS fecha,
+				art.codigo,
+				det.descripcion,
+				det.id AS loteNum,
+				oc.id AS idOc,
+				det.estadoCalidad,
+				det.certificadoNum
+				')
+			->join('mov.movDetalleId', 'det')
+			->join('mov.proveedorId', 'prov')
+			->join('det.articuloId', 'art')
+			->join('det.ordenCompraId', 'oc')
+			->where('art.requiereControl = 1')
+			->getQuery()
+			->getArrayResult();	
+		return $qb;	
+	}
 }

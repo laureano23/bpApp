@@ -292,6 +292,28 @@ class StockController extends Controller
 			return new Response($msg, 500);
 		}
 	}
+
+	/**
+     * @Route("/listarPendientesVerificacion", name="mbp_articulos_listarPendientesVerificacion", options={"expose"=true})
+     */
+    public function listarPendientesVerificacion()
+	{
+		$em = $this->getDoctrine()->getManager();
+		$req = $this->get('request');
+		$response = new Response;
+		$repoMov = $em->getRepository('MbpArticulosBundle:MovimientosArticulos');
+		
+		try{
+			$res=$repoMov->listarPendientesVerificacion();
+			
+			$response->setContent(json_encode(array('success'=>true, 'data'=>$res)));
+			//print_r($res);
+			
+			return $response;
+		}catch(\Exception $e){
+			throw $e;
+		}
+	}
 }
 
 

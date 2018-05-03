@@ -211,6 +211,10 @@ Ext.define('MetApp.view.Principal.MyViewport', {
 					}
 				]				
 			},
+			{
+				text: 'Control de Recepción',
+				itemId: 'controlRecepcion'
+			}
         ]
         
         var subMenuRadiadores = [

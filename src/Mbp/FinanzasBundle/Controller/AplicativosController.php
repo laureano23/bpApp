@@ -30,9 +30,7 @@ class AplicativosController extends Controller
 			$hasta=$req->request->get('hasta');
 			$desde= \DateTime::createFromFormat('d/m/Y', $desde);
 			$hasta= \DateTime::createFromFormat('d/m/Y', $hasta);
-			$cuit = $this->container->getParameter('cuit_prod');
 			
-			$cuit=$cuit = $this->getCuitFormateado();
 			
 			$res=$repo->createQueryBuilder('f')
 				->select("
@@ -103,8 +101,6 @@ class AplicativosController extends Controller
 			$hasta= \DateTime::createFromFormat('d/m/Y', $hasta);
 			//
 			
-			$cuit = $this->getCuitFormateado();
-			
 			$res=$repo->createQueryBuilder('tr')
 				->select("
 					CONCAT(CONCAT(CONCAT(CONCAT(SUBSTRING(prov.cuit, 1, 2), '-'), SUBSTRING(prov.cuit, 3, 8)), '-'), SUBSTRING(prov.cuit, 11, 12)) AS cuit,
@@ -174,20 +170,6 @@ class AplicativosController extends Controller
 
         return $response;
 		
-    }
-    
-	
-	
-    private function getCuitFormateado()
-    {
-    	/* FORMATEAMOS EL CUIT */
-    	$cuit = $this->container->getParameter('cuit_prod');
-		$cuit=str_split($cuit);
-		array_splice($cuit, 2, 0, "-");
-		array_splice($cuit, 11, 0, "-");
-		$cuit=implode($cuit);
-		
-		return $cuit;
     }
 }
 
