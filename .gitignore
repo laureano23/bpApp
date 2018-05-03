@@ -24,12 +24,9 @@
 
 !app/cache/.gitkeep
 !app/logs/.gitkeep
-
+ 
 /build/
 
 /vendor/
 
 /bin/
-
-#EXCLUIMOS TODOS LOS ARCHIVOS PDF
-*.pdf
