@@ -36,6 +36,7 @@ class AplicativosController extends Controller
 			
 			$res=$repo->createQueryBuilder('f')
 				->select("
+					CONCAT(CONCAT(CONCAT(CONCAT(SUBSTRING(cliente.cuit, 1, 2), '-'), SUBSTRING(cliente.cuit, 3, 8)), '-'), SUBSTRING(cliente.cuit, 11, 12)) AS cuit,
 					f.perIIBB,
 					DATE_FORMAT(f.fecha, '%d/%m/%Y') AS fecha,
 					CASE WHEN tipo.esFactura = true THEN 'F'
@@ -53,6 +54,7 @@ class AplicativosController extends Controller
 						ELSE LPAD(f.perIIBB, 11, '0') END AS perIIBB,					
 					'A' AS finLinea")
 				->join('f.tipoId', 'tipo')
+				->join('f.clienteId', 'cliente')
 				->where('f.fecha BETWEEN :desde AND :hasta')
 				->andWhere('f.perIIBB != 0')
 				->setParameter('desde', $desde)
@@ -60,13 +62,14 @@ class AplicativosController extends Controller
 				->getQuery()
 				->getArrayResult();
 			
+			
 			$nombreArchivo="AR"."-".$this->container->getParameter('cuit_prod')."-".$desde->format("Ym").self::$periodoPercepcion."-".self::$codigoPercepcion."-LOTE1.txt";
 			
 			$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/txt/');
 			$file=fopen($basePath.$nombreArchivo, "w");
 			
 			foreach ($res as $linea) {				
-				$str = $cuit.$linea['fecha'].$linea['tipoCbte'].$linea['subTipoCbte'].$linea['ptoVta'].$linea['fcNro'].$linea['subTotal'].$linea['perIIBB'].$linea['finLinea'].PHP_EOL;	
+				$str = $linea['cuit'].$linea['fecha'].$linea['tipoCbte'].$linea['subTipoCbte'].$linea['ptoVta'].$linea['fcNro'].$linea['subTotal'].$linea['perIIBB'].$linea['finLinea'].PHP_EOL;	
 				fwrite($file, $str);
 			}
 			fclose($file);
@@ -104,12 +107,14 @@ class AplicativosController extends Controller
 			
 			$res=$repo->createQueryBuilder('tr')
 				->select("
+					CONCAT(CONCAT(CONCAT(CONCAT(SUBSTRING(prov.cuit, 1, 2), '-'), SUBSTRING(prov.cuit, 3, 8)), '-'), SUBSTRING(prov.cuit, 11, 12)) AS cuit,
 					DATE_FORMAT(op.emision, '%d/%m/%Y') AS fecha,
 					LPAD(fc.sucursal, 4, '0') AS ptoVta,
 					LPAD(fc.numFc, 8, '0') AS fcNro,
 					LPAD(det.importe, 11, '0') AS retencion,
 					'A' AS finLinea")
 				->join('tr.ordenPagoImputada', 'op')
+				->join('op.proveedorId', 'prov')
 				->join('tr.facturaImputada', 'fc')
 				->join('op.pagoDetalleId', 'det')
 				->join('det.idFormaPago', 'formaPago')
@@ -127,10 +132,11 @@ class AplicativosController extends Controller
 			$file=fopen($basePath.$nombreArchivo, "w");
 			
 			foreach ($res as $linea) {				
-				$str = $cuit.$linea['fecha'].$linea['ptoVta'].$linea['fcNro'].$linea['retencion'].$linea['finLinea'].PHP_EOL;	
+				$str = $linea['cuit'].$linea['fecha'].$linea['ptoVta'].$linea['fcNro'].$linea['retencion'].$linea['finLinea'].PHP_EOL;	
 				fwrite($file, $str);
 			}
 			
+					
 			fclose($file);
 							
 			return $response->setContent(json_encode(array('success' => true, 'nombreArchivo' => $nombreArchivo)));		

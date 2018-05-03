@@ -88,6 +88,7 @@ doctrine:
                         date_format: Mapado\MysqlDoctrineFunctions\DQL\MysqlDateFormat
                     string_functions:
                         lpad: DoctrineExtensions\Query\Mysql\Lpad
+                        substr: DoctrineExtensions\Query\Mysql\SubstringIndex
                 mappings:
                     tree:
                         type: annotation

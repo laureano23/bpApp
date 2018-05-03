@@ -332,8 +332,9 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 	 */
 	SaveArt: function(button){
 		var me = this;
-		var form = button.up('form');		
-		var values = form.getValues();
+		var win=button.up('window');
+		var form = win.queryById('artForm');		
+		var values = form.getForm().getValues();
 		var store = Ext.StoreManager.lookup('Articulos.Articulos');
 		var proxy = store.getProxy();
 		var record;
@@ -354,8 +355,11 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 			me.ResetForm(button);
 		});
 		
+		console.log(values);
+		
 		if(values.id > 0){
 			var rec = store.findRecord('id', values.id);
+			console.log(rec);
 			rec.set(values);			
 		}
 		else{

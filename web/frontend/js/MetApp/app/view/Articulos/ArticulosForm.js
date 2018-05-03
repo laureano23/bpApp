@@ -4,7 +4,7 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 	id: 'articulosForm',
 	itemId: 'articulosForm',
 	width: 800,
-	height: 470,
+	//height: 470,
 	layout: 'fit',
 	autoShow: true,
 	title: 'Tabla de Articulos',
@@ -28,7 +28,7 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 				fieldLabel: 'Id',				
 				width: 250,
 				text: 'id',
-				hidden: true,
+				//hidden: true,
 				listeners: {//PARA SETEAR EL ID EN LA TAB DE IMAGENES
 					change: {
 						fn: function(){
@@ -278,6 +278,16 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 											disabledCls: 'myDisabledClass',
 										},
 										{
+											xtype: 'checkbox',
+											readOnly: true,
+											disabledCls: 'myDisabledClass',
+											padding: '0 5 5 5',
+											fieldLabel: 'Requiere control de calidad',
+											name: 'requiereControl',
+											itemId: 'requiereControl',
+											labelWidth: 170
+										},
+										{
 											xtype: 'fieldset',
 											collapsible: true,
 											collapsed: false,
@@ -314,12 +324,13 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 													itemId: 'rutaServer',
 													width: 700,
 													labelWidth: 100,
-													allowBlank: true
+													allowBlank: true,
+													margins: '5 0 0 0',
 												},
 												{
 													xtype: 'button',
 													text: 'Copiar',
-													margin: '0 0 0 5',
+													margins: '0 0 0 5',
 													itemId: 'copiarRuta'
 												}
 											]
@@ -327,7 +338,7 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 										{
 											xtype: 'container',	
 											height: 55,
-											padding: '1 0 0 1',
+											margin: '5 0 0 1',
 											layout: 'hbox',
 											cls: 'panelBtn',
 											width: 600,

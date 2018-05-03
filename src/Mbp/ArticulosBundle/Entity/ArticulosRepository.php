@@ -138,7 +138,8 @@ class ArticulosRepository extends EntityRepository
 			->setSubFamiliaId($subFam)
 			->setPrecio($data->precio)
 			->setMonedaPrecio($data->monedaPrecio == 'p' ? 0 : 1)
-			->setRutaServer($data->rutaServer);
+			->setRutaServer($data->rutaServer)
+			->setRequiereControl($data->requiereControl == "on" ? 1 : 0);
 			
 			$errors = $validator->validate($art);
 			if(count($errors) > 0){

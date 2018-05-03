@@ -185,6 +185,13 @@ class Articulos
      * @ORM\Column(name="rutaServer", type="text", nullable=true)
      */
     private $rutaServer;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="requiereControl", type="boolean", nullable=false)
+     */
+    private $requiereControl=0;
 
 
     /**
@@ -623,5 +630,29 @@ class Articulos
     public function getPeso()
     {
         return $this->peso;
+    }
+
+    /**
+     * Set requiereControl
+     *
+     * @param boolean $requiereControl
+     *
+     * @return Articulos
+     */
+    public function setRequiereControl($requiereControl)
+    {
+        $this->requiereControl = $requiereControl;
+
+        return $this;
+    }
+
+    /**
+     * Get requiereControl
+     *
+     * @return boolean
+     */
+    public function getRequiereControl()
+    {
+        return $this->requiereControl;
     }
 }

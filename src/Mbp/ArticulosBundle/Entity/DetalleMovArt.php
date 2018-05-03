@@ -67,6 +67,13 @@ class DetalleMovArt
 	 * @Assert\NotNull()  
 	 */
 	private $movimientoId;
+	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="controlado", type="boolean", nullable=false)
+     */
+    private $controlado=0;
 
     /**
      * Get id
@@ -238,5 +245,29 @@ class DetalleMovArt
     public function getMovimientoId()
     {
         return $this->movimientoId;
+    }
+
+    /**
+     * Set controlado
+     *
+     * @param boolean $controlado
+     *
+     * @return DetalleMovArt
+     */
+    public function setControlado($controlado)
+    {
+        $this->controlado = $controlado;
+
+        return $this;
+    }
+
+    /**
+     * Get controlado
+     *
+     * @return boolean
+     */
+    public function getControlado()
+    {
+        return $this->controlado;
     }
 }
