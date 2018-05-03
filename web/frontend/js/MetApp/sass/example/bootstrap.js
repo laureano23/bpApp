@@ -914,6 +914,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.controller.Security.Roles": [],
   "MetApp.controller.Security.SecurityController": [],
   "MetApp.controller.Security.UserParamsController": [],
+  "MetApp.controller.Utilitarios.UtilitariosController": [],
   "MetApp.model.Articulos.Articulos": [],
   "MetApp.model.Articulos.ConceptosEntradaModel": [],
   "MetApp.model.Articulos.DepositoArticulosModel": [],
@@ -927,6 +928,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.model.Calidad.Correlativos": [],
   "MetApp.model.Calidad.Estanqueidad": [],
   "MetApp.model.Clientes.ClientesModel": [],
+  "MetApp.model.Clientes.CotizacionModel": [],
   "MetApp.model.Clientes.TransportesModel": [],
   "MetApp.model.Compras.OrdenCompraModel": [],
   "MetApp.model.Finanzas.BancosModel": [],
@@ -990,6 +992,8 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.store.Calidad.Correlativos": [],
   "MetApp.store.Calidad.Estanqueidad": [],
   "MetApp.store.Clientes.Clientes": [],
+  "MetApp.store.Clientes.CotizacionDetalleStore": [],
+  "MetApp.store.Clientes.CotizacionStore": [],
   "MetApp.store.Clientes.TransportesStore": [],
   "MetApp.store.Compras.HistoricoCompraStore": [],
   "MetApp.store.Compras.OrdenCompraStore": [],
@@ -1058,6 +1062,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.view.CCClientes.CCClientes": [],
   "MetApp.view.CCClientes.Cobranza": [],
   "MetApp.view.CCClientes.Facturacion": [],
+  "MetApp.view.CCClientes.NotasCCView": [],
   "MetApp.view.CCProveedores.BalanceView": [],
   "MetApp.view.CCProveedores.CCProveedores": [],
   "MetApp.view.CCProveedores.ChequeTerceros": [],
@@ -1143,10 +1148,13 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.view.Reportes.RepoIVAVentas": [],
   "MetApp.view.Reportes.RepoSaldoDeudor": [],
   "MetApp.view.Reportes.ReporteArtVendidos": [],
+  "MetApp.view.Reportes.ReporteCCCliente": [],
   "MetApp.view.Reportes.ReporteCbteNoPagodos": [],
   "MetApp.view.Reportes.ReporteHistoricoMov": [],
   "MetApp.view.Reportes.ReporteHistoricoMovBancarios": [],
-  "MetApp.view.Reportes.ReporteIntResarcitorios": []
+  "MetApp.view.Reportes.ReporteIntResarcitorios": [],
+  "MetApp.view.Utilitarios.CotizacionView": [],
+  "MetApp.view.Utilitarios.TxtRetencionesView": []
 });
 Ext.ClassManager.addNameAliasMappings({
   "Ext.AbstractComponent": [],
@@ -2203,6 +2211,7 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.controller.Security.Roles": [],
   "MetApp.controller.Security.SecurityController": [],
   "MetApp.controller.Security.UserParamsController": [],
+  "MetApp.controller.Utilitarios.UtilitariosController": [],
   "MetApp.model.Articulos.Articulos": [],
   "MetApp.model.Articulos.ConceptosEntradaModel": [],
   "MetApp.model.Articulos.DepositoArticulosModel": [],
@@ -2216,6 +2225,7 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.model.Calidad.Correlativos": [],
   "MetApp.model.Calidad.Estanqueidad": [],
   "MetApp.model.Clientes.ClientesModel": [],
+  "MetApp.model.Clientes.CotizacionModel": [],
   "MetApp.model.Clientes.TransportesModel": [],
   "MetApp.model.Compras.OrdenCompraModel": [],
   "MetApp.model.Finanzas.BancosModel": [],
@@ -2307,6 +2317,12 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.store.Calidad.Correlativos": [],
   "MetApp.store.Calidad.Estanqueidad": [],
   "MetApp.store.Clientes.Clientes": [
+    "clientesStore"
+  ],
+  "MetApp.store.Clientes.CotizacionDetalleStore": [
+    "clientesStore"
+  ],
+  "MetApp.store.Clientes.CotizacionStore": [
     "clientesStore"
   ],
   "MetApp.store.Clientes.TransportesStore": [
@@ -2512,6 +2528,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "MetApp.view.CCClientes.Facturacion": [
     "widget.facturacion"
+  ],
+  "MetApp.view.CCClientes.NotasCCView": [
+    "widget.NotasCCView"
   ],
   "MetApp.view.CCProveedores.BalanceView": [
     "widget.BalanceView"
@@ -2768,6 +2787,9 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.view.Reportes.ReporteArtVendidos": [
     "widget.ReporteArtVendidos"
   ],
+  "MetApp.view.Reportes.ReporteCCCliente": [
+    "widget.ReporteCCCliente"
+  ],
   "MetApp.view.Reportes.ReporteCbteNoPagodos": [
     "widget.ReporteCbteNoPagodos"
   ],
@@ -2779,6 +2801,12 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "MetApp.view.Reportes.ReporteIntResarcitorios": [
     "widget.ReporteIntResarcitorios"
+  ],
+  "MetApp.view.Utilitarios.CotizacionView": [
+    "widget.CotizacionView"
+  ],
+  "MetApp.view.Utilitarios.TxtRetencionesView": [
+    "widget.TxtRetencionesView"
   ]
 });
 Ext.setVersion("ext-locale-es", "4.2.0");

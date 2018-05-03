@@ -104,6 +104,13 @@ class Cotizacion
      */
     private $idUsuario;
 	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="inactiva", type="boolean")
+     */
+    private $inactiva=0;
+	
 	public function __construct() {
         $this->detalle = new ArrayCollection();
     }
@@ -414,5 +421,29 @@ class Cotizacion
     public function getDescuento()
     {
         return $this->descuento;
+    }
+
+    /**
+     * Set inactiva
+     *
+     * @param boolean $inactiva
+     *
+     * @return Cotizacion
+     */
+    public function setInactiva($inactiva)
+    {
+        $this->inactiva = $inactiva;
+
+        return $this;
+    }
+
+    /**
+     * Get inactiva
+     *
+     * @return boolean
+     */
+    public function getInactiva()
+    {
+        return $this->inactiva;
     }
 }

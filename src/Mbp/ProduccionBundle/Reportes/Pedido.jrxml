@@ -65,7 +65,8 @@ WHERE
 ORDER BY
      PedidoClientes.`esRepuesto` ASC,
     cliente.`idCliente` ASC,
-    articulos.`codigo`]]>
+    articulos.`codigo` ASC,
+    PedidoClientesDetalle.`fechaProg` ASC]]>
 	</queryString>
 	<field name="PedidoClientes_id" class="java.lang.Integer"/>
 	<field name="PedidoClientes_fechaPedido" class="java.sql.Date"/>

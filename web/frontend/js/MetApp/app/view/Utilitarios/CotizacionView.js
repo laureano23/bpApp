@@ -1,6 +1,6 @@
 Ext.define('MetApp.view.Utilitarios.CotizacionView' ,{
 	extend: 'Ext.window.Window',
-	height: 600,
+	height: 550,
 	width: 1000,
 	modal: true,
 	autoShow: true,
@@ -255,7 +255,25 @@ Ext.define('MetApp.view.Utilitarios.CotizacionView' ,{
 					                xtype: 'datefield',
 					                format: 'd/m/Y'
 					            }
-							},							
+							},	
+							{ 
+								header: 'Editar',
+								itemId: 'editar',
+								xtype: 'actioncolumn',
+								items: [
+									{ iconCls: 'edit' }										
+								],
+								flex: 1
+							},	
+							{ 
+								header: 'Eliminar',
+								itemId: 'eliminar',
+								xtype: 'actioncolumn',
+								items: [
+									{ iconCls: 'delete' }										
+								],
+								flex: 1
+							},						
 						]
 					},
 				},
@@ -443,13 +461,15 @@ Ext.define('MetApp.view.Utilitarios.CotizacionView' ,{
 									xtype: 'button',
 									itemId: 'insert',
 									name: 'insert',
-									text: 'Insertar'
+									text: 'Insertar',
+									margin: '0 0 5 5'
 								},
 								{
 									xtype: 'button',
 									itemId: 'guardar',
 									name: 'guardar',
-									text: 'Guardar'
+									text: 'Guardar',
+									margin: '0 0 5 5'
 								},	
 							]
 						}

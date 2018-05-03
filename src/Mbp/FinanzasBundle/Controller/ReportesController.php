@@ -1295,6 +1295,131 @@ ORDER BY
 		
         return $response;
 	}
+	
+	/**
+     * @Route("/Cotizaciones/Reportes/cotizacionReporte", name="mbp_Cotizaciones_reporteCoti", options={"expose"=true})
+     */	    
+    public function cotizacionReporte()
+	{
+		//RECIBO PARAMETROS
+		$em = $this->getDoctrine()->getManager();
+		$req = $this->getRequest();
+		$response = new Response();	
+		
+		try{
+			/*
+			 * PARAMETROS
+			 */
+			$idCoti = $req->request->get('idCoti');	
+							
+			$reporteador = $this->get('reporteador');
+			$kernel = $this->get('kernel');
+			
+			/*
+			 * Configuro reporte
+			 */
+			$jru = $reporteador->jru();
+			
+			/*
+			 * Ruta archivo Jasper
+			 */				
+					
+			$ruta = $kernel->locateResource('@MbpFinanzasBundle/Reportes/Cotizacion.jrxml');
+			
+			/*
+			 * Ruta de destino del PDF
+			 */
+			$destino = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'Cotizacion.pdf';		
+			
+			//Parametros HashMap
+			$param = $reporteador->getJava('java.util.HashMap');
+			$rutaLogo = $reporteador->getRutaLogo($kernel);
+			
+			
+			$param->put('cotizacionId', $idCoti);
+			$param->put('rutaLogo', $rutaLogo);				
+			$conn = $reporteador->getJdbc();
+			
+			$sql = "
+				SELECT
+				     DetalleCotizacion.`id` AS DetalleCotizacion_id,
+				     DetalleCotizacion.`descripcion` AS DetalleCotizacion_descripcion,
+				     DetalleCotizacion.`cant` AS DetalleCotizacion_cant,
+				     DetalleCotizacion.`unidad` AS DetalleCotizacion_unidad,
+				     DetalleCotizacion.`precio` AS DetalleCotizacion_precio,
+				     DetalleCotizacion.`entrega` AS DetalleCotizacion_entrega,
+				     DetalleCotizacion.`cotizacionId` AS DetalleCotizacion_cotizacionId,
+				     DetalleCotizacion.`articuloId` AS DetalleCotizacion_articuloId,
+				     cliente.`idCliente` AS cliente_idCliente,
+				     cliente.`rsocial` AS cliente_rsocial,
+				     Cotizacion.`id` AS Cotizacion_id,
+				     Cotizacion.`emision` AS Cotizacion_emision,
+				     Cotizacion.`direccion` AS Cotizacion_direccion,
+				     Cotizacion.`cuit` AS Cotizacion_cuit,
+				     Cotizacion.`condVenta` AS Cotizacion_condVenta,
+				     Cotizacion.`moneda` AS Cotizacion_moneda,
+				     Cotizacion.`tc` AS Cotizacion_tc,
+				     Cotizacion.`observaciones` AS Cotizacion_observaciones,
+				     Cotizacion.`clienteId` AS Cotizacion_clienteId,
+				     Cotizacion.`idUsuario` AS Cotizacion_idUsuario,
+				     Cotizacion.`total` AS Cotizacion_total,
+				     Cotizacion.`descuento` AS Cotizacion_descuento,
+				     Cotizacion.`inactiva` AS Cotizacion_inactiva,
+				     articulos.`idArticulos` AS articulos_idArticulos,
+				     articulos.`descripcion` AS articulos_descripcion,
+				     articulos.`codigo` AS articulos_codigo,
+				     articulos.`unidad` AS articulos_unidad,
+				     articulos.`costo` AS articulos_costo,
+				     articulos.`precio` AS articulos_precio,
+				     articulos.`moneda` AS articulos_moneda
+				FROM
+				     `cliente` cliente INNER JOIN `Cotizacion` Cotizacion ON cliente.`idCliente` = Cotizacion.`clienteId`
+				     INNER JOIN `DetalleCotizacion` DetalleCotizacion ON Cotizacion.`id` = DetalleCotizacion.`cotizacionId`
+				     INNER JOIN `articulos` articulos ON DetalleCotizacion.`articuloId` = articulos.`idArticulos`
+				WHERE Cotizacion.`id` = $idCoti
+			";
+			
+			$res = $jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
+			
+			//ARMO RESPUESTA	
+			$response->setContent(
+					json_encode(array(
+						'success' =>true,					
+						)
+					)
+				);
+			
+			return $response;
+		}catch(\Exception $e){
+			throw $e;
+			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(
+				json_encode(array('success' => false, 'msg' => $e->getMessage()))
+				);
+		}
+	}
+	
+	/**
+     * @Route("/Cotizaciones/Reportes/verCoti", name="mbp_Cotizaciones_verCoti", options={"expose"=true})
+     */	    
+    public function verCoti()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'Cotizacion.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'Cotizacion.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+		
+		$response->deleteFileAfterSend(TRUE);
+		
+        return $response;
+	}
 }
 
 

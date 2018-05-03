@@ -73,8 +73,7 @@ class CotizacionController extends Controller
 			throw $e;
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(json_encode(array('success' => FALSE, 'msg'=>$e->getMessage())));
-		}		
-		
+		}	
 	}
 }
 

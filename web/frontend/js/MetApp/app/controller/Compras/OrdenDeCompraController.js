@@ -372,7 +372,6 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 					var myMask = new Ext.LoadMask(grid, {msg:"Aguarde..."});
 					var store = grid.getStore();
 					var selection = store.getAt(rowIndex);
-					console.log(selection);
 					Ext.Ajax.request({
 						url: Routing.generate('mbp_compras_eliminarOrden'),
 						params: {

@@ -44,7 +44,28 @@ Ext.define('MetApp.controller.Utilitarios.UtilitariosController',{
 			'CotizacionView textfield[itemId=desc]': {
 				change: this.AplicarDescuento
 			},
+			'CotizacionView actioncolumn[itemId=editar]': {
+				click: this.EditarItemCoti
+			},
+			'CotizacionView actioncolumn[itemId=eliminar]': {
+				click: this.EliminarItemCoti
+			},
 		});
+	},
+	
+	EliminarItemCoti: function(grid, colIndex, rowIndex){
+		var store = grid.getStore();
+		var selection = store.getAt(rowIndex);
+		store.remove(selection);		
+	},
+	
+	EditarItemCoti: function(grid, colIndex, rowIndex){
+		var win=grid.up('window');
+		var formArt=win.queryById('formArticulos');
+		var store = grid.getStore();
+		var selection = store.getAt(rowIndex);
+		formArt.loadRecord(selection);
+		store.remove(selection);		
 	},
 	
 	AplicarDescuento: function(txt){
@@ -98,6 +119,20 @@ Ext.define('MetApp.controller.Utilitarios.UtilitariosController',{
 						form.getForm().reset();
 						storeDetalles.removeAll();
 						formArt.getForm().reset();
+						
+						//si el guardado fue correcto llamamos al reportes
+						Ext.Ajax.request({
+							url: Routing.generate('mbp_Cotizaciones_reporteCoti'),
+							
+							params: {
+								idCoti: resp.idCoti	
+							},
+							
+							success: function(resp){
+								var ruta = Routing.generate('mbp_Cotizaciones_verCoti');
+						    	window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+							}
+						})
 					}
 	       		}
 			});	
@@ -125,6 +160,7 @@ Ext.define('MetApp.controller.Utilitarios.UtilitariosController',{
 	},
 	
 	BuscarArticulo: function(btn){
+		var winCoti=btn.up('window');
 		var formArt=btn.up('window').queryById('formArticulos');
 		var win=Ext.widget('winarticulosearch');
 		
@@ -132,29 +168,31 @@ Ext.define('MetApp.controller.Utilitarios.UtilitariosController',{
 			var sel=win.down('grid').getSelectionModel().getSelection()[0];
 			formArt.loadRecord(sel);
 			win.close();
+			winCoti.queryById('cant').focus('', 20);
 		});
 	},
 	
 	BuscarClienteCoti: function(btn){
 		var win=btn.up('window');
-		var formCoti=btn.up('window').queryById('formCotizacion');
-		var win=Ext.widget('clientesSearchGrid');
+		var formCoti=win.queryById('formCotizacion');
+		var winCliente=Ext.widget('clientesSearchGrid');
 		
-		win.down('button').on('click', function(btn){
-			var sel=win.down('grid').getSelectionModel().getSelection()[0];			
+		winCliente.down('button').on('click', function(btn){
+			var sel=winCliente.down('grid').getSelectionModel().getSelection()[0];			
 			formCoti.loadRecord(sel);
-			win.close();
-			win.queryById('buscarArt').focus("", 30);
+			winCliente.close();
+			
+			win.queryById('buscarArt').focus('', 30);
 		});
 	},
 	
 	AddCotizacionesWin: function(btn){
 		var win=Ext.widget('CotizacionView');
+		win.queryById('buscaCliente').focus('', 20);
 		
 		var store=win.down('grid').getStore();
 		store.on({
-			'datachanged':function(st, opts){	
-				console.log(st);			
+			'datachanged':function(st, opts){
 				var total=0;
 				st.each(function(rec){
 					var data = rec.getData();
@@ -162,7 +200,7 @@ Ext.define('MetApp.controller.Utilitarios.UtilitariosController',{
 				});						
 				var desc = win.queryById('desc').getValue();
 				total = total - desc * total / 100;
-				win.queryById('total').setValue(total);
+				win.queryById('total').setValue(total.toFixed(2));
 			}
 		});
 	},

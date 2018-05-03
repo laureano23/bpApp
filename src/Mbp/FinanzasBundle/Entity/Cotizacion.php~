@@ -104,6 +104,13 @@ class Cotizacion
      */
     private $idUsuario;
 	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="inactiva", type="boolean")
+     */
+    private $inactiva;
+	
 	public function __construct() {
         $this->detalle = new ArrayCollection();
     }
@@ -366,5 +373,53 @@ class Cotizacion
     public function getIdUsuario()
     {
         return $this->idUsuario;
+    }
+
+    /**
+     * Set total
+     *
+     * @param string $total
+     *
+     * @return Cotizacion
+     */
+    public function setTotal($total)
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
+    /**
+     * Get total
+     *
+     * @return string
+     */
+    public function getTotal()
+    {
+        return $this->total;
+    }
+
+    /**
+     * Set descuento
+     *
+     * @param string $descuento
+     *
+     * @return Cotizacion
+     */
+    public function setDescuento($descuento)
+    {
+        $this->descuento = $descuento;
+
+        return $this;
+    }
+
+    /**
+     * Get descuento
+     *
+     * @return string
+     */
+    public function getDescuento()
+    {
+        return $this->descuento;
     }
 }
