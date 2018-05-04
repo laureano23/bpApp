@@ -21,6 +21,7 @@ Ext.define('MetApp.store.Calidad.ControlRecepcionStore',{
 		
 		writer: {
 			type: 'json',
+			allowSingle: false,
 			encode: true,
 			root: 'data',							
 		},

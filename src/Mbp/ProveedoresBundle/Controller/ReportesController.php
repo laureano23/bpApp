@@ -600,6 +600,7 @@ class ReportesController extends Controller
 			     Proveedor.`direccion` AS Proveedor_direccion,
 			     Proveedor.`localidad` AS Proveedor_localidad,
 			     Proveedor.`provincia` AS Proveedor_provincia,
+			     Proveedor.`cuit` AS Proveedor_cuit,
 			     provincia.`id` AS provincia_id,
 			     provincia.`nombre` AS provincia_nombre,
 			     localidades.`id` AS localidades_id,
@@ -617,13 +618,13 @@ class ReportesController extends Controller
 			     LEFT JOIN `localidades` localidades ON Proveedor.`localidad` = localidades.`id`
 			     INNER JOIN `TipoComprobante` TipoComprobante ON FacturaProveedor.`tipoId` = TipoComprobante.`id`
 			WHERE
-			     OrdenPago.`id` = $idOp
-			          AND TransaccionOPFC.`facturaId` = FacturaProveedor.`id`
+			     OrdenPago.`id` = $idOp     AND TransaccionOPFC.`facturaId` = FacturaProveedor.`id`
 			 AND FormasPagos.`retencionIIBB` = TRUE";		     
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 				
 		}catch(\Exception $e){
+			throw $e;
 			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(
 				json_encode(array('success' => false, 'msg' => $e->getMessage()))
