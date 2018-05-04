@@ -13,6 +13,7 @@
 /web/frontend/js/*
 #EXCLUIMOS METAPP
 !/web/frontend/js/MetApp/
+ 
 
 /app/bootstrap.php.cache
 
