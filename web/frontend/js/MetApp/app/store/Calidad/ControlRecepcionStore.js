@@ -8,7 +8,7 @@ Ext.define('MetApp.store.Calidad.ControlRecepcionStore',{
 		type: 'ajax',
 		api: {
 			read: Routing.generate('mbp_articulos_listarPendientesVerificacion'),			
-			//update: Routing.generate('mbp_calidad_updatecorrelativo'),
+			update: Routing.generate("mbp_calidad_controlIngreso"),
 		},
 		
 		reader: {

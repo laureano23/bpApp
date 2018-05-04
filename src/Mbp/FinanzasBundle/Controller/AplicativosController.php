@@ -122,7 +122,7 @@ class AplicativosController extends Controller
 				->getArrayResult();
 			
 		
-			$nombreArchivo="AR"."-".$this->container->getParameter('cuit_prod')."-".$desde->format("Ym").$quincena."-".self::$codigoPercepcion."-LOTE1.txt";
+			$nombreArchivo="AR"."-".$this->container->getParameter('cuit_prod')."-".$desde->format("Ym").$quincena."-".self::$codigoRetencion."-LOTE1.txt";
 			
 			$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/txt/');
 			$file=fopen($basePath.$nombreArchivo, "w");

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LibroIVAVentas" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="c4b105ad-c9d2-4e6e-aab2-f046571798ae">
 	<property name="ireport.zoom" value="1.1000000000000052"/>
-	<property name="ireport.x" value="253"/>
+	<property name="ireport.x" value="152"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="fechaDesde" class="java.lang.String">
 		<defaultValueExpression><![CDATA[01/01/2001]]></defaultValueExpression>
@@ -28,6 +28,7 @@
      Facturas.`porcentajeIIBB` AS Facturas_porcentajeIIBB,
      Facturas.`moneda` AS Facturas_moneda,
      Facturas.`tipoCambio` AS Facturas_tipoCambio,
+     Facturas.`tipoId` AS Facturas_tipoId,
      TipoComprobante.`id` AS TipoComprobante_id,
      TipoComprobante.`esFactura` AS TipoComprobante_esFactura,
      TipoComprobante.`esNotaCredito` AS TipoComprobante_esNotaCredito,
@@ -50,7 +51,7 @@ AND TipoComprobante.`esBalance` = 0]]>
 	<field name="cliente_idCliente" class="java.lang.Integer"/>
 	<field name="cliente_rsocial" class="java.lang.String"/>
 	<field name="Facturas_id" class="java.lang.Integer"/>
-	<field name="Facturas_fecha" class="java.sql.Timestamp"/>
+	<field name="Facturas_fecha" class="java.sql.Date"/>
 	<field name="Facturas_concepto" class="java.lang.String"/>
 	<field name="Facturas_clienteId" class="java.lang.Integer"/>
 	<field name="Facturas_ptoVta" class="java.lang.Integer"/>
@@ -61,6 +62,7 @@ AND TipoComprobante.`esBalance` = 0]]>
 	<field name="Facturas_porcentajeIIBB" class="java.math.BigDecimal"/>
 	<field name="Facturas_moneda" class="java.lang.Boolean"/>
 	<field name="Facturas_tipoCambio" class="java.math.BigDecimal"/>
+	<field name="Facturas_tipoId" class="java.lang.Integer"/>
 	<field name="TipoComprobante_id" class="java.lang.Integer"/>
 	<field name="TipoComprobante_esFactura" class="java.lang.Boolean"/>
 	<field name="TipoComprobante_esNotaCredito" class="java.lang.Boolean"/>
@@ -84,7 +86,8 @@ $F{Facturas_total}]]></variableExpression>
  $F{Facturas_total} -$F{Facturas_iva21}-$F{Facturas_perIIBB}]]></variableExpression>
 	</variable>
 	<variable name="sumaPer" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{Facturas_perIIBB}]]></variableExpression>
+		<variableExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == true? (-1*$F{Facturas_perIIBB}):
+$F{Facturas_perIIBB}]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>

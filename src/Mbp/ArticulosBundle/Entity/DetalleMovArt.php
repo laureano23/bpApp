@@ -71,7 +71,10 @@ class DetalleMovArt
 	/**
      * @var boolean
      *
-     * @ORM\Column(name="estadoCalidad", type="string", nullable=true)
+	 * estado 0 rechazadp
+	 * estado 1 aprobado
+	 * 
+     * @ORM\Column(name="estadoCalidad", type="boolean", nullable=true)
      */
     private $estadoCalidad;
 	

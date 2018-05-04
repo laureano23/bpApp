@@ -43,6 +43,7 @@ Ext.define('MetApp.view.Calidad.ControlRecepcionView', {
 							region: 'center',
 							store: 'MetApp.store.Calidad.ControlRecepcionStore',
 							columns: [
+								{ text: 'id movimiento', dataIndex: 'id', hidden: true, width: 150 },
 								{ text: 'Código', dataIndex: 'codigo', width: 150 },
 								{ text: 'Descripción', dataIndex: 'descripcion', width: 300 },
 								{ text: 'Cantidad', dataIndex: 'cant', flex: 1 },

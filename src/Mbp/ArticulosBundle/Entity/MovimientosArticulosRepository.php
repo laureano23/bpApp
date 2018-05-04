@@ -21,14 +21,17 @@ class MovimientosArticulosRepository extends \Doctrine\ORM\EntityRepository
 				det.descripcion,
 				det.id AS loteNum,
 				oc.id AS idOc,
+				det.cantidad AS cant,
 				det.estadoCalidad,
-				det.certificadoNum
+				det.certificadoNum,
+				det.id AS id
 				')
 			->join('mov.movDetalleId', 'det')
 			->join('mov.proveedorId', 'prov')
 			->join('det.articuloId', 'art')
 			->join('det.ordenCompraId', 'oc')
 			->where('art.requiereControl = 1')
+			->andWhere('det.estadoCalidad is NULL')
 			->getQuery()
 			->getArrayResult();	
 		return $qb;	

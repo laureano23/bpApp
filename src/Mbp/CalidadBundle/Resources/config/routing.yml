@@ -1,3 +1,8 @@
+mbp_calidad_ingresos:
+    resource: "@MbpCalidadBundle/Controller/ControlRecepcionController.php"
+    type:     annotation
+    prefix:   /recepcion
+
 mbp_calidad_correlativos:
     path:     /correlativos
     defaults: { _controller: MbpCalidadBundle:Default:correlativos }
