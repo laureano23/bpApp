@@ -624,7 +624,6 @@ class ReportesController extends Controller
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 				
 		}catch(\Exception $e){
-			throw $e;
 			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(
 				json_encode(array('success' => false, 'msg' => $e->getMessage()))
