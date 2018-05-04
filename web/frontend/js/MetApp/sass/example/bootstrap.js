@@ -879,6 +879,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.controller.Bancos.ReportesController": [],
   "MetApp.controller.Calidad.CalidadController": [],
   "MetApp.controller.Calidad.CalidadReportesController": [],
+  "MetApp.controller.Calidad.RecepcionController": [],
   "MetApp.controller.Clientes.CCClientesController": [],
   "MetApp.controller.Clientes.ClientesController": [],
   "MetApp.controller.Clientes.TransportesController": [],
@@ -989,6 +990,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.store.Bancos.ConceptosBancoStore": [],
   "MetApp.store.Bancos.CuentasBancoStore": [],
   "MetApp.store.Bancos.MovimientosBancoStore": [],
+  "MetApp.store.Calidad.ControlRecepcionStore": [],
   "MetApp.store.Calidad.Correlativos": [],
   "MetApp.store.Calidad.Estanqueidad": [],
   "MetApp.store.Clientes.Clientes": [],
@@ -1068,6 +1070,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.view.CCProveedores.ChequeTerceros": [],
   "MetApp.view.CCProveedores.FacturaProveedor": [],
   "MetApp.view.CCProveedores.PagoProveedores": [],
+  "MetApp.view.Calidad.ControlRecepcionView": [],
   "MetApp.view.Calidad.FormEstanqueidadRG010": [],
   "MetApp.view.Calidad.GridNumCorrelativa": [],
   "MetApp.view.Calidad.NumCorrelativaForm": [],
@@ -2176,6 +2179,7 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.controller.Bancos.ReportesController": [],
   "MetApp.controller.Calidad.CalidadController": [],
   "MetApp.controller.Calidad.CalidadReportesController": [],
+  "MetApp.controller.Calidad.RecepcionController": [],
   "MetApp.controller.Clientes.CCClientesController": [],
   "MetApp.controller.Clientes.ClientesController": [],
   "MetApp.controller.Clientes.TransportesController": [],
@@ -2314,6 +2318,7 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.store.Bancos.MovimientosBancoStore": [
     "store.MovimientosBancosStore"
   ],
+  "MetApp.store.Calidad.ControlRecepcionStore": [],
   "MetApp.store.Calidad.Correlativos": [],
   "MetApp.store.Calidad.Estanqueidad": [],
   "MetApp.store.Clientes.Clientes": [
@@ -2546,6 +2551,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "MetApp.view.CCProveedores.PagoProveedores": [
     "widget.PagoProveedores"
+  ],
+  "MetApp.view.Calidad.ControlRecepcionView": [
+    "widget.ControlRecepcionView"
   ],
   "MetApp.view.Calidad.FormEstanqueidadRG010": [
     "widget.estanqueidadForm"
