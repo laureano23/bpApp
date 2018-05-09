@@ -200,28 +200,23 @@ Ext.define('MetApp.view.Proveedores.FormProveedores' ,{
 									xtype: 'container',
 									columnWidth: 0.33,
 									layout: 'vbox',
-									items: [										
+									defaults: {
+										readOnly: true,
+										disabledCls: 'myDisabledClass'
+									},
+									items: [	
 										{
-											title: 'Retencion',
-											border: false,
-											defaults: {
-												readOnly: true,
-												disabledCls: 'myDisabledClass'
-											},
-											items: [
-												{
-													xtype: 'checkbox',
-													name: 'aplicaRetencion',
-													fieldLabel: 'Aplica:',
-													uncheckedValue: false
-												},
-												{
-													xtype: 'numberfield',
-													name: 'porcentajeRetencion',
-													fieldLabel: 'Retencion'
-												}
-											]
+											xtype: 'checkbox',
+											name: 'noAplicaRetencion',
+											fieldLabel: 'No Aplica Retención:',
+											labelWidth: 140,
+											uncheckedValue: false
 										},
+										/*{
+											xtype: 'numberfield',
+											name: 'porcentajeRetencion',
+											fieldLabel: 'Retencion'
+										}*/
 										{
 											xtype: 'combobox',
 											queryMode: 'local',

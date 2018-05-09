@@ -17,7 +17,7 @@ Ext.define('MetApp.model.Proveedores.ProveedoresModel',{
 		{name: 'contacto3', type: 'string'},
 		{name: 'condCompra', type: 'string'},
 		{name: 'vencimientoFc', type: 'int'},
-		{name: 'aplicaRetencion', type: 'boolean'},
+		{name: 'noAplicaRetencion', type: 'bool'},
 		{name: 'porcentajeRetencion', type: 'float'},
 		{name: 'tipoGasto', type: 'int'},
 		{name: 'localidad', type: 'int'},

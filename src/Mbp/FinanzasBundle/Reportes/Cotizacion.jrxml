@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OrdenDeCompra" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="b20991a6-8da8-4cf2-8ac6-123176886f03">
 	<property name="ireport.zoom" value="1.3310000000000057"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="12"/>
+	<property name="ireport.x" value="39"/>
+	<property name="ireport.y" value="29"/>
 	<parameter name="rutaLogo" class="java.lang.String"/>
 	<parameter name="cotizacionId" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -183,9 +183,18 @@ Tel: 4484-2416]]></text>
 				<textFieldExpression><![CDATA[$F{Cotizacion_direccion}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="112" width="429" height="43" uuid="9a7c1fee-6b49-47c0-a65b-599ba024eee3"/>
-				<text><![CDATA[A los precios cotizados se les debe agregar el IVA (21%)]]></text>
+				<reportElement x="0" y="112" width="108" height="20" uuid="6cf4b034-85e8-4cf9-b9d7-a225d6e91c87"/>
+				<box leftPadding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cond. Comerciales:]]></text>
 			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="108" y="112" width="467" height="20" uuid="6d34ea64-ef6d-4489-8f4d-d9e9aacc0636"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Cotizacion_condVenta}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -325,7 +334,7 @@ Tel: 4484-2416]]></text>
 				<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="73" width="381" height="80" uuid="31ffbb83-6689-4e89-9f2b-1be93962ee7e"/>
+				<reportElement x="0" y="93" width="400" height="60" uuid="31ffbb83-6689-4e89-9f2b-1be93962ee7e"/>
 				<textFieldExpression><![CDATA[$F{Cotizacion_observaciones}]]></textFieldExpression>
 			</textField>
 			<staticText>
@@ -335,6 +344,11 @@ Tel: 4484-2416]]></text>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Observaciones:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="73" width="429" height="20" uuid="9a7c1fee-6b49-47c0-a65b-599ba024eee3"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[A los precios cotizados se les debe agregar el IVA (21%)]]></text>
 			</staticText>
 		</band>
 	</summary>

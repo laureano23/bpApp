@@ -64,7 +64,7 @@ class DefaultController extends Controller
 					->select('p.id, p.rsocial AS rsocial, 
 							p.denominacion, p.direccion, p.email, p.cuit, p.cPostal, p.telefono1, p.contacto1,
 							p.telefono2, p.contacto2, p.telefono3, p.contacto3, p.condCompra, p.vencimientoFc, 
-							p.aplicaRetencion, p.porcentajeRetencion, p.cuentaCerrada, imputacion.id AS tipoGasto,
+							p.noAplicaRetencion, p.porcentajeRetencion, p.cuentaCerrada, imputacion.id AS tipoGasto,
 							prov.id AS provincia,
 							dep.id AS departamento,
 							loc.id AS localidad
@@ -160,7 +160,7 @@ class DefaultController extends Controller
 			$proveedor->setCondCompra($decData->condCompra);
 			$proveedor->setVencimientoFc($decData->vencimientoFc);
 			$proveedor->setPorcentajeRetencion($decData->vencimientoFc);
-			$proveedor->setAplicaRetencion($decData->aplicaRetencion == 'on' ? true : false);
+			$proveedor->setNoAplicaRetencion($decData->noAplicaRetencion == 'on' ? true : false);
 			$proveedor->setPorcentajeRetencion($decData->porcentajeRetencion);
 			$proveedor->setCuentaCerrada($decData->cuentaCerrada == 'on' ? true : false);
 			
@@ -173,7 +173,7 @@ class DefaultController extends Controller
 			));
 			
 			return new Response();	
-		}catch(\Exception $e){
+		}catch(\Exception $e){			
 			echo json_encode(array(
 				'success' => false,
 				'msg' => $e->getMessage()

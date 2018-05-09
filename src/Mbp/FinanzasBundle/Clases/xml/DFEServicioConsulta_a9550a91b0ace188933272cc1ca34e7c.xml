@@ -5,7 +5,7 @@
 <cantidadContribuyentes>1</cantidadContribuyentes>
 <contribuyentes class="list">
 <contribuyente>
-<cuitContribuyente>0</cuitContribuyente> 
+<cuitContribuyente>99999999999</cuitContribuyente> 
 </contribuyente>
 </contribuyentes>
 </CONSULTA-ALICUOTA>

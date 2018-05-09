@@ -1,6 +1,6 @@
 Ext.define('MetApp.store.Clientes.CotizacionDetalleStore',{
 	extend: 'Ext.data.Store',
-	model: 'MetApp.model.Compras.OrdenCompraModel',
+	model: 'MetApp.model.Clientes.CotizacionModel',
 	alias: 'clientesStore',
 	autoSync: true,
 	autoLoad: false,
@@ -8,12 +8,12 @@ Ext.define('MetApp.store.Clientes.CotizacionDetalleStore',{
     pageSize: 1000,
     storeId: 'clientesStore',
 	
-	proxy: {
+	/*proxy: {
         type: 'memory',
         
         reader: {
             type: 'json',
            // root: 'items'
         },
-    }
+    }*/
 });

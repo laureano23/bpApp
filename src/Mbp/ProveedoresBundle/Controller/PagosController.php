@@ -37,9 +37,15 @@ class PagosController extends Controller
 			$proveedor = $repoProv->find($idProv);
 			$repoFinanzas = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
 			$parametrosFinanzas = $repoFinanzas->find(1);			
-			$iibbService = $this->get('ServiceIIBB');	//SERVICIO PARA ALICUOTAS DE IIBB
-			$iibbService->setOpts($proveedor->getCuit());
-			$alicuotaRetencion = $iibbService->getAlicuotaRetencion();
+			
+			//iibb si corresponde
+			$alicuotaRetencion=0;
+			if($proveedor->getNoAplicaRetencion()==false){
+				//print_r("entramos");
+				$iibbService = $this->get('ServiceIIBB');	//SERVICIO PARA ALICUOTAS DE IIBB
+				$iibbService->setOpts($proveedor->getCuit());
+				$alicuotaRetencion = $iibbService->getAlicuotaRetencion();	
+			}			
 			
 			$resp = array();
 			
@@ -154,16 +160,19 @@ class PagosController extends Controller
 			}
 			
 			//CALCULO DE RETENCION
-			$retencion = $this->calculoRentecion($valorAplicado, $proveedor);
-			if($retencion > 0){
-				$pago = new Pago;
-				$tipoPago = $repoTipoPago->findOneByRetencionIIBB(true);
-				$pago->setIdFormaPago($tipoPago);
-				$pago->setEmision(new \DateTime);
-				$pago->setImporte($retencion);
-				$ordenPago->addPagoDetalleId($pago);				
-				$totalImporte = $pago->getImporte();
-			}
+			$retencion;
+			if($proveedor->getNoAplicaRetencion() == false){
+				$retencion = $this->calculoRentecion($valorAplicado, $proveedor);
+				if($retencion > 0){
+					$pago = new Pago;
+					$tipoPago = $repoTipoPago->findOneByRetencionIIBB(true);
+					$pago->setIdFormaPago($tipoPago);
+					$pago->setEmision(new \DateTime);
+					$pago->setImporte($retencion);
+					$ordenPago->addPagoDetalleId($pago);				
+					$totalImporte += $pago->getImporte();
+				}	
+			}			
 			
 			$ordenPago->setImporteTotal($totalImporte); //el importe de los valores + las retenciones
 			

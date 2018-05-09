@@ -736,8 +736,17 @@ Ext.define('MetApp.view.Principal.MyViewport', {
         		itemId: 'tbRetenciones'
         	},
         	{
-        		text: 'Cotizaciones',
-        		itemId: 'tbCotizaciones'
+        		text: 'Cotizaciones',        		
+        		menu: [
+        			{
+        				text: 'Nueva',
+        				itemId: 'tbCotizaciones',
+        			},
+        			{
+        				text: 'Listado',
+        				itemId: 'tbListadoCoti',
+        			}
+        		]
         	},
         ]
     		    	

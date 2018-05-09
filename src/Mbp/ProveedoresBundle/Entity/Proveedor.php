@@ -150,9 +150,9 @@ class Proveedor
     /**
      * @var boolean
      *
-     * @ORM\Column(name="aplicaRetencion", type="boolean", nullable=true)
+     * @ORM\Column(name="noAplicaRetencion", type="boolean", nullable=true)
      */
-    private $aplicaRetencion;
+    private $noAplicaRetencion=0;
 
     /**
      * @var string
@@ -523,27 +523,27 @@ class Proveedor
     }
 
     /**
-     * Set aplicaRetencion
+     * Set noAplicaRetencion
      *
-     * @param boolean $aplicaRetencion
+     * @param boolean $noAplicaRetencion
      *
      * @return Proveedor
      */
-    public function setAplicaRetencion($aplicaRetencion)
+    public function setNoAplicaRetencion($noAplicaRetencion)
     {
-        $this->aplicaRetencion = $aplicaRetencion;
+        $this->noAplicaRetencion = $noAplicaRetencion;
 
         return $this;
     }
 
     /**
-     * Get aplicaRetencion
+     * Get noAplicaRetencion
      *
      * @return boolean
      */
-    public function getAplicaRetencion()
+    public function getNoAplicaRetencion()
     {
-        return $this->aplicaRetencion;
+        return $this->noAplicaRetencion;
     }
 
     /**

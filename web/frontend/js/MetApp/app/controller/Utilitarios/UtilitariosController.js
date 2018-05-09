@@ -6,7 +6,8 @@ Ext.define('MetApp.controller.Utilitarios.UtilitariosController',{
 	],
 	views: [
 		'MetApp.view.Utilitarios.TxtRetencionesView',
-		'MetApp.view.Utilitarios.CotizacionView'
+		'MetApp.view.Utilitarios.CotizacionView',
+		'MetApp.view.Utilitarios.ListadoCotizaciones'
 	],
 	
 	refs:[
@@ -50,7 +51,18 @@ Ext.define('MetApp.controller.Utilitarios.UtilitariosController',{
 			'CotizacionView actioncolumn[itemId=eliminar]': {
 				click: this.EliminarItemCoti
 			},
+			'viewport menuitem[itemId=tbListadoCoti]': {
+				click: this.ListadoCotizaciones
+			},
 		});
+	},
+	
+	ListadoCotizaciones: function(btn){
+		var win=Ext.widget('ListadoCotizaciones');
+		var store=win.down('grid').getStore();
+		
+		console.log(store);
+		store.load();
 	},
 	
 	EliminarItemCoti: function(grid, colIndex, rowIndex){
