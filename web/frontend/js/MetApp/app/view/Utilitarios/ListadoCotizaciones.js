@@ -23,7 +23,7 @@ Ext.define('MetApp.view.Utilitarios.ListadoCotizaciones' ,{
 					store: 'MetApp.store.Clientes.CotizacionDetalleStore',
 					columns: [
 						{ text: 'Fecha', dataIndex: 'fecha', flex: 1 },
-						{ text: 'Cliente', dataIndex: 'cliente', flex: 1 },
+						{ text: 'Cliente', dataIndex: 'cliente', width: 210 },
 						{ text: 'Cot. N°', dataIndex: 'id', flex: 1 },	
 						{ 
 							header: 'Detalle',

@@ -54,14 +54,70 @@ Ext.define('MetApp.controller.Utilitarios.UtilitariosController',{
 			'viewport menuitem[itemId=tbListadoCoti]': {
 				click: this.ListadoCotizaciones
 			},
+			'ListadoCotizaciones actioncolumn[itemId=detalle]': {
+				click: this.VerCotizacion
+			},
+			'ListadoCotizaciones actioncolumn[itemId=eliminar]': {
+				click: this.EliminarCotizacion
+			},
+			'ListadoCotizaciones textfield[itemId=filtroCliente]': {
+				change: this.FiltrarCotizaciones
+			},
 		});
+	},
+	
+	FiltrarCotizaciones: function(txt){
+		var win=txt.up('window');
+		var store=win.down('grid').getStore();
+		
+		store.clearFilter(true);
+		store.filter(
+			{property: 'cliente',
+			value: txt.getValue(),
+			anyMatch: true}
+		);				
+		
+	},
+	
+	EliminarCotizacion: function(grid, colIndex, rowIndex){
+		Ext.Msg.show({
+			title: 'Atención',
+			msg: 'Desea eliminar este item?',
+			buttons: Ext.Msg.YESNOCANCEL,
+     		icon: Ext.Msg.QUESTION,
+     		fn: function(resp){
+     			if(resp=='yes'){
+	     			var store = grid.getStore();
+					var selection = store.getAt(rowIndex);
+					
+					selection.destroy();	
+     			}
+     		}
+		})
+	},
+	
+	VerCotizacion: function(grid, colIndex, rowIndex){
+		var store = grid.getStore();
+		var selection = store.getAt(rowIndex);
+		
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_Cotizaciones_reporteCoti'),
+			
+			params: {
+				idCoti: selection.data.id
+			},
+			
+			success: function(resp){
+				var ruta = Routing.generate('mbp_Cotizaciones_verCoti');
+		    	window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+			}
+		})
 	},
 	
 	ListadoCotizaciones: function(btn){
 		var win=Ext.widget('ListadoCotizaciones');
 		var store=win.down('grid').getStore();
 		
-		console.log(store);
 		store.load();
 	},
 	

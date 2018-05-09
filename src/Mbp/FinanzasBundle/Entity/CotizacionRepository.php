@@ -10,4 +10,22 @@ namespace Mbp\FinanzasBundle\Entity;
  */
 class CotizacionRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function listarCotizaciones()
+	{
+		$em = $this->getEntityManager();
+		$repo = $em->getRepository('MbpFinanzasBundle:Cotizacion');
+		
+		$res = $repo->createQueryBuilder('c')
+			->select("
+				c.id, 
+				DATE_FORMAT(c.emision, '%d/%m/%Y') AS fecha,
+				cli.rsocial AS cliente
+				")
+			->leftJoin('c.clienteId', 'cli')
+			->orderBy('c.id', 'DESC')
+			->getQuery()
+			->getArrayResult();
+		
+		return $res;
+	}
 }

@@ -38,8 +38,8 @@ Ext.define('MetApp.model.Clientes.CotizacionModel',{
 		filterParam: 'filter',	
 		api: {
 			create: Routing.generate("mbp_finanzas_cotizaciones_nueva"),
-			read: Routing.generate("mbp_finanzas_cotizaciones_nueva"),		
-			destroy: Routing.generate("mbp_finanzas_cotizaciones_nueva")		
+			read: Routing.generate("mbp_finanzas_cotizaciones_listar"),		
+			destroy: Routing.generate("mbp_finanzas_cotizaciones_eliminar")		
 		},
 		
 		reader: {
