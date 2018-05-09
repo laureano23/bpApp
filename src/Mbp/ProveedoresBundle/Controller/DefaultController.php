@@ -64,7 +64,7 @@ class DefaultController extends Controller
 					->select('p.id, p.rsocial AS rsocial, 
 							p.denominacion, p.direccion, p.email, p.cuit, p.cPostal, p.telefono1, p.contacto1,
 							p.telefono2, p.contacto2, p.telefono3, p.contacto3, p.condCompra, p.vencimientoFc, 
-							p.noAplicaRetencion, p.porcentajeRetencion, p.cuentaCerrada, imputacion.id AS tipoGasto,
+							p.noAplicaRetencion, p.cuentaCerrada, imputacion.id AS tipoGasto,
 							prov.id AS provincia,
 							dep.id AS departamento,
 							loc.id AS localidad
@@ -129,6 +129,7 @@ class DefaultController extends Controller
 		$repoProvincia = $em->getRepository('MbpPersonalBundle:Provincia');
 		$repoLocalidad = $em->getRepository('MbpPersonalBundle:Localidades');
 		$repoImputaciones = $em->getRepository('MbpProveedoresBundle:ImputacionGastos');
+		$response=new Response;
 		
 		try{
 			$data = $req->request->get('data');
@@ -159,31 +160,18 @@ class DefaultController extends Controller
 			$proveedor->setContacto3($decData->contacto3);
 			$proveedor->setCondCompra($decData->condCompra);
 			$proveedor->setVencimientoFc($decData->vencimientoFc);
-			$proveedor->setPorcentajeRetencion($decData->vencimientoFc);
 			$proveedor->setNoAplicaRetencion($decData->noAplicaRetencion == 'on' ? true : false);
-			$proveedor->setPorcentajeRetencion($decData->porcentajeRetencion);
 			$proveedor->setCuentaCerrada($decData->cuentaCerrada == 'on' ? true : false);
 			
 			$em->persist($proveedor);
-			$em->flush();
+			$em->flush();			
 			
-			echo json_encode(array(
-				'success' => true,
-				'id' => $proveedor->getId()
-			));
-			
-			return new Response();	
-		}catch(\Exception $e){			
-			echo json_encode(array(
-				'success' => false,
-				'msg' => $e->getMessage()
-			));
+			return $response->setContent(json_encode(array('success'=>true, 'id'=>$proveedor->getId())));	
+		}catch(\Exception $e){
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(json_encode(array('success'=>false, 'msg'=>$e->getMessage())));
 		}		
     }
-
-	
-	
-	
 	
 	/**
      * @Route("/proveedores/NuevaFormaPago", name="mbp_proveedores_nuevaFormaPago", options={"expose"=true})

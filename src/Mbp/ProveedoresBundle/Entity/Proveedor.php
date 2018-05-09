@@ -150,16 +150,9 @@ class Proveedor
     /**
      * @var boolean
      *
-     * @ORM\Column(name="noAplicaRetencion", type="boolean", nullable=true)
+     * @ORM\Column(name="noAplicaRetencion", type="boolean", nullable=false)
      */
     private $noAplicaRetencion=0;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="porcentajeRetencion", type="decimal", nullable=true)
-     */
-    private $porcentajeRetencion;
 
     /**
      * @var boolean
@@ -546,30 +539,7 @@ class Proveedor
         return $this->noAplicaRetencion;
     }
 
-    /**
-     * Set porcentajeRetencion
-     *
-     * @param string $porcentajeRetencion
-     *
-     * @return Proveedor
-     */
-    public function setPorcentajeRetencion($porcentajeRetencion)
-    {
-        $this->porcentajeRetencion = $porcentajeRetencion;
-
-        return $this;
-    }
-
-    /**
-     * Get porcentajeRetencion
-     *
-     * @return string
-     */
-    public function getPorcentajeRetencion()
-    {
-        return $this->porcentajeRetencion;
-    }
-
+    
     /**
      * Set cuentaCerrada
      *
