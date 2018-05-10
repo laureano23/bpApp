@@ -80,7 +80,7 @@ class Proveedor
     /**
      * @var string
      *
-     * @ORM\Column(name="cuit", type="string", length=11, nullable=true)
+     * @ORM\Column(name="cuit", type="string", length=11, nullable=true, unique=true)
      */
     private $cuit;
 
