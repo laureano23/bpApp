@@ -307,7 +307,6 @@ class StockController extends Controller
 			$res=$repoMov->listarPendientesVerificacion();
 			
 			$response->setContent(json_encode(array('success'=>true, 'data'=>$res)));
-			//print_r($res);
 			
 			return $response;
 		}catch(\Exception $e){

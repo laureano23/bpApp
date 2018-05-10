@@ -17,6 +17,7 @@ class MovimientosArticulosRepository extends \Doctrine\ORM\EntityRepository
 		$qb = $repoMov->createQueryBuilder('mov')
 			->select('
 				mov.fechaMovimiento AS fecha,
+				mov.comprobanteNum AS comprobante,
 				art.codigo,
 				det.descripcion,
 				det.id AS loteNum,

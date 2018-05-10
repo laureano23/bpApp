@@ -23,6 +23,8 @@ Ext.define('MetApp.model.Compras.OrdenCompraModel',{
 		{ name: 'loteNum', type: 'int' },
 		{ name: 'pedido', type: 'int' },
 		{ name: 'estadoCalidad', type: 'string' },
-		{ name: 'certificadoNum', type: 'string' },		
+		{ name: 'certificadoNum', type: 'string' },
+		{ name: 'detalleControl', type: 'string' },
+		{ name: 'comprobante', type: 'string' },				
 	]
 });

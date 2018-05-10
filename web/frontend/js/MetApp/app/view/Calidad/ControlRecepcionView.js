@@ -47,7 +47,8 @@ Ext.define('MetApp.view.Calidad.ControlRecepcionView', {
 								{ text: 'Código', dataIndex: 'codigo', width: 150 },
 								{ text: 'Descripción', dataIndex: 'descripcion', width: 300 },
 								{ text: 'Cantidad', dataIndex: 'cant', flex: 1 },
-								{ text: 'Lote', dataIndex: 'lote', flex: 1 },
+								{ text: 'Lote', dataIndex: 'loteNum', flex: 1 },
+								{ text: 'Comprobante', dataIndex: 'comprobante', flex: 1 },
 								{							
 									header: 'Estado',
 									width: 150,
@@ -74,6 +75,17 @@ Ext.define('MetApp.view.Calidad.ControlRecepcionView', {
 										xtype: 'textfield',
 									}
 								},
+								{ 
+									header: 'Detalle',
+									itemId: 'detalle',
+									xtype: 'actioncolumn',
+									stopSelection: false,
+									items: [
+										{ iconCls: 'infoact' }										
+									],
+									flex: 1
+								},
+								{ text: 'detalle control', dataIndex: 'detalleControl', hidden: true },	
 							]
 						},	
 						{

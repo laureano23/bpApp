@@ -71,7 +71,10 @@ class DetalleMovArt
 	/**
      * @var boolean
      *
-     * @ORM\Column(name="estadoCalidad", type="string", nullable=true)
+	 * estado 0 rechazadp
+	 * estado 1 aprobado
+	 * 
+     * @ORM\Column(name="estadoCalidad", type="boolean", nullable=true)
      */
     private $estadoCalidad;
 	
@@ -81,6 +84,13 @@ class DetalleMovArt
      * @ORM\Column(name="certificadoNum", type="string", length=255, nullable=true)
      */
     private $certificadoNum;
+	
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="detalleControl", type="string", length=255, nullable=true)
+     */
+    private $detalleControl;
 
     /**
      * Get id
@@ -252,5 +262,53 @@ class DetalleMovArt
     public function getMovimientoId()
     {
         return $this->movimientoId;
+    }
+
+    /**
+     * Set estadoCalidad
+     *
+     * @param string $estadoCalidad
+     *
+     * @return DetalleMovArt
+     */
+    public function setEstadoCalidad($estadoCalidad)
+    {
+        $this->estadoCalidad = $estadoCalidad;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoCalidad
+     *
+     * @return string
+     */
+    public function getEstadoCalidad()
+    {
+        return $this->estadoCalidad;
+    }
+
+    /**
+     * Set certificadoNum
+     *
+     * @param string $certificadoNum
+     *
+     * @return DetalleMovArt
+     */
+    public function setCertificadoNum($certificadoNum)
+    {
+        $this->certificadoNum = $certificadoNum;
+
+        return $this;
+    }
+
+    /**
+     * Get certificadoNum
+     *
+     * @return string
+     */
+    public function getCertificadoNum()
+    {
+        return $this->certificadoNum;
     }
 }

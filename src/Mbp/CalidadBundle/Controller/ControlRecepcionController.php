@@ -33,6 +33,7 @@ class ControlRecepcionController extends Controller
 				}
 				
 				$item->setCertificadoNum($r->certificadoNum);
+				$item->setDetalleControl($r->detalleControl);
 				$em->persist($item);
 			}
 			
@@ -42,7 +43,6 @@ class ControlRecepcionController extends Controller
 			);
 			
 		}catch(\Exception $e){
-			throw $e;
 			$msg = json_encode(array(
 				'success' => false,
 				'msg' => $e->getMessage()

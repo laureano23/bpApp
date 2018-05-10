@@ -18,7 +18,26 @@ Ext.define('MetApp.controller.Calidad.RecepcionController',{
 			'ControlRecepcionView button[itemId=guardar]': {
 				click: this.GuardarCambiosRecepcion
 			},
+			'ControlRecepcionView actioncolumn[itemId=detalle]': {
+				click: this.DetalleControl
+			},
 		})		
+	},
+	
+	DetalleControl: function(btn){
+		var win=btn.up('window');
+		var grid=win.down('grid');
+		var sel=grid.getSelectionModel().getSelection()[0];
+		
+		
+		Ext.Msg.prompt('Control', 'Ingrese control realizado:', function(btn, text){
+		    if (btn == 'ok'){
+		    	console.log(text);
+				sel.data.detalleControl=text;
+				console.log(sel);
+				grid.getView().refreshNode(sel.index);        
+		    }
+		},this, true, sel.data.detalleControl);
 	},
 	
 	GuardarCambiosRecepcion: function(btn){

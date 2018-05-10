@@ -84,6 +84,13 @@ class DetalleMovArt
      * @ORM\Column(name="certificadoNum", type="string", length=255, nullable=true)
      */
     private $certificadoNum;
+	
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="detalleControl", type="string", length=255, nullable=true)
+     */
+    private $detalleControl;
 
     /**
      * Get id
@@ -303,5 +310,29 @@ class DetalleMovArt
     public function getCertificadoNum()
     {
         return $this->certificadoNum;
+    }
+
+    /**
+     * Set detalleControl
+     *
+     * @param string $detalleControl
+     *
+     * @return DetalleMovArt
+     */
+    public function setDetalleControl($detalleControl)
+    {
+        $this->detalleControl = $detalleControl;
+
+        return $this;
+    }
+
+    /**
+     * Get detalleControl
+     *
+     * @return string
+     */
+    public function getDetalleControl()
+    {
+        return $this->detalleControl;
     }
 }
