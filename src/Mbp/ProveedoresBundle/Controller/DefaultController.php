@@ -65,6 +65,7 @@ class DefaultController extends Controller
 							p.denominacion, p.direccion, p.email, p.cuit, p.cPostal, p.telefono1, p.contacto1,
 							p.telefono2, p.contacto2, p.telefono3, p.contacto3, p.condCompra, p.vencimientoFc, 
 							p.noAplicaRetencion, p.cuentaCerrada, imputacion.id AS tipoGasto,
+							p.notasCC,
 							prov.id AS provincia,
 							dep.id AS departamento,
 							loc.id AS localidad
@@ -150,7 +151,7 @@ class DefaultController extends Controller
 			$proveedor->setDenominacion($decData->denominacion);
 			$proveedor->setDireccion($decData->direccion);
 			$proveedor->setEmail($decData->email);
-			$proveedor->setCuit($decData->cuit);
+			$proveedor->setCuit($decData->cuit == "" ? NULL : $decData->cuit);
 			$proveedor->setCPostal($decData->cPostal);
 			$proveedor->setTelefono1($decData->telefono1);
 			$proveedor->setContacto1($decData->contacto1);
@@ -162,11 +163,12 @@ class DefaultController extends Controller
 			$proveedor->setVencimientoFc($decData->vencimientoFc);
 			$proveedor->setNoAplicaRetencion($decData->noAplicaRetencion == 'on' ? true : false);
 			$proveedor->setCuentaCerrada($decData->cuentaCerrada == 'on' ? true : false);
+			$proveedor->setNotasCC($decData->notasCC);
 			
 			$em->persist($proveedor);
 			$em->flush();			
 			
-			return $response->setContent(json_encode(array('success'=>true, 'id'=>$proveedor->getId())));	
+			return $response->setContent(json_encode(array('success'=>true, 'data'=> array('id'=>$proveedor->getId()))));	
 		}catch(\Exception $e){
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(json_encode(array('success'=>false, 'msg'=>$e->getMessage())));

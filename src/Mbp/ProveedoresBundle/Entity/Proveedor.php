@@ -167,6 +167,13 @@ class Proveedor
      * @ORM\Column(name="inactivo", type="boolean", nullable=false)
      */
     private $inactivo=false;
+	
+	/**
+     * @var text
+     *
+     * @ORM\Column(name="notasCC", type="text", nullable=true)
+     */
+    private $notasCC;
 
 
     /**
@@ -683,5 +690,29 @@ class Proveedor
     public function getInactivo()
     {
         return $this->inactivo;
+    }
+
+    /**
+     * Set notasCC
+     *
+     * @param string $notasCC
+     *
+     * @return Proveedor
+     */
+    public function setNotasCC($notasCC)
+    {
+        $this->notasCC = $notasCC;
+
+        return $this;
+    }
+
+    /**
+     * Get notasCC
+     *
+     * @return string
+     */
+    public function getNotasCC()
+    {
+        return $this->notasCC;
     }
 }

@@ -143,33 +143,31 @@ Ext.define('MetApp.controller.Proveedores.ProveedoresController',{
 		form.getForm().reset();
 		form.query('.field').forEach(function(c){c.setReadOnly(false);}); //HABILITO TODOS LOS CAMPOS
 		botonera.nuevoItem(botonera);
-		form.queryById('rSocial').focus();		
+		form.queryById('rsocial').focus();		
 	},
 	
 	GuardarProveedor: function(btn){
 		var win = btn.up('window');
 		var form = win.down('form');
-		var values = form.getValues();
-		var botonera = win.queryById('botonera');
+		var values=form.getForm().getValues();
+		var botonera = win.queryById('botonera');		
 		
 		if(form.isValid() == true){
-			Ext.Ajax.request({
-				url: Routing.generate('mbp_proveedores_nuevo'),
-				
-				params:{
-					data: Ext.JSON.encode(values)
-				},
-				
-				success: function(resp){
-					console.log(resp);
-					var jsonResp = Ext.JSON.decode(resp.responseText);
-					if(jsonResp.success == true){
-						win.queryById('id').setValue(jsonResp.id);
-						form.query('.field').forEach(function(c){c.setReadOnly(true);}); //HABILITO TODOS LOS CAMPOS
-						botonera.resetFn(botonera);		
-					}
+			var rec;
+			if(values.id>0){
+				rec=form.getRecord();
+			}else{
+				rec = Ext.create('MetApp.model.Proveedores.ProveedoresModel');
+			}		
+			rec.set(values);
+			rec.save({
+				success:function(resp){
+					win.queryById('id').setValue(resp.data.id);	
+					form.loadRecord(resp);				
+					form.query('.field').forEach(function(c){c.setReadOnly(true);}); //HABILITO TODOS LOS CAMPOS
+					botonera.resetFn(botonera);
 				}
-			})
+			});
 		}
 	},
 	

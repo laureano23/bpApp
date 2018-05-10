@@ -16,7 +16,8 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 		'MetApp.view.CCProveedores.FacturaProveedor',
 		'MetApp.view.CCProveedores.PagoProveedores',
 		'MetApp.view.CCProveedores.ChequeTerceros',
-		'MetApp.view.CCProveedores.BalanceView'
+		'MetApp.view.CCProveedores.BalanceView',
+		'MetApp.view.CCProveedores.NotasCCViewProv'
 	],
 	refs:[
 		{
@@ -62,7 +63,32 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 			},	
 			'CCProveedores button[itemId=balance]': {
 				click: this.WinBalance
-			}
+			},
+			'CCProveedores button[itemId=notas]': {
+				click: this.NuevaNota
+			},
+		});
+	},
+	
+	NuevaNota: function(btn){
+		var win=btn.up('window');
+		var winNota=Ext.widget('NotasCCViewProv');
+		var btn=winNota.queryById('guardar');
+		var rec=win.down('form').getForm().getRecord();
+		var notas=winNota.queryById('notasCC');
+		
+		notas.setValue(rec.data.notasCC);
+		btn.on('click', function(btn){
+			var form=winNota.down('form');
+			var values=form.getForm().getValues();
+			rec.set(values);
+			rec.save({
+				callback: function (records, operation, success) {
+	                if (operation.success) {
+	                    Ext.Msg.alert('Info', "Guardado exitosamente!");
+	                }
+	            }	
+			})			
 		});
 	},
 	
@@ -179,9 +205,12 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 		var winProv = btn.up('window');
 		var win = Ext.widget('PagoProveedores');
 		var grid = win.queryById('gridPP');
+		var gridImputaciones=win.queryById('gridImputaFc');
+		var storeImputaciones=gridImputaciones.getStore();
 		var store = grid.getStore();
 		var txtTotalAPagar = win.queryById('totalAPagar');
 		
+		storeImputaciones.removeAll();
 		store.removeAll();
 		
 		store.on('datachanged', function(st){			
@@ -216,7 +245,6 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 								})
 							}else{
 								var pagoModel = Ext.create('MetApp.model.Proveedores.PagoProveedoresModel');
-								console.log(rec);
 								pagoModel.set('formaPago', rec.descripcion);
 								pagoModel.set('importe', 0);
 								pagoModel.set('formaPago', rec.data.descripcion);

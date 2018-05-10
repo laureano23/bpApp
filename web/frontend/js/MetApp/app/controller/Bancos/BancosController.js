@@ -362,6 +362,9 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 	
 	NewMovBancos: function(btn){
 		var win = Ext.widget('MovimientosBancoView');
+		var grid=win.down('grid');
+		var store=grid.getStore();
+		store.removeAll();
 		var me = this;
 		
 		//HOT KEY DE LA TABLA ORDEN DE MOVIMIENTO DE BANCOS

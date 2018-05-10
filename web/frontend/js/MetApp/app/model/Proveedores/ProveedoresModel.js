@@ -24,5 +24,27 @@ Ext.define('MetApp.model.Proveedores.ProveedoresModel',{
 		{name: 'departamento', type: 'int'},
 		{name: 'provincia', type: 'string'},
 		{name: 'cuentaCerrada', type: 'boolean'},
-	]
+		{name: 'notasCC', type: 'string'},
+	],
+	
+	proxy: {
+		type: 'ajax',
+		filterParam: 'filter',		
+		api: {
+			read: Routing.generate('mbp_proveedores_listar'),
+			create: Routing.generate('mbp_proveedores_nuevo'),
+			update: Routing.generate('mbp_proveedores_nuevo'),			
+		},
+		
+		reader: {
+			type: 'json',
+			root: 'data'
+		},
+		
+		writer: {
+			type: 'json',
+			root: 'data',
+			encode: true
+		}
+	}
 });
