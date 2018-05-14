@@ -1,0 +1,31 @@
+CREATE DEFINER=`root`@`%` PROCEDURE `listarCCCliente`(
+	IN _idCliente INT    
+)
+BEGIN
+	SELECT 
+    s.id,
+    s.facturaId AS idF,
+    s.cobranzaId AS idCob,
+    #s.concepto,
+    CASE WHEN s.cobranzaId IS NOT NULL THEN CONCAT('COBRANZA N° ', cob.numRecibo) ELSE CONCAT(tc.descripcion, ' N° ', f.ptoVta, '-', f.fcNro) END AS concepto,
+    CASE WHEN s.cobranzaId IS NOT NULL THEN true ELSE false END AS detalle,
+    DATE_FORMAT(s.fechaVencimiento, '%d-%m-%Y') as vencimiento,
+    DATE_FORMAT(s.fechaEmision, '%d-%m-%Y') as emision,
+    s.debe,
+    s.haber,
+    @b := @b + s.debe - s.haber AS saldo
+	FROM
+		(SELECT @b := 0) AS dummy 
+	CROSS JOIN
+		CCClientes AS s
+	LEFT JOIN
+		Facturas f ON f.id = s.facturaId
+	LEFT JOIN
+        TipoComprobante tc ON tc.id = f.tipoId
+    LEFT JOIN
+		Cobranzas cob ON cob.id = s.cobranzaId
+	WHERE
+		s.clienteId = _idCliente
+	ORDER BY
+		s.fechaEmision ASC;
+END

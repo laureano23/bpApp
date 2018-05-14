@@ -1,0 +1,14 @@
+// set doctrine
+		$em = $this->getEntityManager()->getConnection();
+		
+		// prepare statement
+		$sth = $em->prepare("CALL listarCCCliente($idCliente)");
+		
+		// execute and fetch
+		$sth->execute();
+		$res = $sth->fetchAll();
+		
+		print_r($res);
+		exit;
+		
+		return $res;
