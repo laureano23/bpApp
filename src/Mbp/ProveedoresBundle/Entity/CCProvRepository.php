@@ -11,7 +11,20 @@ namespace Mbp\ProveedoresBundle\Entity;
 class CCProvRepository extends \Doctrine\ORM\EntityRepository
 {
 	public function listarCCProv($idProveedor){
-		$em = $this->getEntityManager();
+		
+		$em = $this->getEntityManager()->getConnection();
+		
+		// prepare statement
+		$sth = $em->prepare("CALL listarCCProveedor($idProveedor)");
+		
+		// execute and fetch
+		$sth->execute();
+		$res = $sth->fetchAll();
+		
+		
+		return $res;
+		
+		/*$em = $this->getEntityManager();
 		$repo = $em->getRepository('MbpProveedoresBundle:CCProv');
 		$qb = $this->createQueryBuilder('c');
 				
@@ -44,6 +57,6 @@ class CCProvRepository extends \Doctrine\ORM\EntityRepository
 			->getQuery()
 			->getArrayResult();
 		
-		return $res;
+		return $res;*/
 	}
 }

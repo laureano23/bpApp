@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?><soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginCmsResponse xmlns="http://wsaa.view.sua.dvadac.desein.afip.gov"><loginCmsReturn>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;
-&lt;loginTicketResponse version=&quot;1&quot;&gt;
+&lt;loginTicketResponse version=&quot;1.0&quot;&gt;
     &lt;header&gt;
         &lt;source&gt;CN=wsaahomo, O=AFIP, C=AR, SERIALNUMBER=CUIT 33693450239&lt;/source&gt;
         &lt;destination&gt;CN=metapp, SERIALNUMBER=CUIT 33678767439, O=metalurgicabp, C=ar&lt;/destination&gt;
-        &lt;uniqueId&gt;611430726&lt;/uniqueId&gt;
-        &lt;generationTime&gt;2018-04-30T11:05:45.536-03:00&lt;/generationTime&gt;
-        &lt;expirationTime&gt;2018-04-30T23:05:45.536-03:00&lt;/expirationTime&gt;
+        &lt;uniqueId&gt;3865527286&lt;/uniqueId&gt;
+        &lt;generationTime&gt;2018-05-10T14:42:16.782-03:00&lt;/generationTime&gt;
+        &lt;expirationTime&gt;2018-05-11T02:42:16.782-03:00&lt;/expirationTime&gt;
     &lt;/header&gt;
     &lt;credentials&gt;
-        &lt;token&gt;PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/Pgo8c3NvIHZlcnNpb249IjIuMCI+CiAgICA8aWQgc3JjPSJDTj13c2FhaG9tbywgTz1BRklQLCBDPUFSLCBTRVJJQUxOVU1CRVI9Q1VJVCAzMzY5MzQ1MDIzOSIgZHN0PSJDTj13c2ZlLCBPPUFGSVAsIEM9QVIiIHVuaXF1ZV9pZD0iMjEzNTk4NTA3MyIgZ2VuX3RpbWU9IjE1MjUwOTcwODUiIGV4cF90aW1lPSIxNTI1MTQwMzQ1Ii8+CiAgICA8b3BlcmF0aW9uIHR5cGU9ImxvZ2luIiB2YWx1ZT0iZ3JhbnRlZCI+CiAgICAgICAgPGxvZ2luIGVudGl0eT0iMzM2OTM0NTAyMzkiIHNlcnZpY2U9IndzZmUiIHVpZD0iQ049bWV0YXBwLCBTRVJJQUxOVU1CRVI9Q1VJVCAzMzY3ODc2NzQzOSwgTz1tZXRhbHVyZ2ljYWJwLCBDPWFyIiBhdXRobWV0aG9kPSJjbXMiIHJlZ21ldGhvZD0iMjIiPgogICAgICAgICAgICA8cmVsYXRpb25zPgogICAgICAgICAgICAgICAgPHJlbGF0aW9uIGtleT0iMjAwODYwODIyOTMiIHJlbHR5cGU9IjQiLz4KICAgICAgICAgICAgPC9yZWxhdGlvbnM+CiAgICAgICAgPC9sb2dpbj4KICAgIDwvb3BlcmF0aW9uPgo8L3Nzbz4K&lt;/token&gt;
-        &lt;sign&gt;YX+QzEpwIIfzLCF0s7c/0XQTsxvbhT4xFq7EGKWfLIFLra7zrJWmqnAJGGn9n+/LyJuhyFLrRq5oKSqxcQuqKiI5m5PEvOtfu7mcva/jM86CgccofUNNp8qy+VZ9tdPfjzm0KF+bcvncTKERKSh/+UcfT5iK5i6dRAtzh/Q1JKY=&lt;/sign&gt;
+        &lt;token&gt;PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/Pgo8c3NvIHZlcnNpb249IjIuMCI+CiAgICA8aWQgc3JjPSJDTj13c2FhaG9tbywgTz1BRklQLCBDPUFSLCBTRVJJQUxOVU1CRVI9Q1VJVCAzMzY5MzQ1MDIzOSIgZHN0PSJDTj13c2ZlLCBPPUFGSVAsIEM9QVIiIHVuaXF1ZV9pZD0iMTE3ODc3MDI1OCIgZ2VuX3RpbWU9IjE1MjU5NzQwNzYiIGV4cF90aW1lPSIxNTI2MDE3MzM2Ii8+CiAgICA8b3BlcmF0aW9uIHR5cGU9ImxvZ2luIiB2YWx1ZT0iZ3JhbnRlZCI+CiAgICAgICAgPGxvZ2luIGVudGl0eT0iMzM2OTM0NTAyMzkiIHNlcnZpY2U9IndzZmUiIHVpZD0iQ049bWV0YXBwLCBTRVJJQUxOVU1CRVI9Q1VJVCAzMzY3ODc2NzQzOSwgTz1tZXRhbHVyZ2ljYWJwLCBDPWFyIiBhdXRobWV0aG9kPSJjbXMiIHJlZ21ldGhvZD0iMjIiPgogICAgICAgICAgICA8cmVsYXRpb25zPgogICAgICAgICAgICAgICAgPHJlbGF0aW9uIGtleT0iMjAwODYwODIyOTMiIHJlbHR5cGU9IjQiLz4KICAgICAgICAgICAgPC9yZWxhdGlvbnM+CiAgICAgICAgPC9sb2dpbj4KICAgIDwvb3BlcmF0aW9uPgo8L3Nzbz4K&lt;/token&gt;
+        &lt;sign&gt;bNqwYXiOIcOc1oEsHXnm1z+wKcZ4/LfAQ6VRcY+7235oDR9pjzhpCJFU6bhMlJc1kYTSiuFNoBbdiDKl8yXKaafAl1rMcDqGg+d7PgLfgH1WJPHpgNJJPfN4BlLCyi9/ZL/VW5bp1utnIq09EAM1C1yxNrqzqWPP6atXVq+RRWU=&lt;/sign&gt;
     &lt;/credentials&gt;
 &lt;/loginTicketResponse&gt;
 </loginCmsReturn></loginCmsResponse></soapenv:Body></soapenv:Envelope>

@@ -10,8 +10,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT * FROM
-(SELECT
+		<![CDATA[SELECT
 	DATE_FORMAT(c0_.fechaEmision,'%d-%m-%Y') AS emision,
 	CASE WHEN c0_.cobranzaId IS NOT NULL THEN CONCAT('COBRANZA N° ', c1_.numRecibo)
 		ELSE CONCAT(t2_.descripcion, ' N° ', f3_.ptoVta, '-', f3_.fcNro) END AS concepto,
@@ -26,14 +25,26 @@
 	CASE WHEN t2_.esBalance = 1 THEN 'balance'
 		ELSE '' END AS sclr_9,
 	cliente.rSocial
-FROM CCClientes c0_
+FROM (
+SELECT
+     CCClientes.`id` AS id,
+     CCClientes.`debe` AS debe,
+     CCClientes.`haber` AS haber,
+     CCClientes.`fechaEmision` AS fechaEmision,
+     CCClientes.`fechaVencimiento` AS fechaVencimiento,
+     CCClientes.`facturaId` AS facturaId,
+     CCClientes.`cobranzaId` AS cobranzaId,
+     CCClientes.`clienteId` AS clienteId
+FROM
+     `CCClientes` CCClientes
+ORDER BY CCClientes.`fechaEmision` DESC
+) AS c0_
 LEFT JOIN Facturas f3_ ON c0_.facturaId = f3_.id AND (f3_.clienteId = $P{ID_CLIENTE})
 LEFT JOIN Cobranzas c1_ ON c0_.cobranzaId = c1_.id AND (c1_.clienteId = $P{ID_CLIENTE})
 LEFT JOIN TipoComprobante t2_ ON f3_.tipoId = t2_.id
-INNER JOIN CCClientes c4_ ON (c4_.clienteId = $P{ID_CLIENTE} AND c0_.clienteId = $P{ID_CLIENTE} AND c0_.id >= c4_.id)
+INNER JOIN CCClientes c4_ ON (c4_.clienteId = $P{ID_CLIENTE} AND c0_.clienteId = $P{ID_CLIENTE} AND c0_.id >= c4_.id AND c0_.fechaEmision >= c4_.fechaEmision)
 LEFT JOIN cliente ON cliente.idCliente = c0_.clienteId
-GROUP BY c0_.id) AS sub
-WHERE emision >= $P{FECHA_DESDE}]]>
+GROUP BY c0_.id]]>
 	</queryString>
 	<field name="emision" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -41,7 +52,7 @@ WHERE emision >= $P{FECHA_DESDE}]]>
 	<field name="concepto" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="sclr_2" class="java.lang.Integer"/>
+	<field name="sclr_2" class="java.lang.Long"/>
 	<field name="vencimiento" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
