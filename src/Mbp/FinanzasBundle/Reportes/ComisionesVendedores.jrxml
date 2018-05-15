@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ComisionesVendedores" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="54363c2a-167d-4629-b03e-172c6cd7a7b6">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="106"/>
 	<property name="ireport.y" value="0"/>
 	<queryString>
 		<![CDATA[SELECT
@@ -115,13 +115,13 @@ $F{Facturas_total}-$F{Facturas_iva21} - $F{Facturas_perIIBB}]]></variableExpress
 				<text><![CDATA[Neto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="602" y="0" width="100" height="20" uuid="97f2c86f-6673-4dff-b399-364dadfe641a"/>
+				<reportElement x="602" y="0" width="61" height="20" uuid="97f2c86f-6673-4dff-b399-364dadfe641a"/>
 				<box leftPadding="3"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[%]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="702" y="0" width="100" height="20" uuid="14df01c2-14ca-4e84-949a-68cf63301393"/>
+				<reportElement x="663" y="0" width="139" height="20" uuid="14df01c2-14ca-4e84-949a-68cf63301393"/>
 				<box leftPadding="3"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Comisión]]></text>
@@ -155,13 +155,13 @@ $F{Facturas_total}-$F{Facturas_iva21} - $F{Facturas_perIIBB}]]></variableExpress
 				<textFieldExpression><![CDATA[$V{NETO}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="602" y="0" width="100" height="20" uuid="1597b018-6b59-4243-b918-2a4f69670221"/>
+				<reportElement x="602" y="0" width="61" height="20" uuid="1597b018-6b59-4243-b918-2a4f69670221"/>
 				<box leftPadding="3"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{cliente_comision}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="702" y="0" width="100" height="20" uuid="9fcbcfa5-d6dc-4b75-8b3b-7226d6748c5e"/>
+				<reportElement x="663" y="0" width="139" height="20" uuid="9fcbcfa5-d6dc-4b75-8b3b-7226d6748c5e"/>
 				<box leftPadding="3"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == false ?
