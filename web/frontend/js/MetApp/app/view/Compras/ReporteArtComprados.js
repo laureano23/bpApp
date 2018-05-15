@@ -112,7 +112,7 @@ Ext.define('MetApp.view.Compras.ReporteArtComprados', {
 						},
 						{
 							xtype: 'fieldset',
-							title: 'Cliente',
+							title: 'Proveedor',
 							layout: 'hbox',
 							style: {
 								'text-align': 'center'

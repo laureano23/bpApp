@@ -3,7 +3,7 @@ Ext.define('MetApp.store.Proveedores.ProveedoresStore',{
 	model: 'MetApp.model.Proveedores.ProveedoresModel',
 	alias: 'ProveedoresStore',
 	autoSync: false,
-	autoLoad: false,
+	autoLoad: true,
 	remoteFilter: false,	  
     pageSize: 1000,
     storeId: 'ProveedoresStore',

@@ -57,7 +57,7 @@ Ext.define('MetApp.controller.Compras.ReportesCompraController',{
 	},
 	
 	ArtVendidosCliente: function(btn){
-		var view = Ext.widget('clientesSearchGrid');		
+		var view = Ext.widget('ProveedoresSearchGrid');		
 		var viewReportes = btn.up('window');
 		var btn2 = view.down('button');
 		
@@ -89,37 +89,6 @@ Ext.define('MetApp.controller.Compras.ReportesCompraController',{
 				
 			}
 		})
-		
-		/*if(form.isValid()){
-		
-			var values = form.getForm().getValues();
-			Ext.Ajax.request({
-				url: Routing.generate('mbp_Reportes_ArtVendidos'),
-				
-				params: {
-					codigo1: values.codigo1,
-					codigo2: values.codigo2,
-					cliente1: values.cliente1,
-					cliente2: values.cliente2,
-					desde: values.desde,
-					hasta: values.hasta,
-				},
-				
-				success: function(resp){
-					var jsonResp = Ext.JSON.decode(resp.responseText);
-					if(jsonResp.success == true){
-						var ruta = Routing.generate('mbp_Reportes_VerArtVendidos');
-						
-						window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
-					}
-					myMask.hide();
-				},
-				
-				failure: function(resp){
-					myMask.hide();
-				}
-			});
-		}*/
 	},
 });
 
