@@ -410,7 +410,6 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 	},
 	
 	ArtVendidosCliente: function(btn){
-		console.log(btn);
 		var view = Ext.widget('clientesSearchGrid');
 		view.down('grid').getStore().load();
 		var viewReportes = btn.up('window');
@@ -420,15 +419,12 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 			var sel = view.down('grid').getSelectionModel().getSelection()[0];
 			
 			if(btn.itemId == 'btnCliente1'){
-				console.log("Es el boton 1");
 				viewReportes.queryById('cliente1').setValue(sel.data.id);
 			}else{
 				viewReportes.queryById('cliente2').setValue(sel.data.id);
 			}
 			view.close();
 		});
-		
-		
 	},
 	
 	ImprimirArtVendidos: function(btn){
@@ -469,20 +465,20 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 		}
 	},
 	
-	BuscarArt: function(btn){
+	BuscarArt: function(btnSearch){
 		var view = Ext.widget('winarticulosearch');
-		var viewReportes = btn.up('window');
+		var viewReportes = btnSearch.up('window');
 		var btn = view.down('button');
 		
 		btn.on('click', function(){			
 			var sel = view.down('grid').getSelectionModel().getSelection()[0];
-			console.log(sel);
 			
-			if(btn.itemId == 'btnCodigo1'){
+			if(btnSearch.itemId == 'btnCodigo1'){
 				viewReportes.queryById('codigo1').setValue(sel.data.codigo);
 			}else{
 				viewReportes.queryById('codigo2').setValue(sel.data.codigo);
 			}
+			view.close();
 		});
 	},
 	

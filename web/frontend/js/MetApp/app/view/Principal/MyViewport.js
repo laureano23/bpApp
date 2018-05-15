@@ -533,6 +533,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                 listeners : {
                     render : dragZone,
                 }, 
+            },
+            {
+                text: 'Articulos Comprados',
+                itemId: 'repoArticulosComprados',
+                listeners : {
+                    render : dragZone,
+                }, 
             }
     	]
     	
