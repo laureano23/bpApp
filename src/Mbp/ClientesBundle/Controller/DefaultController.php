@@ -44,6 +44,7 @@ class DefaultController extends Controller
 		$repoClientes = $em->getRepository('MbpClientesBundle:Cliente');
 		$repoIva = $em->getRepository('MbpFinanzasBundle:PosicionIVA');
 		$repoTransporte = $em->getRepository('MbpClientesBundle:Transportes');
+		$repoVendedor = $em->getRepository('MbpFinanzasBundle:Vendedor');
 		
 		try{
 			//throw new \Exception("Error Processing Request", 1);
@@ -85,9 +86,13 @@ class DefaultController extends Controller
 			$cliente->setTasaInt($data->tasa);
 			$cliente->setDescuentoFijo($data->descuentoFijo);
 			$cliente->setNotasCC($data->notasCC);
+			$cliente->setComision($data->comision);
 			
 			$transporte = $repoTransporte->find($data->transporte);
 			if(!empty($transporte)) $cliente->setTransporteId($transporte);
+			
+			$vendedor = $repoVendedor->find($data->vendedor);
+			if(!empty($vendedor)) $cliente->setVendedor($vendedor);
 			
 			$em->persist($cliente);
 			$em->flush();

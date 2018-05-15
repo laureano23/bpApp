@@ -191,6 +191,19 @@ class Cliente
      * @ORM\Column(name="descuentoFijo", type="decimal", precision=5, scale=2, nullable=false)
      */
     private $descuentoFijo;
+	
+	/**    
+     * @ORM\ManyToOne(targetEntity="Mbp\FinanzasBundle\Entity\Vendedor", inversedBy="clientes")
+     * @ORM\JoinColumn(name="vendedorId", referencedColumnName="id", nullable=true)
+     */
+    private $vendedor;
+	
+	/**
+     * @var decimal
+     *
+     * @ORM\Column(name="comision", type="decimal", precision=4, scale=2, nullable=true)
+     */
+    private $comision;
 
     /**
      * Set rsocial
@@ -763,5 +776,53 @@ class Cliente
     public function getNotasCC()
     {
         return $this->notasCC;
+    }
+
+    /**
+     * Set vendedor
+     *
+     * @param \Mbp\FinanzasBundle\Entity\Vendedor $vendedor
+     *
+     * @return Cliente
+     */
+    public function setVendedor(\Mbp\FinanzasBundle\Entity\Vendedor $vendedor = null)
+    {
+        $this->vendedor = $vendedor;
+
+        return $this;
+    }
+
+    /**
+     * Get vendedor
+     *
+     * @return \Mbp\FinanzasBundle\Entity\Vendedor
+     */
+    public function getVendedor()
+    {
+        return $this->vendedor;
+    }
+
+    /**
+     * Set comision
+     *
+     * @param string $comision
+     *
+     * @return Cliente
+     */
+    public function setComision($comision)
+    {
+        $this->comision = $comision;
+
+        return $this;
+    }
+
+    /**
+     * Get comision
+     *
+     * @return string
+     */
+    public function getComision()
+    {
+        return $this->comision;
     }
 }

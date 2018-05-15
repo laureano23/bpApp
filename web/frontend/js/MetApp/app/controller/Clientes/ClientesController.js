@@ -1,6 +1,6 @@
 Ext.define('MetApp.controller.Clientes.ClientesController',{
 	extend: 'Ext.app.Controller',
-	stores: ['Clientes.Clientes'],
+	stores: ['Clientes.Clientes', 'MetApp.store.Finanzas.VendedorStore'],
 	views: [
 		'Clientes.FormClientes',
 		'Clientes.SearchGridClientes'
@@ -171,6 +171,7 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 		var store = Ext.StoreManager.lookup('Clientes.Clientes');
 		
 		store.on('write', function(st, op){
+			console.log(op.getRecords());
 			var rec = op.getRecords();
 			form.loadRecord(rec[0]);
 			botonera.guardarItem(botonera);

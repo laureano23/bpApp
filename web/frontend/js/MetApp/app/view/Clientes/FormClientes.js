@@ -214,6 +214,27 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 												
 											]
 										},
+										{
+											xtype: 'combobox',
+											columnWidth: 0.33,
+											labelWidth: 70,
+											name: 'vendedor',
+											itemId: 'vendedor',
+											store: 'MetApp.store.Finanzas.VendedorStore',
+											displayField: 'nombre',
+											forceSelection: true,
+											valueField: 'id',
+											fieldLabel: 'Vendedor',
+											allowBlank: true
+										},
+										{
+											xtype: 'numberfield',
+											fieldLabel: 'Comisión (%)',
+											name: 'comision',
+											itemId: 'comision',
+											allowBlank: true,
+											decimalSeparator: '.'
+										},
 									]
 								},
 								{

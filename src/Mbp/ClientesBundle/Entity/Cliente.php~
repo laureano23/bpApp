@@ -32,14 +32,14 @@ class Cliente
     /**
      * @var string
      *
-     * @ORM\Column(name="denominacion", type="string", length=60, nullable=true)
+     * @ORM\Column(name="denominacion", type="string", length=250, nullable=true)
      */
     private $denominacion;
     
     /**
      * @var string
      *
-     * @ORM\Column(name="direccion", type="string", length=60, nullable=true)
+     * @ORM\Column(name="direccion", type="string", length=250, nullable=true)
      */
     private $direccion;
     
@@ -95,49 +95,49 @@ class Cliente
     /**
      * @var string
      *
-     * @ORM\Column(name="telefono1", type="string", length=20, nullable=true)
+     * @ORM\Column(name="telefono1", type="string", length=50, nullable=true)
      */
     private $telefono1;
     
     /**
      * @var string
      *
-     * @ORM\Column(name="contacto1", type="string", length=30, nullable=true)
+     * @ORM\Column(name="contacto1", type="string", length=50, nullable=true)
      */
     private $contacto1;
     
     /**
      * @var string
      *
-     * @ORM\Column(name="telefono2", type="string", length=20, nullable=true)
+     * @ORM\Column(name="telefono2", type="string", length=50, nullable=true)
      */
     private $telefono2;
     
     /**
      * @var string
      *
-     * @ORM\Column(name="contacto2", type="string", length=30, nullable=true)
+     * @ORM\Column(name="contacto2", type="string", length=50, nullable=true)
      */
     private $contacto2;
     
     /**
      * @var string
      *
-     * @ORM\Column(name="telefono3", type="string", length=20, nullable=true)
+     * @ORM\Column(name="telefono3", type="string", length=50, nullable=true)
      */
     private $telefono3;
     
     /**
      * @var string
      *
-     * @ORM\Column(name="contacto3", type="string", length=30, nullable=true)
+     * @ORM\Column(name="contacto3", type="string", length=50, nullable=true)
      */
     private $contacto3;
     
     /**
      * @var string
      *
-     * @ORM\Column(name="condVenta", type="string", length=50, nullable=true)
+     * @ORM\Column(name="condVenta", type="string", length=250, nullable=true)
      */
     private $condVenta;
     
@@ -191,6 +191,19 @@ class Cliente
      * @ORM\Column(name="descuentoFijo", type="decimal", precision=5, scale=2, nullable=false)
      */
     private $descuentoFijo;
+	
+	/**    
+     * @ORM\ManyToOne(targetEntity="Mbp\FinanzasBundle\Entity\Vendedor", inversedBy="clientes")
+     * @ORM\JoinColumn(name="vendedorId", referencedColumnName="id", nullable=true)
+     */
+    private $vendedor;
+	
+	/**
+     * @var decimal
+     *
+     * @ORM\Column(name="comision", type="decimal", precision=4, scale=2, nullable=true)
+     */
+    private $comision;
 
     /**
      * Set rsocial
@@ -739,5 +752,53 @@ class Cliente
     public function getDescuentoFijo()
     {
         return $this->descuentoFijo;
+    }
+
+    /**
+     * Set notasCC
+     *
+     * @param string $notasCC
+     *
+     * @return Cliente
+     */
+    public function setNotasCC($notasCC)
+    {
+        $this->notasCC = $notasCC;
+
+        return $this;
+    }
+
+    /**
+     * Get notasCC
+     *
+     * @return string
+     */
+    public function getNotasCC()
+    {
+        return $this->notasCC;
+    }
+
+    /**
+     * Set vendedor
+     *
+     * @param \Mbp\FinanzasBundle\Entity\Vendedor $vendedor
+     *
+     * @return Cliente
+     */
+    public function setVendedor(\Mbp\FinanzasBundle\Entity\Vendedor $vendedor = null)
+    {
+        $this->vendedor = $vendedor;
+
+        return $this;
+    }
+
+    /**
+     * Get vendedor
+     *
+     * @return \Mbp\FinanzasBundle\Entity\Vendedor
+     */
+    public function getVendedor()
+    {
+        return $this->vendedor;
     }
 }
