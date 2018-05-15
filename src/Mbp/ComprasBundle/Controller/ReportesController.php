@@ -239,11 +239,11 @@ class ReportesController extends Controller
 				FROM
 				     `OrdenCompraDetalle` OrdenCompraDetalle INNER JOIN `ordenCompra_detallesOrdenCompra` ordenCompra_detallesOrdenCompra ON OrdenCompraDetalle.`id` = ordenCompra_detallesOrdenCompra.`ordencompradetalle_id`
 				     INNER JOIN `OrdenCompra` OrdenCompra ON ordenCompra_detallesOrdenCompra.`orden_id` = OrdenCompra.`id`
-				     LEFT OUTER JOIN `DetalleMovArt` DetalleMovArt ON OrdenCompra.`id` = DetalleMovArt.`ordenCompraId`
+				     LEFT JOIN `DetalleMovArt` DetalleMovArt ON OrdenCompra.`id` = DetalleMovArt.`ordenCompraId`
 				     INNER JOIN `Proveedor` Proveedor ON OrdenCompra.`proveedorId` = Proveedor.`id`
-				     INNER JOIN `movimientos_detalles` movimientos_detalles ON DetalleMovArt.`id` = movimientos_detalles.`detallemovart_id`
-				     INNER JOIN `MovimientosArticulos` MovimientosArticulos ON movimientos_detalles.`movimientosarticulos_id` = MovimientosArticulos.`id`
-				     INNER JOIN `articulos` articulos ON OrdenCompraDetalle.`articuloId` = articulos.`idArticulos`
+				     LEFT JOIN `movimientos_detalles` movimientos_detalles ON DetalleMovArt.`id` = movimientos_detalles.`detallemovart_id`
+				     LEFT JOIN `MovimientosArticulos` MovimientosArticulos ON movimientos_detalles.`movimientosarticulos_id` = MovimientosArticulos.`id`
+				     LEFT JOIN `articulos` articulos ON OrdenCompraDetalle.`articuloId` = articulos.`idArticulos`
 				WHERE
 				     Proveedor.`id` BETWEEN $proveedorDesde AND $proveedorHasta
 				 AND OrdenCompra.`fechaEmision` BETWEEN '$desde' AND '$hasta'
