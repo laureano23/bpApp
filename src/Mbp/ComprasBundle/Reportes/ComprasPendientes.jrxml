@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ComprasPendientes" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="832" leftMargin="5" rightMargin="5" topMargin="5" bottomMargin="5" uuid="1d7da0f5-2b68-4270-8eac-b439ba47837d">
-	<property name="ireport.zoom" value="0.8264462809917359"/>
+	<property name="ireport.zoom" value="1.464100000000001"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="PROVEEDOR_ID_DESDE" class="java.lang.String">
@@ -75,11 +75,11 @@
 FROM
      `OrdenCompraDetalle` OrdenCompraDetalle INNER JOIN `ordenCompra_detallesOrdenCompra` ordenCompra_detallesOrdenCompra ON OrdenCompraDetalle.`id` = ordenCompra_detallesOrdenCompra.`ordencompradetalle_id`
      INNER JOIN `OrdenCompra` OrdenCompra ON ordenCompra_detallesOrdenCompra.`orden_id` = OrdenCompra.`id`
-     LEFT OUTER JOIN `DetalleMovArt` DetalleMovArt ON OrdenCompra.`id` = DetalleMovArt.`ordenCompraId`
+     LEFT JOIN `DetalleMovArt` DetalleMovArt ON OrdenCompra.`id` = DetalleMovArt.`ordenCompraId`
      INNER JOIN `Proveedor` Proveedor ON OrdenCompra.`proveedorId` = Proveedor.`id`
-     INNER JOIN `movimientos_detalles` movimientos_detalles ON DetalleMovArt.`id` = movimientos_detalles.`detallemovart_id`
-     INNER JOIN `MovimientosArticulos` MovimientosArticulos ON movimientos_detalles.`movimientosarticulos_id` = MovimientosArticulos.`id`
-     INNER JOIN `articulos` articulos ON OrdenCompraDetalle.`articuloId` = articulos.`idArticulos`
+     LEFT JOIN `movimientos_detalles` movimientos_detalles ON DetalleMovArt.`id` = movimientos_detalles.`detallemovart_id`
+     LEFT JOIN `MovimientosArticulos` MovimientosArticulos ON movimientos_detalles.`movimientosarticulos_id` = MovimientosArticulos.`id`
+     LEFT JOIN `articulos` articulos ON OrdenCompraDetalle.`articuloId` = articulos.`idArticulos`
 WHERE
      Proveedor.`id` BETWEEN $P{PROVEEDOR_ID_DESDE} AND $P{PROVEEDOR_ID_HASTA}
  AND OrdenCompra.`fechaEmision` BETWEEN $P{FECHA_DESDE} AND $P{FECHA_HASTA}
@@ -151,22 +151,15 @@ ORDER BY
 		<groupExpression><![CDATA[$F{OrdenCompra_proveedorId}]]></groupExpression>
 		<groupHeader>
 			<band height="20">
-				<staticText>
-					<reportElement x="0" y="0" width="832" height="20" uuid="f951e9ed-796c-4170-bbce-124f762c6571"/>
-					<box leftPadding="2">
+				<textField pattern="">
+					<reportElement x="0" y="0" width="832" height="20" uuid="66940288-d6b5-455e-a36c-a39bf01e6fde"/>
+					<box leftPadding="4">
 						<pen lineWidth="2.0"/>
 						<topPen lineWidth="2.0"/>
 						<leftPen lineWidth="2.0"/>
 						<bottomPen lineWidth="2.0"/>
 						<rightPen lineWidth="2.0"/>
 					</box>
-					<textElement verticalAlignment="Middle">
-						<font size="12" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Proveedor:]]></text>
-				</staticText>
-				<textField pattern="">
-					<reportElement x="100" y="0" width="424" height="20" uuid="66940288-d6b5-455e-a36c-a39bf01e6fde"/>
 					<textElement verticalAlignment="Middle">
 						<font size="12" isBold="true"/>
 					</textElement>
@@ -226,6 +219,30 @@ ORDER BY
 			</image>
 		</band>
 	</title>
+	<pageHeader>
+		<band height="20">
+			<staticText>
+				<reportElement x="0" y="0" width="40" height="20" uuid="089dbde0-4f82-487c-984e-35046689e3e5"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Desde:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="0" width="40" height="20" uuid="eddc148e-f687-4c3b-8a45-1a56ca04b47b"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Hasta:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="40" y="0" width="100" height="20" uuid="0ed35f38-96c8-4eaf-bd72-08a619df7e50"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{FECHA_DESDE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="0" width="100" height="20" uuid="8ed35ec6-a992-4137-b202-07b4a374c61a"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{FECHA_HASTA}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
 	<columnHeader>
 		<band height="20" splitType="Stretch">
 			<staticText>
@@ -376,7 +393,7 @@ ORDER BY
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{OrdenCompraDetalle_cant}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="524" y="0" width="60" height="20" uuid="60db1972-4d7e-4abf-99ed-77a918916d4a"/>
 				<box leftPadding="2" rightPadding="0"/>
 				<textElement verticalAlignment="Middle"/>
@@ -400,7 +417,7 @@ ORDER BY
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{OrdenCompraDetalle_cant}*$V{PRECIO}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="584" y="0" width="60" height="20" uuid="4e72b922-dc60-45e3-8037-c9e9edbf3ccd"/>
 				<box leftPadding="2" rightPadding="0"/>
 				<textElement verticalAlignment="Middle"/>
