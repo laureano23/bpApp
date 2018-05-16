@@ -26,7 +26,8 @@ Ext.define('MetApp.model.Articulos.Articulos',{
 		{name: 'nombreImagen', type: 'string'},
 		{name: 'rutaServer', type: 'string'},
 		{name: 'peso', type: 'string'},
-		{name: 'requiereControl', type: 'string'},			
+		{name: 'requiereControl', type: 'string'},
+		{name: 'vigenciaPrecio', type: 'datetime', dateFormat: 'c' },			
 	]
 });
 

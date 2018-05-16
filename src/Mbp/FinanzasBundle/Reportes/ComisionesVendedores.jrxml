@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ComisionesVendedores" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="54363c2a-167d-4629-b03e-172c6cd7a7b6">
-	<property name="ireport.zoom" value="1.3310000000000004"/>
-	<property name="ireport.x" value="106"/>
+	<property name="ireport.zoom" value="0.9090909090909093"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="FECHA_DESDE" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FECHA_HASTA" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
      Facturas.`id` AS Facturas_id,
@@ -40,7 +46,10 @@
 FROM
      `TipoComprobante` TipoComprobante INNER JOIN `Facturas` Facturas ON TipoComprobante.`id` = Facturas.`tipoId`
      INNER JOIN `cliente` cliente ON Facturas.`clienteId` = cliente.`idCliente`
-     INNER JOIN `Vendedor` Vendedor ON cliente.`vendedorId` = Vendedor.`id`]]>
+     INNER JOIN `Vendedor` Vendedor ON cliente.`vendedorId` = Vendedor.`id`
+WHERE TipoComprobante.`esBalance` = FALSE
+	AND Facturas.`fecha` BETWEEN $P{FECHA_DESDE} AND $P{FECHA_HASTA}
+ORDER BY Vendedor.`id`, Facturas.`fecha` ASC]]>
 	</queryString>
 	<field name="Facturas_id" class="java.lang.Integer"/>
 	<field name="Facturas_fecha" class="java.sql.Date"/>
@@ -79,6 +88,59 @@ FROM
 $F{Facturas_total}-$F{Facturas_iva21} * $F{Facturas_tipoCambio} - $F{Facturas_perIIBB}:
 $F{Facturas_total}-$F{Facturas_iva21} - $F{Facturas_perIIBB}]]></variableExpression>
 	</variable>
+	<variable name="TOTAL" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{COMISION}]]></variableExpression>
+	</variable>
+	<variable name="COMISION" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == false ? $F{cliente_comision} * $V{NETO}/100 : $F{cliente_comision} * $V{NETO}/100 * -1]]></variableExpression>
+	</variable>
+	<group name="ID_VENDEDOR">
+		<groupExpression><![CDATA[$F{Vendedor_id}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField>
+					<reportElement x="0" y="0" width="802" height="20" uuid="9d8d42cf-a9c3-4bac-9f35-29844ad91911"/>
+					<box leftPadding="3">
+						<pen lineWidth="2.0"/>
+						<topPen lineWidth="2.0"/>
+						<leftPen lineWidth="2.0"/>
+						<bottomPen lineWidth="2.0"/>
+						<rightPen lineWidth="2.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Vendedor_nombre}+" "+$F{Vendedor_apellido}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="20">
+				<textField pattern="¤ #,##0.00">
+					<reportElement x="0" y="0" width="802" height="20" uuid="53e890ab-5557-4ee6-afbd-daece974eeb3"/>
+					<box leftPadding="0" rightPadding="3">
+						<pen lineWidth="2.0"/>
+						<topPen lineWidth="2.0"/>
+						<leftPen lineWidth="2.0"/>
+						<bottomPen lineWidth="2.0"/>
+						<rightPen lineWidth="2.0"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{TOTAL}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="563" y="0" width="100" height="20" uuid="8f013500-7dd7-442c-83ea-86e694dd5570"/>
+					<box rightPadding="3"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12" isBold="true" isItalic="true"/>
+					</textElement>
+					<text><![CDATA[Total:]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -92,37 +154,73 @@ $F{Facturas_total}-$F{Facturas_iva21} - $F{Facturas_perIIBB}]]></variableExpress
 		<band height="20" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="0" width="68" height="20" uuid="9f325936-9d93-41dc-a560-a2a008bff7de"/>
-				<box leftPadding="3"/>
+				<box leftPadding="3">
+					<pen lineWidth="2.0"/>
+					<topPen lineWidth="2.0"/>
+					<leftPen lineWidth="2.0"/>
+					<bottomPen lineWidth="2.0"/>
+					<rightPen lineWidth="2.0"/>
+				</box>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Emisión]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="68" y="0" width="137" height="20" uuid="b5b6e3cf-562b-415b-8589-2d149d530781"/>
-				<box leftPadding="3"/>
+				<box leftPadding="3">
+					<pen lineWidth="2.0"/>
+					<topPen lineWidth="2.0"/>
+					<leftPen lineWidth="2.0"/>
+					<bottomPen lineWidth="2.0"/>
+					<rightPen lineWidth="2.0"/>
+				</box>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[N° Comprobante]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="205" y="0" width="297" height="20" uuid="2a5100d7-31d2-435d-b999-7aa2d4ad9ac0"/>
-				<box leftPadding="3"/>
+				<box leftPadding="3">
+					<pen lineWidth="2.0"/>
+					<topPen lineWidth="2.0"/>
+					<leftPen lineWidth="2.0"/>
+					<bottomPen lineWidth="2.0"/>
+					<rightPen lineWidth="2.0"/>
+				</box>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Cliente]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="502" y="0" width="100" height="20" uuid="20707c05-c9b4-40e4-a0e2-47cec2079659"/>
-				<box leftPadding="3"/>
+				<box leftPadding="3">
+					<pen lineWidth="2.0"/>
+					<topPen lineWidth="2.0"/>
+					<leftPen lineWidth="2.0"/>
+					<bottomPen lineWidth="2.0"/>
+					<rightPen lineWidth="2.0"/>
+				</box>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Neto]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="602" y="0" width="61" height="20" uuid="97f2c86f-6673-4dff-b399-364dadfe641a"/>
-				<box leftPadding="3"/>
+				<box leftPadding="3">
+					<pen lineWidth="2.0"/>
+					<topPen lineWidth="2.0"/>
+					<leftPen lineWidth="2.0"/>
+					<bottomPen lineWidth="2.0"/>
+					<rightPen lineWidth="2.0"/>
+				</box>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[%]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="663" y="0" width="139" height="20" uuid="14df01c2-14ca-4e84-949a-68cf63301393"/>
-				<box leftPadding="3"/>
+				<box leftPadding="3">
+					<pen lineWidth="2.0"/>
+					<topPen lineWidth="2.0"/>
+					<leftPen lineWidth="2.0"/>
+					<bottomPen lineWidth="2.0"/>
+					<rightPen lineWidth="2.0"/>
+				</box>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Comisión]]></text>
 			</staticText>
@@ -162,11 +260,9 @@ $F{Facturas_total}-$F{Facturas_iva21} - $F{Facturas_perIIBB}]]></variableExpress
 			</textField>
 			<textField pattern="¤ #,##0.00">
 				<reportElement x="663" y="0" width="139" height="20" uuid="9fcbcfa5-d6dc-4b75-8b3b-7226d6748c5e"/>
-				<box leftPadding="3"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == false ?
-$F{cliente_comision} * $V{NETO}/100 :
-$F{cliente_comision} * $V{NETO}/100 * -1]]></textFieldExpression>
+				<box leftPadding="0" rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{COMISION}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

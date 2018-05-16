@@ -43,7 +43,8 @@ class ArticulosRepository extends EntityRepository
 						CASE WHEN a.moneda = false THEN 'p' ELSE 'd' END AS moneda,
 						CASE WHEN a.monedaPrecio = false THEN 'p' ELSE 'd' END AS monedaPrecio,
 						a.requiereControl,
-						a.peso")
+						a.peso,
+						a.vigenciaPrecio")
 						->leftJoin('a.familiaId', 'f')
 						->leftJoin('a.subFamiliaId', 'sf')
 						->where('a.id = :art')
@@ -142,6 +143,9 @@ class ArticulosRepository extends EntityRepository
 			->setMonedaPrecio($data->monedaPrecio == 'p' ? 0 : 1)
 			->setRutaServer($data->rutaServer)
 			->setRequiereControl($data->requiereControl == "on" ? 1 : 0);
+			$data->vigenciaPrecio != "" ? 
+				$art->setVigenciaPrecio(\DateTime::createFromFormat("d/m/Y", $data->vigenciaPrecio))
+				:"";
 			
 			$errors = $validator->validate($art);
 			if(count($errors) > 0){

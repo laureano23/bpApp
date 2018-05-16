@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Comprobante_Retencion" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c25a2003-a08e-44e6-8e9a-ae881a1f34de">
 	<property name="ireport.zoom" value="1.2100000000000006"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="96"/>
 	<parameter name="OP_ID" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -58,7 +58,8 @@
      localidades.`id` AS localidades_id,
      localidades.`departamento_id` AS localidades_departamento_id,
      localidades.`provincia_id` AS localidades_provincia_id,
-     localidades.`nombre` AS localidades_nombre
+     localidades.`nombre` AS localidades_nombre,
+     baseImponible
 FROM
      `FormasPagos` FormasPagos INNER JOIN `Pago` Pago ON FormasPagos.`id` = Pago.`idFormaPago`
      INNER JOIN `OrdenDePago_detallesPagos` OrdenDePago_detallesPagos ON Pago.`id` = OrdenDePago_detallesPagos.`pago_id`
@@ -68,7 +69,10 @@ FROM
      INNER JOIN `FacturaProveedor` FacturaProveedor ON Proveedor.`id` = FacturaProveedor.`proveedorId`
      LEFT JOIN `provincia` provincia ON Proveedor.`provincia` = provincia.`id`
      LEFT JOIN `localidades` localidades ON Proveedor.`localidad` = localidades.`id`
-     INNER JOIN `TipoComprobante` TipoComprobante ON FacturaProveedor.`tipoId` = TipoComprobante.`id`
+     INNER JOIN `TipoComprobante` TipoComprobante ON FacturaProveedor.`tipoId` = TipoComprobante.`id`,
+	(select SUM(tr.aplicado) as baseImponible
+	from TransaccionOPFC as tr
+	where tr.ordenPagoId = $P{OP_ID} ) as sub
 WHERE
      OrdenPago.`id` = $P{OP_ID}     AND TransaccionOPFC.`facturaId` = FacturaProveedor.`id`
  AND FormasPagos.`retencionIIBB` = TRUE]]>
@@ -123,6 +127,10 @@ WHERE
 	<field name="localidades_departamento_id" class="java.lang.Integer"/>
 	<field name="localidades_provincia_id" class="java.lang.String"/>
 	<field name="localidades_nombre" class="java.lang.String"/>
+	<field name="baseImponible" class="java.math.BigDecimal"/>
+	<variable name="RETENCION" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{TransaccionOPFC_aplicado}*$F{Pago_importe}/$F{baseImponible}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -315,17 +323,20 @@ San Justo, Buenos Aires]]></text>
 			<textField pattern="¤ #,##0.00">
 				<reportElement x="255" y="0" width="100" height="20" uuid="065431b2-a5b4-4efb-8da0-59cc79678b4f"/>
 				<box leftPadding="3"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{TransaccionOPFC_aplicado}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00 %">
+			<textField pattern="#,##0.00 %" isBlankWhenNull="false">
 				<reportElement x="355" y="0" width="100" height="20" uuid="ee6ddaf2-2473-41af-bccb-9f197453b073"/>
 				<box leftPadding="3"/>
-				<textFieldExpression><![CDATA[$F{Pago_importe} / $F{TransaccionOPFC_aplicado}]]></textFieldExpression>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{RETENCION} / $F{TransaccionOPFC_aplicado}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
 				<reportElement x="455" y="0" width="100" height="20" uuid="c6bd3121-2f17-4aee-95f7-2d1ea487a201"/>
 				<box leftPadding="3"/>
-				<textFieldExpression><![CDATA[$F{Pago_importe}]]></textFieldExpression>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{RETENCION}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

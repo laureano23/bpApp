@@ -198,6 +198,16 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 	                    itemId 	  : 'dolares'
 	                },
 	            ]
+			},
+			{
+				xtype: 'datefield',
+				itemId: 'vigenciaPrecio',
+				name: 'vigenciaPrecio',
+				fieldLabel: 'Vigencia',
+				labelWidth: 70,
+				margins: '0 0 0 20',
+				allowBlank: true,
+				readOnly: true
 			}
 		]
 		

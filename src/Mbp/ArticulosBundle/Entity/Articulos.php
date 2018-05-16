@@ -192,6 +192,13 @@ class Articulos
      * @ORM\Column(name="requiereControl", type="boolean", nullable=false)
      */
     private $requiereControl=0;
+	
+	/**
+     * @var date
+     *
+     * @ORM\Column(name="vigenciaPrecio", type="date", nullable=true)
+     */
+    private $vigenciaPrecio;
 
 
     /**
@@ -654,5 +661,29 @@ class Articulos
     public function getRequiereControl()
     {
         return $this->requiereControl;
+    }
+
+    /**
+     * Set vigenciaPrecio
+     *
+     * @param \DateTime $vigenciaPrecio
+     *
+     * @return Articulos
+     */
+    public function setVigenciaPrecio($vigenciaPrecio)
+    {
+        $this->vigenciaPrecio = $vigenciaPrecio;
+
+        return $this;
+    }
+
+    /**
+     * Get vigenciaPrecio
+     *
+     * @return \DateTime
+     */
+    public function getVigenciaPrecio()
+    {
+        return $this->vigenciaPrecio;
     }
 }
