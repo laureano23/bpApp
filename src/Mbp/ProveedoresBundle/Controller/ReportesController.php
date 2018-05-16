@@ -606,7 +606,8 @@ class ReportesController extends Controller
 			     localidades.`id` AS localidades_id,
 			     localidades.`departamento_id` AS localidades_departamento_id,
 			     localidades.`provincia_id` AS localidades_provincia_id,
-			     localidades.`nombre` AS localidades_nombre
+			     localidades.`nombre` AS localidades_nombre,
+			     baseImponible
 			FROM
 			     `FormasPagos` FormasPagos INNER JOIN `Pago` Pago ON FormasPagos.`id` = Pago.`idFormaPago`
 			     INNER JOIN `OrdenDePago_detallesPagos` OrdenDePago_detallesPagos ON Pago.`id` = OrdenDePago_detallesPagos.`pago_id`
@@ -616,9 +617,12 @@ class ReportesController extends Controller
 			     INNER JOIN `FacturaProveedor` FacturaProveedor ON Proveedor.`id` = FacturaProveedor.`proveedorId`
 			     LEFT JOIN `provincia` provincia ON Proveedor.`provincia` = provincia.`id`
 			     LEFT JOIN `localidades` localidades ON Proveedor.`localidad` = localidades.`id`
-			     INNER JOIN `TipoComprobante` TipoComprobante ON FacturaProveedor.`tipoId` = TipoComprobante.`id`
+			     INNER JOIN `TipoComprobante` TipoComprobante ON FacturaProveedor.`tipoId` = TipoComprobante.`id`,
+				(select SUM(tr.aplicado) as baseImponible
+				from TransaccionOPFC as tr
+				where tr.ordenPagoId = $idOp ) as sub
 			WHERE
-			     OrdenPago.`id` = $idOp     AND TransaccionOPFC.`facturaId` = FacturaProveedor.`id`
+			     OrdenPago.`id` = $idOp AND TransaccionOPFC.`facturaId` = FacturaProveedor.`id`
 			 AND FormasPagos.`retencionIIBB` = TRUE";		     
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
