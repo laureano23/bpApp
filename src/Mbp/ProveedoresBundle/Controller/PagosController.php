@@ -233,6 +233,7 @@ class PagosController extends Controller
 		$iibbService->setOpts($proveedor->getCuit());
 		$alicuotaRetencion = $iibbService->getAlicuotaRetencion();
 		
+		
 		$retencion=0;
 		foreach($imputado as $imp){
 			$fcProv = $repoFc->find($imp->id);

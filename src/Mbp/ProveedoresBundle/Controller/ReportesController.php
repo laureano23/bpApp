@@ -618,12 +618,15 @@ class ReportesController extends Controller
 			     LEFT JOIN `provincia` provincia ON Proveedor.`provincia` = provincia.`id`
 			     LEFT JOIN `localidades` localidades ON Proveedor.`localidad` = localidades.`id`
 			     INNER JOIN `TipoComprobante` TipoComprobante ON FacturaProveedor.`tipoId` = TipoComprobante.`id`,
-				(select SUM(tr.aplicado) as baseImponible
+				(select SUM(case when f.neto > op.topeRetencionIIBB then tr.aplicado else 0 end) as baseImponible
 				from TransaccionOPFC as tr
-				where tr.ordenPagoId = $idOp ) as sub
+				inner join FacturaProveedor f on f.id = tr.facturaId
+				inner join OrdenPago op on op.id = tr.ordenPagoId
+				where tr.ordenPagoId = $idOp) as sub
 			WHERE
-			     OrdenPago.`id` = $idOp AND TransaccionOPFC.`facturaId` = FacturaProveedor.`id`
-			 AND FormasPagos.`retencionIIBB` = TRUE";		     
+			     OrdenPago.`id` = $idOp     AND TransaccionOPFC.`facturaId` = FacturaProveedor.`id`
+			 AND FormasPagos.`retencionIIBB` = TRUE
+			and FacturaProveedor.`neto` > OrdenPago.`topeRetencionIIBB`";		     
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 				

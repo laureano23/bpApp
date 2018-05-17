@@ -78,7 +78,7 @@ FROM
 WHERE
      OrdenPago.`id` = $P{OP_ID}     AND TransaccionOPFC.`facturaId` = FacturaProveedor.`id`
  AND FormasPagos.`retencionIIBB` = TRUE
-and FacturaProveedor.`neto` > 2000]]>
+and FacturaProveedor.`neto` > OrdenPago.`topeRetencionIIBB`]]>
 	</queryString>
 	<field name="Pago_id" class="java.lang.Integer"/>
 	<field name="Pago_banco" class="java.lang.String"/>
@@ -108,7 +108,7 @@ and FacturaProveedor.`neto` > 2000]]>
 	<field name="TransaccionOPFC_facturaId" class="java.lang.Integer"/>
 	<field name="TransaccionOPFC_ordenPagoId" class="java.lang.Integer"/>
 	<field name="FacturaProveedor_id" class="java.lang.Integer"/>
-	<field name="FacturaProveedor_fechaEmision" class="java.sql.Timestamp"/>
+	<field name="FacturaProveedor_fechaEmision" class="java.sql.Date"/>
 	<field name="FacturaProveedor_sucursal" class="java.lang.Integer"/>
 	<field name="FacturaProveedor_numFc" class="java.lang.Integer"/>
 	<field name="FacturaProveedor_neto" class="java.math.BigDecimal"/>

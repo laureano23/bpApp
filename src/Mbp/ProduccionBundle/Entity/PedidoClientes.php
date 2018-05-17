@@ -66,7 +66,7 @@ class PedidoClientes
     private $usuarioId;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Mbp\ProduccionBundle\Entity\PedidoClientesDetalle", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="Mbp\ProduccionBundle\Entity\PedidoClientesDetalle", cascade={"persist", "delete"})
      * @ORM\JoinTable(name="pedidoId_detalleId",
      *      joinColumns={@ORM\JoinColumn(name="pedidoId", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="detalleId", referencedColumnName="id")}

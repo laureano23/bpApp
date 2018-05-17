@@ -42,9 +42,9 @@ class Factura
     private $fechaCarga;
 
     /**
-     * @var \DateTime
+     * @var \Date
      *
-     * @ORM\Column(name="fechaEmision", type="datetime")
+     * @ORM\Column(name="fechaEmision", type="date")
      */
     private $fechaEmision;
 
@@ -218,7 +218,7 @@ class Factura
     /**
      * Set fechaEmision
      *
-     * @param \DateTime $fechaEmision
+     * @param \Date $fechaEmision
      *
      * @return Factura
      */
@@ -232,7 +232,7 @@ class Factura
     /**
      * Get fechaEmision
      *
-     * @return \DateTime
+     * @return \Date
      */
     public function getFechaEmision()
     {

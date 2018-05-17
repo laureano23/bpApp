@@ -36,9 +36,9 @@ class CCProv
     private $haber=0;
 	
 	/**
-     * @var \DateTime
+     * @var \Date
      *
-     * @ORM\Column(name="fechaEmision", type="datetime", nullable=false)
+     * @ORM\Column(name="fechaEmision", type="date", nullable=false)
      */
     private $fechaEmision;
 	
@@ -129,7 +129,7 @@ class CCProv
     /**
      * Set fechaEmision
      *
-     * @param \DateTime $fechaEmision
+     * @param \Date $fechaEmision
      *
      * @return CCProv
      */
@@ -143,7 +143,7 @@ class CCProv
     /**
      * Get fechaEmision
      *
-     * @return \DateTime
+     * @return \Date
      */
     public function getFechaEmision()
     {
