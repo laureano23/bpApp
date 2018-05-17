@@ -108,7 +108,8 @@ class PagosController extends Controller
 			$ordenPago = 0;
 			$ordenPago = new OrdenPago(); //CREO UNA NUEVA ORDEN DE PAGO
 			$ordenPago->setEmision(new \DateTime());
-			$ordenPago->setProveedorId($proveedor);				
+			$ordenPago->setProveedorId($proveedor);	
+			$ordenPago->setTopeRetencionIIBB($parametrosFinanzas->getTopeRetencionIIBB());			
 			
 			$totalImporte = 0;
 			foreach ($decData as $rec) {

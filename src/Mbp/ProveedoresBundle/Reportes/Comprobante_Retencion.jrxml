@@ -70,9 +70,10 @@ FROM
      LEFT JOIN `provincia` provincia ON Proveedor.`provincia` = provincia.`id`
      LEFT JOIN `localidades` localidades ON Proveedor.`localidad` = localidades.`id`
      INNER JOIN `TipoComprobante` TipoComprobante ON FacturaProveedor.`tipoId` = TipoComprobante.`id`,
-	(select SUM(case when f.neto > 2000 then tr.aplicado else 0 end) as baseImponible
+	(select SUM(case when f.neto > op.topeRetencionIIBB then tr.aplicado else 0 end) as baseImponible
 	from TransaccionOPFC as tr
 	inner join FacturaProveedor f on f.id = tr.facturaId
+	inner join OrdenPago op on op.id = tr.ordenPagoId
 	where tr.ordenPagoId = $P{OP_ID}) as sub
 WHERE
      OrdenPago.`id` = $P{OP_ID}     AND TransaccionOPFC.`facturaId` = FacturaProveedor.`id`

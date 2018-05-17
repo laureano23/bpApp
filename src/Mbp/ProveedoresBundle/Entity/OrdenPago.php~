@@ -249,28 +249,4 @@ class OrdenPago
     {
         return $this->ccId;
     }
-
-    /**
-     * Set topeRetencionIIBB
-     *
-     * @param string $topeRetencionIIBB
-     *
-     * @return OrdenPago
-     */
-    public function setTopeRetencionIIBB($topeRetencionIIBB)
-    {
-        $this->topeRetencionIIBB = $topeRetencionIIBB;
-
-        return $this;
-    }
-
-    /**
-     * Get topeRetencionIIBB
-     *
-     * @return string
-     */
-    public function getTopeRetencionIIBB()
-    {
-        return $this->topeRetencionIIBB;
-    }
 }
