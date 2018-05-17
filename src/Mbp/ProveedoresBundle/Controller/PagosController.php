@@ -29,10 +29,13 @@ class PagosController extends Controller
     	$em = $this->getDoctrine()->getManager();
     	$req = $this->getRequest();
 		$repoProv = $em->getRepository('MbpProveedoresBundle:Proveedor');
+		$repoFc = $em->getRepository('MbpProveedoresBundle:Factura');
 		$idProv = $req->request->get('idProv');
-		$imputado = $req->request->get('totalImputado');
+		$imputado = json_decode($req->request->get('imputaciones'));
 		$response = new Response;
 		
+		if(empty($imputado)) return $response->setContent(json_encode(array('aplicaRetencion' => true, 'success' => true)));
+				
 		try{
 			$proveedor = $repoProv->find($idProv);
 			$repoFinanzas = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
@@ -41,30 +44,22 @@ class PagosController extends Controller
 			//iibb si corresponde
 			$alicuotaRetencion=0;
 			if($proveedor->getNoAplicaRetencion()==false){
-				//print_r("entramos");
 				$iibbService = $this->get('ServiceIIBB');	//SERVICIO PARA ALICUOTAS DE IIBB
 				$iibbService->setOpts($proveedor->getCuit());
 				$alicuotaRetencion = $iibbService->getAlicuotaRetencion();	
 			}			
 			
-			$resp = array();
-			
+			$resp = array();			
 			if($proveedor->getProvincia() == ""){
 				throw new \Exception("Debe cargar la provincia del proveedor, para calcular retención", 1);
 			} 
 			
 			
 			if($proveedor->getProvincia()->getId() == $parametrosFinanzas->getProvincia()->getId()
-			 && $alicuotaRetencion > 0
-			 && $parametrosFinanzas->getTopeRetencionIIBB() <= $imputado){
-				$retencion=0;
-				$resp['success'] = true;
+			 && $alicuotaRetencion > 0){
+			 	$resp['success'] = true;
 				$resp['aplicaRetencion'] = true;
-				
-				if($imputado){
-					$retencion = $imputado * $alicuotaRetencion / 100;
-					$resp['retencion'] = number_format($retencion, 2);
-				}
+				$resp['retencion'] = $this->calculoRentecion($imputado, $proveedor);
 				
 				return $response->setContent(json_encode($resp));			
 			}else{				
@@ -72,6 +67,7 @@ class PagosController extends Controller
 			}
 			
 		}catch(\Exception $e){
+			throw $e;
 			$response->setContent(
 				json_encode(array(
 					'success' => false,
@@ -102,16 +98,17 @@ class PagosController extends Controller
 		$repoFc = $em->getRepository('MbpProveedoresBundle:Factura');
 		$repoOP = $em->getRepository('MbpProveedoresBundle:OrdenPago');
 		$repoTrans = $em->getRepository('MbpProveedoresBundle:TransaccionOPFC');
+		$repoFinanzas = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');			
 		$response = new Response;
 		
 		try{
 			$proveedor = $repoProv->find($idProv); //PROVEEDOR ASOCIADO
+			$parametrosFinanzas = $repoFinanzas->find(1); //PARAMETROS DE FINANZAS
 			if($proveedor->getCuentaCerrada() == TRUE) throw new \Exception("El proveedor tiene la cuenta cerrada", 1);
 			$ordenPago = 0;
 			$ordenPago = new OrdenPago(); //CREO UNA NUEVA ORDEN DE PAGO
 			$ordenPago->setEmision(new \DateTime());
-			$ordenPago->setProveedorId($proveedor);	
-			
+			$ordenPago->setProveedorId($proveedor);				
 			
 			$totalImporte = 0;
 			foreach ($decData as $rec) {
@@ -161,8 +158,9 @@ class PagosController extends Controller
 			
 			//CALCULO DE RETENCION
 			$retencion;
-			if($proveedor->getNoAplicaRetencion() == false){
-				$retencion = $this->calculoRentecion($valorAplicado, $proveedor);
+			if($proveedor->getNoAplicaRetencion() == false &&
+				$proveedor->getProvincia()->getId() == $parametrosFinanzas->getProvincia()->getId()){
+				$retencion = $this->calculoRentecion($fcImputarDec, $proveedor);
 				if($retencion > 0){
 					$pago = new Pago;
 					$tipoPago = $repoTipoPago->findOneByRetencionIIBB(true);
@@ -223,26 +221,27 @@ class PagosController extends Controller
 		}
     }
 
-	private function calculoRentecion($acumImputado, $proveedor)
+	private function calculoRentecion(array $imputado, $proveedor)
 	{
-		if($acumImputado == 0) return;
-		
 		$em = $this->getDoctrine()->getManager();
-		$importe = 0;
-		//CONSULTA RETENCION DE IIBB
+		$repoFc = $em->getRepository('MbpProveedoresBundle:Factura');
 		$repoFinanzas = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
 		$parametrosFinanzas = $repoFinanzas->find(1);
+		
 		$iibbService = $this->get('ServiceIIBB');	//SERVICIO PARA ALICUOTAS DE IIBB
 		$iibbService->setOpts($proveedor->getCuit());
 		$alicuotaRetencion = $iibbService->getAlicuotaRetencion();
 		
-		if($proveedor->getProvincia()->getId() == $parametrosFinanzas->getProvincia()->getId()
-			&& $alicuotaRetencion > 0
-			&& $parametrosFinanzas->getTopeRetencionIIBB() <= $acumImputado){
-			$importe = $acumImputado * $alicuotaRetencion / 100;
-			return number_format($importe, 2);;			
-		}
-		return $importe;
+		$retencion=0;
+		foreach($imputado as $imp){
+			$fcProv = $repoFc->find($imp->id);
+			
+			if($parametrosFinanzas->getTopeRetencionIIBB() <= $fcProv->getNeto()){	
+				$retencion += $imp->aplicar * $alicuotaRetencion / 100;
+				$retencion = number_format($retencion, 2);
+			}
+		}		
+		return $retencion;
 	}
 }
 

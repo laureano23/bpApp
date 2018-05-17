@@ -210,7 +210,8 @@ Ext.define('MetApp.view.Proveedores.FormProveedores' ,{
 											name: 'noAplicaRetencion',
 											fieldLabel: 'No Aplica Retención:',
 											labelWidth: 140,
-											uncheckedValue: false
+											uncheckedValue: false,
+											inputValue: true
 										},
 										/*{
 											xtype: 'numberfield',

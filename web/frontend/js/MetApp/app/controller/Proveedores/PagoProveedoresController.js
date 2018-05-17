@@ -369,7 +369,11 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 		var totalImputado = 0;
 		var txtTotal = win.queryById('totalImputado');
 		
+		var arrayImputaciones=new Array;
 		store.each(function(rec){
+			if(rec.data.aplicar >0){
+				arrayImputaciones.push(rec.data);	
+			}
 			totalImputado = totalImputado + rec.data.aplicar;
 		});
 		txtTotal.setValue(totalImputado);
@@ -386,13 +390,12 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 				url: Routing.generate('mbp_proveedores_verificarRetencion'),
 				
 				params: {
-					totalImputado: totalImputado,
+					imputaciones: Ext.JSON.encode(arrayImputaciones),
 					idProv: idProv
 				},
 				
 				success: function(resp){
 					var decodeResp = Ext.JSON.decode(resp.responseText);
-					console.log(decodeResp);
 					var rec = storePagos.findRecord('retencionIIBB', true);
 					if(decodeResp.aplicaRetencion == true && decodeResp.retencion > 0){
 						

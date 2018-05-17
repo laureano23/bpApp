@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Detalle_Pago_Proveedor" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="890e90cc-cf89-4202-bb29-76354a7dbc5d">
-	<property name="ireport.zoom" value="1.1000000000000036"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="154"/>
+	<property name="ireport.zoom" value="1.4641000000000062"/>
+	<property name="ireport.x" value="152"/>
+	<property name="ireport.y" value="7"/>
 	<parameter name="ordenPagoId" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -103,24 +103,6 @@ WHERE
 				<reportElement x="0" y="0" width="555" height="134" uuid="4d973a22-0b27-4b13-a101-94dee90ca542"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="384" y="2" width="151" height="20" uuid="f9d6358c-85f4-4e1e-b3a4-bf43c8a17b0d"/>
-				<textElement>
-					<font size="14" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Orden de pago]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="356" y="24" width="28" height="20" uuid="f8f03a69-dd88-43aa-a4c4-f0432e921c50"/>
-				<textElement>
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[N° ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="383" y="59" width="66" height="20" uuid="e14b6aed-cb4a-46d3-ab93-a8c6a1baddb3"/>
-				<text><![CDATA[Buenos Aires, ]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="30" y="39" width="187" height="20" uuid="60d49e0c-a977-4cf6-937d-b82b734c51d2"/>
 				<textElement>
 					<font size="14" isBold="true"/>
@@ -155,10 +137,22 @@ WHERE
 Tel/Fax: 4484-2416]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="384" y="24" width="151" height="20" uuid="0105de59-d8a5-405d-91a6-8b113fe3fc33"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{OrdenPago_id}]]></textFieldExpression>
+				<reportElement x="307" y="24" width="228" height="20" uuid="0105de59-d8a5-405d-91a6-8b113fe3fc33"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Orden de pago N° "+$F{OrdenPago_id}]]></textFieldExpression>
 			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="386" y="59" width="169" height="20" uuid="a61c7db9-3e9b-4a21-8b0d-7ae9f3d6ca69"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Pago_emision}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="307" y="59" width="77" height="20" uuid="9662f8a9-909f-497c-8bfd-e57826da473f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Buenos Aires, ]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>
