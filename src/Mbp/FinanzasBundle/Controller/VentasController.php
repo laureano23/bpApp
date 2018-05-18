@@ -181,26 +181,25 @@ class VentasController extends Controller
 						
 			$ultimoComp = $faele->ultimoNroComp($cbteTipo);
 			
-
+			
 			//CONSULTA PERCEPCION DE IIBB
-			$iibbService = $this->get('ServiceIIBB');	//SERVICIO PARA ALICUOTAS DE IIBB
-			$iibbService->setOpts($cliente->getCuit());
-			$alicuotaPercepcion = $iibbService->getAlicuotaPercepcion();			
 			$percepcionIIBB=0;
+			$alicuotaPercepcion=0;
+			
 			
 			if($cliente->getProvincia() == NULL){
 				throw new \Exception("El cliente debe tener cargados localidad y provincia para calcular IIBB", 1);				
+			}elseif($cliente->getDepartamento()->getProvinciaId()->getId() == $parametrosFinanzas->getProvincia()->getId()){
+				$iibbService = $this->get('ServiceIIBB');	//SERVICIO PARA ALICUOTAS DE IIBB
+				$iibbService->setOpts($cliente->getCuit());
+				$alicuotaPercepcion = $iibbService->getAlicuotaPercepcion();
+				
+				if($alicuotaPercepcion > 0
+					&& $netoGrabado > $parametrosFinanzas->getTopePercepcionIIBB()){
+					$percepcionIIBB = $netoGrabado * $alicuotaPercepcion / 100; 
+					$percepcionIIBB = number_format($percepcionIIBB, 2, ".", "");
+				}			
 			}
-			
-			if($cliente->getDepartamento()->getProvinciaId()->getId() == $parametrosFinanzas->getProvincia()->getId()
-				&& $alicuotaPercepcion > 0
-				&& $netoGrabado > $parametrosFinanzas->getTopePercepcionIIBB())
-			{
-				$percepcionIIBB = $netoGrabado * $alicuotaPercepcion / 100; 
-				$percepcionIIBB = number_format($percepcionIIBB, 2, ".", "");
-			}	
-			
-			
 
 			//REDONDEO IMPORTES A 2 DECIMALES
 			$netoGrabado = number_format($netoGrabado, 2, ".", "");
@@ -325,7 +324,7 @@ class VentasController extends Controller
 			return $response;
 
 		}catch(\Exception $e){
-			//throw $e;
+			throw $e;
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			$response->setContent(json_encode(array("success"=>false, "msg"=>$e->getMessage(), 'code' => $e->getCode())));
 			return $response;
