@@ -101,19 +101,18 @@ class AplicativosController extends Controller
 			$hasta= \DateTime::createFromFormat('d/m/Y', $hasta);
 			//
 			
-			$desde=$desde->format("Y-m-d");
-			$hasta=$hasta->format("Y-m-d");
+			$desdeSql=$desde->format("Y-m-d");
+			$hastaSql=$hasta->format("Y-m-d");
 			
 			$em = $em->getConnection();
 		
-			// prepare statement
 			$sth = $em->prepare("
 				select 
 					CONCAT(CONCAT(CONCAT(CONCAT(SUBSTRING(prov.cuit, 1, 2), '-'), SUBSTRING(prov.cuit, 3, 8)), '-'), SUBSTRING(prov.cuit, 11, 12)) AS cuit,
 					DATE_FORMAT(op.fechaEmision, '%d/%m/%Y') AS fecha,
 					LPAD(fc.sucursal, 4, '0') AS ptoVta,
 					LPAD(fc.numFc, 8, '0') AS fcNro,
-					LPAD((tr.aplicado * pago.importe / baseImponible), 11, '0') AS retencion,
+					LPAD((truncate((tr.aplicado * pago.importe / baseImponible), 2)), 11 ,'0') AS retencion,
 					'A' AS finLinea
 				from TransaccionOPFC tr
 					left join FacturaProveedor fc on fc.id = tr.facturaId
@@ -129,47 +128,14 @@ class AplicativosController extends Controller
 				        where op.fechaEmision between '2018-05-17' and '2018-05-18'
 				        group by op.id) as sub
 				where fp.retencionIIBB = true
-					and op.fechaEmision between '$desde' and '$hasta'
+					and op.fechaEmision between '$desdeSql' and '$hastaSql'
 				    and fc.neto > op.topeRetencionIIBB
 				    group by tr.id
 			");
 			
-			// execute and fetch
 			$sth->execute();
-			$res = $sth->fetchAll();
-						
-			/*$res=$repo->createQueryBuilder('tr')
-				->select("
-					CONCAT(CONCAT(CONCAT(CONCAT(SUBSTRING(prov.cuit, 1, 2), '-'), SUBSTRING(prov.cuit, 3, 8)), '-'), SUBSTRING(prov.cuit, 11, 12)) AS cuit,
-					DATE_FORMAT(op.emision, '%d/%m/%Y') AS fecha,
-					LPAD(fc.sucursal, 4, '0') AS ptoVta,
-					LPAD(fc.numFc, 8, '0') AS fcNro,
-					LPAD(SUM(tr.aplicado), 11, '0') AS retencion,
-					'A' AS finLinea")->addSelect("
-						(select SUM(case when f.neto > op.topeRetencionIIBB then tr.aplicado else 0 end) as baseImponible
-						from MbpProveedoresBundle:TransaccionOPFC as tr2
-						inner join MbpProveedoresBundle:Factura f with f.id = tr2.facturaId
-						inner join MbpProveedoresBundle:OrdenPago op2 with op.id = tr2.ordenPagoId
-						) as sub
-					")
-					
-				->join('tr.ordenPagoImputada', 'op')
-				->join('op.proveedorId', 'prov')
-				->join('tr.facturaImputada', 'fc')
-				->join('op.pagoDetalleId', 'det')
-				->join('det.idFormaPago', 'formaPago')
-				->where('op.emision BETWEEN :desde AND :hasta')
-				->andWhere('fc.neto > op.topeRetencionIIBB')
-				->andWhere('formaPago.retencionIIBB = true')
-				->setParameter('desde', $desde)
-				->setParameter('hasta', $hasta)
-				->groupBy('fcNro')
-				->getQuery()
-				->getArrayResult();
-			*/
-			print_r($res);
-			exit;
-		
+			$res = $sth->fetchAll();					
+			
 			$nombreArchivo="AR"."-".$this->container->getParameter('cuit_prod')."-".$desde->format("Ym").$quincena."-".self::$codigoRetencion."-LOTE1.txt";
 			
 			$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/txt/');
