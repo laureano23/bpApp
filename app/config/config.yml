@@ -105,6 +105,7 @@ doctrine:
                     MbpProveedoresBundle: ~    
                     MbpSecurityBundle: ~
                     MbpSenchaBundle: ~                      
+                    MbpTestBundle: ~  
             web:
                 connection: web
                 mappings:

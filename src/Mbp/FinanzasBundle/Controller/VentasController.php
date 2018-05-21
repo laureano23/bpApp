@@ -541,6 +541,31 @@ class VentasController extends Controller
 			return $response;
 		}
 	}
+	
+	/**
+     * @Route("/adm/listarPosicionesIva", name="mbp_finanzas_posicionesIva", options={"expose"=true})
+     */	
+    public function listarPosicionesIva()
+	{
+		$em = $this->getDoctrine()->getManager();
+		$response = new Response;
+		$repoIva = $em->getRepository('MbpFinanzasBundle:PosicionIVA');
+		
+		try{
+			$res = $repoIva->createQueryBuilder('p')
+				->select('')
+				->getQuery()
+				->getArrayResult();
+			
+			return $response->setContent(
+				json_encode(array('success' => true, 'data' => $res))
+			);
+		}catch(\Exception $e){
+			$response->setContent(json_encode(array("success" => false, "msg" => $e->getMessage())));
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response;
+		}
+	}
 }
 
 

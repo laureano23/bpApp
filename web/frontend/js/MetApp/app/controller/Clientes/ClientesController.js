@@ -1,6 +1,6 @@
 Ext.define('MetApp.controller.Clientes.ClientesController',{
 	extend: 'Ext.app.Controller',
-	stores: ['Clientes.Clientes', 'MetApp.store.Finanzas.VendedorStore'],
+	stores: ['Clientes.Clientes', 'MetApp.store.Finanzas.VendedorStore', 'MetApp.store.Finanzas.PosicionIvaStore'],
 	views: [
 		'Clientes.FormClientes',
 		'Clientes.SearchGridClientes'

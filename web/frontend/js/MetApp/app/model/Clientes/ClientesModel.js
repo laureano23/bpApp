@@ -29,7 +29,8 @@ Ext.define('MetApp.model.Clientes.ClientesModel',{
 		{name: 'descuentoFijo', type: 'string'},
 		{name: 'notasCC', type: 'string'},
 		{name: 'vendedor', type: 'int'},
-		{name: 'comision', type: 'float'},				
+		{name: 'comision', type: 'float'},
+		{name: 'posicion', type: 'string'}						
 	],
 	proxy: {
 		type: 'ajax',

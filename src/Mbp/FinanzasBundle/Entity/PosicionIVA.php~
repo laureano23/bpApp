@@ -1,0 +1,118 @@
+<?php
+
+namespace Mbp\FinanzasBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * PosicionIVA
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="Mbp\FinanzasBundle\Entity\PosicionIVARepository")
+ */
+class PosicionIVA
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="posicion", type="string", length=255)
+     */
+    private $posicion;
+	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="esResponsableInscripto", type="boolean", nullable=false)
+     */
+    private $esResponsableInscripto=0;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="esResponsableNoInscripto", type="boolean", nullable=false)
+     */
+    private $esResponsableNoInscripto=0;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="esExento", type="boolean", nullable=false)
+     */
+    private $esExento=0;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="esResponsableMonotributo", type="boolean", nullable=false)
+     */
+    private $esResponsableMonotributo=0;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="esConsumidorFinal", type="boolean", nullable=false)
+     */
+    private $esConsumidorFinal=0;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="esExportacion", type="boolean", nullable=false)
+     */
+    private $esExportacion=0;
+	
+	 /**
+     * @ORM\OneToMany(targetEntity="Mbp\FinanzasBundle\Entity\Facturas", mappedBy="tipoIva")
+     */
+    private $facturas;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Mbp\ClientesBundle\Entity\Cliente", mappedBy="iva")
+     */
+    private $clientes;
+
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set posicion
+     *
+     * @param string $posicion
+     *
+     * @return PosicionIVA
+     */
+    public function setPosicion($posicion)
+    {
+        $this->posicion = $posicion;
+
+        return $this;
+    }
+
+    /**
+     * Get posicion
+     *
+     * @return string
+     */
+    public function getPosicion()
+    {
+        return $this->posicion;
+    }
+}
+

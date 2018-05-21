@@ -801,4 +801,28 @@ class Cliente
     {
         return $this->vendedor;
     }
+
+    /**
+     * Set comision
+     *
+     * @param string $comision
+     *
+     * @return Cliente
+     */
+    public function setComision($comision)
+    {
+        $this->comision = $comision;
+
+        return $this;
+    }
+
+    /**
+     * Get comision
+     *
+     * @return string
+     */
+    public function getComision()
+    {
+        return $this->comision;
+    }
 }

@@ -112,6 +112,9 @@ class AplicativosController extends Controller
 					DATE_FORMAT(op.fechaEmision, '%d/%m/%Y') AS fecha,
 					LPAD(fc.sucursal, 4, '0') AS ptoVta,
 					LPAD(fc.numFc, 8, '0') AS fcNro,
+					tr.aplicado as aplicado,
+					pago.importe as pagoImporte,
+					baseImponible,
 					LPAD((truncate((tr.aplicado * pago.importe / baseImponible), 2)), 11 ,'0') AS retencion,
 					'A' AS finLinea
 				from TransaccionOPFC tr
@@ -120,13 +123,14 @@ class AplicativosController extends Controller
 				    inner join Proveedor prov on prov.id = op.proveedorId
 				    inner join OrdenDePago_detallesPagos op_det on op_det.ordenPago_id = op.id
 				    inner join Pago pago on pago.id = op_det.pago_id
-				    left join FormasPagos fp on fp.id = pago.idFormaPago,
-					(select SUM(case when f.neto > op.topeRetencionIIBB then tr.aplicado else 0 end) as baseImponible
+				    left join FormasPagos fp on fp.id = pago.idFormaPago
+				    inner join
+					(select SUM(case when f.neto > op.topeRetencionIIBB then tr.aplicado else 0 end) as baseImponible, op.id as opId
 						from TransaccionOPFC as tr
 						inner join FacturaProveedor f on f.id = tr.facturaId
 						inner join OrdenPago op on op.id = tr.ordenPagoId
-				        where op.fechaEmision between '2018-05-17' and '2018-05-18'
-				        group by op.id) as sub
+				        where op.fechaEmision between '$desdeSql' and '$hastaSql'
+				        group by op.id) as sub on sub.opId = op.id
 				where fp.retencionIIBB = true
 					and op.fechaEmision between '$desdeSql' and '$hastaSql'
 				    and fc.neto > op.topeRetencionIIBB
@@ -134,7 +138,8 @@ class AplicativosController extends Controller
 			");
 			
 			$sth->execute();
-			$res = $sth->fetchAll();					
+			$res = $sth->fetchAll();	
+		
 			
 			$nombreArchivo="AR"."-".$this->container->getParameter('cuit_prod')."-".$desde->format("Ym").$quincena."-".self::$codigoRetencion."-LOTE1.txt";
 			

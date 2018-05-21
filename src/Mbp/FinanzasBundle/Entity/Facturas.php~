@@ -205,7 +205,7 @@ class Facturas
     private $digitoVerificador;
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="Mbp\FinanzasBundle\Entity\PosicionIVA", inversedBy="facturas")
+	 * @ORM\ManyToOne(targetEntity="Mbp\FinanzasBundle\Entity\PosicionIva", inversedBy="facturas")
 	 * @ORM\JoinColumn(name="tipoIva", referencedColumnName="id", nullable=false)
 	 */
     private $tipoIva;

@@ -190,53 +190,7 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 								border: false
 							},
 							layout: 'column',
-							items: [
-								{
-									title: 'Posicion IVA',
-									defaults: {
-										readOnly: true,
-										border: false,
-										disabledCls: 'myDisabledClass'
-									},
-									columnWidth: 0.33,
-									items: [
-										{
-											xtype: 'radiogroup',
-											columns: 1,
-											vertical: true,
-											items: [
-												{ boxLabel: 'Responsable Inscripto', name: 'iva', inputValue: '1', checked: true },
-												{ boxLabel: 'Responsable No Inscripto', name: 'iva', inputValue: '2' },
-												{ boxLabel: 'Exento', name: 'iva', inputValue: '3' },
-												{ boxLabel: 'Responsable Monotributo', name: 'iva', inputValue: '4' },
-												{ boxLabel: 'Consumidor Final', name: 'iva', inputValue: '5' },
-												{ boxLabel: 'Exportacion', name: 'iva', inputValue: '6' },
-												
-											]
-										},
-										{
-											xtype: 'combobox',
-											columnWidth: 0.33,
-											labelWidth: 70,
-											name: 'vendedor',
-											itemId: 'vendedor',
-											store: 'MetApp.store.Finanzas.VendedorStore',
-											displayField: 'nombre',
-											forceSelection: true,
-											valueField: 'id',
-											fieldLabel: 'Vendedor',
-											allowBlank: true
-										},
-										{
-											xtype: 'numberfield',
-											fieldLabel: 'Comisión (%)',
-											name: 'comision',
-											itemId: 'comision',
-											allowBlank: true,
-											decimalSeparator: '.'
-										},
-									]
-								},
+							items: [								
 								{
 									title: 'Telefonos',									
 									columnWidth: 0.67,
@@ -339,6 +293,38 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 									]
 								},
 								{
+									title: 'Vendedor',
+									defaults: {
+										readOnly: true,
+										border: false,
+										disabledCls: 'myDisabledClass'
+									},
+									columnWidth: 0.33,
+									items: [											
+										{
+											xtype: 'combobox',
+											columnWidth: 0.33,
+											labelWidth: 70,
+											name: 'vendedor',
+											itemId: 'vendedor',
+											store: 'MetApp.store.Finanzas.VendedorStore',
+											displayField: 'nombre',
+											forceSelection: true,
+											valueField: 'id',
+											fieldLabel: 'Vendedor',
+											allowBlank: true
+										},
+										{
+											xtype: 'numberfield',
+											fieldLabel: 'Comisión (%)',
+											name: 'comision',
+											itemId: 'comision',
+											allowBlank: true,
+											decimalSeparator: '.'
+										},
+									]
+								},
+								{
 									title: 'Condicion Comerciales',
 									columnWidth: 0.67,
 									layout: 'vbox',
@@ -356,12 +342,37 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 											disabledCls: 'myDisabledClass'
 										},
 										{
-											xtype: 'textfield',
-											name: 'descuentoFijo',
-											itemId: 'descuentoFijo',
-											fieldLabel: 'Descuento Fijo',
-											disabledCls: 'myDisabledClass'
-										},
+											xtype: 'container',
+											layout: 'hbox',
+											defaults:{
+												readOnly: true,
+												disabledCls: 'myDisabledClass'
+											},
+											items: [
+												{
+													xtype: 'textfield',
+													name: 'descuentoFijo',
+													itemId: 'descuentoFijo',
+													fieldLabel: 'Descuento Fijo',
+													disabledCls: 'myDisabledClass'
+												},
+												{
+													xtype: 'combobox',
+													columnWidth: 0.33,
+													labelWidth: 70,
+													margins: '0 0 0 5',
+													name: 'iva',
+													itemId: 'iva',
+													labelWidth: 80,
+													store: 'MetApp.store.Finanzas.PosicionIvaStore',
+													displayField: 'posicion',
+													forceSelection: true,
+													valueField: 'id',
+													fieldLabel: 'Posicion Iva',
+													allowBlank: false
+												},
+											]
+										},										
 										{
 											xtype: 'container',
 											defaults: {

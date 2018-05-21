@@ -88,7 +88,7 @@ class Cliente
     /**
      * @var \Mbp\FinanzasBundle\Entity\PosicionIVA
      * @ORM\ManyToOne(targetEntity="Mbp\FinanzasBundle\Entity\PosicionIVA")
-     * @ORM\JoinColumn(name="iva", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="iva", referencedColumnName="id", nullable=false)
      */
     private $iva;
     
