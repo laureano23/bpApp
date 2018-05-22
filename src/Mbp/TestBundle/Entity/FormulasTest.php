@@ -10,7 +10,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  * @ORM\Table(name="FormulasTest")
  * @Gedmo\Tree(type="nested")
- * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
+ * @ORM\Entity(repositoryClass="Mbp\TestBundle\Entity\FormulasTestRepository")
  */
 class FormulasTest
 {
@@ -141,6 +141,11 @@ class FormulasTest
     public function getParent()
     {
         return $this->parent;
+    }
+
+    public function getLvl()
+    {
+        return $this->lvl;
     }
 }
 

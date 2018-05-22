@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Mbp\TestBundle\Entity\Category;
 use Mbp\TestBundle\Entity\FormulasTest;
 
@@ -57,7 +58,7 @@ class DefaultController extends Controller
 		$options = array('decorate' => true,
 		'nodeDecorator' => function ($node) {
                 //\Doctrine\Common\Util\Debug::dump($node);
-			return $node['codigo'];
+			return $node['codigo']."----".$node['lvl'];
             });
 		$tree = $repo->buildTree($query->getArrayResult(), $options);
 
@@ -119,16 +120,28 @@ class DefaultController extends Controller
 		$nodeChildren3->setCantidad(1);
 		$nodeChildren3->setIdArt($repoArt->findOneBy(array('codigo'=>"CNPT014024042")));
 
+		$nodeChildren4 =new FormulasTest;
+		$nodeChildren4->setCantidad(1);
+		$nodeChildren4->setIdArt($repoArt->findOneBy(array('codigo'=>"10001")));
+
+		$nodeChildren5 =new FormulasTest;
+		$nodeChildren5->setCantidad(1);
+		$nodeChildren5->setIdArt($repoArt->findOneBy(array('codigo'=>"15050")));
+
 		//$nodeChildren->setParent($parent);
 		$nodeChildren1->setParent($nodeChildren);
 		$nodeChildren2->setParent($nodeChildren);
 		$nodeChildren3->setParent($nodeChildren);
+		$nodeChildren4->setParent($nodeChildren3);
+		$nodeChildren5->setParent($nodeChildren4);
 
 		//$em->persist($parent);
 		$em->persist($nodeChildren);
 		$em->persist($nodeChildren1);
 		$em->persist($nodeChildren2);
 		$em->persist($nodeChildren3);
+		$em->persist($nodeChildren4);
+		$em->persist($nodeChildren5);
 		$em->flush();
 		
 		return new Response;
@@ -137,28 +150,50 @@ class DefaultController extends Controller
     /**
      * @Route("/test/asociarArbol")
      */
-    public function asociarArbol()
+    public function asociarArbol(Request $req)
     {
-    	$em = $this->getDoctrine()->getManager();
+    	$idArtParaFormular=$req->query->get('idArtParaFormular');
+    	$idArtHijo=$req->query->get('idArtArtHijo');
+    	$cantidad=$req->query->get('cantidad');
+
+
+		$em = $this->getDoctrine()->getManager();
     	$repo=$em->getRepository('MbpTestBundle:FormulasTest');
-    	$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
 
-    	$nodeChildren=$repo->find(1);
-		
+    	$repo->agregarNodo($idArtParaFormular, $idArtHijo, $cantidad);
 
-		$parent =new FormulasTest;
-		$parent->setCantidad(1);
-		$parent->setIdArt($repoArt->findOneBy(array('codigo'=>"33901")));
-
-		$nodeChildren->setParent($parent);
-		
-
-		$em->persist($parent);
-		$em->persist($nodeChildren);
-		
-		$em->flush();
-		
 		return new Response;
+    }
+
+    public function arbolRecursivo($arbol, &$flagParent, &$parent=null, &$firstParent=null, $repoArt, $em, &$lastChild)
+    {
+    	foreach ($arbol as $nodo) {
+			$art=$repoArt->find($nodo['idArt']);
+			if($flagParent==0){
+				$parent=new FormulasTest;
+				
+				$parent->setCantidad($nodo['cantidad']);    				
+				$parent->setIdArt($art);
+				$em->persist($parent);
+				$firstParent=$parent;
+				$flagParent++;
+			}else{
+				$child=new FormulasTest;
+				//print_r($nodo);
+				$child->setCantidad($nodo['cantidad']);
+				$child->setIdArt($art);
+				$child->setParent($parent);
+				$em->persist($child);
+				if($nodo['lvl'] != ($parent->getLvl() + 1)){ //si la profundidad coincide quiere decir que saltamos de nivel de profundidad y el padre del siguiente nodo es el nodo actual
+					//$parent=$lastChild; //aca hay un error
+					$child->setParent($lastChild);
+
+				}
+			}
+			if(!empty($nodo['__children'])){
+    			$this->arbolRecursivo($nodo['__children'], $flagParent, $parent, $firstParent, $repoArt, $em, $child);
+			}
+    	}
     }
 }
 
