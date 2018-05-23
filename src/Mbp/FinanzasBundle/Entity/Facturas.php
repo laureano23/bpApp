@@ -864,14 +864,16 @@ class Facturas
         return $this->digitoVerificador;
     }
 
+    
+
     /**
      * Set tipoIva
      *
-     * @param \Mbp\FinanzasBundle\Entity\TipoIva $tipoIva
+     * @param \Mbp\FinanzasBundle\Entity\PosicionIVA $tipoIva
      *
      * @return Facturas
      */
-    public function setTipoIva(\Mbp\FinanzasBundle\Entity\TipoIva $tipoIva = null)
+    public function setTipoIva(\Mbp\FinanzasBundle\Entity\PosicionIVA $tipoIva)
     {
         $this->tipoIva = $tipoIva;
 
@@ -881,7 +883,7 @@ class Facturas
     /**
      * Get tipoIva
      *
-     * @return \Mbp\FinanzasBundle\Entity\TipoIva
+     * @return \Mbp\FinanzasBundle\Entity\PosicionIVA
      */
     public function getTipoIva()
     {

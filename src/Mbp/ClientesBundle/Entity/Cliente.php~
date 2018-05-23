@@ -88,7 +88,7 @@ class Cliente
     /**
      * @var \Mbp\FinanzasBundle\Entity\PosicionIVA
      * @ORM\ManyToOne(targetEntity="Mbp\FinanzasBundle\Entity\PosicionIVA")
-     * @ORM\JoinColumn(name="iva", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="iva", referencedColumnName="id", nullable=false)
      */
     private $iva;
     
@@ -378,29 +378,7 @@ class Cliente
         return $this->cPostal;
     }
 	
-	/**
-     * Set iva
-     *
-     * @param decimal $iva
-     * @return Cliente
-     */
-    public function setIva($iva)
-    {
-        $this->iva = $iva;
-
-        return $this;
-    }
-
-    /**
-     * Get iva
-     *
-     * @return decimal 
-     */
-    public function getIva()
-    {
-        return $this->iva;
-    }
-	
+		
 	/**
      * Set telefono1
      *

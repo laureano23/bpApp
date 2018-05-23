@@ -121,6 +121,9 @@ class VentasController extends Controller
 			$tipo = $repoTipo->find($decodefcData->tipo);		
 			$factura->setTipoId($tipo);
 			$factura->setConcepto($tipo->getDescripcion());
+
+			//tipo de iva	
+			$factura->setTipoIva($cliente->getIva());
 			
 			$netoGrabado = 0;
 			$ivaLiquidado = 0;

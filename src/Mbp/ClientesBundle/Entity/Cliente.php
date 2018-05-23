@@ -378,29 +378,7 @@ class Cliente
         return $this->cPostal;
     }
 	
-	/**
-     * Set iva
-     *
-     * @param decimal $iva
-     * @return Cliente
-     */
-    public function setIva($iva)
-    {
-        $this->iva = $iva;
-
-        return $this;
-    }
-
-    /**
-     * Get iva
-     *
-     * @return decimal 
-     */
-    public function getIva()
-    {
-        return $this->iva;
-    }
-	
+		
 	/**
      * Set telefono1
      *
@@ -824,5 +802,29 @@ class Cliente
     public function getComision()
     {
         return $this->comision;
+    }
+
+    /**
+     * Set iva
+     *
+     * @param \Mbp\FinanzasBundle\Entity\PosicionIVA $iva
+     *
+     * @return Cliente
+     */
+    public function setIva(\Mbp\FinanzasBundle\Entity\PosicionIVA $iva)
+    {
+        $this->iva = $iva;
+
+        return $this;
+    }
+
+    /**
+     * Get iva
+     *
+     * @return \Mbp\FinanzasBundle\Entity\PosicionIVA
+     */
+    public function getIva()
+    {
+        return $this->iva;
     }
 }
