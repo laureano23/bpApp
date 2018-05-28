@@ -2,7 +2,7 @@ Ext.define('MetApp.store.Compras.HistoricoCompraStore',{
 	extend: 'Ext.data.Store',
 	model: 'MetApp.model.Compras.OrdenCompraModel',
 	alias: 'store.HistoricoCompraStore',
-	autoSync: true,
+	autoSync: false,
 	autoLoad: false,
     id: 'HistoricoCompraStore',
     storeId: 'HistoricoCompraStore',

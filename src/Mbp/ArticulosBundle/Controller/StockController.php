@@ -275,6 +275,9 @@ class StockController extends Controller
 			}
 			
 			$em->persist($movimiento);
+
+			//\Doctrine\Common\Util\Debug::dump($movimiento);
+			//exit;
 			$em->flush();
 			
 			$msg = array(

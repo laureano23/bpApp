@@ -295,14 +295,13 @@ Ext.define('MetApp.controller.Articulos.StockController',{
 		var grid = win.down('grid');
 		var store = grid.getStore();
 		
-		var data = new Array(); 
+		var dataArt = new Array(); 
 		var i = 0;
 		
 		store.each(function(rec){
-			data[i] = rec.getData();
+			dataArt[i] = rec.getData();
 			i++;	
 		});
-		
 				
 		if(form.isValid()){
 			Ext.Ajax.request({
@@ -310,7 +309,7 @@ Ext.define('MetApp.controller.Articulos.StockController',{
 				
 				params: {
 					data: Ext.JSON.encode(valuesGral),
-					articulos: Ext.JSON.encode(data)
+					articulos: Ext.JSON.encode(dataArt)
 				},
 				
 				success: function(resp){

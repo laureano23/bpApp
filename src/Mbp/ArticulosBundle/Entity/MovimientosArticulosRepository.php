@@ -33,6 +33,7 @@ class MovimientosArticulosRepository extends \Doctrine\ORM\EntityRepository
 			->join('det.ordenCompraId', 'oc')
 			->where('art.requiereControl = 1')
 			->andWhere('det.estadoCalidad is NULL')
+			->andWhere('oc.anulada = false')
 			->getQuery()
 			->getArrayResult();	
 		return $qb;	
