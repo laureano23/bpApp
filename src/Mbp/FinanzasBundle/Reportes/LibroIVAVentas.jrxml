@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LibroIVAVentas" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="c4b105ad-c9d2-4e6e-aab2-f046571798ae">
 	<property name="ireport.zoom" value="1.1000000000000052"/>
-	<property name="ireport.x" value="152"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="fechaDesde" class="java.lang.String">
 		<defaultValueExpression><![CDATA[01/01/2001]]></defaultValueExpression>
@@ -13,7 +13,9 @@
 		<![CDATA[SELECT
      CASE WHEN Facturas.`moneda`=1 THEN Facturas.`perIIBB`*Facturas.`tipoCambio` ELSE Facturas.`perIIBB` END AS Facturas_perIIBB,
      CASE WHEN Facturas.`moneda`=1 THEN Facturas.`iva21`*Facturas.`tipoCambio` ELSE Facturas.`iva21` END AS Facturas_iva21,
-     CASE WHEN Facturas.`moneda`=1 THEN Facturas.`total`*Facturas.`tipoCambio` ELSE Facturas.`total` END AS Facturas_total,
+     CASE WHEN Facturas.`moneda`=1
+	THEN Facturas.`total` * Facturas.`tipoCambio`
+	ELSE Facturas.`total` END AS Facturas_total,
      cliente.`idCliente` AS cliente_idCliente,
      cliente.`rsocial` AS cliente_rsocial,
      Facturas.`id` AS Facturas_id,
@@ -43,7 +45,8 @@ FROM
      INNER JOIN `TipoComprobante` TipoComprobante ON Facturas.`tipoId` = TipoComprobante.`id`
 WHERE
      Facturas.`fecha` BETWEEN $P{fechaDesde} AND $P{fechaHasta}
-AND TipoComprobante.`esBalance` = 0]]>
+AND TipoComprobante.`esBalance` = 0
+ORDER BY Facturas.`fecha` ASC]]>
 	</queryString>
 	<field name="Facturas_perIIBB" class="java.math.BigDecimal"/>
 	<field name="Facturas_iva21" class="java.math.BigDecimal"/>
@@ -78,7 +81,9 @@ $F{Facturas_total}*-1:
 $F{Facturas_total}]]></variableExpression>
 	</variable>
 	<variable name="sumaIVA" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{Facturas_iva21}]]></variableExpression>
+		<variableExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == true ?
+$F{Facturas_iva21} * -1:
+$F{Facturas_iva21}]]></variableExpression>
 	</variable>
 	<variable name="sumaNeto" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == true ?
@@ -181,7 +186,7 @@ $F{Facturas_perIIBB}]]></variableExpression>
 				<text><![CDATA[Neto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="527" y="0" width="83" height="20" uuid="5b8730a7-093e-41ce-a3df-473d89bda073"/>
+				<reportElement x="527" y="0" width="65" height="20" uuid="5b8730a7-093e-41ce-a3df-473d89bda073"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
@@ -189,7 +194,7 @@ $F{Facturas_perIIBB}]]></variableExpression>
 				<text><![CDATA[No Grav.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="610" y="0" width="60" height="20" uuid="2154dabc-45b4-4fd9-9c43-08f013e60d3a"/>
+				<reportElement x="592" y="0" width="60" height="20" uuid="2154dabc-45b4-4fd9-9c43-08f013e60d3a"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
@@ -197,7 +202,7 @@ $F{Facturas_perIIBB}]]></variableExpression>
 				<text><![CDATA[IVA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="670" y="0" width="41" height="20" uuid="8e322a4b-fb96-45d4-b9f8-f89d952e95ef"/>
+				<reportElement x="652" y="0" width="41" height="20" uuid="8e322a4b-fb96-45d4-b9f8-f89d952e95ef"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
@@ -205,7 +210,7 @@ $F{Facturas_perIIBB}]]></variableExpression>
 				<text><![CDATA[% Per.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="711" y="0" width="41" height="20" uuid="24378ca0-9f75-405a-bdcb-3a624408ca75"/>
+				<reportElement x="693" y="0" width="41" height="20" uuid="24378ca0-9f75-405a-bdcb-3a624408ca75"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
@@ -214,7 +219,7 @@ $F{Facturas_perIIBB}]]></variableExpression>
 IIBB]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="752" y="0" width="70" height="20" uuid="764031f7-4b5e-4909-8878-1fd5d22c7633"/>
+				<reportElement x="734" y="0" width="88" height="20" uuid="764031f7-4b5e-4909-8878-1fd5d22c7633"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
@@ -235,7 +240,15 @@ IIBB]]></text>
 				<reportElement x="56" y="0" width="31" height="20" uuid="ace9bdee-0f62-4627-a281-7f6b5911eeb1"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{Facturas_concepto}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{TipoComprobante_esFactura} && $F{TipoComprobante_subTipoA} ? "FA":
+$F{TipoComprobante_esFactura} && $F{TipoComprobante_subTipoB} ? "FB" :
+$F{TipoComprobante_esFactura} && $F{TipoComprobante_subTipoE} ? "FE" :
+$F{TipoComprobante_esNotaCredito} && $F{TipoComprobante_subTipoA} ? "NCA" :
+$F{TipoComprobante_esNotaCredito} && $F{TipoComprobante_subTipoB} ? "NCB" :
+$F{TipoComprobante_esNotaCredito} && $F{TipoComprobante_subTipoE} ? "NCE" :
+$F{TipoComprobante_esNotaDebito} && $F{TipoComprobante_subTipoA} ? "NDA" :
+$F{TipoComprobante_esNotaDebito} && $F{TipoComprobante_subTipoB} ? "NDB" :
+$F{TipoComprobante_esNotaDebito} && $F{TipoComprobante_subTipoE} ? "NDE" : ""]]></textFieldExpression>
 			</textField>
 			<textField pattern="#00000000" isBlankWhenNull="true">
 				<reportElement x="130" y="0" width="53" height="20" uuid="01eb0648-1bd8-4519-b0bf-be9a310629d8"/>
@@ -273,30 +286,30 @@ IIBB]]></text>
 				<textFieldExpression><![CDATA[$F{Facturas_total}-$F{Facturas_iva21}-$F{Facturas_perIIBB}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="527" y="0" width="83" height="20" uuid="4e650972-1270-41a3-91d0-ff9c9c222559"/>
+				<reportElement x="527" y="0" width="65" height="20" uuid="4e650972-1270-41a3-91d0-ff9c9c222559"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="610" y="0" width="60" height="20" uuid="354ab5c2-3085-44a7-abf7-1890d8dfc38d"/>
+				<reportElement x="592" y="0" width="60" height="20" uuid="354ab5c2-3085-44a7-abf7-1890d8dfc38d"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{Facturas_iva21}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="711" y="0" width="41" height="20" uuid="5e8a1e23-f3bf-45a5-aec3-9ce3f02098d2"/>
+				<reportElement x="693" y="0" width="41" height="20" uuid="5e8a1e23-f3bf-45a5-aec3-9ce3f02098d2"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{Facturas_perIIBB}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="752" y="0" width="70" height="20" uuid="292efa0a-1a1f-453b-871b-7cda0d71ae96"/>
+				<reportElement x="734" y="0" width="88" height="20" uuid="292efa0a-1a1f-453b-871b-7cda0d71ae96"/>
 				<box leftPadding="0" rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{Facturas_total}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="670" y="0" width="41" height="20" uuid="2c4e9fb7-bae7-4024-bc1b-dc5e0a4c1657"/>
+				<reportElement x="652" y="0" width="41" height="20" uuid="2c4e9fb7-bae7-4024-bc1b-dc5e0a4c1657"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{Facturas_porcentajeIIBB}]]></textFieldExpression>

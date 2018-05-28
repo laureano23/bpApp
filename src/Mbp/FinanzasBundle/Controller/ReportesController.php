@@ -354,7 +354,9 @@ class ReportesController extends Controller
 			$sql = "SELECT
 				     CASE WHEN Facturas.`moneda`=1 THEN Facturas.`perIIBB`*Facturas.`tipoCambio` ELSE Facturas.`perIIBB` END AS Facturas_perIIBB,
 				     CASE WHEN Facturas.`moneda`=1 THEN Facturas.`iva21`*Facturas.`tipoCambio` ELSE Facturas.`iva21` END AS Facturas_iva21,
-				     CASE WHEN Facturas.`moneda`=1 THEN Facturas.`total`*Facturas.`tipoCambio` ELSE Facturas.`total` END AS Facturas_total,
+				     CASE WHEN Facturas.`moneda`=1
+					THEN Facturas.`total` * Facturas.`tipoCambio`
+					ELSE Facturas.`total` END AS Facturas_total,
 				     cliente.`idCliente` AS cliente_idCliente,
 				     cliente.`rsocial` AS cliente_rsocial,
 				     Facturas.`id` AS Facturas_id,
@@ -384,7 +386,8 @@ class ReportesController extends Controller
 				     INNER JOIN `TipoComprobante` TipoComprobante ON Facturas.`tipoId` = TipoComprobante.`id`
 				WHERE
 				     Facturas.`fecha` BETWEEN '$desde' AND '$hasta'
-				     AND TipoComprobante.`esBalance` = 0";
+				AND TipoComprobante.`esBalance` = 0
+				ORDER BY Facturas.`fecha` ASC";
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	
 		}catch(\Exception $e){
