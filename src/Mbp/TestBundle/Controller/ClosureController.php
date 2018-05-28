@@ -10,6 +10,38 @@ use Mbp\TestBundle\Entity\FormulasC;
 
 class ClosureController extends Controller
 {
+
+    /**
+     * @Route("/closure/borrarNodo")
+     */
+    public function borrarNodo()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repo=$em->getRepository('MbpTestBundle:FormulasC');
+        $repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
+
+        //buscamos por el codigo/letra
+        $res=$repo->findByLetra("G");
+
+        //borramos la letra C de todos los arboles
+        foreach ($res as $r) {
+            $childrens = $repo->children($r);
+            foreach ($childrens as $child) {
+                if($child->getLetra() == "I"){
+                    $em->remove($child);
+                }    
+            }
+            
+        }
+
+        $em->flush();
+
+        //\Doctrine\Common\Util\Debug::dump($res);
+
+        return new Response;
+    }
+
+
 	 /**
      * @Route("/closure/desasociarNodo")
      */
@@ -152,20 +184,6 @@ class ClosureController extends Controller
     	return new Response;
     }
 
-     /**
-     * @Route("/closure/borrarNodo")
-     */
-    public function borrarNodo()
-    {
-    	$em = $this->getDoctrine()->getManager();
-    	$repo=$em->getRepository('MbpTestBundle:FormulasC');
-    	$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
-
-    	$nodos=$repo->findByLetra("C");
-
-    	\Doctrine\Common\Util\Debug::dump($nodos);
-    	return new Response;
-    }
 
     private function copiadoRecursivo($arrayNodes, &$parent, $flagLvl, &$lastAdded, $em){
     	foreach ($arrayNodes as $ch) {
@@ -224,10 +242,10 @@ class ClosureController extends Controller
     	$repo=$em->getRepository('MbpTestBundle:FormulasC');
     	$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
 
-    	$node=$repo->findOneByLetra("A");
+    	$node=$repo->findOneBy(['letra' => 'A', 'level' => 1]);
 
     	$qb=$repo->childrenQueryBuilder($node);
-    	$res=$repo->queryFormula($node);
+    	$res=$repo->queryFormulaCompleta($node);
 
 		print_r($res);
 
