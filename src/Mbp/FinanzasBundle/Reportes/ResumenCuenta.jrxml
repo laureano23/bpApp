@@ -75,6 +75,9 @@ GROUP BY c0_.id]]>
 	<variable name="TOTAL_HABER" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{haber}]]></variableExpression>
 	</variable>
+	<variable name="TOTAL_SALDO" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{TOTAL_DEBE}-$V{TOTAL_HABER}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -250,6 +253,14 @@ GROUP BY c0_.id]]>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{TOTAL_HABER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" pattern="#,##0.00">
+				<reportElement x="462" y="0" width="93" height="20" uuid="21612049-b5a1-4b90-9c96-45d23e4720b4"/>
+				<box leftPadding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL_SALDO}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>
