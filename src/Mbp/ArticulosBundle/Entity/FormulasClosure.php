@@ -1,5 +1,5 @@
 <?php
-namespace Mbp\TestBundle\Entity;
+namespace Mbp\ArticulosBundle\Entity;
 
 use Gedmo\Tree\Entity\MappedSuperclass\AbstractClosure;
 use Doctrine\ORM\Mapping as ORM;

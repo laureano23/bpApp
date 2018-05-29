@@ -1,13 +1,13 @@
 <?php
 
-namespace Mbp\TestBundle\Entity;
+namespace Mbp\ArticulosBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @Gedmo\Tree(type="closure")
- * @Gedmo\TreeClosure(class="Mbp\TestBundle\Entity\FormulasClosure")
+ * @Gedmo\TreeClosure(class="Mbp\ArticulosBundle\Entity\FormulasClosure")
  * @ORM\Entity(repositoryClass="FormulasCRepository")
  */
 class FormulasC
@@ -25,9 +25,9 @@ class FormulasC
     private $cantidad;
 
     /**
-     * @ORM\Column(name="letra", type="string", length=5)
+     * @ORM\Column(name="unidad", type="string", length=50, nullable=true)
      */
-    private $letra;
+    private $unidad;
 
     /**
      * This parameter is optional for the closure strategy
@@ -87,11 +87,11 @@ class FormulasC
     /**
      * Set parent
      *
-     * @param \Mbp\TestBundle\Entity\FormulasC $parent
+     * @param \Mbp\ArticulosBundle\Entity\FormulasC $parent
      *
      * @return FormulasC
      */
-    public function setParent(\Mbp\TestBundle\Entity\FormulasC $parent = null)
+    public function setParent(\Mbp\ArticulosBundle\Entity\FormulasC $parent = null)
     {
         $this->parent = $parent;
 
@@ -101,7 +101,7 @@ class FormulasC
     /**
      * Get parent
      *
-     * @return \Mbp\TestBundle\Entity\FormulasC
+     * @return \Mbp\ArticulosBundle\Entity\FormulasC
      */
     public function getParent()
     {
@@ -109,27 +109,27 @@ class FormulasC
     }
 
     /**
-     * Set letra
+     * Set unidad
      *
-     * @param string $letra
+     * @param string $unidad
      *
      * @return FormulasC
      */
-    public function setLetra($letra)
+    public function setUnidad($unidad)
     {
-        $this->letra = $letra;
+        $this->unidad = $unidad;
 
         return $this;
     }
 
     /**
-     * Get letra
+     * Get unidad
      *
      * @return string
      */
-    public function getLetra()
+    public function getUnidad()
     {
-        return $this->letra;
+        return $this->unidad;
     }
 
 

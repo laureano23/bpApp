@@ -54,31 +54,31 @@ mbp_articulos_actualizar_base:
 
 mbp_formulas_read:
     path:     /extranet/formulaslist
-    defaults: { _controller: MbpArticulosBundle:Formulas:formulaslist }
+    defaults: { _controller: MbpArticulosBundle:Formulas2:formulaslist }
     options:
       expose: true
 
 mbp_formulas_InsertNodo:
     path:     /formulasInsertNodo
-    defaults: { _controller: MbpArticulosBundle:Formulas:formulasInsertNodo }
+    defaults: { _controller: MbpArticulosBundle:Formulas2:formulasInsertNodo }
     options:
       expose: true
 
 mbp_formulas_BorrarNodo:
     path:     /formulasBorrarNodo
-    defaults: { _controller: MbpArticulosBundle:Formulas:formulasBorrarNodo }
+    defaults: { _controller: MbpArticulosBundle:Formulas2:formulasBorrarNodo }
     options:
       expose: true
 
 mbp_formulas_updateNodo:
     path:     /formulasUpdateNodo
-    defaults: { _controller: MbpArticulosBundle:Formulas:formulasUpdateNodo }
+    defaults: { _controller: MbpArticulosBundle:Formulas2:formulasUpdateNodo }
     options:
       expose: true
 
 mbp_formulas_idNodo:
     path:     /extranet/formulasIdNodo
-    defaults: { _controller: MbpArticulosBundle:Formulas:formulasIdNodo }
+    defaults: { _controller: MbpArticulosBundle:Formulas2:formulasIdNodo }
     options:
       expose: true
 

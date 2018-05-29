@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EstructuraDeMateriales" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7c719db6-fefe-4fcb-914a-8c49a59a37f5">
 	<property name="ireport.zoom" value="1.6105100000000157"/>
-	<property name="ireport.x" value="444"/>
+	<property name="ireport.x" value="50"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Prof1" mode="Opaque" forecolor="#000000" backcolor="#FFFFFF" fontSize="8" isItalic="false" isUnderline="false">
 		<conditionalStyle>
@@ -15,81 +15,27 @@
 	<parameter name="rutaLogo" class="java.lang.String"/>
 	<parameter name="tc" class="java.lang.Float"/>
 	<queryString>
-		<![CDATA[SELECT *
-FROM
-(SELECT 	node.id,
-	node.lft,
-	node.rgt,
-	node.cant,
-	(COUNT(parent.id) - (sub_tree.depth + 1)) AS depth,
-	articulos.descripcion,
-	articulos.codigo,
-	articulos.moneda,
-	articulos.costo as costo
-	FROM `articulos` articulos INNER JOIN `Formulas` node ON articulos.`idArticulos` = node.`idArt`,
-        Formulas AS parent,
-        Formulas AS sub_parent,
-        (
-			SELECT node.id, (COUNT(parent.id) - 1) AS depth
-			FROM Formulas AS node,
-			Formulas AS parent
-			WHERE node.lft BETWEEN parent.lft AND parent.rgt
-			AND node.id = $P{idNodo}
-			GROUP BY node.id
-			ORDER BY node.lft
-        )AS sub_tree
-WHERE node.lft BETWEEN parent.lft AND parent.rgt
-        AND node.lft BETWEEN sub_parent.lft AND sub_parent.rgt
-        AND sub_parent.id = sub_tree.id
-GROUP BY node.id
-ORDER BY node.lft) AS x
-
-INNER JOIN
-
-(SELECT 	node.id,
-	SUM(
-		CASE
-			WHEN articulos.moneda = 0
-				THEN articulos.costo * node.cant
-			ELSE articulos.costo * node.cant * $P{tc}
-			END) AS sumCosto,
-	SUM(
-		CASE
-			WHEN articulos.moneda = 0
-				THEN articulos.costo * node.cant
-			ELSE articulos.costo * node.cant * $P{tc}
-			END) * parent.cant AS sumCostoPadre
-	FROM `articulos` articulos INNER JOIN `Formulas` node ON articulos.`idArticulos` = node.`idArt`,
-        Formulas AS parent,
-        Formulas AS sub_parent,
-        (
-			SELECT node.id, (COUNT(parent.id) - 1) AS depth
-			FROM Formulas AS node,
-			Formulas AS parent
-			WHERE node.lft BETWEEN parent.lft AND parent.rgt
-			AND node.id = $P{idNodo}
-			GROUP BY node.id
-			ORDER BY node.lft
-        )AS sub_tree
-WHERE node.lft BETWEEN parent.lft AND parent.rgt
-        AND node.lft BETWEEN sub_parent.lft AND sub_parent.rgt
-        AND sub_parent.id = sub_tree.id
-GROUP BY parent.id
-ORDER BY node.lft) AS y ON x.id = y.id]]>
+		<![CDATA[SELECT
+	node.id,
+	node.cantidad as cant,
+	node.level as depth,
+	art.descripcion,
+	art.codigo,
+	art.moneda,
+	art.costo,
+	node.unidad,
+	art.costo as sumCosto,
+	art.costo as sumCostoPadre
+FROM FormulasClosure c
+INNER JOIN FormulasC node ON node.id = c.descendant
+INNER JOIN articulos art ON art.idArticulos = node.idArt
+WHERE c.ancestor = 323 AND c.descendant <> 323]]>
 	</queryString>
 	<field name="id" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="lft" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="rgt" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="cant" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="depth" class="java.lang.Long"/>
+	<field name="cant" class="java.lang.Integer"/>
+	<field name="depth" class="java.lang.Integer"/>
 	<field name="descripcion" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -102,8 +48,11 @@ ORDER BY node.lft) AS y ON x.id = y.id]]>
 	<field name="costo" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="sumCosto" class="java.lang.Double"/>
-	<field name="sumCostoPadre" class="java.lang.Double"/>
+	<field name="unidad" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sumCosto" class="java.math.BigDecimal"/>
+	<field name="sumCostoPadre" class="java.math.BigDecimal"/>
 	<variable name="sub_total" class="java.lang.Float" resetType="Group" resetGroup="sub_rep" calculation="Sum">
 		<variableExpression><![CDATA[$F{costo}]]></variableExpression>
 	</variable>
@@ -113,8 +62,7 @@ ORDER BY node.lft) AS y ON x.id = y.id]]>
 	<variable name="total" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$F{depth} == 1 ?
 $F{moneda} == true ? $V{COSTO_UNITARIO} * $P{tc} *$F{cant}: $V{COSTO_UNITARIO} *$F{cant}
-:0
-]]></variableExpression>
+:0]]></variableExpression>
 	</variable>
 	<variable name="COSTO_UNITARIO" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$F{costo} == 0 ? $F{sumCosto} : $F{costo}]]></variableExpression>

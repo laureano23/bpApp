@@ -258,7 +258,7 @@ class ClosureController extends Controller
     public function borrarTodo()
     {
     	$em = $this->getDoctrine()->getManager();
-    	$repo=$em->getRepository('MbpTestBundle:FormulasC');
+    	$repo=$em->getRepository('MbpArticulosBundle:FormulasC');
     	$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
 
     	$nodos=$repo->findAll();
@@ -278,13 +278,13 @@ class ClosureController extends Controller
     public function getAlltree()
     {
     	$em = $this->getDoctrine()->getManager();
-    	$repo=$em->getRepository('MbpTestBundle:FormulasC');
+    	$repo=$em->getRepository('MbpArticulosBundle:FormulasC');
     	$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
 
     	$options = array('decorate' => true,
 		'nodeDecorator' => function ($node) {
                 //\Doctrine\Common\Util\Debug::dump($node);
-			return $node['letra'];
+			return $node['id'];
             });
     	$node=$repo->childrenHierarchy(null, false, $options);
     	
