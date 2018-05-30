@@ -29,14 +29,17 @@ class Faele extends wsfev1
 		//VERIFICO QUE EL WSAA 
 		$time = strtotime($this->wsaa->get_expiration());
 		
-		$newTime = \DateTime::createFromFormat('U', $time);
-		$this->wsaa->generar_TA();
-		/*if($newTime < new \DateTime) {
+		//$newTime = strtotime(\DateTime::createFromFormat('U', $time));
+		//$this->wsaa->generar_TA();
+		$newDate = new \DateTime();
+		
+		if($this->wsaa->get_expiration() < $newDate->format("Y-m-d h:m:i")) {
 			if ($this->wsaa->generar_TA()) {				
-			} else {
+			
+			}else {
 				throw new \Exception("Error al obtener el TA", 1);
 			}
-		} else {
+		} /*else {
 			throw new \Exception("TA expiracion ".$this->wsaa->get_expiration(), 1);
 		}*/
 		
