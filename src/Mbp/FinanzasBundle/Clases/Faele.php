@@ -31,9 +31,15 @@ class Faele extends wsfev1
 		
 		//$newTime = strtotime(\DateTime::createFromFormat('U', $time));
 		//$this->wsaa->generar_TA();
-		$newDate = new \DateTime();
+		$newDate = new \DateTime($this->wsaa->get_expiration());
 		
-		if($this->wsaa->get_expiration() < $newDate->format("Y-m-d h:m:i")) {
+		$format_date  = date('Y-m-d H:i:s', strtotime($this->wsaa->get_expiration()));
+
+		$expiracion = new \DateTime($format_date);
+		$now = new \DateTime;
+		
+		if($expiracion < $now) {
+		
 			if ($this->wsaa->generar_TA()) {				
 			
 			}else {
@@ -42,7 +48,6 @@ class Faele extends wsfev1
 		} /*else {
 			throw new \Exception("TA expiracion ".$this->wsaa->get_expiration(), 1);
 		}*/
-		
 	}
 	
 	/* PARAMS
