@@ -34,14 +34,14 @@ class FormulasCRepository extends \Gedmo\Tree\Entity\Repository\ClosureTreeRepos
         $repo=$em->getRepository('MbpArticulosBundle:FormulasC');
         $repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
 
-        $node=$repo->findOneBy(['idArt' => $idArt, 'level' => 1]);
+        $node=$repo->findOneBy(['idArt' => $idArt]);
         
         $dql = "SELECT node.id as idFormula, art.codigo, art.id as idArt, node.unidad, art.descripcion, node.cantidad as cant, art.moneda
                 FROM Mbp\ArticulosBundle\Entity\FormulasClosure c
                 INNER JOIN c.descendant node 
                 INNER JOIN node.idArt art
                 WHERE c.ancestor = :node AND c.descendant <> :node
-                AND node.level=2";
+                AND c.depth=1";
 
         $qb = $em->createQuery($dql);
         $qb->setParameter('node',$node);

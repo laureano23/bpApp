@@ -45,16 +45,19 @@ class Formulas2Controller extends Controller
     	$arbolPadre=$repo->findBy(['idArt'=>$artPadreId]);
     	$arbolHijo=$repo->findOneBy(['idArt'=>$data->id, 'level'=>1]);
 
+    	var_dump($data->cant);
+    	exit;
+
     	if($arbolPadre==null && $arbolHijo==null){
-    		$this->insertPadreNotExistHijoNotExist($artPadreId, $artHijoId);	
+    		$this->insertPadreNotExistHijoNotExist($artPadreId, $artHijoId, $data->cant);	
     	}
 
     	if($arbolPadre!=null && $arbolHijo==null){
-    		$this->insertPadreExistHijoNotExist($arbolPadre, $artHijoId);	
+    		$this->insertPadreExistHijoNotExist($arbolPadre, $artHijoId, $data->cant);	
     	}
 
     	if($arbolPadre==null && $arbolHijo!=null){
-    		$this->insertPadreNotExistHijoExist($artPadreId, $arbolHijo);	
+    		$this->insertPadreNotExistHijoExist($artPadreId, $arbolHijo, $data->cant);	
     	}
 
     	if($arbolPadre!=null && $arbolHijo!=null){
@@ -82,7 +85,7 @@ class Formulas2Controller extends Controller
 		}
 	}
 
-	private function insertPadreNotExistHijoExist($idArtPadre, $arbolHijo){
+	private function insertPadreNotExistHijoExist($idArtPadre, $arbolHijo, $cant){
 		$em = $this->getDoctrine()->getManager();
 		$repo = $em->getRepository('MbpArticulosBundle:FormulasC');
 		$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
@@ -91,7 +94,7 @@ class Formulas2Controller extends Controller
 		$art = $repoArt->find($idArtPadre);
 		$arbolPadre->setidArt($art);
 		$arbolPadre->setParent($arbolPadre);
-		$arbolPadre->setCantidad(1);
+		$arbolPadre->setCantidad($cant);
 		$arbolPadre->setUnidad($art->getUnidad());
 		$em->persist($arbolPadre);
 		$childrens=$repo->getChildren($arbolHijo, false, null, 'asc', true);
@@ -100,24 +103,25 @@ class Formulas2Controller extends Controller
 		$this->copiadoRecursivo($childrens, $arbolPadre, true, $lastAdded, $em);
 	}
 
-	private function insertPadreExistHijoNotExist($arbolPadre, $idArtHijo){
+	private function insertPadreExistHijoNotExist($arbolPadre, $idArtHijo, $cant){
 		$em = $this->getDoctrine()->getManager();
 		$repo = $em->getRepository('MbpArticulosBundle:FormulasC');
     	$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
-		
+			
+
 		foreach ($arbolPadre as $padre) {
 			$arbolHijo = new FormulasC;
 			$art = $repoArt->find($idArtHijo);
 			$arbolHijo->setidArt($art);
 			$arbolHijo->setParent($padre);
-			$arbolHijo->setCantidad(1);
+			$arbolHijo->setCantidad($cant);
 			$arbolHijo->setUnidad($art->getUnidad());
 			$em->persist($arbolHijo);	
 		}
 		
 	}
 
-	private function insertPadreNotExistHijoNotExist($idArtPadre, $idArtHijo){
+	private function insertPadreNotExistHijoNotExist($idArtPadre, $idArtHijo, $cant){
 		$em = $this->getDoctrine()->getManager();
 		$repo = $em->getRepository('MbpArticulosBundle:FormulasC');
     	$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
@@ -126,7 +130,7 @@ class Formulas2Controller extends Controller
 		$art = $repoArt->find($idArtPadre);
 		$arbolPadre->setidArt($art);
 		$arbolPadre->setParent($arbolPadre);
-		$arbolPadre->setCantidad(1);
+		$arbolPadre->setCantidad($cant);
 		$arbolPadre->setUnidad($art->getUnidad());
 		$em->persist($arbolPadre);
 		

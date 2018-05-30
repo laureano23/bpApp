@@ -20,7 +20,7 @@ class FormulasC
     private $id;
 
     /**
-     * @ORM\Column(name="cantidad", type="integer")
+     * @ORM\Column(name="cantidad", type="decimal", precision= 10, scale= 3)
      */
     private $cantidad;
 
