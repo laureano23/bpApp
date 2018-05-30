@@ -45,9 +45,9 @@ class Faele extends wsfev1
 			}else {
 				throw new \Exception("Error al obtener el TA", 1);
 			}
-		} /*else {
-			throw new \Exception("TA expiracion ".$this->wsaa->get_expiration(), 1);
-		}*/
+		} else {
+			//throw new \Exception("TA expiracion ".$this->wsaa->get_expiration(), 1);
+		}
 	}
 	
 	/* PARAMS
