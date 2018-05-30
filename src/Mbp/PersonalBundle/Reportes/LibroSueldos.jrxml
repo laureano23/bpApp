@@ -217,7 +217,7 @@ ORDER BY
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Personal_apellido}+" "+$F{Personal_nombre}]]></textFieldExpression>
 				</textField>
-				<textField isBlankWhenNull="true">
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 					<reportElement x="57" y="38" width="78" height="15" uuid="ae7f49f2-a89d-41a3-974e-a725940691c1"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
