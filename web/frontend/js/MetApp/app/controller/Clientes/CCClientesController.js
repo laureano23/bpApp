@@ -203,7 +203,8 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 				params: {
 					neto: values.neto,
 					obs: values.observaciones,
-					idCliente: idCliente
+					idCliente: idCliente,
+					fecha: values.fecha
 				},
 				
 				success: function(resp){

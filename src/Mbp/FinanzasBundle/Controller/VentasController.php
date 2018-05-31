@@ -482,12 +482,12 @@ class VentasController extends Controller
 			$neto = $req->request->get('neto');
 			$obs = $req->request->get('obs');
 			$idCliente = $req->request->get('idCliente');	
+			$fechaEmision=\DateTime::createFromFormat("d/m/Y", $req->request->get('fecha'));
 		
 			//CREO OBJETO FACTURA
 			$factura = new Facturas;
 			//Creo obj cc
 			$cc = new CCClientes;
-			$fechaFc = new \DateTime;
 			
 			$total;
 			if($neto < 0){
@@ -497,21 +497,23 @@ class VentasController extends Controller
 			}
 			
 			$factura->setTotal($total);
-			$factura->setFecha($fechaFc);
-			$factura->setVencimiento($fechaFc);
+			$factura->setFecha($fechaEmision);
+			$factura->setVencimiento($fechaEmision);
 			$factura->setConcepto("BALANCE");
 			$factura->setPtoVta(0);
 			$factura->setFcNro(0);
 			$factura->setCae(0);
-			$factura->setVtoCae($fechaFc);
+			$factura->setVtoCae($fechaEmision);
 			$factura->setRSocial("BALANCE");
 			$factura->setDomicilio("BALANCE");
 			$factura->setCuit(0);
 			$factura->setIvaCond("BALANCE");
-			$factura->setDigitoVerificador(0);
+			$factura->setDigitoVerificador(0);			
+			
 			
 			$cliente = $repoCliente->find($idCliente);
 			$factura->setClienteId($cliente);
+			$factura->setTipoIva($cliente->getIva());
 			
 			
 			$tipo = $repoTipos->findOneByEsBalance(true);
@@ -539,6 +541,7 @@ class VentasController extends Controller
 			);
 			
 		}catch(\Exception $e){
+			throw $e;
 			$response->setContent(json_encode(array("success" => false, "msg" => $e->getMessage())));
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response;

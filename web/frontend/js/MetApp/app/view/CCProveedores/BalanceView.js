@@ -23,6 +23,13 @@ Ext.define('MetApp.view.CCProveedores.BalanceView' ,{
 					},
 					items: [
 						{
+							xtype: 'datefield',
+							itemId: 'fecha',
+							name: 'fecha',
+							fieldLabel: 'Fecha',
+							allowBlank: false
+						},
+						{
 							xtype: 'numberfield',
 							itemId: 'neto',
 							name: 'neto',

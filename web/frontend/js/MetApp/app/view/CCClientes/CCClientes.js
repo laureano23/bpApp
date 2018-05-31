@@ -172,7 +172,7 @@ Ext.define('MetApp.view.CCClientes.CCClientes' ,{
 								itemId: 'eliminar',
 								xtype: 'actioncolumn',
 								renderer: function(val, met, rec){
-									if(rec.data.idCob != 0 || rec.data.tipoCbte == "balance"){
+									if(rec.data.idCob != 0 || rec.data.esBalance == true){
 										this.items[0].iconCls = 'delete';
 									}else{
 										this.disabledAction(rec.index);

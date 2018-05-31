@@ -351,7 +351,7 @@ class CuentaCorrienteController extends Controller
 		try{
 			$neto = $req->request->get('neto');
 			$proveedorId = $req->request->get('proveedorId');
-			
+			$fechaEmision=\DateTime::createFromFormat("d/m/Y", $req->request->get('fecha'));
 						
 			$obs = $req->request->get('observaciones');
 			
@@ -359,14 +359,14 @@ class CuentaCorrienteController extends Controller
 			$proveedor = $repo->find($proveedorId);
 			if($proveedor->getCuentaCerrada() == TRUE) throw new \Exception("El proveedor tiene la cuenta cerrada", 1);			
 			$balance->setFechaCarga(new \DateTime);
-			$balance->setFechaEmision(new \DateTime);
+			$balance->setFechaEmision($fechaEmision);
 			$balance->setEsBalance(true);
 			$balance->setNeto($neto);
 			$balance->setObservaciones($obs);
 			$balance->setSucursal(0);
 			$balance->setNumFc(0);
 			$balance->setProveedorId($proveedor);
-			$balance->setVencimiento(new \DateTime);
+			$balance->setVencimiento($fechaEmision);
 			$balance->setTotalFc($neto);
 			
 			

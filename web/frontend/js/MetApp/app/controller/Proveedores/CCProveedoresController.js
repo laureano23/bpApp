@@ -103,6 +103,7 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 			var values = form.getForm().getValues();
 			var cc = me.getCCProveedores();
 			
+			console.log(values);
 			if(!form.isValid()) return;
 			
 			
@@ -112,7 +113,8 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 				params: {
 					proveedorId: cc.queryById('id').getValue(),
 					neto: values.neto,
-					observacioens: values.observaciones
+					observacioens: values.observaciones,
+					fecha: values.fecha
 				},
 				
 				success: function(resp){
