@@ -423,6 +423,7 @@ class BancosController extends Controller
 					$chequeTerceros = $repoChequeTerceros->find($comp->idChequeTerceros);
 					//SETEAMOS ESTADO DE CHEQUE DE TERCEROS COMO DEPOSITADO
 					$chequeTerceros->setEstado(2);
+					$chequeTerceros->setMovBancoId($detalleMov);
 					$em->persist($chequeTerceros);
 					$detalleMov->setChequeTerceros($chequeTerceros);
 					$detalleMov->setNumComprobante($chequeTerceros->getNumero());
@@ -441,6 +442,7 @@ class BancosController extends Controller
 			$movimiento->setConceptoBancoId($conceptoMov);
 			
 			$em->persist($movimiento);			
+			$em->persist($chequeTerceros);			
 			$em->flush();				
 			
 			$response->setContent(
