@@ -11,9 +11,64 @@ use Mbp\ArticulosBundle\Entity\FormulasRepository;
 use Mbp\ArticulosBundle\Entity\FormulasC;
 use Mbp\ArticulosBundle\Clases\FormulasClass;
 
-
 class Formulas2Controller extends Controller
 {	
+	/*
+	 * 
+	 * */
+	public function exportarFormulasAction()
+	{
+		//set_time_limit(300); // 0 = no limits
+		$em = $this->getDoctrine()->getManager();
+		$repo = $em->getRepository('MbpArticulosBundle:FormulasC');
+		$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
+
+		$sql="select *, CAST(can_art AS DECIMAL(10,6)) from formulasExportacion fe";
+		$stmt = $em->getConnection()->prepare($sql);
+    	$stmt->execute();
+		$res = $stmt->fetchAll();
+		$i=0;
+		foreach ($res as $r) {
+			$artPadre=$repoArt->findOneByCodigo($r['cod_for']);
+			$artHijo=$repoArt->findOneByCodigo($r['cod_art']);
+
+			if(count($artPadre) == 0 || count($artHijo) == 0){
+				continue;
+			}
+
+			$padre=$repo->findOneByIdArt($artPadre);
+			//el art padre ya existe en formulas solo creamos el hijo
+			$hijo=new FormulasC;
+			$hijo->setCantidad($r['can_art']);			
+			$hijo->setUnidad($r['uni_for']);
+			$hijo->setIdArt($artHijo);
+			if($padre){
+				$hijo->setParent($padre);
+			}else{
+				$padre=new FormulasC;
+				$padre->setCantidad(1);
+				$padre->setParent($padre);
+				$padre->setUnidad("");
+				$padre->setIdArt($artPadre);
+				/*if($padre == null){
+					print_r("seteando padre nulo");	
+				}*/
+				$hijo->setParent($padre);
+			}
+			$em->persist($padre);
+			$em->persist($hijo);
+			$em->flush();
+			$i++;
+
+			if($i==400){
+				break;	
+			}
+			
+		}
+		
+		return new Response;
+	}
+
 	/*
 	 * RECIBE ID DE ARTICULO Y TRAE LE FORMULA DEL MISMO SOLO EN NIVEL DE PROFUNDIDAD 1
 	 * */
