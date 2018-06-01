@@ -16,6 +16,7 @@ class ClosureController extends Controller
      */
     public function borrarNodo()
     {
+
         $em = $this->getDoctrine()->getManager();
         $repo=$em->getRepository('MbpTestBundle:FormulasC');
         $repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
@@ -257,6 +258,7 @@ class ClosureController extends Controller
      */
     public function borrarTodo()
     {
+        set_time_limit(0); // 0 = no limits
     	$em = $this->getDoctrine()->getManager();
     	$repo=$em->getRepository('MbpArticulosBundle:FormulasC');
     	$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');

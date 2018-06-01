@@ -13,12 +13,69 @@ use Mbp\ArticulosBundle\Clases\FormulasClass;
 
 class Formulas2Controller extends Controller
 {	
+
 	/*
-	 * 
+	 * script para ver articulos pendientes de formular BORRAR LUEGO
 	 * */
-	public function exportarFormulasAction()
+	public function pendientesDeFormulaAction()
 	{
-		//set_time_limit(300); // 0 = no limits
+		set_time_limit(0); // 0 = no limits
+		$em = $this->getDoctrine()->getManager();
+		$repo = $em->getRepository('MbpArticulosBundle:FormulasC');
+		$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
+
+		
+		$sql="select *, CAST(can_art AS DECIMAL(10,6)) from formulasExportacion fe";
+		$stmt = $em->getConnection()->prepare($sql);
+    	$stmt->execute();
+		$res = $stmt->fetchAll();
+
+		$faltantes=array();
+		foreach ($res as $r) {
+			$art=$repoArt->findOneByCodigo($r['cod_for']);
+
+			$node=$repo->findOneByIdArt($art);
+
+			if($node==null){
+				array_push($faltantes, $r['cod_for']);
+			}
+		}
+
+
+		print_r($faltantes);
+		return new Response;
+	}
+
+	/*
+	 * script para importar acomodar costos, BORRAR LUEGO 
+	 * */
+	public function acomodarCostosAction()
+	{
+		set_time_limit(0); // 0 = no limits
+		$em = $this->getDoctrine()->getManager();
+		$repo = $em->getRepository('MbpArticulosBundle:FormulasC');
+		$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
+
+		$allNodes=$repo->findAll();
+
+		foreach ($allNodes as $node) {
+			$hijos=$repo->childCount($node);
+
+			if($hijos>0){
+				$node->getIdArt()->setCosto(0);
+				$em->persist($node);
+			}
+		}
+
+		$em->flush();
+	}
+
+	/*
+	 * script para importar formulas, BORRAR LUEGO 
+	 * */
+	public function exportarFormulas2Action()
+	{
+		set_time_limit(0); // 0 = no limits
 		$em = $this->getDoctrine()->getManager();
 		$repo = $em->getRepository('MbpArticulosBundle:FormulasC');
 		$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
@@ -27,8 +84,14 @@ class Formulas2Controller extends Controller
 		$stmt = $em->getConnection()->prepare($sql);
     	$stmt->execute();
 		$res = $stmt->fetchAll();
+
+
 		$i=0;
+		$wasBatched=0;
+		$j=0;
 		foreach ($res as $r) {
+
+			$padre=false;
 			$artPadre=$repoArt->findOneByCodigo($r['cod_for']);
 			$artHijo=$repoArt->findOneByCodigo($r['cod_art']);
 
@@ -36,36 +99,53 @@ class Formulas2Controller extends Controller
 				continue;
 			}
 
-			$padre=$repo->findOneByIdArt($artPadre);
-			//el art padre ya existe en formulas solo creamos el hijo
-			$hijo=new FormulasC;
-			$hijo->setCantidad($r['can_art']);			
-			$hijo->setUnidad($r['uni_for']);
-			$hijo->setIdArt($artHijo);
-			if($padre){
-				$hijo->setParent($padre);
-			}else{
-				$padre=new FormulasC;
-				$padre->setCantidad(1);
-				$padre->setParent($padre);
-				$padre->setUnidad("");
-				$padre->setIdArt($artPadre);
-				/*if($padre == null){
-					print_r("seteando padre nulo");	
-				}*/
-				$hijo->setParent($padre);
+			$padres=array();
+			$padre=$repo->findByIdArt($artPadre);
+			$padres = $padre;
+			if($padre==null){
+				$persisted=$em->getUnitOfWork()->getScheduledEntityInsertions();
+				foreach ($persisted as $reg) {
+					if($reg->getIdArt() == $artPadre){
+						array_push($padres, $reg);
+					}
+				}	
 			}
-			$em->persist($padre);
-			$em->persist($hijo);
-			$em->flush();
-			$i++;
 
-			if($i==400){
-				break;	
+			$padre=new FormulasC;
+			$padre->setCantidad(1);
+			$padre->setParent($padre);
+			$padre->setUnidad("");
+			$padre->setIdArt($artPadre);
+
+			array_push($padres, $padre);
+
+			foreach ($padres as $p) {
+				//el art padre ya existe en formulas solo creamos el hijo
+				$hijo=new FormulasC;
+				$hijo->setCantidad($r['can_art']);			
+				$hijo->setUnidad($r['uni_for']);
+				$hijo->setIdArt($artHijo);
+				
+				$hijo->setParent($p);
+				
+				$em->persist($padre);
+				$em->persist($hijo);	
 			}
+			//\Doctrine\Common\Util\Debug::dump($persisted);
 			
+			//exit;
+
+			if($i==500){
+				$em->flush();
+        		$em->clear(); // Detaches all objects from Doctrine!	
+        		$wasBatched=1;
+        		$i=0;
+			}
+			$i++;
+			$j++;
+			//if($j==3000) exit;
 		}
-		
+		$em->flush();
 		return new Response;
 	}
 
@@ -100,8 +180,6 @@ class Formulas2Controller extends Controller
     	$arbolPadre=$repo->findBy(['idArt'=>$artPadreId]);
     	$arbolHijo=$repo->findOneBy(['idArt'=>$data->id, 'level'=>1]);
 
-    	var_dump($data->cant);
-    	exit;
 
     	if($arbolPadre==null && $arbolHijo==null){
     		$this->insertPadreNotExistHijoNotExist($artPadreId, $artHijoId, $data->cant);	
@@ -236,9 +314,7 @@ class Formulas2Controller extends Controller
         foreach ($padres as $r) {
             $childrens = $repo->children($r);
             foreach ($childrens as $child) {
-            	print_r($child->getIdArt()->getCodigo()." and ".$data->codigo."</br>");
                 if($child->getIdArt()->getCodigo() == $data->codigo){
-                	print_r("entramos a borrar");
                     $em->remove($child);
                 }    
             }
@@ -277,14 +353,14 @@ class Formulas2Controller extends Controller
 	 * RECIBE EL ID DE UN ARTICULO Y DEVULEVE EL ID DE SU FORMULA
 	 * */
 	public function formulasIdNodoAction(Request $req)
-	{
+	{	
 		$em = $this->getDoctrine()->getManager();
 		$repo = $em->getRepository('MbpArticulosBundle:FormulasC');
 		$repoArt = $em->getRepository('MbpArticulosBundle:Articulos');
 		
 		$idArticulo = $req->request->get('idArt');
 		
-		$node=$repo->findOneBy(['idArt'=>$idArticulo, 'level'=>1]);
+		$node=$repo->findOneBy(['idArt'=>$idArticulo]);
 		
 		$resp;
 		if(empty($node)){

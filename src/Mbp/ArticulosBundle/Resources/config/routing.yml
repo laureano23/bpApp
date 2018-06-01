@@ -53,9 +53,21 @@ mbp_articulos_actualizar_base:
       expose: true
 
 #borrar luego de exportar
-mbp_formulas_exportarFormulas:
-    path:     /exportarFormulas
-    defaults: { _controller: MbpArticulosBundle:Formulas2:exportarFormulas }
+mbp_formulas_exportarFormulas2:
+    path:     /exportarFormulas2
+    defaults: { _controller: MbpArticulosBundle:Formulas2:exportarFormulas2 }
+    options:
+      expose: true
+
+mbp_formulas_acomodarCostos:
+    path:     /acomodarCostos
+    defaults: { _controller: MbpArticulosBundle:Formulas2:acomodarCostos }
+    options:
+      expose: true
+
+mbp_formulas_pendientesDeFormula:
+    path:     /pendientesDeFormula
+    defaults: { _controller: MbpArticulosBundle:Formulas2:pendientesDeFormula }
     options:
       expose: true
 
