@@ -75,12 +75,13 @@ class Formulas2Controller extends Controller
 	 * */
 	public function exportarFormulas2Action()
 	{
-		set_time_limit(0); // 0 = no limits
+		$time_start = microtime(true); 
+		set_time_limit(300); // 0 = no limits
 		$em = $this->getDoctrine()->getManager();
 		$repo = $em->getRepository('MbpArticulosBundle:FormulasC');
 		$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
 
-		$sql="select *, CAST(can_art AS DECIMAL(10,6)) from formulasExportacion fe";
+		$sql="select *, CAST(can_art AS DECIMAL(10,6)) from formulasExportacion3 fe";
 		$stmt = $em->getConnection()->prepare($sql);
     	$stmt->execute();
 		$res = $stmt->fetchAll();
@@ -101,23 +102,26 @@ class Formulas2Controller extends Controller
 
 			$padres=array();
 			$padre=$repo->findByIdArt($artPadre);
+
 			$padres = $padre;
-			if($padre==null){
-				$persisted=$em->getUnitOfWork()->getScheduledEntityInsertions();
-				foreach ($persisted as $reg) {
-					if($reg->getIdArt() == $artPadre){
-						array_push($padres, $reg);
-					}
-				}	
+			//if($padre==null){
+			$persisted=$em->getUnitOfWork()->getScheduledEntityInsertions();
+			foreach ($persisted as $reg) {
+				if($reg->getIdArt() == $artPadre){
+					array_push($padres, $reg);
+				}
+			}	
+			//}
+
+			if(count($padres)==0){
+				$padre=new FormulasC;
+				$padre->setCantidad(1);
+				$padre->setParent($padre);
+				$padre->setUnidad("");
+				$padre->setIdArt($artPadre);
+				array_push($padres, $padre);	
 			}
-
-			$padre=new FormulasC;
-			$padre->setCantidad(1);
-			$padre->setParent($padre);
-			$padre->setUnidad("");
-			$padre->setIdArt($artPadre);
-
-			array_push($padres, $padre);
+			
 
 			foreach ($padres as $p) {
 				//el art padre ya existe en formulas solo creamos el hijo
@@ -128,14 +132,14 @@ class Formulas2Controller extends Controller
 				
 				$hijo->setParent($p);
 				
-				$em->persist($padre);
+				$em->persist($p);
 				$em->persist($hijo);	
 			}
 			//\Doctrine\Common\Util\Debug::dump($persisted);
 			
 			//exit;
 
-			if($i==500){
+			if($i==25){
 				$em->flush();
         		$em->clear(); // Detaches all objects from Doctrine!	
         		$wasBatched=1;
@@ -143,9 +147,12 @@ class Formulas2Controller extends Controller
 			}
 			$i++;
 			$j++;
-			//if($j==3000) exit;
+			//if($j==2000) break;
 		}
 		$em->flush();
+		$time_end = microtime(true);
+		$execution_time = ($time_end - $time_start);
+		echo '<b>Total Execution Time:</b> '.$execution_time.' sec';
 		return new Response;
 	}
 
