@@ -149,6 +149,7 @@ class VentasController extends Controller
 				$detalleFc->setPrecio($items->precio);
 				$articulo = $repoArticulo->findByCodigo($items->codigo);
 				$detalleFc->setArticuloId($articulo[0]);
+				$detalleFc->setIvaGrabado($items->ivaGrabado);
 				
 				//BUSCO EL REMITO
 				$repoRemito = $em->getRepository('MbpArticulosBundle:RemitosClientesDetalles');
@@ -162,25 +163,32 @@ class VentasController extends Controller
 				$em->persist($detalleFc);
 				
 				//NETO GRABADO
-				$netoGrabado += $items->cantidad * $items->precio;	
-								
+				if($items->ivaGrabado){
+					$netoGrabado += $items->cantidad * $items->precio;		
+				}else{
+					$netoNoGrabado+=$items->cantidad * $items->precio;		
+				}			
 			}
 			
 			//CALCULO LOS DESCUENTOS ANTES DE CALCULAR IMPUESTOS
-			$descuentoTotal = $netoGrabado * $descuento / 100; 
-			
-			$netoGrabado -= $descuentoTotal;
+			$descuentoTotal = ($netoGrabado+$netoNoGrabado) * $descuento / 100; 
+			$descuentoNetoGrabado=$netoGrabado * $descuento / 100; 
+			$descuentoNetoNoGrabado=$netoNoGrabado * $descuento / 100; 
+
+			$netoGrabado -= $descuentoNetoGrabado;
+			$netoNoGrabado -= $descuentoNetoNoGrabado;
 			
 			$factura->setDtoTotal($descuentoTotal);
 			
 			//SIN IVA PARA EJ NOTA DE DEBITO DE CHEQUES RECHAZADOS
-			if($decodefcData->sinIva == "on"){
+			$ivaLiquidado=$netoGrabado*$parametrosFinanzas->getIva();
+			/*if($decodefcData->sinIva == "on"){
 				$ivaLiquidado = 0;
 				$netoNoGrabado = $netoGrabado;
 				$netoGrabado = 0;
 			}else{
 				$ivaLiquidado = $netoGrabado * $parametrosFinanzas->getIva();	
-			}
+			}*/
 						
 			$ultimoComp = $faele->ultimoNroComp($cbteTipo);
 			

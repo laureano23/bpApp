@@ -9,6 +9,7 @@ Ext.define('MetApp.model.Finanzas.GrillaFacturacionModel',{
 		{ name: 'costo', type: 'float' },
 		{ name: 'precio', type: 'float' },
 		{ name: 'parcial', type: 'float' },
-		{ name: 'remitoNum', type: 'int' }
+		{ name: 'remitoNum', type: 'int' },
+		{ name: 'ivaGrabado', type: 'bool', defaultValue: true },
 	]
 });

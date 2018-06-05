@@ -313,6 +313,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			var fieldSub = win.queryById('subTotal');
 			var fieldIva = win.queryById('iva');
 			var fieldTotal = win.queryById('total');
+			var totalIva=0;
 			if(store.data.items.length == 0){
 				fieldSub.setValue(0);
 				fieldIva.setValue(0);
@@ -323,6 +324,9 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 					var data = rec.getData();									
 					subTotal = data.parcial + aux;
 					aux = subTotal;
+					if(rec.data.ivaGrabado){
+						totalIva+=MetApp.resources.ux.ParametersSingleton.getIva()*rec.data.cantidad * rec.data.precio;
+					}
 				});
 				
 				//restamos el descuento
@@ -330,7 +334,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 				subTotal -= subTotal * descuento / 100;
 				
 				fieldSub.setValue(subTotal);
-				fieldIva.setValue(MetApp.resources.ux.ParametersSingleton.getIva() * fieldSub.getValue())
+				fieldIva.setValue(totalIva);
 				fieldTotal.setValue(fieldSub.getValue() + fieldIva.getValue());
 			}
 		});	

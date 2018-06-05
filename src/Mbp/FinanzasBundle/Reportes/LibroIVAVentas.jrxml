@@ -13,9 +13,7 @@
 		<![CDATA[SELECT
      CASE WHEN Facturas.`moneda`=1 THEN Facturas.`perIIBB`*Facturas.`tipoCambio` ELSE Facturas.`perIIBB` END AS Facturas_perIIBB,
      CASE WHEN Facturas.`moneda`=1 THEN Facturas.`iva21`*Facturas.`tipoCambio` ELSE Facturas.`iva21` END AS Facturas_iva21,
-     CASE WHEN Facturas.`moneda`=1
-	THEN Facturas.`total` * Facturas.`tipoCambio`
-	ELSE Facturas.`total` END AS Facturas_total,
+     CASE WHEN Facturas.`moneda`=1 THEN Facturas.`total`*Facturas.`tipoCambio` ELSE Facturas.`total` END AS Facturas_total,
      cliente.`idCliente` AS cliente_idCliente,
      cliente.`rsocial` AS cliente_rsocial,
      Facturas.`id` AS Facturas_id,
@@ -39,14 +37,43 @@
      TipoComprobante.`descripcion` AS TipoComprobante_descripcion,
      TipoComprobante.`subTipoA` AS TipoComprobante_subTipoA,
      TipoComprobante.`subTipoB` AS TipoComprobante_subTipoB,
-     TipoComprobante.`subTipoE` AS TipoComprobante_subTipoE
+     TipoComprobante.`subTipoE` AS TipoComprobante_subTipoE,
+     Facturas.`tipoIva` AS Facturas_tipoIva,
+     PosicionIVA.`id` AS PosicionIVA_id,
+     PosicionIVA.`posicion` AS PosicionIVA_posicion,
+     PosicionIVA.`esResponsableInscripto` AS PosicionIVA_esResponsableInscripto,
+     PosicionIVA.`esResponsableNoInscripto` AS PosicionIVA_esResponsableNoInscripto,
+     PosicionIVA.`esExento` AS PosicionIVA_esExento,
+     PosicionIVA.`esResponsableMonotributo` AS PosicionIVA_esResponsableMonotributo,
+     PosicionIVA.`esConsumidorFinal` AS PosicionIVA_esConsumidorFinal,
+     PosicionIVA.`esExportacion` AS PosicionIVA_esExportacion,
+     FacturaDetalle.`id` AS FacturaDetalle_id,
+     FacturaDetalle.`descripcion` AS FacturaDetalle_descripcion,
+     FacturaDetalle.`cantidad` AS FacturaDetalle_cantidad,
+     FacturaDetalle.`precio` AS FacturaDetalle_precio,
+     CASE WHEN FacturaDetalle.`ivaGrabado`= 1 THEN
+	 SUM(FacturaDetalle.`cantidad` * FacturaDetalle.`precio`)
+	 ELSE 0 END AS netoGrabado,
+     CASE WHEN FacturaDetalle.`ivaGrabado`= 0 THEN
+	 SUM(FacturaDetalle.`cantidad` * FacturaDetalle.`precio`)
+	 ELSE 0 END AS netoNoGrabado,
+     FacturaDetalle.`articuloId` AS FacturaDetalle_articuloId,
+     FacturaDetalle.`remitoId` AS FacturaDetalle_remitoId,
+     FacturaDetalle.`ivaGrabado` AS FacturaDetalle_ivaGrabado,
+     factura_detallesFacturas.`factura_id` AS factura_detallesFacturas_factura_id,
+     factura_detallesFacturas.`facturadetalle_id` AS factura_detallesFacturas_facturadetalle_id
 FROM
      `cliente` cliente INNER JOIN `Facturas` Facturas ON cliente.`idCliente` = Facturas.`clienteId`
      INNER JOIN `TipoComprobante` TipoComprobante ON Facturas.`tipoId` = TipoComprobante.`id`
+     INNER JOIN `PosicionIVA` PosicionIVA ON Facturas.`tipoIva` = PosicionIVA.`id`
+     INNER JOIN `factura_detallesFacturas` factura_detallesFacturas ON Facturas.`id` = factura_detallesFacturas.`factura_id`
+     RIGHT JOIN `FacturaDetalle` FacturaDetalle ON factura_detallesFacturas.`facturadetalle_id` = FacturaDetalle.`id`
 WHERE
      Facturas.`fecha` BETWEEN $P{fechaDesde} AND $P{fechaHasta}
-AND TipoComprobante.`esBalance` = 0
-ORDER BY Facturas.`fecha` ASC]]>
+ AND TipoComprobante.`esBalance` = 0
+GROUP BY Facturas.`id`
+ORDER BY
+     Facturas.`fecha` ASC ]]>
 	</queryString>
 	<field name="Facturas_perIIBB" class="java.math.BigDecimal"/>
 	<field name="Facturas_iva21" class="java.math.BigDecimal"/>
@@ -75,6 +102,28 @@ ORDER BY Facturas.`fecha` ASC]]>
 	<field name="TipoComprobante_subTipoA" class="java.lang.Boolean"/>
 	<field name="TipoComprobante_subTipoB" class="java.lang.Boolean"/>
 	<field name="TipoComprobante_subTipoE" class="java.lang.Boolean"/>
+	<field name="Facturas_tipoIva" class="java.lang.Integer"/>
+	<field name="PosicionIVA_id" class="java.lang.Integer"/>
+	<field name="PosicionIVA_posicion" class="java.lang.String"/>
+	<field name="PosicionIVA_esResponsableInscripto" class="java.lang.Boolean"/>
+	<field name="PosicionIVA_esResponsableNoInscripto" class="java.lang.Boolean"/>
+	<field name="PosicionIVA_esExento" class="java.lang.Boolean"/>
+	<field name="PosicionIVA_esResponsableMonotributo" class="java.lang.Boolean"/>
+	<field name="PosicionIVA_esConsumidorFinal" class="java.lang.Boolean"/>
+	<field name="PosicionIVA_esExportacion" class="java.lang.Boolean"/>
+	<field name="FacturaDetalle_id" class="java.lang.Integer"/>
+	<field name="FacturaDetalle_descripcion" class="java.lang.String"/>
+	<field name="FacturaDetalle_cantidad" class="java.math.BigDecimal"/>
+	<field name="FacturaDetalle_precio" class="java.math.BigDecimal"/>
+	<field name="netoGrabado" class="java.math.BigDecimal"/>
+	<field name="netoNoGrabado" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="FacturaDetalle_articuloId" class="java.lang.Integer"/>
+	<field name="FacturaDetalle_remitoId" class="java.lang.Integer"/>
+	<field name="FacturaDetalle_ivaGrabado" class="java.lang.Boolean"/>
+	<field name="factura_detallesFacturas_factura_id" class="java.lang.Integer"/>
+	<field name="factura_detallesFacturas_facturadetalle_id" class="java.lang.Integer"/>
 	<variable name="total" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == true ?
 $F{Facturas_total}*-1:
@@ -283,12 +332,13 @@ $F{TipoComprobante_esNotaDebito} && $F{TipoComprobante_subTipoE} ? "NDE" : ""]]>
 				<reportElement x="444" y="0" width="83" height="20" uuid="7870462e-fbe8-4d4d-9cc2-bf3e9e021a25"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{Facturas_total}-$F{Facturas_iva21}-$F{Facturas_perIIBB}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{netoGrabado}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="527" y="0" width="65" height="20" uuid="4e650972-1270-41a3-91d0-ff9c9c222559"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{netoNoGrabado}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="592" y="0" width="60" height="20" uuid="354ab5c2-3085-44a7-abf7-1890d8dfc38d"/>

@@ -176,6 +176,7 @@ Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 							},
 							{ text: 'Parcial', dataIndex: 'parcial' },							
 							{ text: 'remito Id', dataIndex: 'remitoNum', hidden: false },
+							{ xtype: 'checkcolumn', text: 'Aplica IVA', dataIndex: 'ivaGrabado' },
 						]
 					},
 				},

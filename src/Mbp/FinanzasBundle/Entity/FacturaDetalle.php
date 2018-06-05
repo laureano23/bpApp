@@ -54,6 +54,13 @@ class FacturaDetalle
 	 */
 	private $remitoDetalleId;
 
+     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="ivaGrabado", type="boolean", nullable=false)
+     */
+    private $ivaGrabado=1;
+
 
     /**
      * Get id
@@ -207,5 +214,29 @@ class FacturaDetalle
     public function getRemitoDetalleId()
     {
         return $this->remitoDetalleId;
+    }
+
+    /**
+     * Set ivaGrabado
+     *
+     * @param boolean $ivaGrabado
+     *
+     * @return FacturaDetalle
+     */
+    public function setIvaGrabado($ivaGrabado)
+    {
+        $this->ivaGrabado = $ivaGrabado;
+
+        return $this;
+    }
+
+    /**
+     * Get ivaGrabado
+     *
+     * @return boolean
+     */
+    public function getIvaGrabado()
+    {
+        return $this->ivaGrabado;
     }
 }
