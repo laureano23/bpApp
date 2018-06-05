@@ -73,7 +73,7 @@ class Formulas2Controller extends Controller
 	/*
 	 * script para importar formulas, BORRAR LUEGO 
 	 * */
-	public function exportarFormulas2Action()
+	public function exportarFormulas3Action()
 	{
 		$time_start = microtime(true); 
 		set_time_limit(300); // 0 = no limits
@@ -81,78 +81,74 @@ class Formulas2Controller extends Controller
 		$repo = $em->getRepository('MbpArticulosBundle:FormulasC');
 		$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
 
-		$sql="select *, CAST(can_art AS DECIMAL(10,6)) from formulasExportacion3 fe";
+		$res=$repo->createQueryBuilder('f')
+			->select('')
+			->getQuery()
+			->getArrayResult();
+
+		print_r(count($res));
+
+		return new Response;
+	}
+
+	/*
+	 * script para importar formulas, BORRAR LUEGO 
+	 * */
+	public function exportarFormulas2Action()
+	{
+		
+		set_time_limit(0); // 0 = no limits
+		$em = $this->getDoctrine()->getManager();
+		$repo = $em->getRepository('MbpArticulosBundle:FormulasC');
+		$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
+
+		$sql="select *, CAST(can_art AS DECIMAL(10,6)) from formulasExportacion fe";
 		$stmt = $em->getConnection()->prepare($sql);
     	$stmt->execute();
 		$res = $stmt->fetchAll();
 
-
 		$i=0;
-		$wasBatched=0;
-		$j=0;
+		$factor=1;
+		$primerVuelta=false;
+		$em->getConnection()->getConfiguration()->setSQLLogger(null);
 		foreach ($res as $r) {
+			$time_start = microtime(true); 
 
-			$padre=false;
-			$artPadre=$repoArt->findOneByCodigo($r['cod_for']);
-			$artHijo=$repoArt->findOneByCodigo($r['cod_art']);
 
-			if(count($artPadre) == 0 || count($artHijo) == 0){
-				continue;
-			}
-
-			$padres=array();
-			$padre=$repo->findByIdArt($artPadre);
-
-			$padres = $padre;
-			//if($padre==null){
-			$persisted=$em->getUnitOfWork()->getScheduledEntityInsertions();
-			foreach ($persisted as $reg) {
-				if($reg->getIdArt() == $artPadre){
-					array_push($padres, $reg);
-				}
-			}	
-			//}
-
-			if(count($padres)==0){
-				$padre=new FormulasC;
-				$padre->setCantidad(1);
-				$padre->setParent($padre);
-				$padre->setUnidad("");
-				$padre->setIdArt($artPadre);
-				array_push($padres, $padre);	
-			}
-			
-
-			foreach ($padres as $p) {
-				//el art padre ya existe en formulas solo creamos el hijo
-				$hijo=new FormulasC;
-				$hijo->setCantidad($r['can_art']);			
-				$hijo->setUnidad($r['uni_for']);
-				$hijo->setIdArt($artHijo);
-				
-				$hijo->setParent($p);
-				
-				$em->persist($p);
-				$em->persist($hijo);	
-			}
-			//\Doctrine\Common\Util\Debug::dump($persisted);
-			
-			//exit;
-
-			if($i==25){
-				$em->flush();
-        		$em->clear(); // Detaches all objects from Doctrine!	
-        		$wasBatched=1;
-        		$i=0;
-			}
 			$i++;
-			$j++;
-			//if($j==2000) break;
+			$limiteInferior=$factor*500-500;
+			if($i<=$limiteInferior && $primerVuelta) continue;
+
+
+			$articuloHijo=$repoArt->findOneByCodigo($r['cod_art']);
+			$articuloPadre=$repoArt->findOneByCodigo($r['cod_for']);
+
+			if(empty($articuloHijo) || empty($articuloPadre)) continue;
+
+			$request = Request::create(
+			    '/articulos/formulasInsertNodo',
+			    'POST',
+			    array('art' => $articuloPadre->getId(), 'data'=>array('id'=>$articuloHijo->getId(), 'cant' => $r['can_art']))
+			);
+
+			$this->formulasInsertNodoAction($request);
+			$limite=$factor*500;
+	    	if($i==$limite){
+	    		$factor++;
+	    		$time_end = microtime(true);
+				$execution_time = ($time_end - $time_start);
+				echo '<b>Total Execution Time:</b> '.$execution_time.' sec</br>';
+				$primerVuelta=true;
+				$em->clear();
+				sleep(3);
+	    	} 
+	    	//if($factor==3) exit;
 		}
-		$em->flush();
+		//$em->flush();
+
 		$time_end = microtime(true);
 		$execution_time = ($time_end - $time_start);
-		echo '<b>Total Execution Time:</b> '.$execution_time.' sec';
+		echo '<b>Total Execution Time:</b> '.$execution_time.' sec</br>';
 		return new Response;
 	}
 
@@ -178,26 +174,28 @@ class Formulas2Controller extends Controller
 	public function formulasInsertNodoAction(Request $req)
 	{
 		$em = $this->getDoctrine()->getManager();
-		$data = json_decode($req->request->get('data'));
+		//$data = json_decode($req->request->get('data'));
+		$data = $req->request->get('data');
     	$repo = $em->getRepository('MbpArticulosBundle:FormulasC');
     	$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
     	$artPadreId=$req->request->get('art');
-    	$artHijoId=$data->id;
+    	//$artHijoId=$data->id;
+    	$artHijoId=$data['id'];
 
     	$arbolPadre=$repo->findBy(['idArt'=>$artPadreId]);
-    	$arbolHijo=$repo->findOneBy(['idArt'=>$data->id, 'level'=>1]);
+    	$arbolHijo=$repo->findOneBy(['idArt'=>$artHijoId, 'level'=>1]);
 
 
     	if($arbolPadre==null && $arbolHijo==null){
-    		$this->insertPadreNotExistHijoNotExist($artPadreId, $artHijoId, $data->cant);	
+    		$this->insertPadreNotExistHijoNotExist($artPadreId, $artHijoId, $data['cant']);	
     	}
 
     	if($arbolPadre!=null && $arbolHijo==null){
-    		$this->insertPadreExistHijoNotExist($arbolPadre, $artHijoId, $data->cant);	
+    		$this->insertPadreExistHijoNotExist($arbolPadre, $artHijoId, $data['cant']);	
     	}
 
     	if($arbolPadre==null && $arbolHijo!=null){
-    		$this->insertPadreNotExistHijoExist($artPadreId, $arbolHijo, $data->cant);	
+    		$this->insertPadreNotExistHijoExist($artPadreId, $arbolHijo, $data['cant']);	
     	}
 
     	if($arbolPadre!=null && $arbolHijo!=null){
