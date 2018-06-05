@@ -53,6 +53,12 @@ mbp_articulos_actualizar_base:
       expose: true
 
 #borrar luego de exportar
+mbp_formulas_exportarFormulas3:
+    path:     /exportarFormulas3
+    defaults: { _controller: MbpArticulosBundle:Formulas2:exportarFormulas3 }
+    options:
+      expose: true
+
 mbp_formulas_exportarFormulas2:
     path:     /exportarFormulas2
     defaults: { _controller: MbpArticulosBundle:Formulas2:exportarFormulas2 }
