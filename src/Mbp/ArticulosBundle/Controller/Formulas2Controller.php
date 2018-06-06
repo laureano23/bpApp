@@ -130,8 +130,8 @@ class Formulas2Controller extends Controller
     	$artHijoId=$data['id'];
 
     	$arbolPadre=$repo->findBy(['idArt'=>$artPadreId]);
-    	$arbolHijo=$repo->findOneBy(['idArt'=>$artHijoId, 'level'=>1]);
-
+    	//$arbolHijo=$repo->findOneBy(['idArt'=>$artHijoId, 'level'=>1]);
+    	$arbolHijo=$repo->findOneBy(['idArt'=>$artHijoId]);	
 
     	if($arbolPadre==null && $arbolHijo==null){
     		$this->insertPadreNotExistHijoNotExist($artPadreId, $artHijoId, $data['cant']);	
