@@ -15,38 +15,6 @@ class Formulas2Controller extends Controller
 {	
 
 	/*
-	 * script para ver articulos pendientes de formular BORRAR LUEGO
-	 * */
-	public function pendientesDeFormulaAction()
-	{
-		set_time_limit(0); // 0 = no limits
-		$em = $this->getDoctrine()->getManager();
-		$repo = $em->getRepository('MbpArticulosBundle:FormulasC');
-		$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
-
-		
-		$sql="select *, CAST(can_art AS DECIMAL(10,6)) from formulasExportacion fe";
-		$stmt = $em->getConnection()->prepare($sql);
-    	$stmt->execute();
-		$res = $stmt->fetchAll();
-
-		$faltantes=array();
-		foreach ($res as $r) {
-			$art=$repoArt->findOneByCodigo($r['cod_for']);
-
-			$node=$repo->findOneByIdArt($art);
-
-			if($node==null){
-				array_push($faltantes, $r['cod_for']);
-			}
-		}
-
-
-		print_r($faltantes);
-		return new Response;
-	}
-
-	/*
 	 * script para importar acomodar costos, BORRAR LUEGO 
 	 * */
 	public function acomodarCostosAction()
@@ -70,26 +38,6 @@ class Formulas2Controller extends Controller
 		$em->flush();
 	}
 
-	/*
-	 * script para importar formulas, BORRAR LUEGO 
-	 * */
-	public function exportarFormulas3Action()
-	{
-		$time_start = microtime(true); 
-		set_time_limit(300); // 0 = no limits
-		$em = $this->getDoctrine()->getManager();
-		$repo = $em->getRepository('MbpArticulosBundle:FormulasC');
-		$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
-
-		$res=$repo->createQueryBuilder('f')
-			->select('')
-			->getQuery()
-			->getArrayResult();
-
-		print_r(count($res));
-
-		return new Response;
-	}
 
 	/*
 	 * script para importar formulas, BORRAR LUEGO 
@@ -174,28 +122,26 @@ class Formulas2Controller extends Controller
 	public function formulasInsertNodoAction(Request $req)
 	{
 		$em = $this->getDoctrine()->getManager();
-		//$data = json_decode($req->request->get('data'));
-		$data = $req->request->get('data');
+		$data = json_decode($req->request->get('data'));
     	$repo = $em->getRepository('MbpArticulosBundle:FormulasC');
     	$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
     	$artPadreId=$req->request->get('art');
-    	//$artHijoId=$data->id;
-    	$artHijoId=$data['id'];
+    	$artHijoId=$data->id;
 
     	$arbolPadre=$repo->findBy(['idArt'=>$artPadreId]);
     	$arbolHijo=$repo->findOneBy(['idArt'=>$artHijoId, 'level'=>1]);
 
 
     	if($arbolPadre==null && $arbolHijo==null){
-    		$this->insertPadreNotExistHijoNotExist($artPadreId, $artHijoId, $data['cant']);	
+    		$this->insertPadreNotExistHijoNotExist($artPadreId, $artHijoId, $data->cant);	
     	}
 
     	if($arbolPadre!=null && $arbolHijo==null){
-    		$this->insertPadreExistHijoNotExist($arbolPadre, $artHijoId, $data['cant']);	
+    		$this->insertPadreExistHijoNotExist($arbolPadre, $artHijoId, $data->cant);	
     	}
 
     	if($arbolPadre==null && $arbolHijo!=null){
-    		$this->insertPadreNotExistHijoExist($artPadreId, $arbolHijo, $data['cant']);	
+    		$this->insertPadreNotExistHijoExist($artPadreId, $arbolHijo, $data->cant);	
     	}
 
     	if($arbolPadre!=null && $arbolHijo!=null){
@@ -385,7 +331,7 @@ class Formulas2Controller extends Controller
 	 /**
      * @Route("/closure/borrarTodo")
      */
-    public function borrarTodo()
+    private function borrarTodo()
     {
     	$em = $this->getDoctrine()->getManager();
     	$repo=$em->getRepository('MbpArticulosBundle:FormulasC');
