@@ -96,7 +96,7 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 				$resp[$i]['concepto'] = "FACTURA N° ".$rec->getfcNro();
 				$resp[$i]['numFc'] = $rec->getfcNro();
 				$resp[$i]['vencimiento'] = $rec->getvencimiento()->format('d/m/Y');
-				$resp[$i]['haber'] = $rec->getTotal();								
+				$resp[$i]['haber'] = $rec->getTotal()*$rec->getTipoCambio();								
 				$resp[$i]['pendiente'] = 0;
 				$i++;
 			}
