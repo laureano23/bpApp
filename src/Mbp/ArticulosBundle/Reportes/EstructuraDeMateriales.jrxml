@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EstructuraDeMateriales" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7c719db6-fefe-4fcb-914a-8c49a59a37f5">
-	<property name="ireport.zoom" value="1.6105100000000157"/>
-	<property name="ireport.x" value="444"/>
+	<property name="ireport.zoom" value="0.8467108950806659"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Prof1" mode="Opaque" forecolor="#000000" backcolor="#FFFFFF" fontSize="8" isItalic="false" isUnderline="false">
 		<conditionalStyle>
@@ -15,81 +15,40 @@
 	<parameter name="rutaLogo" class="java.lang.String"/>
 	<parameter name="tc" class="java.lang.Float"/>
 	<queryString>
-		<![CDATA[SELECT *
-FROM
-(SELECT 	node.id,
-	node.lft,
-	node.rgt,
-	node.cant,
-	(COUNT(parent.id) - (sub_tree.depth + 1)) AS depth,
-	articulos.descripcion,
-	articulos.codigo,
-	articulos.moneda,
-	articulos.costo as costo
-	FROM `articulos` articulos INNER JOIN `Formulas` node ON articulos.`idArticulos` = node.`idArt`,
-        Formulas AS parent,
-        Formulas AS sub_parent,
-        (
-			SELECT node.id, (COUNT(parent.id) - 1) AS depth
-			FROM Formulas AS node,
-			Formulas AS parent
-			WHERE node.lft BETWEEN parent.lft AND parent.rgt
-			AND node.id = $P{idNodo}
-			GROUP BY node.id
-			ORDER BY node.lft
-        )AS sub_tree
-WHERE node.lft BETWEEN parent.lft AND parent.rgt
-        AND node.lft BETWEEN sub_parent.lft AND sub_parent.rgt
-        AND sub_parent.id = sub_tree.id
-GROUP BY node.id
-ORDER BY node.lft) AS x
-
-INNER JOIN
-
-(SELECT 	node.id,
-	SUM(
-		CASE
-			WHEN articulos.moneda = 0
-				THEN articulos.costo * node.cant
-			ELSE articulos.costo * node.cant * $P{tc}
-			END) AS sumCosto,
-	SUM(
-		CASE
-			WHEN articulos.moneda = 0
-				THEN articulos.costo * node.cant
-			ELSE articulos.costo * node.cant * $P{tc}
-			END) * parent.cant AS sumCostoPadre
-	FROM `articulos` articulos INNER JOIN `Formulas` node ON articulos.`idArticulos` = node.`idArt`,
-        Formulas AS parent,
-        Formulas AS sub_parent,
-        (
-			SELECT node.id, (COUNT(parent.id) - 1) AS depth
-			FROM Formulas AS node,
-			Formulas AS parent
-			WHERE node.lft BETWEEN parent.lft AND parent.rgt
-			AND node.id = $P{idNodo}
-			GROUP BY node.id
-			ORDER BY node.lft
-        )AS sub_tree
-WHERE node.lft BETWEEN parent.lft AND parent.rgt
-        AND node.lft BETWEEN sub_parent.lft AND sub_parent.rgt
-        AND sub_parent.id = sub_tree.id
-GROUP BY parent.id
-ORDER BY node.lft) AS y ON x.id = y.id]]>
+		<![CDATA[SELECT
+	node.id,
+	node.cantidad as cant,
+	node.level,
+	art.descripcion,
+	art.codigo,
+	art.moneda,
+	art.costo,
+	node.unidad,
+	sum(
+		case when art.moneda=0
+		then art.costo*node.cantidad
+		else art.costo*node.cantidad*$P{tc} end
+	) as sumCosto,
+	art.costo,
+	a.depthP,
+	p.depth
+from
+	(select *, c.descendant anterior, c.depth depthP
+	from FormulasClosure c
+	where c.ancestor = $P{idNodo}) as a,
+FormulasClosure p, FormulasC node, articulos art
+where p.ancestor = a.anterior
+and p.descendant = node.id
+and node.idArt = art.idArticulos
+group by a.anterior]]>
 	</queryString>
 	<field name="id" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="lft" class="java.lang.Integer">
+	<field name="cant" class="java.math.BigDecimal"/>
+	<field name="level" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="rgt" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="cant" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="depth" class="java.lang.Long"/>
 	<field name="descripcion" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -102,8 +61,14 @@ ORDER BY node.lft) AS y ON x.id = y.id]]>
 	<field name="costo" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="unidad" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="sumCosto" class="java.lang.Double"/>
-	<field name="sumCostoPadre" class="java.lang.Double"/>
+	<field name="depthP" class="java.lang.Integer"/>
+	<field name="depth" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<variable name="sub_total" class="java.lang.Float" resetType="Group" resetGroup="sub_rep" calculation="Sum">
 		<variableExpression><![CDATA[$F{costo}]]></variableExpression>
 	</variable>
@@ -111,10 +76,9 @@ ORDER BY node.lft) AS y ON x.id = y.id]]>
 		<variableExpression><![CDATA[$F{depth} == 1 ? 1 : 0]]></variableExpression>
 	</variable>
 	<variable name="total" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{depth} == 1 ?
-$F{moneda} == true ? $V{COSTO_UNITARIO} * $P{tc} *$F{cant}: $V{COSTO_UNITARIO} *$F{cant}
-:0
-]]></variableExpression>
+		<variableExpression><![CDATA[$F{depth} == 0 ?
+$F{sumCosto}
+:0]]></variableExpression>
 	</variable>
 	<variable name="COSTO_UNITARIO" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$F{costo} == 0 ? $F{sumCosto} : $F{costo}]]></variableExpression>
@@ -133,7 +97,7 @@ $V{COSTO_UNITARIO} *$F{cant}]]></variableExpression>
 		<band height="79" splitType="Stretch">
 			<frame>
 				<reportElement mode="Opaque" x="0" y="1" width="700" height="78" backcolor="#006699" uuid="b4bc924e-59b0-48cc-bb39-57ad983f81f3"/>
-				<textField evaluationTime="Report" pattern="U$D #,##0.00" isBlankWhenNull="false">
+				<textField evaluationTime="Auto" pattern="U$D #,##0.00" isBlankWhenNull="false">
 					<reportElement x="442" y="59" width="92" height="16" forecolor="#FFFFFF" uuid="bc2074c1-1695-4b19-af60-f67f61e25f3c"/>
 					<box>
 						<bottomPen lineWidth="0.0"/>
@@ -141,7 +105,7 @@ $V{COSTO_UNITARIO} *$F{cant}]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="10" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{total} / $P{tc}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{sumCosto} / $P{tc}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="348" y="59" width="94" height="16" forecolor="#FFFFFF" uuid="19841480-9c22-44fb-a2b8-fd765b4fad08"/>
@@ -197,17 +161,15 @@ $V{COSTO_UNITARIO} *$F{cant}]]></variableExpression>
 				</textElement>
 				<text><![CDATA[Costo ($):]]></text>
 			</staticText>
-			<textField evaluationTime="Report" pattern="¤ #,##0.00" isBlankWhenNull="false">
-				<reportElement x="442" y="28" width="92" height="16" forecolor="#FFFFFF" uuid="e4f48c68-aeef-4443-960c-a6f10edc5c70">
-					<printWhenExpression><![CDATA[$F{depth}==0]]></printWhenExpression>
-				</reportElement>
+			<textField evaluationTime="Auto" pattern="¤ #,##0.00" isBlankWhenNull="false">
+				<reportElement x="442" y="28" width="92" height="16" forecolor="#FFFFFF" uuid="e4f48c68-aeef-4443-960c-a6f10edc5c70"/>
 				<box>
 					<bottomPen lineWidth="0.0"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{sumCosto}]]></textFieldExpression>
 			</textField>
 			<image onErrorType="Blank">
 				<reportElement x="702" y="2" width="100" height="77" uuid="b453a4ac-e52e-4e90-91c3-a297dff3df58"/>
@@ -288,10 +250,12 @@ $V{COSTO_UNITARIO} *$F{cant}]]></variableExpression>
 	<detail>
 		<band height="18" splitType="Stretch">
 			<frame>
-				<reportElement style="Prof1" x="0" y="0" width="802" height="18" uuid="5c4b88ad-b0a4-433d-afd6-b705751d97ef"/>
+				<reportElement style="Prof1" x="0" y="0" width="802" height="18" uuid="5c4b88ad-b0a4-433d-afd6-b705751d97ef">
+					<printWhenExpression><![CDATA[$F{depthP}!=0]]></printWhenExpression>
+				</reportElement>
 				<textField evaluationTime="Auto" isBlankWhenNull="true">
-					<reportElement x="171" y="0" width="316" height="18" uuid="271f364a-edd6-4a49-8251-324231ae43af">
-						<printWhenExpression><![CDATA[$F{depth} != 0]]></printWhenExpression>
+					<reportElement x="171" y="0" width="368" height="18" uuid="271f364a-edd6-4a49-8251-324231ae43af">
+						<printWhenExpression><![CDATA[$F{depthP}!=0]]></printWhenExpression>
 					</reportElement>
 					<box>
 						<bottomPen lineWidth="1.0"/>
@@ -302,18 +266,20 @@ $V{COSTO_UNITARIO} *$F{cant}]]></variableExpression>
 					<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 				</textField>
 				<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
-					<reportElement x="700" y="0" width="51" height="18" uuid="d60a5b02-1dcb-48a4-9920-d3bc748a4d86"/>
+					<reportElement x="700" y="0" width="51" height="18" uuid="d60a5b02-1dcb-48a4-9920-d3bc748a4d86">
+						<printWhenExpression><![CDATA[$F{depthP}!=0]]></printWhenExpression>
+					</reportElement>
 					<box>
 						<bottomPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{subtotal}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{sumCosto}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement x="539" y="0" width="51" height="18" uuid="b43fe537-40af-4d5f-a879-b173cedbc2f8">
-						<printWhenExpression><![CDATA[$F{depth} != 0]]></printWhenExpression>
+						<printWhenExpression><![CDATA[$F{depthP}!=0]]></printWhenExpression>
 					</reportElement>
 					<box>
 						<bottomPen lineWidth="1.0"/>
@@ -324,18 +290,20 @@ $V{COSTO_UNITARIO} *$F{cant}]]></variableExpression>
 					<textFieldExpression><![CDATA[$F{cant}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement x="590" y="0" width="59" height="18" uuid="1aa16315-7512-44ba-96dc-718fd255d573"/>
+					<reportElement x="590" y="0" width="59" height="18" uuid="1aa16315-7512-44ba-96dc-718fd255d573">
+						<printWhenExpression><![CDATA[$F{depthP}!=0]]></printWhenExpression>
+					</reportElement>
 					<box>
 						<bottomPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{COSTO_UNITARIO}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{costo}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0.00" isBlankWhenNull="true">
 					<reportElement x="649" y="0" width="51" height="18" uuid="08a6ac9a-7a6c-447d-b1a5-68b8da100904">
-						<printWhenExpression><![CDATA[$F{depth} != 0]]></printWhenExpression>
+						<printWhenExpression><![CDATA[$F{depthP}!=0]]></printWhenExpression>
 					</reportElement>
 					<box>
 						<bottomPen lineWidth="1.0"/>
@@ -345,30 +313,22 @@ $V{COSTO_UNITARIO} *$F{cant}]]></variableExpression>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{moneda} == true ? "U\$D" : "ARS"]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement x="487" y="0" width="52" height="18" uuid="6135b029-c2d1-4dea-8d8e-5f240a2a48e0"/>
-					<box>
-						<bottomPen lineWidth="1.0"/>
-					</box>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{sumCostoPadre}]]></textFieldExpression>
-				</textField>
 			</frame>
 			<textField isBlankWhenNull="true">
-				<reportElement x="751" y="0" width="51" height="18" uuid="9193fc4d-84b8-4615-b12e-7bc1d33994f9"/>
+				<reportElement x="751" y="0" width="51" height="18" uuid="9193fc4d-84b8-4615-b12e-7bc1d33994f9">
+					<printWhenExpression><![CDATA[$F{depthP}!=0]]></printWhenExpression>
+				</reportElement>
 				<box>
 					<bottomPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{depth}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{depthP}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="46" y="0" width="125" height="18" uuid="fe763e4b-6ed1-49f8-ae3f-fc04b9405a90">
-					<printWhenExpression><![CDATA[$F{depth} != 0]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$F{depthP}!=0]]></printWhenExpression>
 				</reportElement>
 				<box>
 					<bottomPen lineWidth="1.0"/>
@@ -380,7 +340,7 @@ $V{COSTO_UNITARIO} *$F{cant}]]></variableExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="0" y="0" width="46" height="18" uuid="dccd1adb-4420-487c-a735-99e46511ba42">
-					<printWhenExpression><![CDATA[$F{depth} != 0]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$F{depthP}!=0]]></printWhenExpression>
 				</reportElement>
 				<box>
 					<bottomPen lineWidth="1.0"/>
@@ -410,11 +370,6 @@ $V{COSTO_UNITARIO} *$F{cant}]]></variableExpression>
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="42" splitType="Stretch">
-			<textField evaluationTime="Auto" pattern="¤ #,##0.00">
-				<reportElement x="651" y="0" width="100" height="20" uuid="c9d81e79-839c-49e0-a575-bfcd273d999d"/>
-				<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
-			</textField>
-		</band>
+		<band height="42" splitType="Stretch"/>
 	</summary>
 </jasperReport>

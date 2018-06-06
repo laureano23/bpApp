@@ -163,67 +163,32 @@ class ReportesController extends Controller
 		 * 
 		 */
 		$sql = "
-			SELECT *
-			FROM
-			(SELECT 	node.id,
-				node.lft,
-				node.rgt,
-				node.cant,
-				(COUNT(parent.id) - (sub_tree.depth + 1)) AS depth,
-				articulos.descripcion,
-				articulos.codigo,
-				articulos.moneda,
-				articulos.costo as costo
-				FROM `articulos` articulos INNER JOIN `Formulas` node ON articulos.`idArticulos` = node.`idArt`,
-			        Formulas AS parent,
-			        Formulas AS sub_parent,
-			        (
-						SELECT node.id, (COUNT(parent.id) - 1) AS depth
-						FROM Formulas AS node,
-						Formulas AS parent
-						WHERE node.lft BETWEEN parent.lft AND parent.rgt
-						AND node.id = $idNodo
-						GROUP BY node.id
-						ORDER BY node.lft
-			        )AS sub_tree
-			WHERE node.lft BETWEEN parent.lft AND parent.rgt
-			        AND node.lft BETWEEN sub_parent.lft AND sub_parent.rgt
-			        AND sub_parent.id = sub_tree.id
-			GROUP BY node.id
-			ORDER BY node.lft) AS x
-			
-			INNER JOIN
-			
-			(SELECT 	node.id,
-				SUM(
-					CASE
-						WHEN articulos.moneda = 0
-							THEN articulos.costo * node.cant
-						ELSE articulos.costo * node.cant * $tc
-						END) AS sumCosto,
-				SUM(
-					CASE
-						WHEN articulos.moneda = 0
-							THEN articulos.costo * node.cant
-						ELSE articulos.costo * node.cant * $tc
-						END) * parent.cant AS sumCostoPadre
-				FROM `articulos` articulos INNER JOIN `Formulas` node ON articulos.`idArticulos` = node.`idArt`,
-			        Formulas AS parent,
-			        Formulas AS sub_parent,
-			        (
-						SELECT node.id, (COUNT(parent.id) - 1) AS depth
-						FROM Formulas AS node,
-						Formulas AS parent
-						WHERE node.lft BETWEEN parent.lft AND parent.rgt
-						AND node.id = $idNodo
-						GROUP BY node.id
-						ORDER BY node.lft
-			        )AS sub_tree
-			WHERE node.lft BETWEEN parent.lft AND parent.rgt
-			        AND node.lft BETWEEN sub_parent.lft AND sub_parent.rgt
-			        AND sub_parent.id = sub_tree.id
-			GROUP BY parent.id
-			ORDER BY node.lft) AS y ON x.id = y.id
+			SELECT
+				node.id,
+				node.cantidad as cant,
+				node.level,
+				art.descripcion,
+				art.codigo,
+				art.moneda,
+				art.costo,
+				node.unidad,
+				sum(
+					case when art.moneda=0
+					then art.costo*node.cantidad
+					else art.costo*node.cantidad*$tc end
+				) as sumCosto,
+				art.costo,
+				a.depthP,
+				p.depth
+			from
+				(select *, c.descendant anterior, c.depth depthP
+				from FormulasClosure c
+				where c.ancestor = $idNodo) as a,
+			FormulasClosure p, FormulasC node, articulos art
+			where p.ancestor = a.anterior
+			and p.descendant = node.id
+			and node.idArt = art.idArticulos
+			group by a.anterior
 		";
 		 /*
 		  * FIN SQL

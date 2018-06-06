@@ -158,6 +158,11 @@ class PagosController extends Controller
 			}
 			
 			//CALCULO DE RETENCION
+			$prov=$proveedor->getProvincia();
+			if(empty($prov)){
+				throw new \Exception("El proveedor debe tener asignada una provincia", 1);
+			} 
+			
 			$retencion;
 			if($proveedor->getNoAplicaRetencion() == false &&
 				$proveedor->getProvincia()->getId() == $parametrosFinanzas->getProvincia()->getId()){
@@ -210,7 +215,7 @@ class PagosController extends Controller
 			
 			return $response;
 		}catch(\Exception $e){
-			throw $e;
+			//throw $e;
 			$response->setContent(
 				json_encode(array(
 					'success' => false,

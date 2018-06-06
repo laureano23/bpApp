@@ -52,33 +52,58 @@ mbp_articulos_actualizar_base:
     options:
       expose: true
 
+#borrar luego de exportar
+mbp_formulas_exportarFormulas3:
+    path:     /exportarFormulas3
+    defaults: { _controller: MbpArticulosBundle:Formulas2:exportarFormulas3 }
+    options:
+      expose: true
+
+mbp_formulas_exportarFormulas2:
+    path:     /exportarFormulas2
+    defaults: { _controller: MbpArticulosBundle:Formulas2:exportarFormulas2 }
+    options:
+      expose: true
+
+mbp_formulas_acomodarCostos:
+    path:     /acomodarCostos
+    defaults: { _controller: MbpArticulosBundle:Formulas2:acomodarCostos }
+    options:
+      expose: true
+
+mbp_formulas_pendientesDeFormula:
+    path:     /pendientesDeFormula
+    defaults: { _controller: MbpArticulosBundle:Formulas2:pendientesDeFormula }
+    options:
+      expose: true
+
 mbp_formulas_read:
     path:     /extranet/formulaslist
-    defaults: { _controller: MbpArticulosBundle:Formulas:formulaslist }
+    defaults: { _controller: MbpArticulosBundle:Formulas2:formulaslist }
     options:
       expose: true
 
 mbp_formulas_InsertNodo:
     path:     /formulasInsertNodo
-    defaults: { _controller: MbpArticulosBundle:Formulas:formulasInsertNodo }
+    defaults: { _controller: MbpArticulosBundle:Formulas2:formulasInsertNodo }
     options:
       expose: true
 
 mbp_formulas_BorrarNodo:
     path:     /formulasBorrarNodo
-    defaults: { _controller: MbpArticulosBundle:Formulas:formulasBorrarNodo }
+    defaults: { _controller: MbpArticulosBundle:Formulas2:formulasBorrarNodo }
     options:
       expose: true
 
 mbp_formulas_updateNodo:
     path:     /formulasUpdateNodo
-    defaults: { _controller: MbpArticulosBundle:Formulas:formulasUpdateNodo }
+    defaults: { _controller: MbpArticulosBundle:Formulas2:formulasUpdateNodo }
     options:
       expose: true
 
 mbp_formulas_idNodo:
     path:     /extranet/formulasIdNodo
-    defaults: { _controller: MbpArticulosBundle:Formulas:formulasIdNodo }
+    defaults: { _controller: MbpArticulosBundle:Formulas2:formulasIdNodo }
     options:
       expose: true
 

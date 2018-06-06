@@ -118,7 +118,9 @@ Ext.define('MetApp.controller.Articulos.FormulasController',{
 						},
 						success: function(resp){
 							jsonResp = Ext.JSON.decode(resp.responseText);
+							console.log(jsonResp);
 							txtIdFormula.setValue(jsonResp.idNodo);
+							console.log(txtIdFormula.getValue());
 						}
 					});									
 				}
