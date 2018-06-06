@@ -79,7 +79,7 @@ class Formulas2Controller extends Controller
 			    array('art' => $articuloPadre->getId(), 'data'=>array('id'=>$articuloHijo->getId(), 'cant' => $r['can_art']))
 			);
 
-			$this->formulasInsertNodoAction($request);
+			$this->formulasInsertNodo2Action($request);
 			$limite=$factor*500;
 	    	if($i==$limite){
 	    		$factor++;
@@ -117,6 +117,46 @@ class Formulas2Controller extends Controller
 			'data' => $res
 		));
 		return new Response();
+	}
+
+	//borrar despues de exportar
+	public function formulasInsertNodo2Action(Request $req)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$data = $req->request->get('data');
+    	$repo = $em->getRepository('MbpArticulosBundle:FormulasC');
+    	$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
+    	$artPadreId=$req->request->get('art');
+    	$artHijoId=$data['id'];
+
+    	$arbolPadre=$repo->findBy(['idArt'=>$artPadreId]);
+    	$arbolHijo=$repo->findOneBy(['idArt'=>$artHijoId, 'level'=>1]);
+
+
+    	if($arbolPadre==null && $arbolHijo==null){
+    		$this->insertPadreNotExistHijoNotExist($artPadreId, $artHijoId, $data['cant']);	
+    	}
+
+    	if($arbolPadre!=null && $arbolHijo==null){
+    		$this->insertPadreExistHijoNotExist($arbolPadre, $artHijoId, $data['cant']);	
+    	}
+
+    	if($arbolPadre==null && $arbolHijo!=null){
+    		$this->insertPadreNotExistHijoExist($artPadreId, $arbolHijo, $data['cant']);	
+    	}
+
+    	if($arbolPadre!=null && $arbolHijo!=null){
+    		$this->insertPadreExistHijoExist($arbolPadre, $arbolHijo);	
+    	}
+
+    	$em->flush();
+		
+		return new Response(
+			json_encode(array(
+				'success' => true,
+				'idFormula' => 1,
+			))
+		);
 	}
 
 	public function formulasInsertNodoAction(Request $req)
@@ -214,7 +254,7 @@ class Formulas2Controller extends Controller
 		$art = $repoArt->find($idArtPadre);
 		$arbolPadre->setidArt($art);
 		$arbolPadre->setParent($arbolPadre);
-		$arbolPadre->setCantidad($cant);
+		$arbolPadre->setCantidad(1);
 		$arbolPadre->setUnidad($art->getUnidad());
 		$em->persist($arbolPadre);
 		
@@ -222,7 +262,7 @@ class Formulas2Controller extends Controller
 		$art = $repoArt->find($idArtHijo);
 		$arbolHijo->setidArt($art);
 		$arbolHijo->setParent($arbolPadre);
-		$arbolHijo->setCantidad(1);
+		$arbolHijo->setCantidad($cant);
 		$arbolHijo->setUnidad($art->getUnidad());
 		$em->persist($arbolHijo);
 		

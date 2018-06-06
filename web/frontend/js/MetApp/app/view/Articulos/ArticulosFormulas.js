@@ -17,7 +17,8 @@ Ext.define('MetApp.view.Articulos.ArticulosFormulas', {
 		botonera.queryById('btnSave').setDisabled(false);
 		botonera.queryById('btnNew').hide();
 		botonera.queryById('btnReset').setText('Recargar');
-		
+		var dolarOficial = MetApp.resources.ux.ParametersSingleton.getDolarOficial();
+
 		Ext.applyIf(this,{
 			items: [
 				{
@@ -130,7 +131,7 @@ Ext.define('MetApp.view.Articulos.ArticulosFormulas', {
 									header: 'Costo',
 									dataIndex: 'costo',
 									flex: 1,
-									renderer: function(value, meta){
+									/*renderer: function(value, meta){
 										//var dolarOficial = MetApp.resources.ux.ParametersSingleton.getIva();
 										var cant = meta.record.data.cant;
 										var subTotal = meta.record.data.costo;
@@ -144,7 +145,7 @@ Ext.define('MetApp.view.Articulos.ArticulosFormulas', {
 											total  = subTotal / cant;
 										}
 										return total.toFixed(2);
-									}
+									}*/
 								},
 								{ header: 'Moneda', dataIndex: 'moneda',flex: 1 },
 								{ 
@@ -171,15 +172,20 @@ Ext.define('MetApp.view.Articulos.ArticulosFormulas', {
 									xtype: 'numbercolumn',
 									dataIndex: 'costo',
 									summaryType: function (records, values) {
+										
 			                            var i = 0,
 			                                length = records.length,
 			                                total = 0,
 			                                record;			                            
 			                            
 			                            for (i; i < length; ++i) {			                            	
-			                                record = records[i];                             
-			                               
-			                                total += record.get('costo');                   
+			                                record = records[i];             
+			                                if(record.get('moneda') == "U$D"){
+			                                	total += record.get('costo')*dolarOficial*record.get('cant');	
+			                                }else{
+			                                	total += record.get('costo')*record.get('cant');
+			                                }
+			                                                   
 			                            }
 			                            return (total);
 			                            
@@ -187,10 +193,15 @@ Ext.define('MetApp.view.Articulos.ArticulosFormulas', {
 		                      		summaryRenderer: function (value, summaryData, field) {                           
 			                            return Ext.util.Format.usMoney(value);
 			                        },								
-									renderer: function(value, meta, record){								
-										
-		                            	return Ext.util.Format.usMoney(value);	
+									renderer: function(value, meta, record){
+										console.log(meta);
+										console.log(record);
+										if(record.get('moneda') == "U$D"){
+											return Ext.util.Format.usMoney(value*dolarOficial*record.data.cant);	
+										}else{
+		                            		return Ext.util.Format.usMoney(value*record.data.cant);	
 		                                										
+										}
 									}
 								}
 							]

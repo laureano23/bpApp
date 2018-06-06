@@ -36,7 +36,7 @@ class FormulasCRepository extends \Gedmo\Tree\Entity\Repository\ClosureTreeRepos
 
         $node=$repo->findOneBy(['idArt' => $idArt]);
         
-        $dql = "SELECT node.id as idFormula, art.codigo, art.id as idArt, node.unidad, art.descripcion, node.cantidad as cant, art.moneda
+        $dql = "SELECT node.id as idFormula, art.codigo, art.id as idArt, node.unidad, art.descripcion, node.cantidad as cant, art.moneda, art.costo
                 FROM Mbp\ArticulosBundle\Entity\FormulasClosure c
                 INNER JOIN c.descendant node 
                 INNER JOIN node.idArt art

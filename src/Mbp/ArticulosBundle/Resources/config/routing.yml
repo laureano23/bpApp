@@ -59,6 +59,12 @@ mbp_formulas_exportarFormulas3:
     options:
       expose: true
 
+mbp_formulas_InsertNodo2:
+    path:     /formulasInsertNodo2
+    defaults: { _controller: MbpArticulosBundle:Formulas2:formulasInsertNodo2 }
+    options:
+      expose: true
+
 mbp_formulas_exportarFormulas2:
     path:     /exportarFormulas2
     defaults: { _controller: MbpArticulosBundle:Formulas2:exportarFormulas2 }
