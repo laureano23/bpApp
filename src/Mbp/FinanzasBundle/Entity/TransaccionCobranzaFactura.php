@@ -24,7 +24,7 @@ class TransaccionCobranzaFactura
     /**
      * @var string
      *
-     * @ORM\Column(name="aplicado", type="decimal")
+     * @ORM\Column(name="aplicado", type="decimal", precision=10, scale=2)
      */
     private $aplicado;
 
