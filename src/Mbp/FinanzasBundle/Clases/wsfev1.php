@@ -123,7 +123,6 @@ class wsfev1 {
 	public function openTA()
 	{
 	$this->TA = simplexml_load_file($this->path.self::TA);
-
 	return $this->TA == false ? false : true;
 	}
   

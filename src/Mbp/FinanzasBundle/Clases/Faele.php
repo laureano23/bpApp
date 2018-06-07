@@ -20,10 +20,12 @@ class Faele extends wsfev1
 				
 
 		// Carga el archivo TA.xml
-		if($this->openTA() == false) return array(
-			'success' => false,
-			'msg' => 'Error al abrir el ticket xml TA'
-		);
+		
+		if($this->openTA() == false) {
+			$this->wsaa->generar_TA();
+			//throw new \Exception("Error al abrir el ticket TA", 1);
+			
+		};
 		
 		
 		//VERIFICO QUE EL WSAA 
