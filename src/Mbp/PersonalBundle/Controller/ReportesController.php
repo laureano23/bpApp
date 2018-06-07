@@ -547,6 +547,7 @@ class ReportesController extends Controller
 			SELECT
 		     Personal.`idP` AS Personal_idP,
 		     Personal.`nombre` AS Personal_nombre,
+		     Personal.`apellido` AS Personal_apellido,
 		     Recibos.`id` AS Recibos_id,
 		     Recibos.`compensatorio` AS Recibos_compensatorio,
 		     Recibos.`periodo` AS Recibos_periodo,
@@ -586,6 +587,7 @@ class ReportesController extends Controller
 		WHERE Recibos.`mes` = $mes
 		AND Recibos.`anio` = $anio
 		GROUP BY Personal.`idP`
+		ORDER BY Personal.`apellido`
 		";
 
 		$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());

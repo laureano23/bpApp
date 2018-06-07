@@ -13,6 +13,7 @@
 		<![CDATA[SELECT
      Personal.`idP` AS Personal_idP,
      Personal.`nombre` AS Personal_nombre,
+     Personal.`apellido` AS Personal_apellido,
      Recibos.`id` AS Recibos_id,
      Recibos.`compensatorio` AS Recibos_compensatorio,
      Recibos.`periodo` AS Recibos_periodo,
@@ -51,10 +52,12 @@ FROM
      INNER JOIN `RecibosDetalle` RecibosDetalle ON recibo_detallesRecibos.`recibosdetalle_id` = RecibosDetalle.`id`
 WHERE Recibos.`mes` = $P{mes}
 AND Recibos.`anio` = $P{anio}
-GROUP BY Personal.`idP`]]>
+GROUP BY Personal.`idP`
+ORDER BY Personal.`apellido`]]>
 	</queryString>
 	<field name="Personal_idP" class="java.lang.Integer"/>
 	<field name="Personal_nombre" class="java.lang.String"/>
+	<field name="Personal_apellido" class="java.lang.String"/>
 	<field name="Recibos_id" class="java.lang.Integer"/>
 	<field name="Recibos_compensatorio" class="java.lang.Boolean"/>
 	<field name="Recibos_periodo" class="java.lang.Integer"/>
@@ -539,7 +542,7 @@ GROUP BY Personal.`idP`]]>
 					<bottomPen lineWidth="0.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textFieldExpression><![CDATA[$F{Personal_nombre}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Personal_apellido}+" "+$F{Personal_nombre}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="¤ #,##0.00">
 				<reportElement x="102" y="0" width="50" height="20" uuid="24b843a4-0ae5-4f78-a5ac-775864915aea"/>

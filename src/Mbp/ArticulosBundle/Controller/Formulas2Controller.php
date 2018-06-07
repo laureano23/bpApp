@@ -146,7 +146,7 @@ class Formulas2Controller extends Controller
     	}
 
     	if($arbolPadre!=null && $arbolHijo!=null){
-    		$this->insertPadreExistHijoExist($arbolPadre, $arbolHijo);	
+    		$this->insertPadreExistHijoExist($arbolPadre, $arbolHijo, $data['cant']);	
     	}
 
     	$em->flush();
@@ -185,7 +185,7 @@ class Formulas2Controller extends Controller
     	}
 
     	if($arbolPadre!=null && $arbolHijo!=null){
-    		$this->insertPadreExistHijoExist($arbolPadre, $arbolHijo);	
+    		$this->insertPadreExistHijoExist($arbolPadre, $arbolHijo, $data->cant);	
     	}
 
     	$em->flush();
@@ -198,14 +198,14 @@ class Formulas2Controller extends Controller
 		);
 	}
 
-	private function insertPadreExistHijoExist($arbolPadre, $arbolHijo){
+	private function insertPadreExistHijoExist($arbolPadre, $arbolHijo, $primerCantidad){
 		$em = $this->getDoctrine()->getManager();
 		$repo = $em->getRepository('MbpArticulosBundle:FormulasC');
 		$childrens=$repo->getChildren($arbolHijo, false, null, 'asc', true);
 
 		foreach ($arbolPadre as $p) {
 			$lastAdded=null;
-			$this->copiadoRecursivo($childrens, $p, true, $lastAdded, $em);	
+			$this->copiadoRecursivo($childrens, $p, true, $lastAdded, $em, $primerCantidad);	
 		}
 	}
 
@@ -218,13 +218,13 @@ class Formulas2Controller extends Controller
 		$art = $repoArt->find($idArtPadre);
 		$arbolPadre->setidArt($art);
 		$arbolPadre->setParent($arbolPadre);
-		$arbolPadre->setCantidad($cant);
+		$arbolPadre->setCantidad(1);
 		$arbolPadre->setUnidad($art->getUnidad());
 		$em->persist($arbolPadre);
 		$childrens=$repo->getChildren($arbolHijo, false, null, 'asc', true);
 		
 		$lastAdded=null;
-		$this->copiadoRecursivo($childrens, $arbolPadre, true, $lastAdded, $em);
+		$this->copiadoRecursivo($childrens, $arbolPadre, true, $lastAdded, $em, $cant);
 	}
 
 	private function insertPadreExistHijoNotExist($arbolPadre, $idArtHijo, $cant){
@@ -268,7 +268,7 @@ class Formulas2Controller extends Controller
 		
 	}
 
-	private function copiadoRecursivo($arrayNodes, &$parent, $flagLvl, &$lastAdded, $em){
+	private function copiadoRecursivo($arrayNodes, &$parent, $flagLvl, &$lastAdded, $em, $pimerCantidad){
     	foreach ($arrayNodes as $ch) {
     		$nodeN=new FormulasC;
 	    	$nodeN->setCantidad($ch->getCantidad());    	
@@ -278,6 +278,7 @@ class Formulas2Controller extends Controller
 	    	//el primer nodo siempre se engancha al padre buscado
     		if($flagLvl){
     			$nodeN->setParent($parent);
+    			$nodeN->setCantidad($pimerCantidad);
     			$flagLvl=false;
     			$parent=$nodeN;
     		}else{
