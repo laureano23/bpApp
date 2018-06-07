@@ -206,7 +206,7 @@ WHERE
 	</detail>
 	<columnFooter>
 		<band height="200">
-			<subreport>
+			<subreport isUsingCache="false">
 				<reportElement x="0" y="62" width="200" height="100" uuid="b6b5161a-b159-463c-a80f-e8f8075e2ca9"/>
 				<subreportParameter name="cobranzaId">
 					<subreportParameterExpression><![CDATA[$P{cobranzaId}]]></subreportParameterExpression>

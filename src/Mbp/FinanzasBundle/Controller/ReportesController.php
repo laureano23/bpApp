@@ -243,6 +243,8 @@ class ReportesController extends Controller
 			$param->put('cobranzaId', $idCobranza);
 			$param->put('SUBREPORT_DIR', $kernel->locateResource('@MbpFinanzasBundle/Reportes/'));
 			
+			//print_r($kernel->locateResource('@MbpFinanzasBundle/Reportes/'));
+
 			$conn = $reporteador->getJdbc();
 			
 			$sql = "SELECT

@@ -17,7 +17,8 @@
      Facturas.`vencimiento` AS Facturas_vencimiento,
      Facturas.`total` AS Facturas_total,
      Facturas.`fcNro` AS Facturas_fcNro,
-     Facturas.`ptoVta` AS Facturas_ptoVta
+     Facturas.`ptoVta` AS Facturas_ptoVta,
+     Facturas.`tipoCambio` AS Facturas_tipoCambio
 FROM
      `Facturas` Facturas INNER JOIN `TransaccionCobranzaFactura` TransaccionCobranzaFactura ON Facturas.`id` = TransaccionCobranzaFactura.`facturaId`
 WHERE
@@ -28,11 +29,12 @@ WHERE
 	<field name="TransaccionCobranzaFactura_facturaId" class="java.lang.Integer"/>
 	<field name="TransaccionCobranzaFactura_cobranzaId" class="java.lang.Integer"/>
 	<field name="Facturas_id" class="java.lang.Integer"/>
-	<field name="Facturas_fecha" class="java.sql.Timestamp"/>
+	<field name="Facturas_fecha" class="java.sql.Date"/>
 	<field name="Facturas_vencimiento" class="java.sql.Date"/>
 	<field name="Facturas_total" class="java.math.BigDecimal"/>
 	<field name="Facturas_fcNro" class="java.lang.Integer"/>
 	<field name="Facturas_ptoVta" class="java.lang.Integer"/>
+	<field name="Facturas_tipoCambio" class="java.math.BigDecimal"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -116,7 +118,7 @@ WHERE
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{Facturas_total}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Facturas_total}*$F{Facturas_tipoCambio}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="170" y="0" width="80" height="20" uuid="119a17d1-d3c0-4821-a373-794693540c3d"/>
