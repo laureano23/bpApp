@@ -1,6 +1,8 @@
 #IGNORAMOS ARCHIVOS XML
 *.xml
 
+/src/*
+
 #IGNORAMOS LA CARPETA COMPLETA
 /web/*
 
