@@ -206,7 +206,8 @@ class VentasController extends Controller
 				$alicuotaPercepcion = $iibbService->getAlicuotaPercepcion();
 				
 				if($alicuotaPercepcion > 0
-					&& $netoGrabado > $parametrosFinanzas->getTopePercepcionIIBB()){
+					&& $netoGrabado > $parametrosFinanzas->getTopePercepcionIIBB()
+					&& $cliente->getNoAplicaPercepcion() == false){
 					$percepcionIIBB = $netoGrabado * $alicuotaPercepcion / 100; 
 					$percepcionIIBB = number_format($percepcionIIBB, 2, ".", "");
 				}			

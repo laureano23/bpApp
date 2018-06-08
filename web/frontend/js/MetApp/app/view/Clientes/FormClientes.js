@@ -394,6 +394,15 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 													name: 'cuentaCerrada',
 													fieldLabel: 'Cuenta Cerrada:',
 													width: 200,
+												},
+												{
+													xtype: 'checkbox',
+													name: 'noAplicaPercepcion',
+													itemId: 'noAplicaPercepcion',
+													uncheckedValue: false,
+													inputValue: true,
+													fieldLabel: 'No aplica percepción:',
+													width: 200,
 												}
 											]
 										},

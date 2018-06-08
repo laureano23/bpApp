@@ -30,6 +30,7 @@ class ClienteRepository extends  EntityRepository
 							c.tasaInt as tasa,
 							c.descuentoFijo,
 							c.notasCC,
+							c.noAplicaPercepcion,
 							i.esResponsableInscripto,
 							i.esResponsableNoInscripto,
 							i.esExento,

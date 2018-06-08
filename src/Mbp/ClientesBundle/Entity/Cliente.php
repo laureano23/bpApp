@@ -206,6 +206,13 @@ class Cliente
     private $comision;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="noAplicaPercepcion", type="boolean", nullable=false)
+     */
+    private $noAplicaPercepcion=0;
+
+    /**
      * Set rsocial
      *
      * @param string $rsocial
@@ -826,5 +833,29 @@ class Cliente
     public function getIva()
     {
         return $this->iva;
+    }
+
+    /**
+     * Set noAplicaPercepcion
+     *
+     * @param boolean $noAplicaPercepcion
+     *
+     * @return Cliente
+     */
+    public function setNoAplicaPercepcion($noAplicaPercepcion)
+    {
+        $this->noAplicaPercepcion = $noAplicaPercepcion;
+
+        return $this;
+    }
+
+    /**
+     * Get noAplicaPercepcion
+     *
+     * @return boolean
+     */
+    public function getNoAplicaPercepcion()
+    {
+        return $this->noAplicaPercepcion;
     }
 }

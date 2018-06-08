@@ -206,6 +206,13 @@ class Cliente
     private $comision;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="noAplicaPercepcion", type="boolean", nullable=false)
+     */
+    private $noAplicaPercepcion=0;
+
+    /**
      * Set rsocial
      *
      * @param string $rsocial
@@ -802,5 +809,29 @@ class Cliente
     public function getComision()
     {
         return $this->comision;
+    }
+
+    /**
+     * Set iva
+     *
+     * @param \Mbp\FinanzasBundle\Entity\PosicionIVA $iva
+     *
+     * @return Cliente
+     */
+    public function setIva(\Mbp\FinanzasBundle\Entity\PosicionIVA $iva)
+    {
+        $this->iva = $iva;
+
+        return $this;
+    }
+
+    /**
+     * Get iva
+     *
+     * @return \Mbp\FinanzasBundle\Entity\PosicionIVA
+     */
+    public function getIva()
+    {
+        return $this->iva;
     }
 }

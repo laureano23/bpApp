@@ -180,6 +180,7 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 		
 		if(form.isValid() == true){
 			if(values.id > 0){
+				console.log(values);
 				var model=form.getRecord();
 				model.set(values);	
 				model.save();		
