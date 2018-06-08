@@ -134,15 +134,6 @@ Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 									itemId: 'tipoCambio',
 									fieldLabel: 'Tipo cambio',
 									value: 0
-								},
-								{
-									xtype: 'checkbox',
-									labelWidth: 55,
-									margins: '0 0 0 5',
-									fieldLabel: 'Sin IVA',
-									itemId: 'sinIva',
-									name: 'sinIva',
-									uncheckedValue: false
 								}
 							]
 						},												
