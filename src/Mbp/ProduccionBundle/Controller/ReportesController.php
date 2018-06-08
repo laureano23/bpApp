@@ -438,6 +438,7 @@ class ReportesController extends Controller
 			 */				
 					
 			$ruta = $kernel->locateResource('@MbpProduccionBundle/Reportes/OT.jrxml');
+			$rutaSubReport = $kernel->locateResource('@MbpProduccionBundle/Reportes/');
 			$rutaLogo = $reporteador->getRutaLogo($kernel);
 			
 			/*
@@ -450,6 +451,7 @@ class ReportesController extends Controller
 			$param = $reporteador->getJava('java.util.HashMap');
 			$param->put('ot', $ot);
 			$param->put('rutaLogo', $rutaLogo);
+			$param->put('SUBREPORT_DIR', $rutaSubReport);
 			
 			$conn = $reporteador->getJdbc();
 			
