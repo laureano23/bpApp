@@ -42,7 +42,7 @@ Ext.define('MetApp.controller.Utilitarios.UtilitariosController',{
 			'CotizacionView button[itemId=guardar]': {
 				click: this.GuardarCoti
 			},			
-			'CotizacionView textfield[itemId=desc]': {
+			'CotizacionView textfield[itemId=descuentoGral]': {
 				change: this.AplicarDescuento
 			},
 			'CotizacionView actioncolumn[itemId=editar]': {
@@ -50,6 +50,9 @@ Ext.define('MetApp.controller.Utilitarios.UtilitariosController',{
 			},
 			'CotizacionView actioncolumn[itemId=eliminar]': {
 				click: this.EliminarItemCoti
+			},
+			'CotizacionView': {
+				close: this.CloseListeners
 			},
 			'viewport menuitem[itemId=tbListadoCoti]': {
 				click: this.ListadoCotizaciones
@@ -64,6 +67,11 @@ Ext.define('MetApp.controller.Utilitarios.UtilitariosController',{
 				change: this.FiltrarCotizaciones
 			},
 		});
+	},
+
+	CloseListeners: function(win){
+		var store=win.down('grid').getStore();
+		store.clearListeners();
 	},
 	
 	FiltrarCotizaciones: function(txt){
@@ -146,7 +154,7 @@ Ext.define('MetApp.controller.Utilitarios.UtilitariosController',{
 			var data = rec.getData();
 			total += data.cant * data.precio;			
 		});						
-		var desc = win.queryById('desc').getValue();
+		var desc = win.queryById('descuentoGral').getValue();
 		total = total - desc * total / 100;
 		win.queryById('total').setValue(total);
 			
@@ -176,12 +184,11 @@ Ext.define('MetApp.controller.Utilitarios.UtilitariosController',{
 			var proxy=model.getProxy();
 			
 			proxy.setExtraParam('items', Ext.JSON.encode(data));
-			proxy.setExtraParam('descuento', win.queryById('desc').getValue());
+			proxy.setExtraParam('descuento', win.queryById('descuentoGral').getValue());
 			proxy.setExtraParam('total', win.queryById('total').getValue());
 			
 			model.save({
 				callback: function(records, op, success){
-					console.log(op);
 					var resp=Ext.JSON.decode(op.response.responseText);
 					if(resp.success==true){
 						form.getForm().reset();
@@ -248,6 +255,7 @@ Ext.define('MetApp.controller.Utilitarios.UtilitariosController',{
 		winCliente.down('button').on('click', function(btn){
 			var sel=winCliente.down('grid').getSelectionModel().getSelection()[0];			
 			formCoti.loadRecord(sel);
+			win.queryById('descuentoGral').setValue(sel.data.descuentoFijo);
 			winCliente.close();
 			
 			win.queryById('buscarArt').focus('', 30);
@@ -259,6 +267,7 @@ Ext.define('MetApp.controller.Utilitarios.UtilitariosController',{
 		win.queryById('buscaCliente').focus('', 20);
 		
 		var store=win.down('grid').getStore();
+		store.removeAll();
 		store.on({
 			'datachanged':function(st, opts){
 				var total=0;
@@ -266,7 +275,7 @@ Ext.define('MetApp.controller.Utilitarios.UtilitariosController',{
 					var data = rec.getData();
 					total += data.cant * data.precio;			
 				});						
-				var desc = win.queryById('desc').getValue();
+				var desc = win.queryById('descuentoGral').getValue();
 				total = total - desc * total / 100;
 				win.queryById('total').setValue(total.toFixed(2));
 			}

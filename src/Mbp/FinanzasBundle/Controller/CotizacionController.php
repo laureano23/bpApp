@@ -46,7 +46,9 @@ class CotizacionController extends Controller
 			$cotizacion->setClienteId($cliente);
 			$cotizacion->setIdUsuario($this->get('security.context')->getToken()->getUser());
 			$cotizacion->setTotal($total);
-			$cotizacion->setDescuento($descuento);
+
+			$calculoDescuento=$total*$descuento/100;
+			$cotizacion->setDescuento($calculoDescuento);
 						
 			foreach ($detalles as $d) {
 				$detalle=new DetalleCotizacion;

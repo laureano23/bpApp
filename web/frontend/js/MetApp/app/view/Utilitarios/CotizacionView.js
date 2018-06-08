@@ -316,6 +316,7 @@ Ext.define('MetApp.view.Utilitarios.CotizacionView' ,{
 									width: 200,														
 									fieldLabel: 'Desc. Gral',
 									name: 'descuentoGral',
+									itemId: 'descuentoGral',
 									margin: '0 5 0 0',
 									value: 0
 								},

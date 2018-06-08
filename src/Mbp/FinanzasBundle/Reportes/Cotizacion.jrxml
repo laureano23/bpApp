@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OrdenDeCompra" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="b20991a6-8da8-4cf2-8ac6-123176886f03">
 	<property name="ireport.zoom" value="1.3310000000000057"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="12"/>
+	<property name="ireport.x" value="94"/>
+	<property name="ireport.y" value="48"/>
 	<parameter name="rutaLogo" class="java.lang.String"/>
 	<parameter name="cotizacionId" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -319,14 +319,14 @@ Tel: 4484-2416]]></text>
 	<summary>
 		<band height="153">
 			<staticText>
-				<reportElement x="400" y="133" width="86" height="20" uuid="e3195982-5e94-4cff-9e3f-027594c71839"/>
+				<reportElement x="401" y="93" width="86" height="20" uuid="e3195982-5e94-4cff-9e3f-027594c71839"/>
 				<textElement textAlignment="Right">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total:]]></text>
 			</staticText>
 			<textField pattern="#,##0.00">
-				<reportElement x="487" y="133" width="88" height="20" uuid="4a5ba6b4-eb33-4569-89b7-8b0f51135c00"/>
+				<reportElement x="488" y="93" width="88" height="20" uuid="4a5ba6b4-eb33-4569-89b7-8b0f51135c00"/>
 				<box leftPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
@@ -349,6 +349,36 @@ Tel: 4484-2416]]></text>
 				<reportElement x="0" y="73" width="429" height="20" uuid="9a7c1fee-6b49-47c0-a65b-599ba024eee3"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[A los precios cotizados se les debe agregar el IVA (21%)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="402" y="113" width="86" height="20" uuid="1ac63a74-cc2b-46e0-a545-398531906895"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descuento:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="487" y="113" width="88" height="20" uuid="639425be-a9ab-4c67-9833-f84325c79334"/>
+				<box leftPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Cotizacion_descuento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="487" y="133" width="88" height="20" uuid="323d5c88-2b34-4af3-aabf-c8b2fc6ecd9f"/>
+				<box leftPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total}-$F{Cotizacion_descuento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="402" y="133" width="86" height="20" uuid="0e77b04d-20b3-4d03-a7b8-e12c65ae8a5b"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Neto:]]></text>
 			</staticText>
 		</band>
 	</summary>
