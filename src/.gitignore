@@ -1,5 +1,2 @@
 #IGNORAMOS ARCHIVOS PDF
 **/*.pdf
-
-#IGNORAMOS ARCHIVOS XML
-**/*.jasper
