@@ -51,12 +51,12 @@
      FacturaDetalle.`descripcion` AS FacturaDetalle_descripcion,
      FacturaDetalle.`cantidad` AS FacturaDetalle_cantidad,
      FacturaDetalle.`precio` AS FacturaDetalle_precio,
-     CASE WHEN FacturaDetalle.`ivaGrabado`= 1 THEN
-	 SUM(FacturaDetalle.`cantidad` * FacturaDetalle.`precio`)
-	 ELSE 0 END AS netoGrabado,
-     CASE WHEN FacturaDetalle.`ivaGrabado`= 0 THEN
-	 SUM(FacturaDetalle.`cantidad` * FacturaDetalle.`precio`)
-	 ELSE 0 END AS netoNoGrabado,
+     SUM(CASE WHEN FacturaDetalle.`ivaGrabado`= 1 THEN
+	 FacturaDetalle.`cantidad` * FacturaDetalle.`precio`
+	 ELSE 0 END) AS netoGrabado,
+     SUM(CASE WHEN FacturaDetalle.`ivaGrabado`= 0 THEN
+	 FacturaDetalle.`cantidad` * FacturaDetalle.`precio`
+	 ELSE 0 END) AS netoNoGrabado,
      FacturaDetalle.`articuloId` AS FacturaDetalle_articuloId,
      FacturaDetalle.`remitoId` AS FacturaDetalle_remitoId,
      FacturaDetalle.`ivaGrabado` AS FacturaDetalle_ivaGrabado,
@@ -73,7 +73,7 @@ WHERE
  AND TipoComprobante.`esBalance` = 0
 GROUP BY Facturas.`id`
 ORDER BY
-     Facturas.`fecha` ASC ]]>
+     Facturas.`fecha` ASC]]>
 	</queryString>
 	<field name="Facturas_perIIBB" class="java.math.BigDecimal"/>
 	<field name="Facturas_iva21" class="java.math.BigDecimal"/>
