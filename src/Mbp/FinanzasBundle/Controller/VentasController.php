@@ -264,12 +264,8 @@ class VentasController extends Controller
 			$regfetrib['Importe'] = $percepcionIIBB;
 			
 			 
-			// Detalle de iva
-			if($decodefcData->sinIva == "on"){
-				$regfeiva['Id'] = 3; //5 codigo IVA 21...4 codigo IVA 10.5	
-			}else{
-				$regfeiva['Id'] = 5; //5 codigo IVA 21...4 codigo IVA 10.5
-			}			
+			// Detalle de iva			
+			$regfeiva['Id'] = 5; //5 codigo IVA 21...4 codigo IVA 10.5					
 			$regfeiva['BaseImp'] = $netoGrabado;
 			$regfeiva['Importe'] = $ivaLiquidado;
 			
@@ -335,7 +331,7 @@ class VentasController extends Controller
 			return $response;
 
 		}catch(\Exception $e){
-			//throw $e;
+			throw $e;
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			$response->setContent(json_encode(array("success"=>false, "msg"=>$e->getMessage(), 'code' => $e->getCode())));
 			return $response;
