@@ -1,7 +1,7 @@
 Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 	extend: 'Ext.window.Window',
 	height: 450,
-	width: 900,
+	width: 1000,
 	modal: true,
 	autoShow: true,
 	alias: 'widget.facturacion',
