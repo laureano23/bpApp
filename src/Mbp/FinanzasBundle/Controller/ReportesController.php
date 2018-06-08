@@ -354,42 +354,69 @@ class ReportesController extends Controller
 							
 			
 			$sql = "SELECT
-				     CASE WHEN Facturas.`moneda`=1 THEN Facturas.`perIIBB`*Facturas.`tipoCambio` ELSE Facturas.`perIIBB` END AS Facturas_perIIBB,
-				     CASE WHEN Facturas.`moneda`=1 THEN Facturas.`iva21`*Facturas.`tipoCambio` ELSE Facturas.`iva21` END AS Facturas_iva21,
-				     CASE WHEN Facturas.`moneda`=1
-					THEN Facturas.`total` * Facturas.`tipoCambio`
-					ELSE Facturas.`total` END AS Facturas_total,
-				     cliente.`idCliente` AS cliente_idCliente,
-				     cliente.`rsocial` AS cliente_rsocial,
-				     Facturas.`id` AS Facturas_id,
-				     Facturas.`fecha` AS Facturas_fecha,
-				     Facturas.`concepto` AS Facturas_concepto,
-				     Facturas.`clienteId` AS Facturas_clienteId,
-				     Facturas.`ptoVta` AS Facturas_ptoVta,
-				     Facturas.`fcNro` AS Facturas_fcNro,
-				     Facturas.`rSocial` AS Facturas_rSocial,
-				     Facturas.`cuit` AS Facturas_cuit,
-				     Facturas.`ivaCond` AS Facturas_ivaCond,
-				     Facturas.`porcentajeIIBB` AS Facturas_porcentajeIIBB,
-				     Facturas.`moneda` AS Facturas_moneda,
-				     Facturas.`tipoCambio` AS Facturas_tipoCambio,
-				     Facturas.`tipoId` AS Facturas_tipoId,
-				     TipoComprobante.`id` AS TipoComprobante_id,
-				     TipoComprobante.`esFactura` AS TipoComprobante_esFactura,
-				     TipoComprobante.`esNotaCredito` AS TipoComprobante_esNotaCredito,
-				     TipoComprobante.`esNotaDebito` AS TipoComprobante_esNotaDebito,
-				     TipoComprobante.`esBalance` AS TipoComprobante_esBalance,
-				     TipoComprobante.`descripcion` AS TipoComprobante_descripcion,
-				     TipoComprobante.`subTipoA` AS TipoComprobante_subTipoA,
-				     TipoComprobante.`subTipoB` AS TipoComprobante_subTipoB,
-				     TipoComprobante.`subTipoE` AS TipoComprobante_subTipoE
-				FROM
-				     `cliente` cliente INNER JOIN `Facturas` Facturas ON cliente.`idCliente` = Facturas.`clienteId`
-				     INNER JOIN `TipoComprobante` TipoComprobante ON Facturas.`tipoId` = TipoComprobante.`id`
-				WHERE
-				     Facturas.`fecha` BETWEEN '$desde' AND '$hasta'
-				AND TipoComprobante.`esBalance` = 0
-				ORDER BY Facturas.`fecha` ASC";
+			     CASE WHEN Facturas.`moneda`=1 THEN Facturas.`perIIBB`*Facturas.`tipoCambio` ELSE Facturas.`perIIBB` END AS Facturas_perIIBB,
+			     CASE WHEN Facturas.`moneda`=1 THEN Facturas.`iva21`*Facturas.`tipoCambio` ELSE Facturas.`iva21` END AS Facturas_iva21,
+			     CASE WHEN Facturas.`moneda`=1 THEN Facturas.`total`*Facturas.`tipoCambio` ELSE Facturas.`total` END AS Facturas_total,
+			     cliente.`idCliente` AS cliente_idCliente,
+			     cliente.`rsocial` AS cliente_rsocial,
+			     Facturas.`id` AS Facturas_id,
+			     Facturas.`fecha` AS Facturas_fecha,
+			     Facturas.`concepto` AS Facturas_concepto,
+			     Facturas.`clienteId` AS Facturas_clienteId,
+			     Facturas.`ptoVta` AS Facturas_ptoVta,
+			     Facturas.`fcNro` AS Facturas_fcNro,
+			     Facturas.`rSocial` AS Facturas_rSocial,
+			     Facturas.`cuit` AS Facturas_cuit,
+			     Facturas.`ivaCond` AS Facturas_ivaCond,
+			     Facturas.`porcentajeIIBB` AS Facturas_porcentajeIIBB,
+			     Facturas.`moneda` AS Facturas_moneda,
+			     Facturas.`tipoCambio` AS Facturas_tipoCambio,
+			     Facturas.`tipoId` AS Facturas_tipoId,
+			     TipoComprobante.`id` AS TipoComprobante_id,
+			     TipoComprobante.`esFactura` AS TipoComprobante_esFactura,
+			     TipoComprobante.`esNotaCredito` AS TipoComprobante_esNotaCredito,
+			     TipoComprobante.`esNotaDebito` AS TipoComprobante_esNotaDebito,
+			     TipoComprobante.`esBalance` AS TipoComprobante_esBalance,
+			     TipoComprobante.`descripcion` AS TipoComprobante_descripcion,
+			     TipoComprobante.`subTipoA` AS TipoComprobante_subTipoA,
+			     TipoComprobante.`subTipoB` AS TipoComprobante_subTipoB,
+			     TipoComprobante.`subTipoE` AS TipoComprobante_subTipoE,
+			     Facturas.`tipoIva` AS Facturas_tipoIva,
+			     PosicionIVA.`id` AS PosicionIVA_id,
+			     PosicionIVA.`posicion` AS PosicionIVA_posicion,
+			     PosicionIVA.`esResponsableInscripto` AS PosicionIVA_esResponsableInscripto,
+			     PosicionIVA.`esResponsableNoInscripto` AS PosicionIVA_esResponsableNoInscripto,
+			     PosicionIVA.`esExento` AS PosicionIVA_esExento,
+			     PosicionIVA.`esResponsableMonotributo` AS PosicionIVA_esResponsableMonotributo,
+			     PosicionIVA.`esConsumidorFinal` AS PosicionIVA_esConsumidorFinal,
+			     PosicionIVA.`esExportacion` AS PosicionIVA_esExportacion,
+			     FacturaDetalle.`id` AS FacturaDetalle_id,
+			     FacturaDetalle.`descripcion` AS FacturaDetalle_descripcion,
+			     FacturaDetalle.`cantidad` AS FacturaDetalle_cantidad,
+			     FacturaDetalle.`precio` AS FacturaDetalle_precio,
+			     SUM(CASE WHEN FacturaDetalle.`ivaGrabado`= 1 THEN
+				 FacturaDetalle.`cantidad` * FacturaDetalle.`precio`
+				 ELSE 0 END) AS netoGrabado,
+			     SUM(CASE WHEN FacturaDetalle.`ivaGrabado`= 0 THEN
+				 FacturaDetalle.`cantidad` * FacturaDetalle.`precio`
+				 ELSE 0 END) AS netoNoGrabado,
+			     FacturaDetalle.`articuloId` AS FacturaDetalle_articuloId,
+			     FacturaDetalle.`remitoId` AS FacturaDetalle_remitoId,
+			     FacturaDetalle.`ivaGrabado` AS FacturaDetalle_ivaGrabado,
+			     factura_detallesFacturas.`factura_id` AS factura_detallesFacturas_factura_id,
+			     factura_detallesFacturas.`facturadetalle_id` AS factura_detallesFacturas_facturadetalle_id
+			FROM
+			     `cliente` cliente INNER JOIN `Facturas` Facturas ON cliente.`idCliente` = Facturas.`clienteId`
+			     INNER JOIN `TipoComprobante` TipoComprobante ON Facturas.`tipoId` = TipoComprobante.`id`
+			     INNER JOIN `PosicionIVA` PosicionIVA ON Facturas.`tipoIva` = PosicionIVA.`id`
+			     INNER JOIN `factura_detallesFacturas` factura_detallesFacturas ON Facturas.`id` = factura_detallesFacturas.`factura_id`
+			     RIGHT JOIN `FacturaDetalle` FacturaDetalle ON factura_detallesFacturas.`facturadetalle_id` = FacturaDetalle.`id`
+			WHERE
+			     Facturas.`fecha` BETWEEN '$desde' AND '$hasta'
+			 AND TipoComprobante.`esBalance` = 0
+			GROUP BY Facturas.`id`
+			ORDER BY
+			     Facturas.`fecha` ASC";
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	
 		}catch(\Exception $e){
