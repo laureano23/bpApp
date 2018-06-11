@@ -39,7 +39,7 @@ Ext.define('MetApp.view.Clientes.SearchGridClientes', {
 				    tbar: [		
 					{
 						xtype: 'textfield',			
-						fieldLabel: 'Busqueda',			
+						fieldLabel: 'Cuit',			
 						name: 'busqueda',
 						itemId: 'searchField',					
 						enableKeyEvents : true,
@@ -98,7 +98,7 @@ Ext.define('MetApp.view.Clientes.SearchGridClientes', {
 								var panel = Ext.ComponentQuery.query('#clientesSearchGrid')[0];
 								var grid = panel.down('grid');
 								grid.getSelectionModel().select(0);
-								grid.getView().focus();									
+								grid.getView().focus();		 							
 								}				                
 							}
 						}							
