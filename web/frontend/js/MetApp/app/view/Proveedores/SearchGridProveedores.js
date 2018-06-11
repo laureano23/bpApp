@@ -69,7 +69,40 @@ Ext.define('MetApp.view.Proveedores.SearchGridProveedores', {
 								}				                
 							}
 						}							
-					},					
+					},
+					{
+						xtype: 'textfield',			
+						fieldLabel: 'CUIT',			
+						name: 'busquedaCuit',
+						itemId: 'busquedaCuit',					
+						enableKeyEvents : true,
+						listeners: {				
+							keyup : function(field, e){
+									var panel = Ext.ComponentQuery.query('#ProveedoresSearchGrid')[0];
+									var grid = panel.down('grid');	
+									var strSearch = grid.queryById('busquedaCuit').getValue();//Obtenemos el valor del campo de busqueda									
+									var storeArt = grid.getStore();	//Obtenemos el store	
+									
+									storeArt.clearFilter(true);
+									storeArt.filter(
+										{property: 'cuit',
+										value: strSearch,
+										anyMatch: true});
+									},			
+							
+							/*
+							 * Hacemos focus sobre la primer fila de la grilla
+							 */
+							keydown: function (field, k){						
+							if(k.button == 39){									
+								var panel = Ext.ComponentQuery.query('#ProveedoresSearchGrid')[0];
+								var grid = panel.down('grid');
+								grid.getSelectionModel().select(0);
+								grid.getView().focus();									
+								}				                
+							}
+						}							
+					},						
 					{
 						xtype: 'button',
 						text: 'Aceptar',
@@ -78,9 +111,10 @@ Ext.define('MetApp.view.Proveedores.SearchGridProveedores', {
 					}		
 					],
 					columns: [
-						{xtype: 'rownumberer', width: 50, sortable: false},
+						//{xtype: 'rownumberer', width: 50, sortable: false},
 						{text: 'Id', dataIndex: 'id', width: 30},
-						{text: 'Razon social', dataIndex: 'rsocial', flex: 1},			
+						{text: 'Razon social', dataIndex: 'rsocial', width: 500},			
+						{text: 'Cuit', dataIndex: 'cuit', flex: 1},
 					],	
 				},								
 			],			
