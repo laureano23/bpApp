@@ -36,28 +36,18 @@ class ArticulosController extends Controller
 		$request = $this->getRequest();
 		$idArt = $request->request->get('id');
 				
-		$repoFormula = $em->getRepository('MbpArticulosBundle:Formulas');
+		$repoFormula = $em->getRepository('MbpArticulosBundle:FormulasC');
 		$repoArt = $em->getRepository('MbpArticulosBundle:Articulos');
-		$tipoCambio = $this->get('TipoCambio');
 		
 		$articulo = $repoArt->find($idArt);
 		
-		$existeEnFormula = $repoFormula->tieneFormula($articulo);
-						
+		$node=$repoFormula->findOneBy(['idArt' => $idArt]);
+		$childs = $repoFormula->getChildren($node);
+			
 		$costo = 0;
 		
-		if($existeEnFormula){
-			$tc=$tipoCambio->getTipoCambio();
-			$qb = $repoFormula->estructuraCompleta($existeEnFormula[0]['id'], $tc);
-			
-			//print_r($qb);
-			foreach ($qb as $q) {
-				if($q['depth'] ==1){
-					$costo+=$q['sumCostoPadre'];	
-				}	
-			}
-			
-			
+		if(count($childs)>0){
+			$costo = $repoFormula->costoEstructuraCompleta($idArt);
 			
 		}else{
 			$costo = $articulo->getCosto();

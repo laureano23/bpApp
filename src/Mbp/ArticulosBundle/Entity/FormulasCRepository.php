@@ -49,4 +49,38 @@ class FormulasCRepository extends \Gedmo\Tree\Entity\Repository\ClosureTreeRepos
         return $qb->getArrayResult();        
     }
 
+    public function costoEstructuraCompleta($idArt){
+        $em = $this->getEntityManager();
+        $repo=$em->getRepository('MbpArticulosBundle:FormulasC');
+        $repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
+
+        $node=$repo->findOneBy(['idArt' => $idArt]);
+        $idNodo=$node->getId();
+
+        $sql="SELECT
+            sum(
+                case when art.moneda=0
+                then art.costo*node.cantidad
+                else art.costo*node.cantidad*params.dolarOficial end
+            ) as sumCosto,
+            node.id
+        from
+            (select *, c.descendant anterior, c.depth depthP
+            from FormulasClosure c
+            where c.ancestor = $idNodo) as a,
+        FormulasClosure p, FormulasC node, articulos art, ParametrosFinanzas params
+        where p.ancestor = a.anterior
+        and p.descendant = node.id
+        and node.idArt = art.idArticulos
+        group by a.anterior
+        limit 1
+        ";
+
+        $stmt = $em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $res= $stmt->fetchAll(); 
+       // print_r($res);
+        return $res[0]['sumCosto'];
+    }
+
 }
