@@ -16,6 +16,125 @@ use Mbp\FinanzasBundle\Entity\CobranzasDetalle;
 class ReportesController extends Controller
 {
 	/**
+     * @Route("/Reportes/generarComisiones", name="mbp_Reportes_generarComisiones", options={"expose"=true})
+     */	    
+    public function generarComisiones()
+	{
+		//RECIBO PARAMETROS
+		$em = $this->getDoctrine()->getManager();
+		$req = $this->getRequest();
+		
+		try{
+			$desde = $req->request->get('desde');		
+			$hasta = $req->request->get('hasta');
+
+
+			$reporteador = $this->get('reporteador');
+			$kernel = $this->get('kernel');
+			
+			$jru = $reporteador->jru();
+			
+			/*
+			 * Ruta archivo Jasper
+			 */				
+					
+			$ruta = $kernel->locateResource('@MbpFinanzasBundle/Reportes/ComisionesVendedores.jrxml');
+			
+			$destino = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'ComisionesVendedores.pdf';		
+			
+			//Parametros HashMap
+			$param = $reporteador->getJava('java.util.HashMap');
+			$rutaLogo = $reporteador->getRutaLogo($kernel);
+			
+			
+			
+			$conn = $reporteador->getJdbc();
+			$desdeObj=\DateTime::createFromFormat('d/m/Y', $desde);
+			$hastaObj=\DateTime::createFromFormat('d/m/Y', $hasta);
+			//print_r($desdeObj);
+			//exit;
+
+			$desdeSql=$desdeObj->format('Y-m-d');
+			$hastaSql=$hastaObj->format('Y-m-d');
+
+			$param->put('FECHA_DESDE', $desdeSql);
+			$param->put('FECHA_HASTA', $hastaSql);
+
+			$sql = "SELECT
+			     Facturas.`id` AS Facturas_id,
+			     Facturas.`fecha` AS Facturas_fecha,
+			     Facturas.`clienteId` AS Facturas_clienteId,
+			     Facturas.`ptoVta` AS Facturas_ptoVta,
+			     Facturas.`fcNro` AS Facturas_fcNro,
+			     Facturas.`rSocial` AS Facturas_rSocial,
+			     Facturas.`tipoId` AS Facturas_tipoId,
+			     Facturas.`tipoCambio` AS Facturas_tipoCambio,
+			     Facturas.`moneda` AS Facturas_moneda,
+			     TipoComprobante.`id` AS TipoComprobante_id,
+			     TipoComprobante.`esFactura` AS TipoComprobante_esFactura,
+			     TipoComprobante.`esNotaCredito` AS TipoComprobante_esNotaCredito,
+			     TipoComprobante.`esNotaDebito` AS TipoComprobante_esNotaDebito,
+			     TipoComprobante.`esBalance` AS TipoComprobante_esBalance,
+			     TipoComprobante.`descripcion` AS TipoComprobante_descripcion,
+			     TipoComprobante.`subTipoA` AS TipoComprobante_subTipoA,
+			     TipoComprobante.`subTipoB` AS TipoComprobante_subTipoB,
+			     TipoComprobante.`subTipoE` AS TipoComprobante_subTipoE,
+			     TipoComprobante.`codigoAfip` AS TipoComprobante_codigoAfip,
+			     TipoComprobante.`esNegro` AS TipoComprobante_esNegro,
+			     cliente.`idCliente` AS cliente_idCliente,
+			     cliente.`rsocial` AS cliente_rsocial,
+			     Vendedor.`id` AS Vendedor_id,
+			     Vendedor.`apellido` AS Vendedor_apellido,
+			     Vendedor.`nombre` AS Vendedor_nombre,
+			     Vendedor.`telefono` AS Vendedor_telefono,
+			     Vendedor.`inactivo` AS Vendedor_inactivo,
+			     cliente.`vendedorId` AS cliente_vendedorId,
+			     cliente.`comision` AS cliente_comision,
+			     Facturas.`total` AS Facturas_total,
+			     Facturas.`iva21` AS Facturas_iva21,
+			     Facturas.`perIIBB` AS Facturas_perIIBB
+			FROM
+			     `TipoComprobante` TipoComprobante INNER JOIN `Facturas` Facturas ON TipoComprobante.`id` = Facturas.`tipoId`
+			     INNER JOIN `cliente` cliente ON Facturas.`clienteId` = cliente.`idCliente`
+			     INNER JOIN `Vendedor` Vendedor ON cliente.`vendedorId` = Vendedor.`id`
+			WHERE TipoComprobante.`esBalance` = FALSE
+				AND Facturas.`fecha` BETWEEN '$desdeSql' AND '$hastaSql'
+			ORDER BY Vendedor.`id`, Facturas.`fecha` ASC";
+			
+			$res = $jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
+			
+			//ARMO RESPUESTA
+			$response = new Response();
+			return $response->setContent(json_encode(array('success'=>true)));		
+		}catch(\Exception $e){
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(json_encode(array('success'=>false, 'msg'=>$e->getMessage())));
+		}
+	}
+
+	/**
+     * @Route("/Reportes/servirReporteComisiones", name="mbp_Reportes_servirReporteComisiones", options={"expose"=true})
+     */	    
+    public function servirReporteComisiones()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'ComisionesVendedores.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'ComisionesVendedores.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+		$response->deleteFileAfterSend(TRUE);
+
+        return $response;
+	}
+
+
+	/**
      * @Route("/CCClientes/Reportes/generarFc", name="mbp_CCClientes_generateFc", options={"expose"=true})
      */	    
     public function generarFcAction()

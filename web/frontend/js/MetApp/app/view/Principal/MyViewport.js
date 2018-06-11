@@ -631,6 +631,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
 		                    render : dragZone,
 		                }, 
         			},
+                    {
+                        text: 'Comisiones a Vendedores',
+                        itemId: 'reporteComisiones',
+                        listeners : {
+                            render : dragZone,
+                        }, 
+                    },
         		]        		
         	},
         	{

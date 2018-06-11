@@ -89,9 +89,9 @@ $F{Facturas_total}-$F{Facturas_iva21} * $F{Facturas_tipoCambio} - $F{Facturas_pe
 $F{Facturas_total}-$F{Facturas_iva21} - $F{Facturas_perIIBB}]]></variableExpression>
 	</variable>
 	<variable name="TOTAL" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{COMISION}]]></variableExpression>
+		<variableExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == false ? $F{cliente_comision} * $V{NETO}/100 : $F{cliente_comision} * $V{NETO}/100 * -1]]></variableExpression>
 	</variable>
-	<variable name="COMISION" class="java.math.BigDecimal">
+	<variable name="COMISION" class="java.math.BigDecimal" resetType="None">
 		<variableExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == false ? $F{cliente_comision} * $V{NETO}/100 : $F{cliente_comision} * $V{NETO}/100 * -1]]></variableExpression>
 	</variable>
 	<group name="ID_VENDEDOR">
@@ -115,30 +115,7 @@ $F{Facturas_total}-$F{Facturas_iva21} - $F{Facturas_perIIBB}]]></variableExpress
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="20">
-				<textField pattern="¤ #,##0.00">
-					<reportElement x="0" y="0" width="802" height="20" uuid="53e890ab-5557-4ee6-afbd-daece974eeb3"/>
-					<box leftPadding="0" rightPadding="3">
-						<pen lineWidth="2.0"/>
-						<topPen lineWidth="2.0"/>
-						<leftPen lineWidth="2.0"/>
-						<bottomPen lineWidth="2.0"/>
-						<rightPen lineWidth="2.0"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="12" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{TOTAL}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="563" y="0" width="100" height="20" uuid="8f013500-7dd7-442c-83ea-86e694dd5570"/>
-					<box rightPadding="3"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="12" isBold="true" isItalic="true"/>
-					</textElement>
-					<text><![CDATA[Total:]]></text>
-				</staticText>
-			</band>
+			<band height="20"/>
 		</groupFooter>
 	</group>
 	<background>
@@ -273,6 +250,29 @@ $F{Facturas_total}-$F{Facturas_iva21} - $F{Facturas_perIIBB}]]></variableExpress
 		<band height="54" splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="42" splitType="Stretch"/>
+		<band height="20" splitType="Stretch">
+			<textField evaluationTime="Report" pattern="¤ #,##0.00">
+				<reportElement x="0" y="0" width="802" height="20" uuid="53e890ab-5557-4ee6-afbd-daece974eeb3"/>
+				<box leftPadding="0" rightPadding="3">
+					<pen lineWidth="2.0"/>
+					<topPen lineWidth="2.0"/>
+					<leftPen lineWidth="2.0"/>
+					<bottomPen lineWidth="2.0"/>
+					<rightPen lineWidth="2.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="563" y="0" width="100" height="20" uuid="8f013500-7dd7-442c-83ea-86e694dd5570"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Total:]]></text>
+			</staticText>
+		</band>
 	</summary>
 </jasperReport>

@@ -13,7 +13,8 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 		'MetApp.view.Reportes.ReporteCbteNoPagodos',
 		'MetApp.view.Reportes.RepoChequeTerceros',
 		'MetApp.view.Reportes.RepoChequesEntregados',
-		'MetApp.view.Reportes.ReporteCCCliente'
+		'MetApp.view.Reportes.ReporteCCCliente',
+		'MetApp.view.Reportes.RepoComisiones'
 	],
 	refs:[
 	],
@@ -21,6 +22,12 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 	init: function(){
 		var me = this;
 		me.control({
+			'#reporteComisiones': {
+				click: this.AddReporteComisiones
+			},
+			'RepoComisiones button[itemId=printDateReport]': {
+				click: this.ImprimirComisiones
+			},
 			'#reporteIVAVentas': {
 				click: this.AddReporteIVAVentas
 			},
@@ -109,6 +116,24 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 				click: this.SubmitCCForm
 			},
 		});
+	},
+
+	ImprimirComisiones: function(btn){
+		var win=btn.up('window');
+		var form=win.down('form').getForm();
+
+		form.submit({
+			url: Routing.generate('mbp_Reportes_generarComisiones'),
+
+			success: function(resp){
+				var ruta=Routing.generate('mbp_Reportes_servirReporteComisiones');
+				window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+			}
+		})
+	},
+
+	AddReporteComisiones: function(btn){
+		Ext.widget('RepoComisiones');
 	},
 	
 	SubmitCCForm: function(btn){
