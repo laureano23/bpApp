@@ -331,11 +331,20 @@ class Formulas2Controller extends Controller
 		$em = $this->getDoctrine()->getManager();
 		$repo = $em->getRepository('MbpArticulosBundle:FormulasC');
 		$data = json_decode($req->request->get('data'));
+		$idArtPadre = $req->request->get('art');
 
-		$node=$repo->find($data->idFormula);
-		$node->setCantidad($data->cant);
-		$node->setUnidad($data->unidad);
-		$em->persist($node);
+		$padres = $repo->findByIdArt($idArtPadre);
+
+		foreach ($padres as $p) {
+			$childs = $repo->getChildren($p, false, null, 'asc', true);
+			foreach ($childs as $child) {
+				if($child->getIdArt()->getId()==$data->idArt){
+					$child->setCantidad($data->cant);
+					$child->setUnidad($data->unidad);
+					$em->persist($child);
+				}
+			}
+		}
 		$em->flush();
 				
 		$resp = new Response(
