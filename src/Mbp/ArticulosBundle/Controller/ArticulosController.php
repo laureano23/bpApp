@@ -49,9 +49,8 @@ class ArticulosController extends Controller
 		}
 		$costo = 0;
 		
-		if(count($childs)>0){
-			$costo = $repoFormula->costoEstructuraCompleta($idArt);
-			
+		if($childs != 0 && count($childs)>0){
+			$costo = $repoFormula->costoEstructuraCompleta($idArt);			
 		}else{
 			$costo = $articulo->getCosto();
 		}
