@@ -54,7 +54,9 @@ class FormulasCRepository extends \Gedmo\Tree\Entity\Repository\ClosureTreeRepos
         $repo=$em->getRepository('MbpArticulosBundle:FormulasC');
         $repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
 
-        $node=$repo->findOneBy(['idArt' => $idArt]);
+        $art=$repoArt->find($idArt);
+
+        $node=$repo->findOneBy(['idArt' => $art]);
         $idNodo=$node->getId();
 
         $sql="SELECT
@@ -79,7 +81,6 @@ class FormulasCRepository extends \Gedmo\Tree\Entity\Repository\ClosureTreeRepos
         $stmt = $em->getConnection()->prepare($sql);
         $stmt->execute();
         $res= $stmt->fetchAll(); 
-       // print_r($res);
         return $res[0]['sumCosto'];
     }
 

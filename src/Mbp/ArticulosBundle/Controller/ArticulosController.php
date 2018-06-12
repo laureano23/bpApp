@@ -35,6 +35,7 @@ class ArticulosController extends Controller
 		$em = $this->getDoctrine()->getManager();
 		$request = $this->getRequest();
 		$idArt = $request->request->get('id');
+
 				
 		$repoFormula = $em->getRepository('MbpArticulosBundle:FormulasC');
 		$repoArt = $em->getRepository('MbpArticulosBundle:Articulos');
@@ -42,8 +43,10 @@ class ArticulosController extends Controller
 		$articulo = $repoArt->find($idArt);
 		
 		$node=$repoFormula->findOneBy(['idArt' => $idArt]);
-		$childs = $repoFormula->getChildren($node);
-			
+		$childs;
+		if($node!=null){
+			$childs=$repoFormula->getChildren($node);
+		}
 		$costo = 0;
 		
 		if(count($childs)>0){

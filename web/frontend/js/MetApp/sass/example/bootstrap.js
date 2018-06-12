@@ -938,8 +938,10 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.model.Finanzas.GridImputaFcModel": [],
   "MetApp.model.Finanzas.GrillaFacturacionModel": [],
   "MetApp.model.Finanzas.GrillaPagosModel": [],
+  "MetApp.model.Finanzas.PosicionIvaModel": [],
   "MetApp.model.Finanzas.TiposComprobantesModel": [],
   "MetApp.model.Finanzas.TiposPagoModel": [],
+  "MetApp.model.Finanzas.VendedorModel": [],
   "MetApp.model.Parametros.CentroCostosModel": [],
   "MetApp.model.Parametros.UserParamsModel": [],
   "MetApp.model.Personal.BancosModel": [],
@@ -1004,8 +1006,10 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.store.Finanzas.GridImputaFcStore": [],
   "MetApp.store.Finanzas.GrillaFacturacionStore": [],
   "MetApp.store.Finanzas.GrillaPagosStore": [],
+  "MetApp.store.Finanzas.PosicionIvaStore": [],
   "MetApp.store.Finanzas.TiposComprobantesStore": [],
   "MetApp.store.Finanzas.TiposPagoStore": [],
+  "MetApp.store.Finanzas.VendedorStore": [],
   "MetApp.store.Parametros.CentroCostosStore": [],
   "MetApp.store.Parametros.UserParamsStore": [],
   "MetApp.store.Personal.BancosStore": [],
@@ -1069,6 +1073,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.view.CCProveedores.CCProveedores": [],
   "MetApp.view.CCProveedores.ChequeTerceros": [],
   "MetApp.view.CCProveedores.FacturaProveedor": [],
+  "MetApp.view.CCProveedores.NotasCCViewProv": [],
   "MetApp.view.CCProveedores.PagoProveedores": [],
   "MetApp.view.Calidad.ControlRecepcionView": [],
   "MetApp.view.Calidad.FormEstanqueidadRG010": [],
@@ -1087,6 +1092,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.view.Compras.OrdenCompraView": [],
   "MetApp.view.Compras.PedidosInternosView": [],
   "MetApp.view.Compras.PendienteArticuloComprasView": [],
+  "MetApp.view.Compras.ReporteArtComprados": [],
   "MetApp.view.Parametros.CentroCostosView": [],
   "MetApp.view.Parametros.SearchGridCentroCostosView": [],
   "MetApp.view.Principal.MyViewport": [],
@@ -1147,6 +1153,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.view.RRHH.TablaSindicatos": [],
   "MetApp.view.Reportes.RepoChequeTerceros": [],
   "MetApp.view.Reportes.RepoChequesEntregados": [],
+  "MetApp.view.Reportes.RepoComisiones": [],
   "MetApp.view.Reportes.RepoIVACompras": [],
   "MetApp.view.Reportes.RepoIVAVentas": [],
   "MetApp.view.Reportes.RepoSaldoDeudor": [],
@@ -1157,6 +1164,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.view.Reportes.ReporteHistoricoMovBancarios": [],
   "MetApp.view.Reportes.ReporteIntResarcitorios": [],
   "MetApp.view.Utilitarios.CotizacionView": [],
+  "MetApp.view.Utilitarios.ListadoCotizaciones": [],
   "MetApp.view.Utilitarios.TxtRetencionesView": []
 });
 Ext.ClassManager.addNameAliasMappings({
@@ -2238,8 +2246,10 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.model.Finanzas.GridImputaFcModel": [],
   "MetApp.model.Finanzas.GrillaFacturacionModel": [],
   "MetApp.model.Finanzas.GrillaPagosModel": [],
+  "MetApp.model.Finanzas.PosicionIvaModel": [],
   "MetApp.model.Finanzas.TiposComprobantesModel": [],
   "MetApp.model.Finanzas.TiposPagoModel": [],
+  "MetApp.model.Finanzas.VendedorModel": [],
   "MetApp.model.Parametros.CentroCostosModel": [],
   "MetApp.model.Parametros.UserParamsModel": [],
   "MetApp.model.Personal.BancosModel": [],
@@ -2354,11 +2364,17 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.store.Finanzas.GrillaPagosStore": [
     "store.GrillaPagosStore"
   ],
+  "MetApp.store.Finanzas.PosicionIvaStore": [
+    "store.PosicionIvaStore"
+  ],
   "MetApp.store.Finanzas.TiposComprobantesStore": [
     "store.TiposComprobantesStore"
   ],
   "MetApp.store.Finanzas.TiposPagoStore": [
     "store.TiposPagoStore"
+  ],
+  "MetApp.store.Finanzas.VendedorStore": [
+    "store.VendedorStore"
   ],
   "MetApp.store.Parametros.CentroCostosStore": [
     "store.CentroCostosStore"
@@ -2549,6 +2565,9 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.view.CCProveedores.FacturaProveedor": [
     "widget.FacturaProveedor"
   ],
+  "MetApp.view.CCProveedores.NotasCCViewProv": [
+    "widget.NotasCCViewProv"
+  ],
   "MetApp.view.CCProveedores.PagoProveedores": [
     "widget.PagoProveedores"
   ],
@@ -2602,6 +2621,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "MetApp.view.Compras.PendienteArticuloComprasView": [
     "widget.PendienteArticuloComprasView"
+  ],
+  "MetApp.view.Compras.ReporteArtComprados": [
+    "widget.ReporteArtComprados"
   ],
   "MetApp.view.Parametros.CentroCostosView": [
     "widget.CentroCostosView"
@@ -2783,6 +2805,9 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.view.Reportes.RepoChequesEntregados": [
     "widget.RepoChequesEntregados"
   ],
+  "MetApp.view.Reportes.RepoComisiones": [
+    "widget.RepoComisiones"
+  ],
   "MetApp.view.Reportes.RepoIVACompras": [
     "widget.RepoIVACompras"
   ],
@@ -2812,6 +2837,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "MetApp.view.Utilitarios.CotizacionView": [
     "widget.CotizacionView"
+  ],
+  "MetApp.view.Utilitarios.ListadoCotizaciones": [
+    "widget.ListadoCotizaciones"
   ],
   "MetApp.view.Utilitarios.TxtRetencionesView": [
     "widget.TxtRetencionesView"
