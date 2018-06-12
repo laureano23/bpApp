@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ComprasPendientes" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="832" leftMargin="5" rightMargin="5" topMargin="5" bottomMargin="5" uuid="1d7da0f5-2b68-4270-8eac-b439ba47837d">
-	<property name="ireport.zoom" value="1.464100000000001"/>
+	<property name="ireport.zoom" value="1.2100000000000006"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="PROVEEDOR_ID_DESDE" class="java.lang.String">
@@ -55,7 +55,7 @@
      MovimientosArticulos.`clienteId` AS MovimientosArticulos_clienteId,
      MovimientosArticulos.`depositoId` AS MovimientosArticulos_depositoId,
      DetalleMovArt.`id` AS DetalleMovArt_id,
-     DetalleMovArt.`cantidad` AS DetalleMovArt_cantidad,
+     SUM(DetalleMovArt.`cantidad`) AS DetalleMovArt_cantidad,
      DetalleMovArt.`loteNum` AS DetalleMovArt_loteNum,
      DetalleMovArt.`descripcion` AS DetalleMovArt_descripcion,
      DetalleMovArt.`ordenCompraId` AS DetalleMovArt_ordenCompraId,
@@ -84,6 +84,7 @@ WHERE
      Proveedor.`id` BETWEEN $P{PROVEEDOR_ID_DESDE} AND $P{PROVEEDOR_ID_HASTA}
  AND OrdenCompra.`fechaEmision` BETWEEN $P{FECHA_DESDE} AND $P{FECHA_HASTA}
  AND articulos.`codigo` BETWEEN $P{CODIGO_DESDE} AND $P{CODIGO_HASTA}
+GROUP BY OrdenCompraDetalle.`id`, DetalleMovArt.`articuloId`
 ORDER BY
      Proveedor.`id` ASC,
      OrdenCompraDetalle.`fechaEntrega` DESC]]>
