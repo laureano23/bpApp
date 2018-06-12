@@ -119,6 +119,7 @@ class ArticulosRepository extends EntityRepository
 		$repoArt = $em->getRepository('MbpArticulosBundle:Articulos');
 		$repoFamilia = $em->getRepository('MbpArticulosBundle:Familia');
 		$repoSubFamilia = $em->getRepository('MbpArticulosBundle:SubFamilia');
+		$repoFormulas=$em->getRepository('MbpArticulosBundle:FormulasC');
 		
 		try{
 			//BUSCA FAMILIA Y SUB FAMILIA
@@ -133,8 +134,7 @@ class ArticulosRepository extends EntityRepository
 			}			
 			$art->setcodigo($data->codigo)
 			->setdescripcion($data->descripcion)
-			->setunidad($data->unidad)
-			->setcosto($data->costo)
+			->setunidad($data->unidad)			
 			->setPeso($data->peso)
 			->setMoneda($data->moneda == 'p' ? 0 : 1)
 			->setFamiliaId($fam)
@@ -146,6 +146,15 @@ class ArticulosRepository extends EntityRepository
 			$data->vigenciaPrecio != "" ? 
 				$art->setVigenciaPrecio(\DateTime::createFromFormat("d/m/Y", $data->vigenciaPrecio))
 				:"";
+
+			//el costo lo seteamos si no tenemos formula
+			$nodo=$repoFormulas->findOneByidArt($art);
+			if($nodo!=null && $repoFormulas->childCount($nodo) > 0){
+					
+			}else{
+				$art->setcosto($data->costo);	
+			}
+			
 			
 			$errors = $validator->validate($art);
 			if(count($errors) > 0){

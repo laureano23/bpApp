@@ -168,8 +168,9 @@ class Formulas2Controller extends Controller
     	$artPadreId=$req->request->get('art');
     	$artHijoId=$data->id;
 
+
     	$arbolPadre=$repo->findBy(['idArt'=>$artPadreId]);
-    	$arbolHijo=$repo->findOneBy(['idArt'=>$artHijoId, 'level'=>1]);
+    	$arbolHijo=$repo->findOneBy(['idArt'=>$artHijoId]);
 
 
     	if($arbolPadre==null && $arbolHijo==null){
@@ -216,6 +217,9 @@ class Formulas2Controller extends Controller
 
 		$arbolPadre = new FormulasC;
 		$art = $repoArt->find($idArtPadre);
+		//seteo el costo a 0 ya que estara definido por formula
+    	$art->setCosto(0);
+    	$em->persist($art);
 		$arbolPadre->setidArt($art);
 		$arbolPadre->setParent($arbolPadre);
 		$arbolPadre->setCantidad(1);
@@ -252,6 +256,10 @@ class Formulas2Controller extends Controller
 	
 		$arbolPadre = new FormulasC;
 		$art = $repoArt->find($idArtPadre);
+		//seteo el costo a 0 ya que estara definido por formula
+    	$art->setCosto(0);
+    	$em->persist($art);
+
 		$arbolPadre->setidArt($art);
 		$arbolPadre->setParent($arbolPadre);
 		$arbolPadre->setCantidad(1);

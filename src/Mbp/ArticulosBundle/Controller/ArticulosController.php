@@ -73,9 +73,7 @@ class ArticulosController extends Controller
 		$response = new Response();
 		$data = $request->request->get('data');
 		
-		try{
-			//throw new \Exception("Error Processing Request", 1);	
-			
+		try{			
 			$rep = $em->getRepository('MbpArticulosBundle:Articulos');
 			$validator = $this->get('validator');
 			$res = $rep->crearArticulo($data, $validator);
