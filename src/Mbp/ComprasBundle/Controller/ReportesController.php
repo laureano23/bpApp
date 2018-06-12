@@ -219,7 +219,7 @@ class ReportesController extends Controller
 				     MovimientosArticulos.`clienteId` AS MovimientosArticulos_clienteId,
 				     MovimientosArticulos.`depositoId` AS MovimientosArticulos_depositoId,
 				     DetalleMovArt.`id` AS DetalleMovArt_id,
-				     DetalleMovArt.`cantidad` AS DetalleMovArt_cantidad,
+				     SUM(DetalleMovArt.`cantidad`) AS DetalleMovArt_cantidad,
 				     DetalleMovArt.`loteNum` AS DetalleMovArt_loteNum,
 				     DetalleMovArt.`descripcion` AS DetalleMovArt_descripcion,
 				     DetalleMovArt.`ordenCompraId` AS DetalleMovArt_ordenCompraId,
