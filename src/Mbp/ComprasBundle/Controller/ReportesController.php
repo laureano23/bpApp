@@ -248,6 +248,7 @@ class ReportesController extends Controller
 				     Proveedor.`id` BETWEEN $proveedorDesde AND $proveedorHasta
 				 AND OrdenCompra.`fechaEmision` BETWEEN '$desde' AND '$hasta'
 				 AND articulos.`codigo` BETWEEN '$codigoDesde' AND '$codigoHasta'
+				GROUP BY OrdenCompraDetalle.`id`, DetalleMovArt.`articuloId`
 				ORDER BY
 				     Proveedor.`id` ASC,
 				     OrdenCompraDetalle.`fechaEntrega` DESC
