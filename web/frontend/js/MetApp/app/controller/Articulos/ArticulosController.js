@@ -18,6 +18,9 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 				'#actualizarBDArticulos': {
 					click: this.actualizarBDArticulos
 				},
+				'articulosform button[itemId=estructuraProducto]': {
+					click: this.EstructuraProducto
+				},
 				'articulosform button[action=actBuscaArt]': {
 					click: this.SearchArt
 				},				
@@ -55,6 +58,12 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 					click: this.EnQueFormulas
 				},
 		});		
+	},
+
+	EstructuraProducto: function(btn){
+		console.log("hola");
+		console.log(this.getController('Articulos.FormulasController'));
+		this.getController('Articulos.FormulasController').Estructura(btn);
 	},
 	
 	EnQueFormulas: function(btn){
@@ -351,7 +360,7 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 		
 		store.on('write', function(st, op){
 			var resp = Ext.JSON.decode(op.response.responseText);
-			form.queryById('idCodigo').setValue(resp.data.id);
+			form.queryById('id').setValue(resp.data.id);
 			me.ResetForm(button);
 		});
 		
@@ -389,7 +398,7 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 		var form = button.up('form');
 		var record = form.getForm().getRecord();
 		var store = this.getArticulosArticulosStore();
-		var id = form.queryById('idCodigo').getValue();
+		var id = form.queryById('id').getValue();
 		var model = store.findRecord('id', id);
 		
 		var proxy = store.getProxy();

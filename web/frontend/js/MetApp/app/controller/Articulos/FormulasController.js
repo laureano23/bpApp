@@ -266,7 +266,7 @@ Ext.define('MetApp.controller.Articulos.FormulasController',{
 			url: Routing.generate('mbp_formulas_generaReporte'),
 			
 			params: {
-				idNodo: win.queryById('idFormula').getValue()
+				idArt: win.queryById('id').getValue()
 			},
 			
 			success: function(resp, opt){

@@ -132,13 +132,21 @@ class ReportesController extends Controller
 	{
 		$repo = $this->get('reporteador');		
 		$kernel = $this->get('kernel');	
+		$em=$this->getDoctrine()->getEntityManager();
+		$repoFormulas=$em->getRepository('MbpArticulosBundle:FormulasC');
+		$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
 		
 		/*
 		 * Recibo parametros del request 
 		 */
 		$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
-		$idNodo = (int)$req->request->get('idNodo');
+		$idArt=$req->request->get('idArt');
+		$art=$repoArt->find($idArt);
+
+		$nodo = $repoFormulas->findOneByIdArt($art);
+		if($nodo==null) return;
+		$idNodo=$nodo->getId();
 		$tipoCambio = $this->get('TipoCambio');
 		$tc = (float)$tipoCambio->getTipoCambio();
 		

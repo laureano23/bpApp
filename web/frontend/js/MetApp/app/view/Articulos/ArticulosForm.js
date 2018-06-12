@@ -24,7 +24,7 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 			{
 				xtype: 'numberfield',
 				name: 'id',
-				itemId: 'idCodigo',
+				itemId: 'id',
 				fieldLabel: 'Id',				
 				width: 250,
 				text: 'id',
@@ -73,6 +73,12 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 				xtype: 'button',
 				text: 'En que formulas',
 				itemId: 'enQueFormulas',
+				margin: '0 0 0 5'				
+			},
+			{
+				xtype: 'button',
+				text: 'Estructura',
+				itemId: 'estructuraProducto',
 				margin: '0 0 0 5'				
 			}
 		]
@@ -244,7 +250,7 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 												disabledCls: 'myDisabledClass'	
 											},
 											layout: 'hbox',							
-											width: 600,
+											width: 750,
 											padding: '5 5 5 5',
 											items: autz.getAuthorizedElements(itemsBox1)
 										},
