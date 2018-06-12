@@ -43,7 +43,7 @@ class ArticulosController extends Controller
 		$articulo = $repoArt->find($idArt);
 		
 		$node=$repoFormula->findOneBy(['idArt' => $idArt]);
-		$childs;
+		$childs=0;
 		if($node!=null){
 			$childs=$repoFormula->getChildren($node);
 		}
