@@ -28,6 +28,9 @@ SELECT
      Facturas.`total` AS Facturas_total,
      Facturas.`moneda` AS Facturas_moneda,
      Facturas.`tipoCambio` AS Facturas_tipoCambio,
+     CASE WHEN tipo.esFactura = true then "FA N° "
+	when tipo.esNotaDebito=true then "NC N° "
+	else "ND N° " end as concepto,
      cliente.`rsocial` AS cliente_rsocial,
      cliente.`idCliente` AS cliente_idCliente,
      tipo.esFactura as esFactura,
@@ -45,7 +48,8 @@ WHERE
 	Facturas_total > TransaccionCobranzaFactura_aplicado AND
 	esFactura = true OR
 	Facturas_total > TransaccionCobranzaFactura_aplicado AND
-	esNotaDebito = true]]>
+	esNotaDebito = true
+ORDER BY cliente_idCliente, Facturas_fecha]]>
 	</queryString>
 	<field name="TransaccionCobranzaFactura_aplicado" class="java.math.BigDecimal"/>
 	<field name="Cobranzas_id" class="java.lang.Integer"/>
@@ -54,7 +58,7 @@ WHERE
 	<field name="TransaccionCobranzaFactura_facturaId" class="java.lang.Integer"/>
 	<field name="TransaccionCobranzaFactura_cobranzaId" class="java.lang.Integer"/>
 	<field name="Facturas_id" class="java.lang.Integer"/>
-	<field name="Facturas_fecha" class="java.sql.Timestamp"/>
+	<field name="Facturas_fecha" class="java.sql.Date"/>
 	<field name="Facturas_concepto" class="java.lang.String"/>
 	<field name="fcNro" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -65,6 +69,9 @@ WHERE
 	<field name="Facturas_total" class="java.math.BigDecimal"/>
 	<field name="Facturas_moneda" class="java.lang.Boolean"/>
 	<field name="Facturas_tipoCambio" class="java.math.BigDecimal"/>
+	<field name="concepto" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="cliente_rsocial" class="java.lang.String"/>
 	<field name="cliente_idCliente" class="java.lang.Integer"/>
 	<field name="esFactura" class="java.lang.Boolean">
@@ -223,7 +230,7 @@ WHERE
 			<textField>
 				<reportElement x="60" y="0" width="83" height="20" uuid="f3cd3609-0fd5-4e8b-a97d-7d58bf63889c"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{Facturas_concepto}+" "+$F{Facturas_ptoVta}+"-"+$F{fcNro}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{concepto}+$F{Facturas_ptoVta}+"-"+$F{fcNro}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="143" y="0" width="78" height="20" uuid="79018bb8-c38a-4c06-8bde-a400e6b7fc77"/>
