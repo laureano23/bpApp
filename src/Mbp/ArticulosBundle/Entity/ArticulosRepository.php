@@ -44,7 +44,7 @@ class ArticulosRepository extends EntityRepository
 						CASE WHEN a.monedaPrecio = false THEN 'p' ELSE 'd' END AS monedaPrecio,
 						a.requiereControl,
 						a.peso,
-						a.vigenciaPrecio")
+						DATE_FORMAT(a.vigenciaPrecio, '%d/%m/%Y') vigenciaPrecio")
 						->leftJoin('a.familiaId', 'f')
 						->leftJoin('a.subFamiliaId', 'sf')
 						->where('a.id = :art')

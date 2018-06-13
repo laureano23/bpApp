@@ -139,7 +139,19 @@ Ext.define('MetApp.view.CCClientes.CCClientes' ,{
 								dataIndex: 'emision',
 								flex: 1
 							},
-							{ text: 'Concepto', dataIndex: 'concepto', width: 240 },
+							{ 
+								text: 'Concepto',
+								dataIndex: 'concepto',
+								width: 240,
+								renderer: function(val, met, rec){
+									console.log(rec);
+									if(rec.data.pagado == true){
+										return '<span style="color:blue;">'+val+'</span>';
+									}else{
+										return val;
+									}
+								}, 
+							},
 							{ text: 'Vencimiento', dataIndex: 'vencimiento', flex: 1 },
 							{ text: 'Debe', dataIndex: 'debe', xtype: 'numbercolumn', flex: 1 },
 							{ text: 'Haber', dataIndex: 'haber', xtype: 'numbercolumn', flex: 1 },
