@@ -96,6 +96,11 @@ Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 									name: 'vencimientoFc',
 									itemId: 'vencimientoFc',
 									fieldLabel: 'Vencimiento Fc'
+								},
+								{
+									xtype: 'button',
+									text: 'Detalle',
+									itemId: 'detalleProveedor',
 								}
 							]
 						},

@@ -40,6 +40,9 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 			'#tbCCProveedores': {
 				click: this.AddCCProveedoresTb
 			},
+			'CCProveedores button[itemId=detalleProveedor]': {
+				click: this.DetalleProveedor
+			},
 			'CCProveedores button[itemId=buscaProveedor]': {
 				click: this.BuscaProveedor
 			},
@@ -68,6 +71,15 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 				click: this.NuevaNota
 			},
 		});
+	},
+
+	DetalleProveedor: function(btn){
+		var winCC=btn.up('window');
+		var rec=winCC.down('form').getForm().getRecord();
+		var win=Ext.widget('ProveedoresWin');
+		
+		win.down('form').loadRecord(rec);
+		
 	},
 	
 	NuevaNota: function(btn){
