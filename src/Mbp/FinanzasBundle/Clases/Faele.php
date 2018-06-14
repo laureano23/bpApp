@@ -109,6 +109,11 @@ class Faele extends wsfev1
 			);
 		}
 	}
+
+	public function consultarCaeEmitido($cbteTipo, $cbteNum, $ptoVta){
+		return $this->FECompConsultar($cbteTipo, $cbteNum, $ptoVta);
+
+	}
 	
 	public function digitoVerificador($tipoCbte, $cae, $vtoCae){
 		
