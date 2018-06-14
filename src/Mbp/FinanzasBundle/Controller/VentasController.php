@@ -24,9 +24,11 @@ class VentasController extends Controller
 
 		$faele = $this->get('mbp.faele'); //FACTURA ELECTRONICA			
 		
-		$cae=$faele->consultarCaeEmitido(1, 250, 1);
+		$cae=$faele->consultarCaeEmitido(1, 5034, 2);
 
 		print_r($cae);
+		$dig=$faele->digitoVerificador(1, $cae->FECompConsultarResult->ResultGet->CodAutorizacion, $cae->FECompConsultarResult->ResultGet->FchVto);
+		print_r('dig verificador: '.$dig);
 		return $response;
 	}
 
