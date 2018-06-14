@@ -13,6 +13,24 @@ use Mbp\FinanzasBundle\Entity\TipoComprobante;
 
 class VentasController extends Controller
 {	
+
+	/**
+     * @Route("/CCClientes/recuperarComp", name="mbp_CCClientes_recuperarComp", options={"expose"=true})
+     */	    
+    public function recuperarComp()
+	{
+
+		$response = new Response;
+
+		$faele = $this->get('mbp.faele'); //FACTURA ELECTRONICA			
+		
+		$cae=$faele->consultarCaeEmitido(1, 250, 1);
+
+		print_r($cae);
+		return $response;
+	}
+
+
 	/**
      * @Route("/CCClientes/listarTiposComprobantes", name="mbp_CCClientes_listarTiposComprobantes", options={"expose"=true})
      */
