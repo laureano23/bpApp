@@ -267,6 +267,18 @@ class wsfev1 {
 							'Sign' => $this->TA->credentials->sign,
 							'Cuit' => self::$CUIT)));
 	}
+
+	public function FECompConsultar($cbteTipo, $cbteNum, $ptoVta){
+		return $this->client->FECompConsultar(
+		array('Auth'=>array('Token' => $this->TA->credentials->token,
+							'Sign' => $this->TA->credentials->sign,
+							'Cuit' => self::$CUIT),
+			'FeCompConsReq'=>array(
+							'CbteTipo' => $cbteTipo,
+							'CbteNro' => $cbteNum,
+							'PtoVta' => $ptoVta)
+			));
+	}
 	
 } // class
 
