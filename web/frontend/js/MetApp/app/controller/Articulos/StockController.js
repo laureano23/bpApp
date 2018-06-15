@@ -302,6 +302,7 @@ Ext.define('MetApp.controller.Articulos.StockController',{
 			dataArt[i] = rec.getData();
 			i++;	
 		});
+
 				
 		if(form.isValid()){
 			Ext.Ajax.request({
