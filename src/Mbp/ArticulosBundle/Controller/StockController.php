@@ -258,6 +258,7 @@ class StockController extends Controller
 				$oc == "" ? $detalle->setOrdenCompraId(null) : $detalle->setOrdenCompraId($oc);
 				$detalle->setArticuloId($objArt);
 				
+				//$em->persist($detalle);
 				$movimiento->addMovDetalleId($detalle);
 				
 				//VALIDAMOS LA ENTIDAD				
