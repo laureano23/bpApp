@@ -170,34 +170,7 @@ class ReportesController extends Controller
 		 * SQL
 		 * 
 		 */
-		$sql = "
-			SELECT
-				node.id,
-				node.cantidad as cant,
-				node.level,
-				art.descripcion,
-				art.codigo,
-				art.moneda,
-				art.costo,
-				node.unidad,
-				sum(
-					case when art.moneda=0
-					then art.costo*node.cantidad
-					else art.costo*node.cantidad*$tc end
-				) as sumCosto,
-				art.costo,
-				a.depthP,
-				p.depth
-			from
-				(select *, c.descendant anterior, c.depth depthP
-				from FormulasClosure c
-				where c.ancestor = $idNodo) as a,
-			FormulasClosure p, FormulasC node, articulos art
-			where p.ancestor = a.anterior
-			and p.descendant = node.id
-			and node.idArt = art.idArticulos
-			group by a.anterior
-		";
+		$sql = "call estructuraFormulas($idNodo, $tc);";
 		 /*
 		  * FIN SQL
 		  */

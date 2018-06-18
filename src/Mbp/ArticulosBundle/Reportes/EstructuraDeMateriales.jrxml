@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EstructuraDeMateriales" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7c719db6-fefe-4fcb-914a-8c49a59a37f5">
-	<property name="ireport.zoom" value="0.8467108950806659"/>
+	<property name="ireport.zoom" value="1.3636363636363635"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Prof1" mode="Opaque" forecolor="#000000" backcolor="#FFFFFF" fontSize="8" isItalic="false" isUnderline="false">
@@ -15,32 +15,7 @@
 	<parameter name="rutaLogo" class="java.lang.String"/>
 	<parameter name="tc" class="java.lang.Float"/>
 	<queryString>
-		<![CDATA[SELECT
-	node.id,
-	node.cantidad as cant,
-	node.level,
-	art.descripcion,
-	art.codigo,
-	art.moneda,
-	art.costo,
-	node.unidad,
-	sum(
-		case when art.moneda=0
-		then art.costo*node.cantidad
-		else art.costo*node.cantidad*$P{tc} end
-	) as sumCosto,
-	art.costo,
-	a.depthP,
-	p.depth
-from
-	(select *, c.descendant anterior, c.depth depthP
-	from FormulasClosure c
-	where c.ancestor = $P{idNodo}) as a,
-FormulasClosure p, FormulasC node, articulos art
-where p.ancestor = a.anterior
-and p.descendant = node.id
-and node.idArt = art.idArticulos
-group by a.anterior]]>
+		<![CDATA[call estructuraFormulas($P{idNodo}, $P{tc});]]>
 	</queryString>
 	<field name="id" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -58,17 +33,16 @@ group by a.anterior]]>
 	<field name="moneda" class="java.lang.Boolean">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="anterior" class="java.lang.Integer"/>
 	<field name="costo" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="unidad" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="sumCosto" class="java.lang.Double"/>
+	<field name="sumCosto" class="java.math.BigDecimal"/>
 	<field name="depthP" class="java.lang.Integer"/>
 	<field name="depth" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="sumatoria" class="java.math.BigDecimal"/>
 	<variable name="sub_total" class="java.lang.Float" resetType="Group" resetGroup="sub_rep" calculation="Sum">
 		<variableExpression><![CDATA[$F{costo}]]></variableExpression>
 	</variable>
@@ -105,7 +79,7 @@ $V{COSTO_UNITARIO} *$F{cant}]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="10" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{sumCosto} / $P{tc}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{sumatoria} / $P{tc}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="348" y="59" width="94" height="16" forecolor="#FFFFFF" uuid="19841480-9c22-44fb-a2b8-fd765b4fad08"/>
@@ -169,7 +143,7 @@ $V{COSTO_UNITARIO} *$F{cant}]]></variableExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{sumCosto}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{sumatoria}]]></textFieldExpression>
 			</textField>
 			<image onErrorType="Blank">
 				<reportElement x="702" y="2" width="100" height="77" uuid="b453a4ac-e52e-4e90-91c3-a297dff3df58"/>
@@ -275,7 +249,7 @@ $V{COSTO_UNITARIO} *$F{cant}]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{sumCosto}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{costo} == 0 ? $F{sumatoria}: $F{sumCosto}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement x="539" y="0" width="51" height="18" uuid="b43fe537-40af-4d5f-a879-b173cedbc2f8">
