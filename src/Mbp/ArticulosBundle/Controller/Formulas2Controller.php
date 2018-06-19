@@ -284,16 +284,19 @@ class Formulas2Controller extends Controller
 	    	$nodeN->setidArt($ch->getIdArt());
 
 	    	//el primer nodo siempre se engancha al padre buscado
-    		if($flagLvl){
+    		if($flagLvl){				
     			$nodeN->setParent($parent);
     			$nodeN->setCantidad($pimerCantidad);
+    			$nodeN->setLevel($parent->getLevel()+1);
     			$flagLvl=false;
     			$parent=$nodeN;
     		}else{
-	    		if($lastAdded != null && $lastAdded->getLevel()+1 == $ch->getLevel()){
+	    		if($lastAdded != null && $lastAdded->getLevel()+1 == $ch->getLevel()+1){
 	    			$parent=$lastAdded;
 	    		}
+
 	    		$nodeN->setParent($parent);	
+	    		$nodeN->setLevel($parent->getLevel()+1);
 	    		$lastAdded=$nodeN;
     		}
     		$em->persist($nodeN);
@@ -323,7 +326,8 @@ class Formulas2Controller extends Controller
 
         $em->flush();
 
-        return new Response;
+        $response=new Response;
+        return $response->setContent(json_encode(array('success'=>true)));
 	}
 	
 	public function formulasUpdateNodoAction(Request $req)
