@@ -14,7 +14,8 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 		'MetApp.view.Reportes.RepoChequeTerceros',
 		'MetApp.view.Reportes.RepoChequesEntregados',
 		'MetApp.view.Reportes.ReporteCCCliente',
-		'MetApp.view.Reportes.RepoComisiones'
+		'MetApp.view.Reportes.RepoComisiones',
+		'MetApp.view.Reportes.RepoRetenciones'
 	],
 	refs:[
 	],
@@ -22,6 +23,12 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 	init: function(){
 		var me = this;
 		me.control({
+			'#reporteRetenciones': {
+				click: this.AddReporteRetenciones
+			},
+			'RepoRetenciones button[itemId=printReport]': {
+				click: this.ImprimirReporteRetenciones
+			},
 			'#reporteComisiones': {
 				click: this.AddReporteComisiones
 			},
@@ -116,6 +123,24 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 				click: this.SubmitCCForm
 			},
 		});
+	},
+	
+	ImprimirReporteRetenciones: function(btn){
+		var win=btn.up('window');
+		var form=win.down('form').getForm();
+
+		form.submit({
+			url: Routing.generate('mbp_proveedores_reporteRetencion'),
+
+			success: function(resp){
+				var ruta=Routing.generate('mbp_proveedores_verReporteRetencion');
+				window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+			}
+		})
+	},
+
+	AddReporteRetenciones: function(btn){
+		Ext.widget('RepoRetenciones');
 	},
 
 	ImprimirComisiones: function(btn){

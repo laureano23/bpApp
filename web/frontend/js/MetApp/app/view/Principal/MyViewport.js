@@ -663,7 +663,14 @@ Ext.define('MetApp.view.Principal.MyViewport', {
         				listeners : {
 		                    render : dragZone,
 		                }, 
-        			}
+        			},
+                    {
+                        text: 'Retenciones',
+                        itemId: 'reporteRetenciones',
+                        listeners : {
+                            render : dragZone,
+                        }, 
+                    }
         		]
         	},
         	{
