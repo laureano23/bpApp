@@ -28,6 +28,9 @@ Ext.define('MetApp.model.Articulos.Articulos',{
 		{name: 'peso', type: 'string'},
 		{name: 'requiereControl', type: 'string'},
 		{name: 'vigenciaPrecio', type: 'datetime', dateFormat: 'c' },			
+		{name: 'provSug1', type: 'int'},
+		{name: 'provSug2', type: 'int'},
+		{name: 'provSug3', type: 'int'}
 	]
 });
 

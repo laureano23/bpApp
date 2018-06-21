@@ -14,6 +14,46 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ArticulosController extends Controller
 {
+	public function updateProvAction()
+    {    	
+    	$em = $this->getDoctrine()->getManager();				
+		$repoArt = $em->getRepository('MbpArticulosBundle:Articulos');
+		$repoProv = $em->getRepository('MbpProveedoresBundle:Proveedor');
+
+		$sql="SELECT * 
+			FROM `TABLE 113` prov
+			where prov.`prov1` != 0 or prov.`prov2` or prov.`prov3`
+			";
+
+        $stmt = $em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $res= $stmt->fetchAll();
+
+
+
+		foreach ($res as $r) {
+			$art=$repoArt->findOneByCodigo($r['cod_art']);
+
+			if($art==null) continue;
+			$prov1=$repoProv->findOneByCuit($r['prov1']);
+
+
+			$prov2=$repoProv->findOneByCuit($r['prov2']);
+			$prov3=$repoProv->findOneByCuit($r['prov3']);
+
+			$art->setProvSug1($prov1);
+			$art->setProvSug2($prov2);
+			$art->setProvSug3($prov3);
+
+			$em->persist($art);
+
+		}
+		//print_r($res);
+		$em->flush();
+		$em->clear();
+		return new Response();
+    }
+
     public function articuloslistAction()
     {    	
     	$em = $this->getDoctrine()->getManager();

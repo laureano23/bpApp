@@ -44,9 +44,15 @@ class ArticulosRepository extends EntityRepository
 						CASE WHEN a.monedaPrecio = false THEN 'p' ELSE 'd' END AS monedaPrecio,
 						a.requiereControl,
 						a.peso,
-						DATE_FORMAT(a.vigenciaPrecio, '%d/%m/%Y') vigenciaPrecio")
+						DATE_FORMAT(a.vigenciaPrecio, '%d/%m/%Y') vigenciaPrecio,
+						pr1.id as provSug1,
+						pr2.id as provSug2,
+						pr3.id as provSug3")
 						->leftJoin('a.familiaId', 'f')
 						->leftJoin('a.subFamiliaId', 'sf')
+						->leftJoin('a.provSug1', 'pr1')
+						->leftJoin('a.provSug2', 'pr2')
+						->leftJoin('a.provSug3', 'pr3')
 						->where('a.id = :art')
 						->andWhere('a.inactivo = 0')
 						->setParameter('art', $idArt)
@@ -120,6 +126,7 @@ class ArticulosRepository extends EntityRepository
 		$repoFamilia = $em->getRepository('MbpArticulosBundle:Familia');
 		$repoSubFamilia = $em->getRepository('MbpArticulosBundle:SubFamilia');
 		$repoFormulas=$em->getRepository('MbpArticulosBundle:FormulasC');
+		$repoProveedor=$em->getRepository('MbpProveedoresBundle:Proveedor');
 		
 		try{
 			//BUSCA FAMILIA Y SUB FAMILIA
@@ -142,7 +149,11 @@ class ArticulosRepository extends EntityRepository
 			->setPrecio($data->precio)
 			->setMonedaPrecio($data->monedaPrecio == 'p' ? 0 : 1)
 			->setRutaServer($data->rutaServer)
+			->setProvSug1($repoProveedor->find($data->provSug1))
+			->setProvSug2($repoProveedor->find($data->provSug2))
+			->setProvSug3($repoProveedor->find($data->provSug3))
 			->setRequiereControl($data->requiereControl == "on" ? 1 : 0);
+
 			$data->vigenciaPrecio != "" ? 
 				$art->setVigenciaPrecio(\DateTime::createFromFormat("d/m/Y", $data->vigenciaPrecio))
 				:"";

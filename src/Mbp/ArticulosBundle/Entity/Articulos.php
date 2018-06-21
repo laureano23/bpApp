@@ -200,6 +200,30 @@ class Articulos
      */
     private $vigenciaPrecio;
 
+    /** 
+     * @var \Mbp\ProveedoresBundle\Entity\Proveedor
+     *
+     * @ORM\ManyToOne(targetEntity="Mbp\ProveedoresBundle\Entity\Proveedor")
+     * @ORM\JoinColumn(name="prov1Id", referencedColumnName="id", unique=false, nullable=true)     
+     */
+    private $provSug1;
+
+    /** 
+     * @var \Mbp\ProveedoresBundle\Entity\Proveedor
+     *
+     * @ORM\ManyToOne(targetEntity="Mbp\ProveedoresBundle\Entity\Proveedor")
+     * @ORM\JoinColumn(name="prov2Id", referencedColumnName="id", unique=false, nullable=true)     
+     */
+    private $provSug2;
+
+    /** 
+     * @var \Mbp\ProveedoresBundle\Entity\Proveedor
+     *
+     * @ORM\ManyToOne(targetEntity="Mbp\ProveedoresBundle\Entity\Proveedor")
+     * @ORM\JoinColumn(name="prov3Id", referencedColumnName="id", unique=false, nullable=true)     
+     */
+    private $provSug3;
+
 
     /**
      * Set codigo
@@ -685,5 +709,77 @@ class Articulos
     public function getVigenciaPrecio()
     {
         return $this->vigenciaPrecio;
+    }
+
+    /**
+     * Set provSug1
+     *
+     * @param \Mbp\ProveedoresBundle\Entity\Proveedor $provSug1
+     *
+     * @return Articulos
+     */
+    public function setProvSug1(\Mbp\ProveedoresBundle\Entity\Proveedor $provSug1 = null)
+    {
+        $this->provSug1 = $provSug1;
+
+        return $this;
+    }
+
+    /**
+     * Get provSug1
+     *
+     * @return \Mbp\ProveedoresBundle\Entity\Proveedor
+     */
+    public function getProvSug1()
+    {
+        return $this->provSug1;
+    }
+
+    /**
+     * Set provSug2
+     *
+     * @param \Mbp\ProveedoresBundle\Entity\Proveedor $provSug2
+     *
+     * @return Articulos
+     */
+    public function setProvSug2(\Mbp\ProveedoresBundle\Entity\Proveedor $provSug2 = null)
+    {
+        $this->provSug2 = $provSug2;
+
+        return $this;
+    }
+
+    /**
+     * Get provSug2
+     *
+     * @return \Mbp\ProveedoresBundle\Entity\Proveedor
+     */
+    public function getProvSug2()
+    {
+        return $this->provSug2;
+    }
+
+    /**
+     * Set provSug3
+     *
+     * @param \Mbp\ProveedoresBundle\Entity\Proveedor $provSug3
+     *
+     * @return Articulos
+     */
+    public function setProvSug3(\Mbp\ProveedoresBundle\Entity\Proveedor $provSug3 = null)
+    {
+        $this->provSug3 = $provSug3;
+
+        return $this;
+    }
+
+    /**
+     * Get provSug3
+     *
+     * @return \Mbp\ProveedoresBundle\Entity\Proveedor
+     */
+    public function getProvSug3()
+    {
+        return $this->provSug3;
     }
 }

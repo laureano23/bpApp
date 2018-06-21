@@ -200,6 +200,30 @@ class Articulos
      */
     private $vigenciaPrecio;
 
+    /** 
+     * @var \Mbp\ProveedoresBundle\Entity\Proveedor
+     *
+     * @ORM\ManyToOne(targetEntity="Mbp\ProveedoresBundle\Entity\Proveedor")
+     * @ORM\JoinColumn(name="prov1Id", referencedColumnName="id", unique=false, nullable=true)     
+     */
+    private $provSug1;
+
+    /** 
+     * @var \Mbp\ProveedoresBundle\Entity\Proveedor
+     *
+     * @ORM\ManyToOne(targetEntity="Mbp\ProveedoresBundle\Entity\Proveedor")
+     * @ORM\JoinColumn(name="prov1Id", referencedColumnName="id", unique=false, nullable=true)     
+     */
+    private $provSug2;
+
+    /** 
+     * @var \Mbp\ProveedoresBundle\Entity\Proveedor
+     *
+     * @ORM\ManyToOne(targetEntity="Mbp\ProveedoresBundle\Entity\Proveedor")
+     * @ORM\JoinColumn(name="prov1Id", referencedColumnName="id", unique=false, nullable=true)     
+     */
+    private $provSug3;
+
 
     /**
      * Set codigo
@@ -661,5 +685,29 @@ class Articulos
     public function getRequiereControl()
     {
         return $this->requiereControl;
+    }
+
+    /**
+     * Set vigenciaPrecio
+     *
+     * @param \DateTime $vigenciaPrecio
+     *
+     * @return Articulos
+     */
+    public function setVigenciaPrecio($vigenciaPrecio)
+    {
+        $this->vigenciaPrecio = $vigenciaPrecio;
+
+        return $this;
+    }
+
+    /**
+     * Get vigenciaPrecio
+     *
+     * @return \DateTime
+     */
+    public function getVigenciaPrecio()
+    {
+        return $this->vigenciaPrecio;
     }
 }

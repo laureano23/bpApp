@@ -1,3 +1,9 @@
+mbp_articulos_updateProv:
+    path:     /updateProv
+    defaults: { _controller: MbpArticulosBundle:Articulos:updateProv }
+    options:
+      expose: true
+
 mbp_articulos_read:
     path:     /extranet/articuloslist
     defaults: { _controller: MbpArticulosBundle:Articulos:articuloslist }

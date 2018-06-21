@@ -6,7 +6,7 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 		'Articulos.ArticuloSearchGrd',
 		'Articulos.ArticulosFormulas'
 		],
-	stores: ['Articulos.Articulos', 'Articulos.Formula'],
+	stores: ['Articulos.Articulos', 'Articulos.Formula', 'MetApp.store.Proveedores.ProveedoresStore'],
 	
 	init: function(){
 		
@@ -17,6 +17,9 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 				},
 				'#actualizarBDArticulos': {
 					click: this.actualizarBDArticulos
+				},
+				'articulosform combobox[itemId=provSug1]': {
+					focus: this.ResetStoreProv
 				},
 				'articulosform button[itemId=estructuraProducto]': {
 					click: this.EstructuraProducto
@@ -60,9 +63,12 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 		});		
 	},
 
+	ResetStoreProv: function(combo){
+		var store=combo.getStore();
+		store.clearFilter(true);
+	},
+
 	EstructuraProducto: function(btn){
-		console.log("hola");
-		console.log(this.getController('Articulos.FormulasController'));
 		this.getController('Articulos.FormulasController').Estructura(btn);
 	},
 	

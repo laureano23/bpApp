@@ -284,15 +284,60 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 											items: autz.getAuthorizedElements(familias)
 										},
 										{
-											xtype: 'textfield',
-											padding: '0 5 5 5',
-											name: 'peso',
-											itemId: 'peso',
-											fieldLabel: 'Peso (Kg.)',
-											readOnly: true,
-											allowBlank: true,
-											disabledCls: 'myDisabledClass',
-										},
+											xtype: 'container',
+											layout: 'hbox',
+											items: [
+												{
+													xtype: 'textfield',
+													padding: '0 5 5 5',
+													name: 'peso',
+													itemId: 'peso',
+													fieldLabel: 'Peso (Kg.)',
+													readOnly: true,
+													allowBlank: true,
+													disabledCls: 'myDisabledClass',
+												},
+												{
+													xtype: 'container',
+													layout: 'vbox',
+													defaults: {
+														disabledCls: 'myDisabledClass',
+														readOnly: true,
+														allowBlank: true,
+														store: 'MetApp.store.Proveedores.ProveedoresStore',
+														displayField: 'rsocial',
+														valueField: 'id',
+														margins: '0 5 0 0',
+														forceSelection: true,
+														queryMode: 'local',
+														typeAhead: true,							
+														minChars: 1,
+														width: 350
+													},
+													margins: '0 5 0 8',
+													items: [
+														{
+															xtype: 'combobox',
+															name: 'provSug1',
+															itemId: 'provSug1',															
+															fieldLabel: 'Proveedor 1'															
+														},
+														{
+															xtype: 'combobox',
+															name: 'provSug2',
+															itemId: 'provSug2',
+															fieldLabel: 'Proveedor 2'
+														},
+														{
+															xtype: 'combobox',
+															name: 'provSug3',
+															itemId: 'provSug3',
+															fieldLabel: 'Proveedor 3'
+														}
+													]
+												}
+											]
+										},										
 										{
 											xtype: 'checkbox',
 											readOnly: true,
