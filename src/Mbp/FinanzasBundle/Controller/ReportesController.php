@@ -1150,6 +1150,9 @@ ORDER BY
 			     Facturas.`total` AS Facturas_total,
 			     Facturas.`moneda` AS Facturas_moneda,
 			     Facturas.`tipoCambio` AS Facturas_tipoCambio,
+			     CASE WHEN tipo.esFactura = true then 'FA N° '
+				when tipo.esNotaDebito=true then 'NC N° '
+				else 'ND N° ' end as concepto,
 			     cliente.`rsocial` AS cliente_rsocial,
 			     cliente.`idCliente` AS cliente_idCliente,
 			     tipo.esFactura as esFactura,
@@ -1168,7 +1171,7 @@ ORDER BY
 				esFactura = true OR
 				Facturas_total > TransaccionCobranzaFactura_aplicado AND
 				esNotaDebito = true
-			     ";
+			ORDER BY cliente_idCliente, Facturas_fecha";
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	
 		}catch(\Exception $e){
