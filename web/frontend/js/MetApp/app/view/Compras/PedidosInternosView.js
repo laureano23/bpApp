@@ -68,7 +68,8 @@ Ext.define('MetApp.view.Compras.PedidosInternosView' ,{
 							{ text: 'Codigo', dataIndex: 'codigo', width: 150 },
 							{ text: 'Descripcion', dataIndex: 'descripcion', width: 380 },
 							{ text: 'Cantidad', dataIndex: 'cant', width: 70 },
-							{ text: 'Unidad', dataIndex: 'unidad', width: 55 },							
+							{ text: 'Unidad', dataIndex: 'unidad', width: 55 },	
+							{ text: 'Proveedor', dataIndex: 'proveedor', width: 80 },						
 							{ 
 								text: 'Entrega',
 								dataIndex: 'entrega',
@@ -189,7 +190,36 @@ Ext.define('MetApp.view.Compras.PedidosInternosView' ,{
 									margin: '0 0 0 2'
 								}
 							]
-						},		
+						},	
+						{
+							xtype: 'container',
+							layout: 'hbox',
+							style: {
+								background: 'white'
+							},
+							defaults: {
+								labelWidth: 90
+							},
+							items: [
+								{
+									xtype: 'combobox',
+									name: 'provSug1',
+									margin: '5 0 0 0',
+									itemId: 'provSug1',															
+									fieldLabel: 'Proveedor',
+									allowBlank: true,
+									store: 'MetApp.store.Proveedores.ProveedoresStore',
+									displayField: 'rsocial',
+									valueField: 'id',
+									margins: '0 5 0 0',
+									forceSelection: false,
+									queryMode: 'local',
+									typeAhead: true,							
+									minChars: 1,
+									width: 350
+								}
+							]
+						},	
 						{
 							xtype: 'button',
 							text: 'Guardar',

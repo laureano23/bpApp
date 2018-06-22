@@ -57,7 +57,15 @@ Ext.define('MetApp.view.Compras.ListaPedidosInternosView' ,{
 						{ text: 'Pendiente', dataIndex: 'pendiente', flex: 1 }, //SALE DE CANTIDAD - CUMPLIDO
 						{ text: 'Precio', dataIndex: 'precio', flex: 1 },
 						{ text: 'Moneda', dataIndex: 'moneda', flex: 1 },
-						{ text: 'Proveedor', dataIndex: 'proveedor', width: 150 },
+						{ 
+							text: 'Proveedor',
+							dataIndex: 'proveedor',
+							width: 150,
+							itemId: 'proveedor',
+							editor: {
+								xtype: 'textfield',
+			               	},
+						},
 						{ text: 'Entrega', dataIndex: 'entrega', flex: 1 },
 					]
 				},		

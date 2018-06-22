@@ -68,10 +68,9 @@ XML;
 		$objCurlFileUploader = new CurlFileUploader($this->file,
 				$this->urlArba,
 				"file", 
-				Array('user'=>$this->user,'password'=>$this->pass));
+				Array('user'=>$this->user,'password'=>'1234'));
 
 		$respuesta=$objCurlFileUploader->UploadFile();
-		
 		
 		
 		$this->response = json_decode(json_encode((array)simplexml_load_string($respuesta)),1);

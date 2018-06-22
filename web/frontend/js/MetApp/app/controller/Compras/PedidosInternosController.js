@@ -38,10 +38,29 @@ Ext.define('MetApp.controller.Compras.PedidosInternosController',{
 			},
 			'viewport menuitem[itemId=verPedidosInternos]': {
 				click: this.VerPedidosInternos
-			},		
+			},	
+			'ListaPedidosInternosView grid': {
+				edit: this.CambiarProveedor
+			},	
 		});		
 	},
 	
+	CambiarProveedor: function(cell, grid){
+	
+		console.log(grid.record);
+		console.log(cell);
+		var win=Ext.widget('ProveedoresSearchGrid');
+
+		win.down('button').on('click', function(){
+			var model=grid.record;
+			var gridCliente=win.down('grid');
+			var sel=gridCliente.getSelectionModel().getSelection()[0];
+			console.log(sel);
+			model.set('proveedor', sel.data.rsocial);
+			win.close();
+		});
+	},
+
 	VerPedidosInternos: function(btn){
 		var win = Ext.widget('ListaPedidosInternosView');
 		var store = win.down('grid').getStore();
@@ -109,6 +128,7 @@ Ext.define('MetApp.controller.Compras.PedidosInternosController',{
 				
 				var formArt = pedidoInterno.queryById('formaArt');				
 				formArt.loadRecord(sel);
+				console.log(sel);
 				
 				winSearch.close();
 				if(sel.data.codigo == 'ZZZ'){
@@ -126,12 +146,16 @@ Ext.define('MetApp.controller.Compras.PedidosInternosController',{
 		var win = btn.up('window');
 		var form=win.queryById('formaArt');
 		var values = form.getForm().getValues();
-		
+		var comboProv=win.queryById('provSug1');
+		var storeProv=comboProv.getStore();
+
 		if(!form.isValid()) return;
 		
 		var model = Ext.create('MetApp.model.Compras.OrdenCompraModel');
+
 		model.set(values);
-		
+		model.set('proveedor', comboProv.rawValue);
+
 		var store = win.down('grid').getStore();
 		store.add(model);
 		
@@ -180,7 +204,9 @@ Ext.define('MetApp.controller.Compras.PedidosInternosController',{
 		var win = grid.up('window');
 		var form = win.queryById('formaArt');
 		
+		console.log(selection);
 		form.loadRecord(selection);
+		form.down('combobox').setRawValue(selection.data.proveedor);
 		var store = grid.getStore();
 		store.remove(selection);
 	},

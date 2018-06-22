@@ -8,11 +8,29 @@ class ArticulosRepository extends EntityRepository
 	public function listarArticulos()
 	{
 		$em = $this->getEntityManager();
-		$dql = 'SELECT a 
-			FROM MbpArticulosBundle:Articulos a 
-			WHERE a.inactivo=0';
-		$q = $em->createQuery($dql);
-		$res = $q->getArrayResult();
+		$repoArt = $em->getRepository('MbpArticulosBundle:Articulos');
+
+		$art = 	$repoArt->createQueryBuilder('a')
+						->select("a.id, a.descripcion, a.codigo, a.unidad, a.iva, f.id AS familia,
+						 sf.id AS subFamilia, a.precio, a.nombreImagen,
+						 a.rutaServer,
+						CASE WHEN a.moneda = false THEN 'p' ELSE 'd' END AS moneda,
+						CASE WHEN a.monedaPrecio = false THEN 'p' ELSE 'd' END AS monedaPrecio,
+						a.requiereControl,
+						a.peso,
+						DATE_FORMAT(a.vigenciaPrecio, '%d/%m/%Y') vigenciaPrecio,
+						pr1.id as provSug1,
+						pr2.id as provSug2,
+						pr3.id as provSug3")
+						->leftJoin('a.familiaId', 'f')
+						->leftJoin('a.subFamiliaId', 'sf')
+						->leftJoin('a.provSug1', 'pr1')
+						->leftJoin('a.provSug2', 'pr2')
+						->leftJoin('a.provSug3', 'pr3')
+						->andWhere('a.inactivo = 0')
+						->getQuery();
+						
+		$res = $art->getArrayResult();
 		
 		$total = count($res);
 				

@@ -78,6 +78,13 @@ class PedidoInternoDetalle
     private $inactivo=0;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="proveedor", type="string", length=255)
+     */
+    private $proveedor;
+
+    /**
      * Get id
      *
      * @return integer
@@ -253,5 +260,29 @@ class PedidoInternoDetalle
     public function getCumplido()
     {
         return $this->cumplido;
+    }
+
+    /**
+     * Set codigo
+     *
+     * @param string $codigo
+     *
+     * @return PedidoInternoDetalle
+     */
+    public function setCodigo($codigo)
+    {
+        $this->codigo = $codigo;
+
+        return $this;
+    }
+
+    /**
+     * Get codigo
+     *
+     * @return string
+     */
+    public function getCodigo()
+    {
+        return $this->codigo;
     }
 }

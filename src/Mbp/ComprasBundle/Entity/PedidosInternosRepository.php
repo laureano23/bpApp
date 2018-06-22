@@ -19,7 +19,8 @@ class PedidosInternosRepository extends \Doctrine\ORM\EntityRepository
 				 	d.unidad, d.inactivo, DATE_FORMAT(d.entrega, '%d/%m/%Y') entrega,
 				 	d.pedido,
 				 	d.cumplido,
-				 	d.codigo")	
+				 	d.codigo,
+				 	d.proveedor")	
 				->join('p.detalleId', 'd')				
 				->where('d.inactivo = false')
 				->getQuery()

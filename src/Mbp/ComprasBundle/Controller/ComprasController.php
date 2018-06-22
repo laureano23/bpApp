@@ -235,6 +235,7 @@ class ComprasController extends Controller
 				$detalle->setCantidad($art->cant);
 				$detalle->setUnidad($art->unidad);
 				$detalle->setEntrega(\DateTime::createFromFormat("d/m/Y", $art->entrega));
+				$detalle->setProveedor($art->proveedor);
 				
 				$pedido->addDetalleId($detalle);			
 			}
@@ -299,6 +300,7 @@ class ComprasController extends Controller
 			
 			$row->setPedido($data->pedido);
 			$row->setCumplido($data->cumplido);
+			$row->setProveedor($data->proveedor);
 			
 			if($row->getCumplido() >= $row->getCantidad()){
 				$row->setInactivo(TRUE);
