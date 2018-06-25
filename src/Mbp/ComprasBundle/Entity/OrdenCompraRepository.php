@@ -20,25 +20,30 @@ class OrdenCompraRepository extends \Doctrine\ORM\EntityRepository
 		$art = $repArt->findOneByCodigo($codigoArt);	
 		
 		if(empty($art)) throw new \Exception("Artículo no encontrado", 1);
+		$idArt=$art->getId();
+
+		$sql="
+			select sub.*, detMov.cantidad as ingresado, sub.articuloId,
+				sum(detMov.cantidad) as ingresado,
+			    sub.totalComprado - sum(ifnull(detMov.cantidad,0)) as pendiente
+			from
+				(select oc.id as idOc, SUM(detalleOrden.cant) as totalComprado, detalleOrden.articuloId, detalleOrden.fechaEntrega as entrega 
+				from
+					OrdenCompraDetalle as detalleOrden
+					inner join ordenCompra_detallesOrdenCompra oc_det on oc_det.ordencompradetalle_id = detalleOrden.id
+					left join OrdenCompra oc on oc.id = oc_det.orden_id 
+				where detalleOrden.articuloId=$idArt
+			    group by oc.id) as sub
+			left join DetalleMovArt detMov on detMov.ordenCompraId=sub.idOc and detMov.articuloId = sub.articuloId
+			group by sub.idOc
+			having pendiente > 0
+		";
+
+		$stmt = $em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $res= $stmt->fetchAll(); 
 		
-		$data = $rep->createQueryBuilder('oc')
-				->select("
-					CASE WHEN mov.tipoMovimiento = 0 THEN (detalleOc.cant - SUM(det.cantidad)) ELSE detalleOc.cant END as pendiente,
-					oc.id as idOc,
-					DATE_FORMAT(detalleOc.fechaEntrega, '%d/%m/%Y') entrega")	
-				->join('oc.ordenDetalleId', 'detalleOc')
-				->join('detalleOc.articuloId', 'articulo')				
-				->leftJoin('MbpArticulosBundle:DetalleMovArt', 'det', 'WITH', 'det.ordenCompraId = oc.id')
-				->leftJoin('det.movimientoId', 'mov')			
-				->where('detalleOc.articuloId = :idArt')
-				->orWhere('det.articuloId = :idArt')
-				->having('pendiente > 0')				
-				->setParameter('idArt', $art->getId())
-				->groupBy('oc.id')
-				->getQuery()
-				->getArrayResult();
-		
-		return $data;
+		return $res;
 	}
 	
 }
