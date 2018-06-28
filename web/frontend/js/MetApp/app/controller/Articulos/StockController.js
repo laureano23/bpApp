@@ -41,7 +41,7 @@ Ext.define('MetApp.controller.Articulos.StockController',{
 				'EntradaSalidaArticulos button[itemId=insert]': {
 					click: this.InsertarArticulo
 				},
-				'EntradaSalidaArticulos textfield[itemId=oc]': {
+				'EntradaSalidaArticulos textfield[itemId=referenciaOc]': {
 					focus: this.BuscarOC
 				},
 				'PendienteArticuloComprasView button[itemId=ok]': {
@@ -249,6 +249,8 @@ Ext.define('MetApp.controller.Articulos.StockController',{
 			model.set(values);
 			var store = winStock.down('grid').getStore();
 			
+			console.log(model);
+			//model.set('idOc', null);
 			store.add(model);
 			form.getForm().reset();	
 			form.queryById('descripcion').setReadOnly(true);
@@ -284,7 +286,7 @@ Ext.define('MetApp.controller.Articulos.StockController',{
 		
 		var winStock = me.getEntradaSalidaArticulos();
 		
-		winStock.queryById('oc').setValue(selection.data.idOc);
+		winStock.queryById('referenciaOc').setValue(selection.data.idDetalleOrden);
 		winPendientes.close();
 	},
 	

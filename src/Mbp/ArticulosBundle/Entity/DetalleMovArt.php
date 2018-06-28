@@ -38,12 +38,12 @@ class DetalleMovArt
     private $loteNum;
 	
 	/** 
-     * @var \Mbp\ComprasBundle\Entity\OrdenCompra
+     * @var \Mbp\ComprasBundle\Entity\OrdenCompraDetalle
      *
-     * @ORM\ManyToOne(targetEntity="Mbp\ComprasBundle\Entity\OrdenCompra")
-     * @ORM\JoinColumn(name="ordenCompraId", referencedColumnName="id", unique=false, nullable=true)	 
+     * @ORM\ManyToOne(targetEntity="Mbp\ComprasBundle\Entity\OrdenCompraDetalle", inversedBy="detalleMovArtId")
+     * @ORM\JoinColumn(name="ordenCompraDetalleId", referencedColumnName="id", unique=false, nullable=true)	 
      */
-    private $ordenCompraId;
+    private $ordenCompraDetalleId;
     
     /**
      * @var \Mbp\ArticulosBundle\Entity\Articulos
@@ -174,31 +174,6 @@ class DetalleMovArt
         return $this->descripcion;
     }
 
-    /**
-     * Set ordenCompraId
-     *
-     * @param \Mbp\ComprasBundle\Entity\OrdenCompra $ordenCompraId
-     *
-     * @return DetalleMovArt
-     */
-    public function setOrdenCompraId(\Mbp\ComprasBundle\Entity\OrdenCompra $ordenCompraId = null)
-    {
-        $this->ordenCompraId = $ordenCompraId;
-
-        return $this;
-    }
-
-    /**
-     * Get ordenCompraId
-     *
-     * @return \Mbp\ComprasBundle\Entity\OrdenCompra
-     */
-    public function getOrdenCompraId()
-    {
-        return $this->ordenCompraId;
-    }
-
-    
     /**
      * Set articuloId
      *
@@ -334,5 +309,29 @@ class DetalleMovArt
     public function getDetalleControl()
     {
         return $this->detalleControl;
+    }
+
+    /**
+     * Set ordenCompraDetalleId
+     *
+     * @param \Mbp\ComprasBundle\Entity\OrdenCompraDetalle $ordenCompraDetalleId
+     *
+     * @return DetalleMovArt
+     */
+    public function setOrdenCompraDetalleId(\Mbp\ComprasBundle\Entity\OrdenCompraDetalle $ordenCompraDetalleId = null)
+    {
+        $this->ordenCompraDetalleId = $ordenCompraDetalleId;
+
+        return $this;
+    }
+
+    /**
+     * Get ordenCompraDetalleId
+     *
+     * @return \Mbp\ComprasBundle\Entity\OrdenCompraDetalle
+     */
+    public function getOrdenCompraDetalleId()
+    {
+        return $this->ordenCompraDetalleId;
     }
 }

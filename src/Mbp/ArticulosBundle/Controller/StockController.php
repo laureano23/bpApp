@@ -181,6 +181,7 @@ class StockController extends Controller
 		$repoCliente = $em->getRepository('MbpClientesBundle:Cliente');
 		$repoDeposito = $em->getRepository('MbpArticulosBundle:DepositoArticulos');
 		$repoOC = $em->getRepository('MbpComprasBundle:OrdenCompra');
+		$repoDetalleOC = $em->getRepository('MbpComprasBundle:OrdenCompraDetalle');
 		
 		try{
 			$data = json_decode($req->request->get('data'));
@@ -244,10 +245,13 @@ class StockController extends Controller
 			
 			
 			/* AGREGAR DETALLES AL MOVIMIENTO */	
-			$validator = $this->get('validator');//VALIDADOR		
+			$validator = $this->get('validator');//VALIDADOR
+
+			//print_r($articulos);
+			//exit;		
 			foreach ($articulos as $art) {
-				//BUSCAMOS OC
-				$oc = $repoOC->find($art->idOc);	
+				//BUSCAMOS DETALLE DE OC
+				$detalleOc = $repoDetalleOC->find($art->referenciaOc);	
 				$objArt = $repoArt->findOneByCodigo($art->codigo);
 				
 				
@@ -255,7 +259,7 @@ class StockController extends Controller
 				$detalle->setCantidad($art->cant);
 				$art->loteNum == 0 ? $detalle->setLoteNum(null) : $detalle->setLoteNum($art->loteNum);
 				$detalle->setDescripcion($art->descripcion);
-				$oc == "" ? $detalle->setOrdenCompraId(null) : $detalle->setOrdenCompraId($oc);
+				$detalleOc == "" ? $detalle->setOrdenCompraDetalleId(null) : $detalle->setOrdenCompraDetalleId($detalleOc);
 				$detalle->setArticuloId($objArt);
 				
 				//$em->persist($detalle);
@@ -288,6 +292,7 @@ class StockController extends Controller
 			return $response->setContent(json_encode($msg));
 			
 		}catch(\Exception $e){
+			throw $e;
 			$msg = json_encode(array(
 				'success' => false,
 				'msg' => $e->getMessage()

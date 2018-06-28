@@ -21,135 +21,75 @@
 	</parameter>
 	<parameter name="rutaLogo" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT
-     OrdenCompra.`id` AS OrdenCompra_id,
-     OrdenCompra.`usuario` AS OrdenCompra_usuario,
-     OrdenCompra.`fechaEmision` AS OrdenCompra_fechaEmision,
-     OrdenCompra.`monedaOC` AS OrdenCompra_monedaOC,
-     OrdenCompra.`condicionCompra` AS OrdenCompra_condicionCompra,
-     OrdenCompra.`lugarEntrega` AS OrdenCompra_lugarEntrega,
-     OrdenCompra.`observaciones` AS OrdenCompra_observaciones,
-     OrdenCompra.`descuentoGral` AS OrdenCompra_descuentoGral,
-     OrdenCompra.`tc` AS OrdenCompra_tc,
-     OrdenCompra.`proveedorId` AS OrdenCompra_proveedorId,
-     OrdenCompra.`anulada` AS OrdenCompra_anulada,
-     OrdenCompraDetalle.`id` AS OrdenCompraDetalle_id,
-     OrdenCompraDetalle.`unidad` AS OrdenCompraDetalle_unidad,
-     OrdenCompraDetalle.`precio` AS OrdenCompraDetalle_precio,
-     OrdenCompraDetalle.`cant` AS OrdenCompraDetalle_cant,
-     OrdenCompraDetalle.`fechaEntrega` AS OrdenCompraDetalle_fechaEntrega,
-     OrdenCompraDetalle.`iva` AS OrdenCompraDetalle_iva,
-     OrdenCompraDetalle.`ivaCalculado` AS OrdenCompraDetalle_ivaCalculado,
-     OrdenCompraDetalle.`moneda` AS OrdenCompraDetalle_moneda,
-     OrdenCompraDetalle.`articuloId` AS OrdenCompraDetalle_articuloId,
-     OrdenCompraDetalle.`descripcion` AS OrdenCompraDetalle_descripcion,
-     ordenCompra_detallesOrdenCompra.`orden_id` AS ordenCompra_detallesOrdenCompra_orden_id,
-     ordenCompra_detallesOrdenCompra.`ordencompradetalle_id` AS ordenCompra_detallesOrdenCompra_ordencompradetalle_id,
-     MovimientosArticulos.`id` AS MovimientosArticulos_id,
-     MovimientosArticulos.`fechaMovimiento` AS MovimientosArticulos_fechaMovimiento,
-     MovimientosArticulos.`tipoMovimiento` AS MovimientosArticulos_tipoMovimiento,
-     MovimientosArticulos.`observaciones` AS MovimientosArticulos_observaciones,
-     MovimientosArticulos.`comprobanteNum` AS MovimientosArticulos_comprobanteNum,
-     MovimientosArticulos.`conceptoId` AS MovimientosArticulos_conceptoId,
-     MovimientosArticulos.`proveedorId` AS MovimientosArticulos_proveedorId,
-     MovimientosArticulos.`clienteId` AS MovimientosArticulos_clienteId,
-     MovimientosArticulos.`depositoId` AS MovimientosArticulos_depositoId,
-     DetalleMovArt.`id` AS DetalleMovArt_id,
-     SUM(DetalleMovArt.`cantidad`) AS DetalleMovArt_cantidad,
-     DetalleMovArt.`loteNum` AS DetalleMovArt_loteNum,
-     DetalleMovArt.`descripcion` AS DetalleMovArt_descripcion,
-     DetalleMovArt.`ordenCompraId` AS DetalleMovArt_ordenCompraId,
-     DetalleMovArt.`articuloId` AS DetalleMovArt_articuloId,
-     DetalleMovArt.`estadoCalidad` AS DetalleMovArt_estadoCalidad,
-     DetalleMovArt.`certificadoNum` AS DetalleMovArt_certificadoNum,
-     DetalleMovArt.`detalleControl` AS DetalleMovArt_detalleControl,
-     movimientos_detalles.`movimientosarticulos_id` AS movimientos_detalles_movimientosarticulos_id,
-     movimientos_detalles.`detallemovart_id` AS movimientos_detalles_detallemovart_id,
-     Proveedor.`id` AS Proveedor_id,
-     Proveedor.`departamento` AS Proveedor_departamento,
-     Proveedor.`provincia` AS Proveedor_provincia,
-     Proveedor.`rsocial` AS Proveedor_rsocial,
-     Proveedor.`denominacion` AS Proveedor_denominacion,
-     articulos.`codigo` AS articulos_codigo,
-     articulos.`idArticulos` AS articulos_idArticulos
-FROM
-     `OrdenCompraDetalle` OrdenCompraDetalle INNER JOIN `ordenCompra_detallesOrdenCompra` ordenCompra_detallesOrdenCompra ON OrdenCompraDetalle.`id` = ordenCompra_detallesOrdenCompra.`ordencompradetalle_id`
-     INNER JOIN `OrdenCompra` OrdenCompra ON ordenCompra_detallesOrdenCompra.`orden_id` = OrdenCompra.`id`
-     LEFT JOIN `DetalleMovArt` DetalleMovArt ON OrdenCompra.`id` = DetalleMovArt.`ordenCompraId`
-     INNER JOIN `Proveedor` Proveedor ON OrdenCompra.`proveedorId` = Proveedor.`id`
-     LEFT JOIN `movimientos_detalles` movimientos_detalles ON DetalleMovArt.`id` = movimientos_detalles.`detallemovart_id`
-     LEFT JOIN `MovimientosArticulos` MovimientosArticulos ON movimientos_detalles.`movimientosarticulos_id` = MovimientosArticulos.`id`
-     LEFT JOIN `articulos` articulos ON OrdenCompraDetalle.`articuloId` = articulos.`idArticulos`
-WHERE
-     Proveedor.`id` BETWEEN $P{PROVEEDOR_ID_DESDE} AND $P{PROVEEDOR_ID_HASTA}
- AND OrdenCompra.`fechaEmision` BETWEEN $P{FECHA_DESDE} AND $P{FECHA_HASTA}
- AND articulos.`codigo` BETWEEN $P{CODIGO_DESDE} AND $P{CODIGO_HASTA}
-GROUP BY OrdenCompraDetalle.`id`, DetalleMovArt.`articuloId`
-ORDER BY
-     Proveedor.`id` ASC,
-     OrdenCompraDetalle.`fechaEntrega` DESC]]>
+		<![CDATA[select sub.*, detMov.cantidad as cantidad, detMov.ordenCompraId, sum(ifnull(detMov.cantidad, 0)) as ingresado
+from
+	(select oc.id as ordenId, art.codigo, detalleOrden.cant as comprado, detalleOrden.descripcion, detalleOrden.articuloId, oc.fechaEmision,oc.tc, oc.monedaOc, detalleOrden.unidad, detalleOrden.precio, sum(detalleOrden.cant) as compradoTotal, detalleOrden.fechaEntrega, prov.id as proveedorId, prov.rsocial
+	from
+		OrdenCompraDetalle as detalleOrden
+		inner join ordenCompra_detallesOrdenCompra oc_det on oc_det.ordencompradetalle_id = detalleOrden.id
+		left join OrdenCompra oc on oc.id = oc_det.orden_id
+		left join Proveedor prov on oc.proveedorId = prov.id
+		left join articulos art on art.idArticulos = detalleOrden.articuloId
+	 where
+		oc.fechaEmision between $P{FECHA_DESDE} and $P{FECHA_HASTA}
+		and prov.id between $P{PROVEEDOR_ID_DESDE} and $P{PROVEEDOR_ID_HASTA}
+		and art.codigo between $P{CODIGO_DESDE} and $P{CODIGO_HASTA}
+	 group by oc.id, art.idArticulos) as sub
+left join DetalleMovArt detMov on detMov.ordenCompraId = sub.ordenId and detMov.articuloId = sub.articuloId
+group by sub.ordenId, sub.articuloId]]>
 	</queryString>
-	<field name="OrdenCompra_id" class="java.lang.Integer"/>
-	<field name="OrdenCompra_usuario" class="java.lang.String"/>
-	<field name="OrdenCompra_fechaEmision" class="java.sql.Date"/>
-	<field name="OrdenCompra_monedaOC" class="java.lang.Boolean"/>
-	<field name="OrdenCompra_condicionCompra" class="java.lang.String"/>
-	<field name="OrdenCompra_lugarEntrega" class="java.lang.String"/>
-	<field name="OrdenCompra_observaciones" class="java.lang.String"/>
-	<field name="OrdenCompra_descuentoGral" class="java.math.BigDecimal"/>
-	<field name="OrdenCompra_tc" class="java.math.BigDecimal"/>
-	<field name="OrdenCompra_proveedorId" class="java.lang.Integer"/>
-	<field name="OrdenCompra_anulada" class="java.lang.Boolean"/>
-	<field name="OrdenCompraDetalle_id" class="java.lang.Integer"/>
-	<field name="OrdenCompraDetalle_unidad" class="java.lang.String"/>
-	<field name="OrdenCompraDetalle_precio" class="java.math.BigDecimal"/>
-	<field name="OrdenCompraDetalle_cant" class="java.math.BigDecimal"/>
-	<field name="OrdenCompraDetalle_fechaEntrega" class="java.sql.Date"/>
-	<field name="OrdenCompraDetalle_iva" class="java.math.BigDecimal"/>
-	<field name="OrdenCompraDetalle_ivaCalculado" class="java.math.BigDecimal"/>
-	<field name="OrdenCompraDetalle_moneda" class="java.lang.Boolean"/>
-	<field name="OrdenCompraDetalle_articuloId" class="java.lang.Integer"/>
-	<field name="OrdenCompraDetalle_descripcion" class="java.lang.String"/>
-	<field name="ordenCompra_detallesOrdenCompra_orden_id" class="java.lang.Integer"/>
-	<field name="ordenCompra_detallesOrdenCompra_ordencompradetalle_id" class="java.lang.Integer"/>
-	<field name="MovimientosArticulos_id" class="java.lang.Integer"/>
-	<field name="MovimientosArticulos_fechaMovimiento" class="java.sql.Date"/>
-	<field name="MovimientosArticulos_tipoMovimiento" class="java.lang.Boolean"/>
-	<field name="MovimientosArticulos_observaciones" class="java.lang.String"/>
-	<field name="MovimientosArticulos_comprobanteNum" class="java.lang.String"/>
-	<field name="MovimientosArticulos_conceptoId" class="java.lang.Integer"/>
-	<field name="MovimientosArticulos_proveedorId" class="java.lang.Integer"/>
-	<field name="MovimientosArticulos_clienteId" class="java.lang.Integer"/>
-	<field name="MovimientosArticulos_depositoId" class="java.lang.Integer"/>
-	<field name="DetalleMovArt_id" class="java.lang.Integer"/>
-	<field name="DetalleMovArt_cantidad" class="java.math.BigDecimal"/>
-	<field name="DetalleMovArt_loteNum" class="java.lang.Integer"/>
-	<field name="DetalleMovArt_descripcion" class="java.lang.String"/>
-	<field name="DetalleMovArt_ordenCompraId" class="java.lang.Integer"/>
-	<field name="DetalleMovArt_articuloId" class="java.lang.Integer"/>
-	<field name="DetalleMovArt_estadoCalidad" class="java.lang.Boolean"/>
-	<field name="DetalleMovArt_certificadoNum" class="java.lang.String"/>
-	<field name="DetalleMovArt_detalleControl" class="java.lang.String"/>
-	<field name="movimientos_detalles_movimientosarticulos_id" class="java.lang.Integer"/>
-	<field name="movimientos_detalles_detallemovart_id" class="java.lang.Integer"/>
-	<field name="Proveedor_id" class="java.lang.Integer"/>
-	<field name="Proveedor_departamento" class="java.lang.Integer"/>
-	<field name="Proveedor_provincia" class="java.lang.String"/>
-	<field name="Proveedor_rsocial" class="java.lang.String"/>
-	<field name="Proveedor_denominacion" class="java.lang.String"/>
-	<field name="articulos_codigo" class="java.lang.String"/>
-	<field name="articulos_idArticulos" class="java.lang.Integer"/>
+	<field name="ordenId" class="java.lang.Integer"/>
+	<field name="codigo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="comprado" class="java.math.BigDecimal"/>
+	<field name="descripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="articuloId" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fechaEmision" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tc" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="monedaOc" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="unidad" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="precio" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="compradoTotal" class="java.math.BigDecimal"/>
+	<field name="fechaEntrega" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="proveedorId" class="java.lang.Integer"/>
+	<field name="rsocial" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cantidad" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ordenCompraId" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ingresado" class="java.math.BigDecimal"/>
 	<variable name="TOTAL" class="java.math.BigDecimal" resetType="Group" resetGroup="id_proveedor" calculation="Sum">
-		<variableExpression><![CDATA[$V{PRECIO}*$F{OrdenCompraDetalle_cant}]]></variableExpression>
+		<variableExpression><![CDATA[$V{PRECIO}*$F{comprado}]]></variableExpression>
 	</variable>
 	<variable name="TOTAL_GRAL" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$V{TOTAL}]]></variableExpression>
 	</variable>
 	<variable name="PRECIO" class="java.math.BigDecimal" resetType="None">
-		<variableExpression><![CDATA[$F{OrdenCompra_monedaOC} == true ? $F{OrdenCompraDetalle_precio} * $F{OrdenCompra_tc} : $F{OrdenCompraDetalle_precio}]]></variableExpression>
+		<variableExpression><![CDATA[$F{monedaOc} == true ? $F{precio} * $F{tc} : $F{precio}]]></variableExpression>
 	</variable>
 	<group name="id_proveedor">
-		<groupExpression><![CDATA[$F{OrdenCompra_proveedorId}]]></groupExpression>
+		<groupExpression><![CDATA[$F{proveedorId}]]></groupExpression>
 		<groupHeader>
 			<band height="20">
 				<textField pattern="">
@@ -164,7 +104,7 @@ ORDER BY
 					<textElement verticalAlignment="Middle">
 						<font size="12" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{Proveedor_rsocial}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{rsocial}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -374,31 +314,31 @@ ORDER BY
 				<reportElement x="0" y="0" width="68" height="20" uuid="b5f0b7d9-418b-4ec9-bcac-adc5d33a7c34"/>
 				<box leftPadding="2" rightPadding="0"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{OrdenCompra_fechaEmision}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{fechaEmision}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="113" y="0" width="88" height="20" uuid="299770bb-8e74-4f33-b91a-da5531a0babe"/>
 				<box leftPadding="2" rightPadding="0"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{articulos_codigo}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="201" y="0" width="263" height="20" uuid="c32e434e-e7c8-4868-8744-050f5f664f1d"/>
 				<box leftPadding="2" rightPadding="0"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{OrdenCompraDetalle_descripcion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="464" y="0" width="60" height="20" uuid="55eb76cb-335a-45f8-8cc2-802d757e989f"/>
 				<box leftPadding="2" rightPadding="0"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{OrdenCompraDetalle_cant}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{compradoTotal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="524" y="0" width="60" height="20" uuid="60db1972-4d7e-4abf-99ed-77a918916d4a"/>
 				<box leftPadding="2" rightPadding="0"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{DetalleMovArt_cantidad}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{ingresado}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
 				<reportElement x="644" y="0" width="60" height="20" uuid="ff02e293-4b6d-4200-97f1-6f6907e619fe"/>
@@ -410,26 +350,26 @@ ORDER BY
 				<reportElement x="777" y="0" width="55" height="20" uuid="470e4016-0528-48c8-ae85-7bcd3cf51c8e"/>
 				<box leftPadding="2" rightPadding="0"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{OrdenCompraDetalle_fechaEntrega}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{fechaEntrega}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
 				<reportElement x="704" y="0" width="73" height="20" uuid="e7e47c66-96a9-4308-8479-6400dbf4f70d"/>
 				<box leftPadding="2" rightPadding="0"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{OrdenCompraDetalle_cant}*$V{PRECIO}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{comprado}*$V{PRECIO}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="584" y="0" width="60" height="20" uuid="4e72b922-dc60-45e3-8037-c9e9edbf3ccd"/>
 				<box leftPadding="2" rightPadding="0"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{OrdenCompraDetalle_cant} - $F{DetalleMovArt_cantidad}  < 0 ?
-0 : $F{OrdenCompraDetalle_cant} - $F{DetalleMovArt_cantidad}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{compradoTotal} - $F{ingresado}  < 0 ?
+0 : $F{compradoTotal} - $F{ingresado}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
 				<reportElement x="68" y="0" width="45" height="20" uuid="5e61f0dd-d9a8-4528-a13d-6413991c25f8"/>
 				<box leftPadding="2" rightPadding="0"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{OrdenCompra_id}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{ordenId}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

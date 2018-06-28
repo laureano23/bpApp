@@ -38,12 +38,12 @@ class DetalleMovArt
     private $loteNum;
 	
 	/** 
-     * @var \Mbp\ComprasBundle\Entity\OrdenCompra
+     * @var \Mbp\ComprasBundle\Entity\OrdenCompraDetalle
      *
-     * @ORM\ManyToOne(targetEntity="Mbp\ComprasBundle\Entity\OrdenCompra")
-     * @ORM\JoinColumn(name="ordenCompraId", referencedColumnName="id", unique=false, nullable=true)	 
+     * @ORM\ManyToOne(targetEntity="Mbp\ComprasBundle\Entity\OrdenCompraDetalle", inversedBy="detalleMovArtId")
+     * @ORM\JoinColumn(name="ordenCompraDetalleId", referencedColumnName="id", unique=false, nullable=true)	 
      */
-    private $ordenCompraId;
+    private $ordenCompraDetalleId;
     
     /**
      * @var \Mbp\ArticulosBundle\Entity\Articulos
@@ -175,31 +175,6 @@ class DetalleMovArt
     }
 
     /**
-     * Set ordenCompraId
-     *
-     * @param \Mbp\ComprasBundle\Entity\OrdenCompra $ordenCompraId
-     *
-     * @return DetalleMovArt
-     */
-    public function setOrdenCompraId(\Mbp\ComprasBundle\Entity\OrdenCompra $ordenCompraId = null)
-    {
-        $this->ordenCompraId = $ordenCompraId;
-
-        return $this;
-    }
-
-    /**
-     * Get ordenCompraId
-     *
-     * @return \Mbp\ComprasBundle\Entity\OrdenCompra
-     */
-    public function getOrdenCompraId()
-    {
-        return $this->ordenCompraId;
-    }
-
-    
-    /**
      * Set articuloId
      *
      * @param \Mbp\ArticulosBundle\Entity\Articulos $articuloId
@@ -310,5 +285,29 @@ class DetalleMovArt
     public function getCertificadoNum()
     {
         return $this->certificadoNum;
+    }
+
+    /**
+     * Set detalleControl
+     *
+     * @param string $detalleControl
+     *
+     * @return DetalleMovArt
+     */
+    public function setDetalleControl($detalleControl)
+    {
+        $this->detalleControl = $detalleControl;
+
+        return $this;
+    }
+
+    /**
+     * Get detalleControl
+     *
+     * @return string
+     */
+    public function getDetalleControl()
+    {
+        return $this->detalleControl;
     }
 }

@@ -185,7 +185,7 @@ Ext.define('MetApp.view.Articulos.Stock.EntradaSalidaArticulos', {
 								{ text: 'Descripción', dataIndex: 'descripcion', width: 300 },
 								{ text: 'Cantidad', dataIndex: 'cant', flex: 1 },
 								{ text: 'Lote', dataIndex: 'lote', flex: 1 },
-								{ text: 'OC N°', dataIndex: 'idOc', flex: 1 },
+								{ text: 'OC N°', dataIndex: 'referenciaOc', flex: 1 },
 								{ 
 									header: 'Editar',
 									itemId: 'editar',
@@ -293,8 +293,8 @@ Ext.define('MetApp.view.Articulos.Stock.EntradaSalidaArticulos', {
 									width: 170,
 									labelWidth: 60,
 									allowBlank: true,
-									name: 'idOc',
-									itemId: 'oc',
+									name: 'referenciaOc',
+									itemId: 'referenciaOc',
 									fieldLabel: 'OC N°',									
 								},
 								{

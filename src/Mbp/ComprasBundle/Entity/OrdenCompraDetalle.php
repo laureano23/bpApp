@@ -85,6 +85,11 @@ class OrdenCompraDetalle
      */
     private $descripcion;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Mbp\ArticulosBundle\Entity\DetalleMovArt", mappedBy="ordenCompraDetalleId")
+     */
+    private $detalleMovArtId;
+
 
     /**
      * Get id
@@ -310,5 +315,46 @@ class OrdenCompraDetalle
     public function getDescripcion()
     {
         return $this->descripcion;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->detalleMovArtId = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add detalleMovArtId
+     *
+     * @param \Mbp\ArticulosBundle\Entity\DetalleMovArt $detalleMovArtId
+     *
+     * @return OrdenCompraDetalle
+     */
+    public function addDetalleMovArtId(\Mbp\ArticulosBundle\Entity\DetalleMovArt $detalleMovArtId)
+    {
+        $this->detalleMovArtId[] = $detalleMovArtId;
+
+        return $this;
+    }
+
+    /**
+     * Remove detalleMovArtId
+     *
+     * @param \Mbp\ArticulosBundle\Entity\DetalleMovArt $detalleMovArtId
+     */
+    public function removeDetalleMovArtId(\Mbp\ArticulosBundle\Entity\DetalleMovArt $detalleMovArtId)
+    {
+        $this->detalleMovArtId->removeElement($detalleMovArtId);
+    }
+
+    /**
+     * Get detalleMovArtId
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDetalleMovArtId()
+    {
+        return $this->detalleMovArtId;
     }
 }

@@ -22,12 +22,30 @@ class OrdenCompraRepository extends \Doctrine\ORM\EntityRepository
 		if(empty($art)) throw new \Exception("Artículo no encontrado", 1);
 		$idArt=$art->getId();
 
-		$sql="
+		$res=$rep->createQueryBuilder('oc')
+			->select("
+				DATE_FORMAT(oc.fechaEmision, '%d/%m/%Y') as fechaEmision,
+				detOrden.id as idDetalleOrden,
+				DATE_FORMAT(detOrden.fechaEntrega, '%d/%m/%Y') as entrega,
+				detOrden.cant - ifnull(SUM(mov.cantidad),0) as pendiente,
+				detOrden.cant as ordenCant,
+				mov.cantidad as movCant")
+			->join('oc.ordenDetalleId', 'detOrden')
+			->leftJoin('detOrden.detalleMovArtId', 'mov')
+			->join('detOrden.articuloId', 'art')
+			->where('art = :idArt')
+			->setParameter('idArt', $art)
+			->groupBy('detOrden.id')
+			->getQuery()
+			->getArrayResult();
+
+
+		/*$sql="
 			select sub.*, detMov.cantidad as ingresado, sub.articuloId,
 				sum(detMov.cantidad) as ingresado,
 			    sub.totalComprado - sum(ifnull(detMov.cantidad,0)) as pendiente
 			from
-				(select oc.id as idOc, SUM(detalleOrden.cant) as totalComprado, detalleOrden.articuloId, detalleOrden.fechaEntrega as entrega 
+				(select oc.id as idOc, detalleOrden.id as idDetalleOrden, SUM(detalleOrden.cant) as totalComprado, detalleOrden.articuloId, detalleOrden.fechaEntrega as entrega 
 				from
 					OrdenCompraDetalle as detalleOrden
 					inner join ordenCompra_detallesOrdenCompra oc_det on oc_det.ordencompradetalle_id = detalleOrden.id
@@ -41,7 +59,7 @@ class OrdenCompraRepository extends \Doctrine\ORM\EntityRepository
 
 		$stmt = $em->getConnection()->prepare($sql);
         $stmt->execute();
-        $res= $stmt->fetchAll(); 
+        $res= $stmt->fetchAll(); */
 		
 		return $res;
 	}

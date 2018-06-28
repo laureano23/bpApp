@@ -89,6 +89,7 @@ doctrine:
                     string_functions:
                         lpad: DoctrineExtensions\Query\Mysql\Lpad
                         substr: DoctrineExtensions\Query\Mysql\SubstringIndex
+                        ifnull: DoctrineExtensions\Query\Mysql\IfNull
                 mappings:
                     tree:
                         type: annotation

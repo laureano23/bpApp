@@ -1,8 +1,10 @@
 Ext.define('MetApp.model.Compras.OrdenCompraModel',{
 	extend: 'Ext.data.Model',
-	idProperty: 'id',
+	idProperty: 'idOc',
 	fields: [
 		{ name: 'idOc', type: 'int' },
+		{ name: 'referenciaOc', type: 'int' },
+		{ name: 'idDetalleOrden', type: 'int' },
 		{ name: 'fecha', type: 'datetime' },
 		{ name: 'id', type: 'int' },
 		{ name: 'codigo', type: 'string' },
