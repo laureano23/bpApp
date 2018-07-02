@@ -36,6 +36,7 @@ class DetalleMovArt
      * @ORM\Column(name="loteNum", type="integer", nullable=true)
      */
     private $loteNum;
+    
 	
 	/** 
      * @var \Mbp\ComprasBundle\Entity\OrdenCompraDetalle
