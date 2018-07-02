@@ -21,7 +21,7 @@
 	</parameter>
 	<parameter name="rutaLogo" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select sub.*, detMov.cantidad as cantidad, detMov.ordenCompraId, sum(ifnull(detMov.cantidad, 0)) as ingresado
+		<![CDATA[select sub.*, detMov.cantidad as cantidad, sum(ifnull(detMov.cantidad, 0)) as ingresado
 from
 	(select oc.id as ordenId, art.codigo, detalleOrden.cant as comprado, detalleOrden.descripcion, detalleOrden.articuloId, oc.fechaEmision,oc.tc, oc.monedaOc, detalleOrden.unidad, detalleOrden.precio, sum(detalleOrden.cant) as compradoTotal, detalleOrden.fechaEntrega, prov.id as proveedorId, prov.rsocial
 	from
@@ -35,7 +35,8 @@ from
 		and prov.id between $P{PROVEEDOR_ID_DESDE} and $P{PROVEEDOR_ID_HASTA}
 		and art.codigo between $P{CODIGO_DESDE} and $P{CODIGO_HASTA}
 	 group by oc.id, art.idArticulos) as sub
-left join DetalleMovArt detMov on detMov.ordenCompraId = sub.ordenId and detMov.articuloId = sub.articuloId
+left join detallemovart_ordencompradetalle det_det on det_det.ordencompradetalle_id = sub.ordenId
+left join DetalleMovArt detMov on detMov.ordenCompraDetalleId = det_det.detallemovart_id
 group by sub.ordenId, sub.articuloId]]>
 	</queryString>
 	<field name="ordenId" class="java.lang.Integer"/>
@@ -73,9 +74,6 @@ group by sub.ordenId, sub.articuloId]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="cantidad" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="ordenCompraId" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="ingresado" class="java.math.BigDecimal"/>
@@ -309,7 +307,7 @@ group by sub.ordenId, sub.articuloId]]>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="20" splitType="Stretch">
+		<band height="21" splitType="Stretch">
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="0" y="0" width="68" height="20" uuid="b5f0b7d9-418b-4ec9-bcac-adc5d33a7c34"/>
 				<box leftPadding="2" rightPadding="0"/>

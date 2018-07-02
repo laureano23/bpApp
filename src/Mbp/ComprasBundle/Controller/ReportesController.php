@@ -185,73 +185,23 @@ class ReportesController extends Controller
 			
 			$conn = $reporteador->getJdbc();
 			$sql = "
-				SELECT
-				     OrdenCompra.`id` AS OrdenCompra_id,
-				     OrdenCompra.`usuario` AS OrdenCompra_usuario,
-				     OrdenCompra.`fechaEmision` AS OrdenCompra_fechaEmision,
-				     OrdenCompra.`monedaOC` AS OrdenCompra_monedaOC,
-				     OrdenCompra.`condicionCompra` AS OrdenCompra_condicionCompra,
-				     OrdenCompra.`lugarEntrega` AS OrdenCompra_lugarEntrega,
-				     OrdenCompra.`observaciones` AS OrdenCompra_observaciones,
-				     OrdenCompra.`descuentoGral` AS OrdenCompra_descuentoGral,
-				     OrdenCompra.`tc` AS OrdenCompra_tc,
-				     OrdenCompra.`proveedorId` AS OrdenCompra_proveedorId,
-				     OrdenCompra.`anulada` AS OrdenCompra_anulada,
-				     OrdenCompraDetalle.`id` AS OrdenCompraDetalle_id,
-				     OrdenCompraDetalle.`unidad` AS OrdenCompraDetalle_unidad,
-				     OrdenCompraDetalle.`precio` AS OrdenCompraDetalle_precio,
-				     OrdenCompraDetalle.`cant` AS OrdenCompraDetalle_cant,
-				     OrdenCompraDetalle.`fechaEntrega` AS OrdenCompraDetalle_fechaEntrega,
-				     OrdenCompraDetalle.`iva` AS OrdenCompraDetalle_iva,
-				     OrdenCompraDetalle.`ivaCalculado` AS OrdenCompraDetalle_ivaCalculado,
-				     OrdenCompraDetalle.`moneda` AS OrdenCompraDetalle_moneda,
-				     OrdenCompraDetalle.`articuloId` AS OrdenCompraDetalle_articuloId,
-				     OrdenCompraDetalle.`descripcion` AS OrdenCompraDetalle_descripcion,
-				     ordenCompra_detallesOrdenCompra.`orden_id` AS ordenCompra_detallesOrdenCompra_orden_id,
-				     ordenCompra_detallesOrdenCompra.`ordencompradetalle_id` AS ordenCompra_detallesOrdenCompra_ordencompradetalle_id,
-				     MovimientosArticulos.`id` AS MovimientosArticulos_id,
-				     MovimientosArticulos.`fechaMovimiento` AS MovimientosArticulos_fechaMovimiento,
-				     MovimientosArticulos.`tipoMovimiento` AS MovimientosArticulos_tipoMovimiento,
-				     MovimientosArticulos.`observaciones` AS MovimientosArticulos_observaciones,
-				     MovimientosArticulos.`comprobanteNum` AS MovimientosArticulos_comprobanteNum,
-				     MovimientosArticulos.`conceptoId` AS MovimientosArticulos_conceptoId,
-				     MovimientosArticulos.`proveedorId` AS MovimientosArticulos_proveedorId,
-				     MovimientosArticulos.`clienteId` AS MovimientosArticulos_clienteId,
-				     MovimientosArticulos.`depositoId` AS MovimientosArticulos_depositoId,
-				     DetalleMovArt.`id` AS DetalleMovArt_id,
-				     SUM(DetalleMovArt.`cantidad`) AS DetalleMovArt_cantidad,
-				     DetalleMovArt.`loteNum` AS DetalleMovArt_loteNum,
-				     DetalleMovArt.`descripcion` AS DetalleMovArt_descripcion,
-				     DetalleMovArt.`ordenCompraId` AS DetalleMovArt_ordenCompraId,
-				     DetalleMovArt.`articuloId` AS DetalleMovArt_articuloId,
-				     DetalleMovArt.`estadoCalidad` AS DetalleMovArt_estadoCalidad,
-				     DetalleMovArt.`certificadoNum` AS DetalleMovArt_certificadoNum,
-				     DetalleMovArt.`detalleControl` AS DetalleMovArt_detalleControl,
-				     movimientos_detalles.`movimientosarticulos_id` AS movimientos_detalles_movimientosarticulos_id,
-				     movimientos_detalles.`detallemovart_id` AS movimientos_detalles_detallemovart_id,
-				     Proveedor.`id` AS Proveedor_id,
-				     Proveedor.`departamento` AS Proveedor_departamento,
-				     Proveedor.`provincia` AS Proveedor_provincia,
-				     Proveedor.`rsocial` AS Proveedor_rsocial,
-				     Proveedor.`denominacion` AS Proveedor_denominacion,
-				     articulos.`codigo` AS articulos_codigo,
-				     articulos.`idArticulos` AS articulos_idArticulos
-				FROM
-				     `OrdenCompraDetalle` OrdenCompraDetalle INNER JOIN `ordenCompra_detallesOrdenCompra` ordenCompra_detallesOrdenCompra ON OrdenCompraDetalle.`id` = ordenCompra_detallesOrdenCompra.`ordencompradetalle_id`
-				     INNER JOIN `OrdenCompra` OrdenCompra ON ordenCompra_detallesOrdenCompra.`orden_id` = OrdenCompra.`id`
-				     LEFT JOIN `DetalleMovArt` DetalleMovArt ON OrdenCompra.`id` = DetalleMovArt.`ordenCompraId`
-				     INNER JOIN `Proveedor` Proveedor ON OrdenCompra.`proveedorId` = Proveedor.`id`
-				     LEFT JOIN `movimientos_detalles` movimientos_detalles ON DetalleMovArt.`id` = movimientos_detalles.`detallemovart_id`
-				     LEFT JOIN `MovimientosArticulos` MovimientosArticulos ON movimientos_detalles.`movimientosarticulos_id` = MovimientosArticulos.`id`
-				     LEFT JOIN `articulos` articulos ON OrdenCompraDetalle.`articuloId` = articulos.`idArticulos`
-				WHERE
-				     Proveedor.`id` BETWEEN $proveedorDesde AND $proveedorHasta
-				 AND OrdenCompra.`fechaEmision` BETWEEN '$desde' AND '$hasta'
-				 AND articulos.`codigo` BETWEEN '$codigoDesde' AND '$codigoHasta'
-				GROUP BY OrdenCompraDetalle.`id`, DetalleMovArt.`articuloId`
-				ORDER BY
-				     Proveedor.`id` ASC,
-				     OrdenCompraDetalle.`fechaEntrega` DESC
+				select sub.*, detMov.cantidad as cantidad, sum(ifnull(detMov.cantidad, 0)) as ingresado
+				from
+					(select oc.id as ordenId, art.codigo, detalleOrden.cant as comprado, detalleOrden.descripcion, detalleOrden.articuloId, oc.fechaEmision,oc.tc, oc.monedaOc, detalleOrden.unidad, detalleOrden.precio, sum(detalleOrden.cant) as compradoTotal, detalleOrden.fechaEntrega, prov.id as proveedorId, prov.rsocial
+					from
+						OrdenCompraDetalle as detalleOrden
+						inner join ordenCompra_detallesOrdenCompra oc_det on oc_det.ordencompradetalle_id = detalleOrden.id
+						left join OrdenCompra oc on oc.id = oc_det.orden_id
+						left join Proveedor prov on oc.proveedorId = prov.id
+						left join articulos art on art.idArticulos = detalleOrden.articuloId
+					where
+					    oc.fechaEmision between '$desde' and '$hasta'
+						and prov.id between $proveedorDesde and $proveedorHasta
+						and art.codigo between '$codigoDesde' and '$codigoHasta'
+				group by oc.id, art.idArticulos) as sub
+				left join detallemovart_ordencompradetalle det_det on det_det.ordencompradetalle_id = sub.ordenId
+				left join DetalleMovArt detMov on detMov.ordenCompraDetalleId = det_det.detallemovart_id
+				group by sub.ordenId, sub.articuloId
 			";
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
