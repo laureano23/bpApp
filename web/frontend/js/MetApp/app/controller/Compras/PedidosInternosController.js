@@ -49,16 +49,17 @@ Ext.define('MetApp.controller.Compras.PedidosInternosController',{
 	
 		console.log(grid.record);
 		console.log(cell);
-		var win=Ext.widget('ProveedoresSearchGrid');
-
-		win.down('button').on('click', function(){
-			var model=grid.record;
-			var gridCliente=win.down('grid');
-			var sel=gridCliente.getSelectionModel().getSelection()[0];
-			console.log(sel);
-			model.set('proveedor', sel.data.rsocial);
-			win.close();
-		});
+		if(cell.context.colIdx == 11){
+			var win=Ext.widget('ProveedoresSearchGrid');	
+			win.down('button').on('click', function(){
+				var model=grid.record;
+				var gridCliente=win.down('grid');
+				var sel=gridCliente.getSelectionModel().getSelection()[0];
+				console.log(sel);
+				model.set('proveedor', sel.data.rsocial);
+				win.close();
+			});
+		}
 	},
 
 	VerPedidosInternos: function(btn){
