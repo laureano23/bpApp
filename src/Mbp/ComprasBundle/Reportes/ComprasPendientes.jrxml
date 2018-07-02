@@ -23,7 +23,7 @@
 	<queryString>
 		<![CDATA[select sub.*, detMov.cantidad as cantidad, sum(ifnull(detMov.cantidad, 0)) as ingresado
 from
-	(select oc.id as ordenId, art.codigo, detalleOrden.cant as comprado, detalleOrden.descripcion, detalleOrden.articuloId, oc.fechaEmision,oc.tc, oc.monedaOc, detalleOrden.unidad, detalleOrden.precio, sum(detalleOrden.cant) as compradoTotal, detalleOrden.fechaEntrega, prov.id as proveedorId, prov.rsocial
+	(select oc.id as ordenId, art.codigo, detalleOrden.id as detalleOrdenId, detalleOrden.cant as comprado, detalleOrden.descripcion, detalleOrden.articuloId, oc.fechaEmision,oc.tc, oc.monedaOc, detalleOrden.unidad, detalleOrden.precio, sum(detalleOrden.cant) as compradoTotal, detalleOrden.fechaEntrega, prov.id as proveedorId, prov.rsocial
 	from
 		OrdenCompraDetalle as detalleOrden
 		inner join ordenCompra_detallesOrdenCompra oc_det on oc_det.ordencompradetalle_id = detalleOrden.id
@@ -34,15 +34,15 @@ from
 		oc.fechaEmision between $P{FECHA_DESDE} and $P{FECHA_HASTA}
 		and prov.id between $P{PROVEEDOR_ID_DESDE} and $P{PROVEEDOR_ID_HASTA}
 		and art.codigo between $P{CODIGO_DESDE} and $P{CODIGO_HASTA}
-	 group by oc.id, art.idArticulos) as sub
-left join detallemovart_ordencompradetalle det_det on det_det.ordencompradetalle_id = sub.ordenId
-left join DetalleMovArt detMov on detMov.ordenCompraDetalleId = det_det.detallemovart_id
+	group by oc.id, art.idArticulos) as sub
+left join DetalleMovArt detMov on detMov.ordenCompraDetalleId = sub.detalleOrdenId
 group by sub.ordenId, sub.articuloId]]>
 	</queryString>
 	<field name="ordenId" class="java.lang.Integer"/>
 	<field name="codigo" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="detalleOrdenId" class="java.lang.Integer"/>
 	<field name="comprado" class="java.math.BigDecimal"/>
 	<field name="descripcion" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>

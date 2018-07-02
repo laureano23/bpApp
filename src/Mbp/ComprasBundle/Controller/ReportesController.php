@@ -187,20 +187,19 @@ class ReportesController extends Controller
 			$sql = "
 				select sub.*, detMov.cantidad as cantidad, sum(ifnull(detMov.cantidad, 0)) as ingresado
 				from
-					(select oc.id as ordenId, art.codigo, detalleOrden.cant as comprado, detalleOrden.descripcion, detalleOrden.articuloId, oc.fechaEmision,oc.tc, oc.monedaOc, detalleOrden.unidad, detalleOrden.precio, sum(detalleOrden.cant) as compradoTotal, detalleOrden.fechaEntrega, prov.id as proveedorId, prov.rsocial
+					(select oc.id as ordenId, art.codigo, detalleOrden.id as detalleOrdenId, detalleOrden.cant as comprado, detalleOrden.descripcion, detalleOrden.articuloId, oc.fechaEmision,oc.tc, oc.monedaOc, detalleOrden.unidad, detalleOrden.precio, sum(detalleOrden.cant) as compradoTotal, detalleOrden.fechaEntrega, prov.id as proveedorId, prov.rsocial
 					from
 						OrdenCompraDetalle as detalleOrden
 						inner join ordenCompra_detallesOrdenCompra oc_det on oc_det.ordencompradetalle_id = detalleOrden.id
 						left join OrdenCompra oc on oc.id = oc_det.orden_id
 						left join Proveedor prov on oc.proveedorId = prov.id
 						left join articulos art on art.idArticulos = detalleOrden.articuloId
-					where
+					 where
 					    oc.fechaEmision between '$desde' and '$hasta'
 						and prov.id between $proveedorDesde and $proveedorHasta
 						and art.codigo between '$codigoDesde' and '$codigoHasta'
 				group by oc.id, art.idArticulos) as sub
-				left join detallemovart_ordencompradetalle det_det on det_det.ordencompradetalle_id = sub.ordenId
-				left join DetalleMovArt detMov on detMov.ordenCompraDetalleId = det_det.detallemovart_id
+				left join DetalleMovArt detMov on detMov.ordenCompraDetalleId = sub.detalleOrdenId
 				group by sub.ordenId, sub.articuloId
 			";
 			
