@@ -356,7 +356,9 @@ class ReportesController extends Controller
 		 AND Recibos.`anio` BETWEEN $anioDesde AND $anioHasta
 		 AND Recibos.`periodo` BETWEEN $periodoDesde AND $periodoHasta
 		 AND Recibos.`compensatorio` = $compensatorio
-		ORDER BY Personal.`apellido` ASC, RecibosDetalle.`remunerativo` DESC";
+		ORDER BY
+		     Personal.`apellido` ASC, Personal.`nombre` ASC,
+		     RecibosDetalle.`remunerativo` DESC";
 		
 		$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 		

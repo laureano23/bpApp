@@ -173,7 +173,7 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 									fieldLabel: 'CUIT:',
 									emptyText: '33678767439',
 									labelWidth: 35,
-									allowBlank: false
+									allowBlank: true
 								},
 								{
 									xtype: 'textfield',

@@ -64,7 +64,7 @@ WHERE
  AND Recibos.`periodo` BETWEEN $P{periodoDesde} AND $P{periodoHasta}
  AND Recibos.`compensatorio` = $P{compensatorio}
 ORDER BY
-     Personal.`apellido` ASC,
+     Personal.`apellido` ASC, Personal.`nombre` ASC,
      RecibosDetalle.`remunerativo` DESC]]>
 	</queryString>
 	<field name="Recibos_id" class="java.lang.Integer"/>

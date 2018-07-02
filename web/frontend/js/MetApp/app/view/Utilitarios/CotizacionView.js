@@ -49,7 +49,8 @@ Ext.define('MetApp.view.Utilitarios.CotizacionView' ,{
 									width: 200,
 									name: 'id',
 									itemId: 'id',
-									fieldLabel: 'Cliente',				
+									fieldLabel: 'Cliente',	
+									allowBlank: true			
 								},
 								{
 									xtype: 'button',
@@ -63,7 +64,8 @@ Ext.define('MetApp.view.Utilitarios.CotizacionView' ,{
 									itemId: 'rsocial',
 									width: 450,
 									allowBlank: false,
-									margin: '0 5 0 0'
+									margin: '0 5 0 0',
+									readOnly: false
 								},								
 								{
 									xtype: 'datefield',

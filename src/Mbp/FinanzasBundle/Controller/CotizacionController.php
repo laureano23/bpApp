@@ -40,7 +40,7 @@ class CotizacionController extends Controller
 			$cotizacion->setTc($coti->tc);
 			
 			$cliente=$repoClientes->find($coti->id);
-			if(empty($cliente)) throw new \Exception("Cliente no encontrado", 1);
+			//if(empty($cliente)) throw new \Exception("Cliente no encontrado", 1);
 			
 			
 			$cotizacion->setClienteId($cliente);

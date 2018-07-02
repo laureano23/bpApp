@@ -64,7 +64,11 @@ class DefaultController extends Controller
 			$cliente->setProvincia($repoProvincia->find($data->provincia));
 			$cliente->setLocalidad($repoLocalidad->find($data->localidad));
 			$cliente->setEmail($data->email);
-			$cliente->setCuit($data->cuit);
+			if($data->cuit == 0){
+				$cliente->setCuit(null);
+			}else{
+				$cliente->setCuit($data->cuit);	
+			}
 			$cliente->setCPostal($data->cPostal);
 			$iva = $repoIva->find($data->iva);
 			
