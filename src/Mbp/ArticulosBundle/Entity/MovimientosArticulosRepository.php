@@ -30,10 +30,10 @@ class MovimientosArticulosRepository extends \Doctrine\ORM\EntityRepository
 			->join('mov.movDetalleId', 'det')
 			->join('mov.proveedorId', 'prov')
 			->join('det.articuloId', 'art')
-			->join('det.ordenCompraId', 'oc')
+			->join('det.ordenCompraDetalleId', 'oc')
 			->where('art.requiereControl = 1')
 			->andWhere('det.estadoCalidad is NULL')
-			->andWhere('oc.anulada = false')
+			//->andWhere('oc.anulada = false')
 			->getQuery()
 			->getArrayResult();	
 		return $qb;	
