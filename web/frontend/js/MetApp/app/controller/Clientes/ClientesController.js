@@ -42,10 +42,12 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 	FilterLocalidad: function(combo){
 		var win = combo.up('window');
 		var storeLocalidad = win.queryById('comboLocalidad').getStore();
+		var storeVendedor = win.queryById('vendedor').getStore();
 		var deptoId = win.queryById('comboPartido').getValue();
 		
 		storeLocalidad.getProxy().setExtraParam('partidoId', deptoId);
 		storeLocalidad.load();	
+		storeVendedor.load();
 	},
 	
 	FilterPartido: function(combo){
