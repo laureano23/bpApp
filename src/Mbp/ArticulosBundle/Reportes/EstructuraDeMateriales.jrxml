@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EstructuraDeMateriales" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7c719db6-fefe-4fcb-914a-8c49a59a37f5">
 	<property name="ireport.zoom" value="1.6500000000000006"/>
-	<property name="ireport.x" value="313"/>
+	<property name="ireport.x" value="570"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Prof1" mode="Opaque" forecolor="#000000" backcolor="#FFFFFF" fontSize="8" isItalic="false" isUnderline="false">
 		<conditionalStyle>
@@ -39,10 +39,8 @@
 	</field>
 	<field name="sumCosto" class="java.math.BigDecimal"/>
 	<field name="depthP" class="java.lang.Integer"/>
-	<field name="depth" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="sumatoria" class="java.math.BigDecimal"/>
+	<field name="depth" class="java.lang.String"/>
 	<variable name="sub_total" class="java.lang.Float" resetType="Group" resetGroup="sub_rep" calculation="Sum">
 		<variableExpression><![CDATA[$F{costo}]]></variableExpression>
 	</variable>
@@ -77,7 +75,7 @@ $V{COSTO_UNITARIO} *$F{cant}]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="10" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{total} / $P{tc}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{sumCosto} / $P{tc}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="348" y="59" width="94" height="16" forecolor="#FFFFFF" uuid="19841480-9c22-44fb-a2b8-fd765b4fad08"/>
@@ -141,7 +139,7 @@ $V{COSTO_UNITARIO} *$F{cant}]]></variableExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{sumCosto}]]></textFieldExpression>
 			</textField>
 			<image onErrorType="Blank">
 				<reportElement x="702" y="2" width="100" height="77" uuid="b453a4ac-e52e-4e90-91c3-a297dff3df58"/>
