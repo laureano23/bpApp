@@ -209,10 +209,13 @@ class PedidoClientesController extends Controller
 			     articulos.`moneda` AS articulos_moneda,
 			     PedidoClientesDetalle.`descripcion` AS PedidoClientesDetalle_descripcion,
 			     ParametrosFinanzas.`dolarOficial` AS dolarOficial,
-			     articulos.`monedaPrecio` AS articulos_monedaPrecio
+			     articulos.`monedaPrecio` AS articulos_monedaPrecio,
+     			 group_concat(op.otId) as ot
 			FROM
-			     `PedidoClientesDetalle` PedidoClientesDetalle INNER JOIN `pedidoId_detalleId` pedidoId_detalleId ON PedidoClientesDetalle.`id` = pedidoId_detalleId.`detalleId`
+			     `PedidoClientesDetalle` PedidoClientesDetalle 
+			     INNER JOIN `pedidoId_detalleId` pedidoId_detalleId ON PedidoClientesDetalle.`id` = pedidoId_detalleId.`detalleId`
 			     INNER JOIN `PedidoClientes` PedidoClientes ON pedidoId_detalleId.`pedidoId` = PedidoClientes.`id`
+			     left join Ot_Pedidos op on op.pedidoId = PedidoClientes.id
 			     INNER JOIN `cliente` cliente ON PedidoClientes.`cliente` = cliente.`idCliente`
 			     INNER JOIN `articulos` articulos ON PedidoClientesDetalle.`codigo` = articulos.`idArticulos`,
 			     `ParametrosFinanzas` ParametrosFinanzas
@@ -221,6 +224,7 @@ class PedidoClientesController extends Controller
 			 AND articulos.`codigo` BETWEEN '$codigoDesde' AND '$codigoHasta'
 			 AND PedidoClientesDetalle.`fechaProg` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql'  
 			 AND PedidoClientesDetalle.`inactivo` = 0
+			 GROUP BY PedidoClientesDetalle.`id`
 			ORDER BY
 			    PedidoClientes.`esRepuesto` ASC,
 			    cliente.`idCliente` ASC,
