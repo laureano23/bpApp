@@ -40,25 +40,24 @@ Ext.define('MetApp.controller.Compras.PedidosInternosController',{
 				click: this.VerPedidosInternos
 			},	
 			'ListaPedidosInternosView grid': {
-				edit: this.CambiarProveedor
+				cellclick: this.CambiarProveedor
 			},	
 		});		
 	},
 	
-	CambiarProveedor: function(cell, grid){
-	
-		console.log(grid.record);
-		console.log(cell);
-		if(cell.context.colIdx == 11){
-			var win=Ext.widget('ProveedoresSearchGrid');	
-			win.down('button').on('click', function(){
-				var model=grid.record;
+	CambiarProveedor: function(view, td, cellIndex, model, tr, rowIndex, e, eOpts){
+		var win;
+		var task = new Ext.util.DelayedTask(function(){
+		    win=Ext.widget('ProveedoresSearchGrid');
+		    win.down('button').on('click', function(){
 				var gridCliente=win.down('grid');
 				var sel=gridCliente.getSelectionModel().getSelection()[0];
-				console.log(sel);
 				model.set('proveedor', sel.data.rsocial);
 				win.close();
 			});
+		});
+		if(cellIndex == 11){
+			task.delay(500); //delay para evitar conflicto de eventos				
 		}
 	},
 
