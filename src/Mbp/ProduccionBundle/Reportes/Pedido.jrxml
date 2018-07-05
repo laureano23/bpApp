@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Pedidos" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="faabb94c-b32d-4f38-913c-e824ee7dd96c">
-	<property name="ireport.zoom" value="1.100000000000001"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="2.3579476910000032"/>
+	<property name="ireport.x" value="502"/>
+	<property name="ireport.y" value="78"/>
 	<parameter name="codigoDesde" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["1"]]></defaultValueExpression>
 	</parameter>
@@ -50,10 +50,12 @@
      articulos.`moneda` AS articulos_moneda,
      PedidoClientesDetalle.`descripcion` AS PedidoClientesDetalle_descripcion,
      ParametrosFinanzas.`dolarOficial` AS dolarOficial,
-     articulos.`monedaPrecio` AS articulos_monedaPrecio
+     articulos.`monedaPrecio` AS articulos_monedaPrecio,
+     group_concat(op.otId) as ot
 FROM
      `PedidoClientesDetalle` PedidoClientesDetalle INNER JOIN `pedidoId_detalleId` pedidoId_detalleId ON PedidoClientesDetalle.`id` = pedidoId_detalleId.`detalleId`
      INNER JOIN `PedidoClientes` PedidoClientes ON pedidoId_detalleId.`pedidoId` = PedidoClientes.`id`
+     left join Ot_Pedidos op on op.pedidoId = PedidoClientes.id
      INNER JOIN `cliente` cliente ON PedidoClientes.`cliente` = cliente.`idCliente`
      INNER JOIN `articulos` articulos ON PedidoClientesDetalle.`codigo` = articulos.`idArticulos`,
      `ParametrosFinanzas` ParametrosFinanzas
@@ -62,6 +64,7 @@ WHERE
  AND articulos.`codigo` BETWEEN $P{codigoDesde} AND $P{codigoHasta}
  AND PedidoClientesDetalle.`fechaProg` BETWEEN $P{fechaDesde} AND $P{fechaHasta}
  AND PedidoClientesDetalle.`inactivo` = 0
+GROUP BY PedidoClientesDetalle.`id`
 ORDER BY
      PedidoClientes.`esRepuesto` ASC,
     cliente.`idCliente` ASC,
@@ -98,6 +101,9 @@ ORDER BY
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="articulos_monedaPrecio" class="java.lang.Boolean"/>
+	<field name="ot" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<variable name="TOTAL_GRAL" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{articulos_monedaPrecio} == true
 ? $F{articulos_precio}*$F{dolarOficial}*($F{PedidoClientesDetalle_cantidad}-$F{PedidoClientesDetalle_entregado}):$F{articulos_precio}*($F{PedidoClientesDetalle_cantidad}-$F{PedidoClientesDetalle_entregado})]]></variableExpression>
@@ -228,7 +234,7 @@ ORDER BY
 				<text><![CDATA[Codigo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="100" y="0" width="276" height="20" uuid="f0425b4a-b5c8-4dcf-aa2f-506effb82f50"/>
+				<reportElement x="100" y="0" width="223" height="20" uuid="f0425b4a-b5c8-4dcf-aa2f-506effb82f50"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -239,7 +245,7 @@ ORDER BY
 				<text><![CDATA[Descripcion]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="376" y="0" width="53" height="20" uuid="d9f72297-8c01-4c0e-851f-ed1d26f68363"/>
+				<reportElement x="323" y="0" width="53" height="20" uuid="d9f72297-8c01-4c0e-851f-ed1d26f68363"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -315,6 +321,17 @@ ORDER BY
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[SubTotal]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="376" y="0" width="53" height="20" uuid="3cd91cd1-ad16-412e-8125-346c54716293"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[OT]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
@@ -334,7 +351,7 @@ ORDER BY
 				<textFieldExpression><![CDATA[$F{articulos_codigo}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="100" y="0" width="276" height="20" uuid="eda36d26-bfcf-4f60-bb81-c476766dbf04"/>
+				<reportElement x="100" y="0" width="221" height="20" uuid="eda36d26-bfcf-4f60-bb81-c476766dbf04"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -374,7 +391,7 @@ ORDER BY
 				<textFieldExpression><![CDATA[$F{PedidoClientesDetalle_fechaProg}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="376" y="0" width="53" height="20" uuid="df5db287-17aa-4a62-93ab-4ab5f628d9e8"/>
+				<reportElement x="321" y="0" width="55" height="20" uuid="df5db287-17aa-4a62-93ab-4ab5f628d9e8"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -443,6 +460,20 @@ ORDER BY
 				</textElement>
 				<textFieldExpression><![CDATA[$F{articulos_monedaPrecio} == true
 ? $F{articulos_precio}*$F{dolarOficial}*($F{PedidoClientesDetalle_cantidad}-$F{PedidoClientesDetalle_entregado}):$F{articulos_precio}*($F{PedidoClientesDetalle_cantidad}-$F{PedidoClientesDetalle_entregado})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="376" y="0" width="53" height="20" uuid="c1fe9d39-8579-44dd-bc39-45f689d6497b"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ot}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
