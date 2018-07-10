@@ -1,5 +1,5 @@
 #IGNORAMOS LA CARPETA COMPLETA
-/web/*
+/web/bundles
 
 #EXCLUIMOS FRONTEND
 !/web/frontend/
