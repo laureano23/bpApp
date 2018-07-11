@@ -18,6 +18,9 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 				'#actualizarBDArticulos': {
 					click: this.actualizarBDArticulos
 				},
+				'articulosform button[itemId=enQueFormulas]': {
+					click: this.EnQueFormulas
+				},
 				'articulosform combobox[itemId=provSug1]': {
 					focus: this.ResetStoreProv
 				},
@@ -63,6 +66,26 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 		});		
 	},
 
+	EnQueFormulas: function(btn){
+		var win=btn.up('window');
+
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_formulas_enQueFormulas'),
+
+			params: {
+				idArt: win.queryById('id').getValue()
+			},
+
+			success: function(resp){
+				var jsonResp = Ext.JSON.decode(resp.responseText);
+				if(jsonResp.success == true){
+					var ruta = Routing.generate('mbp_formulas_enQueFormulas_pdf');
+					window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');					
+				}
+			}
+		})
+	},
+
 	ResetStoreProv: function(combo){
 		var store=combo.getStore();
 		store.clearFilter(true);
@@ -70,10 +93,6 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 
 	EstructuraProducto: function(btn){
 		this.getController('Articulos.FormulasController').Estructura(btn);
-	},
-	
-	EnQueFormulas: function(btn){
-		
 	},
 	
 	PedidosPendientes: function(btn){
@@ -92,12 +111,7 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 			fechaDesde:"01/01/2000",
 			fechaHasta:"01/01/2500"
 		};
-		
-		
-		console.log(data);
 		var values=Ext.JSON.encode(data);
-		
-		console.log(values);
 		
 		
 		Ext.Ajax.request({

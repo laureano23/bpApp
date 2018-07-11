@@ -13,6 +13,95 @@ use Mbp\ArticulosBundle\Entity\Formulas;
 
 class ReportesController extends Controller
 {
+	/**
+     * @Route("/enQueFormulas", name="mbp_formulas_enQueFormulas", options={"expose"=true})
+     */
+	public function enQueFormulas()
+	{
+		$repo = $this->get('reporteador');		
+		$kernel = $this->get('kernel');	
+		$em = $this->getDoctrine()->getManager();
+		$req = $this->getRequest();
+		$response = new Response;
+		
+		try{
+			/*
+			 * Recibo parametros del request 
+			 */
+			
+			$id = $req->request->get('idArt');
+			$jru = $repo->jru();
+					
+			$ruta = $kernel->locateResource('@MbpArticulosBundle/Reportes/EnQueFormulas.jrxml');
+			
+			//Ruta de destino
+			$destino = $kernel->locateResource('@MbpArticulosBundle/Resources/public/pdf/').'EnQueFormulas.pdf';
+			
+			//Parametros HashMap
+			$param = $repo->getJava('java.util.HashMap');
+			$param->put('ID_ART', $id);
+					
+			$conn = $repo->getJdbc();
+			
+			/*
+			 * SQL
+			 * 
+			 */
+			$sql = "
+				SELECT sub.*, art.codigo as codigoHijo, art.descripcion as descripcionHijo
+				from
+				(SELECT art.codigo, art.descripcion, f.cantidad
+				FROM FormulasC as f
+				JOIN FormulasC parent on parent.id = f.parent_id
+				JOIN articulos art on art.idArticulos = parent.idArt
+				WHERE f.idArt = $id
+					and f.level = 2
+				ORDER BY art.codigo ASC) as sub,
+				articulos art
+				where art.idArticulos = $id
+			";
+			
+			//Exportamos el reporte
+			$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
+						
+			return $response->setContent(
+				json_encode(array(
+					'success' => true,
+					'reporte' => $destino,	
+				))
+			);
+		}catch(\Exception $e){
+			print($e);
+			return $response->setContent(
+				json_encode(array(
+					'success' => false,
+					'msg' => $e->getMessage(),	
+				))
+			);
+		}
+			
+	}
+	
+	/**
+     * @Route("/enQueFormulasPDF", name="mbp_formulas_enQueFormulas_pdf", options={"expose"=true})
+     */
+	public function enQueFormulasPDF()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpArticulosBundle/Resources/public/pdf/').'EnQueFormulas.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'EnQueFormulas.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+
+        return $response;
+	}
+
 	 /**
      * @Route("/etiquetaIngresoMaterial", name="mbp_formulas_etiquetaIngresoMaterial", options={"expose"=true})
      */
