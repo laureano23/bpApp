@@ -281,6 +281,13 @@ Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 									fieldLabel: 'Descuento (%)',
 									margin: '0 0 0 5'									
 								},
+								{
+									xtype: 'numberfield',
+									name: 'percepcionIIBB',
+									itemId: 'percepcionIIBB',
+									fieldLabel: 'Precepción IIBB',
+									margin: '0 0 0 5'									
+								},
 							]
 						},									
 						{

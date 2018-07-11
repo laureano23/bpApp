@@ -22,14 +22,18 @@ class OrdenCompraRepository extends \Doctrine\ORM\EntityRepository
 		if(empty($art)) throw new \Exception("Artículo no encontrado", 1);
 		$idArt=$art->getId();
 
+		//print_r($art->getCodigo());
+
 		$res=$rep->createQueryBuilder('oc')
 			->select("
 				DATE_FORMAT(oc.fechaEmision, '%d/%m/%Y') as fechaEmision,
 				detOrden.id as idDetalleOrden,
+				oc.id as idOc,
 				DATE_FORMAT(detOrden.fechaEntrega, '%d/%m/%Y') as entrega,
 				detOrden.cant - ifnull(SUM(mov.cantidad),0) as pendiente,
 				detOrden.cant as ordenCant,
-				mov.cantidad as movCant")
+				mov.cantidad as movCant,
+				art.codigo")
 			->join('oc.ordenDetalleId', 'detOrden')
 			->leftJoin('detOrden.detalleMovArtId', 'mov')
 			->join('detOrden.articuloId', 'art')
