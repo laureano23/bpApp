@@ -68,22 +68,12 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 
 	EnQueFormulas: function(btn){
 		var win=btn.up('window');
-
-		Ext.Ajax.request({
+		var form=win.down('form').getForm();
+		form.standardSubmit=true;
+		form.submit({
+			target: '_blank',
 			url: Routing.generate('mbp_formulas_enQueFormulas'),
-
-			params: {
-				idArt: win.queryById('id').getValue()
-			},
-
-			success: function(resp){
-				var jsonResp = Ext.JSON.decode(resp.responseText);
-				if(jsonResp.success == true){
-					var ruta = Routing.generate('mbp_formulas_enQueFormulas_pdf');
-					window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');					
-				}
-			}
-		})
+		});
 	},
 
 	ResetStoreProv: function(combo){
