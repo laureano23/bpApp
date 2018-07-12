@@ -178,6 +178,7 @@ Ext.define('MetApp.view.Articulos.Stock.EntradaSalidaArticulos', {
 							},
 							margins: '5 0 0 0',
 							cls: 'extra-alt',
+							height: 200,
 							region: 'center',
 							store: 'MetApp.store.Compras.HistoricoCompraStore',
 							columns: [
