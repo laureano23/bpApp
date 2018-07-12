@@ -31,7 +31,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 	],
 	
 	init: function(){
-		var me = this;		
+		var me = this;	
 		
 		me.control({
 			'#tbCCClientes': {
@@ -88,6 +88,9 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			'facturacion textfield[itemId=descuentoFijo]': {
 				change: this.CalcularDescuento
 			},
+			'facturacion textfield[itemId=percepcionIIBB]': {
+				change: this.PercepcionManual
+			},
 			'facturacion checkbox[itemId=sinIva]': {
 				change: this.SacarIVA
 			},
@@ -113,6 +116,15 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 				select: this.SetReadOnlyCuenta
 			},
 		});
+	},
+
+	PercepcionManual: function(txt){
+		var win=txt.up('window');
+		var subTotal=win.queryById('subTotal');
+		var iva=win.queryById('iva');
+		var total=win.queryById('total');
+
+		total.setValue(subTotal.getValue() + iva.getValue() + txt.getValue());
 	},
 	
 	DetalleCliente: function(btn){
@@ -148,7 +160,6 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 	SacarIVA: function(check){
 		var win = check.up('window');
 		var val = win.queryById('sinIva').getValue();
-		console.log(val);
 		var subTotal = win.queryById('subTotal');
 		var iva = win.queryById('iva');
 		var total = win.queryById('total');
@@ -168,6 +179,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var desc = txt.getValue();		
 		var subTotal = win.queryById('subTotal');
 		var iva = win.queryById('iva');
+		var percepcion = win.queryById('percepcionIIBB');
 		var total = win.queryById('total');
 		var store = win.down('grid').getStore();
 		var aux=0;
@@ -182,7 +194,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		
 		subTotal.setValue(sub * (100-desc)/100);
 		iva.setValue(subTotal.getValue() * MetApp.resources.ux.ParametersSingleton.getIva());
-		total.setValue(iva.getValue() + subTotal.getValue());
+		total.setValue(iva.getValue() + subTotal.getValue() + percepcion.getValue());
 	},
 	
 		
@@ -285,6 +297,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 	},
 	
 	AddNuevoFactura: function(btn){
+
 		var cc = btn.up('window');
 		var descuento = cc.queryById('descuentoFijo').getValue();
 		var me = this;
@@ -292,6 +305,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var store = winFact.down('grid').getStore();	
 		var comboTipo = winFact.queryById('tipo');
 		var storeTipo = comboTipo.getStore();
+		
 		
 		storeTipo.load({
 			callback: function(){
@@ -307,35 +321,51 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		store.loadData([], false);
 						
 		/* ESCUCHA CAMBIOS DEL STORE PARA ACTUALIZAR SUBTOTALES Y TOTAL */
-		store.on('datachanged', function(store){
+		store.on('datachanged', function(store){			
 			var win = me.getFacturacion();
+			var form=win.queryById('datosFc');
 			var aux = 0;
 			var fieldSub = win.queryById('subTotal');
 			var fieldIva = win.queryById('iva');
 			var fieldTotal = win.queryById('total');
 			var totalIva=0;
+			var descuento = win.queryById('descuentoFijo').getValue();
 			if(store.data.items.length == 0){
 				fieldSub.setValue(0);
 				fieldIva.setValue(0);
 				fieldTotal.setValue(0);
-			}else{
-				store.each(function(rec){
+			}else{				
+				store.each(function(rec){					
 					rec.data.parcial = rec.data.cantidad * rec.data.precio;
 					var data = rec.getData();									
 					subTotal = data.parcial + aux;
 					aux = subTotal;
 					if(rec.data.ivaGrabado){
-						totalIva+=MetApp.resources.ux.ParametersSingleton.getIva()*rec.data.cantidad * rec.data.precio;
+						totalIva+=MetApp.resources.ux.ParametersSingleton.getIva()*rec.data.cantidad * rec.data.precio * (1-descuento/100);
 					}
 				});
 				
-				//restamos el descuento
-				var descuento = win.queryById('descuentoFijo').getValue();
+				//restamos el descuento				
 				subTotal -= subTotal * descuento / 100;
-				
+
 				fieldSub.setValue(subTotal);
 				fieldIva.setValue(totalIva);
-				fieldTotal.setValue(fieldSub.getValue() + fieldIva.getValue());
+
+				//calculamos percepcion
+				form.getForm().submit({
+					url: Routing.generate('mbp_CCClientes_calcularPercepcion'),
+					params: {
+						subTotal: subTotal,
+						clienteId: cc.queryById('id').getValue()
+					},
+					success: function(form, action){
+						var jsonResp=Ext.JSON.decode(action.response.responseText);
+						var percepcion=win.queryById('percepcionIIBB');
+						percepcion.setValue(jsonResp.percepcion);
+
+						fieldTotal.setValue(fieldSub.getValue() + fieldIva.getValue() + percepcion.getValue());
+					}
+				});				
 			}
 		});	
 		
@@ -357,8 +387,6 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		}
 		var values = selection.getData();
 		var reporte = '';
-		
-		console.log(values);
 		if(values.idF > 0){
 			reporte = Routing.generate('mbp_CCClientes_generateFc');
 		}else{
@@ -419,7 +447,6 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var selection = grid.getSelectionModel().getSelection()[0];
 		var adjunto = win.queryById('adjunto');
 		
-		console.log(selection);
 		//SETEO ADJUNTO
 		adjunto.setValue(selection.data.concepto);
 	},
@@ -667,7 +694,8 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 					params: {
 						data: Ext.JSON.encode(arrayRecords),
 						fcData: Ext.JSON.encode(valuesDatosFc),	
-						descuentoFijo: descuento
+						descuentoFijo: descuento,
+						percepcion: win.queryById('percepcionIIBB').getValue()
 					},
 					
 					
@@ -710,7 +738,8 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 				params: {
 					data: Ext.JSON.encode(arrayRecords),
 					fcData: Ext.JSON.encode(valuesDatosFc),	
-					descuentoFijo: descuento
+					descuentoFijo: descuento,
+					percepcion: win.queryById('percepcionIIBB').getValue()
 				},
 				
 				
@@ -735,8 +764,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 				},
 				
 				failure: function(resp){
-					var decodeResp = Ext.JSON.decode(resp.responseText);
-					console.log(decodeResp);
+					var decodeResp = Ext.JSON.decode(resp.responseText);					
 					myMask.hide();
 					Ext.Msg.show({
 					    title:'Atencion',

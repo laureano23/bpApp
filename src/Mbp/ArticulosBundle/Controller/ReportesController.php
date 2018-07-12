@@ -69,7 +69,6 @@ class ReportesController extends Controller
 
 	        return $response;
 		}catch(\Exception $e){
-			//throw $e;
 			return $response->setContent(
 				json_encode(array(
 					'success' => false,

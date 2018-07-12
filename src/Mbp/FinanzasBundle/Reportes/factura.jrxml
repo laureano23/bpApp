@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b7fbe4cc-9642-4a30-b319-1f1509ec7bd0">
 	<property name="ireport.zoom" value="1.2100000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="62"/>
+	<property name="ireport.y" value="41"/>
 	<parameter name="rutaLogo" class="java.lang.String"/>
 	<parameter name="facturaId" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -742,7 +742,7 @@ $F{FacturaDetalle_descripcion}+" OC N°: "+$F{PedidoClientes_oc}]]></textFieldEx
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{Facturas_perIIBB}*100/$V{subTotal}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Facturas_perIIBB}*100/($V{subTotal}-$F{Facturas_dtoTotal})]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="279" y="47" width="41" height="20" uuid="0c0558b4-cdc2-4b88-989c-c66e50330bad"/>

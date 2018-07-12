@@ -144,7 +144,6 @@ Ext.define('MetApp.view.CCClientes.CCClientes' ,{
 								dataIndex: 'concepto',
 								width: 240,
 								renderer: function(val, met, rec){
-									console.log(rec);
 									if(rec.data.pagado == true){
 										return '<span style="color:blue;">'+val+'</span>';
 									}else{

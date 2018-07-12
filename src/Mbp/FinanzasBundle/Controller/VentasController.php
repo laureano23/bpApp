@@ -14,6 +14,51 @@ use Mbp\FinanzasBundle\Entity\TipoComprobante;
 class VentasController extends Controller
 {	
 
+
+	/**
+     * @Route("/CCClientes/calcularPercepcion", name="mbp_CCClientes_calcularPercepcion", options={"expose"=true})
+     */	    
+    public function calcularPercepcion()
+	{
+		//RECIBO PARAMETROS
+		$em = $this->getDoctrine()->getManager();
+		$response=new Response;
+		$req = $this->getRequest();
+		$response = new Response;
+		$netoGrabado = $req->request->get('subTotal');
+		$idCliente = $req->request->get('clienteId');
+		//PARAMETROS FINANCIEROS
+		$repoFinanzas = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
+		
+		try{
+			$parametrosFinanzas = $repoFinanzas->find(1);
+			$percepcionIIBB=0;
+			$alicuotaPercepcion=0;
+			
+			$repoCliente = $em->getRepository('MbpClientesBundle:Cliente');
+			$cliente = $repoCliente->find($idCliente);
+			if($cliente->getProvincia() == NULL){
+				throw new \Exception("El cliente debe tener cargados localidad y provincia para calcular IIBB", 1);				
+			}elseif($cliente->getDepartamento()->getProvinciaId()->getId() == $parametrosFinanzas->getProvincia()->getId()){
+				$iibbService = $this->get('ServiceIIBB');	//SERVICIO PARA ALICUOTAS DE IIBB
+				$iibbService->setOpts($cliente->getCuit());
+				$alicuotaPercepcion = $iibbService->getAlicuotaPercepcion();
+				
+				if($alicuotaPercepcion > 0
+					&& $netoGrabado > $parametrosFinanzas->getTopePercepcionIIBB()
+					&& $cliente->getNoAplicaPercepcion() == false){
+					$percepcionIIBB = $netoGrabado * $alicuotaPercepcion / 100; 
+					$percepcionIIBB = number_format($percepcionIIBB, 2, ".", "");
+				}			
+			}
+			
+			return $response->setContent(json_encode(array('success'=>true, 'percepcion'=>$percepcionIIBB)));
+		}catch(\Exception $e){
+			return $response->setContent(json_encode(array('success'=>false, 'msg'=>$e->getMessage())));
+		}
+		
+	}
+
 	/**
      * @Route("/CCClientes/recuperarComp", name="mbp_CCClientes_recuperarComp", options={"expose"=true})
      */	    
@@ -99,13 +144,13 @@ class VentasController extends Controller
 			$data = $req->request->get('data');
 			$fcData = $req->request->get('fcData');
 			$descuento = $req->request->get('descuentoFijo');
+			$percepcionIIBB = $req->request->get('percepcion');
 			$decodeData = json_decode($data);
 			$decodefcData = json_decode($fcData);
 			
 			//PARAMETROS FINANCIEROS
 			$repoFinanzas = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
 			$parametrosFinanzas = $repoFinanzas->find(1);
-			
 						
 			if(empty($parametrosFinanzas)) throw new \Exception("No estan definidos los parámetros financieros", 1);
 		
@@ -214,29 +259,13 @@ class VentasController extends Controller
 			
 			
 			//CONSULTA PERCEPCION DE IIBB
-			$percepcionIIBB=0;
-			$alicuotaPercepcion=0;
-			
-			
-			if($cliente->getProvincia() == NULL){
-				throw new \Exception("El cliente debe tener cargados localidad y provincia para calcular IIBB", 1);				
-			}elseif($cliente->getDepartamento()->getProvinciaId()->getId() == $parametrosFinanzas->getProvincia()->getId()){
-				$iibbService = $this->get('ServiceIIBB');	//SERVICIO PARA ALICUOTAS DE IIBB
-				$iibbService->setOpts($cliente->getCuit());
-				$alicuotaPercepcion = $iibbService->getAlicuotaPercepcion();
-				
-				if($alicuotaPercepcion > 0
-					&& $netoGrabado > $parametrosFinanzas->getTopePercepcionIIBB()
-					&& $cliente->getNoAplicaPercepcion() == false){
-					$percepcionIIBB = $netoGrabado * $alicuotaPercepcion / 100; 
-					$percepcionIIBB = number_format($percepcionIIBB, 2, ".", "");
-				}			
-			}
+			$alicuotaPercepcion = $percepcionIIBB * 100 / $netoGrabado;
 
 			//REDONDEO IMPORTES A 2 DECIMALES
 			$netoGrabado = number_format($netoGrabado, 2, ".", "");
 			$ivaLiquidado = number_format($ivaLiquidado, 2, ".", "");
 			$netoNoGrabado = number_format($netoNoGrabado, 2, ".", "");
+			$alicuotaPercepcion = number_format($netoNoGrabado, 2, ".", "");
 			
 			
 			
@@ -357,7 +386,6 @@ class VentasController extends Controller
 			return $response;
 
 		}catch(\Exception $e){
-			//throw $e;
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			$response->setContent(json_encode(array("success"=>false, "msg"=>$e->getMessage(), 'code' => $e->getCode())));
 			return $response;

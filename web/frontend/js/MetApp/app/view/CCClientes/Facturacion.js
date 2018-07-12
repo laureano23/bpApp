@@ -286,7 +286,8 @@ Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 									name: 'percepcionIIBB',
 									itemId: 'percepcionIIBB',
 									fieldLabel: 'Precepción IIBB',
-									margin: '0 0 0 5'									
+									margin: '0 0 0 5',
+									value: 0								
 								},
 							]
 						},									
