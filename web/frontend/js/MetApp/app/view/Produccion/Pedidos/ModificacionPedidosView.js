@@ -30,7 +30,7 @@ Ext.define('MetApp.view.Produccion.Pedidos.ModificacionPedidosView', {
 					itemId: 'gridModificacionPedidos',
 					alias: 'widget.gridModificacionPedidos',
 					anchorSize: '100%',
-					height: 200,	
+					height: 500,	
 					width: 1100,
 					autoScroll: true,				
 					multiSelect: true,
