@@ -90,6 +90,11 @@ class OrdenCompraDetalle
      */
     private $detalleMovArtId;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="OrdenCompra", mappedBy="ordenDetalleId")
+     */
+    private $ordenCompra;
+
 
     /**
      * Get id
@@ -356,5 +361,39 @@ class OrdenCompraDetalle
     public function getDetalleMovArtId()
     {
         return $this->detalleMovArtId;
+    }
+
+    /**
+     * Add ordenCompra
+     *
+     * @param \Mbp\ComprasBundle\Entity\OrdenCompraDetalle $ordenCompra
+     *
+     * @return OrdenCompraDetalle
+     */
+    public function addOrdenCompra(\Mbp\ComprasBundle\Entity\OrdenCompraDetalle $ordenCompra)
+    {
+        $this->ordenCompra[] = $ordenCompra;
+
+        return $this;
+    }
+
+    /**
+     * Remove ordenCompra
+     *
+     * @param \Mbp\ComprasBundle\Entity\OrdenCompraDetalle $ordenCompra
+     */
+    public function removeOrdenCompra(\Mbp\ComprasBundle\Entity\OrdenCompraDetalle $ordenCompra)
+    {
+        $this->ordenCompra->removeElement($ordenCompra);
+    }
+
+    /**
+     * Get ordenCompra
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOrdenCompra()
+    {
+        return $this->ordenCompra;
     }
 }

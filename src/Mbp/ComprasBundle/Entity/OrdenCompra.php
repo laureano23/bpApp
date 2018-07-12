@@ -38,7 +38,7 @@ class OrdenCompra
     private $usuario;
 	
 	/**
-	 * @ORM\ManyToMany(targetEntity="OrdenCompraDetalle", cascade={"remove", "persist"})
+	 * @ORM\ManyToMany(targetEntity="OrdenCompraDetalle", cascade={"remove", "persist"}, inversedBy="ordenCompra")
 	 * @ORM\JoinTable(name="ordenCompra_detallesOrdenCompra",
 	 *  joinColumns={ @ORM\JoinColumn(name = "orden_id", referencedColumnName="id") }),
 	 *  inverseJoinColumns={@JoinColumn(name="detallesOrden_id", referencedColumnName="id", unique=true)}

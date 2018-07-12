@@ -90,6 +90,11 @@ class OrdenCompraDetalle
      */
     private $detalleMovArtId;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="OrdenCompra", mappedBy="ordenDetalleId")
+     */
+    private $ordenCompra;
+
 
     /**
      * Get id
@@ -315,5 +320,80 @@ class OrdenCompraDetalle
     public function getDescripcion()
     {
         return $this->descripcion;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->detalleMovArtId = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add detalleMovArtId
+     *
+     * @param \Mbp\ArticulosBundle\Entity\DetalleMovArt $detalleMovArtId
+     *
+     * @return OrdenCompraDetalle
+     */
+    public function addDetalleMovArtId(\Mbp\ArticulosBundle\Entity\DetalleMovArt $detalleMovArtId)
+    {
+        $this->detalleMovArtId[] = $detalleMovArtId;
+
+        return $this;
+    }
+
+    /**
+     * Remove detalleMovArtId
+     *
+     * @param \Mbp\ArticulosBundle\Entity\DetalleMovArt $detalleMovArtId
+     */
+    public function removeDetalleMovArtId(\Mbp\ArticulosBundle\Entity\DetalleMovArt $detalleMovArtId)
+    {
+        $this->detalleMovArtId->removeElement($detalleMovArtId);
+    }
+
+    /**
+     * Get detalleMovArtId
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDetalleMovArtId()
+    {
+        return $this->detalleMovArtId;
+    }
+
+    /**
+     * Add ordenCompra
+     *
+     * @param \Mbp\ComprasBundle\Entity\OrdenCompraDetalle $ordenCompra
+     *
+     * @return OrdenCompraDetalle
+     */
+    public function addOrdenCompra(\Mbp\ComprasBundle\Entity\OrdenCompraDetalle $ordenCompra)
+    {
+        $this->ordenCompra[] = $ordenCompra;
+
+        return $this;
+    }
+
+    /**
+     * Remove ordenCompra
+     *
+     * @param \Mbp\ComprasBundle\Entity\OrdenCompraDetalle $ordenCompra
+     */
+    public function removeOrdenCompra(\Mbp\ComprasBundle\Entity\OrdenCompraDetalle $ordenCompra)
+    {
+        $this->ordenCompra->removeElement($ordenCompra);
+    }
+
+    /**
+     * Get ordenCompra
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOrdenCompra()
+    {
+        return $this->ordenCompra;
     }
 }

@@ -88,26 +88,17 @@ Ext.define('MetApp.controller.Articulos.StockController',{
 	
 	ImprimirEtiqueta: function(grid, colIndex, rowIndex){
 		var selection = grid.getStore().getAt(rowIndex);
-		
+		var form=grid.up('form').getForm();
 		var myMask = new Ext.LoadMask(grid, {msg:"Cargando..."});
-		myMask.show();
-		
-		Ext.Ajax.request({
+		//myMask.show();
+
+		console.log(form);
+		form.standardSubmit=true;
+		form.submit({
+			target: '_blank',
 			url: Routing.generate('mbp_formulas_etiquetaIngresoMaterial'),
-			
 			params: {
 				id: selection.data.id
-			},
-			
-			success: function(resp){
-				var ruta = Routing.generate('mbp_formulas_etiquetaIngresoMaterial_pdf');						
-				window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
-				
-				myMask.hide();
-			},
-			
-			failure: function(resp){
-				myMask.hide();
 			}
 		});
 	},

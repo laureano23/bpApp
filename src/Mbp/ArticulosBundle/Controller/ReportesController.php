@@ -130,7 +130,7 @@ class ReportesController extends Controller
 			     DetalleMovArt.`cantidad` AS DetalleMovArt_cantidad,
 			     DetalleMovArt.`loteNum` AS DetalleMovArt_loteNum,
 			     DetalleMovArt.`descripcion` AS DetalleMovArt_descripcion,
-			     DetalleMovArt.`ordenCompraId` AS DetalleMovArt_ordenCompraId,
+			     DetalleMovArt.`ordenCompraDetalleId` AS DetalleMovArt_ordenCompraDetalleId,
 			     DetalleMovArt.`articuloId` AS DetalleMovArt_articuloId,
 			     cliente.`idCliente` AS cliente_idCliente,
 			     cliente.`rsocial` AS cliente_rsocial,
@@ -139,11 +139,37 @@ class ReportesController extends Controller
 			     Proveedor.`provincia` AS Proveedor_provincia,
 			     Proveedor.`rsocial` AS Proveedor_rsocial,
 			     articulos.`idArticulos` AS articulos_idArticulos,
-			     articulos.`codigo` AS articulos_codigo
+			     articulos.`codigo` AS articulos_codigo,
+			     OrdenCompraDetalle.`id` AS OrdenCompraDetalle_id,
+			     OrdenCompraDetalle.`unidad` AS OrdenCompraDetalle_unidad,
+			     OrdenCompraDetalle.`precio` AS OrdenCompraDetalle_precio,
+			     OrdenCompraDetalle.`cant` AS OrdenCompraDetalle_cant,
+			     OrdenCompraDetalle.`fechaEntrega` AS OrdenCompraDetalle_fechaEntrega,
+			     OrdenCompraDetalle.`iva` AS OrdenCompraDetalle_iva,
+			     OrdenCompraDetalle.`ivaCalculado` AS OrdenCompraDetalle_ivaCalculado,
+			     OrdenCompraDetalle.`moneda` AS OrdenCompraDetalle_moneda,
+			     OrdenCompraDetalle.`articuloId` AS OrdenCompraDetalle_articuloId,
+			     OrdenCompraDetalle.`descripcion` AS OrdenCompraDetalle_descripcion,
+			     ordenCompra_detallesOrdenCompra.`orden_id` AS ordenCompra_detallesOrdenCompra_orden_id,
+			     ordenCompra_detallesOrdenCompra.`ordencompradetalle_id` AS ordenCompra_detallesOrdenCompra_ordencompradetalle_id,
+			     OrdenCompra.`id` AS OrdenCompra_id,
+			     OrdenCompra.`usuario` AS OrdenCompra_usuario,
+			     OrdenCompra.`fechaEmision` AS OrdenCompra_fechaEmision,
+			     OrdenCompra.`monedaOC` AS OrdenCompra_monedaOC,
+			     OrdenCompra.`condicionCompra` AS OrdenCompra_condicionCompra,
+			     OrdenCompra.`lugarEntrega` AS OrdenCompra_lugarEntrega,
+			     OrdenCompra.`observaciones` AS OrdenCompra_observaciones,
+			     OrdenCompra.`descuentoGral` AS OrdenCompra_descuentoGral,
+			     OrdenCompra.`tc` AS OrdenCompra_tc,
+			     OrdenCompra.`proveedorId` AS OrdenCompra_proveedorId,
+			     OrdenCompra.`anulada` AS OrdenCompra_anulada
 			FROM
 			     `MovimientosArticulos` MovimientosArticulos LEFT OUTER JOIN `movimientos_detalles` movimientos_detalles ON MovimientosArticulos.`id` = movimientos_detalles.`movimientosarticulos_id`
 			     RIGHT OUTER JOIN `DetalleMovArt` DetalleMovArt ON movimientos_detalles.`detallemovart_id` = DetalleMovArt.`id`
 			     INNER JOIN `articulos` articulos ON DetalleMovArt.`articuloId` = articulos.`idArticulos`
+			     LEFT JOIN `OrdenCompraDetalle` OrdenCompraDetalle ON DetalleMovArt.`ordenCompraDetalleId` = OrdenCompraDetalle.`id`
+			     LEFT JOIN `ordenCompra_detallesOrdenCompra` ordenCompra_detallesOrdenCompra ON OrdenCompraDetalle.`id` = ordenCompra_detallesOrdenCompra.`ordencompradetalle_id`
+			     LEFT JOIN `OrdenCompra` OrdenCompra ON ordenCompra_detallesOrdenCompra.`orden_id` = OrdenCompra.`id`
 			     LEFT OUTER JOIN `cliente` cliente ON MovimientosArticulos.`clienteId` = cliente.`idCliente`
 			     LEFT OUTER JOIN `Proveedor` Proveedor ON MovimientosArticulos.`proveedorId` = Proveedor.`id`
 			WHERE
@@ -153,13 +179,14 @@ class ReportesController extends Controller
 			//Exportamos el reporte
 			$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
 						
-			return $response->setContent(
-				json_encode(array(
-					'success' => true,
-					'reporte' => $destino,	
-				))
-			);
+			$nombreReporte="IngresoStock.pdf";
+			print_r("entramos");
+			$response=$repo->servirReportePDF($nombreReporte, $destino);
+
+	        return $response;
 		}catch(\Exception $e){
+			print($e);
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(
 				json_encode(array(
 					'success' => false,
@@ -168,26 +195,6 @@ class ReportesController extends Controller
 			);
 		}
 			
-	}
-	
-	/**
-     * @Route("/etiquetaIngresoMaterial_pdf", name="mbp_formulas_etiquetaIngresoMaterial_pdf", options={"expose"=true})
-     */
-	public function etiquetaIngresoMaterial_pdf()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpArticulosBundle/Resources/public/pdf/').'IngresoStock.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'IngresoStock.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-
-        return $response;
 	}
 	
 		

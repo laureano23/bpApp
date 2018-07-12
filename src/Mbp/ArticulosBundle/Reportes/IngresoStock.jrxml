@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IngresoStock" language="groovy" pageWidth="155" pageHeight="322" whenNoDataType="AllSectionsNoDetail" columnWidth="153" leftMargin="1" rightMargin="1" topMargin="1" bottomMargin="1" isSummaryWithPageHeaderAndFooter="true" uuid="a53167e1-af4e-451d-b80c-4314fb21d831">
 	<property name="ireport.zoom" value="2.593742460100007"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="192"/>
+	<property name="ireport.y" value="336"/>
 	<property name="com.jaspersoft.studio.unit." value="mm"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="ID_DETALLE_MOV" class="java.lang.String">
@@ -25,7 +25,7 @@
      DetalleMovArt.`cantidad` AS DetalleMovArt_cantidad,
      DetalleMovArt.`loteNum` AS DetalleMovArt_loteNum,
      DetalleMovArt.`descripcion` AS DetalleMovArt_descripcion,
-     DetalleMovArt.`ordenCompraId` AS DetalleMovArt_ordenCompraId,
+     DetalleMovArt.`ordenCompraDetalleId` AS DetalleMovArt_ordenCompraDetalleId,
      DetalleMovArt.`articuloId` AS DetalleMovArt_articuloId,
      cliente.`idCliente` AS cliente_idCliente,
      cliente.`rsocial` AS cliente_rsocial,
@@ -34,11 +34,37 @@
      Proveedor.`provincia` AS Proveedor_provincia,
      Proveedor.`rsocial` AS Proveedor_rsocial,
      articulos.`idArticulos` AS articulos_idArticulos,
-     articulos.`codigo` AS articulos_codigo
+     articulos.`codigo` AS articulos_codigo,
+     OrdenCompraDetalle.`id` AS OrdenCompraDetalle_id,
+     OrdenCompraDetalle.`unidad` AS OrdenCompraDetalle_unidad,
+     OrdenCompraDetalle.`precio` AS OrdenCompraDetalle_precio,
+     OrdenCompraDetalle.`cant` AS OrdenCompraDetalle_cant,
+     OrdenCompraDetalle.`fechaEntrega` AS OrdenCompraDetalle_fechaEntrega,
+     OrdenCompraDetalle.`iva` AS OrdenCompraDetalle_iva,
+     OrdenCompraDetalle.`ivaCalculado` AS OrdenCompraDetalle_ivaCalculado,
+     OrdenCompraDetalle.`moneda` AS OrdenCompraDetalle_moneda,
+     OrdenCompraDetalle.`articuloId` AS OrdenCompraDetalle_articuloId,
+     OrdenCompraDetalle.`descripcion` AS OrdenCompraDetalle_descripcion,
+     ordenCompra_detallesOrdenCompra.`orden_id` AS ordenCompra_detallesOrdenCompra_orden_id,
+     ordenCompra_detallesOrdenCompra.`ordencompradetalle_id` AS ordenCompra_detallesOrdenCompra_ordencompradetalle_id,
+     OrdenCompra.`id` AS OrdenCompra_id,
+     OrdenCompra.`usuario` AS OrdenCompra_usuario,
+     OrdenCompra.`fechaEmision` AS OrdenCompra_fechaEmision,
+     OrdenCompra.`monedaOC` AS OrdenCompra_monedaOC,
+     OrdenCompra.`condicionCompra` AS OrdenCompra_condicionCompra,
+     OrdenCompra.`lugarEntrega` AS OrdenCompra_lugarEntrega,
+     OrdenCompra.`observaciones` AS OrdenCompra_observaciones,
+     OrdenCompra.`descuentoGral` AS OrdenCompra_descuentoGral,
+     OrdenCompra.`tc` AS OrdenCompra_tc,
+     OrdenCompra.`proveedorId` AS OrdenCompra_proveedorId,
+     OrdenCompra.`anulada` AS OrdenCompra_anulada
 FROM
      `MovimientosArticulos` MovimientosArticulos LEFT OUTER JOIN `movimientos_detalles` movimientos_detalles ON MovimientosArticulos.`id` = movimientos_detalles.`movimientosarticulos_id`
      RIGHT OUTER JOIN `DetalleMovArt` DetalleMovArt ON movimientos_detalles.`detallemovart_id` = DetalleMovArt.`id`
      INNER JOIN `articulos` articulos ON DetalleMovArt.`articuloId` = articulos.`idArticulos`
+     LEFT JOIN `OrdenCompraDetalle` OrdenCompraDetalle ON DetalleMovArt.`ordenCompraDetalleId` = OrdenCompraDetalle.`id`
+     LEFT JOIN `ordenCompra_detallesOrdenCompra` ordenCompra_detallesOrdenCompra ON OrdenCompraDetalle.`id` = ordenCompra_detallesOrdenCompra.`ordencompradetalle_id`
+     LEFT JOIN `OrdenCompra` OrdenCompra ON ordenCompra_detallesOrdenCompra.`orden_id` = OrdenCompra.`id`
      LEFT OUTER JOIN `cliente` cliente ON MovimientosArticulos.`clienteId` = cliente.`idCliente`
      LEFT OUTER JOIN `Proveedor` Proveedor ON MovimientosArticulos.`proveedorId` = Proveedor.`id`
 WHERE
@@ -59,7 +85,7 @@ WHERE
 	<field name="DetalleMovArt_cantidad" class="java.math.BigDecimal"/>
 	<field name="DetalleMovArt_loteNum" class="java.lang.Integer"/>
 	<field name="DetalleMovArt_descripcion" class="java.lang.String"/>
-	<field name="DetalleMovArt_ordenCompraId" class="java.lang.Integer"/>
+	<field name="DetalleMovArt_ordenCompraDetalleId" class="java.lang.Integer"/>
 	<field name="DetalleMovArt_articuloId" class="java.lang.Integer"/>
 	<field name="cliente_idCliente" class="java.lang.Integer"/>
 	<field name="cliente_rsocial" class="java.lang.String"/>
@@ -69,6 +95,29 @@ WHERE
 	<field name="Proveedor_rsocial" class="java.lang.String"/>
 	<field name="articulos_idArticulos" class="java.lang.Integer"/>
 	<field name="articulos_codigo" class="java.lang.String"/>
+	<field name="OrdenCompraDetalle_id" class="java.lang.Integer"/>
+	<field name="OrdenCompraDetalle_unidad" class="java.lang.String"/>
+	<field name="OrdenCompraDetalle_precio" class="java.math.BigDecimal"/>
+	<field name="OrdenCompraDetalle_cant" class="java.math.BigDecimal"/>
+	<field name="OrdenCompraDetalle_fechaEntrega" class="java.sql.Date"/>
+	<field name="OrdenCompraDetalle_iva" class="java.math.BigDecimal"/>
+	<field name="OrdenCompraDetalle_ivaCalculado" class="java.math.BigDecimal"/>
+	<field name="OrdenCompraDetalle_moneda" class="java.lang.Boolean"/>
+	<field name="OrdenCompraDetalle_articuloId" class="java.lang.Integer"/>
+	<field name="OrdenCompraDetalle_descripcion" class="java.lang.String"/>
+	<field name="ordenCompra_detallesOrdenCompra_orden_id" class="java.lang.Integer"/>
+	<field name="ordenCompra_detallesOrdenCompra_ordencompradetalle_id" class="java.lang.Integer"/>
+	<field name="OrdenCompra_id" class="java.lang.Integer"/>
+	<field name="OrdenCompra_usuario" class="java.lang.String"/>
+	<field name="OrdenCompra_fechaEmision" class="java.sql.Date"/>
+	<field name="OrdenCompra_monedaOC" class="java.lang.Boolean"/>
+	<field name="OrdenCompra_condicionCompra" class="java.lang.String"/>
+	<field name="OrdenCompra_lugarEntrega" class="java.lang.String"/>
+	<field name="OrdenCompra_observaciones" class="java.lang.String"/>
+	<field name="OrdenCompra_descuentoGral" class="java.math.BigDecimal"/>
+	<field name="OrdenCompra_tc" class="java.math.BigDecimal"/>
+	<field name="OrdenCompra_proveedorId" class="java.lang.Integer"/>
+	<field name="OrdenCompra_anulada" class="java.lang.Boolean"/>
 	<columnHeader>
 		<band height="320">
 			<staticText>
@@ -236,7 +285,7 @@ WHERE
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{DetalleMovArt_ordenCompraId}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{OrdenCompra_id}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="6" y="298" width="147" height="17" uuid="3be3c36e-38cf-4ee7-aa18-5a3053061c05"/>

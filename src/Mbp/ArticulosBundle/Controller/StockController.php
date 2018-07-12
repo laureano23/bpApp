@@ -28,9 +28,6 @@ class StockController extends Controller
 			$rep = $em->getRepository('MbpArticulosBundle:MovimientosArticulos');
 			$id = $req->request->get('idOrigen');
 			$origen = $req->request->get('origen2');
-			
-			
-			
 				
 			$qb = $rep->createQueryBuilder('m');
 			
@@ -40,15 +37,14 @@ class StockController extends Controller
 				->leftJoin('m.proveedorId', 'prov')
 				->leftJoin('m.clienteId', 'cliente')
 				->leftJoin('d.articuloId', 'art')
-				->leftJoin('d.ordenCompraId', 'oc')
+				->leftJoin('d.ordenCompraDetalleId', 'detOc')
+				->leftJoin('detOc.ordenCompra', 'oc')
 				->where('prov.id = :id')
 				->orWhere('cliente = :id')
 				->setParameter('id', $id)
 				->orderBy('m.fechaMovimiento', 'DESC')
 				->getQuery()
 				->getArrayResult();	
-		
-			
 				
 			return $response->setContent(
 				json_encode(array('success' => true, 'data' => $data))
