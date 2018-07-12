@@ -90,15 +90,15 @@ Ext.define('MetApp.controller.Articulos.StockController',{
 		var selection = grid.getStore().getAt(rowIndex);
 		var form=grid.up('form').getForm();
 		var myMask = new Ext.LoadMask(grid, {msg:"Cargando..."});
-		//myMask.show();
-
-		console.log(form);
-		form.standardSubmit=true;
+		
 		form.submit({
 			target: '_blank',
+			standardSubmit: true,
 			url: Routing.generate('mbp_formulas_etiquetaIngresoMaterial'),
 			params: {
 				id: selection.data.id
+			},
+			success: function(){
 			}
 		});
 	},
