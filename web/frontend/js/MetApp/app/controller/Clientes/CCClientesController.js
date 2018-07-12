@@ -314,8 +314,6 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		})
 		
 		winFact.queryById('descuentoFijo').setValue(descuento);
-		
-		
 		var subTotal=0;
 		
 		store.loadData([], false);
@@ -323,6 +321,8 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		/* ESCUCHA CAMBIOS DEL STORE PARA ACTUALIZAR SUBTOTALES Y TOTAL */
 		store.on('datachanged', function(store){			
 			var win = me.getFacturacion();
+			var winCC = me.getCCClientes();
+			console.log(winCC);
 			var form=win.queryById('datosFc');
 			var aux = 0;
 			var fieldSub = win.queryById('subTotal');
@@ -356,7 +356,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 					url: Routing.generate('mbp_CCClientes_calcularPercepcion'),
 					params: {
 						subTotal: subTotal,
-						clienteId: cc.queryById('id').getValue()
+						clienteId: winCC.queryById('id').getValue()
 					},
 					success: function(form, action){
 						var jsonResp=Ext.JSON.decode(action.response.responseText);
