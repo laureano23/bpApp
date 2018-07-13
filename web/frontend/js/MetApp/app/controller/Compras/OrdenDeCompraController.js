@@ -4,6 +4,7 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 		'MetApp.view.Compras.OrdenCompraView',
 		'MetApp.view.Compras.ListaOcView',
 		'MetApp.view.Compras.HistoricoArticuloCompras',
+		'MetApp.view.Compras.ModificarOCView',
 		],
 	stores: [
 		'Articulos.Articulos',
@@ -77,7 +78,60 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 				'ListaOcView textfield[itemId=filtroProveedor]': {
 					keyup: this.FiltrarLista
 				},
+				'#modificarOrdenDeCompra': {
+					click: this.ModificarOrdenDeCompra
+				},
+				'ModificarOCView button[itemId=buscarOC]': {
+					click: this.BuscarOC
+				},					
 		});		
+	},
+
+	BuscarOC: function(btn){
+		var win=btn.up('window');
+		var form=btn.up('form').getForm();
+		var grid=win.down('grid');
+		var store=grid.getStore();
+		form.submit({
+			url: Routing.generate('mbp_compras_buscarOrden'),
+			success: function(form, resp){
+				var jsonResp=Ext.JSON.decode(resp.response.responseText);				
+				store.loadRawData(jsonResp.data);
+			}
+		});
+	},
+
+	ModificarOrdenDeCompra: function(btn){
+		var win=Ext.widget('ModificarOCView');
+		var store=win.down('grid').getStore();
+		var form=win.down('form');
+		store.removeAll();
+
+		//listener del store
+		store.on('update', function(st, rec, op){
+			store.suspendEvents();
+			var arrayRec=[];
+			var i=0;
+			st.each(function(rec){
+				rec.data.entrega = Ext.util.Format.date(rec.data.entrega, 'd/m/Y');
+				arrayRec[i]=rec.data;
+				i++;
+			})
+			
+			form.submit({
+				url: Routing.generate('mbp_compras_modificarOrden'),
+				success: function(form, resp){
+					var jsonResp=Ext.JSON.decode(resp.response.responseText);
+					store.resumeEvents();
+				},
+				params:{
+					data: Ext.JSON.encode(arrayRec)
+				},
+				failure: function(form, resp){
+					store.resumeEvents();
+				}
+			});
+		});
 	},
 	
 	callbackOrdenCompraStore: function(st, opts){

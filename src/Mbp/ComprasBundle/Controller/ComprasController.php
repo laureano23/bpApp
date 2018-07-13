@@ -14,6 +14,96 @@ use Mbp\ComprasBundle\Entity\PedidoInternoDetalle;
 
 class ComprasController extends Controller
 {
+	/**
+     * @Route("/ordenCompra/modificarOrden", name="mbp_compras_modificarOrden", options={"expose"=true})
+     */
+    public function modificarOrden()
+    {
+    	$em = $this->getDoctrine()->getEntityManager();
+    	$response = new Response;
+		$repo = $em->getRepository('MbpComprasBundle:OrdenCompraDetalle');
+
+		try{
+			$req = $this->getRequest();
+	    	$ocNum=$req->request->get('ocNum');
+	    	$detalles=json_decode($req->request->get('data'));
+
+	    	foreach ($detalles as $det) {
+	    		$ocDetalle=$repo->find($det->idDetalleOrden);
+	    		$ocDetalle->setPrecio($det->precio);
+	    		$ocDetalle->setCant($det->cant);
+	    		$ocDetalle->setUnidad($det->unidad);
+	    		$entrega=\DateTime::createFromFormat('d/m/Y', $det->entrega);
+	    		$ocDetalle->setFechaEntrega($entrega);
+
+	    		$em->persist($ocDetalle);
+	    	}
+
+	    	$em->flush();
+
+	    	return $response->setContent(
+	    		json_encode(array('success'=>true))
+    		);
+		}catch(\Exception $e){
+			throw $e;
+			$response->setContent(
+				json_encode(array(
+					'success' => false,
+					'msg' => $e->getMessage()
+				))
+			);
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+    }
+	/**
+     * @Route("/ordenCompra/buscarOrden", name="mbp_compras_buscarOrden", options={"expose"=true})
+     */
+    public function buscarOrden()
+    {
+    	$em = $this->getDoctrine()->getEntityManager();
+    	$response = new Response;
+		$repo = $em->getRepository('MbpComprasBundle:OrdenCompra');
+
+		try{
+			$req = $this->getRequest();
+	    	$ocNum=$req->request->get('ocNum');
+
+	    	$qb=$repo->createQueryBuilder('oc')
+	    		->select("
+	    				art.codigo,
+	    				art.descripcion,
+	    				detalle.id as idDetalleOrden,
+	    				detalle.cant,
+	    				detalle.unidad,
+	    				detalle.precio,
+	    				oc.monedaOC as moneda,
+	    				DATE_FORMAT(detalle.fechaEntrega, '%d/%m/%Y') entrega,
+	    				prov.rsocial as proveedor
+	    				")
+	    		->join('oc.ordenDetalleId', 'detalle')
+	    		->join('detalle.articuloId', 'art')
+	    		->join('oc.proveedorId', 'prov')
+	    		->where('oc.anulada = 0')
+	    		->andWhere('oc.id = :ocNum')
+	    		->setParameter('ocNum', $ocNum)
+	    		->getQuery()
+	    		->getArrayResult();
+
+	    	return $response->setContent(
+	    		json_encode(array('success'=>true, 'data'=>$qb))
+    		);
+		}catch(\Exception $e){
+			$response->setContent(
+				json_encode(array(
+					'success' => false,
+					'msg' => $e->getMessage()
+				))
+			);
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+    	
+    }
+
     /**
      * @Route("/ordenCompra/nuevaOrdenCompra", name="mbp_compras_nuevaOrden", options={"expose"=true})
      */

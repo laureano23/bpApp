@@ -7,7 +7,7 @@ Ext.define('MetApp.controller.Compras.PedidosInternosController',{
 		'MetApp.view.Compras.ListaPedidosInternosView'
 	],
 	stores: [
-		
+		'MetApp.store.Compras.PedidosInternosStore'
 	],
 	
 	refs:[

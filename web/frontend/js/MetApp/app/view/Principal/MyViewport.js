@@ -528,6 +528,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                 }, 
             },
             {
+                text: 'Modificar orden de compra',
+                itemId: 'modificarOrdenDeCompra',
+                listeners : {
+                    render : dragZone,
+                }, 
+            },
+            {
                 text: 'Ver Pedidos Internos',
                 itemId: 'verPedidosInternos',
                 listeners : {

@@ -18,6 +18,7 @@ class ArticulosRepository extends EntityRepository
 						CASE WHEN a.monedaPrecio = false THEN 'p' ELSE 'd' END AS monedaPrecio,
 						a.requiereControl,
 						a.peso,
+						a.costo,
 						DATE_FORMAT(a.vigenciaPrecio, '%d/%m/%Y') vigenciaPrecio,
 						pr1.id as provSug1,
 						pr2.id as provSug2,

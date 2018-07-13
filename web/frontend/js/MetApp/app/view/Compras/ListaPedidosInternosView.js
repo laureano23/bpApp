@@ -30,7 +30,7 @@ Ext.define('MetApp.view.Compras.ListaPedidosInternosView' ,{
 		        	selType: 'cellmodel',
 					cls: 'extra-alt',
 					region: 'center',
-					store: 'MetApp.store.Compras.OrdenCompraStore',
+					store: 'MetApp.store.Compras.PedidosInternosStore',
 					columns: [
 						{ text: 'id Detalle', dataIndex: 'id', width: 100, hidden: true },
 						{ text: 'Emision', dataIndex: 'fecha', width: 100 },

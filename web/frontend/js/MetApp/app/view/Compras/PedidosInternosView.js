@@ -60,7 +60,7 @@ Ext.define('MetApp.view.Compras.PedidosInternosView' ,{
 					region: 'center',
 					border: false,
 					itemId: 'detallesStore',
-					store: 'MetApp.store.Compras.OrdenCompraStore',
+					store: 'MetApp.store.Compras.PedidosInternosStore',
 					height: 150,
 					columns: {
 						items: [
