@@ -37,12 +37,6 @@ mbp_calidad_addEstanqueidadReg:
 
 #Formulario Control de estanqueidad
 
-mbp_calidad_showFormRg010:
-    path:     /showFormRg010
-    defaults: { _controller: MbpCalidadBundle:Reportes:showFormRg010 }
-    options:
-       expose: true
-
 mbp_calidad_generateFormRg010:
     path:     /generateFormRg010
     defaults: { _controller: MbpCalidadBundle:Reportes:generateFormRg010 }
@@ -54,12 +48,6 @@ mbp_calidad_generateFormRg010:
 mbp_calidad_generateReporteRg010:
     path:     /generateReporteRg010
     defaults: { _controller: MbpCalidadBundle:Reportes:generateReporteRg010 }
-    options:
-       expose: true
-       
-mbp_calidad_showReporteRg010:
-    path:     /showReporteRg010
-    defaults: { _controller: MbpCalidadBundle:Reportes:showReporteRg010 }
     options:
        expose: true
 
@@ -78,12 +66,6 @@ mbp_calidad_deleteEstanqueidad:
 mbp_calidad_generateReporteRg010Fechas:
     path:     /generateReporteRg010Fechas
     defaults: { _controller: MbpCalidadBundle:Reportes:generateReporteRg010Fechas }
-    options:
-       expose: true
-
-mbp_calidad_showReporteRg010Fechas:
-    path:     /showReporteRg010Fechas
-    defaults: { _controller: MbpCalidadBundle:Reportes:showReporteRg010Fechas }
     options:
        expose: true
 

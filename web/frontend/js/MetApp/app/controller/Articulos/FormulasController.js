@@ -261,21 +261,16 @@ Ext.define('MetApp.controller.Articulos.FormulasController',{
 	 * */
 	Estructura: function(btn){
 		var win = btn.up('window');
-		
-		Ext.Ajax.request({
+		var form=win.down('form').getForm();
+
+		form.submit({
+			target: '_blank',
 			url: Routing.generate('mbp_formulas_generaReporte'),
-			
-			params: {
+			params:{
 				idArt: win.queryById('id').getValue()
 			},
-			
-			success: function(resp, opt){
-				var jsonReporte = Ext.JSON.decode(resp.responseText);
-							
-				var ruta = Routing.generate('mbp_formulas_muestraReporte');
-				window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');	
-			}
-		});
+			standardSubmit: true
+		})	
 	}
 });
 

@@ -67,7 +67,8 @@ Ext.application({
 	appFolder: '../frontend/js/MetApp/app',
 	
 	launch: function(){	
-		Ext.util.Observable.observe(Ext.data.Connection, {			
+		Ext.util.Observable.observe(Ext.data.Connection, {
+			console.log("hola");			
 		    requestexception: function(conn, response, options) {
 		    	var resp = Ext.JSON.decode(response.responseText);
 		    	if(!resp.tipo){	

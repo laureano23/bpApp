@@ -180,12 +180,10 @@ class ReportesController extends Controller
 			$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
 						
 			$nombreReporte="IngresoStock.pdf";
-			print_r("entramos");
 			$response=$repo->servirReportePDF($nombreReporte, $destino);
 
 	        return $response;
 		}catch(\Exception $e){
-			print($e);
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(
 				json_encode(array(
@@ -208,76 +206,64 @@ class ReportesController extends Controller
 		$em=$this->getDoctrine()->getEntityManager();
 		$repoFormulas=$em->getRepository('MbpArticulosBundle:FormulasC');
 		$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
+		$response=new Response;
 		
-		/*
-		 * Recibo parametros del request 
-		 */
-		$em = $this->getDoctrine()->getManager();
-		$req = $this->getRequest();
-		$idArt=$req->request->get('idArt');
-		$art=$repoArt->find($idArt);
+		try{
+			/*
+			 * Recibo parametros del request 
+			 */
+			$em = $this->getDoctrine()->getManager();
+			$req = $this->getRequest();
+			$idArt=$req->request->get('idArt');
+			$art=$repoArt->find($idArt);
 
-		$nodo = $repoFormulas->findOneByIdArt($art);
-		if($nodo==null) return;
-		$idNodo=$nodo->getId();
-		$tipoCambio = $this->get('TipoCambio');
-		$tc = (float)$tipoCambio->getTipoCambio();
-		
-		$jru = $repo->jru();
-				
-		$ruta = $kernel->locateResource('@MbpArticulosBundle/Reportes/EstructuraDeMateriales.jrxml');
-		$rutaLogo = $repo->getRutaLogo($kernel);
-		
-		//Ruta de destino
-		$destino = $kernel->locateResource('@MbpArticulosBundle/Resources/public/pdf/').'Estructura_materiales.pdf';
-		
-		//Parametros HashMap
-		$param = $repo->getJava('java.util.HashMap');
-		$param->put('idNodo', $idNodo);
-		$param->put('rutaLogo', $rutaLogo);
-		$param->put('tc', $tc);
-				
-		$conn = $repo->getJdbc();
-		
-		/*
-		 * SQL
-		 * 
-		 */
-		$sql = "call estructuraFormulas($idNodo, $tc);";
-		 /*
-		  * FIN SQL
-		  */
-		
-		//Exportamos el reporte
-		$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
-		
-		
-		return new Response(
-			json_encode(array(
-				'success' => true,
-				'reporte' => $destino,	
-			))
-		);
-	}
-	
-	/**
-     * @Route("/extranet/muestraReporteEstructura", name="mbp_formulas_muestraReporte", options={"expose"=true})
-     */
-	public function muestraReporteEstructuraAction()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpArticulosBundle/Resources/public/pdf/').'Estructura_materiales.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'Estructura_materiales.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
+			$nodo = $repoFormulas->findOneByIdArt($art);
+			if($nodo==null) return;
+			$idNodo=$nodo->getId();
+			$tipoCambio = $this->get('TipoCambio');
+			$tc = (float)$tipoCambio->getTipoCambio();
+			
+			$jru = $repo->jru();
+					
+			$ruta = $kernel->locateResource('@MbpArticulosBundle/Reportes/EstructuraDeMateriales.jrxml');
+			$rutaLogo = $repo->getRutaLogo($kernel);
+			
+			//Ruta de destino
+			$destino = $kernel->locateResource('@MbpArticulosBundle/Resources/public/pdf/').'Estructura_materiales.pdf';
+			
+			//Parametros HashMap
+			$param = $repo->getJava('java.util.HashMap');
+			$param->put('idNodo', $idNodo);
+			$param->put('rutaLogo', $rutaLogo);
+			$param->put('tc', $tc);
+					
+			$conn = $repo->getJdbc();
+			
+			/*
+			 * SQL
+			 * 
+			 */
+			$sql = "call estructuraFormulas($idNodo, $tc);";
+			 /*
+			  * FIN SQL
+			  */
+			
+			//Exportamos el reporte
+			$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
+			$nombreReporte="Estructura_materiales.pdf";
+			$response=$repo->servirReportePDF($nombreReporte, $destino);
 
-        return $response;
+			return $response;
+		}catch(\Exception $e){
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(
+				json_encode(array(
+					'success' => false,
+					'msg' => $e->getMessage(),	
+				))
+			);
+		}
+		
 	}
 	
 	
@@ -288,127 +274,106 @@ class ReportesController extends Controller
 	{
 		$repo = $this->get('reporteador');		
 		$kernel = $this->get('kernel');	
-		
-		/*
-		 * Recibo parametros del request 
-		 */
-		$em = $this->getDoctrine()->getManager();
-		$req = $this->getRequest();
-		
-		$jru = $repo->jru();
-				
-		$ruta = $kernel->locateResource('@MbpArticulosBundle/Reportes/MovimientosArticulos.jrxml');
-		$rutaLogo = $repo->getRutaLogo($kernel);
-		
-		//Ruta de destino
-		$destino = $kernel->locateResource('@MbpArticulosBundle/Resources/public/pdf/').'MovimientosArticulos.pdf';
-		
-		//Fechas
-		$desde = \DateTime::createFromFormat('d/m/Y', $req->request->get('desde'));
-		$desde = $desde->format('Y-m-d');
-		
-		
-		$hasta = \DateTime::createFromFormat('d/m/Y', $req->request->get('hasta'));
-		$hasta = $hasta->format('Y-m-d');
-		
-		$cod1 = $req->request->get('codigo1');
-		$cod2 = $req->request->get('codigo2');
-		
-		//Parametros HashMap
-		$param = $repo->getJava('java.util.HashMap');
-		$param->put('rutaLogo', $rutaLogo);
-		$param->put('fechaDesde', $desde);
-		$param->put('fechaHasta', $hasta);
-		$param->put('codigoDesde', $cod1);
-		$param->put('codigoHasta', $cod2);
-		
-				
-		$conn = $repo->getJdbc();
-		
-		/*
-		 * SQL
-		 * 
-		 */
-		$sql = "
-			SELECT fechaMov, numComprobante, concepto,
-				CASE WHEN TIPO_MOV = 0 THEN DetalleMovArt.cantidad ELSE null END AS entrada,
-				CASE WHEN TIPO_MOV = 1 OR ISNULL(concepto) THEN RemitosClientesDetalles.cantidad ELSE null END AS salida,
-				Proveedor.rsocial AS proveedorNombre,
-				cliente.rsocial AS clienteNombre,
-				CASE WHEN ISNULL(concepto) THEN articulosRem.codigo ELSE articulosMov.codigo END AS codigo,
-				CASE WHEN ISNULL(concepto) THEN RemitosClientesDetalles.descripcion ELSE DetalleMovArt.descripcion END AS descripcion,
-				CASE WHEN ISNULL(concepto) THEN RemitosClientesDetalles.id ELSE CONCAT('m', DetalleMovArt.id) END AS idFila
-			FROM
-			(SELECT
-			     RemitosClientes.`id` AS remId,
-			     RemitosClientes.`fecha` AS fechaMov,
-			     RemitosClientes.`remitoNum` AS numComprobante,
-			     RemitosClientes.`proveedorId` AS RemitosClientes_proveedorId,
-			     RemitosClientes.`clienteId` AS RemitosClientes_clienteId,
-			     RemitosClientes.`id` AS TIPO_MOV,
-			     RemitosClientes.`id`=0 AS CONCEPTO_MOV
-			FROM
-			     `RemitosClientes` RemitosClientes
-			UNION
-			SELECT
-			     MovimientosArticulos.`id` AS MovimientosArticulos_id,
-			     MovimientosArticulos.`fechaMovimiento` AS MovimientosArticulos_fechaMovimiento,
-			     MovimientosArticulos.`comprobanteNum` AS MovimientosArticulos_comprobanteNum,
-			     MovimientosArticulos.`proveedorId` AS MovimientosArticulos_proveedorId,
-			     MovimientosArticulos.`clienteId` AS MovimientosArticulos_clienteId,
-			     MovimientosArticulos.`tipoMovimiento` AS MovimientosArticulos_tipoMovimiento,
-			     MovimientosArticulos.`conceptoId` AS MovimientosArticulos_conceptoId
-			FROM
-			     `MovimientosArticulos` MovimientosArticulos) AS sub
-			LEFT JOIN movimientos_detalles ON movimientos_detalles.movimientosarticulos_id = remId
-			LEFT JOIN DetalleMovArt ON DetalleMovArt.id = movimientos_detalles.detallemovart_id
-			LEFT JOIN RemitoClientes_detalle AS RemDetalle ON RemDetalle.remitosclientes_id = remId
-			LEFT JOIN RemitosClientesDetalles ON RemDetalle.remitosclientesdetalles_id = RemitosClientesDetalles.id
-			LEFT JOIN cliente ON cliente.idCliente = RemitosClientes_clienteId
-			LEFT JOIN Proveedor ON Proveedor.id = RemitosClientes_proveedorId
-			LEFT JOIN ConceptosStock ON ConceptosStock.id = CONCEPTO_MOV
-			LEFT JOIN articulos AS articulosMov ON articulosMov.idArticulos = DetalleMovArt.articuloId
-			LEFT JOIN articulos AS articulosRem ON articulosRem.idArticulos = RemitosClientesDetalles.articuloId
-			WHERE fechaMov BETWEEN '$desde' AND '$hasta'
-			AND articulosMov.codigo BETWEEN '$cod1' AND '$cod2' OR
-			fechaMov BETWEEN '$desde' AND '$hasta' AND
-			articulosRem.codigo BETWEEN '$cod1' AND '$cod2' AND ISNULL(concepto)
-			GROUP BY idFila
-			ORDER BY codigo
-		";
-		 /*
-		  * FIN SQL
-		  */
-		
-		//Exportamos el reporte
-		$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
-		
-		
-		return new Response(
-			json_encode(array(
-				'success' => true,
-				'reporte' => $destino,	
-			))
-		);
-	}
-	
-	/**
-     * @Route("/ReporteHistoricoMov_PDF", name="mbp_reportes_historicoMov_PDF", options={"expose"=true})
-     */
-	public function ReporteHistoricoMov_PDF()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpArticulosBundle/Resources/public/pdf/').'MovimientosArticulos.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'MovimientosArticulos.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
+		$response=new Response;
 
-        return $response;
+		try{			
+			$em = $this->getDoctrine()->getManager();
+			$req = $this->getRequest();			
+			
+			$jru = $repo->jru();
+					
+			$ruta = $kernel->locateResource('@MbpArticulosBundle/Reportes/MovimientosArticulos.jrxml');
+			$rutaLogo = $repo->getRutaLogo($kernel);
+			
+			//Ruta de destino
+			$destino = $kernel->locateResource('@MbpArticulosBundle/Resources/public/pdf/').'MovimientosArticulos.pdf';
+			
+			//Fechas
+			$desde = \DateTime::createFromFormat('d/m/Y', $req->request->get('desde'));
+			$desde = $desde->format('Y-m-d');
+			
+			
+			$hasta = \DateTime::createFromFormat('d/m/Y', $req->request->get('hasta'));
+			$hasta = $hasta->format('Y-m-d');
+			
+			$cod1 = $req->request->get('codigo1');
+			$cod2 = $req->request->get('codigo2');
+			
+			//Parametros HashMap
+			$param = $repo->getJava('java.util.HashMap');
+			$param->put('rutaLogo', $rutaLogo);
+			$param->put('fechaDesde', $desde);
+			$param->put('fechaHasta', $hasta);
+			$param->put('codigoDesde', $cod1);
+			$param->put('codigoHasta', $cod2);
+			
+					
+			$conn = $repo->getJdbc();
+			
+			
+			$sql = "
+				SELECT fechaMov, numComprobante, concepto,
+					CASE WHEN TIPO_MOV = 0 THEN DetalleMovArt.cantidad ELSE null END AS entrada,
+					CASE WHEN TIPO_MOV = 1 OR ISNULL(concepto) THEN RemitosClientesDetalles.cantidad ELSE null END AS salida,
+					Proveedor.rsocial AS proveedorNombre,
+					cliente.rsocial AS clienteNombre,
+					CASE WHEN ISNULL(concepto) THEN articulosRem.codigo ELSE articulosMov.codigo END AS codigo,
+					CASE WHEN ISNULL(concepto) THEN RemitosClientesDetalles.descripcion ELSE DetalleMovArt.descripcion END AS descripcion,
+					CASE WHEN ISNULL(concepto) THEN RemitosClientesDetalles.id ELSE CONCAT('m', DetalleMovArt.id) END AS idFila
+				FROM
+				(SELECT
+				     RemitosClientes.`id` AS remId,
+				     RemitosClientes.`fecha` AS fechaMov,
+				     RemitosClientes.`remitoNum` AS numComprobante,
+				     RemitosClientes.`proveedorId` AS RemitosClientes_proveedorId,
+				     RemitosClientes.`clienteId` AS RemitosClientes_clienteId,
+				     RemitosClientes.`id` AS TIPO_MOV,
+				     RemitosClientes.`id`=0 AS CONCEPTO_MOV
+				FROM
+				     `RemitosClientes` RemitosClientes
+				UNION
+				SELECT
+				     MovimientosArticulos.`id` AS MovimientosArticulos_id,
+				     MovimientosArticulos.`fechaMovimiento` AS MovimientosArticulos_fechaMovimiento,
+				     MovimientosArticulos.`comprobanteNum` AS MovimientosArticulos_comprobanteNum,
+				     MovimientosArticulos.`proveedorId` AS MovimientosArticulos_proveedorId,
+				     MovimientosArticulos.`clienteId` AS MovimientosArticulos_clienteId,
+				     MovimientosArticulos.`tipoMovimiento` AS MovimientosArticulos_tipoMovimiento,
+				     MovimientosArticulos.`conceptoId` AS MovimientosArticulos_conceptoId
+				FROM
+				     `MovimientosArticulos` MovimientosArticulos) AS sub
+				LEFT JOIN movimientos_detalles ON movimientos_detalles.movimientosarticulos_id = remId
+				LEFT JOIN DetalleMovArt ON DetalleMovArt.id = movimientos_detalles.detallemovart_id
+				LEFT JOIN RemitoClientes_detalle AS RemDetalle ON RemDetalle.remitosclientes_id = remId
+				LEFT JOIN RemitosClientesDetalles ON RemDetalle.remitosclientesdetalles_id = RemitosClientesDetalles.id
+				LEFT JOIN cliente ON cliente.idCliente = RemitosClientes_clienteId
+				LEFT JOIN Proveedor ON Proveedor.id = RemitosClientes_proveedorId
+				LEFT JOIN ConceptosStock ON ConceptosStock.id = CONCEPTO_MOV
+				LEFT JOIN articulos AS articulosMov ON articulosMov.idArticulos = DetalleMovArt.articuloId
+				LEFT JOIN articulos AS articulosRem ON articulosRem.idArticulos = RemitosClientesDetalles.articuloId
+				WHERE fechaMov BETWEEN '$desde' AND '$hasta'
+				AND articulosMov.codigo BETWEEN '$cod1' AND '$cod2' OR
+				fechaMov BETWEEN '$desde' AND '$hasta' AND
+				articulosRem.codigo BETWEEN '$cod1' AND '$cod2' AND ISNULL(concepto)
+				GROUP BY idFila
+				ORDER BY codigo
+			";
+			
+			//Exportamos el reporte
+			$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
+			$nombreReporte="MovimientosArticulos.pdf";
+			$response=$repo->servirReportePDF($nombreReporte, $destino);
+
+			return $response;
+		}catch(\Exception $e){
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(
+				json_encode(array(
+					'success' => false,
+					'msg' => $e->getMessage(),	
+				))
+			);
+		}		
+		
 	}
 }
