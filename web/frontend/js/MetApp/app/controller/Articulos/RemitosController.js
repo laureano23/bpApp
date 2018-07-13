@@ -366,27 +366,35 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 				myMask.hide();
 				if(jsonResp.success == true){
 					store.removeAll();
-					myMask.show();
-					Ext.Ajax.request({
-						url: Routing.generate('mbp_articulos_imprimirRemitoCliente'),
-						
-						params: {
-							idRemito: jsonResp.idRemito
-						},
-						
-						success: function(resp){
-							var jsonResp = Ext.JSON.decode(resp.responseText);
-							myMask.hide();
-							if(jsonResp.success == true){
-								var ruta = Routing.generate('mbp_articulos_verRemitoCliente');
-			    				window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');	
-							}								
-						},
-						
-						failure: function(resp){
-							myMask.hide();
+					//mostramos el num de remito
+					Ext.Msg.show({
+						title: 'Atención',
+						msg: 'Se imprimirá el remito N° '+jsonResp.remitoNum,
+						buttons: Ext.Msg.OK,
+						fn: function(btn){
+							myMask.show();
+							Ext.Ajax.request({
+								url: Routing.generate('mbp_articulos_imprimirRemitoCliente'),
+								
+								params: {
+									idRemito: jsonResp.idRemito
+								},
+								
+								success: function(resp){
+									var jsonResp = Ext.JSON.decode(resp.responseText);
+									myMask.hide();
+									if(jsonResp.success == true){
+										var ruta = Routing.generate('mbp_articulos_verRemitoCliente');
+					    				window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');	
+									}								
+								},
+								
+								failure: function(resp){
+									myMask.hide();
+								}
+							});		
 						}
-					});						
+					})											
 				}	
 			},
 

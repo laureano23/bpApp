@@ -146,7 +146,7 @@ class RemitosController extends Controller
 			}//EOF FOREACH ITEM
 			$em->flush();
 
-			$response->setContent(json_encode(array('success' => true, 'idRemito' => $remito->getId())));
+			$response->setContent(json_encode(array('success' => true, 'idRemito' => $remito->getId(), 'remitoNum' => $remito->getRemitoNum())));
 			return $response;				
 			
         }catch(\Exception $e){
