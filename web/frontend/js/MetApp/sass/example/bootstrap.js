@@ -1001,6 +1001,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.store.Clientes.TransportesStore": [],
   "MetApp.store.Compras.HistoricoCompraStore": [],
   "MetApp.store.Compras.OrdenCompraStore": [],
+  "MetApp.store.Compras.PedidosInternosStore": [],
   "MetApp.store.Finanzas.BancosStore": [],
   "MetApp.store.Finanzas.CCClientesStore": [],
   "MetApp.store.Finanzas.GridImputaFcStore": [],
@@ -1089,6 +1090,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.view.Compras.HistoricoArticuloCompras": [],
   "MetApp.view.Compras.ListaOcView": [],
   "MetApp.view.Compras.ListaPedidosInternosView": [],
+  "MetApp.view.Compras.ModificarOCView": [],
   "MetApp.view.Compras.OrdenCompraView": [],
   "MetApp.view.Compras.PedidosInternosView": [],
   "MetApp.view.Compras.PendienteArticuloComprasView": [],
@@ -1156,6 +1158,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.view.Reportes.RepoComisiones": [],
   "MetApp.view.Reportes.RepoIVACompras": [],
   "MetApp.view.Reportes.RepoIVAVentas": [],
+  "MetApp.view.Reportes.RepoRetenciones": [],
   "MetApp.view.Reportes.RepoSaldoDeudor": [],
   "MetApp.view.Reportes.ReporteArtVendidos": [],
   "MetApp.view.Reportes.ReporteCCCliente": [],
@@ -2349,6 +2352,9 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.store.Compras.OrdenCompraStore": [
     "store.OrdenCompraStore"
   ],
+  "MetApp.store.Compras.PedidosInternosStore": [
+    "store.PedidosInternosStore"
+  ],
   "MetApp.store.Finanzas.BancosStore": [
     "store.BancosStore"
   ],
@@ -2613,6 +2619,9 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.view.Compras.ListaPedidosInternosView": [
     "widget.ListaPedidosInternosView"
   ],
+  "MetApp.view.Compras.ModificarOCView": [
+    "widget.ModificarOCView"
+  ],
   "MetApp.view.Compras.OrdenCompraView": [
     "widget.OrdenCompraView"
   ],
@@ -2813,6 +2822,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "MetApp.view.Reportes.RepoIVAVentas": [
     "widget.RepoIVAVentas"
+  ],
+  "MetApp.view.Reportes.RepoRetenciones": [
+    "widget.RepoRetenciones"
   ],
   "MetApp.view.Reportes.RepoSaldoDeudor": [
     "widget.RepoSaldoDeudor"
