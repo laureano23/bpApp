@@ -298,46 +298,67 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 													disabledCls: 'myDisabledClass',
 												},
 												{
-													xtype: 'container',
-													layout: 'vbox',
-													defaults: {
-														disabledCls: 'myDisabledClass',
-														readOnly: true,
-														allowBlank: true,
-														store: 'MetApp.store.Proveedores.ProveedoresStore',
-														displayField: 'rsocial',
-														valueField: 'id',
-														margins: '0 5 0 0',
-														forceSelection: true,
-														queryMode: 'local',
-														typeAhead: true,							
-														minChars: 1,
-														width: 350
-													},
-													margins: '0 5 0 8',
-													items: [
-														{
-															xtype: 'combobox',
-															name: 'provSug1',
-															itemId: 'provSug1',															
-															fieldLabel: 'Proveedor 1'															
-														},
-														{
-															xtype: 'combobox',
-															name: 'provSug2',
-															itemId: 'provSug2',
-															fieldLabel: 'Proveedor 2'
-														},
-														{
-															xtype: 'combobox',
-															name: 'provSug3',
-															itemId: 'provSug3',
-															fieldLabel: 'Proveedor 3'
-														}
-													]
+													xtype: 'numberfield',
+													name: 'stock',
+													itemId: 'stock',
+													readOnly: true,
+													fieldLabel: 'Stock',
+													labelWidth: 50,
+													width: 150,
+													decimalSeparator: '.'
+												},
+												{
+													xtype: 'datefield',
+													labelWidth: 80,
+													width: 180,
+													margin: '0 0 0 5',
+													name: 'fechaStock',
+													itemId: 'fechaStock',
+													readOnly: true,
+													fieldLabel: 'Fecha act.'
+												}												
+											]
+										},
+										{
+											xtype: 'container',
+											layout: 'vbox',
+											margin: '5 0 0 5',
+											defaults: {
+												disabledCls: 'myDisabledClass',
+												readOnly: true,
+												allowBlank: true,
+												store: 'MetApp.store.Proveedores.ProveedoresStore',
+												displayField: 'rsocial',
+												valueField: 'id',
+												margins: '0 5 0 0',
+												forceSelection: true,
+												queryMode: 'local',
+												typeAhead: true,							
+												minChars: 1,
+												width: 350
+											},
+											margins: '0 5 0 8',
+											items: [
+												{
+													xtype: 'combobox',
+													name: 'provSug1',
+													itemId: 'provSug1',															
+													fieldLabel: 'Proveedor 1'															
+												},
+												{
+													xtype: 'combobox',
+													name: 'provSug2',
+													itemId: 'provSug2',
+													fieldLabel: 'Proveedor 2'
+												},
+												{
+													xtype: 'combobox',
+													name: 'provSug3',
+													itemId: 'provSug3',
+													fieldLabel: 'Proveedor 3'
 												}
 											]
-										},										
+										},								
 										{
 											xtype: 'checkbox',
 											readOnly: true,

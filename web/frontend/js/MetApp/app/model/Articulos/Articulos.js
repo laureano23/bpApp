@@ -30,7 +30,9 @@ Ext.define('MetApp.model.Articulos.Articulos',{
 		{name: 'vigenciaPrecio', type: 'datetime', dateFormat: 'c' },			
 		{name: 'provSug1', type: 'int'},
 		{name: 'provSug2', type: 'int'},
-		{name: 'provSug3', type: 'int'}
+		{name: 'provSug3', type: 'int'},
+		{name: 'stock', type: 'float'},
+		{name: 'fechaStock', type: 'datetime', dateFormat: 'c'},
 	]
 });
 

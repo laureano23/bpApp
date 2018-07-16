@@ -164,6 +164,13 @@ class Articulos
      * @ORM\Column(name="stock", type="decimal", precision=11, scale=2, nullable=false)
      */
     private $stock=0;
+
+    /**
+     * @var date
+     *
+     * @ORM\Column(name="fechaStock", type="date", nullable=true)
+     */
+    private $fechaStock;
 	
 	/**
      * @var string
@@ -781,5 +788,29 @@ class Articulos
     public function getProvSug3()
     {
         return $this->provSug3;
+    }
+
+    /**
+     * Set fechaStock
+     *
+     * @param \DateTime $fechaStock
+     *
+     * @return Articulos
+     */
+    public function setFechaStock($fechaStock)
+    {
+        $this->fechaStock = $fechaStock;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaStock
+     *
+     * @return \DateTime
+     */
+    public function getFechaStock()
+    {
+        return $this->fechaStock;
     }
 }

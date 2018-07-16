@@ -19,6 +19,8 @@ class ArticulosRepository extends EntityRepository
 						a.requiereControl,
 						a.peso,
 						a.costo,
+						a.stock,
+						DATE_FORMAT(a.fechaStock, '%d/%m/%Y') fechaStock,
 						DATE_FORMAT(a.vigenciaPrecio, '%d/%m/%Y') vigenciaPrecio,
 						pr1.id as provSug1,
 						pr2.id as provSug2,
@@ -63,6 +65,8 @@ class ArticulosRepository extends EntityRepository
 						CASE WHEN a.monedaPrecio = false THEN 'p' ELSE 'd' END AS monedaPrecio,
 						a.requiereControl,
 						a.peso,
+						a.stock,
+						DATE_FORMAT(a.fechaStock, '%d/%m/%Y') fechaStock,
 						DATE_FORMAT(a.vigenciaPrecio, '%d/%m/%Y') vigenciaPrecio,
 						pr1.id as provSug1,
 						pr2.id as provSug2,
@@ -158,9 +162,13 @@ class ArticulosRepository extends EntityRepository
 			}else{
 				$art = new Articulos();	
 			}			
+
+
+
 			$art->setcodigo($data->codigo)
 			->setdescripcion($data->descripcion)
-			->setunidad($data->unidad)			
+			->setunidad($data->unidad)	
+			->setStock($data->stock)	
 			->setPeso($data->peso)
 			->setMoneda($data->moneda == 'p' ? 0 : 1)
 			->setFamiliaId($fam)
@@ -176,6 +184,9 @@ class ArticulosRepository extends EntityRepository
 			$data->vigenciaPrecio != "" ? 
 				$art->setVigenciaPrecio(\DateTime::createFromFormat("d/m/Y", $data->vigenciaPrecio))
 				:"";
+			$data->fechaStock != "" ? 
+			$art->setFechaStock(\DateTime::createFromFormat("d/m/Y", $data->fechaStock))
+			:"";
 
 			//el costo lo seteamos si no tenemos formula
 			$nodo=$repoFormulas->findOneByidArt($art);
