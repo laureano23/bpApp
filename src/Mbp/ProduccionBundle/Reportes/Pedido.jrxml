@@ -56,6 +56,7 @@ FROM
      `PedidoClientesDetalle` PedidoClientesDetalle INNER JOIN `pedidoId_detalleId` pedidoId_detalleId ON PedidoClientesDetalle.`id` = pedidoId_detalleId.`detalleId`
      INNER JOIN `PedidoClientes` PedidoClientes ON pedidoId_detalleId.`pedidoId` = PedidoClientes.`id`
      left join Ot_Pedidos op on op.pedidoId = PedidoClientesDetalle.id
+     inner join Ot ot on ot.ot = op.otId
      INNER JOIN `cliente` cliente ON PedidoClientes.`cliente` = cliente.`idCliente`
      INNER JOIN `articulos` articulos ON PedidoClientesDetalle.`codigo` = articulos.`idArticulos`,
      `ParametrosFinanzas` ParametrosFinanzas
@@ -64,6 +65,7 @@ WHERE
  AND articulos.`codigo` BETWEEN $P{codigoDesde} AND $P{codigoHasta}
  AND PedidoClientesDetalle.`fechaProg` BETWEEN $P{fechaDesde} AND $P{fechaHasta}
  AND PedidoClientesDetalle.`inactivo` = 0
+and ot.anulada = 0
 GROUP BY PedidoClientesDetalle.`id`
 ORDER BY
      PedidoClientes.`esRepuesto` ASC,

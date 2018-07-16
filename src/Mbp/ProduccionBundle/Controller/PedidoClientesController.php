@@ -216,6 +216,7 @@ class PedidoClientesController extends Controller
 			     INNER JOIN `pedidoId_detalleId` pedidoId_detalleId ON PedidoClientesDetalle.`id` = pedidoId_detalleId.`detalleId`
 			     INNER JOIN `PedidoClientes` PedidoClientes ON pedidoId_detalleId.`pedidoId` = PedidoClientes.`id`
 			     left join Ot_Pedidos op on op.pedidoId = PedidoClientesDetalle.id
+			     inner join Ot ot on ot.ot = op.otId
 			     INNER JOIN `cliente` cliente ON PedidoClientes.`cliente` = cliente.`idCliente`
 			     INNER JOIN `articulos` articulos ON PedidoClientesDetalle.`codigo` = articulos.`idArticulos`,
 			     `ParametrosFinanzas` ParametrosFinanzas
@@ -224,6 +225,7 @@ class PedidoClientesController extends Controller
 			 AND articulos.`codigo` BETWEEN '$codigoDesde' AND '$codigoHasta'
 			 AND PedidoClientesDetalle.`fechaProg` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql'  
 			 AND PedidoClientesDetalle.`inactivo` = 0
+			 and ot.anulada = 0
 			 GROUP BY PedidoClientesDetalle.`id`
 			ORDER BY
 			    PedidoClientes.`esRepuesto` ASC,
