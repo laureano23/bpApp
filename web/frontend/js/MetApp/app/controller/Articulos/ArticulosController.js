@@ -65,10 +65,10 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 
 	EnQueFormulas: function(btn){
 		var win=btn.up('window');
-		var form=win.down('form').getForm();
-		form.standardSubmit=true;
+		var form=win.down('form').getForm();		
 		form.submit({
 			target: '_blank',
+			standardSubmit: true,
 			url: Routing.generate('mbp_formulas_enQueFormulas'),
 		});
 	},

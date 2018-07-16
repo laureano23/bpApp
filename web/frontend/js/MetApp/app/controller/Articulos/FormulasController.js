@@ -261,7 +261,7 @@ Ext.define('MetApp.controller.Articulos.FormulasController',{
 	 * */
 	Estructura: function(btn){
 		var win = btn.up('window');
-		var form=win.down('form').getForm();
+		var form=win.down('form').getForm(); 
 
 		form.submit({
 			target: '_blank',
