@@ -15,11 +15,11 @@
 	<parameter name="fechaHasta" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
-	<parameter name="clienteDesde" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	<parameter name="clienteDesde" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[6]]></defaultValueExpression>
 	</parameter>
-	<parameter name="clienteHasta" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[99999]]></defaultValueExpression>
+	<parameter name="clienteHasta" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[6]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
@@ -53,12 +53,13 @@
      articulos.`monedaPrecio` AS articulos_monedaPrecio,
      group_concat(op.otId) as ot
 FROM
-     `PedidoClientesDetalle` PedidoClientesDetalle INNER JOIN `pedidoId_detalleId` pedidoId_detalleId ON PedidoClientesDetalle.`id` = pedidoId_detalleId.`detalleId`
+     `PedidoClientesDetalle` PedidoClientesDetalle
+     INNER JOIN `pedidoId_detalleId` pedidoId_detalleId ON PedidoClientesDetalle.`id` = pedidoId_detalleId.`detalleId`
      INNER JOIN `PedidoClientes` PedidoClientes ON pedidoId_detalleId.`pedidoId` = PedidoClientes.`id`
      left join Ot_Pedidos op on op.pedidoId = PedidoClientesDetalle.id
-     inner join Ot ot on ot.ot = op.otId
-     INNER JOIN `cliente` cliente ON PedidoClientes.`cliente` = cliente.`idCliente`
-     INNER JOIN `articulos` articulos ON PedidoClientesDetalle.`codigo` = articulos.`idArticulos`,
+     left join Ot ot on ot.ot = op.otId
+     left JOIN `cliente` cliente ON PedidoClientes.`cliente` = cliente.`idCliente`
+     left JOIN `articulos` articulos ON PedidoClientesDetalle.`codigo` = articulos.`idArticulos`,
      `ParametrosFinanzas` ParametrosFinanzas
 WHERE
      PedidoClientes.`cliente` BETWEEN $P{clienteDesde} AND $P{clienteHasta}
