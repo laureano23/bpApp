@@ -314,6 +314,7 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 													margin: '0 0 0 5',
 													name: 'fechaStock',
 													itemId: 'fechaStock',
+													allowBlank: true,
 													readOnly: true,
 													fieldLabel: 'Fecha act.'
 												}												

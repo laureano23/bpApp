@@ -59,10 +59,7 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 				},
 				'articulosform button[itemId=pedidoPendiente]': {
 					click: this.PedidosPendientes
-				},
-				'articulosform button[itemId=enQueFormulas]': {
-					click: this.EnQueFormulas
-				},
+				}
 		});		
 	},
 
