@@ -212,14 +212,14 @@ class PedidoClientesController extends Controller
 			     articulos.`monedaPrecio` AS articulos_monedaPrecio,
      			 group_concat(op.otId) as ot
 			FROM
-			     `PedidoClientesDetalle` PedidoClientesDetalle 
-			     INNER JOIN `pedidoId_detalleId` pedidoId_detalleId ON PedidoClientesDetalle.`id` = pedidoId_detalleId.`detalleId`
-			     INNER JOIN `PedidoClientes` PedidoClientes ON pedidoId_detalleId.`pedidoId` = PedidoClientes.`id`
-			     left join Ot_Pedidos op on op.pedidoId = PedidoClientesDetalle.id
-			     inner join Ot ot on ot.ot = op.otId
-			     INNER JOIN `cliente` cliente ON PedidoClientes.`cliente` = cliente.`idCliente`
-			     INNER JOIN `articulos` articulos ON PedidoClientesDetalle.`codigo` = articulos.`idArticulos`,
-			     `ParametrosFinanzas` ParametrosFinanzas
+			     `PedidoClientesDetalle` PedidoClientesDetalle
+				     INNER JOIN `pedidoId_detalleId` pedidoId_detalleId ON PedidoClientesDetalle.`id` = pedidoId_detalleId.`detalleId`
+				     INNER JOIN `PedidoClientes` PedidoClientes ON pedidoId_detalleId.`pedidoId` = PedidoClientes.`id`
+				     left join Ot_Pedidos op on op.pedidoId = PedidoClientesDetalle.id
+				     left join Ot ot on ot.ot = op.otId
+				     left JOIN `cliente` cliente ON PedidoClientes.`cliente` = cliente.`idCliente`
+				     left JOIN `articulos` articulos ON PedidoClientesDetalle.`codigo` = articulos.`idArticulos`,
+				     `ParametrosFinanzas` ParametrosFinanzas
 			WHERE
 			     PedidoClientes.`cliente` BETWEEN $clienteDesde AND $clienteHasta
 			 AND articulos.`codigo` BETWEEN '$codigoDesde' AND '$codigoHasta'
