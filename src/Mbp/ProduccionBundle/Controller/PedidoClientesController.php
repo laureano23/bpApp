@@ -215,7 +215,7 @@ class PedidoClientesController extends Controller
 			     `PedidoClientesDetalle` PedidoClientesDetalle 
 			     INNER JOIN `pedidoId_detalleId` pedidoId_detalleId ON PedidoClientesDetalle.`id` = pedidoId_detalleId.`detalleId`
 			     INNER JOIN `PedidoClientes` PedidoClientes ON pedidoId_detalleId.`pedidoId` = PedidoClientes.`id`
-			     left join Ot_Pedidos op on op.pedidoId = PedidoClientes.id
+			     left join Ot_Pedidos op on op.pedidoId = PedidoClientesDetalle.id
 			     INNER JOIN `cliente` cliente ON PedidoClientes.`cliente` = cliente.`idCliente`
 			     INNER JOIN `articulos` articulos ON PedidoClientesDetalle.`codigo` = articulos.`idArticulos`,
 			     `ParametrosFinanzas` ParametrosFinanzas
