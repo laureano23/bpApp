@@ -261,15 +261,8 @@ Ext.define('MetApp.controller.Articulos.FormulasController',{
 	 * */
 	Estructura: function(btn){
 		var win = btn.up('window');
-<<<<<<< HEAD
-		var form=win.down('form').getForm(); 
-
-		form.submit({
-			target: '_blank',
-=======
 		
 		Ext.Ajax.request({
->>>>>>> parent of 67ad6b8... Recodeando servidor de reportes
 			url: Routing.generate('mbp_formulas_generaReporte'),
 			
 			params: {
