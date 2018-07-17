@@ -100,10 +100,5 @@ mbp_sencha:
     resource: "@MbpSenchaBundle/Resources/config/routing.yml"
     prefix:   /
 
-mbp_sencha_servidorReportes:
-    resource: "@MbpSenchaBundle/Controller/ServidorReportesController.php"
-    type:     annotation
-    prefix:   /
-
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

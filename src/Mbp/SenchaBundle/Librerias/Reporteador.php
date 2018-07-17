@@ -3,10 +3,6 @@ namespace Mbp\SenchaBundle\Librerias;
 
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 require_once __DIR__.'/JdbcConnection.php';
 require_once __DIR__.'/php-jru.php';
@@ -21,20 +17,6 @@ class Reporteador extends Controller
 	public function __construct($driver, $host, $user, $pass)
 	{		
 		$this->con = new \JdbcConnection($driver, "jdbc:mysql://localhost/".$host, $user, $pass);
-	}
-
-	public function servirReportePDF($nombreReporte, $ruta)
-	{		
-		$response = new BinaryFileResponse($ruta);
-        $response->trustXSendfileTypeHeader();
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $nombreReporte,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $nombreReporte)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-
-        return $response;
 	}
 	
 	public function getRutaLogo($kernel)

@@ -65,12 +65,29 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 
 	EnQueFormulas: function(btn){
 		var win=btn.up('window');
+<<<<<<< HEAD
 		var form=win.down('form').getForm();		
 		form.submit({
 			target: '_blank',
 			standardSubmit: true,
+=======
+
+		Ext.Ajax.request({
+>>>>>>> parent of dc09d56... Se modifica arquitectura para presentar los reportes
 			url: Routing.generate('mbp_formulas_enQueFormulas'),
-		});
+
+			params: {
+				idArt: win.queryById('id').getValue()
+			},
+
+			success: function(resp){
+				var jsonResp = Ext.JSON.decode(resp.responseText);
+				if(jsonResp.success == true){
+					var ruta = Routing.generate('mbp_formulas_enQueFormulas_pdf');
+					window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');					
+				}
+			}
+		})
 	},
 
 	ResetStoreProv: function(combo){

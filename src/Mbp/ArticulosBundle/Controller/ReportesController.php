@@ -29,7 +29,7 @@ class ReportesController extends Controller
 			 * Recibo parametros del request 
 			 */
 			
-			$id = $req->request->get('id');
+			$id = $req->request->get('idArt');
 			$jru = $repo->jru();
 					
 			$ruta = $kernel->locateResource('@MbpArticulosBundle/Reportes/EnQueFormulas.jrxml');
@@ -63,20 +63,46 @@ class ReportesController extends Controller
 			
 			//Exportamos el reporte
 			$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
-
-			$nombreReporte="EnQueFormulas.pdf";
-			$response=$repo->servirReportePDF($nombreReporte, $destino);
-
-	        return $response;
+						
+			return $response->setContent(
+				json_encode(array(
+					'success' => true,
+					'reporte' => $destino,	
+				))
+			);
 		}catch(\Exception $e){
+<<<<<<< HEAD
+=======
+			print($e);
+>>>>>>> parent of dc09d56... Se modifica arquitectura para presentar los reportes
 			return $response->setContent(
 				json_encode(array(
 					'success' => false,
-					'msg' => print($e),	
+					'msg' => $e->getMessage(),	
 				))
 			);
 		}
 			
+	}
+	
+	/**
+     * @Route("/enQueFormulasPDF", name="mbp_formulas_enQueFormulas_pdf", options={"expose"=true})
+     */
+	public function enQueFormulasPDF()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpArticulosBundle/Resources/public/pdf/').'EnQueFormulas.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'EnQueFormulas.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+
+        return $response;
 	}
 
 	 /**
