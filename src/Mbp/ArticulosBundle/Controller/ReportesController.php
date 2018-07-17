@@ -71,10 +71,7 @@ class ReportesController extends Controller
 				))
 			);
 		}catch(\Exception $e){
-<<<<<<< HEAD
-=======
 			print($e);
->>>>>>> parent of dc09d56... Se modifica arquitectura para presentar los reportes
 			return $response->setContent(
 				json_encode(array(
 					'success' => false,
