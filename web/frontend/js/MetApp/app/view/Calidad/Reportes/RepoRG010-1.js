@@ -91,14 +91,12 @@ Ext.define('MetApp.view.Calidad.Reportes.RepoRG010-1', {
 						{
 							xtype: 'datefield',
 							itemId: 'desde',
-							name: 'desde',
 							fieldLabel: 'Desde',
 							labelWidth: 40
 						},
 						{
 							xtype: 'datefield',
 							itemId: 'hasta',
-							name: 'hasta',
 							fieldLabel: 'Hasta',
 							labelWidth: 40
 						},

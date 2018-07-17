@@ -19,34 +19,47 @@ class ReportesController extends Controller
 	public function generateFormRg010Action()
 	{
 		$repo = $this->get('reporteador');		
-		$kernel = $this->get('kernel');				
+		$kernel = $this->get('kernel');		
 		
-		try{
-			$jru = $repo->jru();
-					
-			$ruta = $kernel->locateResource('@MbpCalidadBundle/Reportes/RG-010 Control Estanqueidad.jasper');
-			
-			//Ruta de destino
-			$destino = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'RG-010 Estanqueidad.pdf';
-			
-			//Parametros
-			$param = null;
-			
-			//Exportamos el reporte
-			$jru->runReportEmpty($ruta, $destino, $param);
-			$nombreReporte="RG-010 Estanqueidad.pdf";
-			$response=$repo->servirReportePDF($nombreReporte, $destino);
-
-	        return $response;
-		}catch(\Exception $e){
-			$response=new Response;
-			return $response->setContent(
-				json_encode(array(
-					'success' => false,
-					'msg' => $e->getMessage(),	
-				))
+		$jru = $repo->jru();
+				
+		$ruta = $kernel->locateResource('@MbpCalidadBundle/Reportes/RG-010 Control Estanqueidad.jasper');
+		
+		//Ruta de destino
+		$destino = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'RG-010 Estanqueidad.pdf';
+		
+		//Parametros
+		$param = null;
+		
+		//Exportamos el reporte
+		$jru->runReportEmpty($ruta, $destino, $param);
+		
+		
+		echo json_encode(
+				array(
+					'success'=> true,
+					'reporte' => $destino,		
+				)
 			);
-		}		
+		
+		return new Response();
+	}
+	
+	public function showFormRg010Action()
+	{		
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'RG-010 Estanqueidad.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'RG-010 Estanqueidad.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+
+        return $response;
 	}
     
 	/*
@@ -57,74 +70,97 @@ class ReportesController extends Controller
 		$repo = $this->get('reporteador');		
 		$kernel = $this->get('kernel');	
 		
-		try{
-			$em = $this->getDoctrine()->getManager();
-			$req = $this->getRequest();
-			$ot = (int)$req->request->get('ot');
-			
-			$jru = $repo->jru();
-					
-			$ruta = $kernel->locateResource('@MbpCalidadBundle/Reportes/RG010-01.jrxml');
-			
-			//Ruta de destino
-			$destino = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'RG010-01.pdf';
-			
-			//Parametros HashMap
-			$param = $repo->getJava('java.util.HashMap');
-			$param->put('ot', $ot);
-			
-			$conn = $repo->getJdbc();
-			
-			$sql = "
-				SELECT
-				     Estanqueidad.`fechaPrueba` AS Estanqueidad_fechaPrueba,
-				     Estanqueidad.`ot` AS Estanqueidad_ot,
-				     Estanqueidad.`pruebaNum` AS Estanqueidad_pruebaNum,
-				     Estanqueidad.`estado` AS Estanqueidad_estado,
-				     Estanqueidad.`mChapa` AS Estanqueidad_mChapa,
-				     Estanqueidad.`mBagueta` AS Estanqueidad_mBagueta,
-				     Estanqueidad.`mPerfil` AS Estanqueidad_mPerfil,
-				     Estanqueidad.`mPisoDesp` AS Estanqueidad_mPisoDesp,
-				     Estanqueidad.`tRosca` AS Estanqueidad_tRosca,
-				     Estanqueidad.`tPoros` AS Estanqueidad_tPoros,
-				     Estanqueidad.`tConector` AS Estanqueidad_tConector,
-				     Estanqueidad.`sConector` AS Estanqueidad_sConector,
-				     Estanqueidad.`sTapaPanel` AS Estanqueidad_sTapaPanel,
-				     Estanqueidad.`sPlanchuelas` AS Estanqueidad_sPlanchuelas,
-				     Estanqueidad.`soldador` AS Estanqueidad_soldador,
-				     Estanqueidad.`probador` AS Estanqueidad_probador,
-				     Estanqueidad.`presion` AS Estanqueidad_presion,
-				     Personal.`idP` AS Personal_idP,
-				     Personal.`nombre` AS Personal_nombre,
-				     Personal_A.`idP` AS Personal_A_idP,
-				     Personal_A.`nombre` AS Personal_A_nombre,
-				     Estanqueidad.`mAnulado` AS Estanqueidad_mAnulado,
-				     Estanqueidad.`mCiba` AS Estanqueidad_mCiba,
-				     Estanqueidad.`tFijacion` AS Estanqueidad_tFijacion,
-				     Estanqueidad.`mChapaColectora` AS Estanqueidad_mChapaColectora,
-				     Estanqueidad.`sPuntera` AS Estanqueidad_sPuntera
-				FROM
-				     `Personal` Personal RIGHT JOIN `Estanqueidad` Estanqueidad ON Personal.`idP` = Estanqueidad.`soldador`
-				     LEFT JOIN `Personal` Personal_A ON Estanqueidad.`probador` = Personal_A.`idP`
-				WHERE
-				     Estanqueidad.`ot` = $ot
-			";
-			//Exportamos el reporte
-			$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
-			$nombreReporte="RG010-01.pdf";
-			$response=$repo->servirReportePDF($nombreReporte, $destino);
-
-	        return $response;
-		}catch(\Exception $e){
-			$response=new Response;
-			return $response->setContent(
-				json_encode(array(
-					'success' => false,
-					'msg' => $e->getMessage(),	
-				))
-			);
-		}	
+		/*
+		 * Recibo parametros del request 
+		 */
+		$em = $this->getDoctrine()->getManager();
+		$req = $this->getRequest();
+		$ot = (int)$req->request->get('ot');
 		
+		$jru = $repo->jru();
+				
+		$ruta = $kernel->locateResource('@MbpCalidadBundle/Reportes/RG010-01.jrxml');
+		
+		//Ruta de destino
+		$destino = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'RG010-01.pdf';
+		
+		//Parametros HashMap
+		$param = $repo->getJava('java.util.HashMap');
+		$param->put('ot', $ot);
+		
+		$conn = $repo->getJdbc();
+		
+		/*
+		 * SQL
+		 * 
+		 */
+		$sql = "
+			SELECT
+			     Estanqueidad.`fechaPrueba` AS Estanqueidad_fechaPrueba,
+			     Estanqueidad.`ot` AS Estanqueidad_ot,
+			     Estanqueidad.`pruebaNum` AS Estanqueidad_pruebaNum,
+			     Estanqueidad.`estado` AS Estanqueidad_estado,
+			     Estanqueidad.`mChapa` AS Estanqueidad_mChapa,
+			     Estanqueidad.`mBagueta` AS Estanqueidad_mBagueta,
+			     Estanqueidad.`mPerfil` AS Estanqueidad_mPerfil,
+			     Estanqueidad.`mPisoDesp` AS Estanqueidad_mPisoDesp,
+			     Estanqueidad.`tRosca` AS Estanqueidad_tRosca,
+			     Estanqueidad.`tPoros` AS Estanqueidad_tPoros,
+			     Estanqueidad.`tConector` AS Estanqueidad_tConector,
+			     Estanqueidad.`sConector` AS Estanqueidad_sConector,
+			     Estanqueidad.`sTapaPanel` AS Estanqueidad_sTapaPanel,
+			     Estanqueidad.`sPlanchuelas` AS Estanqueidad_sPlanchuelas,
+			     Estanqueidad.`soldador` AS Estanqueidad_soldador,
+			     Estanqueidad.`probador` AS Estanqueidad_probador,
+			     Estanqueidad.`presion` AS Estanqueidad_presion,
+			     Personal.`idP` AS Personal_idP,
+			     Personal.`nombre` AS Personal_nombre,
+			     Personal_A.`idP` AS Personal_A_idP,
+			     Personal_A.`nombre` AS Personal_A_nombre,
+			     Estanqueidad.`mAnulado` AS Estanqueidad_mAnulado,
+			     Estanqueidad.`mCiba` AS Estanqueidad_mCiba,
+			     Estanqueidad.`tFijacion` AS Estanqueidad_tFijacion,
+			     Estanqueidad.`mChapaColectora` AS Estanqueidad_mChapaColectora,
+			     Estanqueidad.`sPuntera` AS Estanqueidad_sPuntera
+			FROM
+			     `Personal` Personal RIGHT JOIN `Estanqueidad` Estanqueidad ON Personal.`idP` = Estanqueidad.`soldador`
+			     LEFT JOIN `Personal` Personal_A ON Estanqueidad.`probador` = Personal_A.`idP`
+			WHERE
+			     Estanqueidad.`ot` = $ot
+		";
+		 /*
+		  * FIN SQL
+		  */
+		
+		//Exportamos el reporte
+		$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
+		
+		
+		echo json_encode(
+				array(
+					'success'=> true,
+					'reporte' => $destino,		
+				)
+			);
+		
+		return new Response();
+	}
+	
+	public function showReporteRg010Action()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'RG010-01.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'RG010-01.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+
+        return $response;
 	}
 
 	/*
@@ -135,78 +171,100 @@ class ReportesController extends Controller
 		$repo = $this->get('reporteador');		
 		$kernel = $this->get('kernel');	
 		
-		try{
-			$em = $this->getDoctrine()->getManager();
-			$req = $this->getRequest();
-			$desde = $req->request->get('desde'); 
-			$hasta = $req->request->get('hasta');
-			$fechaDesde = \DateTime::createFromFormat('d/m/Y', $desde);
-			$fechaHasta = \DateTime::createFromFormat('d/m/Y', $hasta);
-			$fechaDesde=$fechaDesde->format('Y-m-d');
-			$fechaHasta=$fechaHasta->format('Y-m-d');
-
-			$jru = $repo->jru();
-					
-			$ruta = $kernel->locateResource('@MbpCalidadBundle/Reportes/RG010-01Fechas.jrxml');
-			
-			//Ruta de destino
-			$destino = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'RG010-01Fechas.pdf';
-			
-			//Parametros HashMap
-			$param = $repo->getJava('java.util.HashMap');
-							
-			$param->put('fechaDesde', $desde);
-			$param->put('fechaHasta', $hasta);
-			
-			$conn = $repo->getJdbc();
+		/*
+		 * Recibo parametros del request 
+		 */
+		$em = $this->getDoctrine()->getManager();
+		$req = $this->getRequest();
+		$desde = $req->request->get('fechaDesde'); 
+		$hasta = $req->request->get('fechaHasta');
 		
-			$sql = "SELECT
-				     Estanqueidad.`fechaPrueba` AS Estanqueidad_fechaPrueba,
-				     Estanqueidad.`ot` AS Estanqueidad_ot,
-				     Estanqueidad.`pruebaNum` AS Estanqueidad_pruebaNum,
-				     Estanqueidad.`estado` AS Estanqueidad_estado,
-				     Estanqueidad.`mChapa` AS Estanqueidad_mChapa,
-				     Estanqueidad.`mBagueta` AS Estanqueidad_mBagueta,
-				     Estanqueidad.`mPerfil` AS Estanqueidad_mPerfil,
-				     Estanqueidad.`mPisoDesp` AS Estanqueidad_mPisoDesp,
-				     Estanqueidad.`tRosca` AS Estanqueidad_tRosca,
-				     Estanqueidad.`tPoros` AS Estanqueidad_tPoros,
-				     Estanqueidad.`tConector` AS Estanqueidad_tConector,
-				     Estanqueidad.`sConector` AS Estanqueidad_sConector,
-				     Estanqueidad.`sTapaPanel` AS Estanqueidad_sTapaPanel,
-				     Estanqueidad.`sPlanchuelas` AS Estanqueidad_sPlanchuelas,
-				     Estanqueidad.`soldador` AS Estanqueidad_soldador,
-				     Estanqueidad.`probador` AS Estanqueidad_probador,
-				     Estanqueidad.`presion` AS Estanqueidad_presion,
-				     Personal.`idP` AS Personal_idP,
-				     Personal.`nombre` AS Personal_nombre,
-				     Personal_A.`idP` AS Personal_A_idP,
-				     Personal_A.`nombre` AS Personal_A_nombre,
-				     Estanqueidad.`mAnulado` AS Estanqueidad_mAnulado,
-				     Estanqueidad.`mCiba` AS Estanqueidad_mCiba,
-				     Estanqueidad.`tFijacion` AS Estanqueidad_tFijacion,
-				     Estanqueidad.`mChapaColectora` AS Estanqueidad_mChapaColectora,
-	     			 Estanqueidad.`sPuntera` AS Estanqueidad_sPuntera
-					FROM
-					     `Personal` Personal RIGHT JOIN `Estanqueidad` Estanqueidad ON Personal.`idP` = Estanqueidad.`soldador`
-					     LEFT JOIN `Personal` Personal_A ON Estanqueidad.`probador` = Personal_A.`idP`
-					WHERE
-	    		 		fechaPrueba BETWEEN '$fechaDesde' AND '$fechaHasta'";
+		$fechaDesde = explode('T', $desde);
+		$fechaHasta = explode('T', $hasta);				
+		$jru = $repo->jru();
+				
+		$ruta = $kernel->locateResource('@MbpCalidadBundle/Reportes/RG010-01Fechas.jrxml');
+		
+		//Ruta de destino
+		$destino = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'RG010-01Fechas.pdf';
+		
+		//Parametros HashMap
+		$param = $repo->getJava('java.util.HashMap');
 						
-			//Exportamos el reporte
-			$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
-			$nombreReporte="RG010-01Fechas.pdf";
-			$response=$repo->servirReportePDF($nombreReporte, $destino);
-			return $response;
-		}catch(\Exception $e){
-			$response=new Response;
-			return $response->setContent(
-				json_encode(array(
-					'success' => false,
-					'msg' => $e->getMessage(),	
-				))
+		$param->put('fechaDesde', $fechaDesde[0]);
+		$param->put('fechaHasta', $fechaHasta[0]);
+		
+		$conn = $repo->getJdbc();
+		
+		/*
+		 * SQL
+		 * 
+		 */
+		$sql = "SELECT
+			     Estanqueidad.`fechaPrueba` AS Estanqueidad_fechaPrueba,
+			     Estanqueidad.`ot` AS Estanqueidad_ot,
+			     Estanqueidad.`pruebaNum` AS Estanqueidad_pruebaNum,
+			     Estanqueidad.`estado` AS Estanqueidad_estado,
+			     Estanqueidad.`mChapa` AS Estanqueidad_mChapa,
+			     Estanqueidad.`mBagueta` AS Estanqueidad_mBagueta,
+			     Estanqueidad.`mPerfil` AS Estanqueidad_mPerfil,
+			     Estanqueidad.`mPisoDesp` AS Estanqueidad_mPisoDesp,
+			     Estanqueidad.`tRosca` AS Estanqueidad_tRosca,
+			     Estanqueidad.`tPoros` AS Estanqueidad_tPoros,
+			     Estanqueidad.`tConector` AS Estanqueidad_tConector,
+			     Estanqueidad.`sConector` AS Estanqueidad_sConector,
+			     Estanqueidad.`sTapaPanel` AS Estanqueidad_sTapaPanel,
+			     Estanqueidad.`sPlanchuelas` AS Estanqueidad_sPlanchuelas,
+			     Estanqueidad.`soldador` AS Estanqueidad_soldador,
+			     Estanqueidad.`probador` AS Estanqueidad_probador,
+			     Estanqueidad.`presion` AS Estanqueidad_presion,
+			     Personal.`idP` AS Personal_idP,
+			     Personal.`nombre` AS Personal_nombre,
+			     Personal_A.`idP` AS Personal_A_idP,
+			     Personal_A.`nombre` AS Personal_A_nombre,
+			     Estanqueidad.`mAnulado` AS Estanqueidad_mAnulado,
+			     Estanqueidad.`mCiba` AS Estanqueidad_mCiba,
+			     Estanqueidad.`tFijacion` AS Estanqueidad_tFijacion,
+			     Estanqueidad.`mChapaColectora` AS Estanqueidad_mChapaColectora,
+     			 Estanqueidad.`sPuntera` AS Estanqueidad_sPuntera
+				FROM
+				     `Personal` Personal RIGHT JOIN `Estanqueidad` Estanqueidad ON Personal.`idP` = Estanqueidad.`soldador`
+				     LEFT JOIN `Personal` Personal_A ON Estanqueidad.`probador` = Personal_A.`idP`
+				WHERE
+    		 		fechaPrueba BETWEEN '$fechaDesde[0]' AND '$fechaHasta[0]'";
+		 /*
+		  * FIN SQL
+		  */
+		
+		//Exportamos el reporte
+		$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
+		
+		
+		echo json_encode(
+				array(
+					'success'=> true,
+					'reporte' => $destino,		
+				)
 			);
-		}		
+		
+		return new Response();
+	}
+	
+	public function showReporteRg010FechasAction()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'RG010-01Fechas.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'RG010-01Fechas.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+
+        return $response;
 	}
 	
    public function generateRepoFallasSoldaduraAction()

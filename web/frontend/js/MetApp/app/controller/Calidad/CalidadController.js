@@ -191,14 +191,17 @@ Ext.define('MetApp.controller.Calidad.CalidadController',{
 	 * Reporte RG-010 Estanqueidad
 	 */
 	AddRg010Reporte: function(btn){
-		var form = Ext.create('Ext.form.Panel', {
-			clientValidation: true,
+		Ext.Ajax.request({
 			url: Routing.generate('mbp_calidad_generateFormRg010'),
-			standardSubmit: true
+			success: function(response,options){
+				var jsonReporte = Ext.JSON.decode(response.responseText);
+				Reporte=jsonReporte.reporte;
+				var ruta = Routing.generate('mbp_calidad_showFormRg010');
+												
+				window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');								
+			}
 		});
-		form.submit({
-			target: '_blank'
-		});
+		
 	},
 	
 	

@@ -382,28 +382,36 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 	PrintHistoricoMovReporte: function(btn){
 		var win = btn.up('window');
 		var form = win.down('form');
+		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
+		myMask.show();
 		
 		if(form.isValid()){
 			var values = form.getForm().getValues();
-			var form=form.getForm();
-
-			form.submit({
+			
+			Ext.Ajax.request({
 				url: Routing.generate('mbp_reportes_historicoMov'),
-				target: '_blank',
-				standardSubmit: true,
-				params:{
+				
+				params: {
 					desde: values.desde,
 					hasta: values.hasta,
 					codigo1: values.codigo1,
 					codigo2: values.codigo2
 				},
-				failure: function(resp){
-					console.log(resp);
+				
+				success: function(resp){					
+					var jsonResp = Ext.JSON.decode(resp.responseText);
+					if(jsonResp.success == true){
+						var ruta = Routing.generate('mbp_reportes_historicoMov_PDF');
+						
+						window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+					}
+					myMask.hide();
 				},
-				success: function(resp){
-					console.log(resp);
+				
+				failure: function(resp){
+					myMask.hide();
 				}
-			});
+			});	
 		}
 	},
 	
