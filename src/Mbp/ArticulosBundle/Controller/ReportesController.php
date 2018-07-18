@@ -55,7 +55,7 @@ class ReportesController extends Controller
 				JOIN FormulasC parent on parent.id = f.parent_id
 				JOIN articulos art on art.idArticulos = parent.idArt
 				WHERE f.idArt = $id
-					and f.level = 2
+				GROUP BY art.codigo
 				ORDER BY art.codigo ASC) as sub,
 				articulos art
 				where art.idArticulos = $id

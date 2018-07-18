@@ -14,10 +14,11 @@ FROM FormulasC as f
 JOIN FormulasC parent on parent.id = f.parent_id
 JOIN articulos art on art.idArticulos = parent.idArt
 WHERE f.idArt = $P{ID_ART}
-	and f.level = 2
+GROUP BY art.codigo
 ORDER BY art.codigo ASC) as sub,
 articulos art
-where art.idArticulos = $P{ID_ART}]]>
+where art.idArticulos = $P{ID_ART}
+]]>
 	</queryString>
 	<field name="codigo" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
