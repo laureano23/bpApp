@@ -134,13 +134,14 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 			{
 				xtype: 'numberfield',
 				readOnly: true,
-				width: 110,
+				width: 130,
 				labelWidth: 40,
 				margin: '0 0 0 15',
 				itemId: 'iva',
 				name: 'iva',
 				fieldLabel: 'Iva',
 				allowBlank: true,
+				decimalSeparator: '.',
 				value: 21
 			}
 		]

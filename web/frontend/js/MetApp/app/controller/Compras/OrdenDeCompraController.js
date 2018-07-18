@@ -231,6 +231,7 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 			var selection = grid.getSelectionModel().getSelection()[0];
 			
 			formArt.loadRecord(selection);
+			console.log(selection);
 			winArticulos.close();
 			
 			if(selection.data.codigo == 'ZZZ'){

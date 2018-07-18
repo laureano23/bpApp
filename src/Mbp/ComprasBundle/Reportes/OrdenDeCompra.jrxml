@@ -100,36 +100,10 @@ WHERE
  $F{OrdenCompraDetalle_precio} * $F{OrdenCompraDetalle_cant}]]></variableExpression>
 	</variable>
 	<variable name="iva10" class="java.lang.Float" calculation="Sum">
-		<variableExpression><![CDATA[$F{OrdenCompra_monedaOC} == true &&
-$F{OrdenCompraDetalle_iva} != 21 &&
-$F{OrdenCompraDetalle_moneda} == true ?
-$F{OrdenCompraDetalle_ivaCalculado} :
-$F{OrdenCompra_monedaOC} == false &&
-$F{OrdenCompraDetalle_iva} != 21 &&
-$F{OrdenCompraDetalle_moneda} == true ?
-$F{OrdenCompraDetalle_ivaCalculado} * $F{OrdenCompra_tc} :
-$F{OrdenCompra_monedaOC} == true &&
-$F{OrdenCompraDetalle_iva} != 21 &&
-$F{OrdenCompraDetalle_moneda} == false ?
-$F{OrdenCompraDetalle_ivaCalculado} / $F{OrdenCompra_tc}:
-$F{OrdenCompraDetalle_iva} != 21 ?
-$F{OrdenCompraDetalle_precio}: 0]]></variableExpression>
+		<variableExpression><![CDATA[$F{OrdenCompraDetalle_iva} != 21 ? $F{OrdenCompraDetalle_ivaCalculado} : 0]]></variableExpression>
 	</variable>
 	<variable name="iva21" class="java.lang.Float" calculation="Sum">
-		<variableExpression><![CDATA[$F{OrdenCompra_monedaOC} == true &&
-$F{OrdenCompraDetalle_iva} == 21 &&
-$F{OrdenCompraDetalle_moneda} == true ?
-$F{OrdenCompraDetalle_ivaCalculado} :
-$F{OrdenCompra_monedaOC} == false &&
-$F{OrdenCompraDetalle_iva} == 21 &&
-$F{OrdenCompraDetalle_moneda} == true ?
-$F{OrdenCompraDetalle_ivaCalculado} * $F{OrdenCompra_tc} :
-$F{OrdenCompra_monedaOC} == true &&
-$F{OrdenCompraDetalle_iva} == 21 &&
-$F{OrdenCompraDetalle_moneda} == false ?
-$F{OrdenCompraDetalle_ivaCalculado} / $F{OrdenCompra_tc}:
-$F{OrdenCompraDetalle_iva} == 21 ?
-$F{OrdenCompraDetalle_precio}: 0]]></variableExpression>
+		<variableExpression><![CDATA[$F{OrdenCompraDetalle_iva} == 21 ? $F{OrdenCompraDetalle_ivaCalculado} : 0]]></variableExpression>
 	</variable>
 	<background>
 		<band/>

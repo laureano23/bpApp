@@ -84,7 +84,7 @@ class Articulos
 	 * 		max = 100
 	 * )
      */
-    private $iva;
+    private $iva=21;
 	
 	/**
      * @var boolean

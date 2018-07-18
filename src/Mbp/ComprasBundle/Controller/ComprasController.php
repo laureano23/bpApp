@@ -143,7 +143,8 @@ class ComprasController extends Controller
 				$detalle->setCant($det->cant);
 				$detalle->setFechaEntrega($fechaEntrega);
 				$detalle->setIva($det->iva);
-				$det->iva == 21 ? $detalle->setIvaCalculado($det->cant * $det->costo * 0.21) : $detalle->setIvaCalculado($det->cant * $det->costo * 0.105); 
+				$det->iva == 21 ? $detalle->setIvaCalculado($det->cant * $det->costo * 0.21) :
+					$detalle->setIvaCalculado($det->cant * $det->costo * 0.105); 
 				$det->moneda == 'p' ? $detalle->setMoneda(0) : $detalle->setMoneda(1);
 
 				//ACTUALIZO EL COSTO DEL ARTICULO SI ES NECESARIO

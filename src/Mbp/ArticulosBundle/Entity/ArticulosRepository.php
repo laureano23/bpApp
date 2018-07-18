@@ -172,6 +172,7 @@ class ArticulosRepository extends EntityRepository
 			->setPeso($data->peso)
 			->setMoneda($data->moneda == 'p' ? 0 : 1)
 			->setFamiliaId($fam)
+			->setIva($data->iva)
 			->setSubFamiliaId($subFam)
 			->setPrecio($data->precio)
 			->setMonedaPrecio($data->monedaPrecio == 'p' ? 0 : 1)

@@ -12,14 +12,7 @@ Ext.define('MetApp.model.Articulos.Articulos',{
 		{name: 'monedaPrecio', type: 'string'},
 		{
 			name: 'moneda',
-		 	type: 'string',
-			convert: function(val){
-				if(val == false || val=='p'){
-					return 'p';
-				}else{
-					return 'd';
-				}
-			}
+		 	type: 'string'
 		},
 		{name: 'familia', type: 'string'},
 		{name: 'subFamilia', type: 'string'},
