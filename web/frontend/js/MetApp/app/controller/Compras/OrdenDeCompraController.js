@@ -113,7 +113,6 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 			var arrayRec=[];
 			var i=0;
 			st.each(function(rec){
-				rec.data.entrega = Ext.util.Format.date(rec.data.entrega, 'd/m/Y');
 				arrayRec[i]=rec.data;
 				i++;
 			})
