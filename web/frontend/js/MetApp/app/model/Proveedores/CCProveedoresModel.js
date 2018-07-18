@@ -12,6 +12,6 @@ Ext.define('MetApp.model.Proveedores.CCProveedoresModel',{
 		{name: 'detalle', type: 'boolean'},
 		{name: 'imputado', type: 'boolean'},
 		{name: 'valorImputado', type: 'float'},
-		
+		{name: 'pagado', type: 'boolean'}
 	]
 });
