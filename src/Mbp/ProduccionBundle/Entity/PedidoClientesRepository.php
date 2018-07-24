@@ -25,6 +25,7 @@ class PedidoClientesRepository extends \Doctrine\ORM\EntityRepository
 				->leftJoin('p.detalleId', 'd')
 				->leftJoin('d.codigo', 'cod')
 				->where('d.inactivo = 0')				
+				->andWhere('p.inactivo = 0')	
 				->getQuery()
 				->getArrayResult();
 			
@@ -51,6 +52,7 @@ class PedidoClientesRepository extends \Doctrine\ORM\EntityRepository
 			->where('art.codigo = :cod')
 			->andWhere('p.cliente = :cliente')
 			->andWhere('det.inactivo = 0')
+			->andWhere('p.inactivo = 0')	
 			->setParameter('cliente' , $idCliente)
 			->setParameter('cod' , $codigo)
 			->getQuery()
@@ -75,6 +77,7 @@ class PedidoClientesRepository extends \Doctrine\ORM\EntityRepository
 			->where('d.inactivo = 0')
 			->andWhere('c.id =:cliente')
 			->andWhere('cod.codigo =:codigo')
+			->andWhere('p.inactivo = 0')	
 			->setParameter('cliente', $idCliente)
 			->setParameter('codigo', $codigo)				
 			->getQuery()
@@ -96,6 +99,7 @@ class PedidoClientesRepository extends \Doctrine\ORM\EntityRepository
 			->leftJoin('p.detalleId', 'd')
 			->leftJoin('d.codigo', 'cod')
 			->where('d.inactivo = 0')
+			->andWhere('p.inactivo = 0')	
 			->andWhere('cod.codigo =:codigo')
 			->setParameter('codigo', $codigo)				
 			->getQuery()
