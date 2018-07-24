@@ -225,6 +225,7 @@ class PedidoClientesController extends Controller
 			 AND articulos.`codigo` BETWEEN '$codigoDesde' AND '$codigoHasta'
 			 AND PedidoClientesDetalle.`fechaProg` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql'  
 			 AND PedidoClientesDetalle.`inactivo` = 0
+			 AND PedidoClientes.`inactivo` = 0
 			 GROUP BY PedidoClientesDetalle.`id`
 			ORDER BY
 			    PedidoClientes.`esRepuesto` ASC,

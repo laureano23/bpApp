@@ -66,6 +66,7 @@ WHERE
  AND articulos.`codigo` BETWEEN $P{codigoDesde} AND $P{codigoHasta}
  AND PedidoClientesDetalle.`fechaProg` BETWEEN $P{fechaDesde} AND $P{fechaHasta}
  AND PedidoClientesDetalle.`inactivo` = 0
+ AND PedidoClientes.`inactivo` = 0
 GROUP BY PedidoClientesDetalle.`id`
 ORDER BY
      PedidoClientes.`esRepuesto` ASC,
