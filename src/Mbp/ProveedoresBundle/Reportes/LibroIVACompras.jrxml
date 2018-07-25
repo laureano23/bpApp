@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LibroIVACompras" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="c4b105ad-c9d2-4e6e-aab2-f046571798ae">
-	<property name="ireport.zoom" value="1.6105100000000199"/>
-	<property name="ireport.x" value="634"/>
+	<property name="ireport.zoom" value="1.1000000000000132"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="fechaDesde" class="java.lang.String">
 		<defaultValueExpression><![CDATA[01/01/2001]]></defaultValueExpression>
@@ -394,9 +394,9 @@ $F{FacturaProveedor_iibbOtras}]]></variableExpression>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="20" splitType="Stretch">
-			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="45" height="20" uuid="d6d036b0-3265-4e36-a153-ec6672cc7379"/>
+		<band height="15" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="45" height="15" uuid="d6d036b0-3265-4e36-a153-ec6672cc7379"/>
 				<box leftPadding="2"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -404,7 +404,7 @@ $F{FacturaProveedor_iibbOtras}]]></variableExpression>
 				<textFieldExpression><![CDATA[$F{FacturaProveedor_fechaEmision}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="45" y="0" width="31" height="20" uuid="ace9bdee-0f62-4627-a281-7f6b5911eeb1"/>
+				<reportElement x="45" y="0" width="31" height="15" uuid="ace9bdee-0f62-4627-a281-7f6b5911eeb1"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -412,7 +412,7 @@ $F{FacturaProveedor_iibbOtras}]]></variableExpression>
 				<textFieldExpression><![CDATA[$F{TipoComprobante_abreviatura}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#00000000" isBlankWhenNull="true">
-				<reportElement x="119" y="0" width="53" height="20" uuid="01eb0648-1bd8-4519-b0bf-be9a310629d8"/>
+				<reportElement x="119" y="0" width="53" height="15" uuid="01eb0648-1bd8-4519-b0bf-be9a310629d8"/>
 				<box leftPadding="2"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -420,7 +420,7 @@ $F{FacturaProveedor_iibbOtras}]]></variableExpression>
 				<textFieldExpression><![CDATA[$F{FacturaProveedor_numFc}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#0000" isBlankWhenNull="true">
-				<reportElement x="76" y="0" width="35" height="20" uuid="072ab758-fb99-4ee3-be15-74e6a9cedc14"/>
+				<reportElement x="76" y="0" width="35" height="15" uuid="072ab758-fb99-4ee3-be15-74e6a9cedc14"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
@@ -428,14 +428,14 @@ $F{FacturaProveedor_iibbOtras}]]></variableExpression>
 				<textFieldExpression><![CDATA[$F{FacturaProveedor_sucursal}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="111" y="0" width="8" height="20" uuid="280f4bcf-a248-402f-96f7-304a61509779"/>
+				<reportElement x="111" y="0" width="8" height="15" uuid="280f4bcf-a248-402f-96f7-304a61509779"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[-]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="172" y="0" width="134" height="20" uuid="878e0f2d-965c-4026-aaab-8aaf4cb8a905"/>
+				<reportElement x="172" y="0" width="134" height="15" uuid="878e0f2d-965c-4026-aaab-8aaf4cb8a905"/>
 				<box leftPadding="2"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -443,7 +443,7 @@ $F{FacturaProveedor_iibbOtras}]]></variableExpression>
 				<textFieldExpression><![CDATA[$F{Proveedor_rsocial}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="306" y="0" width="74" height="20" uuid="3ae47855-31ba-4921-8a99-a2ad1db601c1"/>
+				<reportElement x="306" y="0" width="74" height="15" uuid="3ae47855-31ba-4921-8a99-a2ad1db601c1"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -451,7 +451,7 @@ $F{FacturaProveedor_iibbOtras}]]></variableExpression>
 				<textFieldExpression><![CDATA[$F{Proveedor_cuit}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="380" y="0" width="63" height="20" uuid="7870462e-fbe8-4d4d-9cc2-bf3e9e021a25"/>
+				<reportElement x="380" y="0" width="63" height="15" uuid="7870462e-fbe8-4d4d-9cc2-bf3e9e021a25"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -459,7 +459,7 @@ $F{FacturaProveedor_iibbOtras}]]></variableExpression>
 				<textFieldExpression><![CDATA[$F{FacturaProveedor_neto}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="443" y="0" width="52" height="20" uuid="4e650972-1270-41a3-91d0-ff9c9c222559"/>
+				<reportElement x="443" y="0" width="52" height="15" uuid="4e650972-1270-41a3-91d0-ff9c9c222559"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -467,7 +467,7 @@ $F{FacturaProveedor_iibbOtras}]]></variableExpression>
 				<textFieldExpression><![CDATA[$F{FacturaProveedor_netoNoGrabado}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="495" y="0" width="46" height="20" uuid="354ab5c2-3085-44a7-abf7-1890d8dfc38d"/>
+				<reportElement x="495" y="0" width="46" height="15" uuid="354ab5c2-3085-44a7-abf7-1890d8dfc38d"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -475,7 +475,7 @@ $F{FacturaProveedor_iibbOtras}]]></variableExpression>
 				<textFieldExpression><![CDATA[$F{FacturaProveedor_iva21}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="671" y="0" width="30" height="20" uuid="5e8a1e23-f3bf-45a5-aec3-9ce3f02098d2"/>
+				<reportElement x="671" y="0" width="30" height="15" uuid="5e8a1e23-f3bf-45a5-aec3-9ce3f02098d2"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -483,7 +483,7 @@ $F{FacturaProveedor_iibbOtras}]]></variableExpression>
 				<textFieldExpression><![CDATA[$F{FacturaProveedor_iibbCf}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="763" y="0" width="59" height="20" uuid="292efa0a-1a1f-453b-871b-7cda0d71ae96"/>
+				<reportElement x="763" y="0" width="59" height="15" uuid="292efa0a-1a1f-453b-871b-7cda0d71ae96"/>
 				<box leftPadding="0" rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
@@ -491,7 +491,7 @@ $F{FacturaProveedor_iibbOtras}]]></variableExpression>
 				<textFieldExpression><![CDATA[$F{FacturaProveedor_totalFc}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="541" y="0" width="35" height="20" uuid="2c4e9fb7-bae7-4024-bc1b-dc5e0a4c1657"/>
+				<reportElement x="541" y="0" width="35" height="15" uuid="2c4e9fb7-bae7-4024-bc1b-dc5e0a4c1657"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -499,7 +499,7 @@ $F{FacturaProveedor_iibbOtras}]]></variableExpression>
 				<textFieldExpression><![CDATA[$F{FacturaProveedor_iva27}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="576" y="0" width="35" height="20" uuid="c721eab8-85ee-42b4-b3c1-4d5b8d13d494"/>
+				<reportElement x="576" y="0" width="35" height="15" uuid="c721eab8-85ee-42b4-b3c1-4d5b8d13d494"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -507,7 +507,7 @@ $F{FacturaProveedor_iibbOtras}]]></variableExpression>
 				<textFieldExpression><![CDATA[$F{FacturaProveedor_iva10_5}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="611" y="0" width="30" height="20" uuid="77a50b01-ed4f-4916-b865-abee67133200"/>
+				<reportElement x="611" y="0" width="30" height="15" uuid="77a50b01-ed4f-4916-b865-abee67133200"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -515,7 +515,7 @@ $F{FacturaProveedor_iibbOtras}]]></variableExpression>
 				<textFieldExpression><![CDATA[$F{FacturaProveedor_perIva3}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="641" y="0" width="30" height="20" uuid="b7186e0c-e4c2-4f26-8beb-e3ad9ea9f8d9"/>
+				<reportElement x="641" y="0" width="30" height="15" uuid="b7186e0c-e4c2-4f26-8beb-e3ad9ea9f8d9"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -523,7 +523,7 @@ $F{FacturaProveedor_iibbOtras}]]></variableExpression>
 				<textFieldExpression><![CDATA[$F{FacturaProveedor_perIva5}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="701" y="0" width="31" height="20" uuid="2e979fee-4169-4114-90d4-19fa42e3c62c"/>
+				<reportElement x="701" y="0" width="31" height="15" uuid="2e979fee-4169-4114-90d4-19fa42e3c62c"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -531,7 +531,7 @@ $F{FacturaProveedor_iibbOtras}]]></variableExpression>
 				<textFieldExpression><![CDATA[$F{FacturaProveedor_iibbBsas}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="732" y="0" width="31" height="20" uuid="16e91c69-f25e-4020-87d8-d2cb6af61581"/>
+				<reportElement x="732" y="0" width="31" height="15" uuid="16e91c69-f25e-4020-87d8-d2cb6af61581"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
