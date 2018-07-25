@@ -122,21 +122,21 @@ class Factura
      *
      * @ORM\Column(name="iibbCf", type="decimal", precision=7 , scale=2, nullable=true)
      */
-    private $iibbCf;
+    private $iibbCf=0;
 
     /**
      * @var string
      *
      * @ORM\Column(name="iibbBsas", type="decimal", precision=7 , scale=2, nullable=true)
      */
-    private $iibbBsas;
+    private $iibbBsas=0;
 
     /**
      * @var string
      *
      * @ORM\Column(name="iibbOtras", type="decimal", precision=7 , scale=2, nullable=true)
      */
-    private $iibbOtras;
+    private $iibbOtras=0;
 
     /**
      * @var \DateTime
