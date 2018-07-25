@@ -253,11 +253,11 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 		var tc = MetApp.resources.ux.ParametersSingleton.dolarOficial;
 		values.tcArticulo = tc;
 		
-		console.log(values);
 		store.loadRawData(values, true);
 		form.getForm().reset();
 		form.queryById('descripcion').setReadOnly(true);
 		win.focus();
+		win.queryById('buscarArt').focus('', 10);
 	},
 	
 	EliminarItem: function(btn){
