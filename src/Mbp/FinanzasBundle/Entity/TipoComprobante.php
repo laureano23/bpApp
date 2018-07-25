@@ -62,6 +62,13 @@ class TipoComprobante
      * @ORM\Column(name="descripcion", type="string", length=255)
      */
     private $descripcion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="abreviatura", type="string", length=20, nullable=true)
+     */
+    private $abreviatura;
 	
 	/**
      * @var boolean
@@ -341,5 +348,29 @@ class TipoComprobante
     public function getEsNegro()
     {
         return $this->esNegro;
+    }
+
+    /**
+     * Set abreviatura
+     *
+     * @param string $abreviatura
+     *
+     * @return TipoComprobante
+     */
+    public function setAbreviatura($abreviatura)
+    {
+        $this->abreviatura = $abreviatura;
+
+        return $this;
+    }
+
+    /**
+     * Get abreviatura
+     *
+     * @return string
+     */
+    public function getAbreviatura()
+    {
+        return $this->abreviatura;
     }
 }
