@@ -129,35 +129,68 @@ Ext.define('MetApp.view.CCProveedores.FacturaProveedor',{
 											margin: '5 0 0 5',
 											title: 'Percepciones',
 											margin: '0 5 5 0',
-											layout: 'vbox',
+											layout: 'hbox',
 											defaults: {
 												margins: '5 5 0 0',
 												labelWidth: 60,
-												width: 180,
+												//width: 160,
 											},
 											items: [
 												{
-													xtype: 'numberfield',
-													fieldLabel: 'IVA 5%',	
-													name: 'perIva5',
-													itemId: 'perIva5',
-													decimalSeparator: '.',						
+													xtype: 'container',
+													layout: 'vbox',
+													defaults: {
+														width: 190
+													},
+													flex: .4,
+													items:[
+														{
+															xtype: 'numberfield',
+															fieldLabel: 'IVA 5%',	
+															name: 'perIva5',
+															itemId: 'perIva5',
+															decimalSeparator: '.',						
+														},
+														{
+															xtype: 'numberfield',
+															fieldLabel: 'IVA 3%',	
+															name: 'perIva3',
+															itemId: 'perIva3',
+															decimalSeparator: '.',						
+														},
+														{
+															xtype: 'numberfield',
+															fieldLabel: 'IIBB CABA',	
+															name: 'iibbCf',
+															decimalSeparator: '.',
+															itemId: 'iibbCf'						
+														},
+													]
 												},
 												{
-													xtype: 'numberfield',
-													fieldLabel: 'IVA 3%',	
-													name: 'perIva3',
-													itemId: 'perIva3',
-													decimalSeparator: '.',						
-												},
-												{
-													xtype: 'numberfield',
-													fieldLabel: 'IIBB CF',	
-													name: 'iibbCf',
-													decimalSeparator: '.',
-													itemId: 'iibbCf'						
-												},					
-											
+													xtype: 'container',
+													layout: 'vbox',
+													flex: .4,
+													defaults: {
+														width: 190
+													},
+													items:[
+														{
+															xtype: 'numberfield',
+															fieldLabel: 'IIBB BS.AS',	
+															name: 'iibbBsas',
+															decimalSeparator: '.',
+															itemId: 'iibbBsas'						
+														},
+														{
+															xtype: 'numberfield',
+															fieldLabel: 'IIBB Otras',	
+															name: 'iibbOtras',
+															decimalSeparator: '.',
+															itemId: 'iibbOtras'						
+														},
+													]
+												}
 											]
 										},
 										{

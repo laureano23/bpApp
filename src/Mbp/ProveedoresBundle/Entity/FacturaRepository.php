@@ -154,6 +154,8 @@ class FacturaRepository extends \Doctrine\ORM\EntityRepository
 			f.perIva5,
 			f.perIva3,
 			f.iibbCf,
+			f.iibbBsas,
+			f.iibbOtras,
 			f.concepto,
 			f.totalFc,
 			f.imputado,

@@ -72,13 +72,15 @@ class CuentaCorrienteController extends Controller
 			$fcProveedor->setperIva5($objData->perIva5);
 			$fcProveedor->setperIva3($objData->perIva3);
 			$fcProveedor->setiibbCf($objData->iibbCf);
+			$fcProveedor->setiibbBsas($objData->iibbBsas);
+			$fcProveedor->setiibbOtras($objData->iibbOtras);
 			$fcProveedor->setvencimiento(\DateTime::createFromFormat('d/m/Y', $objData->vencimiento));
 			$fcProveedor->setconcepto($objData->concepto);
-			$fcProveedor->setTotalFc();
+			$fcProveedor->setTotalFc(); // la logica del total esta dentro de la entidad factura
 			$fcProveedor->setImputacionGasto($tipoGasto);
 			$fcProveedor->setObservaciones($objData->observaciones);
 			
-			
+			//print_r($fcProveedor->getTotalFc());			
 			if($fcProveedor->getTipoId()->getEsNotaCredito()){
 				$cc->setDebe($fcProveedor->getTotalFc());
 			}else{

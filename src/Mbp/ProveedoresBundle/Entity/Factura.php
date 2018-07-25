@@ -125,6 +125,20 @@ class Factura
     private $iibbCf;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="iibbBsas", type="decimal", precision=7 , scale=2, nullable=true)
+     */
+    private $iibbBsas;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="iibbOtras", type="decimal", precision=7 , scale=2, nullable=true)
+     */
+    private $iibbOtras;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="vencimiento", type="date")
@@ -561,7 +575,7 @@ class Factura
      */
     public function setTotalFc()
     {
-        $this->totalFc = $this->getNeto() + $this->getNetoNoGrabado() + $this->getIva21() + $this->getIibbCf() + $this->getIva105() + $this->getIva27() + $this->getPerIva3() + $this->getPerIva5();
+        $this->totalFc = $this->getNeto() + $this->getNetoNoGrabado() + $this->getIva21() + $this->getIibbCf() + $this->getIva105() + $this->getIva27() + $this->getPerIva3() + $this->getPerIva5() + $this->getIibbBsas() + $this->getIibbOtras();
 
         return $this;
     }
@@ -752,5 +766,53 @@ class Factura
     public function getCcId()
     {
         return $this->ccId;
+    }
+
+    /**
+     * Set iibbBsas
+     *
+     * @param string $iibbBsas
+     *
+     * @return Factura
+     */
+    public function setIibbBsas($iibbBsas)
+    {
+        $this->iibbBsas = $iibbBsas;
+
+        return $this;
+    }
+
+    /**
+     * Get iibbBsas
+     *
+     * @return string
+     */
+    public function getIibbBsas()
+    {
+        return $this->iibbBsas;
+    }
+
+    /**
+     * Set iibbOtras
+     *
+     * @param string $iibbOtras
+     *
+     * @return Factura
+     */
+    public function setIibbOtras($iibbOtras)
+    {
+        $this->iibbOtras = $iibbOtras;
+
+        return $this;
+    }
+
+    /**
+     * Get iibbOtras
+     *
+     * @return string
+     */
+    public function getIibbOtras()
+    {
+        return $this->iibbOtras;
     }
 }

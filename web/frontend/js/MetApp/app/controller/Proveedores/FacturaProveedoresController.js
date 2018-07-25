@@ -22,7 +22,10 @@ Ext.define('MetApp.controller.Proveedores.FacturaProveedoresController',{
 			'FacturaProveedor datefield[itemId=fechaEmision]': {
 				blur: this.CalculaFechaVencimiento
 			},
-			'FacturaProveedor numberfield[itemId=neto]': {
+			'FacturaProveedor field': {
+				change: this.CalculaTotal
+			},
+			/*'FacturaProveedor numberfield[itemId=neto]': {
 				blur: this.CalculaTotal
 			},
 			'FacturaProveedor numberfield[itemId=netoNoGrabado]': {
@@ -48,7 +51,10 @@ Ext.define('MetApp.controller.Proveedores.FacturaProveedoresController',{
 			},
 			'FacturaProveedor numberfield[itemId=vencimiento]': {
 				blur: this.CalculaTotal
-			},				
+			},
+			'FacturaProveedor numberfield[itemId=vencimiento]': {
+				blur: this.CalculaTotal
+			},*/	
 		});
 	},
 	
@@ -113,7 +119,9 @@ Ext.define('MetApp.controller.Proveedores.FacturaProveedoresController',{
 			perIva5 = win.queryById('perIva5').getValue(),
 			perIva3 = win.queryById('perIva3').getValue(),
 			iibbCf = win.queryById('iibbCf').getValue();
-		var total = neto + netoNoGrabado + iva21 + iva27 + iva10_5 + perIva5 + perIva3 + iibbCf;
+			iibbBsas = win.queryById('iibbBsas').getValue();
+			iibbOtras = win.queryById('iibbOtras').getValue();
+		var total = neto + netoNoGrabado + iva21 + iva27 + iva10_5 + perIva5 + perIva3 + iibbCf + iibbBsas + iibbOtras;
 		var txtTotal = win.queryById('total');
 		txtTotal.setValue(total);
 	},

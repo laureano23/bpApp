@@ -17,6 +17,8 @@ Ext.define('MetApp.model.Proveedores.FacturaProveedoresModel',{
 		{name: 'perIva5', type: 'float'},
 		{name: 'perIva3', type: 'float'},
 		{name: 'iibbCf', type: 'float'},
+		{name: 'iibbBsas', type: 'float'},
+		{name: 'iibbOtras', type: 'float'},
 		{name: 'vencimientoFc', type: 'int'},
 		{name: 'vencimiento', type: 'datetime'},
 		{name: 'concepto', type: 'string'},
