@@ -259,13 +259,16 @@ class VentasController extends Controller
 			
 			
 			//CONSULTA PERCEPCION DE IIBB
-			$alicuotaPercepcion = $percepcionIIBB * 100 / $netoGrabado;
+			$alicuotaPercepcion = 0;
+			if($netoGrabado > 0){
+				$alicuotaPercepcion = $percepcionIIBB * 100 / $netoGrabado;
+			}
 
 			//REDONDEO IMPORTES A 2 DECIMALES
 			$netoGrabado = number_format($netoGrabado, 2, ".", "");
 			$ivaLiquidado = number_format($ivaLiquidado, 2, ".", "");
 			$netoNoGrabado = number_format($netoNoGrabado, 2, ".", "");
-			$alicuotaPercepcion = number_format($netoNoGrabado, 2, ".", "");
+			$alicuotaPercepcion = number_format($alicuotaPercepcion, 2, ".", "");
 			
 			
 			
@@ -386,6 +389,7 @@ class VentasController extends Controller
 			return $response;
 
 		}catch(\Exception $e){
+			throw $e;
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			$response->setContent(json_encode(array("success"=>false, "msg"=>$e->getMessage(), 'code' => $e->getCode())));
 			return $response;
