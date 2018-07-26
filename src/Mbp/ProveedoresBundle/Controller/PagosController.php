@@ -245,7 +245,7 @@ class PagosController extends Controller
 			
 			if($parametrosFinanzas->getTopeRetencionIIBB() <= $fcProv->getNeto()){	
 				$retencion += $imp->aplicar * $alicuotaRetencion / 100;
-				$retencion = number_format($retencion, 2);
+				$retencion = number_format($retencion, 2, ".", "");
 			}
 		}		
 		return $retencion;
