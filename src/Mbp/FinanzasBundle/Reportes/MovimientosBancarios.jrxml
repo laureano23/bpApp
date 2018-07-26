@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MovimientosBancarios" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="709b51c8-5f4d-4b2d-a677-76deaca708e6">
-	<property name="ireport.zoom" value="1.3310000000000033"/>
-	<property name="ireport.x" value="180"/>
+	<property name="ireport.zoom" value="1.464100000000004"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="DESDE" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -41,8 +41,8 @@
      ConceptosBanco.`inactivo` AS ConceptosBanco_inactivo,
      DetalleMovimientosBancos.`idCliente` AS DetalleMovimientosBancos_idCliente,
      cliente.`idCliente` AS cliente_idCliente,
-     cliente.`rsocial` AS cliente_rsocial,
-     Proveedor.`rsocial` AS Proveedor_rsocial,
+     IFNULL(cliente.`rsocial`, "") AS cliente_rsocial,
+     IFNULL(Proveedor.`rsocial`,"") AS Proveedor_rsocial,
      Proveedor.`id` AS Proveedor_id,
      MovimientosBancos.`cuentaId` AS MovimientosBancos_cuentaId,
      CuentasBancarias.`id` AS CuentasBancarias_id,
@@ -51,7 +51,8 @@
      CuentasBancarias.`cbu` AS CuentasBancarias_cbu,
      CuentasBancarias.`bancoId` AS CuentasBancarias_bancoId,
      Bancos.`id` AS Bancos_id,
-     Bancos.`nombre` AS Bancos_nombre
+     Bancos.`nombre` AS Bancos_nombre,
+     IFNULL(clienteCob.rsocial,"") as clienteCobranza
 FROM
      `MovimientosBancos` MovimientosBancos INNER JOIN `MovimientoBanco_Detalle` MovimientoBanco_Detalle ON MovimientosBancos.`id` = MovimientoBanco_Detalle.`Movimiento_id`
      INNER JOIN `DetalleMovimientosBancos` DetalleMovimientosBancos ON MovimientoBanco_Detalle.`detallemovimientosbancos_id` = DetalleMovimientosBancos.`id`
@@ -60,10 +61,12 @@ FROM
      LEFT JOIN `ConceptosBanco` ConceptosBanco ON MovimientosBancos.`ceonceptoBancoId` = ConceptosBanco.`id`
      LEFT JOIN `CuentasBancarias` CuentasBancarias ON MovimientosBancos.`cuentaId` = CuentasBancarias.`id`
      LEFT JOIN `Bancos` Bancos ON CuentasBancarias.`bancoId` = Bancos.`id`
+     LEFT JOIN `cobranza_detallesCobranzas` cob_det ON cob_det.`cobranzasdetalle_id` = DetalleMovimientosBancos.`ChequeTerceros_id`
+     LEFT JOIN `Cobranzas` cob ON cob.`id` = cob_det.`cobranza_id`
+     LEFT JOIN `cliente` clienteCob ON clienteCob.`idCliente` = cob.`clienteId`
 WHERE CAST(MovimientosBancos.`fechaMovimiento` AS DATE) BETWEEN $P{DESDE} AND $P{HASTA}
 	AND ConceptosBanco.`id` BETWEEN $P{CONCEPTO_DESDE} AND $P{CONCEPTO_HASTA}
-	AND CuentasBancarias.`id` BETWEEN $P{CUENTA_DESDE} AND $P{CUENTA_HASTA}
-     ]]>
+	AND CuentasBancarias.`id` BETWEEN $P{CUENTA_DESDE} AND $P{CUENTA_HASTA}]]>
 	</queryString>
 	<field name="MovimientosBancos_id" class="java.lang.Integer"/>
 	<field name="MovimientosBancos_fechaMovimiento" class="java.sql.Timestamp"/>
@@ -94,6 +97,7 @@ WHERE CAST(MovimientosBancos.`fechaMovimiento` AS DATE) BETWEEN $P{DESDE} AND $P
 	<field name="CuentasBancarias_bancoId" class="java.lang.Integer"/>
 	<field name="Bancos_id" class="java.lang.Integer"/>
 	<field name="Bancos_nombre" class="java.lang.String"/>
+	<field name="clienteCobranza" class="java.lang.String"/>
 	<variable name="SUBTOTAL_DEBE" class="java.math.BigDecimal" resetType="Group" resetGroup="CUENTAS_BANCARIAS" calculation="Sum">
 		<variableExpression><![CDATA[$F{ConceptosBanco_imputaDebe} == true ? $F{DetalleMovimientosBancos_importe} : 0]]></variableExpression>
 	</variable>
@@ -300,11 +304,13 @@ WHERE CAST(MovimientosBancos.`fechaMovimiento` AS DATE) BETWEEN $P{DESDE} AND $P
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{DetalleMovimientosBancos_fechaDiferida}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField isBlankWhenNull="false">
 				<reportElement x="427" y="0" width="228" height="20" isPrintWhenDetailOverflows="true" uuid="4dc8ffa7-3e37-4622-ab04-30f337dd0b49"/>
 				<box leftPadding="2"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{Proveedor_rsocial} != null ? $F{Proveedor_rsocial} : $F{cliente_rsocial}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Proveedor_rsocial}+
+$F{cliente_rsocial}+
+$F{clienteCobranza}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="655" y="0" width="71" height="20" uuid="7cf84161-ab15-4258-87d5-fb7d236d035b"/>
