@@ -677,6 +677,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                         listeners : {
                             render : dragZone,
                         }, 
+					},
+					{
+                        text: 'Ordenes de Pago',
+                        itemId: 'reporteOrdenesDePago',
+                        listeners : {
+                            render : dragZone,
+                        }, 
                     }
         		]
         	},

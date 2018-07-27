@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Detalle_Pago_Proveedor" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="890e90cc-cf89-4202-bb29-76354a7dbc5d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="294"/>
+	<parameter name="ordenPagoId" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["\\\\192.168.0.123\\proyectos\\bpDev\\mbp\\src\\Mbp\\ProveedoresBundle\\Reportes\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DESDE" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="HASTA" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     Pago.`id` AS Pago_id,
+     Pago.`emision` AS Pago_emision,
+     Pago.`numero` AS Pago_numero,
+     Pago.`diferido` AS Pago_diferido,
+     Pago.`idFormaPago` AS Pago_idFormaPago,
+     Pago.`banco` AS Pago_banco,
+     Pago.`importe` AS Pago_importe,
+     OrdenPago.`id` AS OrdenPago_id,
+     OrdenPago.`proveedorId` AS OrdenPago_proveedorId,
+     OrdenDePago_detallesPagos.`pago_id` AS OrdenDePago_detallesPagos_pago_id,
+     OrdenDePago_detallesPagos.`ordenPago_id` AS OrdenDePago_detallesPagos_ordenPago_id,
+     Proveedor.`id` AS Proveedor_id,
+     Proveedor.`provincia` AS Proveedor_provincia,
+     Proveedor.`rsocial` AS Proveedor_rsocial,
+     Proveedor.`denominacion` AS Proveedor_denominacion,
+     Proveedor.`direccion` AS Proveedor_direccion,
+     Proveedor.`cuit` AS Proveedor_cuit,
+     Proveedor.`cPostal` AS Proveedor_cPostal,
+     OrdenPago.`fechaEmision` AS OrdenPago_fechaEmision,
+     Proveedor.`departamento` AS Proveedor_departamento,
+     localidades.`id` AS localidades_id,
+     localidades.`departamento_id` AS localidades_departamento_id,
+     localidades.`provincia_id` AS localidades_provincia_id,
+     localidades.`nombre` AS localidades_nombre,
+     Proveedor.`localidad` AS Proveedor_localidad,
+     provincia.`id` AS provincia_id,
+     provincia.`nombre` AS provincia_nombre,
+     FormasPagos.`id` AS FormasPagos_id,
+     FormasPagos.`descripcion` AS FormasPagos_descripcion,
+     FormasPagos.`inactivo` AS FormasPagos_inactivo,
+     FormasPagos.`retencionIIBB` AS FormasPagos_retencionIIBB,
+     FormasPagos.`retencionIVA21` AS FormasPagos_retencionIVA21,
+     FormasPagos.`chequeTerceros` AS FormasPagos_chequeTerceros,
+     FormasPagos.`esChequePropio` AS FormasPagos_esChequePropio,
+     FormasPagos.`ceonceptoBancoId` AS FormasPagos_ceonceptoBancoId
+FROM
+     `Pago` Pago INNER JOIN `OrdenDePago_detallesPagos` OrdenDePago_detallesPagos ON Pago.`id` = OrdenDePago_detallesPagos.`pago_id`
+     INNER JOIN `OrdenPago` OrdenPago ON OrdenDePago_detallesPagos.`ordenPago_id` = OrdenPago.`id`
+     INNER JOIN `Proveedor` Proveedor ON OrdenPago.`proveedorId` = Proveedor.`id`
+     LEFT OUTER JOIN `localidades` localidades ON Proveedor.`localidad` = localidades.`id`
+     LEFT JOIN `provincia` provincia ON localidades.`provincia_id` = provincia.`id`
+     LEFT JOIN `FormasPagos` FormasPagos ON Pago.`idFormaPago` = FormasPagos.`id`
+WHERE
+     OrdenPago.`fechaEmision` BETWEEN $P{DESDE} AND $P{HASTA}
+GROUP BY OrdenPago.`id`
+ORDER BY OrdenPago.`id`]]>
+	</queryString>
+	<field name="Pago_id" class="java.lang.Integer"/>
+	<field name="Pago_emision" class="java.sql.Timestamp"/>
+	<field name="Pago_numero" class="java.lang.String"/>
+	<field name="Pago_diferido" class="java.sql.Timestamp"/>
+	<field name="Pago_idFormaPago" class="java.lang.Integer"/>
+	<field name="Pago_banco" class="java.lang.String"/>
+	<field name="Pago_importe" class="java.math.BigDecimal"/>
+	<field name="OrdenPago_id" class="java.lang.Integer"/>
+	<field name="OrdenPago_proveedorId" class="java.lang.Integer"/>
+	<field name="OrdenDePago_detallesPagos_pago_id" class="java.lang.Integer"/>
+	<field name="OrdenDePago_detallesPagos_ordenPago_id" class="java.lang.Integer"/>
+	<field name="Proveedor_id" class="java.lang.Integer"/>
+	<field name="Proveedor_provincia" class="java.lang.String"/>
+	<field name="Proveedor_rsocial" class="java.lang.String"/>
+	<field name="Proveedor_denominacion" class="java.lang.String"/>
+	<field name="Proveedor_direccion" class="java.lang.String"/>
+	<field name="Proveedor_cuit" class="java.lang.String"/>
+	<field name="Proveedor_cPostal" class="java.lang.String"/>
+	<field name="OrdenPago_fechaEmision" class="java.sql.Timestamp"/>
+	<field name="Proveedor_departamento" class="java.lang.Integer"/>
+	<field name="localidades_id" class="java.lang.Integer"/>
+	<field name="localidades_departamento_id" class="java.lang.Integer"/>
+	<field name="localidades_provincia_id" class="java.lang.String"/>
+	<field name="localidades_nombre" class="java.lang.String"/>
+	<field name="Proveedor_localidad" class="java.lang.Integer"/>
+	<field name="provincia_id" class="java.lang.String"/>
+	<field name="provincia_nombre" class="java.lang.String"/>
+	<field name="FormasPagos_id" class="java.lang.Integer"/>
+	<field name="FormasPagos_descripcion" class="java.lang.String"/>
+	<field name="FormasPagos_inactivo" class="java.lang.Boolean"/>
+	<field name="FormasPagos_retencionIIBB" class="java.lang.Boolean"/>
+	<field name="FormasPagos_retencionIVA21" class="java.lang.Boolean"/>
+	<field name="FormasPagos_chequeTerceros" class="java.lang.Boolean"/>
+	<field name="FormasPagos_esChequePropio" class="java.lang.Boolean"/>
+	<field name="FormasPagos_ceonceptoBancoId" class="java.lang.Integer"/>
+	<variable name="totalImporte" class="java.lang.Float" resetType="Group" resetGroup="ORDEN_PAGO_ID" calculation="Sum">
+		<variableExpression><![CDATA[$F{Pago_importe}]]></variableExpression>
+	</variable>
+	<group name="ORDEN_PAGO_ID">
+		<groupExpression><![CDATA[$F{Pago_id}]]></groupExpression>
+		<groupHeader>
+			<band height="265">
+				<rectangle>
+					<reportElement x="0" y="245" width="140" height="20" uuid="dddff9ad-cb1d-441c-a541-a0e10d5e6a09"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="449" y="245" width="106" height="20" uuid="ab7b74f5-a183-4005-b21c-99750a74608d"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="356" y="245" width="93" height="20" uuid="2ad70aaa-ee8f-4b64-8ef0-e13fec2c2422"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="238" y="245" width="118" height="20" uuid="cd75babe-8ed6-4b2d-a534-c3c1ea84af02"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="140" y="245" width="98" height="20" uuid="7615e836-948a-4054-97f4-2d18bb165f54"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="140" y="245" width="98" height="20" uuid="f24bcb0f-c73e-4c67-9c21-74a7e1027d67"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Banco]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="238" y="245" width="118" height="20" uuid="09dc371c-b3e3-4a80-a5ac-f9f2ff9dd375"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[N° de cheque]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="356" y="245" width="93" height="20" uuid="756690bb-3cab-4b3c-9eda-dee7027fa192"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Importe]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="449" y="245" width="106" height="20" uuid="fd3226ce-04bf-4f48-852a-1a7a469c9621"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Diferido]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="245" width="140" height="20" uuid="79b918b0-c0d1-4ed0-9e06-c3f83606ab90"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Concepto]]></text>
+				</staticText>
+				<rectangle radius="10">
+					<reportElement x="0" y="143" width="555" height="84" uuid="f13b98dd-fb62-4d3f-9977-5fbb8bb0e600"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="12" y="157" width="59" height="20" uuid="cacca223-bf00-43a3-acf3-97fd346d89ae"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Señor(es):]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="12" y="177" width="59" height="20" uuid="24430ab4-66de-4dce-9d1a-f226de9d9b8d"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Domicilio:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="12" y="197" width="59" height="20" uuid="be32a6ca-179d-4d47-8cd3-0775147082db"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[CUIT:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="263" y="177" width="59" height="20" uuid="01dcea6d-b142-49e0-b45f-8034cfbe4fe2"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Localidad:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="71" y="157" width="192" height="20" uuid="ff6e470c-0dd8-415b-b4f3-f0389d38b97e"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{Proveedor_rsocial}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="71" y="177" width="192" height="20" uuid="f2b8ca6e-b076-4eb9-a023-f849439693aa"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{Proveedor_direccion}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="71" y="197" width="192" height="20" uuid="75854095-f963-4ae6-968a-528d0ef896d9"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{Proveedor_cuit}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="322" y="177" width="192" height="20" uuid="a92319f1-01d0-4985-a999-893cbb73ee1e"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{localidades_nombre}]]></textFieldExpression>
+				</textField>
+				<rectangle radius="10">
+					<reportElement x="0" y="0" width="555" height="134" uuid="4d973a22-0b27-4b13-a101-94dee90ca542"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="30" y="39" width="187" height="20" uuid="60d49e0c-a977-4cf6-937d-b82b734c51d2"/>
+					<textElement>
+						<font size="14" isBold="true"/>
+					</textElement>
+					<text><![CDATA[METALURGICA B.P. SRL]]></text>
+				</staticText>
+				<line>
+					<reportElement x="282" y="0" width="1" height="39" uuid="ce5bd391-8fd9-4778-bf40-fa31baf8f946"/>
+				</line>
+				<line>
+					<reportElement x="282" y="79" width="1" height="55" uuid="e10edb9d-3454-4305-a519-94d5a0311ab9"/>
+				</line>
+				<staticText>
+					<reportElement x="263" y="39" width="39" height="40" uuid="a1539bce-87e7-40ae-8dbf-e0ac5d3362c4"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="24" isBold="true"/>
+					</textElement>
+					<text><![CDATA[X]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="57" y="59" width="100" height="41" uuid="9c43ff3a-abc9-4040-aa8e-8258d7ea9b42"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Ombu 3865
+Tel/Fax: 4484-2416]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="307" y="24" width="228" height="20" uuid="0105de59-d8a5-405d-91a6-8b113fe3fc33"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Orden de pago N° "+$F{OrdenPago_id}]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement x="386" y="59" width="169" height="20" uuid="a61c7db9-3e9b-4a21-8b0d-7ae9f3d6ca69"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{Pago_emision}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="307" y="59" width="77" height="20" uuid="9662f8a9-909f-497c-8bfd-e57826da473f"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Buenos Aires, ]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="500">
+				<textField evaluationTime="Group" evaluationGroup="ORDEN_PAGO_ID" pattern="#,##0.00">
+					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="427" y="467" width="128" height="22" uuid="59920641-4cc2-446b-9f23-08d353ffb98f"/>
+					<box leftPadding="2" rightPadding="0"/>
+					<textElement verticalAlignment="Middle">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{totalImporte}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="334" y="467" width="93" height="22" uuid="879ddaa8-88d0-41fa-8f09-23ca498c691f"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="14" isBold="true" isItalic="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[Total:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="0" y="435" width="57" height="25" uuid="7947b8f0-1ea5-49f5-8297-290c50dcfe9b"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[Firma:                            ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="0" y="475" width="57" height="25" uuid="b7ceac8c-9065-4e6e-aa61-ba2480f9e9a7"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[Aclaración: ]]></text>
+				</staticText>
+				<line>
+					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="71" y="460" width="146" height="1" uuid="cfceb2b1-2d76-40f3-9e05-c17ef5c2c3a6"/>
+				</line>
+				<line>
+					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="71" y="494" width="146" height="1" uuid="30a5e9c9-bef0-48b3-a1b0-1d8684668a40"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="140" y="0" width="98" height="20" uuid="a7502f34-1eaf-422e-abfe-e061658f8203"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Pago_banco}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="238" y="0" width="118" height="20" uuid="e980574a-60a2-431f-beb7-7e7500a91216"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Pago_numero}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="356" y="0" width="93" height="20" uuid="94903013-ebe9-41ed-a1df-e20c1505227a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Pago_importe}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="449" y="0" width="106" height="20" uuid="1e11316e-bf8d-4195-b9a1-426597724e25"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Pago_diferido}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="140" height="20" uuid="12a581e2-09d2-41b0-a773-31ecaf77c317"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{FormasPagos_descripcion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -15,7 +15,8 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 		'MetApp.view.Reportes.RepoChequesEntregados',
 		'MetApp.view.Reportes.ReporteCCCliente',
 		'MetApp.view.Reportes.RepoComisiones',
-		'MetApp.view.Reportes.RepoRetenciones'
+		'MetApp.view.Reportes.RepoRetenciones',
+		'MetApp.view.Reportes.RepoOrdenesDePago',
 	],
 	refs:[
 	],
@@ -122,7 +123,30 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 			'ReporteCCCliente button[itemId=printDateReport]': {
 				click: this.SubmitCCForm
 			},
+			'viewport menuitem[itemId=reporteOrdenesDePago]': {
+				click: this.AddRepoOrdenesDePago
+			},
+			'RepoOrdenesDePago button[itemId=printReport]': {
+				click: this.SubmitOrdenPagoReport
+			},
 		});
+	},
+
+	SubmitOrdenPagoReport: function(btn){
+		var form=btn.up('form').getForm();
+
+		form.submit({
+			url: Routing.generate('mbp_proveedores_OrdenesDePago'),
+			waitMsg: 'Cargando...',
+			success: function(){
+				var ruta=Routing.generate('mbp_proveedores_VerOrdendesDePago');
+				window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+			}
+		})
+	},
+
+	AddRepoOrdenesDePago: function(btn){
+		Ext.widget('RepoOrdenesDePago');
 	},
 	
 	ImprimirReporteRetenciones: function(btn){

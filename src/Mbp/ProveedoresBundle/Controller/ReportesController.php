@@ -790,6 +790,136 @@ class ReportesController extends Controller
 
         return $response;
 	}     
+
+	/**
+     * @Route("/proveedores/OrdenesDePago", name="mbp_proveedores_OrdenesDePago", options={"expose"=true})
+     */
+    public function OrdenesDePago(){
+    	//RECIBO PARAMETROS
+		$em = $this->getDoctrine()->getManager();
+		$req = $this->getRequest();
+		$response = new Response;
+		
+		
+		try{
+			/*
+			 * PARAMETROS
+			 */
+			$desde =  \DateTime::createFromFormat('d/m/Y', $req->request->get('desde'));
+			$hasta = \DateTime::createFromFormat('d/m/Y', $req->request->get('hasta'));			
+
+			$reporteador = $this->get('reporteador');
+			$kernel = $this->get('kernel');
+			
+			/*
+			 * Configuro reporte
+			 */
+			$jru = $reporteador->jru();
+			
+			/*
+			 * Ruta archivo Jasper
+			 */				
+					
+			$ruta = $kernel->locateResource('@MbpProveedoresBundle/Reportes/OrdenPagoEntreFechas.jrxml');
+			
+			/*
+			 * Ruta de destino del PDF
+			 */
+			$destino = $kernel->locateResource('@MbpProveedoresBundle/Resources/public/pdf/').'OrdenPagoEntreFechas.pdf';		
+			
+			//Parametros HashMap
+			$param = $reporteador->getJava('java.util.HashMap');
+			$rutaLogo = $reporteador->getRutaLogo($kernel);
+			
+			$param->put('DESDE', $desde->format('d/m/Y'));
+			$param->put('HASTA', $hasta->format('d/m/Y'));			
+			
+			$conn = $reporteador->getJdbc();
+			
+			$desdeSql = $desde->format('Y-m-d');
+			$hastaSql = $hasta->format('Y-m-d');
+			$sql = "
+						SELECT
+						Pago.`id` AS Pago_id,
+						Pago.`emision` AS Pago_emision,
+						Pago.`numero` AS Pago_numero,
+						Pago.`diferido` AS Pago_diferido,
+						Pago.`idFormaPago` AS Pago_idFormaPago,
+						Pago.`banco` AS Pago_banco,
+						Pago.`importe` AS Pago_importe,
+						OrdenPago.`id` AS OrdenPago_id,
+						OrdenPago.`proveedorId` AS OrdenPago_proveedorId,
+						OrdenDePago_detallesPagos.`pago_id` AS OrdenDePago_detallesPagos_pago_id,
+						OrdenDePago_detallesPagos.`ordenPago_id` AS OrdenDePago_detallesPagos_ordenPago_id,
+						Proveedor.`id` AS Proveedor_id,
+						Proveedor.`provincia` AS Proveedor_provincia,
+						Proveedor.`rsocial` AS Proveedor_rsocial,
+						Proveedor.`denominacion` AS Proveedor_denominacion,
+						Proveedor.`direccion` AS Proveedor_direccion,
+						Proveedor.`cuit` AS Proveedor_cuit,
+						Proveedor.`cPostal` AS Proveedor_cPostal,
+						OrdenPago.`fechaEmision` AS OrdenPago_fechaEmision,
+						Proveedor.`departamento` AS Proveedor_departamento,
+						localidades.`id` AS localidades_id,
+						localidades.`departamento_id` AS localidades_departamento_id,
+						localidades.`provincia_id` AS localidades_provincia_id,
+						localidades.`nombre` AS localidades_nombre,
+						Proveedor.`localidad` AS Proveedor_localidad,
+						provincia.`id` AS provincia_id,
+						provincia.`nombre` AS provincia_nombre,
+						FormasPagos.`id` AS FormasPagos_id,
+						FormasPagos.`descripcion` AS FormasPagos_descripcion,
+						FormasPagos.`inactivo` AS FormasPagos_inactivo,
+						FormasPagos.`retencionIIBB` AS FormasPagos_retencionIIBB,
+						FormasPagos.`retencionIVA21` AS FormasPagos_retencionIVA21,
+						FormasPagos.`chequeTerceros` AS FormasPagos_chequeTerceros,
+						FormasPagos.`esChequePropio` AS FormasPagos_esChequePropio,
+						FormasPagos.`ceonceptoBancoId` AS FormasPagos_ceonceptoBancoId
+				FROM
+						`Pago` Pago INNER JOIN `OrdenDePago_detallesPagos` OrdenDePago_detallesPagos ON Pago.`id` = OrdenDePago_detallesPagos.`pago_id`
+						INNER JOIN `OrdenPago` OrdenPago ON OrdenDePago_detallesPagos.`ordenPago_id` = OrdenPago.`id`
+						INNER JOIN `Proveedor` Proveedor ON OrdenPago.`proveedorId` = Proveedor.`id`
+						LEFT OUTER JOIN `localidades` localidades ON Proveedor.`localidad` = localidades.`id`
+						LEFT JOIN `provincia` provincia ON localidades.`provincia_id` = provincia.`id`
+						LEFT JOIN `FormasPagos` FormasPagos ON Pago.`idFormaPago` = FormasPagos.`id`
+				WHERE
+						OrdenPago.`fechaEmision` BETWEEN '$desdeSql' AND '$hastaSql'
+				GROUP BY OrdenPago.`id`
+				ORDER BY OrdenPago.`id`";		     
+			
+			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
+
+			return $response->setContent(
+				json_encode(array('success' => true))
+			);	
+				
+		}catch(\Exception $e){
+			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(
+				json_encode(array('success' => false, 'msg' => $e->getMessage()))
+				);
+		}
+	}   
+		
+	/**
+	 * @Route("/proveedores/VerOrdendesDePago", name="mbp_proveedores_VerOrdendesDePago", options={"expose"=true})
+	 */	    
+	public function VerOrdendesDePago()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpProveedoresBundle/Resources/public/pdf/').'OrdenPagoEntreFechas.pdf';	
+		$response = new BinaryFileResponse($basePath);
+		$response->trustXSendfileTypeHeader();
+		$filename = 'OrdenPagoEntreFechas.pdf';
+		$response->setContentDisposition(
+			ResponseHeaderBag::DISPOSITION_INLINE,
+			$filename,
+			iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+		);
+		$response->headers->set('Content-type', 'application/pdf');
+
+		return $response;
+    }
 }
 
 
