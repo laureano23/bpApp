@@ -422,6 +422,29 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 											typeAhead: true,							
 											minChars: 1,
 											fieldLabel: 'Transporte',
+											listeners: {
+												afterrender: function (combo) {
+													combo.tip = new Ext.ToolTip({
+														renderTo: Ext.getBody(),
+														target: combo.el,
+														listeners: {
+															beforeshow: function (tip) {
+																var selected;																
+																if (combo.valueModels) {
+																	selected = combo.valueModels[0];
+																	data = selected.data;
+																	tip.update("<b>Datos</b></br>"+"Dirección: "+data.direccion+"</br>Localidad: "+data.departamento+"</br>Provincia: "+data.provincia+"</br>Teléfono: "+data.contacto+"</br>Horarios: "+data.horarios);
+																} else {
+																	return false;
+																}
+															}
+														}
+													});
+												},
+												destroy: function (combo) {
+													combo.tip.destroy();
+												}
+											}
 										},
 										{
 											xtype: 'container',
