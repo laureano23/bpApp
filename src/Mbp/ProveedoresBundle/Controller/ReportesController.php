@@ -919,7 +919,119 @@ class ReportesController extends Controller
 		$response->headers->set('Content-type', 'application/pdf');
 
 		return $response;
-    }
+	}
+	
+	/**
+     * @Route("/finanzas/CobranzasEntreFechas", name="mbp_finanzas_CobranzasEntreFechas", options={"expose"=true})
+     */
+    public function CobranzasEntreFechas(){
+    	//RECIBO PARAMETROS
+		$em = $this->getDoctrine()->getManager();
+		$req = $this->getRequest();
+		$response = new Response;
+		
+		
+		try{
+			/*
+			 * PARAMETROS
+			 */
+			$desde =  \DateTime::createFromFormat('d/m/Y', $req->request->get('desde'));
+			$hasta = \DateTime::createFromFormat('d/m/Y', $req->request->get('hasta'));			
+
+			$reporteador = $this->get('reporteador');
+			$kernel = $this->get('kernel');
+			
+			/*
+			 * Configuro reporte
+			 */
+			$jru = $reporteador->jru();
+			
+			/*
+			 * Ruta archivo Jasper
+			 */				
+					
+			$ruta = $kernel->locateResource('@MbpFinanzasBundle/Reportes/ReciboCobranzasEntreFechas.jrxml');
+			
+			/*
+			 * Ruta de destino del PDF
+			 */
+			$destino = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'ReciboCobranzasEntreFechas.pdf';		
+			
+			//Parametros HashMap
+			$param = $reporteador->getJava('java.util.HashMap');
+			$rutaLogo = $reporteador->getRutaLogo($kernel);
+			
+			$param->put('DESDE', $desde->format('d/m/Y'));
+			$param->put('HASTA', $hasta->format('d/m/Y'));			
+			$param->put('rutaLogo', $rutaLogo);	
+			
+			$conn = $reporteador->getJdbc();
+			
+			$desdeSql = $desde->format('Y-m-d');
+			$hastaSql = $hasta->format('Y-m-d');
+
+
+			$sql = "
+			SELECT
+					Cobranzas.`id` AS Cobranzas_id,
+					Cobranzas.`emision` AS Cobranzas_emision,
+					Cobranzas.`clienteId` AS Cobranzas_clienteId,
+					CobranzasDetalle.`id` AS CobranzasDetalle_id,
+					CobranzasDetalle.`importe` AS CobranzasDetalle_importe,
+					CobranzasDetalle.`vencimiento` AS CobranzasDetalle_vencimiento,
+					cobranza_detallesCobranzas.`cobranza_id` AS cobranza_detallesCobranzas_cobranza_id,
+					cobranza_detallesCobranzas.`cobranzasdetalle_id` AS cobranza_detallesCobranzas_cobranzasdetalle_id,
+					cliente.`idCliente` AS cliente_idCliente,
+					cliente.`rsocial` AS cliente_rsocial,
+					FormasPagos.`id` AS FormasPago_id,
+					FormasPagos.`descripcion` AS FormasPago_descripcion,
+					Cobranzas.`numRecibo` AS Cobranzas_numRecibo,
+					CobranzasDetalle.`numero` AS CobranzasDetalle_numero,
+					CobranzasDetalle.`banco` AS CobranzasDetalle_banco
+			FROM
+					`Cobranzas` Cobranzas INNER JOIN `cobranza_detallesCobranzas` cobranza_detallesCobranzas ON Cobranzas.`id` = cobranza_detallesCobranzas.`cobranza_id`
+					INNER JOIN `cliente` cliente ON Cobranzas.`clienteId` = cliente.`idCliente`
+					INNER JOIN `CobranzasDetalle` CobranzasDetalle ON cobranza_detallesCobranzas.`cobranzasdetalle_id` = CobranzasDetalle.`id`
+					INNER JOIN `FormasPagos` FormasPagos ON CobranzasDetalle.`formaPagoId` = FormasPagos.`id`
+			WHERE
+					Cobranzas.`emision` BETWEEN '$desdeSql' AND '$hastaSql'
+			GROUP BY CobranzasDetalle.`id`
+			ORDER BY Cobranzas.`id` ASC, CobranzasDetalle.`importe` DESC
+			";		     
+			
+			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
+
+			return $response->setContent(
+				json_encode(array('success' => true))
+			);	
+				
+		}catch(\Exception $e){
+			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(
+				json_encode(array('success' => false, 'msg' => $e->getMessage()))
+				);
+		}
+	}
+
+	/**
+	 * @Route("/finanzas/VerCobranzasEntreFechas", name="mbp_finanzas_VerCobranzasEntreFechas", options={"expose"=true})
+	 */	    
+	public function VerCobranzasEntreFechas()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'ReciboCobranzasEntreFechas.pdf';	
+		$response = new BinaryFileResponse($basePath);
+		$response->trustXSendfileTypeHeader();
+		$filename = 'ReciboCobranzasEntreFechas.pdf';
+		$response->setContentDisposition(
+			ResponseHeaderBag::DISPOSITION_INLINE,
+			$filename,
+			iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+		);
+		$response->headers->set('Content-type', 'application/pdf');
+
+		return $response;
+	}
 }
 
 

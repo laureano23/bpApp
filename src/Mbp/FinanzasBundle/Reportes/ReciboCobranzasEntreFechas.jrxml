@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReciboCobranzas" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="c33ce8c6-1a4c-46bd-9270-7b87efd587d4">
+	<property name="ireport.zoom" value="1.331000000000001"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="rutaLogo" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["\\\\192.168.0.123\\proyectos\\Metbp\\src\\Mbp\\FinanzasBundle\\Reportes\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DESDE" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="HASTA" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     Cobranzas.`id` AS Cobranzas_id,
+     Cobranzas.`emision` AS Cobranzas_emision,
+     Cobranzas.`clienteId` AS Cobranzas_clienteId,
+     CobranzasDetalle.`id` AS CobranzasDetalle_id,
+     CobranzasDetalle.`importe` AS CobranzasDetalle_importe,
+     CobranzasDetalle.`vencimiento` AS CobranzasDetalle_vencimiento,
+     cobranza_detallesCobranzas.`cobranza_id` AS cobranza_detallesCobranzas_cobranza_id,
+     cobranza_detallesCobranzas.`cobranzasdetalle_id` AS cobranza_detallesCobranzas_cobranzasdetalle_id,
+     cliente.`idCliente` AS cliente_idCliente,
+     cliente.`rsocial` AS cliente_rsocial,
+     FormasPagos.`id` AS FormasPago_id,
+     FormasPagos.`descripcion` AS FormasPago_descripcion,
+     Cobranzas.`numRecibo` AS Cobranzas_numRecibo,
+     CobranzasDetalle.`numero` AS CobranzasDetalle_numero,
+     CobranzasDetalle.`banco` AS CobranzasDetalle_banco
+FROM
+     `Cobranzas` Cobranzas INNER JOIN `cobranza_detallesCobranzas` cobranza_detallesCobranzas ON Cobranzas.`id` = cobranza_detallesCobranzas.`cobranza_id`
+     INNER JOIN `cliente` cliente ON Cobranzas.`clienteId` = cliente.`idCliente`
+     INNER JOIN `CobranzasDetalle` CobranzasDetalle ON cobranza_detallesCobranzas.`cobranzasdetalle_id` = CobranzasDetalle.`id`
+     INNER JOIN `FormasPagos` FormasPagos ON CobranzasDetalle.`formaPagoId` = FormasPagos.`id`
+WHERE
+     Cobranzas.`emision` BETWEEN $P{DESDE} AND $P{HASTA}
+GROUP BY CobranzasDetalle.`id`
+ORDER BY Cobranzas.`id` ASC, CobranzasDetalle.`importe` DESC]]>
+	</queryString>
+	<field name="Cobranzas_id" class="java.lang.Integer"/>
+	<field name="Cobranzas_emision" class="java.sql.Timestamp"/>
+	<field name="Cobranzas_clienteId" class="java.lang.Integer"/>
+	<field name="CobranzasDetalle_id" class="java.lang.Integer"/>
+	<field name="CobranzasDetalle_importe" class="java.math.BigDecimal"/>
+	<field name="CobranzasDetalle_vencimiento" class="java.sql.Date"/>
+	<field name="cobranza_detallesCobranzas_cobranza_id" class="java.lang.Integer"/>
+	<field name="cobranza_detallesCobranzas_cobranzasdetalle_id" class="java.lang.Integer"/>
+	<field name="cliente_idCliente" class="java.lang.Integer"/>
+	<field name="cliente_rsocial" class="java.lang.String"/>
+	<field name="FormasPago_id" class="java.lang.Integer"/>
+	<field name="FormasPago_descripcion" class="java.lang.String"/>
+	<field name="Cobranzas_numRecibo" class="java.lang.Integer"/>
+	<field name="CobranzasDetalle_numero" class="java.lang.String"/>
+	<field name="CobranzasDetalle_banco" class="java.lang.String"/>
+	<variable name="total" class="java.lang.Float" resetType="Group" resetGroup="COBRANZA_ID" calculation="Sum">
+		<variableExpression><![CDATA[$F{CobranzasDetalle_importe}]]></variableExpression>
+	</variable>
+	<group name="COBRANZA_ID" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{Cobranzas_id}]]></groupExpression>
+		<groupHeader>
+			<band height="105">
+				<rectangle radius="15">
+					<reportElement mode="Transparent" x="0" y="0" width="555" height="70" uuid="c55e94d1-4bf4-458d-b8d6-a407142b3a59"/>
+				</rectangle>
+				<image scaleImage="FillFrame" onErrorType="Blank">
+					<reportElement x="10" y="10" width="106" height="48" uuid="9054135e-b813-4266-9936-55fc43ae82d3"/>
+					<imageExpression><![CDATA[$P{rutaLogo}]]></imageExpression>
+				</image>
+				<staticText>
+					<reportElement x="131" y="4" width="75" height="20" uuid="dccbaf58-1273-4d00-abb3-32c6ce30df04"/>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Recibo N°: ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="131" y="46" width="59" height="20" uuid="c80258f7-8bf3-4de4-8048-468f0c79cc57"/>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Cliente:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="346" y="4" width="59" height="20" uuid="4d33868f-f7da-4f8b-8fb6-cc7d0ec69365"/>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Fecha:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="206" y="4" width="140" height="20" uuid="c6dee4ca-8aed-425a-96d8-8a2c147dc3c3"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Cobranzas_numRecibo}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="190" y="46" width="215" height="20" uuid="14eaa254-4d27-43fb-ba94-f5c0569c8bc6"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cliente_rsocial}]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement x="405" y="4" width="116" height="20" uuid="56f819c5-3c48-4e67-ba2b-f2151c3f341a"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Cobranzas_emision}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="181" y="85" width="92" height="20" uuid="1a25ce6e-cb96-42cb-b890-6fb61f5130dd"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[N°]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="356" y="85" width="89" height="20" uuid="e30588b1-50e5-4fcc-aaa4-91b1c9d43755"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Importe]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="445" y="85" width="111" height="20" uuid="de3c9d47-bc8b-4975-9ecd-f9b97cd1d52d"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Diferido]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="1" y="85" width="179" height="20" uuid="f61bebee-f7b5-4116-b8ab-a273127c92d1"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Concepto]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="273" y="85" width="83" height="20" uuid="48886b11-83c0-467a-b74b-424eb69990be"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Banco]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="50">
+				<staticText>
+					<reportElement x="306" y="30" width="49" height="20" uuid="1cd7995c-1a55-4b4a-986b-9967ba85361b"/>
+					<textElement textAlignment="Right">
+						<font size="14" isItalic="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[Total:]]></text>
+				</staticText>
+				<textField evaluationTime="Group" evaluationGroup="COBRANZA_ID" pattern="¤ #,##0.00">
+					<reportElement x="355" y="30" width="200" height="20" uuid="ed76afc2-a317-46b0-9784-5f1f39958827"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="179" height="20" uuid="ce7a7b60-3456-4255-ba2c-ee26a40a2f87"/>
+				<textFieldExpression><![CDATA[$F{FormasPago_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="180" y="0" width="92" height="20" uuid="500c9e64-7c54-4034-a08d-c105b1346111"/>
+				<textFieldExpression><![CDATA[$F{CobranzasDetalle_numero}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="355" y="0" width="89" height="20" uuid="adb52be9-16a3-416a-816e-4489a5aeae0e"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{CobranzasDetalle_importe}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="444" y="0" width="111" height="20" uuid="66308f91-ade4-48e8-a876-ae2a4735f061"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{CobranzasDetalle_vencimiento}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="272" y="0" width="83" height="20" uuid="4fba976f-0816-42b0-9945-d2d9f1ef5a87"/>
+				<textFieldExpression><![CDATA[$F{CobranzasDetalle_banco}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

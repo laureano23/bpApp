@@ -17,6 +17,7 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 		'MetApp.view.Reportes.RepoComisiones',
 		'MetApp.view.Reportes.RepoRetenciones',
 		'MetApp.view.Reportes.RepoOrdenesDePago',
+		'MetApp.view.Reportes.RepoCobranzasEntreFechas'
 	],
 	refs:[
 	],
@@ -129,7 +130,30 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 			'RepoOrdenesDePago button[itemId=printReport]': {
 				click: this.SubmitOrdenPagoReport
 			},
+			'viewport menuitem[itemId=reporteCobranzasEntreFechas]': {
+				click: this.AddReporteCobranzasEntreFechas
+			},
+			'RepoCobranzasEntreFechas button[itemId=printReport]': {
+				click: this.SubmitCobranzasReport
+			},
 		});
+	},
+
+	AddReporteCobranzasEntreFechas: function(btn){
+		Ext.widget('RepoCobranzasEntreFechas');
+	},
+
+	SubmitCobranzasReport: function(btn){
+		var form=btn.up('form').getForm();
+
+		form.submit({
+			url: Routing.generate('mbp_finanzas_CobranzasEntreFechas'),
+			waitMsg: 'Cargando...',
+			success: function(){
+				var ruta=Routing.generate('mbp_finanzas_VerCobranzasEntreFechas');
+				window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+			}
+		})
 	},
 
 	SubmitOrdenPagoReport: function(btn){
