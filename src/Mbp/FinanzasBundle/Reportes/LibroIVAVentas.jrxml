@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LibroIVAVentas" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="c4b105ad-c9d2-4e6e-aab2-f046571798ae">
-	<property name="ireport.zoom" value="1.1000000000000052"/>
+	<property name="ireport.zoom" value="2.357947691000012"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="10"/>
 	<parameter name="fechaDesde" class="java.lang.String">
 		<defaultValueExpression><![CDATA[01/01/2001]]></defaultValueExpression>
 	</parameter>
@@ -29,6 +29,7 @@
      Facturas.`moneda` AS Facturas_moneda,
      Facturas.`tipoCambio` AS Facturas_tipoCambio,
      Facturas.`tipoId` AS Facturas_tipoId,
+     Facturas.`dtoTotal` AS Facturas_dtoTotal,
      TipoComprobante.`id` AS TipoComprobante_id,
      TipoComprobante.`esFactura` AS TipoComprobante_esFactura,
      TipoComprobante.`esNotaCredito` AS TipoComprobante_esNotaCredito,
@@ -93,6 +94,7 @@ ORDER BY
 	<field name="Facturas_moneda" class="java.lang.Boolean"/>
 	<field name="Facturas_tipoCambio" class="java.math.BigDecimal"/>
 	<field name="Facturas_tipoId" class="java.lang.Integer"/>
+	<field name="Facturas_dtoTotal" class="java.math.BigDecimal"/>
 	<field name="TipoComprobante_id" class="java.lang.Integer"/>
 	<field name="TipoComprobante_esFactura" class="java.lang.Boolean"/>
 	<field name="TipoComprobante_esNotaCredito" class="java.lang.Boolean"/>
@@ -332,7 +334,7 @@ $F{TipoComprobante_esNotaDebito} && $F{TipoComprobante_subTipoE} ? "NDE" : ""]]>
 				<reportElement x="444" y="0" width="83" height="20" uuid="7870462e-fbe8-4d4d-9cc2-bf3e9e021a25"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{netoGrabado}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{netoGrabado}-$F{Facturas_dtoTotal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="527" y="0" width="65" height="20" uuid="4e650972-1270-41a3-91d0-ff9c9c222559"/>
