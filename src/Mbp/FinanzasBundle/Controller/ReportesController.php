@@ -491,6 +491,7 @@ class ReportesController extends Controller
 			     Facturas.`moneda` AS Facturas_moneda,
 			     Facturas.`tipoCambio` AS Facturas_tipoCambio,
 			     Facturas.`tipoId` AS Facturas_tipoId,
+				 Facturas.`dtoTotal` AS Facturas_dtoTotal,
 			     TipoComprobante.`id` AS TipoComprobante_id,
 			     TipoComprobante.`esFactura` AS TipoComprobante_esFactura,
 			     TipoComprobante.`esNotaCredito` AS TipoComprobante_esNotaCredito,
