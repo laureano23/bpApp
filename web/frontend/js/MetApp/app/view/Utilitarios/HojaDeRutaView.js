@@ -153,7 +153,8 @@ Ext.define('MetApp.view.Utilitarios.HojaDeRutaView' ,{
 											xtype: 'textfield',
 											name: 'nombre',
 											width: 500,
-											itemId: 'nombre'
+											itemId: 'nombre',
+											allowBlank:false
 										}
 									]
 								},
@@ -211,12 +212,14 @@ Ext.define('MetApp.view.Utilitarios.HojaDeRutaView' ,{
 										{
 											xtype: 'datefield',
 											name: 'fechaDesde',
-											fieldLabel: 'Desde'
+											fieldLabel: 'Desde',
+											allowBlank:false
 										},
 										{
 											xtype: 'datefield',
 											name: 'fechaHasta',
-											fieldLabel: 'Hasta'
+											fieldLabel: 'Hasta',
+											allowBlank:false
 										},
 										{
 											xtype: 'button',

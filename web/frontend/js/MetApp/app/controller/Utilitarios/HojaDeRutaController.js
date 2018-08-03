@@ -65,6 +65,9 @@ Ext.define('MetApp.controller.Utilitarios.HojaDeRutaController',{
         var values = form.getForm().getValues();
         var store = btn.up('window').down('grid').getStore();
         var model;
+
+        if(!form.getForm().isValid()) return;
+
         if(values.idViaje == 0){
             model=Ext.create('MetApp.model.Utilitarios.HojaDeRutaModel');
             model.set(values);
