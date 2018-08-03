@@ -61,7 +61,8 @@ Ext.application({
 		'MetApp.controller.Bancos.ReportesController',
 		'MetApp.controller.Articulos.EnfriadoresController',
 		'MetApp.controller.Articulos.StockController',
-		'Utilitarios.UtilitariosController'
+		'Utilitarios.UtilitariosController',
+		'Utilitarios.HojaDeRutaController'
 	],
 	name: 'MetApp',
 	appFolder: '../frontend/js/MetApp/app',
@@ -123,13 +124,9 @@ Ext.application({
 		    }
 		});
 	},
-	
-	
-	
 	globals: {
 		//role: role.res
 	}
-	
 });
 
 

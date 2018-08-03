@@ -31,6 +31,7 @@ class AppKernel extends Kernel
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Mbp\TestBundle\MbpTestBundle(),
             new Lopi\Bundle\PusherBundle\LopiPusherBundle(),
+            new Mbp\UtilitariosBundle\MbpUtilitariosBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test', 'prod'))) {

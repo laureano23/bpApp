@@ -65,12 +65,13 @@ Ext.application({
 		'MetApp.controller.Bancos.ReportesController',
 		'MetApp.controller.Articulos.EnfriadoresController',
 		'MetApp.controller.Articulos.StockController',
-		'Utilitarios.UtilitariosController'
+		'Utilitarios.UtilitariosController',
+		'Utilitarios.HojaDeRutaController'
 	],
 	name: 'MetApp',
 	appFolder: '../frontend/js/MetApp/app',
 	
-	launch: function(){	
+	launch: function(){			
 		Ext.util.Observable.observe(Ext.data.Connection, {			
 		    requestexception: function(conn, response, options) {
 		    	var resp = Ext.JSON.decode(response.responseText);
@@ -125,10 +126,8 @@ Ext.application({
 				}).show();
 		    }
 		});
-		
-		
-		
 	},
+
 	
 	
 	

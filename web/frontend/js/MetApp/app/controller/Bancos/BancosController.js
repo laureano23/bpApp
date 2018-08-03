@@ -461,7 +461,7 @@ Ext.define('MetApp.controller.Bancos.BancosController',{
 						form.query('.field').forEach(function(field){
 							field.setReadOnly(true);
 						});
-						grid.removeAll();
+						store.removeAll();
 						Ext.Msg.show({
 						    title:'Atencion',
 						    msg: 'La operacion se realizo correctamente',

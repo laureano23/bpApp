@@ -787,9 +787,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
         			{
         				text: 'Listado',
         				itemId: 'tbListadoCoti',
-        			}
+					}
         		]
-        	},
+			},	
+			{
+				text: 'Hoja de Ruta',
+				itemId: 'tbHojaDeRuta',
+			}
         ]
     		    	
     	var me = this;    	
