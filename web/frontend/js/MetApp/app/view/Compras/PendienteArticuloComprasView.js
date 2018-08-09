@@ -25,7 +25,7 @@ Ext.define('MetApp.view.Compras.PendienteArticuloComprasView' ,{
 					cls: 'extra-alt',
 					region: 'center',
 					columns: [
-						//{ text: 'OC N°', dataIndex: 'idOc', flex: 1 },	
+						{ text: 'OC N°', dataIndex: 'idOc', flex: 1 },	
 						{ text: 'detalle orden N°', dataIndex: 'idDetalleOrden', hidden: true },
 						{ 
 							text: 'Fecha entrega',
