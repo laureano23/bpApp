@@ -9,6 +9,89 @@ namespace Mbp\FinanzasBundle\Entity;
  */
 class FacturasRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function citiVentasCbtes(\DateTime $desde, \DateTime $hasta)
+	{
+		$em = $this->getEntityManager();
+		$repoFacturas = $em->getRepository('MbpFinanzasBundle:Facturas');
+
+		//si no hay IVA liquidado en la factura el importe neto es 0 y se completa el campo importe excento
+		//el doc del cliente esta fijado en 80 que es CUIT, si se modifica hay q cambiar la consulta
+		$res=$repoFacturas->createQueryBuilder('f')
+                ->select("
+                    DATE_FORMAT(f.fecha, '%Y%m%d') AS fechaEmision,
+                    LPAD(tipo.codigoAfip, 3, '0') as tipoCbteAfip,
+                    LPAD(f.ptoVta, 5, '0') AS ptoVta,
+                    LPAD(f.fcNro, 20, '0') AS fcNroDesde,
+					LPAD(f.fcNro, 20, '0') AS fcNroHasta,
+					LPAD(80, 2, '0') AS codDocumento,
+                    CASE WHEN posicionIVA.esResponsableInscripto = true 
+                        THEN LPAD(cliente.cuit, 20, '0')
+                        ELSE '' END AS numIdentificacion,
+                    LPAD(f.rSocial, 30, ' ') AS nombreComprador,
+					LPAD(REPLACE(f.total, '.', ''), 15, 0) as montoTotal,
+					CASE WHEN f.iva21 > 0  
+                        THEN LPAD(0, 15, '0') 
+						ELSE LPAD(REPLACE((f.total-f.iva21-f.perIIBB), '.', ''), 15, '0') END AS montoNoGrabado,   
+					LPAD(0, 15, '0') AS percepcionNoCategorizados,   
+					CASE WHEN f.iva21 > 0   
+                        THEN LPAD(0, 15, '0') 
+						ELSE LPAD(REPLACE((f.total-f.iva21-f.perIIBB), '.', ''), 15, '0') END AS montoExcento,
+					LPAD(0, 15, '0') AS pagoCuentaImpNacionales,   
+					LPAD(REPLACE(f.perIIBB, '.', ''), 15, '0') AS perIIBB,
+					LPAD(0, 15, '0') AS impPercepcionImpMunicipales,   
+                    LPAD(0, 15, '0') AS impInternos,   
+                    CASE WHEN f.moneda = 1 
+                        THEN 'DOL'
+                        ELSE 'PES' END AS moneda,
+                    LPAD(REPLACE(f.tipoCambio, '.', ''), 10, '0') AS tipoCambio,
+                    LPAD(1, 1, '0') AS cantAlicuotasIVA,
+                    ' ' as codigoDeOperacion,
+                    LPAD(0, 15, '0') AS otrosTributos,
+                    DATE_FORMAT(f.vencimiento, '%Y%m%d') AS fechaVencimiento
+                    ")
+                ->join('f.tipoId', 'tipo')                
+                ->join('f.clienteId', 'cliente')
+                ->join('cliente.iva', 'posicionIVA')
+                ->where('tipo.esBalance = 0')
+                ->andWhere('f.fecha BETWEEN :desde AND :hasta')
+                ->setParameter('desde', $desde)
+				->setParameter('hasta', $hasta)
+				->getQuery()
+				->getArrayResult();
+				
+		return $res;
+
+	}
+
+	public function citiVentasAlicuota(\DateTime $desde, \DateTime $hasta)
+	{
+		$em = $this->getEntityManager();
+		$repoFacturas = $em->getRepository('MbpFinanzasBundle:Facturas');
+
+		$res=$repoFacturas->createQueryBuilder('f')
+                ->select("
+                    LPAD(tipo.codigoAfip, 3, '0') as tipoCbteAfip,
+                    LPAD(f.ptoVta, 5, '0') AS ptoVta,
+					LPAD(f.fcNro, 20, '0') AS fcNro,
+					CASE WHEN f.iva21 > 0  
+						THEN LPAD(REPLACE((f.total-f.iva21-f.perIIBB), '.', ''), 15, 0)
+						ELSE LPAD(0, 15, '0') END as netoGrabado,
+                    LPAD(5, 4, '0') AS alicuotaIVACodigoAfip,
+                    LPAD(REPLACE(f.iva21, '.', ''), 15, '0') AS impuestoLiquidado")
+                ->join('f.tipoId', 'tipo')                
+                ->join('f.clienteId', 'cliente')
+                ->join('cliente.iva', 'posicionIVA')
+                ->where('tipo.esBalance = 0')
+                ->andWhere('f.fecha BETWEEN :desde AND :hasta')
+                ->setParameter('desde', $desde)
+				->setParameter('hasta', $hasta)
+				->getQuery()
+				->getArrayResult();
+				
+		return $res;
+
+	}
+
 	public function listaFacturasClientes($idCliente)
 	{		
 		$em = $this->getEntityManager();

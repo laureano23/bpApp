@@ -80,6 +80,14 @@ class PosicionIVA
      */
     private $clientes;
 
+    /**
+     * @var smallint
+     *
+     * @ORM\Column(name="tipoDocAfip", type="smallint", nullable=false)
+     * dato que debe sacarse de tablas de AFIP
+     */
+    private $tipoDocAfip=0;
+
 
     /**
      * Get id
@@ -114,5 +122,224 @@ class PosicionIVA
     {
         return $this->posicion;
     }
-}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->facturas = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->clientes = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
+    /**
+     * Set esResponsableInscripto
+     *
+     * @param boolean $esResponsableInscripto
+     *
+     * @return PosicionIVA
+     */
+    public function setEsResponsableInscripto($esResponsableInscripto)
+    {
+        $this->esResponsableInscripto = $esResponsableInscripto;
+
+        return $this;
+    }
+
+    /**
+     * Get esResponsableInscripto
+     *
+     * @return boolean
+     */
+    public function getEsResponsableInscripto()
+    {
+        return $this->esResponsableInscripto;
+    }
+
+    /**
+     * Set esResponsableNoInscripto
+     *
+     * @param boolean $esResponsableNoInscripto
+     *
+     * @return PosicionIVA
+     */
+    public function setEsResponsableNoInscripto($esResponsableNoInscripto)
+    {
+        $this->esResponsableNoInscripto = $esResponsableNoInscripto;
+
+        return $this;
+    }
+
+    /**
+     * Get esResponsableNoInscripto
+     *
+     * @return boolean
+     */
+    public function getEsResponsableNoInscripto()
+    {
+        return $this->esResponsableNoInscripto;
+    }
+
+    /**
+     * Set esExento
+     *
+     * @param boolean $esExento
+     *
+     * @return PosicionIVA
+     */
+    public function setEsExento($esExento)
+    {
+        $this->esExento = $esExento;
+
+        return $this;
+    }
+
+    /**
+     * Get esExento
+     *
+     * @return boolean
+     */
+    public function getEsExento()
+    {
+        return $this->esExento;
+    }
+
+    /**
+     * Set esResponsableMonotributo
+     *
+     * @param boolean $esResponsableMonotributo
+     *
+     * @return PosicionIVA
+     */
+    public function setEsResponsableMonotributo($esResponsableMonotributo)
+    {
+        $this->esResponsableMonotributo = $esResponsableMonotributo;
+
+        return $this;
+    }
+
+    /**
+     * Get esResponsableMonotributo
+     *
+     * @return boolean
+     */
+    public function getEsResponsableMonotributo()
+    {
+        return $this->esResponsableMonotributo;
+    }
+
+    /**
+     * Set esConsumidorFinal
+     *
+     * @param boolean $esConsumidorFinal
+     *
+     * @return PosicionIVA
+     */
+    public function setEsConsumidorFinal($esConsumidorFinal)
+    {
+        $this->esConsumidorFinal = $esConsumidorFinal;
+
+        return $this;
+    }
+
+    /**
+     * Get esConsumidorFinal
+     *
+     * @return boolean
+     */
+    public function getEsConsumidorFinal()
+    {
+        return $this->esConsumidorFinal;
+    }
+
+    /**
+     * Set esExportacion
+     *
+     * @param boolean $esExportacion
+     *
+     * @return PosicionIVA
+     */
+    public function setEsExportacion($esExportacion)
+    {
+        $this->esExportacion = $esExportacion;
+
+        return $this;
+    }
+
+    /**
+     * Get esExportacion
+     *
+     * @return boolean
+     */
+    public function getEsExportacion()
+    {
+        return $this->esExportacion;
+    }
+
+    /**
+     * Add factura
+     *
+     * @param \Mbp\FinanzasBundle\Entity\Facturas $factura
+     *
+     * @return PosicionIVA
+     */
+    public function addFactura(\Mbp\FinanzasBundle\Entity\Facturas $factura)
+    {
+        $this->facturas[] = $factura;
+
+        return $this;
+    }
+
+    /**
+     * Remove factura
+     *
+     * @param \Mbp\FinanzasBundle\Entity\Facturas $factura
+     */
+    public function removeFactura(\Mbp\FinanzasBundle\Entity\Facturas $factura)
+    {
+        $this->facturas->removeElement($factura);
+    }
+
+    /**
+     * Get facturas
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFacturas()
+    {
+        return $this->facturas;
+    }
+
+    /**
+     * Add cliente
+     *
+     * @param \Mbp\ClientesBundle\Entity\Cliente $cliente
+     *
+     * @return PosicionIVA
+     */
+    public function addCliente(\Mbp\ClientesBundle\Entity\Cliente $cliente)
+    {
+        $this->clientes[] = $cliente;
+
+        return $this;
+    }
+
+    /**
+     * Remove cliente
+     *
+     * @param \Mbp\ClientesBundle\Entity\Cliente $cliente
+     */
+    public function removeCliente(\Mbp\ClientesBundle\Entity\Cliente $cliente)
+    {
+        $this->clientes->removeElement($cliente);
+    }
+
+    /**
+     * Get clientes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getClientes()
+    {
+        return $this->clientes;
+    }
+}

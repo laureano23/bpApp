@@ -90,6 +90,7 @@ doctrine:
                         lpad: DoctrineExtensions\Query\Mysql\Lpad
                         substr: DoctrineExtensions\Query\Mysql\SubstringIndex
                         ifnull: DoctrineExtensions\Query\Mysql\IfNull
+                        replace: DoctrineExtensions\Query\Mysql\Replace
                 mappings:
                     tree:
                         type: annotation

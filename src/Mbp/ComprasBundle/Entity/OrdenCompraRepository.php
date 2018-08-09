@@ -22,50 +22,33 @@ class OrdenCompraRepository extends \Doctrine\ORM\EntityRepository
 		if(empty($art)) throw new \Exception("Artículo no encontrado", 1);
 		$idArt=$art->getId();
 
-		//print_r($art->getCodigo());
-
-		$res=$rep->createQueryBuilder('oc')
-			->select("
-				DATE_FORMAT(oc.fechaEmision, '%d/%m/%Y') as fechaEmision,
-				detOrden.id as idDetalleOrden,
-				oc.id as idOc,
-				DATE_FORMAT(detOrden.fechaEntrega, '%d/%m/%Y') as entrega,
-				detOrden.cant - ifnull(SUM(mov.cantidad),0) as pendiente,
-				detOrden.cant as ordenCant,
-				mov.cantidad as movCant,
-				art.codigo")
-			->join('oc.ordenDetalleId', 'detOrden')
-			->leftJoin('detOrden.detalleMovArtId', 'mov')
-			->join('detOrden.articuloId', 'art')
-			->where('art = :idArt')
-			->setParameter('idArt', $art)
-			->groupBy('detOrden.id')
-			->getQuery()
-			->getArrayResult();
-
-
-		/*$sql="
-			select sub.*, detMov.cantidad as ingresado, sub.articuloId,
-				sum(detMov.cantidad) as ingresado,
-			    sub.totalComprado - sum(ifnull(detMov.cantidad,0)) as pendiente
-			from
-				(select oc.id as idOc, detalleOrden.id as idDetalleOrden, SUM(detalleOrden.cant) as totalComprado, detalleOrden.articuloId, detalleOrden.fechaEntrega as entrega 
-				from
-					OrdenCompraDetalle as detalleOrden
-					inner join ordenCompra_detallesOrdenCompra oc_det on oc_det.ordencompradetalle_id = detalleOrden.id
-					left join OrdenCompra oc on oc.id = oc_det.orden_id 
-				where detalleOrden.articuloId=$idArt
-			    group by oc.id) as sub
-			left join DetalleMovArt detMov on detMov.ordenCompraId=sub.idOc and detMov.articuloId = sub.articuloId
-			group by sub.idOc
-			having pendiente > 0
+		$idArt = $art->getId();
+		$sql = "
+		SELECT sub.* 
+		FROM(
+			SELECT DATE_FORMAT(o0_.fechaEmision,'%d/%m/%Y') AS fechaEmision,
+			o1_.id AS idDetalleOrden,
+			o0_.id AS idOc,
+			DATE_FORMAT(o1_.fechaEntrega,'%d/%m/%Y') AS entrega,
+			o1_.cant - IFNULL(SUM(d2_.cantidad), 0) AS pendiente,
+			o1_.cant AS ordenCant,
+			d2_.cantidad AS movCant,
+			a3_.codigo AS codigo 
+			FROM OrdenCompra o0_
+			INNER JOIN ordenCompra_detallesOrdenCompra o4_ ON o0_.id = o4_.orden_id
+			INNER JOIN OrdenCompraDetalle o1_ ON o1_.id = o4_.ordencompradetalle_id
+			LEFT JOIN DetalleMovArt d2_ ON o1_.id = d2_.ordenCompraDetalleId 
+			INNER JOIN articulos a3_ ON o1_.articuloId = a3_.idArticulos 
+			WHERE a3_.idArticulos = $idArt
+			GROUP BY o1_.id) sub
+		WHERE sub.pendiente > 0
 		";
-
+			
 		$stmt = $em->getConnection()->prepare($sql);
-        $stmt->execute();
-        $res= $stmt->fetchAll(); */
-		
-		return $res;
+		$stmt->execute();
+		$data = $stmt->fetchAll();
+
+		return $data;
 	}
 	
 }

@@ -152,8 +152,7 @@ class StockController extends Controller
 			$response = new Response($resp, 200);
 			
 			return $response;
-		}catch(\Exception $e){
-			
+		}catch(\Exception $e){			
 			$msg = json_encode(array(
 				'success' => false,
 				'msg' => $e->getMessage()

@@ -80,6 +80,14 @@ class PosicionIVA
      */
     private $clientes;
 
+    /**
+     * @var smallint
+     *
+     * @ORM\Column(name="tipoDocAfip", type="smallint", nullable=false)
+     * dato que debe sacarse de tablas de AFIP
+     */
+    private $tipoDocAfip=0;
+
 
     /**
      * Get id
@@ -333,5 +341,29 @@ class PosicionIVA
     public function getClientes()
     {
         return $this->clientes;
+    }
+
+    /**
+     * Set tipoDocAfip
+     *
+     * @param integer $tipoDocAfip
+     *
+     * @return PosicionIVA
+     */
+    public function setTipoDocAfip($tipoDocAfip)
+    {
+        $this->tipoDocAfip = $tipoDocAfip;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoDocAfip
+     *
+     * @return integer
+     */
+    public function getTipoDocAfip()
+    {
+        return $this->tipoDocAfip;
     }
 }
