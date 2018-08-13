@@ -793,6 +793,15 @@ Ext.define('MetApp.view.Principal.MyViewport', {
 			{
 				text: 'Hoja de Ruta',
 				itemId: 'tbHojaDeRuta',
+			},
+			{
+				text: 'CITI',
+				menu: [
+        			{
+        				text: 'CITI Ventas',
+        				itemId: 'tbCITIVentas',
+        			},
+        		]
 			}
         ]
     		    	

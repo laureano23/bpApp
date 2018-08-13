@@ -304,6 +304,7 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 	},
 	
 	FiltrarCliente: function(txt){
+		console.log("aaa");
 		var win = txt.up('window');
 		var grid = win.down('grid');
 		var store = grid.getStore();

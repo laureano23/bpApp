@@ -32,8 +32,6 @@ class CitiController extends Controller
 			
             $res = $repo->citiVentasCbtes($desde, $hasta);
             $res2 = $repo->citiVentasAlicuota($desde, $hasta);
-            
-           
 			
             $nombreArchivo="CITI-VENTAS-CBTE.txt";
             $nombreArchivo2="CITI-VENTAS-ALICUOTA.txt";
@@ -91,14 +89,14 @@ class CitiController extends Controller
     } 
 
 	 /**
-     * @Route("/aplicativos/servir_txt_retenciones_percepciones", name="mbp_finanzas_txt_retenciones_percepciones_servir", options={"expose"=true})
+     * @Route("/aplicativos/servir_txt_CITIVentas", name="mbp_finanzas_txt_CITIVentas_servir", options={"expose"=true})
      */
-    public function servir_txt_retenciones_percepciones()
+    public function servir_txt_CITIVentas()
     {
     	$response = new Response;
 		$req = $this->getRequest();
-		$nombreArchivo=$req->query->get('nombreArchivo');
-				
+        $nombreArchivo=$req->request->get('nombreArchivo');
+        				
 		$kernel = $this->get('kernel');
 		$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/txt/');
 		

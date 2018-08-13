@@ -62,7 +62,8 @@ Ext.application({
 		'MetApp.controller.Articulos.EnfriadoresController',
 		'MetApp.controller.Articulos.StockController',
 		'Utilitarios.UtilitariosController',
-		'Utilitarios.HojaDeRutaController'
+		'Utilitarios.HojaDeRutaController',
+		'Utilitarios.CITIVentasController'
 	],
 	name: 'MetApp',
 	appFolder: '../frontend/js/MetApp/app',
