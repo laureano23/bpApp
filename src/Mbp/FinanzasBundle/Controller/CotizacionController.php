@@ -81,14 +81,20 @@ class CotizacionController extends Controller
 	/**
      * @Route("/cotizaciones/listarCotizaciones", name="mbp_finanzas_cotizaciones_listar", options={"expose"=true})
      */
-    public function listarCotizaciones()
+    public function listarCotizaciones(Request $req)
     {
     	$response=new Response;
 		$em = $this->getDoctrine()->getManager();
 		$repoCoti = $em->getRepository('MbpFinanzasBundle:Cotizacion');
 		
 		try{
-			$cotizaciones=$repoCoti->listarCotizaciones();
+			$idCodigo = $req->query->get('idCodigo');
+			
+			if($idCodigo > 0){//filtramos por codigo el listado
+				$cotizaciones=$repoCoti->listarCotizacionesPorCodigo($idCodigo);
+			}else{
+				$cotizaciones=$repoCoti->listarCotizaciones();
+			}			
 		
 			return $response->setContent(json_encode(array('success' => true, 'data' => $cotizaciones)));	
 		}catch(\Exception $e){

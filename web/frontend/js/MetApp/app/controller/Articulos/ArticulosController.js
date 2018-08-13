@@ -59,8 +59,29 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 				},
 				'articulosform button[itemId=pedidoPendiente]': {
 					click: this.PedidosPendientes
+				},
+				'articulosform button[itemId=cotizacionArt]': {
+					click: this.VerCotizacion
 				}
 		});		
+	},
+
+	VerCotizacion: function(btn){
+		var winArt=btn.up('window');
+		var win=Ext.widget('ListadoCotizaciones');
+		var grid=win.down('grid');
+		var store=grid.getStore();
+		var form=winArt.down('form');
+		var values=form.getForm().getValues();
+
+		console.log(values);
+		
+
+		store.load({
+			params: {
+				idCodigo: values.id
+			}			
+		});
 	},
 
 	EnQueFormulas: function(btn){

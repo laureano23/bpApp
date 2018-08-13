@@ -28,4 +28,27 @@ class CotizacionRepository extends \Doctrine\ORM\EntityRepository
 		
 		return $res;
 	}
+
+	public function listarCotizacionesPorCodigo($idCodigo)
+	{
+		$em = $this->getEntityManager();
+		$repo = $em->getRepository('MbpFinanzasBundle:Cotizacion');
+		
+		$res = $repo->createQueryBuilder('c')
+			->select("
+				c.id, 
+				DATE_FORMAT(c.emision, '%d/%m/%Y') AS fecha,
+				cli.rsocial AS cliente
+				")
+			->join('c.detalle', 'd')
+			->join('d.articuloId', 'art')
+			->leftJoin('c.clienteId', 'cli')
+			->where('art.id = :idCodigo')
+			->setParameter('idCodigo', $idCodigo)
+			->orderBy('c.id', 'DESC')			
+			->getQuery()
+			->getArrayResult();
+		
+		return $res;
+	}
 }

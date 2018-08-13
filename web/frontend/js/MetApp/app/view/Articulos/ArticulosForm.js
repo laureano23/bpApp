@@ -80,6 +80,12 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 				text: 'Estructura',
 				itemId: 'estructuraProducto',
 				margin: '0 0 0 5'				
+			},
+			{
+				xtype: 'button',
+				text: 'Cotizaciones',
+				itemId: 'cotizacionArt',
+				margin: '0 0 0 5'				
 			}
 		]
 		
