@@ -23,10 +23,9 @@ class CitiController extends Controller
 		$req = $this->getRequest();
 		
 		try{
-			//$desde=$req->request->get('desde');
-            //$hasta=$req->request->get('hasta');
-            $desde='01/01/2018';
-			$hasta='31/12/2018';
+			$desde=$req->request->get('desde');
+            $hasta=$req->request->get('hasta');
+            
 			$desde= \DateTime::createFromFormat('d/m/Y', $desde);
 			$hasta= \DateTime::createFromFormat('d/m/Y', $hasta);			
 			
@@ -40,7 +39,7 @@ class CitiController extends Controller
             $file=fopen($basePath.$nombreArchivo, "w");
             $file2=fopen($basePath.$nombreArchivo2, "w");
 			
-			foreach ($res as $linea) {				
+			foreach ($res as $linea) {		
                 $str = $linea['fechaEmision'].
                     $linea['tipoCbteAfip'].
                     $linea['ptoVta'].
@@ -59,11 +58,12 @@ class CitiController extends Controller
                     $linea['impInternos'].
                     $linea['moneda'].
                     $linea['tipoCambio'].
+                    $linea['tipoCambioDecimal'].
                     $linea['cantAlicuotasIVA'].
                     $linea['codigoDeOperacion'].
                     $linea['otrosTributos'].
                     $linea['fechaVencimiento'].
-                    PHP_EOL;	
+                    "\r\n";	//fin de linea para aplicativos bajo SO Windows
 				fwrite($file, $str);
 			}
             fclose($file);
@@ -75,7 +75,7 @@ class CitiController extends Controller
                     $linea['netoGrabado'].
                     $linea['alicuotaIVACodigoAfip'].
                     $linea['impuestoLiquidado'].
-                    PHP_EOL;	
+                    "\r\n";	//fin de linea para aplicativos bajo SO Windows
 				fwrite($file2, $str);
 			}
 			fclose($file2);
