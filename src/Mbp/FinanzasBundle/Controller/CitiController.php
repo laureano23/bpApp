@@ -40,6 +40,9 @@ class CitiController extends Controller
             $file2=fopen($basePath.$nombreArchivo2, "w");
 			
 			foreach ($res as $linea) {		
+                /*if($linea['cantAlicuotasIVA']<=0){
+                    print_r("no puede ser cero");
+                }*/
                 $str = $linea['fechaEmision'].
                     $linea['tipoCbteAfip'].
                     $linea['ptoVta'].
@@ -67,7 +70,7 @@ class CitiController extends Controller
 				fwrite($file, $str);
 			}
             fclose($file);
-            
+
             foreach ($res2 as $linea) {				
                 $str = $linea['tipoCbteAfip'].
                     $linea['ptoVta'].

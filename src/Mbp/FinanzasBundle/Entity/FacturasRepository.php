@@ -31,7 +31,7 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
                     CASE WHEN posicionIVA.esResponsableInscripto = true 
                         THEN LPAD(cliente.cuit, 20, '0')
                         ELSE '' END AS numIdentificacion,
-					LPAD(f.rSocial, 30, ' ') AS nombreComprador,
+					RPAD(REPLACE(f.rSocial, '°', ' '), 30, ' ') AS nombreComprador,
 					CASE WHEN f.moneda=1
 						THEN LPAD(REPLACE(ROUND((f.total*f.tipoCambio), 2), '.', ''), 15, 0)
 						ELSE LPAD(REPLACE(f.total, '.', ''), 15, 0) END as montoTotal,
