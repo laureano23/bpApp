@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OrdenDeCompra" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="b20991a6-8da8-4cf2-8ac6-123176886f03">
 	<property name="ireport.zoom" value="1.3310000000000057"/>
-	<property name="ireport.x" value="94"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="48"/>
 	<parameter name="rutaLogo" class="java.lang.String"/>
 	<parameter name="cotizacionId" class="java.lang.Integer">
@@ -25,6 +25,7 @@
      Cotizacion.`cuit` AS Cotizacion_cuit,
      Cotizacion.`condVenta` AS Cotizacion_condVenta,
      Cotizacion.`moneda` AS Cotizacion_moneda,
+     Cotizacion.`cliente` AS Cotizacion_cliente,
      Cotizacion.`tc` AS Cotizacion_tc,
      Cotizacion.`observaciones` AS Cotizacion_observaciones,
      Cotizacion.`clienteId` AS Cotizacion_clienteId,
@@ -40,7 +41,8 @@
      articulos.`precio` AS articulos_precio,
      articulos.`moneda` AS articulos_moneda
 FROM
-     `cliente` cliente INNER JOIN `Cotizacion` Cotizacion ON cliente.`idCliente` = Cotizacion.`clienteId`
+     `Cotizacion` Cotizacion
+     LEFT JOIN `cliente` cliente  ON cliente.`idCliente` = Cotizacion.`clienteId`
      INNER JOIN `DetalleCotizacion` DetalleCotizacion ON Cotizacion.`id` = DetalleCotizacion.`cotizacionId`
      INNER JOIN `articulos` articulos ON DetalleCotizacion.`articuloId` = articulos.`idArticulos`
 WHERE Cotizacion.`id` = $P{cotizacionId}]]>
@@ -61,6 +63,7 @@ WHERE Cotizacion.`id` = $P{cotizacionId}]]>
 	<field name="Cotizacion_cuit" class="java.lang.String"/>
 	<field name="Cotizacion_condVenta" class="java.lang.String"/>
 	<field name="Cotizacion_moneda" class="java.lang.Boolean"/>
+	<field name="Cotizacion_cliente" class="java.lang.String"/>
 	<field name="Cotizacion_tc" class="java.math.BigDecimal"/>
 	<field name="Cotizacion_observaciones" class="java.lang.String"/>
 	<field name="Cotizacion_clienteId" class="java.lang.Integer"/>
@@ -175,7 +178,7 @@ Tel: 4484-2416]]></text>
 			<textField isBlankWhenNull="true">
 				<reportElement x="65" y="72" width="336" height="20" uuid="14375b87-9fe2-4650-8517-7a90f51024da"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{cliente_rsocial}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Cotizacion_cliente}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="65" y="92" width="364" height="20" uuid="8642324d-fc31-475a-b992-13d25a78cbb9"/>

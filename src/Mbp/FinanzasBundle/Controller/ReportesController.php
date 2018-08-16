@@ -1501,41 +1501,43 @@ ORDER BY
 			$conn = $reporteador->getJdbc();
 			
 			$sql = "
-				SELECT
-				     DetalleCotizacion.`id` AS DetalleCotizacion_id,
-				     DetalleCotizacion.`descripcion` AS DetalleCotizacion_descripcion,
-				     DetalleCotizacion.`cant` AS DetalleCotizacion_cant,
-				     DetalleCotizacion.`unidad` AS DetalleCotizacion_unidad,
-				     DetalleCotizacion.`precio` AS DetalleCotizacion_precio,
-				     DetalleCotizacion.`entrega` AS DetalleCotizacion_entrega,
-				     DetalleCotizacion.`cotizacionId` AS DetalleCotizacion_cotizacionId,
-				     DetalleCotizacion.`articuloId` AS DetalleCotizacion_articuloId,
-				     cliente.`idCliente` AS cliente_idCliente,
-				     cliente.`rsocial` AS cliente_rsocial,
-				     Cotizacion.`id` AS Cotizacion_id,
-				     Cotizacion.`emision` AS Cotizacion_emision,
-				     Cotizacion.`direccion` AS Cotizacion_direccion,
-				     Cotizacion.`cuit` AS Cotizacion_cuit,
-				     Cotizacion.`condVenta` AS Cotizacion_condVenta,
-				     Cotizacion.`moneda` AS Cotizacion_moneda,
-				     Cotizacion.`tc` AS Cotizacion_tc,
-				     Cotizacion.`observaciones` AS Cotizacion_observaciones,
-				     Cotizacion.`clienteId` AS Cotizacion_clienteId,
-				     Cotizacion.`idUsuario` AS Cotizacion_idUsuario,
-				     Cotizacion.`total` AS Cotizacion_total,
-				     Cotizacion.`descuento` AS Cotizacion_descuento,
-				     Cotizacion.`inactiva` AS Cotizacion_inactiva,
-				     articulos.`idArticulos` AS articulos_idArticulos,
-				     articulos.`descripcion` AS articulos_descripcion,
-				     articulos.`codigo` AS articulos_codigo,
-				     articulos.`unidad` AS articulos_unidad,
-				     articulos.`costo` AS articulos_costo,
-				     articulos.`precio` AS articulos_precio,
-				     articulos.`moneda` AS articulos_moneda
+			SELECT
+						DetalleCotizacion.`id` AS DetalleCotizacion_id,
+						DetalleCotizacion.`descripcion` AS DetalleCotizacion_descripcion,
+						DetalleCotizacion.`cant` AS DetalleCotizacion_cant,
+						DetalleCotizacion.`unidad` AS DetalleCotizacion_unidad,
+						DetalleCotizacion.`precio` AS DetalleCotizacion_precio,
+						DetalleCotizacion.`entrega` AS DetalleCotizacion_entrega,
+						DetalleCotizacion.`cotizacionId` AS DetalleCotizacion_cotizacionId,
+						DetalleCotizacion.`articuloId` AS DetalleCotizacion_articuloId,
+						cliente.`idCliente` AS cliente_idCliente,
+						cliente.`rsocial` AS cliente_rsocial,
+						Cotizacion.`id` AS Cotizacion_id,
+						Cotizacion.`emision` AS Cotizacion_emision,
+						Cotizacion.`direccion` AS Cotizacion_direccion,
+						Cotizacion.`cuit` AS Cotizacion_cuit,
+						Cotizacion.`condVenta` AS Cotizacion_condVenta,
+						Cotizacion.`moneda` AS Cotizacion_moneda,
+						Cotizacion.`cliente` AS Cotizacion_cliente,
+						Cotizacion.`tc` AS Cotizacion_tc,
+						Cotizacion.`observaciones` AS Cotizacion_observaciones,
+						Cotizacion.`clienteId` AS Cotizacion_clienteId,
+						Cotizacion.`idUsuario` AS Cotizacion_idUsuario,
+						Cotizacion.`total` AS Cotizacion_total,
+						Cotizacion.`descuento` AS Cotizacion_descuento,
+						Cotizacion.`inactiva` AS Cotizacion_inactiva,
+						articulos.`idArticulos` AS articulos_idArticulos,
+						articulos.`descripcion` AS articulos_descripcion,
+						articulos.`codigo` AS articulos_codigo,
+						articulos.`unidad` AS articulos_unidad,
+						articulos.`costo` AS articulos_costo,
+						articulos.`precio` AS articulos_precio,
+						articulos.`moneda` AS articulos_moneda
 				FROM
-				     `cliente` cliente INNER JOIN `Cotizacion` Cotizacion ON cliente.`idCliente` = Cotizacion.`clienteId`
-				     INNER JOIN `DetalleCotizacion` DetalleCotizacion ON Cotizacion.`id` = DetalleCotizacion.`cotizacionId`
-				     INNER JOIN `articulos` articulos ON DetalleCotizacion.`articuloId` = articulos.`idArticulos`
+						`Cotizacion` Cotizacion
+						LEFT JOIN `cliente` cliente  ON cliente.`idCliente` = Cotizacion.`clienteId`
+						INNER JOIN `DetalleCotizacion` DetalleCotizacion ON Cotizacion.`id` = DetalleCotizacion.`cotizacionId`
+						INNER JOIN `articulos` articulos ON DetalleCotizacion.`articuloId` = articulos.`idArticulos`
 				WHERE Cotizacion.`id` = $idCoti
 			";
 			

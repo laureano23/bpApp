@@ -173,6 +173,7 @@ Ext.define('MetApp.controller.Utilitarios.UtilitariosController',{
 			
 			if(storeDetalles.count() == 0){
 				Ext.Msg.alert("Atención", "Debe ingresar al menos un artículo");
+				return;
 			}
 			storeDetalles.each(function(rec){
 				data[i] = rec.getData();
@@ -255,6 +256,8 @@ Ext.define('MetApp.controller.Utilitarios.UtilitariosController',{
 		winCliente.down('button').on('click', function(btn){
 			var sel=winCliente.down('grid').getSelectionModel().getSelection()[0];			
 			formCoti.loadRecord(sel);
+			console.log(sel);
+			formCoti.queryById('rsocial').setValue(sel.data.rsocial);
 			win.queryById('descuentoGral').setValue(sel.data.descuentoFijo);
 			winCliente.close();
 			

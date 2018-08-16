@@ -41,7 +41,7 @@ class CotizacionController extends Controller
 			
 			$cliente=$repoClientes->find($coti->id);
 			//if(empty($cliente)) throw new \Exception("Cliente no encontrado", 1);
-			
+			$cotizacion->setCliente($coti->cliente);
 			
 			$cotizacion->setClienteId($cliente);
 			$cotizacion->setIdUsuario($this->get('security.context')->getToken()->getUser());

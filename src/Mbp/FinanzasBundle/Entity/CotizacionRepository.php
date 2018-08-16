@@ -19,9 +19,8 @@ class CotizacionRepository extends \Doctrine\ORM\EntityRepository
 			->select("
 				c.id, 
 				DATE_FORMAT(c.emision, '%d/%m/%Y') AS fecha,
-				cli.rsocial AS cliente
+				c.cliente
 				")
-			->leftJoin('c.clienteId', 'cli')
 			->orderBy('c.id', 'DESC')
 			->getQuery()
 			->getArrayResult();
@@ -38,11 +37,10 @@ class CotizacionRepository extends \Doctrine\ORM\EntityRepository
 			->select("
 				c.id, 
 				DATE_FORMAT(c.emision, '%d/%m/%Y') AS fecha,
-				cli.rsocial AS cliente
+				c.cliente
 				")
 			->join('c.detalle', 'd')
 			->join('d.articuloId', 'art')
-			->leftJoin('c.clienteId', 'cli')
 			->where('art.id = :idCodigo')
 			->setParameter('idCodigo', $idCodigo)
 			->orderBy('c.id', 'DESC')			

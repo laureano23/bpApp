@@ -39,7 +39,7 @@ class Cotizacion
     /**
      * @var string
      *
-     * @ORM\Column(name="cliente", type="string", length=255)
+     * @ORM\Column(name="cliente", type="string", length=255,)
      */
     private $cliente;
 
@@ -452,29 +452,5 @@ class Cotizacion
     public function getInactiva()
     {
         return $this->inactiva;
-    }
-
-    /**
-     * Set cliente
-     *
-     * @param string $cliente
-     *
-     * @return Cotizacion
-     */
-    public function setCliente($cliente)
-    {
-        $this->cliente = $cliente;
-
-        return $this;
-    }
-
-    /**
-     * Get cliente
-     *
-     * @return string
-     */
-    public function getCliente()
-    {
-        return $this->cliente;
     }
 }

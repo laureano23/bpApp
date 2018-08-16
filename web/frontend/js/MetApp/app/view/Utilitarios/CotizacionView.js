@@ -60,7 +60,7 @@ Ext.define('MetApp.view.Utilitarios.CotizacionView' ,{
 								},
 								{
 									xtype: 'textfield',
-									name: 'rsocial',
+									name: 'cliente',
 									itemId: 'rsocial',
 									width: 450,
 									allowBlank: false,
