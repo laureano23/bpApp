@@ -68,6 +68,8 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 		var storeProv = comboProv.getStore();
 		var comboTransporte = win.queryById('transporte');
 		var storeTransportes = comboTransporte.getStore();
+		var comboIva = win.queryById('iva');
+		var storeIva = comboIva.getStore();
 		
 		var map = new Ext.util.KeyMap({
 		    target: win.getId(),	
@@ -106,6 +108,7 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 				
 		storeProv.load();
 		storeTransportes.load();
+		storeIva.load();
 	},
 	
 	BuscaCliente: function(btn){

@@ -92,6 +92,7 @@ class DefaultController extends Controller
 			$cliente->setNotasCC($data->notasCC);
 			$cliente->setComision($data->comision);
 			$cliente->setNoAplicaPercepcion($data->noAplicaPercepcion);
+			$cliente->setObservaciones($data->observaciones);
 			
 			$transporte = $repoTransporte->find($data->transporte);
 			if(!empty($transporte)) $cliente->setTransporteId($transporte);

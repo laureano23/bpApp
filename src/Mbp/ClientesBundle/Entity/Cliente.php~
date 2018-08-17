@@ -74,7 +74,7 @@ class Cliente
     /**
      * @var string
      *
-     * @ORM\Column(name="cuit", type="string", length=11, nullable=true)
+     * @ORM\Column(name="cuit", type="string", length=11, nullable=true, unique=true)
      */
     private $cuit;
     
@@ -211,6 +211,13 @@ class Cliente
      * @ORM\Column(name="noAplicaPercepcion", type="boolean", nullable=false)
      */
     private $noAplicaPercepcion=0;
+
+    /**
+     * @var text
+     *
+     * @ORM\Column(name="observaciones", type="text", nullable=true)
+     */
+    private $observaciones;
 
     /**
      * Set rsocial
@@ -833,5 +840,29 @@ class Cliente
     public function getIva()
     {
         return $this->iva;
+    }
+
+    /**
+     * Set noAplicaPercepcion
+     *
+     * @param boolean $noAplicaPercepcion
+     *
+     * @return Cliente
+     */
+    public function setNoAplicaPercepcion($noAplicaPercepcion)
+    {
+        $this->noAplicaPercepcion = $noAplicaPercepcion;
+
+        return $this;
+    }
+
+    /**
+     * Get noAplicaPercepcion
+     *
+     * @return boolean
+     */
+    public function getNoAplicaPercepcion()
+    {
+        return $this->noAplicaPercepcion;
     }
 }

@@ -471,6 +471,25 @@ Ext.define('MetApp.view.Clientes.FormClientes' ,{
 											]
 										}										
 									]
+								},
+								{
+									title: 'Observaciones',
+									columnWidth: 0.33,
+									layout: 'vbox',
+									defaults: {
+										padding: '5 0 0 0',
+									},
+									items: [
+										{
+											xtype: 'textareafield',
+											readOnly: true,
+											disabledCls: 'myDisabledClass',
+											width: 270,
+											height: 120,
+											name: 'observaciones',
+											itemId: 'observaciones'
+										}
+									]
 								}
 							]
 						},

@@ -32,6 +32,7 @@ class ClienteRepository extends  EntityRepository
 							c.notasCC,
 							c.noAplicaPercepcion,
 							c.comision,
+							c.observaciones,
 							i.esResponsableInscripto,
 							i.esResponsableNoInscripto,
 							i.esExento,

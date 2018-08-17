@@ -32,6 +32,7 @@ Ext.define('MetApp.model.Clientes.ClientesModel',{
 		{name: 'comision', type: 'float'},
 		{name: 'posicion', type: 'string'},
 		{name: 'noAplicaPercepcion', type: 'boolean'},						
+		{name: 'observaciones', type: 'string'}
 	],
 	proxy: {
 		type: 'ajax',
