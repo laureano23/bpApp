@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ResumenCuenta" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4e5228fb-db98-4dd7-8b25-f2c19dafdbf4">
-	<property name="ireport.zoom" value="1.464100000000001"/>
+	<property name="ireport.zoom" value="1.1000000000000005"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="FECHA_DESDE" class="java.lang.String">
+	<parameter name="FECHA_DESDE" class="java.util.Date">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="ID_CLIENTE" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT
-	DATE_FORMAT(c0_.fechaEmision,'%d-%m-%Y') AS emision,
+		<![CDATA[select sub.*
+from
+(SELECT
+	DATE_FORMAT(c0_.fechaEmision,'%d-%m-%Y') AS emision1,
+	c0_.fechaEmision as emision,
 	CASE WHEN c0_.cobranzaId IS NOT NULL THEN CONCAT('COBRANZA N° ', c1_.numRecibo)
 		ELSE CONCAT(t2_.descripcion, ' N° ', f3_.ptoVta, '-', f3_.fcNro) END AS concepto,
 	CASE WHEN c0_.cobranzaId IS NOT NULL THEN 1
@@ -44,15 +47,15 @@ LEFT JOIN Cobranzas c1_ ON c0_.cobranzaId = c1_.id AND (c1_.clienteId = $P{ID_CL
 LEFT JOIN TipoComprobante t2_ ON f3_.tipoId = t2_.id
 INNER JOIN CCClientes c4_ ON (c4_.clienteId = $P{ID_CLIENTE} AND c0_.clienteId = $P{ID_CLIENTE} AND c0_.id >= c4_.id AND c0_.fechaEmision >= c4_.fechaEmision)
 LEFT JOIN cliente ON cliente.idCliente = c0_.clienteId
-GROUP BY c0_.id]]>
+GROUP BY c0_.id)sub
+where sub.emision >= $P{FECHA_DESDE}]]>
 	</queryString>
-	<field name="emision" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="emision1" class="java.lang.String"/>
+	<field name="emision" class="java.sql.Date"/>
 	<field name="concepto" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="sclr_2" class="java.lang.Long"/>
+	<field name="sclr_2" class="java.lang.Integer"/>
 	<field name="vencimiento" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -104,7 +107,7 @@ GROUP BY c0_.id]]>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Desde:]]></text>
 			</staticText>
-			<textField pattern="">
+			<textField pattern="dd/MM/yyyy">
 				<reportElement x="44" y="20" width="100" height="20" uuid="fbaeab11-16a2-4bdb-b60c-d53639b4d14e"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{FECHA_DESDE}]]></textFieldExpression>

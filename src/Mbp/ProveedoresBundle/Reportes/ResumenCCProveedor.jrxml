@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ResumenCuenta" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4e5228fb-db98-4dd7-8b25-f2c19dafdbf4">
-	<property name="ireport.zoom" value="1.0000000000000004"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="1.3310000000000008"/>
+	<property name="ireport.x" value="126"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="FECHA_DESDE" class="java.util.Date">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -236,6 +236,45 @@ where sub2.fechaEmision >= $P{FECHA_DESDE}]]>
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="20"/>
+		<band height="20">
+			<textField evaluationTime="Report" pattern="#,##0.00">
+				<reportElement x="276" y="0" width="93" height="20" uuid="717fa835-273a-48e7-8eb5-b6a56ef3d094"/>
+				<box leftPadding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL_DEBE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="20" uuid="b4d9b9d4-1b12-4818-84d5-059197383835"/>
+				<box leftPadding="3">
+					<pen lineWidth="2.0"/>
+					<topPen lineWidth="2.0"/>
+					<leftPen lineWidth="2.0"/>
+					<bottomPen lineWidth="2.0"/>
+					<rightPen lineWidth="2.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SubTotal:]]></text>
+			</staticText>
+			<textField evaluationTime="Report" pattern="#,##0.00">
+				<reportElement x="462" y="0" width="93" height="20" uuid="ef1f743f-b66a-45c5-8be0-0615035d8d4a"/>
+				<box leftPadding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL_SALDO}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" pattern="#,##0.00">
+				<reportElement x="369" y="0" width="93" height="20" uuid="da01cad2-b41e-438e-b892-03ecf9d742dc"/>
+				<box leftPadding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL_HABER}]]></textFieldExpression>
+			</textField>
+		</band>
 	</summary>
 </jasperReport>

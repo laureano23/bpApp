@@ -1378,39 +1378,58 @@ ORDER BY
 			$param = $reporteador->getJava('java.util.HashMap');
 			$rutaLogo = $reporteador->getRutaLogo($kernel);
 			
-			$desde=\DateTime::createFromFormat("d/m/Y", $desde);
-			$desdeSql=$desde->format("d-m-Y");
-			
+			$simpleDateFormat = new \Java("java.text.SimpleDateFormat", 'd/M/yyyy');
+			$javaDate = $simpleDateFormat->parse($desde); // This is a Java date
 			$param->put('ID_CLIENTE', $idCliente);
-			$param->put('FECHA_DESDE', $desdeSql);
-			
+			$param->put('FECHA_DESDE', $javaDate);
+
+			$desde=\DateTime::createFromFormat("d/m/Y", $desde);
+			$desdeSql=$desde->format("Y/m/d");
+
 			$conn = $reporteador->getJdbc();
 			
 			$sql = "
-				SELECT * FROM
-				(SELECT
-					DATE_FORMAT(c0_.fechaEmision,'%d-%m-%Y') AS emision,
-					CASE WHEN c0_.cobranzaId IS NOT NULL THEN CONCAT('COBRANZA N° ', c1_.numRecibo)
-						ELSE CONCAT(t2_.descripcion, ' N° ', f3_.ptoVta, '-', f3_.fcNro) END AS concepto,
-					CASE WHEN c0_.cobranzaId IS NOT NULL THEN 1
-						ELSE 0 END AS sclr_2,
-					DATE_FORMAT(c0_.fechaVencimiento,'%d-%m-%Y') AS vencimiento,
-					c0_.debe AS debe,
-					c0_.haber AS haber,
-					SUM(c4_.debe) - SUM(c4_.haber) AS saldo,
-					f3_.id AS id_7,
-					c1_.id AS id_8,
-					CASE WHEN t2_.esBalance = 1 THEN 'balance'
-						ELSE '' END AS sclr_9,
-					cliente.rSocial
-				FROM CCClientes c0_
-				LEFT JOIN Facturas f3_ ON c0_.facturaId = f3_.id AND (f3_.clienteId = $idCliente)
-				LEFT JOIN Cobranzas c1_ ON c0_.cobranzaId = c1_.id AND (c1_.clienteId = $idCliente)
-				LEFT JOIN TipoComprobante t2_ ON f3_.tipoId = t2_.id
-				INNER JOIN CCClientes c4_ ON (c4_.clienteId = $idCliente AND c0_.clienteId = $idCliente AND c0_.id >= c4_.id)
-				LEFT JOIN cliente ON cliente.idCliente = c0_.clienteId
-				GROUP BY c0_.id) AS sub
-				WHERE emision >= '$desdeSql'
+			select sub.*
+			from
+			(SELECT
+				DATE_FORMAT(c0_.fechaEmision,'%d-%m-%Y') AS emision1,
+				c0_.fechaEmision as emision,
+				CASE WHEN c0_.cobranzaId IS NOT NULL THEN CONCAT('COBRANZA N° ', c1_.numRecibo)
+					ELSE CONCAT(t2_.descripcion, ' N° ', f3_.ptoVta, '-', f3_.fcNro) END AS concepto,
+				CASE WHEN c0_.cobranzaId IS NOT NULL THEN 1
+					ELSE 0 END AS sclr_2,
+				DATE_FORMAT(c0_.fechaVencimiento,'%d-%m-%Y') AS vencimiento,
+				c0_.debe AS debe,
+				c0_.haber AS haber,
+				SUM(c4_.debe) - SUM(c4_.haber) AS saldo,
+				f3_.id AS id_7,
+				c1_.id AS id_8,
+				CASE WHEN t2_.esBalance = 1 THEN 'balance'
+					ELSE '' END AS sclr_9,
+				cliente.rSocial
+			FROM (
+			SELECT
+				CCClientes.`id` AS id,
+				CCClientes.`debe` AS debe,
+				CCClientes.`haber` AS haber,
+				CCClientes.`fechaEmision` AS fechaEmision,
+				CCClientes.`fechaVencimiento` AS fechaVencimiento,
+				CCClientes.`facturaId` AS facturaId,
+				CCClientes.`cobranzaId` AS cobranzaId,
+				CCClientes.`clienteId` AS clienteId
+			FROM
+				`CCClientes` CCClientes
+			ORDER BY CCClientes.`fechaEmision` DESC
+			) AS c0_
+			LEFT JOIN Facturas f3_ ON c0_.facturaId = f3_.id AND (f3_.clienteId = $idCliente)
+			LEFT JOIN Cobranzas c1_ ON c0_.cobranzaId = c1_.id AND (c1_.clienteId = $idCliente)
+			LEFT JOIN TipoComprobante t2_ ON f3_.tipoId = t2_.id
+			INNER JOIN CCClientes c4_ ON (c4_.clienteId = $idCliente 
+				AND c0_.clienteId = $idCliente 
+				AND c0_.id >= c4_.id AND c0_.fechaEmision >= c4_.fechaEmision)
+			LEFT JOIN cliente ON cliente.idCliente = c0_.clienteId
+			GROUP BY c0_.id)sub
+			where sub.emision >= '$desdeSql'
 			";
 			
 			$res = $jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());

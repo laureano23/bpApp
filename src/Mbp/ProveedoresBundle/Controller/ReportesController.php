@@ -51,10 +51,10 @@ class ReportesController extends Controller
 			$param = $reporteador->getJava('java.util.HashMap');
 			$rutaLogo = $reporteador->getRutaLogo($kernel);
 			
-			//print_r($desde);
+			
 			$simpleDateFormat = new \Java("java.text.SimpleDateFormat", 'd/M/yyyy');
 			$javaDate = $simpleDateFormat->parse($desde); // This is a Java date
-			//echo $javaDate;
+			
 			$param->put('FECHA_DESDE', $javaDate);
 
 			$desde=\DateTime::createFromFormat('d/m/Y', $desde);
