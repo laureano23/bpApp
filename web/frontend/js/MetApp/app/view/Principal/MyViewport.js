@@ -657,6 +657,10 @@ Ext.define('MetApp.view.Principal.MyViewport', {
         	{
         		text: 'Proveedores',
         		menu: [
+					{
+        				text: 'Resumen Cuenta Corriente',
+        				itemId: 'reporteCCProveedores'
+        			},
         			{
         				text: 'Libro IVA compras',
         				itemId: 'reporteIVACompras',

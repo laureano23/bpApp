@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ResumenCuenta" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4e5228fb-db98-4dd7-8b25-f2c19dafdbf4">
-	<property name="ireport.zoom" value="1.464100000000001"/>
+	<property name="ireport.zoom" value="1.0000000000000004"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="FECHA_DESDE" class="java.lang.String">
+	<parameter name="FECHA_DESDE" class="java.util.Date">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="ID_PROVEEDOR" class="java.lang.String">
@@ -15,7 +15,8 @@ from
 (select sub.*, @b := @b + sub.haber - sub.debe AS saldo, p.rSocial
  from
     (SELECT
-    DATE_FORMAT(s.fechaEmision, '%d-%m-%Y %H:%i:%s') as fechaEmision,
+    DATE_FORMAT(s.fechaEmision, '%d-%m-%Y') as fechaEmision1,
+    s.fechaEmision,
     CASE WHEN s.OrdenPagoId IS NOT NULL THEN CONCAT('ORDEN DE PAGO N° ', op.id) ELSE CONCAT(tc.descripcion, ' N° ', f.sucursal, '-', f.numFc) END AS concepto,
     CASE WHEN s.OrdenPagoId IS NOT NULL THEN true ELSE false END AS detalle,
     DATE_FORMAT(s.fechaVencimiento, '%d-%m-%Y %H:%i:%s') as fechaVencimiento,
@@ -50,9 +51,10 @@ from
 	ORDER BY
 		s.fechaEmision, s.id ASC) as sub
 left join Proveedor p on p.id=$P{ID_PROVEEDOR})as sub2
--- where DATE(sub2.fechaEmision) between $P{FECHA_DESDE} and '2050-01-01']]>
+where sub2.fechaEmision >= $P{FECHA_DESDE}]]>
 	</queryString>
-	<field name="fechaEmision" class="java.lang.String">
+	<field name="fechaEmision1" class="java.lang.String"/>
+	<field name="fechaEmision" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="concepto" class="java.lang.String">
@@ -115,7 +117,7 @@ left join Proveedor p on p.id=$P{ID_PROVEEDOR})as sub2
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Desde:]]></text>
 			</staticText>
-			<textField pattern="">
+			<textField pattern="dd/MM/yyyy">
 				<reportElement x="44" y="20" width="100" height="20" uuid="fbaeab11-16a2-4bdb-b60c-d53639b4d14e"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{FECHA_DESDE}]]></textFieldExpression>
@@ -193,7 +195,7 @@ left join Proveedor p on p.id=$P{ID_PROVEEDOR})as sub2
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{fechaEmision}]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd/MM/yyyy">
+			<textField pattern="">
 				<reportElement x="59" y="0" width="217" height="20" uuid="06c087cb-fc3b-44f3-bc9f-4059f9377689"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{concepto}]]></textFieldExpression>
@@ -234,45 +236,6 @@ left join Proveedor p on p.id=$P{ID_PROVEEDOR})as sub2
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="20">
-			<textField evaluationTime="Report" pattern="#,##0.00">
-				<reportElement x="276" y="0" width="93" height="20" uuid="30a647a5-07b5-4297-ab31-5aa4eb5f804f"/>
-				<box leftPadding="3"/>
-				<textElement verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{TOTAL_DEBE}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="0" y="0" width="555" height="20" uuid="4558f5ad-89dc-4ee1-890e-959ae26f6491"/>
-				<box leftPadding="3">
-					<pen lineWidth="2.0"/>
-					<topPen lineWidth="2.0"/>
-					<leftPen lineWidth="2.0"/>
-					<bottomPen lineWidth="2.0"/>
-					<rightPen lineWidth="2.0"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[SubTotal:]]></text>
-			</staticText>
-			<textField evaluationTime="Report" pattern="#,##0.00">
-				<reportElement x="369" y="0" width="93" height="20" uuid="f4beeeb9-530a-424f-8e86-58f279e2ae29"/>
-				<box leftPadding="3"/>
-				<textElement verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{TOTAL_HABER}]]></textFieldExpression>
-			</textField>
-			<textField evaluationTime="Report" pattern="#,##0.00">
-				<reportElement x="462" y="0" width="93" height="20" uuid="21612049-b5a1-4b90-9c96-45d23e4720b4"/>
-				<box leftPadding="3"/>
-				<textElement verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{TOTAL_SALDO}]]></textFieldExpression>
-			</textField>
-		</band>
+		<band height="20"/>
 	</summary>
 </jasperReport>

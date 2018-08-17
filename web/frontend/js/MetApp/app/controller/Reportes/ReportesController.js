@@ -17,14 +17,15 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 		'MetApp.view.Reportes.RepoComisiones',
 		'MetApp.view.Reportes.RepoRetenciones',
 		'MetApp.view.Reportes.RepoOrdenesDePago',
-		'MetApp.view.Reportes.RepoCobranzasEntreFechas'
+		'MetApp.view.Reportes.RepoCobranzasEntreFechas',
+		'MetApp.view.Reportes.ReporteCCProveedores'
 	],
 	refs:[
 	],
 	
 	init: function(){
 		var me = this;
-		me.control({
+		me.control({			
 			'#reporteRetenciones': {
 				click: this.AddReporteRetenciones
 			},
@@ -136,11 +137,55 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 			'RepoCobranzasEntreFechas button[itemId=printReport]': {
 				click: this.SubmitCobranzasReport
 			},
+			'viewport menuitem[itemId=reporteCCProveedores]': {
+				click: this.AddReporteCCProveedores
+			},
+			'ReporteCCProveedores button[itemId=btnProveedor]': {
+				click: this.BuscarProveedorCC
+			},
+			'ReporteCCProveedores button[itemId=printDateReport]': {
+				click: this.SubmitCCProveedoresReport
+			},
 		});
 	},
 
+	SubmitCCProveedoresReport: function(btn){
+		var form=btn.up('form');
+
+		/*Ext.Ajax.request({
+			url: Routing.generate('mbp_proveedores_reporteCC'),
+		})*/
+		form.getForm().suspendEvent('actionfailed');
+		form.submit({
+			url: Routing.generate('mbp_proveedores_reporteCC'),
+			success: function(){
+				var ruta=Routing.generate('mbp_proveedores_verReporteCC');
+				window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+			},
+			failure: function(){
+
+			}
+		});
+	},
+
+	BuscarProveedorCC: function(btn){
+		var winReporte=btn.up('window');
+		var win=Ext.widget('ProveedoresSearchGrid');
+		win.down('button').on('click', function(){
+			var sel=win.down('grid').getSelectionModel().getSelection()[0];
+			winReporte.queryById('proveedor').setValue(sel.data.id);
+			win.close();
+			winReporte.queryById('printDateReport').focus('', 10);
+		});
+	},
+
+	AddReporteCCProveedores: function(btn){
+		var win=Ext.widget('ReporteCCProveedores');
+	},
+
 	AddReporteCobranzasEntreFechas: function(btn){
-		Ext.widget('RepoCobranzasEntreFechas');
+		var win=Ext.widget('RepoCobranzasEntreFechas');
+		win.queryById('desde').focus('', 10);
 	},
 
 	SubmitCobranzasReport: function(btn){

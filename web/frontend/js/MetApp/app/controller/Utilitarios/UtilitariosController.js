@@ -256,7 +256,6 @@ Ext.define('MetApp.controller.Utilitarios.UtilitariosController',{
 		winCliente.down('button').on('click', function(btn){
 			var sel=winCliente.down('grid').getSelectionModel().getSelection()[0];			
 			formCoti.loadRecord(sel);
-			console.log(sel);
 			formCoti.queryById('rsocial').setValue(sel.data.rsocial);
 			win.queryById('descuentoGral').setValue(sel.data.descuentoFijo);
 			winCliente.close();

@@ -12,6 +12,144 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 class ReportesController extends Controller
 {
 	/**
+     * @Route("/proveedores/reporteCC", name="mbp_proveedores_reporteCC", options={"expose"=true})
+     */
+    public function reporteCC()
+    {
+    	//RECIBO PARAMETROS
+		$em = $this->getDoctrine()->getManager();
+		$req = $this->getRequest();
+		$response = new Response;
+		
+		try{
+			/*
+			 * PARAMETROS
+			 */	
+			$desde = $req->request->get('desde');	
+			$idProveedor = $req->request->get('proveedor');
+							
+			$reporteador = $this->get('reporteador');
+			$kernel = $this->get('kernel');
+			
+			/*
+			 * Configuro reporte
+			 */
+			$jru = $reporteador->jru();
+			
+			/*
+			 * Ruta archivo Jasper
+			 */				
+					
+			$ruta = $kernel->locateResource('@MbpProveedoresBundle/Reportes/ResumenCCProveedor.jrxml');
+			
+			/*
+			 * Ruta de destino del PDF
+			 */
+			$destino = $kernel->locateResource('@MbpProveedoresBundle/Resources/public/pdf/').'ResumenCCProveedor.pdf';		
+			
+			//Parametros HashMap
+			$param = $reporteador->getJava('java.util.HashMap');
+			$rutaLogo = $reporteador->getRutaLogo($kernel);
+			
+			//print_r($desde);
+			$simpleDateFormat = new \Java("java.text.SimpleDateFormat", 'd/M/yyyy');
+			$javaDate = $simpleDateFormat->parse($desde); // This is a Java date
+			//echo $javaDate;
+			$param->put('FECHA_DESDE', $javaDate);
+
+			$desde=\DateTime::createFromFormat('d/m/Y', $desde);
+
+			$desdeSql=$desde->format('Y/m/d');
+			
+			$conn = $reporteador->getJdbc();
+						
+			$sql = "
+				select sub2.*
+				from
+				(select sub.*, @b := @b + sub.haber - sub.debe AS saldo, p.rSocial
+				from
+					(SELECT
+					DATE_FORMAT(s.fechaEmision, '%d-%m-%Y') as fechaEmision1,
+					s.fechaEmision,
+					CASE WHEN s.OrdenPagoId IS NOT NULL THEN CONCAT('ORDEN DE PAGO N° ', op.id) ELSE CONCAT(tc.descripcion, ' N° ', f.sucursal, '-', f.numFc) END AS concepto,
+					CASE WHEN s.OrdenPagoId IS NOT NULL THEN true ELSE false END AS detalle,
+					DATE_FORMAT(s.fechaVencimiento, '%d-%m-%Y %H:%i:%s') as fechaVencimiento,
+					s.debe,
+					s.haber,
+					f.id as idF,
+					op.id as idOP,
+					SUM(tr.aplicado) as aplicado,
+					CASE WHEN SUM(tr.aplicado)=haber
+						THEN true
+						ELSE false
+						END AS pagado
+					FROM
+						(SELECT @b := 0) AS dummy
+					CROSS JOIN
+						CCProv AS s
+					LEFT JOIN
+						FacturaProveedor f ON f.id = s.facturaId
+					LEFT JOIN
+						TipoComprobante tc ON tc.id = f.tipoId
+					LEFT JOIN
+						OrdenPago op ON op.id = s.OrdenPagoId
+					LEFT JOIN
+						TransaccionOPFC tr ON tr.facturaId = f.id
+					LEFT JOIN
+						Proveedor prov ON s.proveedorId
+					WHERE
+						s.proveedorId = $idProveedor
+				
+					GROUP BY
+						f.id, op.id
+					ORDER BY
+						s.fechaEmision, s.id ASC) as sub
+				left join Proveedor p on p.id=$idProveedor)as sub2
+				where sub2.fechaEmision >= '$desdeSql'
+			";	
+
+		   	$param->put('SUBREPORT_DIR', $kernel->locateResource('@MbpProveedoresBundle/Reportes/'));
+			
+			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
+			
+			
+			return $response->setContent(json_encode(
+				array(
+					'success'=> true,	
+				)
+			));
+		}catch(\Exception $e){
+			print($e->getMessage());
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(json_encode(array(
+				'success' => false,
+				'msg' => $e->getMessage()
+			)));
+		}		
+	}
+
+	/**
+     * @Route("/proveedores/verReporteCC", name="mbp_proveedores_verReporteCC", options={"expose"=true})
+     */	    
+    public function verReporteCC()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpProveedoresBundle/Resources/public/pdf/').'ResumenCCProveedor.pdf';	
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'ResumenCCProveedor.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+
+        return $response;
+	}
+
+
+	/**
      * @Route("/proveedores/reporteRetencion", name="mbp_proveedores_reporteRetencion", options={"expose"=true})
      */
     public function reporteRetencion()

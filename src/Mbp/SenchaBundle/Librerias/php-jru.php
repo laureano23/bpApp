@@ -247,6 +247,7 @@ class JRU  {
 		} catch (JavaException $ex) {
   			$trace = new Java('java.io.ByteArrayOutputStream');
 			$ex->printStackTrace(new Java('java.io.PrintStream', $trace));
+			print($ex);
 			throw $ex;			
 		}		
 	}
