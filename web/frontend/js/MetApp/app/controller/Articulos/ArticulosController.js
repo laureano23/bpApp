@@ -62,8 +62,32 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 				},
 				'articulosform button[itemId=cotizacionArt]': {
 					click: this.VerCotizacion
+				},
+				'articulosform button[itemId=otsPendientes]': {
+					click: this.VerOtsPendientes
 				}
 		});		
+	},
+
+	VerOtsPendientes: function(btn){
+		var winArt=btn.up('window');
+		var idArt=winArt.queryById('idArt').getValue();
+		var win=Ext.widget('VerOTView');
+		var store=win.down('grid').getStore();
+
+		console.log(idArt);
+		console.log(store);
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_produccion_ListarOrdenesCompletas'),
+			params: {
+				idArt: idArt
+			},
+			success: function(resp){
+				console.log(resp);
+				var jsonResp = Ext.JSON.decode(resp.responseText);
+				store.loadRawData(jsonResp.data);
+			}
+		})
 	},
 
 	VerCotizacion: function(btn){

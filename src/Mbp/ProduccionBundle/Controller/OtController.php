@@ -252,7 +252,14 @@ class OtController extends Controller
 		$request = $this->getRequest();
 		
 		try{
-			$listado = $repo->listarOrdenesCompletas();
+			$idArt = $request->request->get('idArt');
+
+			$listado;
+			if(!isset($idArt)){
+				$listado = $repo->listarOrdenesCompletas();
+			}else{
+				$listado = $repo->listarOrdenesPorArticulo($idArt);
+			}			
 			
 			$response->setContent(json_encode(array(
 				'data' => $listado,

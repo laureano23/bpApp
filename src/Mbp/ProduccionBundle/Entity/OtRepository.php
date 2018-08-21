@@ -14,6 +14,40 @@ use Doctrine\ORM\Query\ResultSetMapping;
  */
 class OtRepository extends EntityRepository
 {
+	public function listarOrdenesPorArticulo($idArt) //lista las OTS por articulo en proceso
+	{
+		$em = $this->getEntityManager();
+		$repo = $em->getRepository('MbpProduccionBundle:Ot');
+		
+		$query = $repo->createQueryBuilder('o')
+			->select("o.ot as otNum, DATE_FORMAT(o.fechaEmision, '%d/%m/%Y') as otEmision,
+					c.descripcion as cliente,
+					codigo.codigo,
+					codigo.descripcion,
+					o.cantidad as totalOt,
+					DATE_FORMAT(o.fechaProg, '%d/%m/%Y') as programado,
+					o.otExterna,
+					o.aprobado,
+					o.rechazado,
+					CASE WHEN o.estado = 0 THEN 'No comenzada'
+					 WHEN o.estado = 1 THEN 'En proceso'
+					 WHEN o.estado = 2 THEN 'Terminada'	
+					 WHEN o.estado = 3 THEN 'Generada'					
+					 ELSE 'No comenzada' END as estado")
+			->join('o.idCodigo', 'codigo')
+			->join('o.sectorId', 'c')
+			->where('o.idCodigo = :art')
+			->andWhere('o.estado != 2')
+			->setParameter('art', $idArt)
+			->orderBy('otNum', 'DESC')
+			->getQuery()
+			->getArrayResult();
+			
+		return $query;
+
+
+	}
+
 	public function readOtPaneles() 
 	{
 		$em = $this->getEntityManager();

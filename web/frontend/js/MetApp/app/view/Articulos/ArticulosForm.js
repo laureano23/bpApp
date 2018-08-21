@@ -3,7 +3,7 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 	alias: 'widget.articulosform',
 	id: 'articulosForm',
 	itemId: 'articulosForm',
-	width: 800,
+	width: 900,
 	//height: 470,
 	layout: 'fit',
 	autoShow: true,
@@ -85,6 +85,12 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 				xtype: 'button',
 				text: 'Cotizaciones',
 				itemId: 'cotizacionArt',
+				margin: '0 0 0 5'				
+			},
+			{
+				xtype: 'button',
+				text: 'OTs Pendientes',
+				itemId: 'otsPendientes',
 				margin: '0 0 0 5'				
 			}
 		]
@@ -257,7 +263,7 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 												disabledCls: 'myDisabledClass'	
 											},
 											layout: 'hbox',							
-											width: 750,
+											width: 850,
 											padding: '5 5 5 5',
 											items: autz.getAuthorizedElements(itemsBox1)
 										},
