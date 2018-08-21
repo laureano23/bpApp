@@ -34,6 +34,7 @@ from
 		oc.fechaEmision between $P{FECHA_DESDE} and $P{FECHA_HASTA}
 		and prov.id between $P{PROVEEDOR_ID_DESDE} and $P{PROVEEDOR_ID_HASTA}
 		and art.codigo between $P{CODIGO_DESDE} and $P{CODIGO_HASTA}
+		and oc.anulada = 0
 	group by oc.id, art.idArticulos) as sub
 left join DetalleMovArt detMov on detMov.ordenCompraDetalleId = sub.detalleOrdenId
 group by sub.ordenId, sub.articuloId]]>

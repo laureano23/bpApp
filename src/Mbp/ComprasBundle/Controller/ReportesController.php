@@ -198,6 +198,7 @@ class ReportesController extends Controller
 					    oc.fechaEmision between '$desde' and '$hasta'
 						and prov.id between $proveedorDesde and $proveedorHasta
 						and art.codigo between '$codigoDesde' and '$codigoHasta'
+						and oc.anulada = 0
 				group by oc.id, art.idArticulos) as sub
 				left join DetalleMovArt detMov on detMov.ordenCompraDetalleId = sub.detalleOrdenId
 				group by sub.ordenId, sub.articuloId
