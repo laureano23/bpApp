@@ -882,6 +882,8 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var gridImputaFc = winCobranza.queryById('gridImputaFc');
 		var storeImputaFc = gridImputaFc.getStore();
 
+		storeImputaFc.removeAll(); //limpiamos el store
+
 		storeImputaFc.on('update', function(st, opts){ 
 			var totalAImputar = 0;
 

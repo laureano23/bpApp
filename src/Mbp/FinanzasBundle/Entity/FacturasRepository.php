@@ -192,44 +192,26 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 		$repoTrans = $em->getRepository('MbpFinanzasBundle:TransaccionCobranzaFactura');
 
 		try{
-			$qbFacturas = $repoFacturas->createQueryBuilder('f')
-				->select('')
-				->where('f.clienteId = :idCliente')
-				->setParameter('idCliente', $idCliente)
-				->getQuery();
-			$res = $qbFacturas->getResult();
 
-			$qb2 = $repoTrans->createQueryBuilder('t');			
-			$query2 = $qb2->select('fc.id, SUM(t.aplicado) AS aplicado')
-					->join('t.facturaImputada', 'fc')
-					->where('fc.clienteId = :idCliente')
-					->groupBy('t.facturaImputada')
-					->setParameter('idCliente',$idCliente)
-					->getQuery();
-			$res2 = $query2->getResult();
-
-			$i=0;
-			$resp = array();
-			foreach ($res as $rec) {
-				$resp[$i]['id'] = $rec->getId();				
-				$resp[$i]['fechaEmision'] = $rec->getFecha()->format('d-m-Y H:i:s');
-				$resp[$i]['concepto'] = "FACTURA N° ".$rec->getfcNro();
-				$resp[$i]['numFc'] = $rec->getfcNro();
-				$resp[$i]['vencimiento'] = $rec->getvencimiento()->format('d/m/Y');
-				$resp[$i]['haber'] = $rec->getTotal()*$rec->getTipoCambio();								
-				$resp[$i]['pendiente'] = 0;
-				$i++;
-			}
-
-			for($i=0; $i<count($res2); $i++){
-				for ($j=0; $j < count($res); $j++) { 
-					if(array_key_exists($i, $res2) && $res2[$i]['id'] == $res[$j]->getId()){					
-						$resp[$j]['valorAplicado'] = $res2[$i]['aplicado'];									
-					}
-				}
-			}
-
-			return $resp;
+			$sql="
+				SELECT sub.*, sub.haber - sub.aplicado as pendiente
+				FROM(SELECT 
+					f.id,
+					f.clienteId,
+					date_format(f.fecha, '%d/%m/%Y') as fechaEmision,
+					fcNro as numFc,
+					f.total*f.tipoCambio as haber,
+					SUM(tr.aplicado) as aplicado,
+					date_format(f.vencimiento, '%d/%m/%Y') as vencimiento    
+				FROM Facturas f
+				LEFT JOIN TransaccionCobranzaFactura tr ON tr.facturaId = f.id
+				GROUP BY f.id) as sub
+				where ((sub.haber - sub.aplicado) > 0 || isnull(sub.haber - sub.aplicado))
+				AND sub.clienteId = $idCliente";
+			
+			$stmt = $em->getConnection()->prepare($sql);
+			$stmt->execute();
+			return $stmt->fetchAll();
 
 
 		}catch(\Exception $e){

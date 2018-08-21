@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ComprasPendientes" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="832" leftMargin="5" rightMargin="5" topMargin="5" bottomMargin="5" uuid="1d7da0f5-2b68-4270-8eac-b439ba47837d">
 	<property name="ireport.zoom" value="1.2100000000000006"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="247"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="PROVEEDOR_ID_DESDE" class="java.lang.String">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
@@ -210,7 +210,7 @@ group by sub.ordenId, sub.articuloId]]>
 				<text><![CDATA[Código]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="201" y="0" width="263" height="20" uuid="863cd555-0351-4cc7-a04d-42f6de2d918a"/>
+				<reportElement x="201" y="0" width="253" height="20" uuid="863cd555-0351-4cc7-a04d-42f6de2d918a"/>
 				<box leftPadding="3" rightPadding="0">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -222,7 +222,7 @@ group by sub.ordenId, sub.articuloId]]>
 				<text><![CDATA[Descripción]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="464" y="0" width="60" height="20" uuid="0d62b045-ceb5-4e20-a84b-ae55e2b50936"/>
+				<reportElement x="454" y="0" width="60" height="20" uuid="0d62b045-ceb5-4e20-a84b-ae55e2b50936"/>
 				<box leftPadding="3" rightPadding="0">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -234,7 +234,7 @@ group by sub.ordenId, sub.articuloId]]>
 				<text><![CDATA[Comprado]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="524" y="0" width="60" height="20" uuid="93cad9db-8ede-41b8-9cc2-63ccc778695c"/>
+				<reportElement x="514" y="0" width="60" height="20" uuid="93cad9db-8ede-41b8-9cc2-63ccc778695c"/>
 				<box leftPadding="3" rightPadding="0">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -246,7 +246,7 @@ group by sub.ordenId, sub.articuloId]]>
 				<text><![CDATA[Cumplido]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="584" y="0" width="60" height="20" uuid="c4ca5d95-4f2f-4508-aad4-993ce21eb62d"/>
+				<reportElement x="574" y="0" width="60" height="20" uuid="c4ca5d95-4f2f-4508-aad4-993ce21eb62d"/>
 				<box leftPadding="3" rightPadding="0">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -258,7 +258,7 @@ group by sub.ordenId, sub.articuloId]]>
 				<text><![CDATA[Saldo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="644" y="0" width="60" height="20" uuid="8f53bd4a-9335-475b-b387-9b9eea9bc72e"/>
+				<reportElement x="634" y="0" width="60" height="20" uuid="8f53bd4a-9335-475b-b387-9b9eea9bc72e"/>
 				<box leftPadding="3" rightPadding="0">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -270,7 +270,7 @@ group by sub.ordenId, sub.articuloId]]>
 				<text><![CDATA[Precio/U]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="704" y="0" width="73" height="20" uuid="ddc8c87f-6f69-429d-9e7f-52d906778822"/>
+				<reportElement x="694" y="0" width="73" height="20" uuid="ddc8c87f-6f69-429d-9e7f-52d906778822"/>
 				<box leftPadding="3" rightPadding="0">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -282,7 +282,7 @@ group by sub.ordenId, sub.articuloId]]>
 				<text><![CDATA[SubTotal]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="777" y="0" width="55" height="20" uuid="50965632-c361-4317-ad15-05526b5a615d"/>
+				<reportElement x="767" y="0" width="65" height="20" uuid="50965632-c361-4317-ad15-05526b5a615d"/>
 				<box leftPadding="3" rightPadding="0">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -322,43 +322,43 @@ group by sub.ordenId, sub.articuloId]]>
 				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="201" y="0" width="263" height="20" uuid="c32e434e-e7c8-4868-8744-050f5f664f1d"/>
+				<reportElement x="201" y="0" width="253" height="20" uuid="c32e434e-e7c8-4868-8744-050f5f664f1d"/>
 				<box leftPadding="2" rightPadding="0"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="464" y="0" width="60" height="20" uuid="55eb76cb-335a-45f8-8cc2-802d757e989f"/>
+				<reportElement x="454" y="0" width="60" height="20" uuid="55eb76cb-335a-45f8-8cc2-802d757e989f"/>
 				<box leftPadding="2" rightPadding="0"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{compradoTotal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="524" y="0" width="60" height="20" uuid="60db1972-4d7e-4abf-99ed-77a918916d4a"/>
+				<reportElement x="514" y="0" width="60" height="20" uuid="60db1972-4d7e-4abf-99ed-77a918916d4a"/>
 				<box leftPadding="2" rightPadding="0"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{ingresado}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="644" y="0" width="60" height="20" uuid="ff02e293-4b6d-4200-97f1-6f6907e619fe"/>
+				<reportElement x="634" y="0" width="60" height="20" uuid="ff02e293-4b6d-4200-97f1-6f6907e619fe"/>
 				<box leftPadding="2" rightPadding="0"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$V{PRECIO}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="777" y="0" width="55" height="20" uuid="470e4016-0528-48c8-ae85-7bcd3cf51c8e"/>
+				<reportElement x="767" y="0" width="65" height="20" uuid="470e4016-0528-48c8-ae85-7bcd3cf51c8e"/>
 				<box leftPadding="2" rightPadding="0"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{fechaEntrega}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="704" y="0" width="73" height="20" uuid="e7e47c66-96a9-4308-8479-6400dbf4f70d"/>
+				<reportElement x="694" y="0" width="73" height="20" uuid="e7e47c66-96a9-4308-8479-6400dbf4f70d"/>
 				<box leftPadding="2" rightPadding="0"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{comprado}*$V{PRECIO}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="584" y="0" width="60" height="20" uuid="4e72b922-dc60-45e3-8037-c9e9edbf3ccd"/>
+				<reportElement x="574" y="0" width="60" height="20" uuid="4e72b922-dc60-45e3-8037-c9e9edbf3ccd"/>
 				<box leftPadding="2" rightPadding="0"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{compradoTotal} - $F{ingresado}  < 0 ?
