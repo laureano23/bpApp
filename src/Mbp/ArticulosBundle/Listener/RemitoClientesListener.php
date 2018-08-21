@@ -19,10 +19,9 @@ class RemitoClientesListener
         foreach ($entity->getDetalleRemito() as $detalle) {        	
         	//AJUSTAMOS STOCK DE ARTICULO
         	$articulo = $detalle->getArticuloId();
-        	$articulo->setStock($articulo->getStock() - $detalle->getCantidad());
-        	$entityManager->persist($articulo);        	
-
-
+            $articulo->setStock($articulo->getStock() - $detalle->getCantidad());
+            $articulo->setFechaStock(new \DateTime());
+        	$entityManager->persist($articulo);       
         }
 
         //AUMENTO EN 1 EL NUMERO DE REMITO

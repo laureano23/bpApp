@@ -317,7 +317,7 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 												{
 													xtype: 'datefield',
 													labelWidth: 80,
-													width: 180,
+													width: 230,
 													margin: '0 0 0 5',
 													name: 'fechaStock',
 													itemId: 'fechaStock',
