@@ -2,4 +2,7 @@ parameters:
 #    mbp_produccion.example.class: Mbp\ProduccionBundle\Example
 
 services:
-
+  cierreOT.listener:
+        class: Mbp\ProduccionBundle\Listeners\CierreOTListener
+        tags:
+            - { name: doctrine.event_listener, event: postUpdate }

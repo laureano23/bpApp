@@ -117,6 +117,7 @@ Ext.define('MetApp.controller.Produccion.Programacion.ProgramacionController', {
 				});
 				
 			}else{
+				store.suspendEvents();
 				Ext.Ajax.request({
 					url: Routing.generate('mbp_produccion_ActualizarEstadoOt'),
 					
@@ -125,10 +126,11 @@ Ext.define('MetApp.controller.Produccion.Programacion.ProgramacionController', {
 					},
 							
 					success: function(resp){
+						store.resumeEvents();
 					},
 					
 					failure: function(resp){
-						
+						store.resumeEvents();
 					}
 				})	
 			}				
