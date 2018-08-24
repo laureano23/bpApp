@@ -76,9 +76,10 @@ Ext.define('MetApp.controller.Produccion.PedidoClientes.PedidoClientesController
 	},
 	
 	ModificarPedido: function(btn){
-		console.log(btn);
 		var win = Ext.widget('ModificacionPedidosView');
 		var store = win.down('grid').getStore();
+		
+		store.clearFilter(true);
 		store.load();
 	},
 	
