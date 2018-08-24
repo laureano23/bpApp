@@ -918,7 +918,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var selection = grid.getSelectionModel().getSelection()[0];
 		
 		formItemCob.loadRecord(selection);
-		grid.getStore().removeAll();
+		grid.getStore().remove(selection);
 	},
 	
 	EliminaItemCob: function(btn){
