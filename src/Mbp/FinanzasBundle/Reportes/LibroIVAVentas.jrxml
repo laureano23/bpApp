@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LibroIVAVentas" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="c4b105ad-c9d2-4e6e-aab2-f046571798ae">
-	<property name="ireport.zoom" value="1.1000000000000052"/>
-	<property name="ireport.x" value="178"/>
+	<property name="ireport.zoom" value="1.3310000000000064"/>
+	<property name="ireport.x" value="197"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="fechaDesde" class="java.lang.String">
 		<defaultValueExpression><![CDATA[01/01/2001]]></defaultValueExpression>
@@ -132,18 +132,24 @@ $F{Facturas_total}*-1:
 $F{Facturas_total}]]></variableExpression>
 	</variable>
 	<variable name="sumaIVA" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == true ?
-$F{Facturas_iva21} * -1:
-$F{Facturas_iva21}]]></variableExpression>
+		<variableExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == true?
+$F{Facturas_iva21} * -1*$F{Facturas_tipoCambio}:
+$F{Facturas_iva21} * $F{Facturas_tipoCambio}]]></variableExpression>
 	</variable>
 	<variable name="sumaNeto" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == true ?
- ($F{Facturas_total}-$F{Facturas_iva21}-$F{Facturas_perIIBB})*-1:
- $F{Facturas_total} -$F{Facturas_iva21}-$F{Facturas_perIIBB}]]></variableExpression>
+		<variableExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == true?
+ ($F{netoGrabado}-$F{Facturas_dtoTotal})*-1*$F{Facturas_tipoCambio}:
+ ($F{netoGrabado}-$F{Facturas_dtoTotal})*$F{Facturas_tipoCambio}]]></variableExpression>
 	</variable>
 	<variable name="sumaPer" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == true? (-1*$F{Facturas_perIIBB}):
-$F{Facturas_perIIBB}]]></variableExpression>
+		<variableExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == true?
+(-1*$F{Facturas_perIIBB})*$F{Facturas_tipoCambio}:
+$F{Facturas_perIIBB}*$F{Facturas_tipoCambio}]]></variableExpression>
+	</variable>
+	<variable name="sumaNoGrabado" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == true?
+ ($F{netoNoGrabado})*-1*$F{Facturas_tipoCambio}:
+ ($F{netoNoGrabado})*$F{Facturas_tipoCambio}]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -237,7 +243,7 @@ $F{Facturas_perIIBB}]]></variableExpression>
 				<text><![CDATA[Neto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="527" y="0" width="65" height="20" uuid="5b8730a7-093e-41ce-a3df-473d89bda073"/>
+				<reportElement x="527" y="0" width="88" height="20" uuid="5b8730a7-093e-41ce-a3df-473d89bda073"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
@@ -245,7 +251,7 @@ $F{Facturas_perIIBB}]]></variableExpression>
 				<text><![CDATA[No Grav.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="592" y="0" width="60" height="20" uuid="2154dabc-45b4-4fd9-9c43-08f013e60d3a"/>
+				<reportElement x="615" y="0" width="60" height="20" uuid="2154dabc-45b4-4fd9-9c43-08f013e60d3a"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
@@ -253,7 +259,7 @@ $F{Facturas_perIIBB}]]></variableExpression>
 				<text><![CDATA[IVA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="652" y="0" width="41" height="20" uuid="8e322a4b-fb96-45d4-b9f8-f89d952e95ef"/>
+				<reportElement x="675" y="0" width="41" height="20" uuid="8e322a4b-fb96-45d4-b9f8-f89d952e95ef"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
@@ -261,7 +267,7 @@ $F{Facturas_perIIBB}]]></variableExpression>
 				<text><![CDATA[% Per.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="693" y="0" width="41" height="20" uuid="24378ca0-9f75-405a-bdcb-3a624408ca75"/>
+				<reportElement x="716" y="0" width="41" height="20" uuid="24378ca0-9f75-405a-bdcb-3a624408ca75"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
@@ -270,7 +276,7 @@ $F{Facturas_perIIBB}]]></variableExpression>
 IIBB]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="734" y="0" width="88" height="20" uuid="764031f7-4b5e-4909-8878-1fd5d22c7633"/>
+				<reportElement x="757" y="0" width="65" height="20" uuid="764031f7-4b5e-4909-8878-1fd5d22c7633"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
@@ -333,39 +339,39 @@ $F{TipoComprobante_esNotaDebito} && $F{TipoComprobante_subTipoE} ? "NDE" : ""]]>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="444" y="0" width="83" height="20" uuid="7870462e-fbe8-4d4d-9cc2-bf3e9e021a25"/>
 				<box leftPadding="2"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{Facturas_moneda}==false ?
 $F{netoGrabado}-$F{Facturas_dtoTotal}:
 ($F{netoGrabado}-$F{Facturas_dtoTotal})*$F{Facturas_tipoCambio}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="527" y="0" width="65" height="20" uuid="4e650972-1270-41a3-91d0-ff9c9c222559"/>
+				<reportElement x="527" y="0" width="88" height="20" uuid="4e650972-1270-41a3-91d0-ff9c9c222559"/>
 				<box leftPadding="2"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{netoNoGrabado}]]></textFieldExpression>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{netoNoGrabado}*$F{Facturas_tipoCambio}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="592" y="0" width="60" height="20" uuid="354ab5c2-3085-44a7-abf7-1890d8dfc38d"/>
+				<reportElement x="615" y="0" width="60" height="20" uuid="354ab5c2-3085-44a7-abf7-1890d8dfc38d"/>
 				<box leftPadding="2"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{Facturas_iva21}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="693" y="0" width="41" height="20" uuid="5e8a1e23-f3bf-45a5-aec3-9ce3f02098d2"/>
+				<reportElement x="716" y="0" width="41" height="20" uuid="5e8a1e23-f3bf-45a5-aec3-9ce3f02098d2"/>
 				<box leftPadding="2"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{Facturas_perIIBB}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="734" y="0" width="88" height="20" uuid="292efa0a-1a1f-453b-871b-7cda0d71ae96"/>
+				<reportElement x="757" y="0" width="65" height="20" uuid="292efa0a-1a1f-453b-871b-7cda0d71ae96"/>
 				<box leftPadding="0" rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{Facturas_total}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="652" y="0" width="41" height="20" uuid="2c4e9fb7-bae7-4024-bc1b-dc5e0a4c1657"/>
+				<reportElement x="675" y="0" width="41" height="20" uuid="2c4e9fb7-bae7-4024-bc1b-dc5e0a4c1657"/>
 				<box leftPadding="2"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{Facturas_porcentajeIIBB}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -429,25 +435,33 @@ $F{netoGrabado}-$F{Facturas_dtoTotal}:
 				<reportElement x="421" y="0" width="106" height="20" uuid="2ad39750-5a66-4e96-a592-8e7a3a95791b"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font isBold="true"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumaNeto}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="592" y="0" width="78" height="20" uuid="24f1b63d-e31f-4a48-9c2a-49b36a70e4e2"/>
+				<reportElement x="615" y="0" width="60" height="20" uuid="24f1b63d-e31f-4a48-9c2a-49b36a70e4e2"/>
 				<box leftPadding="2"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumaIVA}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="670" y="0" width="87" height="20" uuid="58c197db-4c70-431e-8d1e-ba5af9e76e2a"/>
+				<reportElement x="675" y="0" width="87" height="20" uuid="58c197db-4c70-431e-8d1e-ba5af9e76e2a"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font isBold="true"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumaPer}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="527" y="0" width="88" height="20" uuid="d0303632-304e-4855-9df3-f8363a8e4291"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumaNoGrabado}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>
