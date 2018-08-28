@@ -91,7 +91,19 @@ Ext.define('MetApp.controller.Articulos.StockController',{
 		var form=grid.up('form').getForm();
 		var myMask = new Ext.LoadMask(grid, {msg:"Cargando..."});
 		
-		form.submit({
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_formulas_etiquetaIngresoMaterial'),
+			params: {
+				id: selection.data.id
+			},
+			success: function(resp){
+				var ruta = Routing.generate('mbp_formulas_muestraReporteEtiquetaIngreso');						
+				window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+				
+				myMask.hide();
+			}
+		})
+		/*form.submit({
 			target: '_blank',
 			standardSubmit: true,
 			url: Routing.generate('mbp_formulas_etiquetaIngresoMaterial'),
@@ -99,8 +111,12 @@ Ext.define('MetApp.controller.Articulos.StockController',{
 				id: selection.data.id
 			},
 			success: function(){
+				var ruta = Routing.generate('mbp_formulas_muestraReporteEtiquetaIngreso');						
+				window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+				
+				myMask.hide();
 			}
-		});
+		});*/
 	},
 	
 	BuscarOrigenStock: function(btn){

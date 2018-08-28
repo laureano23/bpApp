@@ -192,7 +192,7 @@ WHERE
 				<text><![CDATA[Proveedor:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="4" y="143" width="54" height="15" uuid="450e2b87-8c54-4d03-a76f-6bc929818312"/>
+				<reportElement x="4" y="143" width="81" height="15" uuid="450e2b87-8c54-4d03-a76f-6bc929818312"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Left">
 					<font size="10" isBold="true"/>
@@ -200,7 +200,7 @@ WHERE
 				<text><![CDATA[N° de Lote:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="4" y="158" width="66" height="15" uuid="7b230629-1376-439f-a428-2b810d68d6fd"/>
+				<reportElement x="4" y="158" width="81" height="15" uuid="7b230629-1376-439f-a428-2b810d68d6fd"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Left">
 					<font size="10" isBold="true"/>
@@ -260,14 +260,14 @@ WHERE
 				<textFieldExpression><![CDATA[$F{Proveedor_rsocial} == null ? $F{cliente_rsocial} : $F{Proveedor_rsocial}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="62" y="143" width="88" height="15" uuid="c11005c1-7567-426b-b3f0-a49decfd163e"/>
+				<reportElement x="85" y="143" width="65" height="15" uuid="c11005c1-7567-426b-b3f0-a49decfd163e"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{DetalleMovArt_loteNum}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="73" y="158" width="77" height="15" uuid="83ed15c5-5f03-41b8-837f-0c20561bb512"/>
+				<reportElement x="85" y="158" width="65" height="15" uuid="83ed15c5-5f03-41b8-837f-0c20561bb512"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>

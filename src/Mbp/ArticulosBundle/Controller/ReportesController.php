@@ -202,11 +202,12 @@ class ReportesController extends Controller
 			//Exportamos el reporte
 			$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
 						
-			$nombreReporte="IngresoStock.pdf";
-			print_r("entramos");
-			$response=$repo->servirReportePDF($nombreReporte, $destino);
-
-	        return $response;
+			return new Response(
+				json_encode(array(
+					'success' => true,
+					'reporte' => $destino,	
+				))
+			);
 		}catch(\Exception $e){
 			print($e);
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -218,6 +219,26 @@ class ReportesController extends Controller
 			);
 		}
 			
+	}
+
+	/**
+     * @Route("/muestraReporteEtiquetaIngreso", name="mbp_formulas_muestraReporteEtiquetaIngreso", options={"expose"=true})
+     */
+	public function muestraReporteEtiquetaIngreso()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpArticulosBundle/Resources/public/pdf/').'IngresoStock.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'IngresoStock.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+
+        return $response;
 	}
 	
 		
