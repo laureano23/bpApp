@@ -264,7 +264,7 @@ WHERE
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{DetalleMovArt_loteNum}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{DetalleMovArt_id}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="85" y="158" width="65" height="15" uuid="83ed15c5-5f03-41b8-837f-0c20561bb512"/>
