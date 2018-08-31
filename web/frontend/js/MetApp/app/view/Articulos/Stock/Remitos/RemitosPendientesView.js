@@ -32,6 +32,7 @@ Ext.define('MetApp.view.Articulos.Stock.Remitos.RemitosPendientesView' ,{
 								{header: 'Cliente', dataIndex: 'cliente', width: 300},
 								{header: 'OC', dataIndex: 'oc', flex: 1},
 								{header: 'Pedido N°', dataIndex: 'pedido', flex: 1},
+								{header: 'Remito N°', dataIndex: 'remitoNum', flex: 1},
 								{ xtype : 'checkcolumn', text : 'Marca', dataIndex: 'facturado' }
 							]
 						},
