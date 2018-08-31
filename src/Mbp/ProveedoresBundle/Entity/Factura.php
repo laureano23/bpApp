@@ -8,7 +8,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * FacturaProveedor
  *
- * @ORM\Table(name="FacturaProveedor")
+ * @ORM\Table(name="FacturaProveedor",
+ *      uniqueConstraints={
+ *          @ORM\UniqueConstraint(name="unicoComprobante",
+ *          columns= {"tipoId", "sucursal", "numFc", "proveedorId"})
+ *      })
  * @ORM\Entity(repositoryClass="Mbp\ProveedoresBundle\Entity\FacturaRepository")
  */
 class Factura

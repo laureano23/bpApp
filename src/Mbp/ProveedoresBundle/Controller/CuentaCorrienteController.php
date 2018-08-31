@@ -21,6 +21,47 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class CuentaCorrienteController extends Controller
 {
+	/**
+     * @Route("/proveedores/cc/validarComprobante", name="mbp_proveedores_validarComprobante", options={"expose"=true})
+     */
+    public function validarComprobante()
+    {
+		$req = $this->getRequest();
+		$response = new Response;
+		$tipo = $req->request->get('tipo');
+		$sucursal = $req->request->get('sucursal');
+		$numFc = $req->request->get('numFc');
+		$idProv = $req->request->get('idProv');
+
+		$em = $this->getDoctrine()->getManager();
+		$repoFc = $em->getRepository('MbpProveedoresBundle:Factura');
+		$repoTipoCbpte = $em->getRepository('MbpFinanzasBundle:TipoComprobante');
+		$provRepo = $em->getRepository('MbpProveedoresBundle:Proveedor');
+
+		try{
+			$tipo=$repoTipoCbpte->find($tipo);
+			$proveedor=$provRepo->find($idProv);
+
+			$comprobate=$repoFc->findOneBy(array('tipoId'=>$tipo, 'sucursal'=>$sucursal, 'numFc'=>$numFc, 'proveedorId'=>$idProv));
+
+			if($comprobate!=null){
+				throw new \Exception("Este comprobante ya existe");			
+			}
+			
+			return $response->setContent(json_encode(array('success'=>true)));
+			
+		}catch(\Exception $e){
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(
+				json_encode(array(
+					'success' => false,
+					'msg' => $e->getMessage()
+				))
+			);
+		}
+		
+	}
+
     /**
      * @Route("/proveedores/cc/crearFcProveedor", name="mbp_proveedores_crearFcProveedor", options={"expose"=true})
      */

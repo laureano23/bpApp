@@ -25,37 +25,28 @@ Ext.define('MetApp.controller.Proveedores.FacturaProveedoresController',{
 			'FacturaProveedor field': {
 				change: this.CalculaTotal
 			},
-			/*'FacturaProveedor numberfield[itemId=neto]': {
-				blur: this.CalculaTotal
-			},
-			'FacturaProveedor numberfield[itemId=netoNoGrabado]': {
-				blur: this.CalculaTotal
-			},
-			'FacturaProveedor numberfield[itemId=iva21]': {
-				blur: this.CalculaTotal
-			},
-			'FacturaProveedor numberfield[itemId=iva27]': {
-				blur: this.CalculaTotal
-			},
-			'FacturaProveedor numberfield[itemId=iva10_5]': {
-				blur: this.CalculaTotal
-			},
-			'FacturaProveedor numberfield[itemId=perIva5]': {
-				blur: this.CalculaTotal
-			},
-			'FacturaProveedor numberfield[itemId=perIva3]': {
-				blur: this.CalculaTotal
-			},
-			'FacturaProveedor numberfield[itemId=iibbCf]': {
-				blur: this.CalculaTotal
-			},
-			'FacturaProveedor numberfield[itemId=vencimiento]': {
-				blur: this.CalculaTotal
-			},
-			'FacturaProveedor numberfield[itemId=vencimiento]': {
-				blur: this.CalculaTotal
-			},*/	
+			'FacturaProveedor numberfield[itemId=numFc]': {
+				blur: this.ValidarFactura
+			},	
 		});
+	},
+
+	ValidarFactura: function(txt){
+		var form=txt.up('form').getForm();
+		var formCC = this.getCCProveedores();
+		var idProv = formCC.queryById('id').getValue();
+
+		form.submit({
+			clientValidation: false,
+			url: Routing.generate('mbp_proveedores_validarComprobante'),
+			params: {
+				idProv: idProv
+			},
+			success: function(form, action){
+				console.log(form);
+				console.log(action);
+			}
+		})
 	},
 	
 	CalculaFechaVencimiento: function(btn){
