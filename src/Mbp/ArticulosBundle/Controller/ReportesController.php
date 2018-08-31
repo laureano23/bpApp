@@ -14,6 +14,80 @@ use Mbp\ArticulosBundle\Entity\Formulas;
 class ReportesController extends Controller
 {
 	/**
+     * @Route("/etiquetaArticulo", name="mbp_formulas_etiquetaArticulo", options={"expose"=true})
+     */
+	public function etiquetaArticulo()
+	{
+		$repo = $this->get('reporteador');		
+		$kernel = $this->get('kernel');	
+		$req = $this->getRequest();
+		$response = new Response;
+		
+		try{			
+			$codigo = $req->request->get('codigo');
+			$cliente = $req->request->get('cliente');
+			$numSerie = $req->request->get('numSerie');
+			$jru = $repo->jru();
+					
+			$ruta = $kernel->locateResource('@MbpArticulosBundle/Reportes/EtiquetaArticulo.jasper');
+			
+			//Ruta de destino
+			$destino = $kernel->locateResource('@MbpArticulosBundle/Resources/public/pdf/').'EtiquetaArticulo.pdf';
+			$rutaLogo = $repo->getRutaLogo($kernel);
+
+			//Parametros HashMap
+			$param = $repo->getJava('java.util.HashMap');
+			$param->put('codigo', $codigo);
+			$param->put('cliente', $cliente);
+			$param->put('numSerie', $numSerie);
+			$param->put('rutaLogo', $rutaLogo);
+
+					
+			$conn = $repo->getJdbc();
+			
+			
+			//Exportamos el reporte
+			$jru->runReportToPdfFile($ruta, $destino, $param, $conn->getConnection());
+						
+			return $response->setContent(
+				json_encode(array(
+					'success' => true,
+					'reporte' => $destino,	
+				))
+			);
+		}catch(\Exception $e){
+			print($e);
+			return $response->setContent(
+				json_encode(array(
+					'success' => false,
+					'msg' => $e->getMessage(),	
+				))
+			);
+		}
+			
+	}
+
+	/**
+     * @Route("/etiquetaArticuloPDF", name="mbp_formulas_etiquetaArticuloPDF", options={"expose"=true})
+     */
+	public function etiquetaArticuloPDF()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpArticulosBundle/Resources/public/pdf/').'EtiquetaArticulo.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'EtiquetaArticulo.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+
+        return $response;
+	}
+	
+	/**
      * @Route("/enQueFormulas", name="mbp_formulas_enQueFormulas", options={"expose"=true})
      */
 	public function enQueFormulas()
@@ -71,7 +145,6 @@ class ReportesController extends Controller
 				))
 			);
 		}catch(\Exception $e){
-			print($e);
 			return $response->setContent(
 				json_encode(array(
 					'success' => false,

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EtiquetaArticulo" language="groovy" pageWidth="155" pageHeight="322" whenNoDataType="AllSectionsNoDetail" columnWidth="153" leftMargin="1" rightMargin="1" topMargin="1" bottomMargin="1" isSummaryWithPageHeaderAndFooter="true" uuid="a53167e1-af4e-451d-b80c-4314fb21d831">
+	<property name="ireport.zoom" value="1.4641000000000035"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.unit." value="mm"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="rutaLogo" class="java.lang.String"/>
+	<parameter name="codigo" class="java.lang.String"/>
+	<parameter name="cliente" class="java.lang.String"/>
+	<parameter name="numSerie" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="movimientos_detalles_movimientosarticulos_id" class="java.lang.Integer"/>
+	<field name="movimientos_detalles_detallemovart_id" class="java.lang.Integer"/>
+	<field name="MovimientosArticulos_id" class="java.lang.Integer"/>
+	<field name="MovimientosArticulos_fechaMovimiento" class="java.sql.Date"/>
+	<field name="MovimientosArticulos_tipoMovimiento" class="java.lang.Boolean"/>
+	<field name="MovimientosArticulos_observaciones" class="java.lang.String"/>
+	<field name="MovimientosArticulos_comprobanteNum" class="java.lang.String"/>
+	<field name="MovimientosArticulos_conceptoId" class="java.lang.Integer"/>
+	<field name="MovimientosArticulos_proveedorId" class="java.lang.Integer"/>
+	<field name="MovimientosArticulos_clienteId" class="java.lang.Integer"/>
+	<field name="MovimientosArticulos_depositoId" class="java.lang.Integer"/>
+	<field name="DetalleMovArt_id" class="java.lang.Integer"/>
+	<field name="DetalleMovArt_cantidad" class="java.math.BigDecimal"/>
+	<field name="DetalleMovArt_loteNum" class="java.lang.Integer"/>
+	<field name="DetalleMovArt_descripcion" class="java.lang.String"/>
+	<field name="DetalleMovArt_ordenCompraDetalleId" class="java.lang.Integer"/>
+	<field name="DetalleMovArt_articuloId" class="java.lang.Integer"/>
+	<field name="cliente_idCliente" class="java.lang.Integer"/>
+	<field name="cliente_rsocial" class="java.lang.String"/>
+	<field name="cliente_denominacion" class="java.lang.String"/>
+	<field name="Proveedor_id" class="java.lang.Integer"/>
+	<field name="Proveedor_provincia" class="java.lang.String"/>
+	<field name="Proveedor_rsocial" class="java.lang.String"/>
+	<field name="articulos_idArticulos" class="java.lang.Integer"/>
+	<field name="articulos_codigo" class="java.lang.String"/>
+	<field name="OrdenCompraDetalle_id" class="java.lang.Integer"/>
+	<field name="OrdenCompraDetalle_unidad" class="java.lang.String"/>
+	<field name="OrdenCompraDetalle_precio" class="java.math.BigDecimal"/>
+	<field name="OrdenCompraDetalle_cant" class="java.math.BigDecimal"/>
+	<field name="OrdenCompraDetalle_fechaEntrega" class="java.sql.Date"/>
+	<field name="OrdenCompraDetalle_iva" class="java.math.BigDecimal"/>
+	<field name="OrdenCompraDetalle_ivaCalculado" class="java.math.BigDecimal"/>
+	<field name="OrdenCompraDetalle_moneda" class="java.lang.Boolean"/>
+	<field name="OrdenCompraDetalle_articuloId" class="java.lang.Integer"/>
+	<field name="OrdenCompraDetalle_descripcion" class="java.lang.String"/>
+	<field name="ordenCompra_detallesOrdenCompra_orden_id" class="java.lang.Integer"/>
+	<field name="ordenCompra_detallesOrdenCompra_ordencompradetalle_id" class="java.lang.Integer"/>
+	<field name="OrdenCompra_id" class="java.lang.Integer"/>
+	<field name="OrdenCompra_usuario" class="java.lang.String"/>
+	<field name="OrdenCompra_fechaEmision" class="java.sql.Date"/>
+	<field name="OrdenCompra_monedaOC" class="java.lang.Boolean"/>
+	<field name="OrdenCompra_condicionCompra" class="java.lang.String"/>
+	<field name="OrdenCompra_lugarEntrega" class="java.lang.String"/>
+	<field name="OrdenCompra_observaciones" class="java.lang.String"/>
+	<field name="OrdenCompra_descuentoGral" class="java.math.BigDecimal"/>
+	<field name="OrdenCompra_tc" class="java.math.BigDecimal"/>
+	<field name="OrdenCompra_proveedorId" class="java.lang.Integer"/>
+	<field name="OrdenCompra_anulada" class="java.lang.Boolean"/>
+	<columnHeader>
+		<band height="320">
+			<staticText>
+				<reportElement x="6" y="9" width="145" height="33" uuid="1e71de8d-8a04-4bfa-8503-d9660fc97b29"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Left">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Código:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="85" width="145" height="36" uuid="28157a17-e34a-414e-9846-2b00a96099ab"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Left">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Proveedor/Cliente:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="164" width="143" height="25" uuid="450e2b87-8c54-4d03-a76f-6bc929818312"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Left">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[N° de Serie:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="7" y="42" width="144" height="43" uuid="4e66aa64-805e-4962-aa63-b8c3d0ec4817"/>
+				<textElement verticalAlignment="Top">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{codigo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="7" y="121" width="147" height="43" uuid="6cdeac86-2770-4cbd-8662-eeefad945c19"/>
+				<textElement verticalAlignment="Top">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cliente}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="6" y="189" width="144" height="23" uuid="c11005c1-7567-426b-b3f0-a49decfd163e"/>
+				<textElement verticalAlignment="Top">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numSerie}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement x="6" y="224" width="145" height="83" uuid="d19f3075-45a6-4e51-a0fd-8f4b3a1b2e72"/>
+				<imageExpression><![CDATA[$P{rutaLogo}]]></imageExpression>
+			</image>
+		</band>
+	</columnHeader>
+</jasperReport>

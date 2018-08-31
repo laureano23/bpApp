@@ -4,7 +4,8 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 		'Articulos.ArticulosForm',
 		'Articulos.WinArticuloSearch',
 		'Articulos.ArticuloSearchGrd',
-		'Articulos.ArticulosFormulas'
+		'Articulos.ArticulosFormulas',
+		'Articulos.FormEtiquetaArticuloView'
 		],
 	stores: ['Articulos.Articulos', 'Articulos.Formula', 'MetApp.store.Proveedores.ProveedoresStore'],
 	
@@ -65,8 +66,46 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 				},
 				'articulosform button[itemId=otsPendientes]': {
 					click: this.VerOtsPendientes
+				},
+				'articulosform button[itemId=etiqueta]': {
+					click: this.FormEtiqueta
+				},
+				'FormEtiquetaArticuloView button[itemId=imprimir]': {
+					click: this.ImprimirEtiqueta
 				}
 		});		
+	},
+
+	ImprimirEtiqueta: function(btn){
+	var form=btn.up('window').down('form').getForm();
+	var values=form.getValues();
+	console.log(values);
+	Ext.Ajax.request({
+			url: Routing.generate('mbp_formulas_etiquetaArticulo'),
+			params: {
+				codigo: values.codigo,
+				cliente: values.cliente,
+				numSerie: 1
+			},
+			success: function(resp){
+				var jsonResp=Ext.JSON.decode(resp.responseText);
+				if(jsonResp.success == true){
+					var ruta = Routing.generate('mbp_formulas_etiquetaArticuloPDF');
+					window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');					
+				}
+			}
+		})
+	},
+
+	FormEtiqueta: function(btn){
+		var form=btn.up('window').down('form').getForm();
+		var values=form.getValues();
+		
+		var winEtiqueta=Ext.widget('FormEtiquetaArticuloView');
+		var formEtiqueta=winEtiqueta.down('form').getForm();
+
+		formEtiqueta.setValues(values);
+		
 	},
 
 	VerOtsPendientes: function(btn){

@@ -151,13 +151,16 @@ class JRU  {
 		try {           
 			$JasperRunManager =  new Java (
 				'net.sf.jasperreports.engine.JasperRunManager');			
-				
-			if(!isset($conn))
+			
+			if(!isset($conn)){
 				$JasperRunManager->runReportToPdfFile($inputFileName,$outputFileName,
 					$parameters);
-			else			
+				
+			}else{
 				$JasperRunManager->runReportToPdfFile($inputFileName,$outputFileName,
 					$parameters, $conn);
+			}			
+				
 				
 			return true;
 			

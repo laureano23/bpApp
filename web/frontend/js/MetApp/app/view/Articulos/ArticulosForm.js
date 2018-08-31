@@ -335,44 +335,64 @@ Ext.define('MetApp.view.Articulos.ArticulosForm', {
 										},
 										{
 											xtype: 'container',
-											layout: 'vbox',
-											margin: '5 0 0 5',
-											defaults: {
-												disabledCls: 'myDisabledClass',
-												readOnly: true,
-												allowBlank: true,
-												store: 'MetApp.store.Proveedores.ProveedoresStore',
-												displayField: 'rsocial',
-												valueField: 'id',
-												margins: '0 5 0 0',
-												forceSelection: true,
-												queryMode: 'local',
-												typeAhead: true,							
-												minChars: 1,
-												width: 350
-											},
-											margins: '0 5 0 8',
+											layout: 'column',
 											items: [
 												{
-													xtype: 'combobox',
-													name: 'provSug1',
-													itemId: 'provSug1',															
-													fieldLabel: 'Proveedor 1'															
+													xtype: 'container',
+													columnWidth: 0.5,
+													layout: 'vbox',
+													margin: '5 0 0 5',
+													defaults: {
+														disabledCls: 'myDisabledClass',
+														readOnly: true,
+														allowBlank: true,
+														store: 'MetApp.store.Proveedores.ProveedoresStore',
+														displayField: 'rsocial',
+														valueField: 'id',
+														margins: '0 5 0 0',
+														forceSelection: true,
+														queryMode: 'local',
+														typeAhead: true,							
+														minChars: 1,
+														width: 350
+													},
+													margins: '0 5 0 8',
+													items: [
+														{
+															xtype: 'combobox',
+															name: 'provSug1',
+															itemId: 'provSug1',															
+															fieldLabel: 'Proveedor 1'															
+														},
+														{
+															xtype: 'combobox',
+															name: 'provSug2',
+															itemId: 'provSug2',
+															fieldLabel: 'Proveedor 2'
+														},
+														{
+															xtype: 'combobox',
+															name: 'provSug3',
+															itemId: 'provSug3',
+															fieldLabel: 'Proveedor 3'
+														}
+													]
 												},
 												{
-													xtype: 'combobox',
-													name: 'provSug2',
-													itemId: 'provSug2',
-													fieldLabel: 'Proveedor 2'
-												},
-												{
-													xtype: 'combobox',
-													name: 'provSug3',
-													itemId: 'provSug3',
-													fieldLabel: 'Proveedor 3'
+													xtype: 'container',
+													columnWidth: 0.5,
+													margin: '5 0 0 5',
+													items: [
+														{
+															xtype: 'button',
+															text: 'Etiqueta',
+															iconCls: 'reportes2',
+															itemId: 'etiqueta'
+														}
+													]
 												}
 											]
-										},								
+										},																		
 										{
 											xtype: 'checkbox',
 											readOnly: true,
