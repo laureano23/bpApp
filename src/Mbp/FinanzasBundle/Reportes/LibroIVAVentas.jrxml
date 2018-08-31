@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LibroIVAVentas" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="c4b105ad-c9d2-4e6e-aab2-f046571798ae">
-	<property name="ireport.zoom" value="1.3310000000000064"/>
-	<property name="ireport.x" value="197"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="2.357947691000012"/>
+	<property name="ireport.x" value="1396"/>
+	<property name="ireport.y" value="132"/>
 	<parameter name="fechaDesde" class="java.lang.String">
 		<defaultValueExpression><![CDATA[01/01/2001]]></defaultValueExpression>
 	</parameter>
@@ -340,39 +340,53 @@ $F{TipoComprobante_esNotaDebito} && $F{TipoComprobante_subTipoE} ? "NDE" : ""]]>
 				<reportElement x="444" y="0" width="83" height="20" uuid="7870462e-fbe8-4d4d-9cc2-bf3e9e021a25"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{Facturas_moneda}==false ?
-$F{netoGrabado}-$F{Facturas_dtoTotal}:
-($F{netoGrabado}-$F{Facturas_dtoTotal})*$F{Facturas_tipoCambio}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{TipoComprobante_esNotaCredito}==true?
+    $F{Facturas_moneda}==false ?
+    -1.0*($F{netoGrabado}-$F{Facturas_dtoTotal}):
+    -1.0*($F{netoGrabado}-$F{Facturas_dtoTotal})*$F{Facturas_tipoCambio}:
+    $F{Facturas_moneda}==false ?
+    $F{netoGrabado}-$F{Facturas_dtoTotal}:
+    ($F{netoGrabado}-$F{Facturas_dtoTotal})*$F{Facturas_tipoCambio}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="527" y="0" width="88" height="20" uuid="4e650972-1270-41a3-91d0-ff9c9c222559"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{netoNoGrabado}*$F{Facturas_tipoCambio}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == true ?
+-1.0*$F{netoNoGrabado}*$F{Facturas_tipoCambio}:
+$F{netoNoGrabado}*$F{Facturas_tipoCambio}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="615" y="0" width="60" height="20" uuid="354ab5c2-3085-44a7-abf7-1890d8dfc38d"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{Facturas_iva21}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{TipoComprobante_esNotaCredito}==true?
+-1.0*$F{Facturas_iva21}*$F{Facturas_tipoCambio}:
+$F{Facturas_iva21}*$F{Facturas_tipoCambio}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="716" y="0" width="41" height="20" uuid="5e8a1e23-f3bf-45a5-aec3-9ce3f02098d2"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{Facturas_perIIBB}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{TipoComprobante_esNotaCredito}==true?
+-1.0*$F{Facturas_perIIBB}*$F{Facturas_tipoCambio}:
+$F{Facturas_perIIBB}*$F{Facturas_tipoCambio}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="757" y="0" width="65" height="20" uuid="292efa0a-1a1f-453b-871b-7cda0d71ae96"/>
 				<box leftPadding="0" rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{Facturas_total}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{TipoComprobante_esNotaCredito}==true?
+-1.0*$F{Facturas_total}*$F{Facturas_tipoCambio}:
+$F{Facturas_total}*$F{Facturas_tipoCambio}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="675" y="0" width="41" height="20" uuid="2c4e9fb7-bae7-4024-bc1b-dc5e0a4c1657"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{Facturas_porcentajeIIBB}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{TipoComprobante_esNotaCredito}==true?
+-1.0*$F{Facturas_porcentajeIIBB}*$F{Facturas_tipoCambio}:
+$F{Facturas_porcentajeIIBB}*$F{Facturas_tipoCambio}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
