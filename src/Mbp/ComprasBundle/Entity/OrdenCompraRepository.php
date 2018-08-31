@@ -33,7 +33,8 @@ class OrdenCompraRepository extends \Doctrine\ORM\EntityRepository
 			o1_.cant - IFNULL(SUM(d2_.cantidad), 0) AS pendiente,
 			o1_.cant AS ordenCant,
 			d2_.cantidad AS movCant,
-			a3_.codigo AS codigo 
+			a3_.codigo AS codigo,
+			o0_.anulada
 			FROM OrdenCompra o0_
 			INNER JOIN ordenCompra_detallesOrdenCompra o4_ ON o0_.id = o4_.orden_id
 			INNER JOIN OrdenCompraDetalle o1_ ON o1_.id = o4_.ordencompradetalle_id
@@ -42,6 +43,7 @@ class OrdenCompraRepository extends \Doctrine\ORM\EntityRepository
 			WHERE a3_.idArticulos = $idArt
 			GROUP BY o1_.id) sub
 		WHERE sub.pendiente > 0
+			and sub.anulada=0
 		";
 			
 		$stmt = $em->getConnection()->prepare($sql);
