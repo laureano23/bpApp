@@ -408,6 +408,7 @@ Ext.define('MetApp.controller.RRHH.RecibosController', {
 			if(operation.success == true){
 				win.queryById('empleado').setValue('');
 				grid.getStore().removeAll();				
+				win.queryById('searchPersonal').focus('', 10);
 			}			
 		});
 		
