@@ -1,2 +1,3 @@
 #IGNORAMOS ARCHIVOS PDF
 **/*.pdf
+!**/WebBundle/Resources/public/pdf/**/*.pdf
