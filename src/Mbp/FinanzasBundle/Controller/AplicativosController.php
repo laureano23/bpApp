@@ -35,7 +35,7 @@ class AplicativosController extends Controller
 			$res=$repo->createQueryBuilder('f')
 				->select("
 					CONCAT(CONCAT(CONCAT(CONCAT(SUBSTRING(cliente.cuit, 1, 2), '-'), SUBSTRING(cliente.cuit, 3, 8)), '-'), SUBSTRING(cliente.cuit, 11, 12)) AS cuit,
-					f.perIIBB,
+					f.perIIBB * f.tipoCambio,
 					DATE_FORMAT(f.fecha, '%d/%m/%Y') AS fecha,
 					CASE WHEN tipo.esFactura = true THEN 'F'
 						WHEN tipo.esNotaCredito = true THEN 'C'
@@ -46,10 +46,10 @@ class AplicativosController extends Controller
 						ELSE '' AS subTipoCbte,
 					LPAD(f.ptoVta, 4, '0') AS ptoVta,
 					LPAD(f.fcNro, 8, '0') AS fcNro,					
-					CASE WHEN tipo.esNotaCredito = true THEN CONCAT('-', LPAD((f.total - f.iva21 - f.perIIBB), 11, '0'))
-						ELSE LPAD((f.total - f.iva21 - f.perIIBB), 12, '0') END AS subTotal,
-					CASE WHEN tipo.esNotaCredito = true THEN CONCAT('-', LPAD(f.perIIBB, 10, '0'))
-						ELSE LPAD(f.perIIBB, 11, '0') END AS perIIBB,					
+					CASE WHEN tipo.esNotaCredito = true THEN CONCAT('-', LPAD(((f.total - f.iva21 - f.perIIBB)* f.tipoCambio), 11, '0'))
+						ELSE LPAD(((f.total - f.iva21 - f.perIIBB)* f.tipoCambio), 12, '0') END AS subTotal,
+					CASE WHEN tipo.esNotaCredito = true THEN CONCAT('-', LPAD((f.perIIBB * f.tipoCambio), 10, '0'))
+						ELSE LPAD((f.perIIBB * f.tipoCambio), 11, '0') END AS perIIBB,					
 					'A' AS finLinea")
 				->join('f.tipoId', 'tipo')
 				->join('f.clienteId', 'cliente')
