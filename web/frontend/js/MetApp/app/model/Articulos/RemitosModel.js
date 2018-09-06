@@ -12,6 +12,7 @@ Ext.define('MetApp.model.Articulos.RemitosModel',{
 		{name: 'oc', type: 'string'},
 		{name: 'codigo', type: 'string'},
 		{name: 'pedido', type: 'string'},
+		{name: 'numeroRemito', type: 'string'},		
 		{name: 'facturado', type: 'bool'},
 		{name: 'costo', type: 'float'},
 		{name: 'precio', type: 'float'},
