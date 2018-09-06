@@ -32,22 +32,22 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
                         THEN LPAD(cliente.cuit, 20, '0')
                         ELSE '' END AS numIdentificacion,
 					RPAD(REPLACE(f.rSocial, '°', ' '), 30, ' ') AS nombreComprador,
-					CASE WHEN f.moneda=1
-						THEN LPAD(REPLACE(ROUND((f.total*f.tipoCambio), 2), '.', ''), 15, 0)
-						ELSE LPAD(REPLACE(f.total, '.', ''), 15, 0) END as montoTotal,
-					CASE WHEN f.iva21 > 0 AND f.moneda = 0  
+					CASE WHEN tipo.esNotaCredito=true
+						THEN LPAD(REPLACE(ROUND(((f.total*f.tipoCambio)*-1), 2), '.', ''), 15, 0)
+						ELSE LPAD(REPLACE((f.total*f.tipoCambio), '.', ''), 15, 0) END as montoTotal,
+					CASE WHEN f.iva21 > 0 AND tipo.esNotaCredito=true  
 						THEN LPAD(0, 15, '0') 
-						WHEN f.iva21 = 0 AND f.moneda = 0
-						THEN LPAD(REPLACE((f.total-f.iva21-f.perIIBB), '.', ''), 15, '0') 
-						WHEN f.iva21 > 0 AND f.moneda = 1  
+						WHEN f.iva21 = 0 AND tipo.esNotaCredito=true
+						THEN LPAD(REPLACE(((f.total-f.iva21-f.perIIBB)*-1*f.tipoCambio), '.', ''), 15, '0') 
+						WHEN f.iva21 > 0 AND tipo.esNotaCredito=false
 						THEN LPAD(0, 15, '0') 
 						ELSE LPAD(REPLACE(ROUND(((f.total-f.iva21-f.perIIBB) * f.tipoCambio), 2), '.', ''), 15, '0') 
 						END AS montoNoGrabado,	
 					LPAD(0, 15, '0') AS percepcionNoCategorizados,   
 					LPAD(0, 15, '0') AS montoExcento,  					
 					LPAD(0, 15, '0') AS pagoCuentaImpNacionales,   
-					CASE WHEN f.moneda = 0
-						THEN LPAD(REPLACE(f.perIIBB, '.', ''), 15, '0')
+					CASE WHEN tipo.esNotaCredito=true
+						THEN LPAD(REPLACE((f.perIIBB*f.tipoCambio*-1), '.', ''), 15, '0')
 						ELSE LPAD(REPLACE(ROUND((f.perIIBB * f.tipoCambio), 2), '.', ''), 15, '0')
 						AS perIIBB,
 					LPAD(0, 15, '0') AS impPercepcionImpMunicipales,   
@@ -73,15 +73,6 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 				->setParameter('hasta', $hasta->format('Y-m-d'))
 				->getQuery()
 				->getArrayResult();
-
-				//print_r($res);
-				//exit;
-
-				/*
-				* CASE WHEN f.iva21 > 0  
-                        THEN  
-						ELSE LPAD(REPLACE((f.total-f.iva21-f.perIIBB), '.', ''), 15, '0') END AS montoNoGrabado,   
-				*/ 
 				
 		return $res;
 
@@ -100,20 +91,24 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
                     LPAD(tipo.codigoAfip, 3, '0') as tipoCbteAfip,
                     LPAD(f.ptoVta, 5, '0') AS ptoVta,
 					LPAD(f.fcNro, 20, '0') AS fcNro,
-					CASE WHEN f.iva21 = 0 AND f.moneda = 0
+					CASE WHEN f.iva21 = 0 AND tipo.esNotaCredito=true
 						THEN LPAD(0, 15, '0') 
-						WHEN f.iva21 > 0 AND f.moneda = 0
-						THEN LPAD(REPLACE((f.total-f.iva21-f.perIIBB), '.', ''), 15, 0) 
-						WHEN f.iva21 = 0 AND f.moneda = 1
+						WHEN f.iva21 > 0 AND tipo.esNotaCredito=true
+						THEN LPAD(REPLACE(((f.total-f.iva21-f.perIIBB)*-1*f.tipoCambio), '.', ''), 15, 0) 
+						WHEN f.iva21 = 0 AND tipo.esNotaCredito=false
 						THEN LPAD(0, 15, '0') 
 						ELSE LPAD(REPLACE(ROUND(((f.total-f.iva21-f.perIIBB) * f.tipoCambio), 2), '.', ''), 15, 0) 
 						END as netoGrabado,						
 					CASE WHEN f.iva21=0
 						THEN LPAD(3, 4, '0')
                     	ELSE LPAD(5, 4, '0') END AS alicuotaIVACodigoAfip,
-					CASE WHEN f.moneda = 0
-					THEN LPAD(REPLACE(f.iva21, '.', ''), 15, '0')
-					ELSE LPAD(REPLACE(ROUND((f.iva21 * f.tipoCambio), 2), '.', ''), 15, '0') AS impuestoLiquidado")
+					CASE WHEN tipo.esNotaCredito=true
+					THEN LPAD(REPLACE((f.iva21*f.tipoCambio*-1), '.', ''), 15, '0')
+					ELSE LPAD(REPLACE(ROUND((f.iva21 * f.tipoCambio), 2), '.', ''), 15, '0') AS impuestoLiquidado,
+					SUM (
+						case when tipo.esNotaCredito=true
+						then f.iva21*f.tipoCambio*-1
+						else f.iva21*f.tipoCambio end) as totalIVA")
                 ->join('f.tipoId', 'tipo')                
                 ->join('f.clienteId', 'cliente')
                 ->join('cliente.iva', 'posicionIVA')
@@ -123,8 +118,6 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 				->setParameter('hasta', $hasta->format('Y-m-d'))
 				->getQuery()
 				->getArrayResult();
-
-				
 		return $res;
 
 	}
