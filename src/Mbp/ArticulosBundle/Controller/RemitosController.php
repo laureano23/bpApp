@@ -107,9 +107,17 @@ class RemitosController extends Controller
 					$remitoDetalle->setPedidoDetalleId($pedido);
 					$pedido->setEntregado($pedido->getEntregado() + $item->cantidad);
 					
-					//SI LA CANTIDAD REMITADA + LAS PIEZAS YA ENTREGADAS ES MAYOR O IGUAL A LA CANTIDAD PEDIDA DAMOS DE BAJA EL PEDIDO
-					if($pedido->getEntregado() >= $pedido->getCantidad()){
+					//SI LA CANTIDAD REMITADA + LAS PIEZAS YA ENTREGADAS ES IGUAL A LA CANTIDAD PEDIDA DAMOS DE BAJA EL PEDIDO
+					if($pedido->getEntregado() == $pedido->getCantidad()){
 						$pedido->setInactivo(TRUE);
+					}
+
+					//SI LA CANTIDAD REMITADA + LAS PIEZAS YA ENTREGADAS ES MAYOR A LA CANTIDAD PEDIDA ABORTAMOS EL REMITO, HAY QUE MODIFICAR EL PEDIDO!
+					if($pedido->getEntregado() > $pedido->getCantidad()){
+						$msg="Operación abortada, el item "
+						.$pedido->getCodigo()->getCodigo()." tiene un saldo de "
+						.($pedido->getCantidad()-($pedido->getEntregado()-$item->cantidad));
+						throw new \Exception($msg, 1);						
 					}
 					
 					$em->persist($pedido);

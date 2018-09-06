@@ -55,7 +55,19 @@ Ext.define('MetApp.controller.Produccion.PedidoClientes.PedidoClientesController
 			'ModificacionPedidosView actioncolumn[itemId=eliminar]': {
 				click: this.EliminarPedido
 			},
+			'ModificacionPedidosView textfield[itemId=cliente]': {
+				keyup: this.FiltrarCliente
+			},
 		});
+	},
+
+	FiltrarCliente: function(txt){
+		var win=txt.up('window');
+		var grid=win.down('grid');
+		var store=grid.getStore();
+
+		store.clearFilter(true);
+		store.filter('clienteDesc', txt.getValue());
 	},
 	
 	EliminarPedido: function(grid, colIndex, rowIndex){

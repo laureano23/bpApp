@@ -32,6 +32,17 @@ Ext.define('MetApp.view.Produccion.Pedidos.PedidosPendientesView', {
 						{header: 'Codigo', dataIndex: 'codigo', width: 200},
 						{header: 'Descripcion', dataIndex: 'descripcion', width: 300},
 						{header: 'Cantidad', dataIndex: 'cantidad', width: 'auto'},
+						{header: 'Entregado', dataIndex: 'entregado', width: 'auto'},
+						{
+							header: 'Saldo',
+							width: 'auto',
+							renderer: function(val, metaData, rec){
+								console.log(val);
+								console.log(metaData);
+								console.log(rec);
+								return rec.data.cantidad - rec.data.entregado
+							}
+						},
 						{header: 'OC', dataIndex: 'oc', width: 150},
 						{
 							header: 'Fecha Prog.',

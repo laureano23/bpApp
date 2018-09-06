@@ -3,10 +3,14 @@ Ext.define('MetApp.view.Produccion.Pedidos.ModificacionPedidosView', {
 	alias: 'widget.ModificacionPedidosView',
 	itemdId: 'ModificacionPedidosView',
 	title: 'Modificacion Pedidos de Clientes',
-	layout: 'fit',
+	layout: 'border',
 	modal: true,
 	autoShow: true,
-	
+	width: 1100,
+	height: 500,
+	bodyStyle: {
+		background: 'white'
+	},
 	
 	initComponent: function(){
 		
@@ -14,7 +18,25 @@ Ext.define('MetApp.view.Produccion.Pedidos.ModificacionPedidosView', {
 		Ext.applyIf(me, {
 			items: [
 				{
+					xtype: 'form',
+					frame: false,
+					region: 'north',
+					border: false,
+					margins: '5 5 5 5',
+					layout: 'hbox',
+					items: [
+						{
+							xtype: 'textfield',
+							fieldLabel: 'Cliente',
+							itemId: 'cliente',
+							name: 'cliente',
+							enableKeyEvents: true
+						},
+					]
+				},
+				{
 					xtype: 'grid',
+					region: 'center',
 					plugins: [
 	        			Ext.create('Ext.grid.plugin.CellEditing',{
 	        				clicksToEdit: 1,
