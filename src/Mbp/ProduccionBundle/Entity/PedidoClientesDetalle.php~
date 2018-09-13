@@ -225,28 +225,4 @@ class PedidoClientesDetalle
     {
         return $this->descripcion;
     }
-
-    /**
-     * Set cantAutorizada
-     *
-     * @param string $cantAutorizada
-     *
-     * @return PedidoClientesDetalle
-     */
-    public function setCantAutorizada($cantAutorizada)
-    {
-        $this->cantAutorizada = $cantAutorizada;
-
-        return $this;
-    }
-
-    /**
-     * Get cantAutorizada
-     *
-     * @return string
-     */
-    public function getCantAutorizada()
-    {
-        return $this->cantAutorizada;
-    }
 }

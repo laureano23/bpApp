@@ -100,7 +100,7 @@ class RemitosController extends Controller
 				$remitoDetalle->setDescripcion($item->descripcion);
 				$remitoDetalle->setCantidad($item->cantidad);
 				$remitoDetalle->setUnidad($item->unidad);
-				$remitoDetalle->setOc($item->oc);
+				$remitoDetalle->setOc($item->oc);				
 
 				if($item->pedidoNum != ""){
 					$pedido = $repoPedidos->find($item->pedidoNum);
@@ -120,6 +120,7 @@ class RemitosController extends Controller
 						throw new \Exception($msg, 1);						
 					}
 					
+					$pedido->setCantAutorizada(0); //SETEAMOS LA CANTIDAD AUTORIZADA A 0 PARA MARCAR EL PEDIDO
 					$em->persist($pedido);
 				}
 				

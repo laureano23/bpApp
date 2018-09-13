@@ -7,11 +7,17 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 		'Clientes.SearchGridClientes',
 		'Articulos.WinArticuloSearch',
 		'Articulos.Stock.Remitos.RemitosListadoView',
-		'Produccion.Pedidos.PedidosPendientesView'		
+		'Produccion.Pedidos.PedidosPendientesView',
+		'Produccion.Pedidos.PedidosAutorizadosView'		
 		],
 	stores: [
 		'Articulos.RemitosPendientesStore'
 	],
+
+	refs: [{
+	    ref: 'RemitoClienteView',
+	    selector: 'RemitoClienteView' // your xtype
+	}],
 	
 	init: function(){
 		var me = this;
@@ -43,6 +49,15 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 			'RemitoClienteView textfield[itemId=pedidoNum]': {
 				focus: this.VerPedidos
 			},
+			'RemitoClienteView button[itemId=pedidosAutorizados]': {
+				focus: this.PedidosAutorizadosView
+			},
+			'PedidosAutorizadosView textfield[itemId=cliente]': {
+				keyup: this.FiltrarCliente
+			},
+			'PedidosAutorizadosView button[itemId=insertar]': {
+				click: this.InsertarItemAutorizado
+			},
 			'viewport menuitem[itemId=verRemitos]': {
 				click: this.VerRemitos
 			},
@@ -59,6 +74,47 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 				click: this.VerRemitosPendientesFc
 			},
 		});
+	},
+
+	InsertarItemAutorizado: function(btn){
+		var me=this;
+		var win=btn.up('window');
+		var grid=win.down('grid');
+		var store=grid.getStore();
+		var sel=grid.getSelectionModel().getSelection()[0];
+
+		
+		var winRemito = me.getRemitoClienteView();
+		var gridRemito=winRemito.down('grid');
+		var storeRemito=gridRemito.getStore();
+		sel.data.pedidoNum=sel.data.idDetalle;
+		sel.data.cantidad=sel.data.cantAutorizada;
+		var obj={
+			items: sel.data
+		}
+		storeRemito.loadRawData(obj, true);
+
+		win.close();
+	},
+
+	FiltrarCliente: function(txt){
+		var win=txt.up('window');
+		var grid=win.down('grid');
+		var store=grid.getStore();
+
+		store.clearFilter(true);
+		store.filter('clienteDesc', txt.getValue());
+	},
+
+	PedidosAutorizadosView: function(){
+		var win=Ext.widget('PedidosAutorizadosView');
+		var store=win.down('grid').getStore();
+		store.clearFilter(true);
+
+		store.load({
+			params: {autorizados: true},
+		});
+		
 	},
 	
 	FiltrarRemitosProveedor: function(el, newVal, oldVal){

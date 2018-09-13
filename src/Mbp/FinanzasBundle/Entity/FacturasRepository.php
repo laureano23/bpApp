@@ -104,11 +104,7 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
                     	ELSE LPAD(5, 4, '0') END AS alicuotaIVACodigoAfip,
 					CASE WHEN tipo.esNotaCredito=true
 					THEN LPAD(LPAD(REPLACE((f.iva21*f.tipoCambio), '.', ''), 14, '0'), 15, '-')
-					ELSE LPAD(REPLACE(ROUND((f.iva21 * f.tipoCambio), 2), '.', ''), 15, '0') AS impuestoLiquidado,
-					SUM (
-						case when tipo.esNotaCredito=true
-						then f.iva21*f.tipoCambio*-1
-						else f.iva21*f.tipoCambio end) as totalIVA")
+					ELSE LPAD(REPLACE(ROUND((f.iva21 * f.tipoCambio), 2), '.', ''), 15, '0') AS impuestoLiquidado")
                 ->join('f.tipoId', 'tipo')                
                 ->join('f.clienteId', 'cliente')
                 ->join('cliente.iva', 'posicionIVA')
