@@ -98,22 +98,28 @@ class PedidoClientesController extends Controller
 		$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
 		$response = new Response;
-		
+
 		$cliente = $req->query->get('cliente');
 		$codigo = $req->query->get('codigo');
+		$autorizados = $req->query->get('autorizados');
 		$repo = $em->getRepository('MbpProduccionBundle:PedidoClientes');
 		
 		$res;
-		if(!empty($cliente) && !empty($codigo)){
-			$res = $repo->listarPedidosClienteCodigo($cliente, $codigo);
+		if($autorizados){
+			$res = $repo->listarPedidosAutorizados();
 		}else{
-			if(!empty($codigo)){
-				$res = $repo->listarPedidosCodigo($codigo);
+			if(!empty($cliente) && !empty($codigo)){
+				$res = $repo->listarPedidosClienteCodigo($cliente, $codigo);
 			}else{
-				//LISTA TODOS LOS PEDIDOS
-				$res = $repo->listarPedidos();	
-			}
+				if(!empty($codigo)){
+					$res = $repo->listarPedidosCodigo($codigo);
+				}else{
+					//LISTA TODOS LOS PEDIDOS
+					$res = $repo->listarPedidos();	
+				}
+			}	
 		}
+		
 		
 		return $response->setContent(json_encode($res));
 		

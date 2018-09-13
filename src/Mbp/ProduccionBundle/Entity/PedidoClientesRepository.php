@@ -9,6 +9,28 @@ namespace Mbp\ProduccionBundle\Entity;
  */
 class PedidoClientesRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function listarPedidosAutorizados()
+	{
+		$em = $this->getEntityManager();
+		$repo = $em->getRepository('MbpProduccionBundle:PedidoClientes');
+		
+		$qb = $repo->createQueryBuilder("p")
+			->select("DATE_FORMAT(p.fechaPedido, '%d/%m/%Y') as fechaPedido, p.oc, p.autEntrega, p.id as idPedido,
+				c.rsocial as clienteDesc,
+				d.cantidad,	DATE_FORMAT(d.fechaProg, '%d/%m/%Y') as fechaProgramacion, d.entregado, d.descripcion, d.id as idDetalle,
+				cod.codigo,
+				d.cantAutorizada")
+			->leftJoin('p.cliente', 'c')
+			->leftJoin('p.detalleId', 'd')
+			->leftJoin('d.codigo', 'cod')
+			->where('d.inactivo = 0')				
+			->andWhere('p.inactivo = 0')	
+			->andWhere('d.cantAutorizada > 0')	
+			->getQuery()
+			->getArrayResult();
+		
+		return $qb;
+	}
 	
 	public function listarPedidos()
 	{

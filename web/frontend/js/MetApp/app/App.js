@@ -38,6 +38,7 @@ Ext.application({
 		'Produccion.OrdenesTrabajo.SeguimientoOTController',
 		'Produccion.SoldaduraController',
 		'Produccion.ReportesProduccionController',
+		'Produccion.PedidoClientes.AutorizarEntregasController',
 		'RRHH.PersonalController',
 		'RRHH.SindicatosController',
 		'RRHH.CategoriasController',
@@ -113,7 +114,6 @@ Ext.application({
 		
 		channel.bind('my-event', function(data) {
 		 	var msg = Ext.JSON.decode(data);
-		 	
 		    if(msg.sectorReceptor == MetApp.User.name.sector){
 		    	//btnNotificacion.addCls('nuevaNotificacion'); 
 		    	Ext.create('widget.uxNotification', {

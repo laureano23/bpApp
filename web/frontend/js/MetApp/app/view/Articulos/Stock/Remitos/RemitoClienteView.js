@@ -189,6 +189,13 @@ Ext.define('MetApp.view.Articulos.Stock.Remitos.RemitoClienteView' ,{
 				action: 'guardarRemito',
 				text: 'Guardar'				
 			},
+			{
+				xtype: 'button',
+				margins: '5 5 5 5',
+				itemId: 'pedidosAutorizados',
+				action: 'pedidosAutorizados',
+				text: 'Pedidos Autorizados'				
+			},
 		]
 
 		Ext.applyIf(me,{
