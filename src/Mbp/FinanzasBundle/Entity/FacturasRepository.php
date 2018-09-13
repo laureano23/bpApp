@@ -33,12 +33,12 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
                         ELSE '' END AS numIdentificacion,
 					RPAD(REPLACE(f.rSocial, '°', ' '), 30, ' ') AS nombreComprador,
 					CASE WHEN tipo.esNotaCredito=true
-						THEN LPAD(LPAD(REPLACE(ROUND((f.total*f.tipoCambio), 2), '.', ''), 14, 0), 15, '-')
-						ELSE LPAD(REPLACE((f.total*f.tipoCambio), '.', ''), 15, 0) END as montoTotal,
+						THEN LPAD(LPAD(REPLACE(ROUND((f.total*f.tipoCambio), 2), '.', ''), 14, 0), 15, '0')
+						ELSE LPAD(REPLACE(ROUND((f.total*f.tipoCambio), 2), '.', ''), 15, 0) END as montoTotal,
 					CASE WHEN f.iva21 > 0 AND tipo.esNotaCredito=true  
 						THEN LPAD(0, 15, '0') 
 						WHEN f.iva21 = 0 AND tipo.esNotaCredito=true
-						THEN LPAD(LPAD(REPLACE(((f.total-f.iva21-f.perIIBB)*f.tipoCambio), '.', ''), 14, '0'), 15, '-') 
+						THEN LPAD(LPAD(REPLACE(((f.total-f.iva21-f.perIIBB)*f.tipoCambio), '.', ''), 14, '0'), 15, '0') 
 						WHEN f.iva21 > 0 AND tipo.esNotaCredito=false
 						THEN LPAD(0, 15, '0') 
 						ELSE LPAD(REPLACE(ROUND(((f.total-f.iva21-f.perIIBB) * f.tipoCambio), 2), '.', ''), 15, '0') 
@@ -47,7 +47,7 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 					LPAD(0, 15, '0') AS montoExcento,  					
 					LPAD(0, 15, '0') AS pagoCuentaImpNacionales,   
 					CASE WHEN tipo.esNotaCredito=true
-						THEN LPAD(LPAD(REPLACE((f.perIIBB*f.tipoCambio), '.', ''), 14, '0'), 15, '-')
+						THEN LPAD(LPAD(REPLACE(ROUND((f.perIIBB*f.tipoCambio), 2), '.', ''), 14, '0'), 15, '0')
 						ELSE LPAD(REPLACE(ROUND((f.perIIBB * f.tipoCambio), 2), '.', ''), 15, '0')
 						AS perIIBB,
 					LPAD(0, 15, '0') AS impPercepcionImpMunicipales,   
@@ -73,6 +73,9 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 				->setParameter('hasta', $hasta->format('Y-m-d'))
 				->getQuery()
 				->getArrayResult();
+
+		//print_r($res);
+		//exit;
 				
 		return $res;
 
@@ -94,7 +97,10 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 					CASE WHEN f.iva21 = 0 AND tipo.esNotaCredito=true
 						THEN LPAD(0, 15, '0') 
 						WHEN f.iva21 > 0 AND tipo.esNotaCredito=true
-						THEN LPAD(LPAD(REPLACE(((f.total-f.iva21-f.perIIBB)*f.tipoCambio), '.', ''), 14, 0), 15, '-') 
+						THEN LPAD(
+							LPAD(
+								REPLACE(
+									ROUND(((f.total-f.iva21-f.perIIBB)*f.tipoCambio), 2), '.', ''), 14, 0), 15, '0') 
 						WHEN f.iva21 = 0 AND tipo.esNotaCredito=false
 						THEN LPAD(0, 15, '0') 
 						ELSE LPAD(REPLACE(ROUND(((f.total-f.iva21-f.perIIBB) * f.tipoCambio), 2), '.', ''), 15, 0) 
@@ -103,7 +109,10 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 						THEN LPAD(3, 4, '0')
                     	ELSE LPAD(5, 4, '0') END AS alicuotaIVACodigoAfip,
 					CASE WHEN tipo.esNotaCredito=true
-					THEN LPAD(LPAD(REPLACE((f.iva21*f.tipoCambio), '.', ''), 14, '0'), 15, '-')
+					THEN LPAD(
+						LPAD(
+							REPLACE(
+								ROUND((f.iva21*f.tipoCambio), 2), '.', ''), 14, '0'), 15, '0')
 					ELSE LPAD(REPLACE(ROUND((f.iva21 * f.tipoCambio), 2), '.', ''), 15, '0') AS impuestoLiquidado")
                 ->join('f.tipoId', 'tipo')                
                 ->join('f.clienteId', 'cliente')
@@ -114,6 +123,10 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 				->setParameter('hasta', $hasta->format('Y-m-d'))
 				->getQuery()
 				->getArrayResult();
+
+		//print_r($res);
+		//exit;
+
 		return $res;
 
 	}
