@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LibroIVAVentas" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="c4b105ad-c9d2-4e6e-aab2-f046571798ae">
 	<property name="ireport.zoom" value="2.357947691000012"/>
-	<property name="ireport.x" value="1396"/>
+	<property name="ireport.x" value="711"/>
 	<property name="ireport.y" value="132"/>
 	<parameter name="fechaDesde" class="java.lang.String">
 		<defaultValueExpression><![CDATA[01/01/2001]]></defaultValueExpression>
@@ -132,9 +132,9 @@ $F{Facturas_total}*-1:
 $F{Facturas_total}]]></variableExpression>
 	</variable>
 	<variable name="sumaIVA" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == true?
-$F{Facturas_iva21} * -1*$F{Facturas_tipoCambio}:
-$F{Facturas_iva21} * $F{Facturas_tipoCambio}]]></variableExpression>
+		<variableExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == true ?
+$F{Facturas_iva21} * -1:
+$F{Facturas_iva21}]]></variableExpression>
 	</variable>
 	<variable name="sumaNeto" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == true?
@@ -143,8 +143,8 @@ $F{Facturas_iva21} * $F{Facturas_tipoCambio}]]></variableExpression>
 	</variable>
 	<variable name="sumaPer" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == true?
-(-1*$F{Facturas_perIIBB})*$F{Facturas_tipoCambio}:
-$F{Facturas_perIIBB}*$F{Facturas_tipoCambio}]]></variableExpression>
+(-1*$F{Facturas_perIIBB}):
+$F{Facturas_perIIBB}]]></variableExpression>
 	</variable>
 	<variable name="sumaNoGrabado" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{TipoComprobante_esNotaCredito} == true?
@@ -361,8 +361,8 @@ $F{netoNoGrabado}*$F{Facturas_tipoCambio}]]></textFieldExpression>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{TipoComprobante_esNotaCredito}==true?
--1.0*$F{Facturas_iva21}*$F{Facturas_tipoCambio}:
-$F{Facturas_iva21}*$F{Facturas_tipoCambio}]]></textFieldExpression>
+-1.0*$F{Facturas_iva21}:
+$F{Facturas_iva21}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="716" y="0" width="41" height="20" uuid="5e8a1e23-f3bf-45a5-aec3-9ce3f02098d2"/>
@@ -385,8 +385,8 @@ $F{Facturas_total}*$F{Facturas_tipoCambio}]]></textFieldExpression>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{TipoComprobante_esNotaCredito}==true?
--1.0*$F{Facturas_porcentajeIIBB}*$F{Facturas_tipoCambio}:
-$F{Facturas_porcentajeIIBB}*$F{Facturas_tipoCambio}]]></textFieldExpression>
+-1.0*$F{Facturas_porcentajeIIBB}:
+$F{Facturas_porcentajeIIBB}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

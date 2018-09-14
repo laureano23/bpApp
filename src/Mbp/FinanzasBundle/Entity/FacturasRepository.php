@@ -38,7 +38,7 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 					CASE WHEN f.iva21 > 0 AND tipo.esNotaCredito=true  
 						THEN LPAD(0, 15, '0') 
 						WHEN f.iva21 = 0 AND tipo.esNotaCredito=true
-						THEN LPAD(LPAD(REPLACE(((f.total-f.iva21-f.perIIBB)*f.tipoCambio), '.', ''), 14, '0'), 15, '0') 
+						THEN LPAD(LPAD(REPLACE(ROUND(((f.total-f.iva21-f.perIIBB)*f.tipoCambio), 2), '.', ''), 14, '0'), 15, '0') 
 						WHEN f.iva21 > 0 AND tipo.esNotaCredito=false
 						THEN LPAD(0, 15, '0') 
 						ELSE LPAD(REPLACE(ROUND(((f.total-f.iva21-f.perIIBB) * f.tipoCambio), 2), '.', ''), 15, '0') 
@@ -76,6 +76,7 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 
 		//print_r($res);
 		//exit;
+
 				
 		return $res;
 
