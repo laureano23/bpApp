@@ -34,6 +34,7 @@ Ext.application({
 		'Produccion.OrdenesTrabajo.SeguimientoOTController',
 		'Produccion.SoldaduraController',
 		'Produccion.ReportesProduccionController', 
+		'Produccion.PedidoClientes.AutorizarEntregasController',
 		'RRHH.PersonalController',
 		'RRHH.SindicatosController',
 		'RRHH.CategoriasController',
