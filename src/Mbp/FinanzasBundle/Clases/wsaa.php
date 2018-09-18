@@ -71,6 +71,10 @@ class wsaa {
 			)
 	    );
 	}
+
+	public function analizarCertificado(){
+		return $this->client->AnalizarCertificado(self::$CERT);
+	}
   
 	/*
 	* Crea el archivo xml de TRA

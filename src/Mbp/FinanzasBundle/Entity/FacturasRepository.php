@@ -203,7 +203,7 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 					f.clienteId,
 					date_format(f.fecha, '%d/%m/%Y') as fechaEmision,
 					fcNro as numFc,
-					f.total*f.tipoCambio as haber,
+					ROUND((f.total*f.tipoCambio), 2) as haber,
 					SUM(tr.aplicado) as aplicado,
 					date_format(f.vencimiento, '%d/%m/%Y') as vencimiento    
 				FROM Facturas f

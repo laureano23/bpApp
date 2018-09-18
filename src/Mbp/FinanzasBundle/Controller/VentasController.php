@@ -136,7 +136,9 @@ class VentasController extends Controller
 		$response = new Response;
 
 		try{
-			$faele = $this->get('mbp.faele'); //FACTURA ELECTRONICA			
+			$faele = $this->get('mbp.faele'); //FACTURA ELECTRONICA		
+			
+			//$faele->analizarCertificado();
 			
 			$auxFinanzas = $this->get('AuxiliarFinanzas');
 			
@@ -480,7 +482,7 @@ class VentasController extends Controller
 			//si la cobranza tiene algun detalle asociado a un mov. bancario x ej deposito de cheque no se puede borrar
 			$detallesCobranza=$record->getCobranzaDetalleId();
 			foreach ($detallesCobranza as $det) {
-				if(count($det->getMovBancoId()) > 0){
+				if($det->getFormaPagoId()->getChequeTerceros()){ //
 					return $response->setContent(json_encode(array("success"=>false, "msg"=>"La cobranza tiene un movimiento bancario asociado")));
 				}					
 			}				

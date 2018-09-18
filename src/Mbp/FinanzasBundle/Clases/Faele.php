@@ -51,6 +51,13 @@ class Faele extends wsfev1
 			//throw new \Exception("TA expiracion ".$this->wsaa->get_expiration(), 1);
 		}
 	}
+
+	/*
+	* Analiza los datos del certificado tales como identidad, emisor, caducidad.
+	*/
+	public function analizarCertificado(){
+		print_r($this->wsaa->analizarCertificado());
+	}
 	
 	/* PARAMS
 	 * $cbte = desde y hasta	 
