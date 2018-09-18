@@ -111,7 +111,7 @@ class AplicativosController extends Controller
 					CONCAT(CONCAT(CONCAT(CONCAT(SUBSTRING(prov.cuit, 1, 2), '-'), SUBSTRING(prov.cuit, 3, 8)), '-'), SUBSTRING(prov.cuit, 11, 12)) AS cuit,
 					DATE_FORMAT(op.fechaEmision, '%d/%m/%Y') AS fecha,
 					LPAD(fc.sucursal, 4, '0') AS ptoVta,
-					LPAD(pago.id, 8, '0') AS fcNro,
+					LPAD(tr.id, 8, '0') AS fcNro,
 					tr.aplicado as aplicado,
 					pago.importe as pagoImporte,
 					baseImponible,
