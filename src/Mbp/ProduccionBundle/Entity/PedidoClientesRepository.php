@@ -116,14 +116,17 @@ class PedidoClientesRepository extends \Doctrine\ORM\EntityRepository
 			->select("DATE_FORMAT(p.fechaPedido, '%d/%m/%Y') as fechaPedido, p.oc, p.autEntrega, p.id as idPedido,
 				c.rsocial as clienteDesc,
 				d.cantidad,	DATE_FORMAT(d.fechaProg, '%d/%m/%Y') as fechaProgramacion, d.entregado, d.descripcion, d.id as idDetalle,
-				cod.codigo")
+				cod.codigo,
+				groupconcat(ots.ot) as otsAsociadas")
 			->leftJoin('p.cliente', 'c')
 			->leftJoin('p.detalleId', 'd')
 			->leftJoin('d.codigo', 'cod')
+			->leftJoin('d.ots', 'ots')
 			->where('d.inactivo = 0')
 			->andWhere('p.inactivo = 0')	
 			->andWhere('cod.codigo =:codigo')
-			->setParameter('codigo', $codigo)				
+			->setParameter('codigo', $codigo)	
+			->groupBy('d.id')			
 			->getQuery()
 			->getArrayResult();
 		

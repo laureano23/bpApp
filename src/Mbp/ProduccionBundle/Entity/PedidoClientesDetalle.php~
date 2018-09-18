@@ -71,6 +71,23 @@ class PedidoClientesDetalle
      */
     private $descripcion;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Ot", mappedBy="pedidos")
+     * @ORM\JoinTable(name="Ot_Pedidos",
+     *      joinColumns={@ORM\JoinColumn(name="otId", referencedColumnName="ot")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="pedidoId", referencedColumnName="id", nullable=true)}
+     *      )
+     */
+    private $ots;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+    	$this->ots = new \Doctrine\Common\Collections\ArrayCollection();
+    } 
+
 
     /**
      * Get id
@@ -224,5 +241,29 @@ class PedidoClientesDetalle
     public function getDescripcion()
     {
         return $this->descripcion;
+    }
+
+    /**
+     * Set cantAutorizada
+     *
+     * @param string $cantAutorizada
+     *
+     * @return PedidoClientesDetalle
+     */
+    public function setCantAutorizada($cantAutorizada)
+    {
+        $this->cantAutorizada = $cantAutorizada;
+
+        return $this;
+    }
+
+    /**
+     * Get cantAutorizada
+     *
+     * @return string
+     */
+    public function getCantAutorizada()
+    {
+        return $this->cantAutorizada;
     }
 }

@@ -26,10 +26,10 @@ Ext.define('MetApp.view.Produccion.Pedidos.PedidosPendientesView', {
 					autoScroll: true,	
 					store: 'Produccion.PedidoClientes.PedidoClientesStore',
 					columns: [
-						{xtype: 'rownumberer', width: 50, sortable: false},
+						//{xtype: 'rownumberer', width: 50, sortable: false},
 						{header: 'id Pedido', dataIndex: 'idPedido', width: 50, hidden: true},
 						{header: 'id Detalle', dataIndex: 'idDetalle', width: 50, hidden: true},					
-						{header: 'Codigo', dataIndex: 'codigo', width: 200},
+						{header: 'Codigo', dataIndex: 'codigo', width: 100},
 						{header: 'Descripcion', dataIndex: 'descripcion', width: 300},
 						{header: 'Cantidad', dataIndex: 'cantidad', width: 'auto'},
 						{header: 'Entregado', dataIndex: 'entregado', width: 'auto'},
@@ -43,7 +43,8 @@ Ext.define('MetApp.view.Produccion.Pedidos.PedidosPendientesView', {
 								return rec.data.cantidad - rec.data.entregado
 							}
 						},
-						{header: 'OC', dataIndex: 'oc', width: 150},
+						{header: 'OC', dataIndex: 'oc', width: 100},
+						{header: 'OTs', dataIndex: 'otsAsociadas', width: 100},
 						{
 							header: 'Fecha Prog.',
 							dataIndex: 'fechaProgramacion',

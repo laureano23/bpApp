@@ -93,6 +93,7 @@ doctrine:
                         substr: DoctrineExtensions\Query\Mysql\SubstringIndex
                         ifnull: DoctrineExtensions\Query\Mysql\IfNull
                         replace: DoctrineExtensions\Query\Mysql\Replace
+                        groupconcat: DoctrineExtensions\Query\Mysql\GroupConcat
                 mappings:
                     tree:
                         type: annotation

@@ -119,11 +119,11 @@ class Ot
     private $otExterna;
 	
 	/**
-     * @ORM\ManyToMany(targetEntity="PedidoClientesDetalle")
+     * @ORM\ManyToMany(targetEntity="PedidoClientesDetalle", inversedBy="ots")
      * @ORM\JoinTable(name="Ot_Pedidos",
      *      joinColumns={@ORM\JoinColumn(name="otId", referencedColumnName="ot")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="pedidoId", referencedColumnName="id", nullable=true)}
-     *      )
+     *      ) 
      */
     private $pedidos;
 
@@ -504,6 +504,7 @@ class Ot
     {
     	$this->ordenesConmigo = new \Doctrine\Common\Collections\ArrayCollection();
         $this->misOrdenes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->pedidos = new \Doctrine\Common\Collections\ArrayCollection();
     }    
 
     /**

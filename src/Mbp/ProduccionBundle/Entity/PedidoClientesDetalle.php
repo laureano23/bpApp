@@ -71,6 +71,23 @@ class PedidoClientesDetalle
      */
     private $descripcion;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Ot", mappedBy="pedidos")
+     * @ORM\JoinTable(name="Ot_Pedidos",
+     *      joinColumns={@ORM\JoinColumn(name="otId", referencedColumnName="ot")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="pedidoId", referencedColumnName="id", nullable=true)}
+     *      )
+     */
+    private $ots;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+    	$this->ots = new \Doctrine\Common\Collections\ArrayCollection();
+    } 
+
 
     /**
      * Get id
@@ -248,5 +265,39 @@ class PedidoClientesDetalle
     public function getCantAutorizada()
     {
         return $this->cantAutorizada;
+    }
+
+    /**
+     * Add ot
+     *
+     * @param \Mbp\ProduccionBundle\Entity\Ot $ot
+     *
+     * @return PedidoClientesDetalle
+     */
+    public function addOt(\Mbp\ProduccionBundle\Entity\Ot $ot)
+    {
+        $this->ots[] = $ot;
+
+        return $this;
+    }
+
+    /**
+     * Remove ot
+     *
+     * @param \Mbp\ProduccionBundle\Entity\Ot $ot
+     */
+    public function removeOt(\Mbp\ProduccionBundle\Entity\Ot $ot)
+    {
+        $this->ots->removeElement($ot);
+    }
+
+    /**
+     * Get ots
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOts()
+    {
+        return $this->ots;
     }
 }
