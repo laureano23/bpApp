@@ -6,12 +6,16 @@ Ext.Loader.setConfig({
 });
 
 
+			
+
 Ext.application({
 	requires: [
 		'MetApp.resources.overrides.menu', //REQUIERE OVERRIDE DE ESTA CLASE PARA ARREGLAR UN BUG DE CHROME DONDE DESAPARECEN LOS SUB MENUES
 		'Ext.grid.plugin.DragDrop',
 		'MetApp.resources.ux.ParametersSingleton',
 	], 
+	
+	
 	
 	controllers: [
 		'Security.SecurityController',
@@ -33,7 +37,7 @@ Ext.application({
 		'Produccion.OrdenesTrabajo.OTController',
 		'Produccion.OrdenesTrabajo.SeguimientoOTController',
 		'Produccion.SoldaduraController',
-		'Produccion.ReportesProduccionController', 
+		'Produccion.ReportesProduccionController',
 		'Produccion.PedidoClientes.AutorizarEntregasController',
 		'RRHH.PersonalController',
 		'RRHH.SindicatosController',
@@ -69,12 +73,14 @@ Ext.application({
 	name: 'MetApp',
 	appFolder: '../frontend/js/MetApp/app',
 	
-	launch: function(){	
+	launch: function(){			
 		Ext.util.Observable.observe(Ext.data.Connection, {			
 		    requestexception: function(conn, response, options) {
+				console.log(response);
 		    	var resp = Ext.JSON.decode(response.responseText);
 		    	if(!resp.tipo){	
-			       	Ext.Msg.show({		 		       				
+			       	Ext.Msg.show({	
+						   scope: this,	 		       				
 		    			title: 'Error',
 		    			msg: 'Codigo: '+response.status+' '+resp.msg,
 		    			buttons: Ext.Msg.OK,
@@ -106,10 +112,10 @@ Ext.application({
 		var channel = pusher.subscribe('my-channel');
 		
 		
+		
 		channel.bind('my-event', function(data) {
-			
-		 	var msg = Ext.JSON.decode(data);
-		    if(msg.sectorReceptor == MetApp.User.name.sector){
+			 var msg = Ext.JSON.decode(data);
+		    if(msg.sectorReceptor == MetApp.User.name.sector && msg.env==MetApp.User.name.env){
 		    	//btnNotificacion.addCls('nuevaNotificacion'); 
 		    	Ext.create('widget.uxNotification', {
 					title: 'Notification',
@@ -125,9 +131,14 @@ Ext.application({
 		    }
 		});
 	},
+
+	
+	
+	
 	globals: {
 		//role: role.res
 	}
+	
 });
 
 

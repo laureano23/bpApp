@@ -18,8 +18,10 @@ Ext.define('MetApp.controller.Security.SecurityController',{
 				var user = Ext.create('MetApp.controller.Security.Roles', {					
 					role: data.role,
 					user: data.nombre,
-					sector: data.sector
+					sector: data.sector,
+					env: data.env
 				});	
+				
 				/*
 				 * role1 = ROLE_ADMIN
 				 * role2 = ROLE_USER
@@ -33,7 +35,8 @@ Ext.define('MetApp.controller.Security.SecurityController',{
 						});		
 						MetApp.User.name({
 							name: data.nombre,
-							sector: data.sector
+							sector: data.sector,
+							env: data.env
 						});									
 					}
 				if(user.role == 'ROLE_EXTRANET'){
@@ -45,7 +48,8 @@ Ext.define('MetApp.controller.Security.SecurityController',{
 						});		
 						MetApp.User.name({
 							name: data.nombre,
-							sector: data.sector
+							sector: data.sector,
+							env: data.env
 						});
 				}
 				
@@ -57,7 +61,8 @@ Ext.define('MetApp.controller.Security.SecurityController',{
 						});
 						MetApp.User.name({
 							name: data.nombre,
-							sector: data.sector
+							sector: data.sector,
+							env: data.env
 						});
 					}											
 			},

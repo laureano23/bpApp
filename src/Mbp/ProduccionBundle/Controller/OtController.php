@@ -117,7 +117,8 @@ class OtController extends Controller
 			
 		    $data=array(
 				'message' => 'Se ingreso la OT: '.$ot->getOt().". Verificar panel de programacion",
-				'sectorReceptor' => $sector->getDescripcion()
+				'sectorReceptor' => $sector->getDescripcion(),
+				'env' => $this->container->get('kernel')->getEnvironment()
 			);
 			
 		    $pusher->trigger('my-channel', 'my-event', json_encode($data));
