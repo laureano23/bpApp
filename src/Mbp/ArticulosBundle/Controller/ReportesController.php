@@ -325,6 +325,7 @@ class ReportesController extends Controller
 		$em=$this->getDoctrine()->getEntityManager();
 		$repoFormulas=$em->getRepository('MbpArticulosBundle:FormulasC');
 		$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
+		$response=new Response;
 		
 		/*
 		 * Recibo parametros del request 
@@ -335,7 +336,7 @@ class ReportesController extends Controller
 		$art=$repoArt->find($idArt);
 
 		$nodo = $repoFormulas->findOneByIdArt($art);
-		if($nodo==null) return;
+		if($nodo==null) return $response->setContent(json_encode(array('success'=>true, 'reporte'=>null)));
 		$idNodo=$nodo->getId();
 		$tipoCambio = $this->get('TipoCambio');
 		$tc = (float)$tipoCambio->getTipoCambio();
@@ -369,7 +370,7 @@ class ReportesController extends Controller
 		$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
 		
 		
-		return new Response(
+		return $response->setContent(
 			json_encode(array(
 				'success' => true,
 				'reporte' => $destino,	

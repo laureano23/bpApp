@@ -271,9 +271,16 @@ Ext.define('MetApp.controller.Articulos.FormulasController',{
 			
 			success: function(resp, opt){
 				var jsonReporte = Ext.JSON.decode(resp.responseText);
-							
+
+				if(jsonReporte.success==true && jsonReporte.reporte!=null){
 				var ruta = Routing.generate('mbp_formulas_muestraReporte');
-				window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');	
+				window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');		
+				}else{
+					Ext.Msg.show({
+						title: 'Atención',
+						msg: 'Articulo sin estructura'
+					})
+				}
 			}
 		});
 	}
