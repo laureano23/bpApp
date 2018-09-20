@@ -74,8 +74,8 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 				->getQuery()
 				->getArrayResult();
 
-		//print_r($res);
-		//exit;
+		print_r($res);
+		exit;
 
 				
 		return $res;

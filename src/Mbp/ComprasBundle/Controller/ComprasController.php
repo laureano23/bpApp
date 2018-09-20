@@ -290,6 +290,7 @@ class ComprasController extends Controller
 			->join('c.ordenDetalleId', 'd')
 			->join('d.articuloId', 'a')
 			->where('a.codigo = :cod')
+			->andWhere('c.anulada = 0')
 			->setParameter('cod', $codigo)
 			->getQuery()
 			->getResult();
