@@ -58,9 +58,9 @@ Ext.define('MetApp.view.Produccion.Pedidos.ModificacionPedidosView', {
 					multiSelect: true,
 					store: 'Produccion.PedidoClientes.PedidoClientesStore',
 					columns: [
-						{xtype: 'rownumberer', width: 50, sortable: false},
-						{header: 'id Pedido', dataIndex: 'idPedido', width: 50, hidden: true},
-						{header: 'id Detalle', dataIndex: 'idDetalle', width: 50, hidden: true},					
+						{xtype: 'rownumberer', width: 50, sortable: false, hidden: true},
+						{header: 'id', dataIndex: 'idPedido', width: 50, hidden: true},
+						{header: 'id Detalle', dataIndex: 'idDetalle', width: 50, hidden: false},					
 						{header: 'Codigo', dataIndex: 'codigo', width: 200},
 						{header: 'Descripcion', dataIndex: 'descripcion', width: 300},
 						{

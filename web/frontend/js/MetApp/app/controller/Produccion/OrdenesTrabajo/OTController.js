@@ -7,7 +7,8 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 		'MetApp.view.Articulos.WinArticuloSearch',
 		'MetApp.view.Produccion.OrdenesTrabajo.CierreOTView',
 		'MetApp.view.Produccion.OrdenesTrabajo.VerOTView',
-		'MetApp.view.Produccion.Pedidos.PedidosPendientesView'
+		'MetApp.view.Produccion.Pedidos.PedidosPendientesView',
+		'MetApp.view.Produccion.OrdenesTrabajo.AsociarOTView'
 	],
 	
 	stores: [
@@ -70,9 +71,72 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 			'VerOTView button[itemId=verOT]': {
 				click: this.ReporteOT
 			},
+			'#asociarOt': {
+				click: this.AsociarOTView
+			},
+			'AsociarOTView button[itemId=buscarPedido]': {
+				click: this.BuscarPedidos
+			},
+			'AsociarOTView button[itemId=insert]': {
+				click: this.AsociarPedidoOT
+			},
+			'AsociarOTView button[itemId=borrarAsociacion]': {
+				click: this.BorrarAsociacionPedido
+			},
 		});
 	},
+
+	BorrarAsociacionPedido: function(btn){
+		var win=btn.up('window');
+		var form=win.down('form').getForm();
+
+		form.submit({
+			url: Routing.generate('mbp_produccion_asociarOTConPedido'),
+			params: {
+				borrar: true
+			},
+			success: function(form, action){
+				var jsonResp=Ext.JSON.decode(action.response.responseText);
+				
+				if(jsonResp.success){
+					Ext.Msg.show({
+						title: 'Info',
+						msg: 'Proceso exitoso'
+					})
+				}
+			}
+		})
+	},
+
+	AsociarPedidoOT: function(btn){
+		var win=btn.up('window');
+		var form=win.down('form').getForm();
+
+		form.submit({
+			url: Routing.generate('mbp_produccion_asociarOTConPedido'),
+
+			success: function(form, action){
+				var jsonResp=Ext.JSON.decode(action.response.responseText);
+				
+				if(jsonResp.success){
+					Ext.Msg.show({
+						title: 'Info',
+						msg: 'Proceso exitoso'
+					})
+				}
+			}
+		})
+	},
+
+	BuscarPedidos: function(btn){
+		var win=Ext.widget('ModificacionPedidosView');
+		win.down('grid').getStore().load();
+	},
 	
+	AsociarOTView: function(btn){
+		var win=Ext.widget('AsociarOTView');
+	},
+
 	InsertarPedidos: function(btn){
 		var grid = btn.up('window').down('grid');
 		var store = grid.getStore();

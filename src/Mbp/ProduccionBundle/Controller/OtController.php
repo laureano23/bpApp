@@ -13,6 +13,58 @@ use Mbp\ProduccionBundle\Entity\Ot;
 class OtController extends Controller
 {	
 	/** 
+     * @Route("/asociarOTConPedido", name="mbp_produccion_asociarOTConPedido", options={"expose"=true})
+     */
+    public function asociarOTConPedido()
+    {
+		$em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+		$response = new Response;
+		$repoOt = $em->getRepository('MbpProduccionBundle:Ot');
+		$repoPedidosDetalle = $em->getRepository('MbpProduccionBundle:PedidoClientesDetalle');
+		
+		try{
+			$idPedido = $request->request->get('idPedido');	
+			$ot = $request->request->get('ot');	
+			$borrar = $request->request->get('borrar');
+
+			$ot=$repoOt->find($ot);
+			$pedidoDetalle=$repoPedidosDetalle->find($idPedido);
+
+			if(empty($ot)){
+				throw new \Exception("No se encuentra la OT ingresada", 1);				
+			}
+			
+			if(empty($pedidoDetalle)){
+				throw new \Exception("No se encuentra el pedido ingresado", 1);				
+			}
+
+			if($ot->getIdCodigo()->getCodigo() != $pedidoDetalle->getCodigo()->getCodigo()){
+				throw new \Exception("El artículo pedido no es el mismo que el artículo programado en la OT", 1);				
+			}
+
+			if(!$borrar){
+				$ot->addPedido($pedidoDetalle);
+			}else{
+				$ot->removePedido($pedidoDetalle);
+			}
+			
+			$em->persist($ot);
+
+			$em->flush();
+			        
+	        return $response->setContent(
+				json_encode(array('success' => true))
+			);
+		}catch(\Exception $e){
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR); 
+			return $response->setContent(
+					json_encode(array('success' => false, 'msg' => $e->getMessage()))
+				);
+		}
+	}
+
+	/** 
      * @Route("/nuevaot", name="mbp_produccion_nuevaot", options={"expose"=true})
      */
     public function nuevaOt()

@@ -364,6 +364,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
     					listeners : {
                             render : dragZone,
                         }
+					},
+					{
+    					text: 'Asociar OT',
+    					itemId: 'asociarOt',
+    					listeners : {
+                            render : dragZone,
+                        }
     				}
     			]
     		},
