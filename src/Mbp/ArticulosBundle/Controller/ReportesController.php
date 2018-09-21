@@ -334,8 +334,8 @@ class ReportesController extends Controller
 		$req = $this->getRequest();
 		$idArt=$req->request->get('idArt');
 		$art=$repoArt->find($idArt);
-
 		$nodo = $repoFormulas->findOneByIdArt($art);
+		
 		if($nodo==null) return $response->setContent(json_encode(array('success'=>true, 'reporte'=>null)));
 		$idNodo=$nodo->getId();
 		$tipoCambio = $this->get('TipoCambio');

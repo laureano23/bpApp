@@ -61,16 +61,6 @@ GROUP BY
 	<field name="TipoComprobante_esNotaCredito" class="java.lang.Boolean"/>
 	<field name="TipoComprobante_esNotaDebito" class="java.lang.Boolean"/>
 	<field name="TipoComprobante_descripcion" class="java.lang.String"/>
-	<background>
-		<band height="100">
-			<rectangle>
-				<reportElement x="0" y="0" width="400" height="100" uuid="f8fe265c-4cf0-41ad-8871-a82f74bd622f"/>
-				<graphicElement>
-					<pen lineWidth="2.0"/>
-				</graphicElement>
-			</rectangle>
-		</band>
-	</background>
 	<columnHeader>
 		<band height="40">
 			<staticText>
@@ -133,20 +123,34 @@ GROUP BY
 	</columnHeader>
 	<detail>
 		<band height="20">
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="400" height="20" uuid="b9bf26ce-4f00-41ea-9120-242692085678"/>
+			</rectangle>
 			<textField>
 				<reportElement x="0" y="0" width="240" height="20" uuid="3448f6e3-5e53-4a1a-9165-2610631b6b1c"/>
-				<box leftPadding="3"/>
+				<box leftPadding="3">
+					<leftPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{TipoComprobante_descripcion}+"  "+$F{FacturaProveedor_sucursal}+"-"+$F{FacturaProveedor_numFc}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="240" y="0" width="80" height="20" uuid="dcfd3a28-2652-44fb-be30-3213a4025e79"/>
-				<textElement textAlignment="Right"/>
+				<box>
+					<leftPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{FacturaProveedor_totalFc}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="320" y="0" width="80" height="20" uuid="0f8fb90d-6933-43b8-8b04-642e10e40c86"/>
-				<box rightPadding="3"/>
-				<textElement textAlignment="Right"/>
+				<box rightPadding="3">
+					<leftPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{aplicado}]]></textFieldExpression>
 			</textField>
 		</band>

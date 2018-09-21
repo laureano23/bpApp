@@ -311,9 +311,8 @@ class Formulas2Controller extends Controller
         $data = json_decode($req->request->get('data'));
         $idPadre=$req->request->get('art');
         
-        
-        $padres=$repo->findBy(['idArt'=>$idPadre]);
-
+		$padres=$repo->findBy(['idArt'=>$idPadre]);
+		
         foreach ($padres as $r) {
             $childrens = $repo->children($r);
             foreach ($childrens as $child) {
