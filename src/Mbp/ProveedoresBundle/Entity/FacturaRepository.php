@@ -10,6 +10,30 @@ namespace Mbp\ProveedoresBundle\Entity;
  */
 class FacturaRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function listarFacturasNoAsociadasANC($idPRov)
+	{
+		$em = $this->getEntityManager();
+		$repo = $em->getRepository('MbpProveedoresBundle:Factura');		
+				
+		$qb2 = $em->createQueryBuilder()
+						->select("	f.id AS idF,
+									DATE_FORMAT(f.fechaEmision, '%d/%m/%Y') as emision,
+									f.numFc as numero,
+									tipo.abreviatura as tipoCbte,
+									f.totalFc as importe")
+				->from('MbpProveedoresBundle:Factura', 'f')
+				->leftJoin('f.tipoId', 'tipo')
+				->where('f.proveedorId = :provId')
+				->andWhere('tipo.esFactura = true')								
+				->setParameter('provId', $idPRov)	
+				->orderBy('f.fechaEmision', 'DESC')
+				->getQuery();
+		$res2 = $qb2->getArrayResult();
+			
+		return $res2;
+		
+	}
+
 	public function listarFacturasCC($idPRov)
 	{
 		$em = $this->getEntityManager();
@@ -109,12 +133,12 @@ class FacturaRepository extends \Doctrine\ORM\EntityRepository
 						DATE_FORMAT(fc.fechaEmision, '%d-%m-%Y') AS fechaEmision,
 						fc.numFc AS numFc,
 						DATE_FORMAT(fc.vencimiento, '%d-%m-%Y') As vencimiento,
-						fc.totalFc AS haber
+						fc.totalFc AS haber,
+						tipo.abreviatura as tipo
 					FROM `FacturaProveedor` fc
 					LEFT JOIN TransaccionOPFC t ON fc.id = t.facturaId
 					LEFT JOIN TipoComprobante tipo ON fc.tipoId = tipo.id
-					WHERE fc.proveedorId = $idProv
-						AND tipo.esNotaCredito != 1
+					WHERE fc.proveedorId = $idProv						
 					GROUP BY fc.id, t.facturaId) AS sub
 				WHERE sub.valorAplicado < sub.haber
 			";

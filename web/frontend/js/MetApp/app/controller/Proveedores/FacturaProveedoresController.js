@@ -22,13 +22,45 @@ Ext.define('MetApp.controller.Proveedores.FacturaProveedoresController',{
 			'FacturaProveedor datefield[itemId=fechaEmision]': {
 				blur: this.CalculaFechaVencimiento
 			},
-			'FacturaProveedor field': {
+			'FacturaProveedor numberfield': {
 				change: this.CalculaTotal
 			},
 			'FacturaProveedor numberfield[itemId=numFc]': {
 				blur: this.ValidarFactura
 			},	
+			'FacturaProveedor combobox[itemId=tipo]': {
+				change: this.AsociarFacturaNC
+			},
 		});
+	},
+
+	AsociarFacturaNC: function(combo){
+		console.log(combo);
+		var win=combo.up('window');
+		var grid=win.down('grid');
+		var formCC = this.getCCProveedores();
+		var idProv = formCC.queryById('id').getValue();
+		if(combo.valueModels[0].data.esNotaCredito){
+			grid.show(true);
+			var form=win.down('form').getForm();
+			form.submit({
+				url: Routing.generate('mbp_proveedores_asociarNC'),
+				clientValidation: false,
+				params: {
+					idProv: idProv
+				},
+				success: function(form, action){
+					console.log(form);
+					console.log(action);
+					var jsonResp=Ext.JSON.decode(action.response.responseText);
+					console.log(jsonResp);
+					grid.getStore().loadRawData(jsonResp);
+				}
+			});
+
+		}else{
+			grid.hide(true);
+		}
 	},
 
 	ValidarFactura: function(txt){

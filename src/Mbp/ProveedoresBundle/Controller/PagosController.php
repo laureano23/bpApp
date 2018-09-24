@@ -215,7 +215,6 @@ class PagosController extends Controller
 			
 			return $response;
 		}catch(\Exception $e){
-			//throw $e;
 			$response->setContent(
 				json_encode(array(
 					'success' => false,

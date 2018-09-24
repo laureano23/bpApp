@@ -236,8 +236,31 @@ Ext.define('MetApp.view.CCProveedores.FacturaProveedor',{
 											fieldLabel: 'Observaciones',
 											anchor: '100%',
 											margin: '0 5 0 0'
+										},
+										{
+											xtype: 'grid',
+											anchor: '100%',
+											store: {
+												fields: ['emision', 'tipoCbte', 'numero', 'importe', 'activo'],
+												proxy: {
+													type: 'memory',
+													reader: {
+														type: 'json',
+														root: 'items'
+													}
+												}
+											},
+											margin: '5 0 0 0',
+											height: 150,
+											itemId: 'gridImputacion',
+											columns: [
+												{ header: 'Fecha', dataIndex: 'emision', flex: 1 },
+												{ header: 'Tipo', dataIndex: 'tipoCbte', flex: 1 },
+												{ header: 'N°', dataIndex: 'numero', flex: 1 },
+												{ header: 'Importe', dataIndex: 'importe', flex: 1 },
+												{ xtype : 'checkcolumn', text : 'Active',  dataIndex: 'activo', flex: 1 }
+											]
 										}
-										
 									]
 								}
 							]

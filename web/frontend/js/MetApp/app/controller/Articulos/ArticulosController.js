@@ -306,14 +306,13 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 				success: function(resp){
 					jsonResp = Ext.JSON.decode(resp.responseText);
 					var formArt = Ext.getCmp('articulosForm');
-					
+					console.log(jsonResp);
 					formArt = Ext.getCmp('articulosForm').down('form');	
 					formArt.getForm().setValues(jsonResp.data[0]);
 					var nombreImagen = win.queryById('imagen');
 					if(jsonResp.data[0].nombreImagen != null){
 						nombreImagen.show();
 						nombreImagen.initialConfig.autoEl.href = Routing.generate('mbp_articulos_servirImagen', {id: jsonResp.data[0].id});
-						console.log(nombreImagen);
 					}else{
 						nombreImagen.hide();
 					}					

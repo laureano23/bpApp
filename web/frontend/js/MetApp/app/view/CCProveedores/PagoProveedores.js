@@ -183,21 +183,26 @@ Ext.define('MetApp.view.CCProveedores.PagoProveedores' ,{
 						        })
 						    ],
 							columns: [
-								{ text: 'Id', dataIndex: 'id' },
-								{ text: 'Factura N°', dataIndex: 'numFc' },
-								{ text: 'Importe', dataIndex: 'haber' },
+								{ text: 'Id', dataIndex: 'id', hidden:true },
+								{ text: 'Tipo', dataIndex: 'tipo' },
+								{ text: 'Comprobante N°', dataIndex: 'numFc' },
+								{ text: 'Importe', dataIndex: 'haber', xtype: 'numbercolumn' },
 								{ text: 'Vencimiento', dataIndex: 'vencimiento' },
-								{ text: 'Aplicado', dataIndex: 'valorAplicado' },
+								{ text: 'Aplicado', dataIndex: 'valorAplicado', xtype: 'numbercolumn' },
 								{ 
 									text: 'Pendiente',
 									dataIndex: 'pendiente',
+									xtype: 'numbercolumn',
 									renderer: function(value, metaData, record, row, col, store, gridView){
-										return record.data.haber - record.data.valorAplicado; 
+										return Ext.util.Format.usMoney(record.data.haber - record.data.valorAplicado); 
 									}
 								},
 								{ 
 									text: 'Aplicar',
-								  	editor: 'textfield',
+									editor: {
+										xtype: 'numberfield',
+										decimalSeparator: '.',
+									},
 								  	dataIndex:'aplicar',
 								},
 							]

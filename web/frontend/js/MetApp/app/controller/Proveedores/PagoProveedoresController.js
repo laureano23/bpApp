@@ -367,16 +367,23 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 		var grid = win.down('grid[itemId=gridImputaFc]');
 		var store = grid.getStore();
 		var totalImputado = 0;
+		var totalImputadoNC=0;
 		var txtTotal = win.queryById('totalImputado');
+		var txtTotalAPagar = win.queryById('totalAPagar');
 		
 		var arrayImputaciones=new Array;
 		store.each(function(rec){
 			if(rec.data.aplicar >0){
 				arrayImputaciones.push(rec.data);	
 			}
-			totalImputado = totalImputado + rec.data.aplicar;
+			if(rec.data.tipo!="NCA"){
+				totalImputado = totalImputado + rec.data.aplicar;
+			}else{
+				totalImputadoNC = totalImputadoNC + rec.data.aplicar;
+			}			
 		});
 		txtTotal.setValue(totalImputado);
+		txtTotalAPagar.setValue(totalImputadoNC);
 		
 		//actualizamos el calculo de retencion
 		var gridPagos = win.down('grid[itemId=gridPP]');
@@ -404,24 +411,20 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 						//storePagos.remove(rec);
 					}
 					
-					me.CalcularDiferencia(win.queryById('totalImputado'));
+					//me.CalcularDiferencia(win.queryById('totalImputado'));
 				}
 			})
 		}
 	},
 	
 	EvaluarConceptoBancario: function(field){
-		console.log(field);
 		var win = field.up('window');
 		var store = field.getStore();
 		var rec = store.findRecord('descripcion', field.getValue());
-		
-		console.log(rec);
+
 		if(rec== null){
 			return;
 		}
-		
-		//win.queryById('conceptoBancario').setValue(rec.data.conceptoBancario);
 	},
 	
 	AddFormasPagoView: function(btn){
@@ -484,7 +487,6 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 		form.query('.field').forEach(function(field){
 			field.setReadOnly(false);
 		});
-		console.log(data);
 		form.getForm().setValues(data);
 		
 	},

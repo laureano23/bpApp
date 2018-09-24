@@ -22,6 +22,35 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 class CuentaCorrienteController extends Controller
 {
 	/**
+     * @Route("/proveedores/cc/asociarNC", name="mbp_proveedores_asociarNC", options={"expose"=true})
+     */
+    public function asociarNC()
+    {
+		$req = $this->getRequest();
+		$response = new Response;
+		$idProv = $req->request->get('idProv');
+
+		$em = $this->getDoctrine()->getManager();
+		$repoFc = $em->getRepository('MbpProveedoresBundle:Factura');
+
+		try{
+			$items=$repoFc->listarFacturasNoAsociadasANC($idProv);
+
+			return $response->setContent(json_encode(array('success'=>true, 'items'=>$items)));
+			
+		}catch(\Exception $e){
+			throw $e;
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(
+				json_encode(array(
+					'success' => false,
+					'msg' => $e->getMessage()
+				))
+			);
+		}
+	}
+
+	/**
      * @Route("/proveedores/cc/validarComprobante", name="mbp_proveedores_validarComprobante", options={"expose"=true})
      */
     public function validarComprobante()
