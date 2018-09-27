@@ -123,9 +123,9 @@ Ext.define('MetApp.controller.Proveedores.FacturaProveedoresController',{
 			var storeCbteAsociado=win.down('grid').getStore();
 			var rec=storeCbteAsociado.getModifiedRecords();
 			var fcsAsociadas=[];
-			rec.forEach(element => {
+			rec.forEach(function(element){
 				fcsAsociadas.push(element.getData().idFcAsociada);
-			});
+			})
 			fcModel.set('idFcAsociada', fcsAsociadas);
 			store.add(fcModel);
 			var idTipoGasto = formCC.queryById('tipoGasto').getValue();				
