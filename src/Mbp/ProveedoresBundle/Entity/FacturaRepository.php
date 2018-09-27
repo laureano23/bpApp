@@ -16,7 +16,7 @@ class FacturaRepository extends \Doctrine\ORM\EntityRepository
 		$repo = $em->getRepository('MbpProveedoresBundle:Factura');		
 				
 		$qb2 = $em->createQueryBuilder()
-						->select("	f.id AS idF,
+						->select("	f.id AS idFcAsociada,
 									DATE_FORMAT(f.fechaEmision, '%d/%m/%Y') as emision,
 									f.numFc as numero,
 									tipo.abreviatura as tipoCbte,

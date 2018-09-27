@@ -33,5 +33,6 @@ Ext.define('MetApp.model.Proveedores.FacturaProveedoresModel',{
 		{name: 'tipoGasto', type: 'int'},
 		{name: 'observaciones', type: 'string'},
 		{name: 'esBalance', type: 'bool'},
+		{name: 'idFcAsociada', type: 'auto'},
 	]
 });

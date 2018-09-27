@@ -25,6 +25,9 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 			'#remitoCliente': {
 				click: this.RemitoClienteView
 			},
+			'#entregasAutorizadas': {
+				click: this.PedidosAutorizadosView
+			},
 			'RemitoClienteView button[itemId=buscarOrigen]': {
 				click: this.BuscarOrigen
 			},

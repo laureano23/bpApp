@@ -276,6 +276,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                 listeners : {
                     render : dragZone,
                 }, 
+			},
+			{
+        		text: 'Entregas Autorizadas',
+        		itemId: 'entregasAutorizadas',
+                listeners : {
+                    render : dragZone,
+                }, 
         	},
         	{
         		text: 'Reportes',

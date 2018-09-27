@@ -130,6 +130,18 @@ class CuentaCorrienteController extends Controller
 			$fcProveedor->setfechaEmision(\DateTime::createFromFormat('d/m/Y', $objData->fechaEmision));
 			
 			$tipo = $repoTipoCbpte->find($objData->tipo);
+
+			//si es una NC tengo que verificar si tiene facturas asociadas
+			if($tipo->getEsNotaCredito()){
+				if(!empty($objData->idFcAsociada)){
+					foreach ($objData->idFcAsociada as $id) {
+						$fcAsociada=$repoFc->find($id);
+						$fcAsociada->setFcAsociadaConNC($fcProveedor);
+						$em->persist($fcAsociada);
+					}
+				}
+			}
+
 			$fcProveedor->setTipoId($tipo);
 			$fcProveedor->setsucursal($objData->sucursal);
 			$fcProveedor->setnumFc($objData->numFc);
@@ -173,6 +185,8 @@ class CuentaCorrienteController extends Controller
 				))
 			); 
 		}catch(\Exception $e){
+			throw $e;
+			
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(
 				json_encode(array(

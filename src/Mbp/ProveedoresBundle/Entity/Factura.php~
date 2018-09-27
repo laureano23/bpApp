@@ -8,7 +8,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * FacturaProveedor
  *
- * @ORM\Table(name="FacturaProveedor")
+ * @ORM\Table(name="FacturaProveedor",
+ *      uniqueConstraints={
+ *          @ORM\UniqueConstraint(name="unicoComprobante",
+ *          columns= {"tipoId", "sucursal", "numFc", "proveedorId"})
+ *      })
  * @ORM\Entity(repositoryClass="Mbp\ProveedoresBundle\Entity\FacturaRepository")
  */
 class Factura
@@ -122,21 +126,21 @@ class Factura
      *
      * @ORM\Column(name="iibbCf", type="decimal", precision=7 , scale=2, nullable=true)
      */
-    private $iibbCf;
+    private $iibbCf=0;
 
     /**
      * @var string
      *
      * @ORM\Column(name="iibbBsas", type="decimal", precision=7 , scale=2, nullable=true)
      */
-    private $iibbBsas;
+    private $iibbBsas=0;
 
     /**
      * @var string
      *
      * @ORM\Column(name="iibbOtras", type="decimal", precision=7 , scale=2, nullable=true)
      */
-    private $iibbOtras;
+    private $iibbOtras=0;
 
     /**
      * @var \DateTime
@@ -189,10 +193,22 @@ class Factura
 	 * @ORM\OneToOne(targetEntity="Mbp\ProveedoresBundle\Entity\CCProv", mappedBy="facturaId", cascade={"remove", "persist"})
 	 * @ORM\JoinColumn(name="ccId", referencedColumnName="id", onDelete="SET NULL")
 	 */
-	private $ccId;
+    private $ccId;
+
+    /**
+	 * @ORM\OneToMany(targetEntity="Mbp\ProveedoresBundle\Entity\Factura", mappedBy="fcAsociadaConNC")
+	 */
+    private $ncAsociadaConFc;    
+
+    /**
+	 * @ORM\ManyToOne(targetEntity="Mbp\ProveedoresBundle\Entity\Factura", inversedBy="ncAsociadaConFc")
+	 */
+    private $fcAsociadaConNC;
 
     public function __construct() {
         $this->ordenPago = new ArrayCollection();
+        $this->ncAsociadaConFc = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->fcAsociadaConNC = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -575,7 +591,7 @@ class Factura
      */
     public function setTotalFc()
     {
-        $this->totalFc = $this->getNeto() + $this->getNetoNoGrabado() + $this->getIva21() + $this->getIibbCf() + $this->getIva105() + $this->getIva27() + $this->getPerIva3() + $this->getPerIva5();
+        $this->totalFc = $this->getNeto() + $this->getNetoNoGrabado() + $this->getIva21() + $this->getIibbCf() + $this->getIva105() + $this->getIva27() + $this->getPerIva3() + $this->getPerIva5() + $this->getIibbBsas() + $this->getIibbOtras();
 
         return $this;
     }
@@ -766,5 +782,53 @@ class Factura
     public function getCcId()
     {
         return $this->ccId;
+    }
+
+    /**
+     * Set iibbBsas
+     *
+     * @param string $iibbBsas
+     *
+     * @return Factura
+     */
+    public function setIibbBsas($iibbBsas)
+    {
+        $this->iibbBsas = $iibbBsas;
+
+        return $this;
+    }
+
+    /**
+     * Get iibbBsas
+     *
+     * @return string
+     */
+    public function getIibbBsas()
+    {
+        return $this->iibbBsas;
+    }
+
+    /**
+     * Set iibbOtras
+     *
+     * @param string $iibbOtras
+     *
+     * @return Factura
+     */
+    public function setIibbOtras($iibbOtras)
+    {
+        $this->iibbOtras = $iibbOtras;
+
+        return $this;
+    }
+
+    /**
+     * Get iibbOtras
+     *
+     * @return string
+     */
+    public function getIibbOtras()
+    {
+        return $this->iibbOtras;
     }
 }

@@ -35,7 +35,6 @@ Ext.define('MetApp.controller.Proveedores.FacturaProveedoresController',{
 	},
 
 	AsociarFacturaNC: function(combo){
-		console.log(combo);
 		var win=combo.up('window');
 		var grid=win.down('grid');
 		var formCC = this.getCCProveedores();
@@ -50,10 +49,7 @@ Ext.define('MetApp.controller.Proveedores.FacturaProveedoresController',{
 					idProv: idProv
 				},
 				success: function(form, action){
-					console.log(form);
-					console.log(action);
 					var jsonResp=Ext.JSON.decode(action.response.responseText);
-					console.log(jsonResp);
 					grid.getStore().loadRawData(jsonResp);
 				}
 			});
@@ -75,8 +71,6 @@ Ext.define('MetApp.controller.Proveedores.FacturaProveedoresController',{
 				idProv: idProv
 			},
 			success: function(form, action){
-				console.log(form);
-				console.log(action);
 			}
 		})
 	},
@@ -126,6 +120,13 @@ Ext.define('MetApp.controller.Proveedores.FacturaProveedoresController',{
 		});
 		
 		if(form.isValid()==true){			
+			var storeCbteAsociado=win.down('grid').getStore();
+			var rec=storeCbteAsociado.getModifiedRecords();
+			var fcsAsociadas=[];
+			rec.forEach(element => {
+				fcsAsociadas.push(element.getData().idFcAsociada);
+			});
+			fcModel.set('idFcAsociada', fcsAsociadas);
 			store.add(fcModel);
 			var idTipoGasto = formCC.queryById('tipoGasto').getValue();				
 			comboTipoGasto.select(idTipoGasto);
