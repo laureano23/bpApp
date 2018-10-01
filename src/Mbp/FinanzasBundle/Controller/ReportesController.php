@@ -1046,7 +1046,7 @@ ORDER BY
 			     cliente.`idCliente`
 			ORDER BY
 			     saldo DESC
-			     ";
+			     "; 
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	
 		}catch(\Exception $e){
