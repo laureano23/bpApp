@@ -1041,7 +1041,7 @@ ORDER BY
 			FROM
 			     `cliente` cliente INNER JOIN `CCClientes` CCClientes ON cliente.`idCliente` = CCClientes.`clienteId`
 			WHERE
-				CCClientes.`fechaEmision` <= '$vencimiento'
+				CCClientes.`fechaVencimiento` <= '$vencimiento'				
 			GROUP BY
 			     cliente.`idCliente`
 			ORDER BY
