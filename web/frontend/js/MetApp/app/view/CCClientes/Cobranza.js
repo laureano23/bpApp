@@ -233,13 +233,10 @@ Ext.define('MetApp.view.CCClientes.Cobranza' ,{
 								{ text: 'Factura N°', dataIndex: 'numFc' },
 								{ text: 'Importe', dataIndex: 'haber' },
 								{ text: 'Vencimiento', dataIndex: 'vencimiento' },
-								{ text: 'Aplicado', dataIndex: 'valorAplicado' },
+								{ text: 'Aplicado', dataIndex: 'aplicado' },
 								{ 
 									text: 'Pendiente',
-									dataIndex: 'pendiente',
-									renderer: function(value, metaData, record, row, col, store, gridView){
-										return record.data.haber - record.data.valorAplicado; 
-									}
+									dataIndex: 'pendiente'
 								},
 								{ 
 									text: 'Aplicar',

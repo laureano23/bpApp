@@ -197,14 +197,14 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 		try{
 
 			$sql="
-				SELECT sub.*, sub.haber - sub.aplicado as pendiente
+				SELECT sub.*, sub.haber - ifnull(sub.aplicado, 0) as pendiente
 				FROM(SELECT 
 					f.id,
 					f.clienteId,
 					date_format(f.fecha, '%d/%m/%Y') as fechaEmision,
 					fcNro as numFc,
 					ROUND((f.total*f.tipoCambio), 2) as haber,
-					SUM(tr.aplicado) as aplicado,
+					SUM(ifnull(tr.aplicado,0)) as aplicado,
 					date_format(f.vencimiento, '%d/%m/%Y') as vencimiento    
 				FROM Facturas f
 				LEFT JOIN TransaccionCobranzaFactura tr ON tr.facturaId = f.id
