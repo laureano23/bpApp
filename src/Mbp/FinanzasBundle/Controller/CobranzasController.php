@@ -111,9 +111,10 @@ class CobranzasController extends Controller
 					//VALIDO QUE EL IMPORTE A APLICAR NO SUPERE EL TOTAL DE LA FC
 					$aplicado = $repoTransaccion->getTotalAplicadoFactura($fc->id);
 					$restante = round($factura->getTotal()*$factura->getTipoCambio(), 2)  - $aplicado;
-					if($fc->aplicar > $restante){
-						throw new \Exception("El máximo imputable a esta factura es ".$restante);
-						
+					
+					$epsilon=0.0001; //para comprar flotantes se usa este metodo
+					if(($fc->aplicar - $restante) > $epsilon){
+						throw new \Exception("El máximo imputable a esta factura es ".$restante);						
 					}
 					
 					$transaccion = new TransaccionCobranzaFactura;

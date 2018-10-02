@@ -229,19 +229,23 @@ Ext.define('MetApp.view.CCClientes.Cobranza' ,{
 						        })
 						    ],
 							columns: [
-								{ text: 'Id', dataIndex: 'id' },
+								{ text: 'Id', dataIndex: 'id', hidden: true },
 								{ text: 'Factura N°', dataIndex: 'numFc' },
-								{ text: 'Importe', dataIndex: 'haber' },
+								{ text: 'Importe', dataIndex: 'haber', xtype: 'numbercolumn' },
 								{ text: 'Vencimiento', dataIndex: 'vencimiento' },
-								{ text: 'Aplicado', dataIndex: 'aplicado' },
+								{ text: 'Aplicado', dataIndex: 'aplicado', xtype: 'numbercolumn' },
 								{ 
 									text: 'Pendiente',
-									dataIndex: 'pendiente'
+									dataIndex: 'pendiente',
+									xtype: 'numbercolumn'
 								},
 								{ 
 									text: 'Aplicar',
 								  	editor: 'textfield',
-								  	dataIndex:'aplicar',
+									  dataIndex:'aplicar',
+									  style: {
+										  color: 'blue'
+									  }
 								},
 							]
 						},
