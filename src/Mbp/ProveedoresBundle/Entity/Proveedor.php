@@ -175,6 +175,13 @@ class Proveedor
      */
     private $notasCC;
 
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="observaciones", type="string", length=255, nullable=true)
+     */
+    private $observaciones;
+
 
     /**
      * Get id
@@ -714,5 +721,29 @@ class Proveedor
     public function getNotasCC()
     {
         return $this->notasCC;
+    }
+
+    /**
+     * Set observaciones
+     *
+     * @param string $observaciones
+     *
+     * @return Proveedor
+     */
+    public function setObservaciones($observaciones)
+    {
+        $this->observaciones = $observaciones;
+
+        return $this;
+    }
+
+    /**
+     * Get observaciones
+     *
+     * @return string
+     */
+    public function getObservaciones()
+    {
+        return $this->observaciones;
     }
 }

@@ -195,20 +195,8 @@ class Factura
 	 */
     private $ccId;
 
-    /**
-	 * @ORM\OneToMany(targetEntity="Mbp\ProveedoresBundle\Entity\Factura", mappedBy="fcAsociadaConNC")
-	 */
-    private $ncAsociadaConFc;    
-
-    /**
-	 * @ORM\ManyToOne(targetEntity="Mbp\ProveedoresBundle\Entity\Factura", inversedBy="ncAsociadaConFc")
-	 */
-    private $fcAsociadaConNC;
-
     public function __construct() {
         $this->ordenPago = new ArrayCollection();
-        $this->ncAsociadaConFc = new \Doctrine\Common\Collections\ArrayCollection();
-        //$this->fcAsociadaConNC = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -830,63 +818,5 @@ class Factura
     public function getIibbOtras()
     {
         return $this->iibbOtras;
-    }
-
-    /**
-     * Add ncAsociadaConFc
-     *
-     * @param \Mbp\ProveedoresBundle\Entity\Factura $ncAsociadaConFc
-     *
-     * @return Factura
-     */
-    public function addNcAsociadaConFc(\Mbp\ProveedoresBundle\Entity\Factura $ncAsociadaConFc)
-    {
-        $this->ncAsociadaConFc[] = $ncAsociadaConFc;
-
-        return $this;
-    }
-
-    /**
-     * Remove ncAsociadaConFc
-     *
-     * @param \Mbp\ProveedoresBundle\Entity\Factura $ncAsociadaConFc
-     */
-    public function removeNcAsociadaConFc(\Mbp\ProveedoresBundle\Entity\Factura $ncAsociadaConFc)
-    {
-        $this->ncAsociadaConFc->removeElement($ncAsociadaConFc);
-    }
-
-    /**
-     * Get ncAsociadaConFc
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getNcAsociadaConFc()
-    {
-        return $this->ncAsociadaConFc;
-    }
-
-    /**
-     * Set fcAsociadaConNC
-     *
-     * @param \Mbp\ProveedoresBundle\Entity\Factura $fcAsociadaConNC
-     *
-     * @return Factura
-     */
-    public function setFcAsociadaConNC(\Mbp\ProveedoresBundle\Entity\Factura $fcAsociadaConNC = null)
-    {
-        $this->fcAsociadaConNC = $fcAsociadaConNC;
-
-        return $this;
-    }
-
-    /**
-     * Get fcAsociadaConNC
-     *
-     * @return \Mbp\ProveedoresBundle\Entity\Factura
-     */
-    public function getFcAsociadaConNC()
-    {
-        return $this->fcAsociadaConNC;
     }
 }

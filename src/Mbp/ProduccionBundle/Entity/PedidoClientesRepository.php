@@ -19,10 +19,13 @@ class PedidoClientesRepository extends \Doctrine\ORM\EntityRepository
 				c.rsocial as clienteDesc,
 				d.cantidad,	DATE_FORMAT(d.fechaProg, '%d/%m/%Y') as fechaProgramacion, d.entregado, d.descripcion, d.id as idDetalle,
 				cod.codigo,
-				d.cantAutorizada")
+				d.cantAutorizada,
+				d.observacionesAutorizacion,
+				user.username as autorizoEntrega")
 			->leftJoin('p.cliente', 'c')
 			->leftJoin('p.detalleId', 'd')
 			->leftJoin('d.codigo', 'cod')
+			->leftJoin('d.autorizoEntrega', 'user')
 			->where('d.inactivo = 0')				
 			->andWhere('p.inactivo = 0')	
 			->andWhere('d.cantAutorizada > 0')	

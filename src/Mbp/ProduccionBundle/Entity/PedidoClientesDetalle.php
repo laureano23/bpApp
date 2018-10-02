@@ -63,6 +63,14 @@ class PedidoClientesDetalle
      * @ORM\Column(name="cantAutorizada", type="decimal", precision=11, scale=2, nullable=true)
      */
     private $cantAutorizada=0;
+
+    /**
+     * @var \Mbp\SecurityBundle\Entity\Users 
+     *
+     * @ORM\ManyToOne(targetEntity="Mbp\SecurityBundle\Entity\Users") 
+     * @ORM\JoinColumn(name="autorizoEntrega", referencedColumnName="id", nullable=true)
+     */
+    private $autorizoEntrega;
 	
 	/**
      * @var string
@@ -79,6 +87,13 @@ class PedidoClientesDetalle
      *      )
      */
     private $ots;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="observacionesAutorizacion", type="string", nullable=true)
+     */
+    private $observacionesAutorizacion;
 
     /**
      * Constructor
@@ -299,5 +314,53 @@ class PedidoClientesDetalle
     public function getOts()
     {
         return $this->ots;
+    }
+
+    /**
+     * Set autorizoEntrega
+     *
+     * @param \Mbp\SecurityBundle\Entity\Users $autorizoEntrega
+     *
+     * @return PedidoClientesDetalle
+     */
+    public function setAutorizoEntrega(\Mbp\SecurityBundle\Entity\Users $autorizoEntrega = null)
+    {
+        $this->autorizoEntrega = $autorizoEntrega;
+
+        return $this;
+    }
+
+    /**
+     * Get autorizoEntrega
+     *
+     * @return \Mbp\SecurityBundle\Entity\Users
+     */
+    public function getAutorizoEntrega()
+    {
+        return $this->autorizoEntrega;
+    }
+
+    /**
+     * Set observacionesAutorizacion
+     *
+     * @param string $observacionesAutorizacion
+     *
+     * @return PedidoClientesDetalle
+     */
+    public function setObservacionesAutorizacion($observacionesAutorizacion)
+    {
+        $this->observacionesAutorizacion = $observacionesAutorizacion;
+
+        return $this;
+    }
+
+    /**
+     * Get observacionesAutorizacion
+     *
+     * @return string
+     */
+    public function getObservacionesAutorizacion()
+    {
+        return $this->observacionesAutorizacion;
     }
 }

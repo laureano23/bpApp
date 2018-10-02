@@ -20,5 +20,7 @@ Ext.define('MetApp.model.Produccion.PedidoClientes.PedidosClientesModel', {
 		{ name: 'marcar', type: 'string' },
 		{ name: 'cantAutorizada', type: 'int' },
 		{ name: 'otsAsociadas', type: 'string' },
+		{ name: 'observacionesAutorizacion', type: 'string' },
+		{ name: 'autorizoEntrega', type: 'string' },
 	]
 });

@@ -30,6 +30,9 @@ class AutorizacionPedidoController extends Controller
 
 			$pedido=$repoPedidos->find($stdObj->idDetalle);
 			$pedido->setCantAutorizada($stdObj->cantAutorizada);
+			$pedido->setAutorizoEntrega($this->get('security.context')->getToken()->getUser());
+			$pedido->setObservacionesAutorizacion($stdObj->observacionesAutorizacion);
+
 
 			$em->persist($pedido);
 			$em->flush();

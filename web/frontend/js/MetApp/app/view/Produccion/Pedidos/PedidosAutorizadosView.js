@@ -68,7 +68,7 @@ Ext.define('MetApp.view.Produccion.Pedidos.PedidosAutorizadosView', {
 						{header: 'id Pedido', dataIndex: 'idPedido', width: 50, hidden: true},
 						{header: 'id Detalle', dataIndex: 'idDetalle', width: 50, hidden: true},					
 						{header: 'Codigo', dataIndex: 'codigo', width: 110},
-						{header: 'Descripcion', dataIndex: 'descripcion', width: 300},
+						{header: 'Descripcion', dataIndex: 'descripcion', width: 250},
 						{
 							header: 'Cantidad',
 							dataIndex: 'cantidad',
@@ -86,7 +86,7 @@ Ext.define('MetApp.view.Produccion.Pedidos.PedidosAutorizadosView', {
 								return meta.data.cantidad - meta.data.entregado;
 							}
 						},
-						{header: 'Cliente', dataIndex: 'clienteDesc', width: 250},
+						{header: 'Cliente', dataIndex: 'clienteDesc', width: 150},
 						{
 							header: 'Fecha Prog.',
 							dataIndex: 'fechaProgramacion',
@@ -98,6 +98,16 @@ Ext.define('MetApp.view.Produccion.Pedidos.PedidosAutorizadosView', {
 						{
 							header: 'Autorizado',
 							dataIndex: 'cantAutorizada',
+							width: 'auto'
+						},
+						{
+							header: 'Autorizó',
+							dataIndex: 'autorizoEntrega',
+							width: 'auto'
+						},
+						{
+							header: 'Observaciones',
+							dataIndex: 'observacionesAutorizacion',
 							width: 'auto'
 						},
 						/*{ 
