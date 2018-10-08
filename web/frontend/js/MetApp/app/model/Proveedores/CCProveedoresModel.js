@@ -4,7 +4,7 @@ Ext.define('MetApp.model.Proveedores.CCProveedoresModel',{
 		{name: 'idF', type: 'int'},
 		{name: 'idOP', type: 'int'},
 		{name: 'fechaEmision', type: 'datetime'},
-		{name: 'vencimiento', type: 'datetime'},
+		{name: 'fechaVencimiento', type: 'datetime'},
 		{name: 'concepto', type: 'string'},
 		{name: 'debe', type: 'float'},
 		{name: 'haber', type: 'float'},

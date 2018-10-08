@@ -161,7 +161,12 @@ Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 									}
 								},
 							},
-							{ text: 'Vencimiento', dataIndex: 'vencimiento', width:100 },
+							{ text: 'Vencimiento', dataIndex: 'fechaVencimiento', width:100,
+								renderer: function(val){
+								var dt = Ext.Date.parse(val, 'd-m-Y H:i:s');
+								return Ext.Date.format(dt, 'd-m-Y');
+							}
+							},
 							{ text: 'Debe', dataIndex: 'debe', flex: 1, xtype: 'numbercolumn' },
 							{ text: 'Haber', dataIndex: 'haber', flex: 1, xtype: 'numbercolumn' },
 							{

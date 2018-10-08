@@ -77,9 +77,7 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 		var winCC=btn.up('window');
 		var rec=winCC.down('form').getForm().getRecord();
 		var win=Ext.widget('ProveedoresWin');
-		
 		win.down('form').loadRecord(rec);
-		
 	},
 	
 	NuevaNota: function(btn){
