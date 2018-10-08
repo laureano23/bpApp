@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Pedidos" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="faabb94c-b32d-4f38-913c-e824ee7dd96c">
-	<property name="ireport.zoom" value="1.4641000000000017"/>
-	<property name="ireport.x" value="167"/>
+	<property name="ireport.zoom" value="2.3579476910000046"/>
+	<property name="ireport.x" value="1077"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="codigoDesde" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["1"]]></defaultValueExpression>
@@ -48,6 +48,7 @@
      articulos.`costo` AS articulos_costo,
      articulos.`precio` AS articulos_precio,
      articulos.`moneda` AS articulos_moneda,
+     articulos.`stock` AS articulos_stock,
      PedidoClientesDetalle.`descripcion` AS PedidoClientesDetalle_descripcion,
      ParametrosFinanzas.`dolarOficial` AS dolarOficial,
      articulos.`monedaPrecio` AS articulos_monedaPrecio,
@@ -99,6 +100,7 @@ ORDER BY
 	<field name="articulos_costo" class="java.math.BigDecimal"/>
 	<field name="articulos_precio" class="java.math.BigDecimal"/>
 	<field name="articulos_moneda" class="java.lang.Boolean"/>
+	<field name="articulos_stock" class="java.math.BigDecimal"/>
 	<field name="PedidoClientesDetalle_descripcion" class="java.lang.String"/>
 	<field name="dolarOficial" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -226,7 +228,7 @@ ORDER BY
 	<columnHeader>
 		<band height="20" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="100" height="20" uuid="f6dd0a29-e562-4504-b8db-51e91f7757b0"/>
+				<reportElement x="0" y="0" width="82" height="20" uuid="f6dd0a29-e562-4504-b8db-51e91f7757b0"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -237,7 +239,7 @@ ORDER BY
 				<text><![CDATA[Codigo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="100" y="0" width="223" height="20" uuid="f0425b4a-b5c8-4dcf-aa2f-506effb82f50"/>
+				<reportElement x="82" y="0" width="223" height="20" uuid="f0425b4a-b5c8-4dcf-aa2f-506effb82f50"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -248,7 +250,7 @@ ORDER BY
 				<text><![CDATA[Descripcion]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="323" y="0" width="53" height="20" uuid="d9f72297-8c01-4c0e-851f-ed1d26f68363"/>
+				<reportElement x="305" y="0" width="53" height="20" uuid="d9f72297-8c01-4c0e-851f-ed1d26f68363"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -259,7 +261,7 @@ ORDER BY
 				<text><![CDATA[OC]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="429" y="0" width="57" height="20" uuid="a6c65b39-157c-4934-9eb0-312a0dd09e92"/>
+				<reportElement x="396" y="0" width="57" height="20" uuid="a6c65b39-157c-4934-9eb0-312a0dd09e92"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -270,7 +272,7 @@ ORDER BY
 				<text><![CDATA[Cantidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="595" y="0" width="60" height="20" uuid="7dcab7bb-210e-4d93-a3b4-dd1a0d132a18"/>
+				<reportElement x="562" y="0" width="60" height="20" uuid="7dcab7bb-210e-4d93-a3b4-dd1a0d132a18"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -281,7 +283,7 @@ ORDER BY
 				<text><![CDATA[Fecha Programada]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="486" y="0" width="57" height="20" uuid="55287d05-00cf-41c1-819f-a806dad50294"/>
+				<reportElement x="453" y="0" width="57" height="20" uuid="55287d05-00cf-41c1-819f-a806dad50294"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -292,7 +294,7 @@ ORDER BY
 				<text><![CDATA[Entregado]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="543" y="0" width="52" height="20" uuid="c5ef9536-ee27-4424-b3cb-91ddf44bc90a"/>
+				<reportElement x="510" y="0" width="52" height="20" uuid="c5ef9536-ee27-4424-b3cb-91ddf44bc90a"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -303,7 +305,7 @@ ORDER BY
 				<text><![CDATA[Saldo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="655" y="0" width="52" height="20" uuid="9fdde553-075f-49ae-81d8-0b37b7d3e250"/>
+				<reportElement x="622" y="0" width="52" height="20" uuid="9fdde553-075f-49ae-81d8-0b37b7d3e250"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -314,7 +316,7 @@ ORDER BY
 				<text><![CDATA[Precio]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="707" y="0" width="95" height="20" uuid="65312843-fa64-4def-ab2b-ead502aed345"/>
+				<reportElement x="726" y="0" width="76" height="20" uuid="65312843-fa64-4def-ab2b-ead502aed345"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -325,7 +327,7 @@ ORDER BY
 				<text><![CDATA[SubTotal]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="376" y="0" width="53" height="20" uuid="3cd91cd1-ad16-412e-8125-346c54716293"/>
+				<reportElement x="358" y="0" width="38" height="20" uuid="3cd91cd1-ad16-412e-8125-346c54716293"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -335,12 +337,23 @@ ORDER BY
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[OT]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="674" y="0" width="52" height="20" uuid="f531bc33-9fce-4941-8815-0d4e539a33af"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Stock]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="100" height="20" uuid="ce076702-864e-420b-b7f3-d27766d01ca9"/>
+				<reportElement x="0" y="0" width="82" height="20" uuid="ce076702-864e-420b-b7f3-d27766d01ca9"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -354,7 +367,7 @@ ORDER BY
 				<textFieldExpression><![CDATA[$F{articulos_codigo}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="100" y="0" width="221" height="20" uuid="eda36d26-bfcf-4f60-bb81-c476766dbf04"/>
+				<reportElement x="82" y="0" width="221" height="20" uuid="eda36d26-bfcf-4f60-bb81-c476766dbf04"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -366,7 +379,7 @@ ORDER BY
 				<textFieldExpression><![CDATA[$F{PedidoClientesDetalle_descripcion}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="429" y="0" width="57" height="20" uuid="5d9787f4-248e-43a5-98f5-def87db5d6b9"/>
+				<reportElement x="396" y="0" width="57" height="20" uuid="5d9787f4-248e-43a5-98f5-def87db5d6b9"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -380,7 +393,7 @@ ORDER BY
 				<textFieldExpression><![CDATA[$F{PedidoClientesDetalle_cantidad}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="595" y="0" width="60" height="20" uuid="e9685f59-f47f-4bf0-b4b2-338c32bd443f"/>
+				<reportElement x="562" y="0" width="60" height="20" uuid="e9685f59-f47f-4bf0-b4b2-338c32bd443f"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -394,7 +407,7 @@ ORDER BY
 				<textFieldExpression><![CDATA[$F{PedidoClientesDetalle_fechaProg}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="321" y="0" width="55" height="20" uuid="df5db287-17aa-4a62-93ab-4ab5f628d9e8"/>
+				<reportElement x="303" y="0" width="55" height="20" uuid="df5db287-17aa-4a62-93ab-4ab5f628d9e8"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -408,7 +421,7 @@ ORDER BY
 				<textFieldExpression><![CDATA[$F{PedidoClientes_oc}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="486" y="0" width="57" height="20" uuid="4b54da41-5f9d-4eff-8b53-d3b31db9b032"/>
+				<reportElement x="453" y="0" width="57" height="20" uuid="4b54da41-5f9d-4eff-8b53-d3b31db9b032"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -422,7 +435,7 @@ ORDER BY
 				<textFieldExpression><![CDATA[$F{PedidoClientesDetalle_entregado}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="543" y="0" width="52" height="20" uuid="d4f865ba-0f3a-49e3-8997-0d01be133c08"/>
+				<reportElement x="510" y="0" width="52" height="20" uuid="d4f865ba-0f3a-49e3-8997-0d01be133c08"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -436,7 +449,7 @@ ORDER BY
 				<textFieldExpression><![CDATA[$F{PedidoClientesDetalle_cantidad} - $F{PedidoClientesDetalle_entregado}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="655" y="0" width="53" height="20" uuid="eb012842-5c71-489f-8bfe-9d9bc42ea9ad"/>
+				<reportElement x="622" y="0" width="53" height="20" uuid="eb012842-5c71-489f-8bfe-9d9bc42ea9ad"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -450,7 +463,7 @@ ORDER BY
 				<textFieldExpression><![CDATA[$F{articulos_monedaPrecio} == true ? $F{articulos_precio}*$F{dolarOficial}:$F{articulos_precio}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="707" y="0" width="95" height="20" uuid="d3f5b4b4-3600-4882-8328-9044a3d64484"/>
+				<reportElement x="726" y="0" width="76" height="20" uuid="d3f5b4b4-3600-4882-8328-9044a3d64484"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -465,7 +478,7 @@ ORDER BY
 ? $F{articulos_precio}*$F{dolarOficial}*($F{PedidoClientesDetalle_cantidad}-$F{PedidoClientesDetalle_entregado}):$F{articulos_precio}*($F{PedidoClientesDetalle_cantidad}-$F{PedidoClientesDetalle_entregado})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="376" y="0" width="53" height="20" uuid="c1fe9d39-8579-44dd-bc39-45f689d6497b"/>
+				<reportElement x="358" y="0" width="38" height="20" uuid="c1fe9d39-8579-44dd-bc39-45f689d6497b"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -477,6 +490,20 @@ ORDER BY
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ot}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="675" y="0" width="51" height="20" uuid="715b820f-1852-4bb2-9300-5332b1a33add"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{articulos_stock}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

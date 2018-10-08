@@ -213,6 +213,7 @@ class PedidoClientesController extends Controller
 			     articulos.`costo` AS articulos_costo,
 			     articulos.`precio` AS articulos_precio,
 			     articulos.`moneda` AS articulos_moneda,
+     			 articulos.`stock` AS articulos_stock,
 			     PedidoClientesDetalle.`descripcion` AS PedidoClientesDetalle_descripcion,
 			     ParametrosFinanzas.`dolarOficial` AS dolarOficial,
 			     articulos.`monedaPrecio` AS articulos_monedaPrecio,
