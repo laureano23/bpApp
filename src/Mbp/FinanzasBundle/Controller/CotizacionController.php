@@ -26,7 +26,7 @@ class CotizacionController extends Controller
 			$req = $this->getRequest();
 			$coti=json_decode($req->request->get('data'));
 			$detalles=json_decode($req->request->get('items'));
-			$total=$req->request->get('total');
+			//$total=$req->request->get('total');
 			$descuento=$req->request->get('descuento');
 			
 			
@@ -45,11 +45,8 @@ class CotizacionController extends Controller
 			
 			$cotizacion->setClienteId($cliente);
 			$cotizacion->setIdUsuario($this->get('security.context')->getToken()->getUser());
-			$cotizacion->setTotal($total);
-
-			$calculoDescuento=$total*$descuento/100;
-			$cotizacion->setDescuento($calculoDescuento);
-						
+			
+			$totalGral=0;
 			foreach ($detalles as $d) {
 				$detalle=new DetalleCotizacion;
 				$detalle->setDescripcion($d->descripcion);
@@ -65,7 +62,14 @@ class CotizacionController extends Controller
 				$detalle->setCotizacion($cotizacion);
 				
 				$cotizacion->addDetalle($detalle);
+				$totalGral+=($d->precio*$d->cant);
 			}
+
+			$calculoDescuento=$totalGral*$descuento/100;
+			$cotizacion->setTotal($totalGral-$calculoDescuento);
+
+			
+			$cotizacion->setDescuento($calculoDescuento);
 			
 			$em->persist($cotizacion);
 			$em->flush();
