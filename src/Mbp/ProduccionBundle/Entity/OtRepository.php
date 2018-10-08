@@ -38,6 +38,7 @@ class OtRepository extends EntityRepository
 			->join('o.sectorId', 'c')
 			->where('o.idCodigo = :art')
 			->andWhere('o.estado != 2')
+			->andWhere('o.anulada = false')
 			->setParameter('art', $idArt)
 			->orderBy('otNum', 'DESC')
 			->getQuery()
@@ -219,7 +220,6 @@ class OtRepository extends EntityRepository
 					 ELSE 'No comenzada' END as estado")
 			->join('o.idCodigo', 'codigo')
 			->join('o.sectorId', 'c')
-			->where('o.anulada = false')
 			->orderBy('otNum', 'DESC')
 			->getQuery()
 			->getArrayResult();
