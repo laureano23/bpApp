@@ -48,8 +48,8 @@ class AplicativosController extends Controller
 						ELSE '' AS subTipoCbte,
 					LPAD(f.ptoVta, 4, '0') AS ptoVta,
 					LPAD(f.fcNro, 8, '0') AS fcNro,					
-					CASE WHEN tipo.esNotaCredito = true THEN CONCAT('-', LPAD(((f.total - f.iva21 - f.perIIBB)* f.tipoCambio), 11, '0'))
-						ELSE LPAD(((f.total - f.iva21 - f.perIIBB)* f.tipoCambio), 12, '0') END AS subTotal,
+					CASE WHEN tipo.esNotaCredito = true THEN CONCAT('-', LPAD(ROUND(((f.total - f.iva21 - f.perIIBB)* f.tipoCambio),2), 11, '0'))
+						ELSE LPAD(ROUND(((f.total - f.iva21 - f.perIIBB)* f.tipoCambio),2), 12, '0') END AS subTotal,
 					CASE WHEN tipo.esNotaCredito = true THEN CONCAT('-', LPAD(ROUND((f.perIIBB * f.tipoCambio),2), 10, '0'))
 						ELSE LPAD(ROUND((f.perIIBB * f.tipoCambio),2), 11, '0') END AS perIIBB,					
 					'A' AS finLinea")
