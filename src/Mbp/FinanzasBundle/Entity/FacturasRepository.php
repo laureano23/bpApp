@@ -125,9 +125,6 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 				->getQuery()
 				->getArrayResult();
 
-		//print_r($res);
-		//exit;
-
 		return $res;
 
 	}
@@ -188,37 +185,50 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 		}	
 	}
 
+	public function listarFacturasParaAsociar($idCliente){
+		$em = $this->getEntityManager();
+		$repoFacturas = $em->getRepository('MbpFinanzasBundle:Facturas');
+		$repoCliente = $em->getRepository('MbpClientesBundle:Cliente');
+
+		$cliente=$repoCliente->find($idCliente);
+
+		$qb=$repoFacturas->createQueryBuilder('f')
+			->select("f.id, f.fcNro as numFc, f.total as haber, date_format(f.vencimiento, '%d/%m/%Y') as vencimiento")
+			->leftJoin('f.tipoId', 'tipo')
+			->where('f.clienteId = :cliente')
+			->andWhere('tipo.esFactura = true')
+			->setParameter('cliente', $cliente)
+			->orderBy('f.fecha', 'DESC')
+			->getQuery()
+			->getArrayResult();
+		
+		return $qb;
+	}
+
 	public function ListarFcParaImputar($idCliente)
 	{
 		$em = $this->getEntityManager();
 		$repoFacturas = $em->getRepository('MbpFinanzasBundle:Facturas');
 		$repoTrans = $em->getRepository('MbpFinanzasBundle:TransaccionCobranzaFactura');
 
-		try{
-
-			$sql="
-				SELECT sub.*, sub.haber - ifnull(sub.aplicado, 0) as pendiente
-				FROM(SELECT 
-					f.id,
-					f.clienteId,
-					date_format(f.fecha, '%d/%m/%Y') as fechaEmision,
-					fcNro as numFc,
-					ROUND((f.total*f.tipoCambio), 2) as haber,
-					SUM(ifnull(tr.aplicado,0)) as aplicado,
-					date_format(f.vencimiento, '%d/%m/%Y') as vencimiento    
-				FROM Facturas f
-				LEFT JOIN TransaccionCobranzaFactura tr ON tr.facturaId = f.id
-				GROUP BY f.id) as sub
-				where ((sub.haber - sub.aplicado) > 0 || isnull(sub.haber - sub.aplicado))
-				AND sub.clienteId = $idCliente";
-			
-			$stmt = $em->getConnection()->prepare($sql);
-			$stmt->execute();
-			return $stmt->fetchAll();
-
-
-		}catch(\Exception $e){
-			throw $e;			
-		}
+		$sql="
+			SELECT sub.*, sub.haber - ifnull(sub.aplicado, 0) as pendiente
+			FROM(SELECT 
+				f.id,
+				f.clienteId,
+				date_format(f.fecha, '%d/%m/%Y') as fechaEmision,
+				fcNro as numFc,
+				ROUND((f.total*f.tipoCambio), 2) as haber,
+				SUM(ifnull(tr.aplicado,0)) as aplicado,
+				date_format(f.vencimiento, '%d/%m/%Y') as vencimiento    
+			FROM Facturas f
+			LEFT JOIN TransaccionCobranzaFactura tr ON tr.facturaId = f.id
+			GROUP BY f.id) as sub
+			where ((sub.haber - sub.aplicado) > 0 || isnull(sub.haber - sub.aplicado))
+			AND sub.clienteId = $idCliente";
+		
+		$stmt = $em->getConnection()->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll();
 	}
 }

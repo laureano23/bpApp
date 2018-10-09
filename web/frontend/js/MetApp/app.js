@@ -76,7 +76,6 @@ Ext.application({
 	launch: function(){			
 		Ext.util.Observable.observe(Ext.data.Connection, {			
 		    requestexception: function(conn, response, options) {
-				console.log(response);
 		    	var resp = Ext.JSON.decode(response.responseText);
 		    	if(!resp.tipo){	
 			       	Ext.Msg.show({	

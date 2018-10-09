@@ -14,6 +14,30 @@ use Mbp\FinanzasBundle\Entity\TipoComprobante;
 class VentasController extends Controller
 {	
 
+	/**
+     * @Route("/CCClientes/listarFacturasParaAsociar", name="mbp_CCClientes_listarFacturasParaAsociar", options={"expose"=true})
+     */	    
+    public function listarFacturasParaAsociar()
+	{
+		//RECIBO PARAMETROS
+		$em = $this->getDoctrine()->getManager();
+		$req = $this->getRequest();
+		$response = new Response;
+		$idCliente = $req->request->get('idCliente');
+		
+		try{
+			$repoFc = $em->getRepository('MbpFinanzasBundle:Facturas');
+
+			$resp=$repoFc->listarFacturasParaAsociar($idCliente);
+			
+			return $response->setContent(json_encode(array('success'=>true, 'items'=>$resp)));
+		}catch(\Exception $e){
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(json_encode(array('success'=>false, 'msg'=>$e->getMessage())));
+		}
+		
+	}
+
 
 	/**
      * @Route("/CCClientes/calcularPercepcion", name="mbp_CCClientes_calcularPercepcion", options={"expose"=true})
@@ -24,7 +48,6 @@ class VentasController extends Controller
 		$em = $this->getDoctrine()->getManager();
 		$response=new Response;
 		$req = $this->getRequest();
-		$response = new Response;
 		$netoGrabado = $req->request->get('subTotal');
 		$idCliente = $req->request->get('clienteId');
 		//PARAMETROS FINANCIEROS
@@ -149,9 +172,12 @@ class VentasController extends Controller
 			$percepcionIIBB = $req->request->get('percepcion');
 			$decodeData = json_decode($data);
 			$decodefcData = json_decode($fcData);
+			$fcsAsociadas=explode(',', $decodefcData->compAsociados);
+
 			
 			//PARAMETROS FINANCIEROS
 			$repoFinanzas = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
+			$repoFc = $em->getRepository('MbpFinanzasBundle:Facturas');
 			$parametrosFinanzas = $repoFinanzas->find(1);
 						
 			if(empty($parametrosFinanzas)) throw new \Exception("No estan definidos los parámetros financieros", 1);
@@ -189,6 +215,7 @@ class VentasController extends Controller
 			$factura->setTipoId($tipo);
 			$factura->setConcepto($tipo->getDescripcion());
 
+			
 			//tipo de iva	
 			$factura->setTipoIva($cliente->getIva());
 			
@@ -328,6 +355,50 @@ class VentasController extends Controller
 							
 			$regfeiva['BaseImp'] = $netoGrabado;
 			$regfeiva['Importe'] = $ivaLiquidado;
+
+			//SI ES UNA NC DEBO ASOCIAR LAS FCS CORRESPONDIENTES
+			//SI LA NC ES PARCIAL SOLO PUEDE ESTAR APLICADA A UNA FACTURA
+			if($tipo->getEsNotaCredito()){
+				$total=0;
+				if(empty($fcsAsociadas)){
+					throw new \Exception("La nota de crédito debe estar asociada al menos una factura", 1);					
+				}else{
+					//SI ES UNA NOTA DE CREDITO POR VARIOS COMPROBANTES SE ANULA NOTO
+					if(count($fcsAsociadas) > 1){
+						foreach($fcsAsociadas as $fc){
+							$fcAsociada=$repoFc->find($fc);
+							if($fcAsociada->getMoneda() != $decodefcData->moneda){
+								throw new \Exception("La moneda del comprobante a cancelar es distinta a la moneda de la nota de crédito", 1);							
+							}else{
+								$factura->addFacturasAsociada($fcAsociada);
+								$fcAsociada->setAnulaImporteNC($fcAsociada->getTotal());
+								$em->persist($fcAsociada);
+								$total+=$fcAsociada->getTotal();
+							}						
+						}	
+					}else{// SI ES SOBRE UN UNICO COMPROBANTE SE PUEDE ANULAR PARCIALMENTE
+						foreach($fcsAsociadas as $fc){
+							$fcAsociada=$repoFc->find($fc);
+							if($fcAsociada->getMoneda() != $decodefcData->moneda){
+								throw new \Exception("La moneda del comprobante a cancelar es distinta a la moneda de la nota de crédito", 1);							
+							}else{
+								$factura->addFacturasAsociada($fcAsociada);
+								$fcAsociada->setAnulaImporteNC($regfe['ImpTotal']);
+								$em->persist($fcAsociada);
+								$total+=$fcAsociada->getTotal();
+							}						
+						}	
+					}						
+				}		
+				$epsilon=0.0001;
+				if(($regfe['ImpTotal']-$total) > $epsilon && count($fcsAsociadas) > 1){ //validacion para varios comprobantes
+					throw new \Exception("El total de la NC no coincide con las facturas imputadas", 1);					
+				}
+
+				if(($total-$regfe['ImpTotal']) < $epsilon && count($fcsAsociadas) == 1){ //validacion para unico comprobante
+					throw new \Exception("El total de la NC debe ser menor o igual a la factura imputada", 1);					
+				}
+			}
 			
 			
 			$cae = $faele->generarFc($regfe, $regfeasoc, $regfetrib, $regfeiva);	//GENERO FC ELECTRONICA
