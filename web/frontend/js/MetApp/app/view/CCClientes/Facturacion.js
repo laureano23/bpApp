@@ -1,6 +1,6 @@
 Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 	extend: 'Ext.window.Window',
-	height: 600,
+	height: 450,
 	width: 1000,
 	modal: true,
 	autoShow: true,
@@ -126,7 +126,6 @@ Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 						{
 							xtype: 'container',
 							layout: 'hbox',
-							margin: '5 0 5 0',
 							items: [
 								{
 									xtype: 'textfield',
@@ -135,16 +134,6 @@ Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 									itemId: 'tipoCambio',
 									fieldLabel: 'Tipo cambio',
 									value: 0
-								},
-								{
-									xtype: 'textfield',
-									readOnly: true,
-									margins: '0 0 0 5',
-									width: 300,
-									labelWidth: 160,
-									fieldLabel: 'Comprobantes asociados',
-									itemId: 'compAsociados',
-									name: 'compAsociados',
 								}
 							]
 						},												

@@ -8,7 +8,6 @@ Ext.define('MetApp.model.Finanzas.GridImputaFcModel',{
 		{ name: 'vencimiento', type: 'datetime' },
 		{ name: 'valorAplicado', type: 'float' },
 		{ name: 'pendiente', type: 'float' },
-		{ name: 'aplicar', type: 'float' },
-		{ name: 'asociado', type: 'bool' },
+		{ name: 'aplicar', type: 'float' }
 	]
 });

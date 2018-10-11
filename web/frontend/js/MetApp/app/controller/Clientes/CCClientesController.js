@@ -7,7 +7,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		'MetApp.store.Finanzas.CCClientesStore',
 		'MetApp.store.Finanzas.GrillaFacturacionStore',
 		'MetApp.store.Finanzas.TiposPagoStore',
-		'MetApp.store.Finanzas.GridImputaFcStore',
+		'Finanzas.GridImputaFcStore',
 		'MetApp.store.Articulos.RemitosPendientesStore',
 	],
 	views: [
@@ -17,8 +17,12 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		'MetApp.resources.ux.MailerWindow',
 		'Articulos.Stock.Remitos.RemitosPendientesView',
 		'MetApp.view.CCProveedores.BalanceView',
+<<<<<<< HEAD
 		'MetApp.view.CCClientes.NotasCCView',
 		//'MetApp.view.CCClientes.ImputarFacturaView'
+=======
+		'MetApp.view.CCClientes.NotasCCView'
+>>>>>>> parent of 34e7733... Cambios varios
 	],
 	refs:[
 		{
@@ -37,7 +41,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		me.control({
 			'#tbCCClientes': {
 				click: this.AddCCClientesTb
-			},			
+			},
 			'#CCClientes button[itemId=buscaCliente]': {
 				click: this.AddTablaClientes
 			},
@@ -95,9 +99,6 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			'facturacion checkbox[itemId=sinIva]': {
 				change: this.SacarIVA
 			},
-			'facturacion combobox[itemId=tipo]': {
-				change: this.AsociarFacturaView
-			},
 			'cobranza button[itemId=btnEdit]': {
 				click: this.EditaItemCob
 			},
@@ -119,75 +120,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			'cobranza combobox[itemId=formaPago]': {
 				select: this.SetReadOnlyCuenta
 			},
-			'ImputarFacturaView button[itemId=insertar]': {
-				click: this.InsertarFcAsociada
-			},
-			'ImputarFacturaView checkcolumn': {
-				checkchange: this.CalcularTotal
-			},
 		});
-	},
-
-	CalcularTotal: function(check, rowIndex, checked){
-		var win=check.up('window');
-		var store=win.down('grid').getStore();
-		var rec=store.getAt(rowIndex);
-		var total=win.queryById('total');
-
-		if(checked){
-			total.setValue(total.getValue()+rec.data.haber);
-		}else{
-			total.setValue(total.getValue()-rec.data.haber);
-		}
-	},
-
-	InsertarFcAsociada: function(btn){
-		
-		var winAsociacion=btn.up('window');
-		var grid=winAsociacion.down('grid');
-		var store=grid.getStore();
-		var recs=[];
-		var winFact=this.getFacturacion();
-		var txtFcAsociada=winFact.queryById('compAsociados');
-		txtFcAsociada.reset();
-
-		store.each(function(rec){
-			if(rec.data.asociado){
-				if(txtFcAsociada.getValue()==""){
-					txtFcAsociada.setValue(rec.data.id);
-				}else{
-					txtFcAsociada.setValue(txtFcAsociada.getValue()+", "+rec.data.id);
-				}
-			}			
-		});
-		winAsociacion.close();
-	},
-
-	AsociarFacturaView: function(combo){
-		var rec=combo.getStore().findRecord('id', combo.getValue());
-		if(rec.data.esNotaCredito){
-			var win=Ext.widget('ImputarFacturaView');
-			var store=win.down('grid').getStore();
-			var winCC = this.getCCClientes();
-
-			Ext.Ajax.request({
-				url: Routing.generate('mbp_CCClientes_listarFacturasParaAsociar'),
-	
-				params: {
-					idCliente: winCC.queryById('id').getValue()
-				},
-	
-				success: function(resp){
-					var jsonResp = Ext.JSON.decode(resp.responseText);
-					store.loadData(jsonResp.items);
-				},
-	
-				failure: function(resp){
-	
-				}
-			});
-
-		}
 	},
 
 	PercepcionManual: function(txt){

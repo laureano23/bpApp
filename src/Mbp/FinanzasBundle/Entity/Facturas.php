@@ -132,13 +132,6 @@ class Facturas
     private $total=0;
 
     /**
-     * @var \Decimal
-     *
-     * @ORM\Column(name="anulaImporteNC", type="decimal", precision=11, scale=2)
-     */
-    private $anulaImporteNC=0;
-
-    /**
      * @ORM\Column(name="rSocial", type="string", length=250)
      * @Assert\NotNull()
      */
@@ -218,20 +211,6 @@ class Facturas
     private $tipoIva;
 
     /**
-	 * @ORM\ManyToMany(targetEntity="Mbp\FinanzasBundle\Entity\Facturas", mappedBy="facturasAsociadas")	 
-	 */
-    private $notasCreditoAsociadas;
-
-    /**
-	 * @ORM\ManyToMany(targetEntity="Mbp\FinanzasBundle\Entity\Facturas", inversedBy="notasCreditoAsociadas")	 
-     * @ORM\JoinTable(name="Facturas_NotasCredito",
-     *      joinColumns={@ORM\JoinColumn(name="fc_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="nc_id", referencedColumnName="id")}
-     *      )
-	 */
-    private $facturasAsociadas;
-
-    /**
      * Get id
      *
      * @return integer
@@ -294,8 +273,6 @@ class Facturas
     public function __construct()
     {
         $this->facturaDetalleId = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->notasCreditoAsociadas = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->facturasAsociadas = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -911,101 +888,5 @@ class Facturas
     public function getTipoIva()
     {
         return $this->tipoIva;
-    }
-
-    /**
-     * Add notasCreditoAsociada
-     *
-     * @param \Mbp\FinanzasBundle\Entity\Facturas $notasCreditoAsociada
-     *
-     * @return Facturas
-     */
-    public function addNotasCreditoAsociada(\Mbp\FinanzasBundle\Entity\Facturas $notasCreditoAsociada)
-    {
-        $this->notasCreditoAsociadas[] = $notasCreditoAsociada;
-
-        return $this;
-    }
-
-    /**
-     * Remove notasCreditoAsociada
-     *
-     * @param \Mbp\FinanzasBundle\Entity\Facturas $notasCreditoAsociada
-     */
-    public function removeNotasCreditoAsociada(\Mbp\FinanzasBundle\Entity\Facturas $notasCreditoAsociada)
-    {
-        $this->notasCreditoAsociadas->removeElement($notasCreditoAsociada);
-    }
-
-    /**
-     * Get notasCreditoAsociadas
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getNotasCreditoAsociadas()
-    {
-        return $this->notasCreditoAsociadas;
-    }
-
-    /**
-     * Add facturasAsociada
-     *
-     * @param \Mbp\FinanzasBundle\Entity\Facturas $facturasAsociada
-     *
-     * @return Facturas
-     */
-    public function addFacturasAsociada(\Mbp\FinanzasBundle\Entity\Facturas $facturasAsociada)
-    {
-        $this->facturasAsociadas[] = $facturasAsociada;
-
-        return $this;
-    }
-
-    /**
-     * Remove facturasAsociada
-     *
-     * @param \Mbp\FinanzasBundle\Entity\Facturas $facturasAsociada
-     */
-    public function removeFacturasAsociada(\Mbp\FinanzasBundle\Entity\Facturas $facturasAsociada)
-    {
-        $this->facturasAsociadas->removeElement($facturasAsociada);
-    }
-
-    /**
-     * Get facturasAsociadas
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getFacturasAsociadas()
-    {
-        return $this->facturasAsociadas;
-    }
-
-    public function getTotalEnPesos(){
-        return number_format(($this->total*$this->tipoCambio), 2, ".", "");
-    }
-
-    /**
-     * Set anulaImporteNC
-     *
-     * @param string $anulaImporteNC
-     *
-     * @return Facturas
-     */
-    public function setAnulaImporteNC($anulaImporteNC)
-    {
-        $this->anulaImporteNC = $anulaImporteNC;
-
-        return $this;
-    }
-
-    /**
-     * Get anulaImporteNC
-     *
-     * @return string
-     */
-    public function getAnulaImporteNC()
-    {
-        return $this->anulaImporteNC;
     }
 }

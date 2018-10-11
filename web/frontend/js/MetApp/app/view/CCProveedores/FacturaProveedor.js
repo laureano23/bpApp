@@ -1,7 +1,7 @@
 Ext.define('MetApp.view.CCProveedores.FacturaProveedor',{
 	extend: 'Ext.window.Window',
 	layout: 'fit',
-	width: 1000,
+	width: 800,
 	modal: true,
 	autoShow: true,
 	alias: 'widget.FacturaProveedor',
@@ -24,16 +24,13 @@ Ext.define('MetApp.view.CCProveedores.FacturaProveedor',{
 							layout: 'column',
 							defaults: {
 								labelWidth: 110,
-								width: 400
+								width: 300
 							},
 							items: [
 								{
 									xtype: 'container',
-									columnWidth: 0.40,
+									columnWidth: 0.35,
 									margin: '5 0 0 5',
-									defaults: {
-										width: 300
-									},
 									items: [
 										{
 											xtype: 'numberfield',
@@ -121,7 +118,7 @@ Ext.define('MetApp.view.CCProveedores.FacturaProveedor',{
 								},
 								{
 									xtype: 'container',
-									columnWidth: 0.60,
+									columnWidth: 0.65,
 									layout: 'anchor',
 									defaults: {
 										labelWidth: 90,

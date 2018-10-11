@@ -79,6 +79,7 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 	ImprimirEtiqueta: function(btn){
 	var form=btn.up('window').down('form').getForm();
 	var values=form.getValues();
+	console.log(values);
 	Ext.Ajax.request({
 			url: Routing.generate('mbp_formulas_etiquetaArticulo'),
 			params: {
@@ -113,12 +114,15 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 		var win=Ext.widget('VerOTView');
 		var store=win.down('grid').getStore();
 
+		console.log(idArt);
+		console.log(store);
 		Ext.Ajax.request({
 			url: Routing.generate('mbp_produccion_ListarOrdenesCompletas'),
 			params: {
 				idArt: idArt
 			},
 			success: function(resp){
+				console.log(resp);
 				var jsonResp = Ext.JSON.decode(resp.responseText);
 				store.loadRawData(jsonResp.data);
 			}
@@ -132,6 +136,8 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 		var store=grid.getStore();
 		var form=winArt.down('form');
 		var values=form.getForm().getValues();
+
+		console.log(values);
 		
 
 		store.load({
@@ -300,6 +306,7 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 				success: function(resp){
 					jsonResp = Ext.JSON.decode(resp.responseText);
 					var formArt = Ext.getCmp('articulosForm');
+					console.log(jsonResp);
 					formArt = Ext.getCmp('articulosForm').down('form');	
 					formArt.getForm().setValues(jsonResp.data[0]);
 					var nombreImagen = win.queryById('imagen');
@@ -457,8 +464,11 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 			me.ResetForm(button);
 		});
 		
+		console.log(values);
+		
 		if(values.id > 0){
 			var rec = store.findRecord('id', values.id);
+			console.log(rec);
 			rec.set(values);			
 		}
 		else{
