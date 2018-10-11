@@ -17,12 +17,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		'MetApp.resources.ux.MailerWindow',
 		'Articulos.Stock.Remitos.RemitosPendientesView',
 		'MetApp.view.CCProveedores.BalanceView',
-<<<<<<< HEAD
-		'MetApp.view.CCClientes.NotasCCView',
-		//'MetApp.view.CCClientes.ImputarFacturaView'
-=======
 		'MetApp.view.CCClientes.NotasCCView'
->>>>>>> parent of 34e7733... Cambios varios
 	],
 	refs:[
 		{
