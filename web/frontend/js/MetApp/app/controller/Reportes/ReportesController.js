@@ -89,6 +89,12 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 			'ReporteHistoricoMov button[itemId=printDateReport]': {
 				click: this.PrintHistoricoMovReporte
 			},
+			'ReporteHistoricoMov button[itemId=btnCodigo1]': {
+				click: this.BuscarArtDesdeReporteHistMov
+			},
+			'ReporteHistoricoMov button[itemId=btnCodigo2]': {
+				click: this.BuscarArtHastaReporteHistMov
+			},
 			'viewport menuitem[itemId=rg014]': {
 				click: this.ReporteRG014
 			},
@@ -510,6 +516,26 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 	
 	AddFormHistoricoMov: function(btn){
 		Ext.widget('ReporteHistoricoMov');
+	},
+
+	BuscarArtDesdeReporteHistMov: function(btn){
+		var win=Ext.widget('winarticulosearch');
+		win.queryById('insertArt').on('click', function(){			
+			var sel=win.down('grid').getSelectionModel().getSelection()[0];
+			var artDesde=btn.up('window').queryById('codigo1');
+			artDesde.setValue(sel.data.codigo);
+			win.close();
+		});
+	},
+
+	BuscarArtHastaReporteHistMov: function(btn){
+		var win=Ext.widget('winarticulosearch');
+		win.queryById('insertArt').on('click', function(){			
+			var sel=win.down('grid').getSelectionModel().getSelection()[0];
+			var artDesde=btn.up('window').queryById('codigo2');
+			artDesde.setValue(sel.data.codigo);
+			win.close();
+		});
 	},
 	
 	PrintInteresesRes: function(btn){

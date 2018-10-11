@@ -18,7 +18,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		'Articulos.Stock.Remitos.RemitosPendientesView',
 		'MetApp.view.CCProveedores.BalanceView',
 		'MetApp.view.CCClientes.NotasCCView',
-		'MetApp.view.CCClientes.ImputarFacturaView'
+		//'MetApp.view.CCClientes.ImputarFacturaView'
 	],
 	refs:[
 		{
