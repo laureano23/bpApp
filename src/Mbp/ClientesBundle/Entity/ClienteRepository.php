@@ -11,7 +11,7 @@ class ClienteRepository extends  EntityRepository
 		
 		$qb = $repo->createQueryBuilder('c');
 		$res = $qb->select('c.rsocial as nombre, c.direccion,
-			 prov.nombre as provincia, dep.nombre as partido, l.nombre as localidad, c.cuit, i.posicion')
+			 prov.nombre as provincia, dep.nombre as partido, l.nombre as localidad, c.cuit, i.posicion, c.vencimientoFc')
 		    ->where('c.id = :idCliente')
 			->leftjoin('c.provincia', 'prov')
 			->leftjoin('c.departamento', 'dep')

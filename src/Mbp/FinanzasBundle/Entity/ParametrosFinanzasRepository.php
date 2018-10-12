@@ -10,4 +10,25 @@ namespace Mbp\FinanzasBundle\Entity;
  */
 class ParametrosFinanzasRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getParametrosFacturacion(){
+        $em = $this->getEntityManager();
+		$repoFinanzas = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
+
+		$res=$repoFinanzas->createQueryBuilder('f')
+				->select("
+                    
+                    ")
+                ->join('f.tipoId', 'tipo')                
+                ->join('f.clienteId', 'cliente')
+                ->join('cliente.iva', 'posicionIVA')
+                ->where('tipo.esBalance = 0')
+                ->andWhere('f.fecha BETWEEN :desde AND :hasta')
+                ->setParameter('desde', $desde->format('Y-m-d'))
+				->setParameter('hasta', $hasta->format('Y-m-d'))
+				->getQuery()
+				->getArrayResult();
+
+				
+		return $res;
+    }
 }

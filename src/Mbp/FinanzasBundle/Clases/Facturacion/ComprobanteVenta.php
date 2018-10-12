@@ -16,33 +16,57 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
     private $condicionImpositiva;
     private $localidad;
     private $descuento;
+    protected static $concepto;//ESTE DATO DEBE VENIR DEL CLIENTE 1=PRODUCTOS, 2=SERVICIOS, 3=PRODUCTOS Y SERVICIOS
+    private static $alicIVA21;
+    private static $impExcento; //no implementado, = 0
 
     private $repoFactura;
     private $repoCliente;
-    private $repoFinanzas;
     private $faeleService;
+
+
     
     public function __construct($tipoCambio, $fechaEmision,
     $moneda, $cliente, $detallesVenta, $descuento,
-    $faeleService, $repoFactura, $repoCliente, $repoFinanzas){
+    $faeleService, $repoFactura, $repoCliente){
             
         parent::__construct($tipoCambio, $fechaEmision, $moneda);
+
+        self::$concepto=1;
+        self::$alicIVA21=0.21;
+        self::$impExcento=0;
+
         $this->repoFactura=$repoFactura;
         $this->repoCliente=$repoCliente;
-        $this->repoFinanzas=$repoFinanzas;
         $this->faeleService=$faeleService;
+        $this->detallesVenta=[];
+        $this->descuento=$descuento;
 
-        $datosCliente=$this->cargarInfoCliente($cliente);
+        $this->cargarInfoCliente($cliente);        
+        $this->cargarDetallesVenta($detallesVenta);
+    }
 
-        $this->detallesVenta=$detallesVenta;
-
+    private function cargarDatosCbteElectronico(){        
         
     }
 
+
+    protected function cargarParametrosFacturacion(){
+        $this->puntoVenta=$faeleService->getPuntoVenta();
+
+    }
+
+    protected function cargarDetallesVenta($detallesVenta){
+        if(!is_array($detallesVenta)) throw new Exception("Formato de detalles de venta incorrecto", 1);                
+        if(empty($detallesVenta)) throw new Exception("No se enviaron productos para facturar", 1);
+        
+        
+        foreach ($detallesVenta as $d) {
+            array_push($this->detallesVenta, $d);
+        }
+    }
+
     protected function cargarInfoCliente($cliente){
-        \print_r($this->cliente);
-        \var_dump($this->cliente);
-        echo \get_class($this->cliente);
         $clienteInfo=$this->repoCliente->getInfoClienteFacturacion($cliente);
 
         if(empty($clienteInfo)) throw new Exception("Cliente no encontrado", 1);
@@ -51,6 +75,45 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
         $this->partido=$clienteInfo['partido'];
         $this->provincia=$clienteInfo['provincia'];
         $this->clienteNombre=$clienteInfo['nombre'];
-        
+        $this->condicionImpositiva=$clienteInfo['posicion'];
+
+        if(empty($clienteInfo['vencimientoFc'])){
+            $this->fechaVencimiento=new \DateTime();
+        }else{
+            $this->fechaVencimiento=new \DateTime() + $clienteInfo['vencimientoFc'];
+        }        
+    }
+
+    protected function getTotalDetallesGrabados(){
+        $total=0;
+        foreach ($this->detallesVenta as $det) {
+            if($det->ivaGrabado){
+                $total+=$det->precio * $det->cantidad;
+            }            
+        }
+        return $total;
+    }
+
+    protected function getTotalDetallesNoGrabados(){
+        $total=0;
+        foreach ($this->detallesVenta as $det) {
+            if(!$det->ivaGrabado){
+                $total+=$det->precio * $det->cantidad;
+            } 
+        }
+        return $total;
+    }
+
+    
+    protected function getImporteNetoGrabado(){
+        return $this->getTotalDetallesGrabados()-$this->descuento;
+    }
+
+    protected function getTotalComprobante(){
+        return $this->getTotalDetallesGrabados() + $this->getTotalDetallesNoGrabados() + $this->getTotalIVA() - $this->descuento;
+    }
+
+    protected function getTotalIVA(){
+        $this->getImporteNetoGrabado * self::$alicIVA21;
     }
 }
