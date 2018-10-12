@@ -5,6 +5,26 @@ use Doctrine\ORM\EntityRepository;
 
 class ClienteRepository extends  EntityRepository
 {
+	public function getInfoClienteFacturacion($idCliente){
+		$em = $this->getEntityManager();		
+		$repo=$em->getRepository('MbpClientesBundle:Cliente');
+		
+		$qb = $repo->createQueryBuilder('c');
+		$res = $qb->select('c.rsocial as nombre, c.direccion,
+			 prov.nombre as provincia, dep.nombre as partido, l.nombre as localidad, c.cuit, i.posicion')
+		    ->where('c.id = :idCliente')
+			->leftjoin('c.provincia', 'prov')
+			->leftjoin('c.departamento', 'dep')
+			->leftjoin('c.localidad', 'l')
+			->leftjoin('c.iva', 'i')
+			->setParameter('idCliente', $idCliente)		
+		    ->getQuery()
+			->getSingleResult();
+		
+		//\print_r($res);
+		return $res;
+	}
+
 	public function searchCliente($q)
 	{		
 		$em = $this->getEntityManager();		

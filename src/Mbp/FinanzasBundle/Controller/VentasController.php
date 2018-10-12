@@ -10,6 +10,7 @@ use Mbp\FinanzasBundle\Entity\Facturas;
 use Mbp\FinanzasBundle\Entity\FacturaDetalle;
 use Mbp\FinanzasBundle\Entity\CCClientes;
 use Mbp\FinanzasBundle\Entity\TipoComprobante;
+use Mbp\FinanzasBundle\Clases\Facturacion\FacturaA;
 
 class VentasController extends Controller
 {	
@@ -147,6 +148,47 @@ class VentasController extends Controller
 	function ordenar($a, $b) {
 	    return ($b['emisionCalc'] > $a['emisionCalc']) ? -1 : 1;
 	}
+
+	/**
+     * @Route("/CCClientes/crearComprobanteVenta", name="mbp_CCClientes_crearComprobanteVenta", options={"expose"=true})
+     */	    
+    public function crearComprobanteVenta()
+	{
+		//RECIBO PARAMETROS
+		$em = $this->getDoctrine()->getManager();
+		$req = $this->getRequest();
+		$response = new Response;
+		$repoFc = $em->getRepository('MbpFinanzasBundle:Facturas');
+		$repoCliente = $em->getRepository('MbpClientesBundle:Cliente');
+		$repoFinanzas = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
+
+		try{
+			$faele = $this->get('mbp.faele'); //FACTURA ELECTRONICA
+			$data = $req->request->get('data');
+			$fcData = $req->request->get('fcData');
+			$descuento = $req->request->get('descuentoFijo');
+			$percepcionIIBB = $req->request->get('percepcion');
+			$decodeData = json_decode($data);
+			$decodefcData = json_decode($fcData);
+			$fcsAsociadas=explode(',', $decodefcData->compAsociados);
+
+			//\print_r($decodefcData->idCliente);
+			$factura_a=new FacturaA(
+				$decodefcData->tipoCambio, new \DateTime, $decodefcData->moneda,
+				$decodefcData->idCliente, $decodeData, $descuento, $percepcionIIBB,
+				$faele, $repoFc, $repoCliente, $repoFinanzas 
+			);
+			
+			return new Response;
+
+				
+		}catch(\Exception $e){
+			throw $e;
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			$response->setContent(json_encode(array("success"=>false, "msg"=>$e->getMessage(), 'code' => $e->getCode())));
+			return $response;
+		}
+	}
 	
 	/**
      * @Route("/CCClientes/guardarFc", name="mbp_CCClientes_guardarFc", options={"expose"=true})
@@ -159,7 +201,8 @@ class VentasController extends Controller
 		$response = new Response;
 
 		try{
-			$faele = $this->get('mbp.faele'); //FACTURA ELECTRONICA		
+			$faele = $this->get('mbp.faele'); //FACTURA ELECTRONICA
+				
 			
 			//$faele->analizarCertificado();
 			

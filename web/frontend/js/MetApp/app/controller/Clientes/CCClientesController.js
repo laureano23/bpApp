@@ -761,7 +761,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 				}
 				
 				Ext.Ajax.request({
-					url: Routing.generate('mbp_CCClientes_guardarFc'),
+					url: Routing.generate('mbp_CCClientes_crearComprobanteVenta'),
 					
 					params: {
 						data: Ext.JSON.encode(arrayRecords),
@@ -805,7 +805,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			})
 		}else{
 			Ext.Ajax.request({
-				url: Routing.generate('mbp_CCClientes_guardarFc'),
+				url: Routing.generate('mbp_CCClientes_crearComprobanteVenta'),
 				
 				params: {
 					data: Ext.JSON.encode(arrayRecords),
