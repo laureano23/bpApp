@@ -12,6 +12,99 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 class ReportesController extends Controller
 {
 	/**
+     * @Route("/proveedores/reporteSaldoAcreedor", name="mbp_proveedores_reporteSaldoAcreedor", options={"expose"=true})
+     */
+    public function reporteSaldoAcreedor()
+    {
+    	//RECIBO PARAMETROS
+		$em = $this->getDoctrine()->getManager();
+		$req = $this->getRequest();
+		$response = new Response;
+		
+		try{
+			$vencimiento = $req->request->get('vencimiento');								
+			$reporteador = $this->get('reporteador');
+			$kernel = $this->get('kernel');
+			
+			$jru = $reporteador->jru();
+			$ruta = $kernel->locateResource('@MbpProveedoresBundle/Reportes/ResumenSaldoAcreedor.jrxml');			
+			$destino = $kernel->locateResource('@MbpProveedoresBundle/Resources/public/pdf/').'ResumenSaldoAcreedor.pdf';		
+			
+			//Parametros HashMap
+			$param = $reporteador->getJava('java.util.HashMap');
+			$rutaLogo = $reporteador->getRutaLogo($kernel);			
+			
+			$simpleDateFormat = new \Java("java.text.SimpleDateFormat", 'd/M/yyyy');
+			$javaDate = $simpleDateFormat->parse($vencimiento); // This is a Java date
+
+			
+			$param->put('VENCIMIENTO', $javaDate);
+			$param->put('RUTA_LOGO', $rutaLogo);
+
+			$vencimiento=\DateTime::createFromFormat('d/m/Y', $vencimiento);
+
+			$vencimientoSQL=$vencimiento->format('Y/m/d');
+			
+			$conn = $reporteador->getJdbc();
+						
+			$sql = "
+			SELECT
+				CCProv.`id` AS CCProv_id,
+				CCProv.`debe` AS CCProv_debe,
+				CCProv.`haber` AS CCProv_haber,
+				CCProv.`fechaEmision` AS CCProv_fechaEmision,
+				CCProv.`fechaVencimiento` AS CCProv_fechaVencimiento,
+				CCProv.`facturaId` AS CCProv_facturaId,
+				CCProv.`OrdenPagoId` AS CCProv_OrdenPagoId,
+				CCProv.`proveedorId` AS CCProv_proveedorId,
+				Proveedor.`id` AS Proveedor_id,
+				Proveedor.`rsocial` AS Proveedor_rsocial,
+				(SUM(CCProv.`haber`) - SUM(CCProv.`debe`)) as saldo
+			FROM
+				`Proveedor` Proveedor INNER JOIN `CCProv` CCProv ON Proveedor.`id` = CCProv.`proveedorId`
+			WHERE CCProv.`fechaEmision` < '$vencimientoSQL'
+			GROUP BY Proveedor.`id`
+			ORDER BY saldo DESC
+			";	
+
+			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
+			
+			
+			return $response->setContent(json_encode(
+				array(
+					'success'=> true,	
+				)
+			));
+		}catch(\Exception $e){
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(json_encode(array(
+				'success' => false,
+				'msg' => $e->getMessage()
+			)));
+		}		
+	}
+
+	/**
+     * @Route("/proveedores/verReporteSaldoAcreedor", name="mbp_proveedores_verReporteSaldoAcreedor", options={"expose"=true})
+     */	    
+    public function verReporteSaldoAcreedor()
+	{
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpProveedoresBundle/Resources/public/pdf/').'ResumenSaldoAcreedor.pdf';	
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'ResumenSaldoAcreedor.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+
+        return $response;
+	}
+
+	/**
      * @Route("/proveedores/reporteCC", name="mbp_proveedores_reporteCC", options={"expose"=true})
      */
     public function reporteCC()
@@ -119,7 +212,6 @@ class ReportesController extends Controller
 				)
 			));
 		}catch(\Exception $e){
-			print($e->getMessage());
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(json_encode(array(
 				'success' => false,

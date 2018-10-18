@@ -688,6 +688,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
         				listeners : {
 		                    render : dragZone,
 		                }, 
+					},
+					{
+        				text: 'Resumen Saldo Acreedor',
+        				itemId: 'reporteResumenSaldoAcreedor',
+        				listeners : {
+		                    render : dragZone,
+		                }, 
         			},
         			{
         				text: 'Inventario Cheques de Terceros',

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ResumenSaldoAcreedor" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ff538e5c-5b30-4887-a896-1ef4bbbd98a9">
+	<property name="ireport.zoom" value="1.331000000000002"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="VENCIMIENTO" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="RUTA_LOGO" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     CCProv.`id` AS CCProv_id,
+     CCProv.`debe` AS CCProv_debe,
+     CCProv.`haber` AS CCProv_haber,
+     CCProv.`fechaEmision` AS CCProv_fechaEmision,
+     CCProv.`fechaVencimiento` AS CCProv_fechaVencimiento,
+     CCProv.`facturaId` AS CCProv_facturaId,
+     CCProv.`OrdenPagoId` AS CCProv_OrdenPagoId,
+     CCProv.`proveedorId` AS CCProv_proveedorId,
+     Proveedor.`id` AS Proveedor_id,
+     Proveedor.`rsocial` AS Proveedor_rsocial,
+     (SUM(CCProv.`haber`) - SUM(CCProv.`debe`)) as saldo
+FROM
+     `Proveedor` Proveedor INNER JOIN `CCProv` CCProv ON Proveedor.`id` = CCProv.`proveedorId`
+WHERE CCProv.`fechaEmision` < $P{VENCIMIENTO}
+GROUP BY Proveedor.`id`
+ORDER BY saldo DESC]]>
+	</queryString>
+	<field name="CCProv_id" class="java.lang.Integer"/>
+	<field name="CCProv_debe" class="java.math.BigDecimal"/>
+	<field name="CCProv_haber" class="java.math.BigDecimal"/>
+	<field name="CCProv_fechaEmision" class="java.sql.Date"/>
+	<field name="CCProv_fechaVencimiento" class="java.sql.Date"/>
+	<field name="CCProv_facturaId" class="java.lang.Integer"/>
+	<field name="CCProv_OrdenPagoId" class="java.lang.Integer"/>
+	<field name="CCProv_proveedorId" class="java.lang.Integer"/>
+	<field name="Proveedor_id" class="java.lang.Integer"/>
+	<field name="Proveedor_rsocial" class="java.lang.String"/>
+	<field name="saldo" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="50" splitType="Stretch">
+			<staticText>
+				<reportElement x="116" y="0" width="439" height="30" uuid="168711fe-4a6d-469b-9059-131fe6c11c6c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Resumen Saldo Acreedor]]></text>
+			</staticText>
+			<image onErrorType="Blank">
+				<reportElement x="0" y="0" width="116" height="50" uuid="9339ee7f-ee31-4b1f-a36b-1b39c0d0f8bd"/>
+				<imageExpression><![CDATA[$P{RUTA_LOGO}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="73" height="20" uuid="dc0fd19e-b209-461d-9307-86da6c046389"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[A la fecha:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="73" y="0" width="100" height="20" uuid="0f349a64-4699-48ee-a0f6-a76e5668f7aa"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{VENCIMIENTO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="53" height="20" uuid="5ab53f45-a4cf-4073-bc71-347d53afae72"/>
+				<box leftPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[N°]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="53" y="0" width="338" height="20" uuid="83d59a14-ee19-4f5e-8f1a-f9eeccf09568"/>
+				<box leftPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Razón Social]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="391" y="0" width="164" height="20" uuid="7ce1ee4e-df21-4bf8-aca6-5b100d11eff6"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Saldo]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="53" height="20" uuid="d38118a3-5fb2-40da-8c09-2d2181c3a802"/>
+				<box leftPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{CCProv_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="53" y="0" width="338" height="20" uuid="95743cf0-7601-401c-9d41-9e2e9f3d8674"/>
+				<box leftPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Proveedor_rsocial}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="391" y="0" width="164" height="20" uuid="d03bf089-0eec-400a-8705-3f096c3cf39b"/>
+				<box rightPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{saldo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="635" y="0" width="0" height="13" backcolor="#E6E6E6" uuid="d0e775d1-b065-463d-922d-f53b7d112d64"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="0" y="0" width="488" height="13" backcolor="#E6E6E6" uuid="714182a7-9bbb-4c70-aa35-167680653255"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="488" y="0" width="67" height="13" backcolor="#E6E6E6" uuid="76e09aaf-f6cd-493e-9550-e9d8b27ef729"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

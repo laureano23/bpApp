@@ -18,14 +18,21 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 		'MetApp.view.Reportes.RepoRetenciones',
 		'MetApp.view.Reportes.RepoOrdenesDePago',
 		'MetApp.view.Reportes.RepoCobranzasEntreFechas',
-		'MetApp.view.Reportes.ReporteCCProveedores'
+		'MetApp.view.Reportes.ReporteCCProveedores',
+		'MetApp.view.Reportes.RepoSaldoAcreedor'
 	],
 	refs:[
 	],
 	
 	init: function(){
 		var me = this;
-		me.control({			
+		me.control({	
+			'viewport menuitem[itemId=reporteResumenSaldoAcreedor]': {
+				click: this.FormResumenSaldoAcreedor
+			},
+			'RepoSaldoAcreedor button[itemId=printReport]': {
+				click: this.PrintResumenSaldoAcreedor
+			},		
 			'#reporteRetenciones': {
 				click: this.AddReporteRetenciones
 			},
@@ -153,6 +160,22 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 				click: this.SubmitCCProveedoresReport
 			},
 		});
+	},
+
+	FormResumenSaldoAcreedor: function(){
+		Ext.widget('RepoSaldoAcreedor');
+	},
+
+	PrintResumenSaldoAcreedor: function(btn){
+		var form=btn.up('form');
+		form.submit({
+			url: Routing.generate('mbp_proveedores_reporteSaldoAcreedor'),
+
+			success: function(resp){
+				var ruta=Routing.generate('mbp_proveedores_verReporteSaldoAcreedor');
+				window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+			}
+		})
 	},
 
 	SubmitCCProveedoresReport: function(btn){
