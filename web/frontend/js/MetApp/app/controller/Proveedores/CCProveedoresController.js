@@ -382,37 +382,36 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 		
 		if(selection.data.concepto == "BALANCE") return;
 		
-		
-		
 		if(selection.data.idF > 0){
 			win = Ext.widget('FacturaProveedor');
 			var comboTipo =	win.queryById('tipo');
 			var storeT = comboTipo.getStore();
 			
-			storeT.load(({
-				callback: function(rec, op, success){
-					var comboTipoGasto = win.queryById('tipoGasto');
-					
+			storeT.load({
+				
+				callback: function(rec, op, success){					
+					var comboTipoGasto = win.queryById('tipoGasto');					
 					var storeTipo = comboTipoGasto.getStore();
 					storeTipo.load();
 					idF = selection.data.idF;
+					
 					Ext.Ajax.request({
 						url: Routing.generate('mbp_proveedores_buscarFc'),
 						params: {
 							idFc: idF,
 						},
-						success: function(resp){
+						success: function(resp){							
 							var jsonResp = Ext.JSON.decode(resp.responseText);
 							var form = win.down('form');
 							var model = Ext.create('MetApp.model.Proveedores.FacturaProveedoresModel');
-							model.set(jsonResp.data[0]);
+							model.set(jsonResp.data[0]);							
+							var rec = storeT.findRecord('id', model.data.tipo);							
 							form.loadRecord(model);
-							var rec = storeT.findRecord('id', model.data.tipo);
 							comboTipo.select(rec);
 						}
 					});
 				}
-			}))
+			})
 			
 					
 			

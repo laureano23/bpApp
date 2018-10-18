@@ -39,6 +39,7 @@ Ext.define('MetApp.controller.Proveedores.FacturaProveedoresController',{
 		var grid=win.down('grid');
 		var formCC = this.getCCProveedores();
 		var idProv = formCC.queryById('id').getValue();
+		if(combo.valueModels.length==0) return;
 		if(combo.valueModels[0].data.esNotaCredito){
 			grid.show(true);
 			var form=win.down('form').getForm();
