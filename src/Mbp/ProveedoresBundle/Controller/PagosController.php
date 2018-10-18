@@ -89,6 +89,7 @@ class PagosController extends Controller
 		$data = $req->request->get('data');
 		$idOP = $req->request->get('idOP');
 		$idProv = $req->request->get('idProv');
+		$fechaEmision = $req->request->get('fechaEmision');
 		$fcImputar = $req->request->get('fcImputar'); 
 		$decData = json_decode($data);
 		$fcImputarDec = json_decode($fcImputar);
@@ -107,7 +108,7 @@ class PagosController extends Controller
 			if($proveedor->getCuentaCerrada() == TRUE) throw new \Exception("El proveedor tiene la cuenta cerrada", 1);
 			$ordenPago = 0;
 			$ordenPago = new OrdenPago(); //CREO UNA NUEVA ORDEN DE PAGO
-			$ordenPago->setEmision(new \DateTime());
+			$ordenPago->setEmision(\DateTime::createFromFormat("d/m/Y", $fechaEmision));
 			$ordenPago->setProveedorId($proveedor);	
 			$ordenPago->setTopeRetencionIIBB($parametrosFinanzas->getTopeRetencionIIBB());			
 			

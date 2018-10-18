@@ -149,6 +149,7 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 		var totalAPagar = win.queryById('totalAPagar').getValue();
 		var idOP = win.queryById('idOP').getValue();
 		var dif = win.queryById('diferencia').getValue();
+		var fechaEmision = win.queryById('fechaEmision').getRawValue();
 		
 		
 		//STORE DE FACTURAS A IMPUTAR
@@ -182,7 +183,8 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 								fcImputar: Ext.JSON.encode(fcImputar),
 								idProv: idProv,
 								listener: 'nuevoPago',
-								idOP: idOP
+								idOP: idOP,
+								fechaEmision: fechaEmision
 							},
 							
 							success: function(resp){
@@ -254,7 +256,8 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 					fcImputar: Ext.JSON.encode(fcImputar),
 					idProv: idProv,
 					listener: 'nuevoPago',
-					idOP: idOP
+					idOP: idOP,
+					fechaEmision: fechaEmision
 				},
 				
 				success: function(resp){

@@ -39,6 +39,9 @@ Ext.define('MetApp.view.CCProveedores.PagoProveedores' ,{
 							xtype: 'datefield',
 							allowBlank: false,
 							fieldLabel: 'Emision',
+							itemId: 'fechaEmision',
+							format: 'd/m/Y',
+							submitFormat: 'd/m/Y',
 							margin: '5 0 5 5',
 							value: new Date()
 						},
