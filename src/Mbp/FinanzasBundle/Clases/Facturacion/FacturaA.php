@@ -8,44 +8,70 @@ class FacturaA extends ComprobanteVenta{
     private $montoPercepcionIIBB;
     private $IVA;
     private $percepciones;
-    private static $tipoComprobante; //SEGUN TABLAS GENERALES DE AFIP
-    
 
-    public function __construct($tipoCambio, $fechaEmision,
-        $moneda, $cliente, $detallesVenta, $descuento, $percepcionIIBB,
+    private static $tipoComprobante; //SEGUN TABLAS GENERALES DE AFIP
+    private static $idOtrosTributos; //SEGUN TABLAS GENERALES DE AFIP
+
+
+    public function __construct($tipoCambio, $moneda,
+        $cliente, $detallesVenta, $descuento, $percepcionIIBB,
         $faeleService, $repoFactura, $repoCliente){
 
-        parent::__construct($tipoCambio, $fechaEmision, 
+        parent::__construct($tipoCambio, 
         $moneda, $cliente, $detallesVenta, $descuento,        
         $faeleService, $repoFactura, $repoCliente);
 
-        self::$tipoComprobante=1;
-        $percepciones=[];
-        if($percepcionIIBB!=0){
-            array_push($percepciones, $percepcionIIBB);
+        self::$tipoComprobante=1; //1= factura A
+        self::$idOtrosTributos=2; //2= impuestos provinciales
+        $this->percepciones=[];
+        if($this->montoPercepcionIIBB!=0){
+            array_push($percepciones, $this->montoPercepcionIIBB);
         }
 
         $this->percepcionIIBB=$percepcionIIBB;
-        $this->cargarDatosFcElectronica();
+        $this->generarFcElectronica();
+        
+    }
+
+    public function getIdOtrosTributos(){
+        return self::$idOtrosTributos;
     }
 
     public function generarFcElectronica(){
-        $this->faeleService->generarFc(
+        $this->getFaeleService()->generarFc(
             self::$tipoComprobante, 
-            1, //1 es el concepto de productos, se puede implementar para servicios o productos y servicios
+            self::$concepto, //1 es el concepto de productos, se puede implementar para servicios o productos y servicios
             $this->CUITCliente,
-            $this->fechaEmision,
-            $this->getImporteNeto(),
+            $this->getFechaEmision(),
+            $this->getImporteNetoGrabado(),
             $this->getTotalComprobante(),
             $this->getTotalIVA(),
             $this->getTotalPercepciones(),
             self::$impExcento,
-            $this->getTotalComprobante()
+            $this->getTotalComprobante(),
+            $this->getFchServDesde(),
+            $this->getFchServHasta(),
+            $this->getFchVtoPago(),
+            $this->getMoneda(),
+            $this->getCotizacionMoneda(),
+            $this->getIdOtrosTributos(),
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            ''
         );
+        
     }
     
     public function getTotalComprobante(){
-        return $this->getTotalDetallesGrabados() + $this->getTotalDetallesNoGrabados() + $this->getTotalIVA() + $this->montoPercepcionIIBB - $this->descuento;
+        return $this->getTotalDetallesGrabados() + $this->getTotalDetallesNoGrabados() + $this->getTotalIVA() + $this->montoPercepcionIIBB - $this->getDescuento();
     }
 
     public function getTotalPercepciones(){
@@ -54,4 +80,6 @@ class FacturaA extends ComprobanteVenta{
             $total+=$per;
         }
     }
+
+    
 }

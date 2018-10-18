@@ -17,8 +17,10 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
     private $localidad;
     private $descuento;
     protected static $concepto;//ESTE DATO DEBE VENIR DEL CLIENTE 1=PRODUCTOS, 2=SERVICIOS, 3=PRODUCTOS Y SERVICIOS
-    private static $alicIVA21;
-    private static $impExcento; //no implementado, = 0
+    public static $alicIVA21;
+    public static $impExcento; //no implementado, = 0
+    private $fchServDesde;
+    private $fchServHasta;
 
     private $repoFactura;
     private $repoCliente;
@@ -26,11 +28,11 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
 
 
     
-    public function __construct($tipoCambio, $fechaEmision,
+    public function __construct($tipoCambio,
     $moneda, $cliente, $detallesVenta, $descuento,
     $faeleService, $repoFactura, $repoCliente){
             
-        parent::__construct($tipoCambio, $fechaEmision, $moneda);
+        parent::__construct($tipoCambio, $moneda);
 
         self::$concepto=1;
         self::$alicIVA21=0.21;
@@ -46,7 +48,38 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
         $this->cargarDetallesVenta($detallesVenta);
     }
 
-    private function cargarDatosCbteElectronico(){        
+    public function getFaeleService(){
+        return $this->faeleService;
+    }
+
+    protected function getFchServDesde(){
+        if(self::$concepto==1){
+            return null;
+            
+        }else{
+            return date("Ymd");
+        }
+    }
+
+    protected function getFchServHasta(){
+        if(self::$concepto==1){
+            return null;
+            
+        }else{
+            return date("Ymd");
+        }
+    }
+
+    protected function getFchVtoPago(){
+        if(self::$concepto==1){
+            return null;
+            
+        }else{
+            return date("Ymd");
+        }
+    }
+
+    protected function cargarDatosCbteElectronico(){        
         
     }
 
@@ -114,6 +147,26 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
     }
 
     protected function getTotalIVA(){
-        $this->getImporteNetoGrabado * self::$alicIVA21;
+        $this->getImporteNetoGrabado() * self::$alicIVA21;
+    }
+
+    public function getDescuento(){
+        return $this->descuento;
+    }
+
+    //se pued ampliar implementarcion si posteriormente se facturan distintos tipos de IVA
+    //se deja 21% por default
+    public function getIdIVA(){
+        $resIVA=$this->getFaeleService()->FEParamGetTiposIva();
+        $i=0;
+        while($i < sizeof($resIVA) && $resIVA[$i]->Desc=='21%'){            
+            $i++;
+        }
+
+        if($i >= sizeof($resIVA)){
+            throw new Exception("No se encontró el ID del IVA", 1);            
+        }else{
+            return $resIVA[$i]->Id;
+        }
     }
 }

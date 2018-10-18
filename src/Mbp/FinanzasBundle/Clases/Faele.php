@@ -70,22 +70,29 @@ class Faele extends wsfev1
 		$idIVA, $baseImpIVA, $importeIVA, 
 		$regfeasoc, $regfetrib, $regfeiva)
 	{
-		$nro = $this->ultimoNroComp($regfe['CbteTipo']);
-		if($nro['success'] == FALSE){ return $nro; }
-		$nro = $nro['nro'];
-		$nro++;
-
-		$cbteDesde=$nro; //si se quiere implementar por lote hay que modificar estas variables
-		$cbteHasta=$nro;
-
-		$regfe=$this->getArrayDetalleFaele($cbteTipo, $concepto, $docNro, $cbteDesde, $cbteHasta, $cbteFch, $impNeto, $impTotConc,		
-		$impIVA, $impTrib, $impOpEx, $impTotal, $fchServDesde, $fchServHasta, $fchVtoPago, $monId);
+		
 
 		$regfetrib=$this->getArrayImpFaele($idTributo, $descTributo, $baseImpTributo, $alictributo, $importeTributo);
 
 		$regfeiva=$this->getArrayIVAFaele($idIVA, $baseImpIVA, $importeIVA);
 			
 		$regfeasoc=null; //resta desarrollar 
+		
+		
+		$nro = $this->ultimoNroComp($cbteTipo);
+		if($nro['success'] == FALSE){ return $nro; }
+		$nro = $nro['nro'];
+		$nro++;		
+
+		$cbteDesde=$nro; //si se quiere implementar por lote hay que modificar estas variables
+		$cbteHasta=$nro;		
+
+		$regfe=$this->getArrayDetalleFaele($cbteTipo, $concepto, $docNro, $cbteDesde, $cbteHasta, $cbteFch, $impNeto, $impTotConc,		
+		$impIVA, $impTrib, $impOpEx, $impTotal, $fchServDesde, $fchServHasta, $fchVtoPago, $monId, $monCotiz);
+
+		\print_r($regfe);
+		\print_r($regfetrib);
+		\print_r($regfeiva);
 
 		$cae = $this->FECAESolicitar($nro, // ultimo numero de comprobante autorizado mas uno 
                 $this->ptoVta,  // el punto de venta
@@ -114,6 +121,8 @@ class Faele extends wsfev1
 		$regfeiva['Id'] = $idIVA;
 		$regfeiva['BaseImp'] = $baseImpIVA;
 		$regfeiva['Importe'] = $importeIVA;
+
+		return $regfeiva;
 	}
 
 	public function getArrayImpFaele($idTributo, $descTributo, $baseImpTributo, $alictributo, $importeTributo){
@@ -123,13 +132,14 @@ class Faele extends wsfev1
 		$regfetrib['BaseImp'] = $baseImpTributo;
 		$regfetrib['Alic'] = $alictributo; 
 		$regfetrib['Importe'] = $importeTributo;
+
+		return $regfetrib;
 	}
 
 	public function getArrayDetalleFaele(
-		$cbteTipo, $concepto, $docTipo, $docNro, $cbteDesde, $cbteHasta, $cbteFch, $impNeto, $impTotConc,		
+		$cbteTipo, $concepto, $docNro, $cbteDesde, $cbteHasta, $cbteFch, $impNeto, $impTotConc,		
 		$impIVA, $impTrib, $impOpEx, $impTotal, $fchServDesde, $fchServHasta, $fchVtoPago, $monId,
-		$monCotiz, $idTributo, $descTributo, $baseImpTributo, $alictributo, $importeTributo,
-		$idIVA, $baseImpIVA, $importeIVA
+		$monCotiz
 	){
 		$regfe['CbteTipo']=$cbteTipo;		
         $regfe['Concepto']=$concepto;//ESTE DATO DEBE VENIR DEL CLIENTE 1=PRODUCTOS, 2=SERVICIOS, 3=PRODUCTOS Y SERVICIOS

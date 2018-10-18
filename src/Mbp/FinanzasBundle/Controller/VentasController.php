@@ -174,7 +174,7 @@ class VentasController extends Controller
 
 			//\print_r($decodefcData->idCliente);
 			$factura_a=new FacturaA(
-				$decodefcData->tipoCambio, new \DateTime, $decodefcData->moneda,
+				$decodefcData->tipoCambio, $decodefcData->moneda,
 				$decodefcData->idCliente, $decodeData, $descuento, $percepcionIIBB,
 				$faele, $repoFc, $repoCliente, $repoFinanzas 
 			);

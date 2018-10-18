@@ -262,10 +262,13 @@ class wsfev1 {
 	}
 	
 	public function FEParamGetTiposIva(){
-		return $this->client->FEParamGetTiposIva(
+		$res = $this->client->FEParamGetTiposIva(
 		array('Auth'=>array('Token' => $this->TA->credentials->token,
 							'Sign' => $this->TA->credentials->sign,
 							'Cuit' => self::$CUIT)));
+
+		$e = $this->_checkErrors($res, 'FEParamGetTiposIva');
+		return $e == false ? $res->FEParamGetTiposIvaResult->ResultGet->IvaTipo : false;
 	}
 
 	public function FECompConsultar($cbteTipo, $cbteNum, $ptoVta){

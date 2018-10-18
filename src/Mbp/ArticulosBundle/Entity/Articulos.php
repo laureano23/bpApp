@@ -85,6 +85,17 @@ class Articulos
 	 * )
      */
     private $iva=21;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="ivaFacturacion", type="decimal", precision=4, scale=2, nullable=true)
+	 * @Assert\Range(
+     *      min = 0,
+	 * 		max = 100
+	 * )
+     */
+    private $ivaFacturacion=21;
 	
 	/**
      * @var boolean
