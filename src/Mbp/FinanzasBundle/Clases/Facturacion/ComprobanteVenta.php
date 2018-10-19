@@ -15,12 +15,14 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
     private $CAE;
     private $condicionImpositiva;
     private $localidad;
-    private $descuento;
-    protected static $concepto;//ESTE DATO DEBE VENIR DEL CLIENTE 1=PRODUCTOS, 2=SERVICIOS, 3=PRODUCTOS Y SERVICIOS
-    public static $alicIVA21;
-    public static $impExcento; //no implementado, = 0
+    private $descuento;    
     private $fchServDesde;
     private $fchServHasta;
+    private $docCliente;
+
+    //VARIABLES ESTATICAS
+    protected static $concepto=1;//ESTE DATO DEBE VENIR DEL CLIENTE 1=PRODUCTOS, 2=SERVICIOS, 3=PRODUCTOS Y SERVICIOS    
+    public static $impExcento=0; //no implementado, = 0
 
     private $repoFactura;
     private $repoCliente;
@@ -33,11 +35,6 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
     $faeleService, $repoFactura, $repoCliente){
             
         parent::__construct($tipoCambio, $moneda);
-
-        self::$concepto=1;
-        self::$alicIVA21=0.21;
-        self::$impExcento=0;
-
         $this->repoFactura=$repoFactura;
         $this->repoCliente=$repoCliente;
         $this->faeleService=$faeleService;
@@ -99,6 +96,10 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
         }
     }
 
+    protected function getDocCliente(){
+        return $this->docCliente;
+    }
+
     protected function cargarInfoCliente($cliente){
         $clienteInfo=$this->repoCliente->getInfoClienteFacturacion($cliente);
 
@@ -109,11 +110,13 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
         $this->provincia=$clienteInfo['provincia'];
         $this->clienteNombre=$clienteInfo['nombre'];
         $this->condicionImpositiva=$clienteInfo['posicion'];
+        $this->docCliente=$clienteInfo['cuit'];
 
+        $fecha=new \DateTime();
         if(empty($clienteInfo['vencimientoFc'])){
-            $this->fechaVencimiento=new \DateTime();
+            $this->fechaVencimiento=$fecha;
         }else{
-            $this->fechaVencimiento=new \DateTime() + $clienteInfo['vencimientoFc'];
+            $this->fechaVencimiento=$fecha->modify("+".$clienteInfo['vencimientoFc']."day");
         }        
     }
 
@@ -143,12 +146,9 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
     }
 
     protected function getTotalComprobante(){
-        return $this->getTotalDetallesGrabados() + $this->getTotalDetallesNoGrabados() + $this->getTotalIVA() - $this->descuento;
+        return $this->getTotalDetallesGrabados() + $this->getTotalDetallesNoGrabados() - $this->descuento;
     }
-
-    protected function getTotalIVA(){
-        $this->getImporteNetoGrabado() * self::$alicIVA21;
-    }
+    
 
     public function getDescuento(){
         return $this->descuento;

@@ -170,16 +170,16 @@ class VentasController extends Controller
 			$percepcionIIBB = $req->request->get('percepcion');
 			$decodeData = json_decode($data);
 			$decodefcData = json_decode($fcData);
-			$fcsAsociadas=explode(',', $decodefcData->compAsociados);
-
-			//\print_r($decodefcData->idCliente);
+			//$fcsAsociadas=explode(',', $decodefcData->compAsociados);
+			
 			$factura_a=new FacturaA(
 				$decodefcData->tipoCambio, $decodefcData->moneda,
 				$decodefcData->idCliente, $decodeData, $descuento, $percepcionIIBB,
-				$faele, $repoFc, $repoCliente, $repoFinanzas 
+				$faele, $repoFc, $repoCliente, $repoFinanzas
 			);
 			
-			return new Response;
+			$response=new Response;
+			return $response->setContent(json_encode(array('success'=>true)));
 
 				
 		}catch(\Exception $e){
