@@ -24,7 +24,9 @@ class FacturaA extends ComprobanteVenta{
 
         $this->montoPercepcionIIBB=$percepcionIIBB;
 
-        $this->generarFcElectronica();        
+        $res=$this->generarFcElectronica();    
+        
+
     }
 
     public function getIdOtrosTributos(){
@@ -37,13 +39,14 @@ class FacturaA extends ComprobanteVenta{
 
 
     public function generarFcElectronica(){
-        $this->getFaeleService()->generarFc(
+        
+        $res=$this->getFaeleService()->generarFc(
             self::$tipoComprobante, 
             self::$concepto, //1 es el concepto de productos, se puede implementar para servicios o productos y servicios
             $this->getDocCliente(),
             $this->getFechaEmision(),
             $this->getImporteNetoGrabado(),
-            $this->getTotalComprobante(),
+            $this->getImporteNetoNoGrabado(),
             $this->getTotalIVA(),
             $this->getMontoPercepcion(),
             self::$impExcento,
@@ -62,7 +65,6 @@ class FacturaA extends ComprobanteVenta{
             $this->getImporteNetoGrabado(),
             $this->getTotalIVA()
         );
-        
     }
 
     public function getMontoPercepcion(){

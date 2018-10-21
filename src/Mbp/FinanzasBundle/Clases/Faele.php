@@ -89,7 +89,6 @@ class Faele extends wsfev1
 		$regfe=$this->getArrayDetalleFaele($cbteTipo, $concepto, $docNro, $cbteDesde, $cbteHasta, $cbteFch, $impNeto, $impTotConc,		
 		$impIVA, $impTrib, $impOpEx, $impTotal, $fchServDesde, $fchServHasta, $fchVtoPago, $monId, $monCotiz);
 
-
 		$cae = $this->FECAESolicitar($nro, // ultimo numero de comprobante autorizado mas uno 
                 $this->ptoVta,  // el punto de venta
                 $regfe, // los datos a facturar
@@ -99,7 +98,7 @@ class Faele extends wsfev1
     	 );
 		 
 		if($cae['success'] == false || $cae['cae'] <= 0) {
-			return $cae;
+			throw new \Exception(json_encode($cae['msg']['msg']), 1);			
 		}
 		
 		$digito = $this->digitoVerificador($regfe['CbteTipo'], $cae['cae'], $cae['fecha_vencimiento']);

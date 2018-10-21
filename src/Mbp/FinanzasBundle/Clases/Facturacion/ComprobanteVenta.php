@@ -140,6 +140,9 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
         return $total;
     }
 
+    protected function getImporteNetoNoGrabado(){
+        return $this->getTotalDetallesNoGrabados()-$this->descuento;
+    }
     
     protected function getImporteNetoGrabado(){
         return $this->getTotalDetallesGrabados()-$this->descuento;

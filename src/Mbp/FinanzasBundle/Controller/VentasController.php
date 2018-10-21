@@ -177,15 +177,16 @@ class VentasController extends Controller
 				$decodefcData->idCliente, $decodeData, $descuento, $percepcionIIBB,
 				$faele, $repoFc, $repoCliente, $repoFinanzas
 			);
-			
+
+						
 			$response=new Response;
 			return $response->setContent(json_encode(array('success'=>true)));
-
 				
 		}catch(\Exception $e){
-			throw $e;
+			//throw $e;
+			$msg=json_decode($e->getMessage());
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
-			$response->setContent(json_encode(array("success"=>false, "msg"=>$e->getMessage(), 'code' => $e->getCode())));
+			$response->setContent(json_encode(array("success"=>false, "msg"=>$msg, 'code' => $e->getCode())));
 			return $response;
 		}
 	}
