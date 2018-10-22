@@ -28,6 +28,13 @@ class ImputacionGastos
      */
     private $descripcion;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="esGastoRepresentacion", type="boolean", nullable=true)
+     */
+    private $esGastoRepresentacion=0;
+
 
     /**
      * Get id
@@ -62,5 +69,28 @@ class ImputacionGastos
     {
         return $this->descripcion;
     }
-}
 
+    /**
+     * Set esGastoRepresentacion
+     *
+     * @param boolean $esGastoRepresentacion
+     *
+     * @return ImputacionGastos
+     */
+    public function setEsGastoRepresentacion($esGastoRepresentacion)
+    {
+        $this->esGastoRepresentacion = $esGastoRepresentacion;
+
+        return $this;
+    }
+
+    /**
+     * Get esGastoRepresentacion
+     *
+     * @return boolean
+     */
+    public function getEsGastoRepresentacion()
+    {
+        return $this->esGastoRepresentacion;
+    }
+}

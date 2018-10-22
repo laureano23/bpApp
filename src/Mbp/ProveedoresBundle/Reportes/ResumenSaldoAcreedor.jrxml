@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ResumenSaldoAcreedor" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ff538e5c-5b30-4887-a896-1ef4bbbd98a9">
-	<property name="ireport.zoom" value="1.331000000000002"/>
+	<property name="ireport.zoom" value="1.1000000000000016"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="VENCIMIENTO" class="java.util.Date">
@@ -11,6 +11,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
+     (SUM(CCProv.`haber`)-SUM(CCProv.`debe`)) AS saldo,
      CCProv.`id` AS CCProv_id,
      CCProv.`debe` AS CCProv_debe,
      CCProv.`haber` AS CCProv_haber,
@@ -21,13 +22,21 @@
      CCProv.`proveedorId` AS CCProv_proveedorId,
      Proveedor.`id` AS Proveedor_id,
      Proveedor.`rsocial` AS Proveedor_rsocial,
-     (SUM(CCProv.`haber`) - SUM(CCProv.`debe`)) as saldo
+     ImputacionGastos.`id` AS ImputacionGastos_id,
+     ImputacionGastos.`descripcion` AS ImputacionGastos_descripcion,
+     ImputacionGastos.`esGastoRepresentacion` AS ImputacionGastos_esGastoRepresentacion
 FROM
      `Proveedor` Proveedor INNER JOIN `CCProv` CCProv ON Proveedor.`id` = CCProv.`proveedorId`
-WHERE CCProv.`fechaEmision` < $P{VENCIMIENTO}
-GROUP BY Proveedor.`id`
-ORDER BY saldo DESC]]>
+     LEFT JOIN `ImputacionGastos` ImputacionGastos ON Proveedor.`imputacionGastos` = ImputacionGastos.`id`
+WHERE
+     CCProv.`fechaEmision` < $P{VENCIMIENTO}
+	and ImputacionGastos.`esGastoRepresentacion`=0
+GROUP BY
+     Proveedor.`id`
+ORDER BY
+     saldo DESC]]>
 	</queryString>
+	<field name="saldo" class="java.math.BigDecimal"/>
 	<field name="CCProv_id" class="java.lang.Integer"/>
 	<field name="CCProv_debe" class="java.math.BigDecimal"/>
 	<field name="CCProv_haber" class="java.math.BigDecimal"/>
@@ -38,7 +47,9 @@ ORDER BY saldo DESC]]>
 	<field name="CCProv_proveedorId" class="java.lang.Integer"/>
 	<field name="Proveedor_id" class="java.lang.Integer"/>
 	<field name="Proveedor_rsocial" class="java.lang.String"/>
-	<field name="saldo" class="java.math.BigDecimal"/>
+	<field name="ImputacionGastos_id" class="java.lang.Integer"/>
+	<field name="ImputacionGastos_descripcion" class="java.lang.String"/>
+	<field name="ImputacionGastos_esGastoRepresentacion" class="java.lang.Boolean"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>

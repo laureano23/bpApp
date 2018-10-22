@@ -59,10 +59,15 @@ class ReportesController extends Controller
 				CCProv.`proveedorId` AS CCProv_proveedorId,
 				Proveedor.`id` AS Proveedor_id,
 				Proveedor.`rsocial` AS Proveedor_rsocial,
-				(SUM(CCProv.`haber`) - SUM(CCProv.`debe`)) as saldo
+				(SUM(CCProv.`haber`) - SUM(CCProv.`debe`)) as saldo,
+				ImputacionGastos.`id` AS ImputacionGastos_id,
+				ImputacionGastos.`descripcion` AS ImputacionGastos_descripcion,
+				ImputacionGastos.`esGastoRepresentacion` AS ImputacionGastos_esGastoRepresentacion
 			FROM
 				`Proveedor` Proveedor INNER JOIN `CCProv` CCProv ON Proveedor.`id` = CCProv.`proveedorId`
+				LEFT JOIN `ImputacionGastos` ImputacionGastos ON Proveedor.`imputacionGastos` = ImputacionGastos.`id`
 			WHERE CCProv.`fechaEmision` < '$vencimientoSQL'
+				AND ImputacionGastos.`esGastoRepresentacion`=0
 			GROUP BY Proveedor.`id`
 			ORDER BY saldo DESC
 			";	
