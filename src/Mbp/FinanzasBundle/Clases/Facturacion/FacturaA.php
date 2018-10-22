@@ -25,9 +25,11 @@ class FacturaA extends ComprobanteVenta{
         $this->montoPercepcionIIBB=$percepcionIIBB;
 
         $res=$this->generarFcElectronica();    
-        
-
+        $this->setCAE($res['cae']['cae']);
+        $this->setVencimientoCAE(\DateTime::createFromFormat('Ymd', $res['cae']['fecha_vencimiento']));
     }
+
+    
 
     public function getIdOtrosTributos(){
         return self::$idOtrosTributos;
@@ -65,6 +67,8 @@ class FacturaA extends ComprobanteVenta{
             $this->getImporteNetoGrabado(),
             $this->getTotalIVA()
         );
+
+        return $res;
     }
 
     public function getMontoPercepcion(){

@@ -178,13 +178,19 @@ class VentasController extends Controller
 				$faele, $repoFc, $repoCliente, $repoFinanzas
 			);
 
+			$repoFc->crearFacturaA($factura_a);
+
 						
 			$response=new Response;
 			return $response->setContent(json_encode(array('success'=>true)));
 				
 		}catch(\Exception $e){
-			//throw $e;
+			$logger=$this->get('monolog.logger.facturacion');
+			$logger->err($e->getMessage());
 			$msg=json_decode($e->getMessage());
+			if($msg==null){
+				$msg=$e->getMessage();
+			}
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			$response->setContent(json_encode(array("success"=>false, "msg"=>$msg, 'code' => $e->getCode())));
 			return $response;

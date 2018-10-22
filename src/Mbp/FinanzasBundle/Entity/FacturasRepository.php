@@ -1,5 +1,6 @@
 <?php
 namespace Mbp\FinanzasBundle\Entity;
+use Mbp\FinanzasBundle\Entity\Facturas;
 
 /**
  * FacturasRepository
@@ -9,6 +10,21 @@ namespace Mbp\FinanzasBundle\Entity;
  */
 class FacturasRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function crearFacturaA($objFC){
+		$em = $this->getEntityManager();
+		$factura=new Facturas;
+		$repoTipoIVA=$em->getRepository('MbpFinanzasBundle:PosicionIVA');
+
+		
+		$factura->setPtoVta($objFC->getPuntoVenta());
+		$tipoIVA=$repoTipoIVA->findOneByEsResponsableInscripto(true);
+		if(empty($tipoIVA)) throw new \Exception(\json_encode($objFC), 1);
+		
+		$factura->setTipoIva($tipoIVA);
+		$em->persist($factura);
+		$em->flush();
+	}
+
 	public function citiVentasCbtes(\DateTime $desde, \DateTime $hasta)
 	{
 		$em = $this->getEntityManager();
