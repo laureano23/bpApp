@@ -357,14 +357,8 @@ class ReportesController extends Controller
 				
 		$conn = $repo->getJdbc();
 		
-		/*
-		 * SQL
-		 * 
-		 */
 		$sql = "call estructuraFormulas($idNodo, $tc);";
-		 /*
-		  * FIN SQL
-		  */
+		
 		
 		//Exportamos el reporte
 		$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());

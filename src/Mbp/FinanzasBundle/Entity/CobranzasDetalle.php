@@ -60,6 +60,7 @@ class CobranzasDetalle
 	 * 0: EN CARTERA
 	 * 1: ENTREGADO A PROVEEDOR
 	 * 2: DEPOSITADO EN BANCO
+     * 3: RECHAZADO
 	 * */
 	/**
      * @var smallint
