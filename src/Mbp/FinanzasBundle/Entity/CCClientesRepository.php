@@ -1,6 +1,7 @@
 <?php
 
 namespace Mbp\FinanzasBundle\Entity;
+use Mbp\FinanzasBundle\Entity\CCClientes;
 
 /**
  * CCClientesRepository
@@ -23,5 +24,22 @@ class CCClientesRepository extends \Doctrine\ORM\EntityRepository
 		
 		return $res;
 	
+	}
+
+	public function crearMovimientoCC($mov, $cbte){
+		$em = $this->getEntityManager()->getConnection();
+		$repoCliente=$em->getRepository('MbpClientesBundle:Cliente');
+
+		$cc=new CCClientes;
+		$cc->setDebe($mov->getTotalComprobante());
+		$cliente=$repoCliente->find($mov->getCliente());
+		$cc->setClienteId($cliente);
+		$cc->setFacturaId($cbte);
+		$cc->setFechaVencimiento($mov->getFechaVencimiento());
+		$cc->setFechaEmision($mov->getFechaEmision());
+
+		$em->persist($cc);
+		$em->flush();
+		return $cc;
 	}
 }

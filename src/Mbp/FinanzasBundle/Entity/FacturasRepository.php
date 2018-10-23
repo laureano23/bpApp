@@ -14,13 +14,52 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 		$em = $this->getEntityManager();
 		$factura=new Facturas;
 		$repoTipoIVA=$em->getRepository('MbpFinanzasBundle:PosicionIVA');
+		$repoCCClientes=$em->getRepository('MbpFinanzasBundle:CCClientes');
+		$repoTipoCbte=$em->getRepository('MbpFinanzasBundle:TipoComprobante');
+		$repoCliente=$em->getRepository('MbpClientesBundle:Cliente');
 
 		
 		$factura->setPtoVta($objFC->getPuntoVenta());
 		$tipoIVA=$repoTipoIVA->findOneByEsResponsableInscripto(true);
-		if(empty($tipoIVA)) throw new \Exception(\json_encode($objFC), 1);
-		
+		if(empty($tipoIVA)) throw new \Exception("No existe el tipo de IVA responsable inscripto", 1);
 		$factura->setTipoIva($tipoIVA);
+		$factura->setDigitoVerificador($objFC->getDigitoVerificador());
+		$factura->setTipoCambioRefFac($objFC->getCotizacionMoneda());
+		$cc=$repoCCClientes->crearMovimientoCC($objFC, $factura);
+		$factura->setCcId($cc);
+		$tipoCbte=$repoTipoCbte->findOneBy(array('esFactura'=>true, 'subTipoA'=>true));
+		if(empty($tipoCbte)) throw new \Exception("No existe el tipo de comprobante Factura A", 1);
+		
+		$factura->setTipoId($tipoCbte);
+		$factura->setTipoCambio($objFC->getCotizacionMoneda());
+		$factura->setMoneda($objFC->getMoneda());
+		$factura->setDepartamento($objFC->getPartido());
+		$factura->setPorcentajeIIBB($objFC->getAlicuotaPercepcion());
+		$factura->setTotal($objFC->getTotalComprobante());
+		$factura->setFecha($objFC->getFechaEmision());
+		$factura->setVencimiento($objFC->getFechaVencimiento());
+		$factura->setFcNro($objFC->getNumero());
+		$factura->setConcepto($objFC->getDescripcionCbte());
+
+		$cliente=$repoCliente->find($objFC->getCliente());
+		if(empty($cliente)) throw new \Exception("No se encontró el cliente", 1);
+		$factura->setClienteId($cliente);
+
+		$factura->setCae($objFC->getCAE());
+		$factura->setVtoCae($objFC->getVencimientoCAE());
+		$factura->setDtoTotal($objFC->getDescuento());
+		$factura->setPerIIBB($objFC->getMontoPercepcion());
+		$factura->setIva21($objFC->getTotalIVA());
+		$factura->setRSocial($cliente->getRsocial());
+		$factura->setDomicilio($cliente->getDomicilio());
+		$factura->setCuit($cliente->getCuit());
+
+		$posicion=$cliente->getIva()->getPosicion();
+		if(empty($cliente)) throw new \Exception("El cliente no tiene una posición definida frente al IVA", 1);
+		$factura->setIvaCond($posicion);
+
+		$factura->setCondVta($cliente->getCondVenta());
+
 		$em->persist($factura);
 		$em->flush();
 	}

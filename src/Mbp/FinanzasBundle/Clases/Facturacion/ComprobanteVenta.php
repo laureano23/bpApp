@@ -33,9 +33,9 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
     
     public function __construct($tipoCambio,
     $moneda, $cliente, $detallesVenta, $descuento,
-    $faeleService, $repoFactura, $repoCliente){
+    $faeleService, $repoFactura, $repoCliente, $descripcionCbte){
             
-        parent::__construct($tipoCambio, $moneda);
+        parent::__construct($tipoCambio, $moneda, $descripcionCbte);
         $this->repoFactura=$repoFactura;
         $this->repoCliente=$repoCliente;
         $this->faeleService=$faeleService;

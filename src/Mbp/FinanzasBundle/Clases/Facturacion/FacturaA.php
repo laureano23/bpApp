@@ -20,12 +20,13 @@ class FacturaA extends ComprobanteVenta{
 
         parent::__construct($tipoCambio, 
         $moneda, $cliente, $detallesVenta, $descuento,        
-        $faeleService, $repoFactura, $repoCliente);
+        $faeleService, $repoFactura, $repoCliente, 'FACTURA A');
 
         $this->montoPercepcionIIBB=$percepcionIIBB;
 
         $res=$this->generarFcElectronica();    
         $this->setCAE($res['cae']['cae']);
+        $this->setDigitoVerificador($res['cae']['digitoVerificador']);
         $this->setVencimientoCAE(\DateTime::createFromFormat('Ymd', $res['cae']['fecha_vencimiento']));
     }
 
