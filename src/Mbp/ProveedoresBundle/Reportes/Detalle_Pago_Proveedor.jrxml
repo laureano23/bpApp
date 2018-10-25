@@ -276,7 +276,7 @@ Tel/Fax: 4484-2416]]></text>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="250">
+		<band height="300">
 			<subreport>
 				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="507" height="250" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="aab1638e-bc61-4981-99ce-12033e4df880"/>
 				<subreportParameter name="OpId">
