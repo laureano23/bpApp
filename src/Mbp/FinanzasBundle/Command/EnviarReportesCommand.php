@@ -5,7 +5,6 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class EnviarReportesCommand extends ContainerAwareCommand
 {
@@ -15,9 +14,6 @@ class EnviarReportesCommand extends ContainerAwareCommand
             ->setDescription('Envía el libro de IVA ventas e IVA compras al estudio contable');
     }
 
-    /**
-     * @Route("/test/execute", name="mbp_reportes", options={"expose"=true})
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
             $desde=new \DateTime();
