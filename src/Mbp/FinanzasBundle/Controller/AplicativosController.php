@@ -34,34 +34,7 @@ class AplicativosController extends Controller
 			$hasta= \DateTime::createFromFormat('d/m/Y', $hasta);
 			
 			
-			$res=$repo->createQueryBuilder('f')
-				->select("
-					CONCAT(CONCAT(CONCAT(CONCAT(SUBSTRING(cliente.cuit, 1, 2), '-'), SUBSTRING(cliente.cuit, 3, 8)), '-'), SUBSTRING(cliente.cuit, 11, 12)) AS cuit,
-					f.perIIBB * f.tipoCambio,
-					DATE_FORMAT(f.fecha, '%d/%m/%Y') AS fecha,
-					CASE WHEN tipo.esFactura = true THEN 'F'
-						WHEN tipo.esNotaCredito = true THEN 'C'
-						WHEN tipo.esNotaDebito = true THEN 'D'
-						ELSE '' END AS tipoCbte,
-					CASE WHEN tipo.subTipoA = true THEN 'A'
-						WHEN tipo.subTipoB = true THEN 'B'
-						ELSE '' AS subTipoCbte,
-					LPAD(f.ptoVta, 4, '0') AS ptoVta,
-					LPAD(f.fcNro, 8, '0') AS fcNro,					
-					CASE WHEN tipo.esNotaCredito = true THEN CONCAT('-', LPAD(ROUND(((f.total - f.iva21 - f.perIIBB)* f.tipoCambio),2), 11, '0'))
-						ELSE LPAD(ROUND(((f.total - f.iva21 - f.perIIBB)* f.tipoCambio),2), 12, '0') END AS subTotal,
-					CASE WHEN tipo.esNotaCredito = true THEN CONCAT('-', LPAD(ROUND((f.perIIBB * f.tipoCambio),2), 10, '0'))
-						ELSE LPAD(ROUND((f.perIIBB * f.tipoCambio),2), 11, '0') END AS perIIBB,					
-					'A' AS finLinea")
-				->join('f.tipoId', 'tipo')
-				->join('f.clienteId', 'cliente')
-				->where('f.fecha BETWEEN :desde AND :hasta')
-				->andWhere('f.perIIBB != 0')
-				->setParameter('desde', $desde)
-				->setParameter('hasta', $hasta)
-				->getQuery()
-				->getArrayResult();
-			
+			$res=$repo->percepcionesTXT($desde, $hasta);			
 			
 			$nombreArchivo="AR"."-".$this->container->getParameter('cuit_prod')."-".$desde->format("Ym").self::$periodoPercepcion."-".self::$codigoPercepcion."-LOTE1.txt";
 			
@@ -106,42 +79,8 @@ class AplicativosController extends Controller
 			$desdeSql=$desde->format("Y-m-d");
 			$hastaSql=$hasta->format("Y-m-d");
 			
-			$em = $em->getConnection();
-		
-			$sth = $em->prepare("
-				select 
-					CONCAT(CONCAT(CONCAT(CONCAT(SUBSTRING(prov.cuit, 1, 2), '-'), SUBSTRING(prov.cuit, 3, 8)), '-'), SUBSTRING(prov.cuit, 11, 12)) AS cuit,
-					DATE_FORMAT(op.fechaEmision, '%d/%m/%Y') AS fecha,
-					LPAD(fc.sucursal, 4, '0') AS ptoVta,
-					LPAD(tr.id, 8, '0') AS fcNro,
-					tr.aplicado as aplicado,
-					pago.importe as pagoImporte,
-					baseImponible,
-					LPAD((truncate((tr.aplicado * pago.importe / baseImponible), 2)), 11 ,'0') AS retencion,
-					'A' AS finLinea
-				from TransaccionOPFC tr
-					left join FacturaProveedor fc on fc.id = tr.facturaId
-				    left join OrdenPago op on op.id = tr.ordenPagoId
-				    inner join Proveedor prov on prov.id = op.proveedorId
-				    inner join OrdenDePago_detallesPagos op_det on op_det.ordenPago_id = op.id
-				    inner join Pago pago on pago.id = op_det.pago_id
-				    left join FormasPagos fp on fp.id = pago.idFormaPago
-				    inner join
-					(select SUM(case when f.neto > op.topeRetencionIIBB then tr.aplicado else 0 end) as baseImponible, op.id as opId
-						from TransaccionOPFC as tr
-						inner join FacturaProveedor f on f.id = tr.facturaId
-						inner join OrdenPago op on op.id = tr.ordenPagoId
-				        where op.fechaEmision between '$desdeSql' and '$hastaSql'
-				        group by op.id) as sub on sub.opId = op.id
-				where fp.retencionIIBB = true
-					and op.fechaEmision between '$desdeSql' and '$hastaSql'
-				    and fc.neto > op.topeRetencionIIBB
-				    group by tr.id
-			");
-			
-			$sth->execute();
-			$res = $sth->fetchAll();	
-		
+				
+			$res=$repo->retencionesTXT($desdeSql, $hastaSql);
 			
 			$nombreArchivo="AR"."-".$this->container->getParameter('cuit_prod')."-".$desde->format("Ym").$quincena."-".self::$codigoRetencion."-LOTE1.txt";
 			
@@ -158,8 +97,6 @@ class AplicativosController extends Controller
 							
 			return $response->setContent(json_encode(array('success' => true, 'nombreArchivo' => $nombreArchivo)));		
 		}catch(\Exception $e){
-			
-			throw $e;
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(json_encode(array('success' => false, 'msg' => $e->getMessage())));
 		}

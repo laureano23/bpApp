@@ -11,7 +11,7 @@ class EnviarReportesCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this->setName('finanzas:enviarReportes')
-            ->setDescription('Envía el libro de IVA ventas e IVA compras al estudio contable');
+            ->setDescription('Envía el libro de IVA ventas e IVA compras por mail');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

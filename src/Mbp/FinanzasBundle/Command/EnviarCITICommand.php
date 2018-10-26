@@ -11,7 +11,7 @@ class EnviarCITICommand extends ContainerAwareCommand
     protected function configure()
     {
         $this->setName('finanzas:enviarCITI')
-            ->setDescription('Envía los TXT correspondientes a los CITI Venta');
+            ->setDescription('Envía los TXT correspondientes a los CITI Venta por mail');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
