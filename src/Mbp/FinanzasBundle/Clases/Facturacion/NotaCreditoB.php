@@ -4,7 +4,7 @@ namespace Mbp\FinanzasBundle\Clases\Facturacion;
 use Mbp\FinanzasBundle\Clases\Facturacion\ComprobanteVenta;
 use Mbp\FinanzasBundle\Clases\Facturacion\DetalleVentas;
 
-class NotaCredito_B extends ComprobanteVenta{
+class NotaCreditoB extends ComprobanteVenta{
     private $facturasAsociadas;
 
     public function __construct($numero, $tipoCambio, $fechaEmision, $total,

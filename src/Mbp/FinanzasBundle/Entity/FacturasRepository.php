@@ -182,6 +182,23 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 
 	}
 
+	public function buscarCbtesAsociados($arrayIdFcs){
+		$em = $this->getEntityManager();
+		$repoFacturas = $em->getRepository('MbpFinanzasBundle:Facturas');
+
+		$qbFacturas = $repoFacturas->createQueryBuilder('fac')
+				->select('tipo.codigoAfip,
+					fac.ptoVta,
+					fac.fcNro')			
+				->leftJoin('fac.tipoId', 'tipo')
+				->where('fac.id IN (:ids)')
+				->setParameter('ids', $arrayIdFcs)	
+				->getQuery()
+				->getArrayResult();
+		
+		return $qbFacturas;
+	}
+
 	public function listaFacturasClientes($idCliente)
 	{		
 		$em = $this->getEntityManager();
@@ -230,7 +247,6 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 				return;
 			}
 			
-			print_r($resulFacturas);
 			
 		}catch(\Exception $e){
 			$this->get('logger')->error($e->getMessage());

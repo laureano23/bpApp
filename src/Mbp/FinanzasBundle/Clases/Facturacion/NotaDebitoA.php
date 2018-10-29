@@ -4,7 +4,7 @@ namespace Mbp\FinanzasBundle\Clases\Facturacion;
 use Mbp\FinanzasBundle\Clases\Facturacion\ComprobanteVenta;
 use Mbp\FinanzasBundle\Clases\Facturacion\DetalleVentas;
 
-class NotaCredito_A extends ComprobanteVenta{
+class NotaDebitoA extends ComprobanteVenta{
     private $repoFactura;
     private $faeleService;
     private $CUITCliente;
@@ -12,13 +12,12 @@ class NotaCredito_A extends ComprobanteVenta{
     private $IVA;
     private $porcentajePercepcionIIBB;
     private $descuento;
-    private $facturasAsociadas;
 
     public function __construct($numero, $tipoCambio, $fechaEmision, $total,
         $moneda, $cliente, $fechaVencimiento, $puntoVenta,
         $detallesVenta, $domicilio, $partido, $digitoVerificador,
         $provincia, $CAE, $condicionImpositiva, $localidad, $repoFactura, $CUITCliente, $montoPercepcionIIBB,
-        $IVA, $porcentajePercepcionIIBB, $faeleService, $descuento, $facturasAsociadas){
+        $IVA, $porcentajePercepcionIIBB, $faeleService, $descuento){
 
         parent::__construct($numero, $tipoCambio, $fechaEmision, $total,
         $moneda, $cliente, $fechaVencimiento, $puntoVenta,
@@ -32,6 +31,5 @@ class NotaCredito_A extends ComprobanteVenta{
         $this->porcentajePercepcionIIBB=$porcentajePercepcionIIBB;
         $this->faeleService=$faeleService;
         $this->descuento=$descuento;
-        $this->facturasAsociadas=$facturasAsociadas;
     }
 }

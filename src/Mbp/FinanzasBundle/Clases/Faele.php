@@ -67,7 +67,7 @@ class Faele extends wsfev1
 		$cbteTipo, $concepto, $docNro, $cbteFch, $impNeto, $impTotConc,		
 		$impIVA, $impTrib, $impOpEx, $impTotal, $fchServDesde, $fchServHasta, $fchVtoPago, $monId,
 		$monCotiz, $idTributo, $descTributo, $baseImpTributo, $alictributo, $importeTributo,
-		$idIVA, $baseImpIVA, $importeIVA)
+		$idIVA, $baseImpIVA, $importeIVA, $cbtesAsoc)
 	{
 		
 
@@ -75,7 +75,7 @@ class Faele extends wsfev1
 
 		$regfeiva=$this->getArrayIVAFaele($idIVA, $baseImpIVA, $importeIVA);
 			
-		$regfeasoc=null; //resta desarrollar 
+		$regfeasoc=$this->getArrayCbtesAsoc($cbtesAsoc); //resta desarrollar 
 		
 		
 		$nro = $this->ultimoNroComp($cbteTipo);
@@ -83,11 +83,14 @@ class Faele extends wsfev1
 		$nro = $nro['nro'];
 		$nro++;		
 
+		
+
 		$cbteDesde=$nro; //si se quiere implementar por lote hay que modificar estas variables
 		$cbteHasta=$nro;		
 
 		$regfe=$this->getArrayDetalleFaele($cbteTipo, $concepto, $docNro, $cbteDesde, $cbteHasta, $cbteFch, $impNeto, $impTotConc,		
 		$impIVA, $impTrib, $impOpEx, $impTotal, $fchServDesde, $fchServHasta, $fchVtoPago, $monId, $monCotiz);
+
 
 		$cae = $this->FECAESolicitar($nro, // ultimo numero de comprobante autorizado mas uno 
                 $this->ptoVta,  // el punto de venta
@@ -103,13 +106,32 @@ class Faele extends wsfev1
 		
 		$digito = $this->digitoVerificador($regfe['CbteTipo'], $cae['cae'], $cae['fecha_vencimiento']);
 		
-		 return array(
-		 	'cae' => $cae,
+		return array(
+			'cae' => $cae,
 		 	'success' => true,
 		 	'digitoVerificador' => $digito
-		 );
+		);
 	}
 
+	public function getArrayCbtesAsoc($arrayCbteAsoc){
+		$regfeasoc=[];
+		if (empty($arrayCbteAsoc)){
+			return null;
+		}else{
+			foreach($arrayCbteAsoc as $cbte){
+				\array_push($regfeasoc,
+				array(
+					'Tipo'=>$cbte['codigoAfip'],
+					'PtoVta'=>$cbte['ptoVta'],
+					'Nro'=>$cbte['fcNro']
+				));
+			}
+			return $regfeasoc;
+		}
+		
+		
+		
+	}
 
 	public function getArrayIVAFaele($idIVA, $baseImpIVA, $importeIVA){
 
@@ -146,7 +168,7 @@ class Faele extends wsfev1
         $regfe['ImpNeto']=$impNeto;			// neto gravado
         $regfe['ImpTotConc']=$impTotConc;			// no gravado
         $regfe['ImpIVA']=$impIVA;			// IVA liquidado
-        $regfe['ImpTrib']=$impTrib;			// otros tributos
+        $regfe['ImpTrib']=0;			// otros tributos
         $regfe['ImpOpEx']=$impOpEx;			// operacion exentas
         $regfe['ImpTotal']=$impTotal;// total de la factura. ImpNeto + ImpTotConc + ImpIVA + ImpTrib + ImpOpEx
         $regfe['FchServDesde']=null;	// solo concepto 2 o 3

@@ -11,6 +11,7 @@ use Mbp\FinanzasBundle\Entity\FacturaDetalle;
 use Mbp\FinanzasBundle\Entity\CCClientes;
 use Mbp\FinanzasBundle\Entity\TipoComprobante;
 use Mbp\FinanzasBundle\Clases\Facturacion\FacturaA;
+use Mbp\FinanzasBundle\Clases\Facturacion\NotaCreditoA;
 
 class VentasController extends Controller
 {	
@@ -170,21 +171,39 @@ class VentasController extends Controller
 			$percepcionIIBB = $req->request->get('percepcion');
 			$decodeData = json_decode($data);
 			$decodefcData = json_decode($fcData);
-			//$fcsAsociadas=explode(',', $decodefcData->compAsociados);
 			
-			$factura_a=new FacturaA(
-				$decodefcData->tipoCambio, $decodefcData->moneda,
-				$decodefcData->idCliente, $decodeData, $descuento, $percepcionIIBB,
-				$faele, $repoFc, $repoCliente, $repoFinanzas
-			);
 
-			$repoFc->crearFacturaA($factura_a);
+			$comprobante=null;
+			switch($decodefcData->tipo){
+				case 1:
+					$comprobante=new FacturaA(
+						$decodefcData->tipoCambio, $decodefcData->moneda,
+						$decodefcData->idCliente, $decodeData, $descuento, $percepcionIIBB,
+						$faele, $repoFc, $repoCliente, null
+					);
+					$repoFc->crearFacturaA($comprobante);
+					break;
+				case 2:
+					$fcsAsociadas=explode(',', $decodefcData->compAsociados);
+					$comprobante=new NotaCreditoA(
+						$decodefcData->tipoCambio, $decodefcData->moneda,
+						$decodefcData->idCliente, $decodeData, $descuento, $percepcionIIBB,
+						$faele, $repoFc, $repoCliente, $fcsAsociadas
+					);
+					$repoFc->crearNotaCreditoA($comprobante);
+					break;
+			}
+			
+			
+
+			
 
 						
 			$response=new Response;
 			return $response->setContent(json_encode(array('success'=>true)));
 				
 		}catch(\Exception $e){
+			throw $e;
 			$logger=$this->get('monolog.logger.facturacion');
 			$logger->err($e->getMessage());
 			$msg=json_decode($e->getMessage());

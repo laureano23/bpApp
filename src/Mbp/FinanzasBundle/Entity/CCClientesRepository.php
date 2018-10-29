@@ -27,8 +27,10 @@ class CCClientesRepository extends \Doctrine\ORM\EntityRepository
 	}
 
 	public function crearMovimientoCC($mov, $cbte){
-		$em = $this->getEntityManager()->getConnection();
+		$em = $this->getEntityManager();
 		$repoCliente=$em->getRepository('MbpClientesBundle:Cliente');
+
+		\print_r($mov);
 
 		$cc=new CCClientes;
 		$cc->setDebe($mov->getTotalComprobante());

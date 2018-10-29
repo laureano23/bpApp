@@ -20,10 +20,12 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
     private $fchServDesde;
     private $fchServHasta;
     private $docCliente;
+    private $montoPercepcionIIBB;
 
     //VARIABLES ESTATICAS
     protected static $concepto=1;//ESTE DATO DEBE VENIR DEL CLIENTE 1=PRODUCTOS, 2=SERVICIOS, 3=PRODUCTOS Y SERVICIOS    
     public static $impExcento=0; //no implementado, = 0
+    private static $alicIVA21=0.21;
 
     private $repoFactura;
     private $repoCliente;
@@ -32,7 +34,7 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
 
     
     public function __construct($tipoCambio,
-    $moneda, $cliente, $detallesVenta, $descuento,
+    $moneda, $cliente, $detallesVenta, $descuento, $percepcionIIBB,
     $faeleService, $repoFactura, $repoCliente, $descripcionCbte){
             
         parent::__construct($tipoCambio, $moneda, $descripcionCbte);
@@ -41,11 +43,15 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
         $this->faeleService=$faeleService;
         $this->detallesVenta=[];
         $this->descuento=$descuento;
+        $this->montoPercepcionIIBB=$percepcionIIBB;
 
         $this->cargarInfoCliente($cliente);        
         $this->cargarDetallesVenta($detallesVenta);
     }
 
+    public function getTotalIVA(){
+        return $this->getImporteNetoGrabado() * self::$alicIVA21;
+    }
 
     public function getFaeleService(){
         return $this->faeleService;
@@ -84,7 +90,6 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
         $clienteInfo=$this->repoCliente->getInfoClienteFacturacion($cliente);
 
         if(empty($clienteInfo)) throw new \Exception("Cliente no encontrado", 1);
-        if(!$clienteInfo['esResponsableInscripto']) throw new \Exception("Este cliente es responsable inscripto, se debe emitir Factura A", 1);
         
 
         $this->localidad=$clienteInfo['localidad'];
@@ -150,6 +155,16 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
             return $resIVA[$i]->Id;
         }
     }
+
+    public function getMontoPercepcion(){
+        return $this->montoPercepcionIIBB;
+    }
+
+    public function getAlicuotaPercepcion(){
+        return round(($this->montoPercepcionIIBB * 100 / $this->getImporteNetoGrabado()), 2);
+    }
+    
+    
 
 
     /**

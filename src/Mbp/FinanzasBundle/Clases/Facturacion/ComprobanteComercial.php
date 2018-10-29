@@ -24,6 +24,7 @@ abstract class ComprobanteComercial{
     public function getFechaEmision(){
         return $this->fechaEmision;
     }
+    
 
     public function getMoneda(){
         if($this->moneda==0){
