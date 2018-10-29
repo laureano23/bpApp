@@ -174,6 +174,7 @@ class VentasController extends Controller
 			
 
 			$comprobante=null;
+			$idCbte=null;
 			switch($decodefcData->tipo){
 				case 1:
 					$comprobante=new FacturaA(
@@ -181,7 +182,7 @@ class VentasController extends Controller
 						$decodefcData->idCliente, $decodeData, $descuento, $percepcionIIBB,
 						$faele, $repoFc, $repoCliente, null
 					);
-					$repoFc->crearFacturaA($comprobante);
+					$idCbte=$repoFc->crearFacturaA($comprobante);
 					break;
 				case 2:
 					$fcsAsociadas=explode(',', $decodefcData->compAsociados);
@@ -190,17 +191,18 @@ class VentasController extends Controller
 						$decodefcData->idCliente, $decodeData, $descuento, $percepcionIIBB,
 						$faele, $repoFc, $repoCliente, $fcsAsociadas
 					);
-					$repoFc->crearNotaCreditoA($comprobante);
+					$idCbte=$repoFc->crearNotaCreditoA($comprobante);
 					break;
 			}
 			
 			
 
-			
-
-						
+			$cae["idFc"] = $idCbte;
+			$cae["success"]=true;
 			$response=new Response;
-			return $response->setContent(json_encode(array('success'=>true)));
+			$response->setContent(json_encode($cae));
+			
+			return $response;
 				
 		}catch(\Exception $e){
 			throw $e;

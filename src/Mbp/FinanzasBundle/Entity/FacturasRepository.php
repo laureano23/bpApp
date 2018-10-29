@@ -65,6 +65,8 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 		$em->persist($factura);
 		$em->persist($cc);
 		$em->flush();
+
+		return $factura->getId();
 	}
 
 	public function citiVentasCbtes(\DateTime $desde, \DateTime $hasta)
