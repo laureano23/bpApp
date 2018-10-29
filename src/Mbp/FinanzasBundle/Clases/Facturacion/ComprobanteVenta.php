@@ -6,7 +6,7 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
     private $cliente;
     private $clienteNombre;
     private $fechaVencimiento;
-    private $puntoVenta;
+    private $puntoVenta;    
     private $detallesVenta;
     private $domicilio;
     private $partido;
@@ -44,7 +44,9 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
         $this->detallesVenta=[];
         $this->descuento=$descuento;
         $this->montoPercepcionIIBB=$percepcionIIBB;
+        $this->cliente=$cliente;
 
+        $this->cargarParametrosFacturacion();
         $this->cargarInfoCliente($cliente);        
         $this->cargarDetallesVenta($detallesVenta);
     }
@@ -72,7 +74,7 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
 
 
     protected function cargarParametrosFacturacion(){
-        $this->puntoVenta=$faeleService->getPuntoVenta();
+        $this->puntoVenta=$this->faeleService->getPuntoVenta();
 
     }
 
@@ -88,7 +90,6 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
 
     protected function cargarInfoCliente($cliente){
         $clienteInfo=$this->repoCliente->getInfoClienteFacturacion($cliente);
-
         if(empty($clienteInfo)) throw new \Exception("Cliente no encontrado", 1);
         
 

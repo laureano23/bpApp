@@ -36,7 +36,7 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 		$factura->setDepartamento($objFC->getPartido());
 		$factura->setPorcentajeIIBB($objFC->getAlicuotaPercepcion());
 		$factura->setTotal($objFC->getTotalComprobante());
-		$factura->setFecha($objFC->getFechaEmision());
+		$factura->setFecha(\DateTime::createFromFormat('Ymd', $objFC->getFechaEmision()));
 		$factura->setVencimiento($objFC->getFechaVencimiento());
 		$factura->setFcNro($objFC->getNumero());
 		$factura->setConcepto($objFC->getDescripcionCbte());
@@ -45,22 +45,25 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 		if(empty($cliente)) throw new \Exception("No se encontró el cliente", 1);
 		$factura->setClienteId($cliente);
 
-		$factura->setCae($objFC->getCAE());
+		$factura->setCae($objFC->getCAE());		
 		$factura->setVtoCae($objFC->getVencimientoCAE());
 		$factura->setDtoTotal($objFC->getDescuento());
 		$factura->setPerIIBB($objFC->getMontoPercepcion());
 		$factura->setIva21($objFC->getTotalIVA());
 		$factura->setRSocial($cliente->getRsocial());
-		$factura->setDomicilio($cliente->getDomicilio());
+		$factura->setDomicilio($cliente->getDireccion());
 		$factura->setCuit($cliente->getCuit());
 
 		$posicion=$cliente->getIva()->getPosicion();
-		if(empty($cliente)) throw new \Exception("El cliente no tiene una posición definida frente al IVA", 1);
+		if(empty($posicion)) throw new \Exception("El cliente no tiene una posición definida frente al IVA", 1);
 		$factura->setIvaCond($posicion);
 
 		$factura->setCondVta($cliente->getCondVenta());
 
+		//\Doctrine\Common\Util\Debug::dump($factura);
+
 		$em->persist($factura);
+		$em->persist($cc);
 		$em->flush();
 	}
 

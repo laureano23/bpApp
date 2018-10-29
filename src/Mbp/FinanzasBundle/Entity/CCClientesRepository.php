@@ -30,18 +30,14 @@ class CCClientesRepository extends \Doctrine\ORM\EntityRepository
 		$em = $this->getEntityManager();
 		$repoCliente=$em->getRepository('MbpClientesBundle:Cliente');
 
-		\print_r($mov);
-
 		$cc=new CCClientes;
 		$cc->setDebe($mov->getTotalComprobante());
 		$cliente=$repoCliente->find($mov->getCliente());
 		$cc->setClienteId($cliente);
 		$cc->setFacturaId($cbte);
 		$cc->setFechaVencimiento($mov->getFechaVencimiento());
-		$cc->setFechaEmision($mov->getFechaEmision());
+		$cc->setFechaEmision(\DateTime::createFromFormat('Ymd',$mov->getFechaEmision()));
 
-		$em->persist($cc);
-		$em->flush();
 		return $cc;
 	}
 }

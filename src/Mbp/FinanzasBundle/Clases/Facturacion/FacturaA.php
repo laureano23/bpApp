@@ -4,7 +4,7 @@ use Mbp\FinanzasBundle\Clases\Facturacion\ComprobanteVenta;
 use Mbp\FinanzasBundle\Clases\Facturacion\DetalleVentas;
 
 class FacturaA extends ComprobanteVenta{        
-    
+    private $numero;
 
     //VARIABLES ESTATICAS
     private static $tipoComprobante=1; //SEGUN TABLAS GENERALES DE AFIP 1= factura A
@@ -38,7 +38,13 @@ class FacturaA extends ComprobanteVenta{
         return self::$idOtrosTributos;
     }
 
-    
+    public function cargarParametrosFacturacion(){
+        parent::cargarParametrosFacturacion();
+        $res=$this->getFaeleService()->ultimoNroComp(self::$tipoComprobante);
+        if(\array_key_exists('nro', $res)){
+            $this->numero=$res['nro'];
+        }
+    }
 
     public function generarFcElectronica(){
         
@@ -74,4 +80,24 @@ class FacturaA extends ComprobanteVenta{
 
     
     
+
+    /**
+     * Get the value of numero
+     */ 
+    public function getNumero()
+    {
+        return $this->numero;
+    }
+
+    /**
+     * Set the value of numero
+     *
+     * @return  self
+     */ 
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
+
+        return $this;
+    }
 }
