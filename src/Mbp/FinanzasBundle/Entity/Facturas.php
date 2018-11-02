@@ -52,7 +52,7 @@ class Facturas
 	private $clienteId;
 	
 	/**
-	 * @ORM\ManyToMany(targetEntity="FacturaDetalle", cascade={"remove"})
+	 * @ORM\ManyToMany(targetEntity="FacturaDetalle", cascade={"remove", "persist"})
 	 * @ORM\JoinTable(name="factura_detallesFacturas",
 	 *  joinColumns={ @ORM\JoinColumn(name = "factura_id", referencedColumnName="id") }),
 	 *  inverseJoinColumns={@JoinColumn(name="detallesFacturas_id", referencedColumnName="id", unique=true)}

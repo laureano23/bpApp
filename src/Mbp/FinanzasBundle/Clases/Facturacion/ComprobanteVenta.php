@@ -7,6 +7,7 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
     private $clienteNombre;
     private $fechaVencimiento;
     private $puntoVenta;    
+    private $numero;
     private $detallesVenta;
     private $domicilio;
     private $partido;
@@ -166,7 +167,17 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
     }
     
     
+    public function sosFacturaA(){
+        return false;
+    }
+    
+    public function sosNotaCreditoA(){
+        return false;
+    }
 
+    public function sosNotaDebitoA(){
+        return false;
+    }
 
     /**
      * Get the value of cliente
@@ -532,6 +543,26 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
     public function setRepoFactura($repoFactura)
     {
         $this->repoFactura = $repoFactura;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of numero
+     */ 
+    public function getNumero()
+    {
+        return $this->numero;
+    }
+
+    /**
+     * Set the value of numero
+     *
+     * @return  self
+     */ 
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
 
         return $this;
     }

@@ -1,6 +1,7 @@
 <?php
 namespace Mbp\FinanzasBundle\Entity;
 use Mbp\FinanzasBundle\Entity\Facturas;
+use Mbp\FinanzasBundle\Entity\FacturaDetalle;
 
 /**
  * FacturasRepository
@@ -10,63 +11,104 @@ use Mbp\FinanzasBundle\Entity\Facturas;
  */
 class FacturasRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function crearFacturaA($objFC){
+	public function crearComprobante($objFC){
 		$em = $this->getEntityManager();
-		$factura=new Facturas;
+		$comprobante=new Facturas;
 		$repoTipoIVA=$em->getRepository('MbpFinanzasBundle:PosicionIVA');
 		$repoCCClientes=$em->getRepository('MbpFinanzasBundle:CCClientes');
 		$repoTipoCbte=$em->getRepository('MbpFinanzasBundle:TipoComprobante');
 		$repoCliente=$em->getRepository('MbpClientesBundle:Cliente');
+		$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
+		$repoRemitos=$em->getRepository('MbpArticulosBundle:RemitosClientes');
 
 		
-		$factura->setPtoVta($objFC->getPuntoVenta());
+		$comprobante->setPtoVta($objFC->getPuntoVenta());
 		$tipoIVA=$repoTipoIVA->findOneByEsResponsableInscripto(true);
 		if(empty($tipoIVA)) throw new \Exception("No existe el tipo de IVA responsable inscripto", 1);
-		$factura->setTipoIva($tipoIVA);
-		$factura->setDigitoVerificador($objFC->getDigitoVerificador());
-		$factura->setTipoCambioRefFac($objFC->getCotizacionMoneda());
-		$cc=$repoCCClientes->crearMovimientoCC($objFC, $factura);
-		$factura->setCcId($cc);
-		$tipoCbte=$repoTipoCbte->findOneBy(array('esFactura'=>true, 'subTipoA'=>true));
-		if(empty($tipoCbte)) throw new \Exception("No existe el tipo de comprobante Factura A", 1);
+		$comprobante->setTipoIva($tipoIVA);
+		$comprobante->setDigitoVerificador($objFC->getDigitoVerificador());
+		$comprobante->setTipoCambioRefFac($objFC->getCotizacionMoneda());
+		$cc=$repoCCClientes->crearMovimientoCC($objFC, $comprobante);
+		$comprobante->setCcId($cc);
+
+		$tipoCbte;
+		switch (true) {
+			case $objFC->sosFacturaA():
+				$tipoCbte=$repoTipoCbte->findOneBy(array('esFactura'=>true, 'subTipoA'=>true));
+				if(empty($tipoCbte)) throw new \Exception("No existe el tipo de comprobante Factura A", 1);
+				break;
+			case $objFC->sosNotaCreditoA();
+				$tipoCbte=$repoTipoCbte->findOneBy(array('esNotaCredito'=>true, 'subTipoA'=>true));
+				if(empty($tipoCbte)) throw new \Exception("No existe el tipo de comprobante Nota de Crédito A", 1);
+
+				//Al ser una NC puede tener facturas asociadas que esta anulando				
+				foreach ($objFC->getFacturasAsociadas() as $fc) {
+					$comprobante->addFacturasAsociada($this->find($fc['id']));
+				}
+				break;
+			case $objFC->sosNotaDebitoA();
+				$tipoCbte=$repoTipoCbte->findOneBy(array('esNotaDebito'=>true, 'subTipoA'=>true));
+				if(empty($tipoCbte)) throw new \Exception("No existe el tipo de comprobante Nota de débito A", 1);
+				break;
+			default:
+				# code...
+				break;
+		}
 		
-		$factura->setTipoId($tipoCbte);
-		$factura->setTipoCambio($objFC->getCotizacionMoneda());
-		$factura->setMoneda($objFC->getMoneda());
-		$factura->setDepartamento($objFC->getPartido());
-		$factura->setPorcentajeIIBB($objFC->getAlicuotaPercepcion());
-		$factura->setTotal($objFC->getTotalComprobante());
-		$factura->setFecha(\DateTime::createFromFormat('Ymd', $objFC->getFechaEmision()));
-		$factura->setVencimiento($objFC->getFechaVencimiento());
-		$factura->setFcNro($objFC->getNumero());
-		$factura->setConcepto($objFC->getDescripcionCbte());
+		
+		
+		
+		$comprobante->setTipoId($tipoCbte);
+		$comprobante->setTipoCambio($objFC->getCotizacionMoneda());
+		$comprobante->setMoneda($objFC->getMoneda());
+		$comprobante->setDepartamento($objFC->getPartido());
+		$comprobante->setPorcentajeIIBB($objFC->getAlicuotaPercepcion());
+		$comprobante->setTotal($objFC->getTotalComprobante());
+		$comprobante->setFecha(\DateTime::createFromFormat('Ymd', $objFC->getFechaEmision()));
+		$comprobante->setVencimiento($objFC->getFechaVencimiento());
+		$comprobante->setFcNro($objFC->getNumero());
+		$comprobante->setConcepto($objFC->getDescripcionCbte());
 
 		$cliente=$repoCliente->find($objFC->getCliente());
 		if(empty($cliente)) throw new \Exception("No se encontró el cliente", 1);
-		$factura->setClienteId($cliente);
+		$comprobante->setClienteId($cliente);
 
-		$factura->setCae($objFC->getCAE());		
-		$factura->setVtoCae($objFC->getVencimientoCAE());
-		$factura->setDtoTotal($objFC->getDescuento());
-		$factura->setPerIIBB($objFC->getMontoPercepcion());
-		$factura->setIva21($objFC->getTotalIVA());
-		$factura->setRSocial($cliente->getRsocial());
-		$factura->setDomicilio($cliente->getDireccion());
-		$factura->setCuit($cliente->getCuit());
+		$comprobante->setCae($objFC->getCAE());		
+		$comprobante->setVtoCae($objFC->getVencimientoCAE());
+		$comprobante->setDtoTotal($objFC->getDescuento());
+		$comprobante->setPerIIBB($objFC->getMontoPercepcion());
+		$comprobante->setIva21($objFC->getTotalIVA());
+		$comprobante->setRSocial($cliente->getRsocial());
+		$comprobante->setDomicilio($cliente->getDireccion());
+		$comprobante->setCuit($cliente->getCuit());
 
 		$posicion=$cliente->getIva()->getPosicion();
 		if(empty($posicion)) throw new \Exception("El cliente no tiene una posición definida frente al IVA", 1);
-		$factura->setIvaCond($posicion);
+		$comprobante->setIvaCond($posicion);
 
-		$factura->setCondVta($cliente->getCondVenta());
+		$comprobante->setCondVta($cliente->getCondVenta());
 
-		//\Doctrine\Common\Util\Debug::dump($factura);
+		foreach ($objFC->getDetallesVenta() as $d) {
+			$art=$repoArt->findOneByCodigo($d->codigo);
+			$detalleFc=new FacturaDetalle();
+			$detalleFc->setArticuloId($art);
+			$detalleFc->setCantidad($d->cantidad);
+			$detalleFc->setDescripcion($art->getDescripcion());
+			$detalleFc->setFacturaId($comprobante);
+			$detalleFc->setIvaGrabado($d->ivaGrabado);
+			$detalleFc->setPrecio($d->precio);
+			$rem=$repoRemitos->findOneByRemitoNum($d->remitoNum);
+			$detalleFc->setRemitoDetalleId($rem);
 
-		$em->persist($factura);
+			$comprobante->addFacturaDetalleId($detalleFc);
+		}
+
+
+		$em->persist($comprobante);
 		$em->persist($cc);
 		$em->flush();
 
-		return $factura->getId();
+		return $comprobante->getId();
 	}
 
 	public function citiVentasCbtes(\DateTime $desde, \DateTime $hasta)
@@ -194,7 +236,9 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 		$qbFacturas = $repoFacturas->createQueryBuilder('fac')
 				->select('tipo.codigoAfip,
 					fac.ptoVta,
-					fac.fcNro')			
+					fac.fcNro,
+					fac.id,
+					fac.total')			
 				->leftJoin('fac.tipoId', 'tipo')
 				->where('fac.id IN (:ids)')
 				->setParameter('ids', $arrayIdFcs)	
@@ -265,12 +309,19 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 		$repoCliente = $em->getRepository('MbpClientesBundle:Cliente');
 
 		$cliente=$repoCliente->find($idCliente);
+		$qb = $em->createQueryBuilder();
+
+		$sub=$repoFacturas->createQueryBuilder('asoc')
+			->select('asocFc.id')
+			->join('asoc.facturasAsociadas', 'asocFc');
 
 		$qb=$repoFacturas->createQueryBuilder('f')
 			->select("f.id, f.fcNro as numFc, f.total as haber, date_format(f.vencimiento, '%d/%m/%Y') as vencimiento")
 			->leftJoin('f.tipoId', 'tipo')
+			->leftJoin('f.facturasAsociadas', 'facAsoc')
 			->where('f.clienteId = :cliente')
 			->andWhere('tipo.esFactura = true')
+			->andWhere($qb->expr()->notIn('f.id', $sub->getDQL()))
 			->setParameter('cliente', $cliente)
 			->orderBy('f.fecha', 'DESC')
 			->getQuery()
@@ -298,7 +349,10 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 			FROM Facturas f
 			LEFT JOIN TransaccionCobranzaFactura tr ON tr.facturaId = f.id
 			GROUP BY f.id) as sub
-			where ((sub.haber - sub.aplicado) > 0 || isnull(sub.haber - sub.aplicado))
+			where ((sub.haber - sub.aplicado) > 0 || isnull(sub.haber - sub.aplicado || f.id not in (
+				SELECT fcImputadas.id FROM 
+				)
+			))
 			AND sub.clienteId = $idCliente";
 		
 		$stmt = $em->getConnection()->prepare($sql);

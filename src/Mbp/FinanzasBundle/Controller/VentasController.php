@@ -12,6 +12,7 @@ use Mbp\FinanzasBundle\Entity\CCClientes;
 use Mbp\FinanzasBundle\Entity\TipoComprobante;
 use Mbp\FinanzasBundle\Clases\Facturacion\FacturaA;
 use Mbp\FinanzasBundle\Clases\Facturacion\NotaCreditoA;
+use Mbp\FinanzasBundle\Clases\Facturacion\NotaDebitoA;
 
 class VentasController extends Controller
 {	
@@ -182,7 +183,7 @@ class VentasController extends Controller
 						$decodefcData->idCliente, $decodeData, $descuento, $percepcionIIBB,
 						$faele, $repoFc, $repoCliente, null
 					);
-					$idCbte=$repoFc->crearFacturaA($comprobante);
+					$idCbte=$repoFc->crearComprobante($comprobante);
 					break;
 				case 2:
 					$fcsAsociadas=explode(',', $decodefcData->compAsociados);
@@ -191,14 +192,28 @@ class VentasController extends Controller
 						$decodefcData->idCliente, $decodeData, $descuento, $percepcionIIBB,
 						$faele, $repoFc, $repoCliente, $fcsAsociadas
 					);
-					$idCbte=$repoFc->crearNotaCreditoA($comprobante);
+					$idCbte=$repoFc->crearComprobante($comprobante);
+					break;
+				case 4:
+					$comprobante=new NotaDebitoA(
+						$decodefcData->tipoCambio, $decodefcData->moneda,
+						$decodefcData->idCliente, $decodeData, $descuento, $percepcionIIBB,
+						$faele, $repoFc, $repoCliente, null
+					);
+					$idCbte=$repoFc->crearComprobante($comprobante);
 					break;
 			}
 			
 			
+			$cae['cae']=array(
+				'cae'=>$comprobante->getCAE(),
+				'fecha_vencimiento'=>$comprobante->getFechaVencimiento(),
+				'success'=>true
+			);
 
 			$cae["idFc"] = $idCbte;
 			$cae["success"]=true;
+			$cae["digitoVerificador"]=$comprobante->getDigitoVerificador();
 			$response=new Response;
 			$response->setContent(json_encode($cae));
 			

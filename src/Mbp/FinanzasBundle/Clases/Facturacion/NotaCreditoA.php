@@ -8,7 +8,7 @@ class NotaCreditoA extends ComprobanteVenta{
     private $facturasAsociadas;
 
     //VARIABLES ESTATICAS
-    private static $tipoComprobante=1; //SEGUN TABLAS GENERALES DE AFIP 1= factura A
+    private static $tipoComprobante=3; //SEGUN TABLAS GENERALES DE AFIP 3= nota de credito A
     private static $idOtrosTributos=2; //SEGUN TABLAS GENERALES DE AFIP 2= impuestos provinciales    
     private static $idIVA=5;             //SEGUN TABLAS GENERALES DE AFIP 5=21%
 
@@ -17,7 +17,7 @@ class NotaCreditoA extends ComprobanteVenta{
         $faeleService, $repoFactura, $repoCliente, $facturasAsociadas){
 
         parent::__construct($tipoCambio, 
-        $moneda, $cliente, $detallesVenta, $descuento,        
+        $moneda, $cliente, $detallesVenta, $descuento, $percepcionIIBB, 
         $faeleService, $repoFactura, $repoCliente, 'NOTA CREDITO A');
 
         $this->repoFactura=$repoFactura;
@@ -27,9 +27,9 @@ class NotaCreditoA extends ComprobanteVenta{
 
         $this->montoPercepcionIIBB=$percepcionIIBB;
 
-        $res=$this->generarNCAElectronica();    
+        $res=$this->generarNCAElectronica(); 
         $this->setCAE($res['cae']['cae']);
-        $this->setDigitoVerificador($res['cae']['digitoVerificador']);
+        $this->setDigitoVerificador($res['digitoVerificador']);
         $this->setVencimientoCAE(\DateTime::createFromFormat('Ymd', $res['cae']['fecha_vencimiento']));
     }
 
@@ -65,6 +65,11 @@ class NotaCreditoA extends ComprobanteVenta{
         return $res;
     }
     
+    public function cargarParametrosFacturacion(){
+        parent::cargarParametrosFacturacion();
+        $res=$this->getFaeleService()->ultimoNroComp(self::$tipoComprobante);
+        $this->setNumero($res['nro']++);
+    }
 
     public function getIdOtrosTributos(){
         return self::$idOtrosTributos;
@@ -76,7 +81,20 @@ class NotaCreditoA extends ComprobanteVenta{
 
     //CbtesAsoc: Detalle de los comprobantes relacionados con el comprobante que se solicita autorizar
     public function buscarCbtesAsociados($facturasAsociadas){
-        return $this->repoFactura->buscarCbtesAsociados($facturasAsociadas);
+        $compAsociados=$this->repoFactura->buscarCbtesAsociados($facturasAsociadas);
+        $this->validarTotales($compAsociados);
+        return $compAsociados;
+    }
+
+    public function validarTotales($compAsociados){
+        $total=0;
+        foreach ($compAsociados as $c) {
+            $total+=$c['total'];
+        }
+        
+        if(\bccomp($total, $this->getTotalComprobante(), 2) != 0 && $total!=0){
+            throw new \Exception("El total de la NC debe ser igual al total de los comprobantes imputados", 1);            
+        }        
     }
 
     public function getFacturasAsociadas(){
@@ -85,5 +103,9 @@ class NotaCreditoA extends ComprobanteVenta{
     
     public function getTotalComprobante(){
         return parent::getTotalComprobante() + $this->getTotalIVA() + $this->getMontoPercepcion();
+    }
+
+    public function sosNotaCreditoA(){
+        return true;
     }
 }
