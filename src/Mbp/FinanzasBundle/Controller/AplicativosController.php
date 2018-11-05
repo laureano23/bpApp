@@ -63,6 +63,7 @@ class AplicativosController extends Controller
     	
 		$em = $this->getDoctrine()->getManager();
 		$repo = $em->getRepository('MbpProveedoresBundle:TransaccionOPFC');
+		$repoFc = $em->getRepository('MbpFinanzasBundle:Facturas');
 		$response = new Response;
 		$kernel = $this->get('kernel');	
 		$req = $this->getRequest();
@@ -80,7 +81,7 @@ class AplicativosController extends Controller
 			$hastaSql=$hasta->format("Y-m-d");
 			
 				
-			$res=$repo->retencionesTXT($desdeSql, $hastaSql);
+			$res=$repoFc->retencionesTXT($desdeSql, $hastaSql);
 			
 			$nombreArchivo="AR"."-".$this->container->getParameter('cuit_prod')."-".$desde->format("Ym").$quincena."-".self::$codigoRetencion."-LOTE1.txt";
 			
@@ -97,6 +98,8 @@ class AplicativosController extends Controller
 							
 			return $response->setContent(json_encode(array('success' => true, 'nombreArchivo' => $nombreArchivo)));		
 		}catch(\Exception $e){
+			throw $e;
+			
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(json_encode(array('success' => false, 'msg' => $e->getMessage())));
 		}
