@@ -149,7 +149,7 @@ class PagosController extends Controller
 				$imputaciones = $repoTrans->selectSumImputacionByFc($factura);
 				$saldoImputar = $factura->getTotalFc() - $imputaciones['total'];
 
-				if($fc->aplicar > $saldoImputar){
+				if(bccomp($fc->aplicar, $saldoImputar, 2) == 1){ //izq es mayor a derecha
 					throw new \Exception("Esta fc tiene un saldo menor al imputado", 1);					
 				}
 				//FIN DE LA VALIDACION
