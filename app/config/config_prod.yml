@@ -12,6 +12,7 @@ imports:
 #        query_cache_driver: apc
 
 monolog:
+    channels: [facturacion, comandos]
     handlers:
         main:
             type:         fingers_crossed
@@ -23,6 +24,16 @@ monolog:
             level: debug
         console:
             type:  console
+        facturacion:
+            type:    stream
+            path:    "%kernel.logs_dir%/facturacion.log"
+            level:   error
+            channels: [facturacion]
+        comandos:
+            type:    stream
+            path:    "%kernel.logs_dir%/comandos.log"
+            level:   error
+            channels: [comandos]
 
 services:
     mbp.faele:

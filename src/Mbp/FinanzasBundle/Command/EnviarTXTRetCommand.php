@@ -20,6 +20,7 @@ class EnviarTXTRetCommand extends ContainerAwareCommand
 
 		$em = $this->getContainer()->get('doctrine')->getManager();
 		$repo = $em->getRepository('MbpFinanzasBundle:Facturas');
+
 		$desde=new \DateTime();
 		$hasta=new \DateTime();
 		$quincena;
@@ -76,23 +77,23 @@ class EnviarTXTRetCommand extends ContainerAwareCommand
 
 		$sql = "select
 				DATE_FORMAT(op.fechaEmision, '%d/%m/%Y') AS fechaEmision,
-			    tipo.subTipoA,
-			    tipo.subTipoB,
-			    tipo.subTipoE,
-			    fc.sucursal,
-			    fc.numFc,
-			    op.id,
-			    prov.rsocial,
-			    prov.cuit,
-			    fc.neto,
-			    fc.totalFc,
-			    LPAD((truncate((tr.aplicado * pago.importe / baseImponible), 2)), 11 ,'0') AS retencion,
-			    baseImponible,
-			    tr.aplicado,
-			    pago.importe
+				tipo.subTipoA,
+				tipo.subTipoB,
+				tipo.subTipoE,
+				fc.sucursal,
+				fc.numFc,
+				op.id,
+				prov.rsocial,
+				prov.cuit,
+				fc.neto,
+				fc.totalFc,
+				LPAD((truncate((tr.aplicado * pago.importe / baseImponible), 2)), 11 ,'0') AS retencion,
+				baseImponible,
+				tr.aplicado,
+				pago.importe
 			from TransaccionOPFC tr
 				left join FacturaProveedor fc on fc.id = tr.facturaId
-			    left join TipoComprobante tipo on tipo.id=fc.tipoId
+				left join TipoComprobante tipo on tipo.id=fc.tipoId
 				left join OrdenPago op on op.id = tr.ordenPagoId
 				inner join Proveedor prov on prov.id = op.proveedorId
 				inner join OrdenDePago_detallesPagos op_det on op_det.ordenPago_id = op.id
@@ -113,16 +114,16 @@ class EnviarTXTRetCommand extends ContainerAwareCommand
 		$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 		
 
-        $mensaje = \Swift_Message::newInstance()
+		$mensaje = \Swift_Message::newInstance()
 				->setSubject("TXT Retenciones IIBB Metalurgica BP")
 				->setFrom('administracion@metalurgicabp.com.ar')
 				->setTo('lucilamariani@estudioplataroti.com.ar')
-                ->setBody("Este es un envío automático");
+				->setBody("Este es un envío automático");
 		$adjunto1 = \Swift_Attachment::fromPath($basePath.$nombreArchivo);
 		$adjunto2 = \Swift_Attachment::fromPath($destino);
 		$mensaje->attach($adjunto1);
 		$mensaje->attach($adjunto2);
 				
-        $this->getContainer()->get('mailer')->send($mensaje);
+		$this->getContainer()->get('mailer')->send($mensaje);		
     }
 }

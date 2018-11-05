@@ -20,6 +20,8 @@ class EnviarTXTPerCommand extends ContainerAwareCommand
 
 		$em = $this->getContainer()->get('doctrine')->getManager();
 		$repo = $em->getRepository('MbpFinanzasBundle:Facturas');
+
+	
 		$desde=new \DateTime();
 		$desde=$desde->modify('-1 month');
 		$hasta=new \DateTime();
@@ -43,14 +45,14 @@ class EnviarTXTPerCommand extends ContainerAwareCommand
 		}
 		fclose($file);
 
-        $mensaje = \Swift_Message::newInstance()
+		$mensaje = \Swift_Message::newInstance()
 				->setSubject("TXT Percepciones IIBB Metalurgica BP")
 				->setFrom('administracion@metalurgicabp.com.ar')
 				->setTo('lucilamariani@estudioplataroti.com.ar')
-                ->setBody("Este es un envío automático");
-        $adjunto1 = \Swift_Attachment::fromPath($basePath.$nombreArchivo);
-        $mensaje->attach($adjunto1);
+				->setBody("Este es un envío automático");
+		$adjunto1 = \Swift_Attachment::fromPath($basePath.$nombreArchivo);
+		$mensaje->attach($adjunto1);
 				
-        $this->getContainer()->get('mailer')->send($mensaje);
+		$this->getContainer()->get('mailer')->send($mensaje);					
     }
 }

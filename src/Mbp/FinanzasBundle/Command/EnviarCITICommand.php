@@ -19,6 +19,8 @@ class EnviarCITICommand extends ContainerAwareCommand
 
 		$em = $this->getContainer()->get('doctrine')->getManager();
 		$repo = $em->getRepository('MbpFinanzasBundle:Facturas');
+
+	
 		$desde=new \DateTime();
 		$desde=$desde->modify('-1 month');
 		$hasta=new \DateTime();
@@ -80,16 +82,17 @@ class EnviarCITICommand extends ContainerAwareCommand
 		fclose($file2);
 
 
-        $mensaje = \Swift_Message::newInstance()
+		$mensaje = \Swift_Message::newInstance()
 				->setSubject("CITI Ventas Metalurgica BP")
 				->setFrom('administracion@metalurgicabp.com.ar')
 				->setTo('lucilamariani@estudioplataroti.com.ar')
-                ->setBody("Este es un envío automático");
-        $adjunto1 = \Swift_Attachment::fromPath($basePath.$nombreArchivo);
-        $adjunto2 = \Swift_Attachment::fromPath($basePath.$nombreArchivo2);
-        $mensaje->attach($adjunto1);
-        $mensaje->attach($adjunto2);
+				->setBody("Este es un envío automático");
+		$adjunto1 = \Swift_Attachment::fromPath($basePath.$nombreArchivo);
+		$adjunto2 = \Swift_Attachment::fromPath($basePath.$nombreArchivo2);
+		$mensaje->attach($adjunto1);
+		$mensaje->attach($adjunto2);
 				
-        $this->getContainer()->get('mailer')->send($mensaje);
+		$this->getContainer()->get('mailer')->send($mensaje);	
+	
     }
 }
