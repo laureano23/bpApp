@@ -167,7 +167,7 @@ class EnviarReportesCommand extends ContainerAwareCommand
         $mensaje = \Swift_Message::newInstance()
 				->setSubject("Libro IVA ventas Metalurgica BP")
 				->setFrom('administracion@metalurgicabp.com.ar')
-				->setTo('lucilamariani@estudioplataroti.com.ar')
+				->setTo($this->getContainer()->getParameter('mail_reportes_contables'))
                 ->setBody("Este es un envío automático");
         $adjunto1 = \Swift_Attachment::fromPath($destinoIVAVentas);
         $adjunto2 = \Swift_Attachment::fromPath($destinoIVACompras);

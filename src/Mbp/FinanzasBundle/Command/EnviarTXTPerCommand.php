@@ -48,7 +48,7 @@ class EnviarTXTPerCommand extends ContainerAwareCommand
 		$mensaje = \Swift_Message::newInstance()
 				->setSubject("TXT Percepciones IIBB Metalurgica BP")
 				->setFrom('administracion@metalurgicabp.com.ar')
-				->setTo('lucilamariani@estudioplataroti.com.ar')
+				->setTo($this->getContainer()->getParameter('mail_reportes_contables'))
 				->setBody("Este es un envío automático");
 		$adjunto1 = \Swift_Attachment::fromPath($basePath.$nombreArchivo);
 		$mensaje->attach($adjunto1);

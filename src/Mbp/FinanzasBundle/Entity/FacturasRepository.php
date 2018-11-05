@@ -10,7 +10,7 @@ namespace Mbp\FinanzasBundle\Entity;
 class FacturasRepository extends \Doctrine\ORM\EntityRepository
 {	
 	
-	public function retencionesTXT($desdeSql, $hastaSql){
+	public function retencionesTXT($desdeSql, $hastaSql){		
 		$em = $this->getEntityManager();
 		
 		$sth = $em->getConnection()->prepare("
