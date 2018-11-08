@@ -1044,6 +1044,8 @@ ORDER BY
 				CCClientes.`fechaVencimiento` <= '$vencimiento'				
 			GROUP BY
 			     cliente.`idCliente`
+			HAVING
+				saldo > 0
 			ORDER BY
 			     saldo DESC
 			     "; 
