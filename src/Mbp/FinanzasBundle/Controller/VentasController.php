@@ -220,7 +220,6 @@ class VentasController extends Controller
 			return $response;
 				
 		}catch(\Exception $e){
-			throw $e;
 			$logger=$this->get('monolog.logger.facturacion');
 			$logger->err($e->getMessage());
 			$msg=json_decode($e->getMessage());

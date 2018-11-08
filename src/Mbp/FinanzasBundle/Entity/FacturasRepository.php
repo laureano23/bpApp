@@ -349,8 +349,8 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 			FROM Facturas f
 			LEFT JOIN TransaccionCobranzaFactura tr ON tr.facturaId = f.id
 			GROUP BY f.id) as sub
-			where ((sub.haber - sub.aplicado) > 0 || isnull(sub.haber - sub.aplicado || f.id not in (
-				SELECT fcImputadas.id FROM 
+			where ((sub.haber - sub.aplicado) > 0 || isnull(sub.haber - sub.aplicado || sub.id not in (
+				SELECT fcImputadas.nc_id FROM Facturas_NotasCredito AS fcImputadas
 				)
 			))
 			AND sub.clienteId = $idCliente";

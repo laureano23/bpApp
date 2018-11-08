@@ -145,6 +145,16 @@ Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 									fieldLabel: 'Comprobantes asociados',
 									itemId: 'compAsociados',
 									name: 'compAsociados',
+								},
+								{
+									xtype: 'textfield',
+									readOnly: true,
+									margins: '0 0 0 5',
+									width: 300,
+									labelWidth: 160,
+									fieldLabel: 'Total Cbtes. Asociados ($)',
+									itemId: 'totalAsociados',
+									name: 'totalAsociados',
 								}
 							]
 						},												

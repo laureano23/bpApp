@@ -168,7 +168,7 @@ class Faele extends wsfev1
         $regfe['ImpNeto']=$impNeto;			// neto gravado
         $regfe['ImpTotConc']=$impTotConc;			// no gravado
         $regfe['ImpIVA']=$impIVA;			// IVA liquidado
-        $regfe['ImpTrib']=0;			// otros tributos
+        $regfe['ImpTrib']=$impTrib;			// otros tributos
         $regfe['ImpOpEx']=$impOpEx;			// operacion exentas
         $regfe['ImpTotal']=$impTotal;// total de la factura. ImpNeto + ImpTotConc + ImpIVA + ImpTrib + ImpOpEx
         $regfe['FchServDesde']=null;	// solo concepto 2 o 3

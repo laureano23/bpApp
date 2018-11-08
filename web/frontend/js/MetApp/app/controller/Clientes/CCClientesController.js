@@ -146,21 +146,23 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var winAsociacion=btn.up('window');
 		var grid=winAsociacion.down('grid');
 		var store=grid.getStore();
-		var recs=[];
 		var winFact=this.getFacturacion();
 		var txtFcAsociada=winFact.queryById('compAsociados');
 		txtFcAsociada.reset();
+		var totalAsociado=0;
 
 		store.each(function(rec){
 			if(rec.data.asociado){
 				if(txtFcAsociada.getValue()==""){
 					txtFcAsociada.setValue(rec.data.id);
 				}else{
-					txtFcAsociada.setValue(txtFcAsociada.getValue()+", "+rec.data.id);
+					txtFcAsociada.setValue(txtFcAsociada.getValue()+", "+rec.data.id);					
 				}
+				totalAsociado+=rec.data.haber;
 			}			
 		});
 		winAsociacion.close();
+		winFact.queryById('totalAsociados').setValue(totalAsociado);
 	},
 
 	AsociarFacturaView: function(combo){
@@ -394,7 +396,6 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		store.on('datachanged', function(store){			
 			var win = me.getFacturacion();
 			var winCC = me.getCCClientes();
-			console.log(winCC);
 			var form=win.queryById('datosFc');
 			var aux = 0;
 			var fieldSub = win.queryById('subTotal');
