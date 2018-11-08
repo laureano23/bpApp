@@ -39,7 +39,7 @@ class Cotizacion
     /**
      * @var string
      *
-     * @ORM\Column(name="cliente", type="string", length=255,)
+     * @ORM\Column(name="cliente", type="string", length=255)
      */
     private $cliente;
 
@@ -117,6 +117,13 @@ class Cotizacion
      * @ORM\Column(name="inactiva", type="boolean")
      */
     private $inactiva=0;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="esExportacion", type="boolean", nullable=false)
+     */
+    private $esExportacion=0;
 	
 	public function __construct() {
         $this->detalle = new ArrayCollection();
@@ -452,5 +459,29 @@ class Cotizacion
     public function getInactiva()
     {
         return $this->inactiva;
+    }
+
+    /**
+     * Set cliente
+     *
+     * @param string $cliente
+     *
+     * @return Cotizacion
+     */
+    public function setCliente($cliente)
+    {
+        $this->cliente = $cliente;
+
+        return $this;
+    }
+
+    /**
+     * Get cliente
+     *
+     * @return string
+     */
+    public function getCliente()
+    {
+        return $this->cliente;
     }
 }

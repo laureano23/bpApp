@@ -1503,6 +1503,7 @@ ORDER BY
 						Cotizacion.`total` AS Cotizacion_total,
 						Cotizacion.`descuento` AS Cotizacion_descuento,
 						Cotizacion.`inactiva` AS Cotizacion_inactiva,
+						Cotizacion.`esExportacion` AS Cotizacion_esExportacion,
 						articulos.`idArticulos` AS articulos_idArticulos,
 						articulos.`descripcion` AS articulos_descripcion,
 						articulos.`codigo` AS articulos_codigo,

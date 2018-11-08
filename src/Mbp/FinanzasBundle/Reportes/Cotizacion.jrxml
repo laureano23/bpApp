@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OrdenDeCompra" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="b20991a6-8da8-4cf2-8ac6-123176886f03">
-	<property name="ireport.zoom" value="1.3310000000000057"/>
+	<property name="ireport.zoom" value="1.331000000000006"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="48"/>
+	<property name="ireport.y" value="7"/>
 	<parameter name="rutaLogo" class="java.lang.String"/>
 	<parameter name="cotizacionId" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -33,6 +33,7 @@
      Cotizacion.`total` AS Cotizacion_total,
      Cotizacion.`descuento` AS Cotizacion_descuento,
      Cotizacion.`inactiva` AS Cotizacion_inactiva,
+     Cotizacion.`esExportacion` AS Cotizacion_esExportacion,
      articulos.`idArticulos` AS articulos_idArticulos,
      articulos.`descripcion` AS articulos_descripcion,
      articulos.`codigo` AS articulos_codigo,
@@ -71,6 +72,7 @@ WHERE Cotizacion.`id` = $P{cotizacionId}]]>
 	<field name="Cotizacion_total" class="java.math.BigDecimal"/>
 	<field name="Cotizacion_descuento" class="java.math.BigDecimal"/>
 	<field name="Cotizacion_inactiva" class="java.lang.Boolean"/>
+	<field name="Cotizacion_esExportacion" class="java.lang.Boolean"/>
 	<field name="articulos_idArticulos" class="java.lang.Integer"/>
 	<field name="articulos_descripcion" class="java.lang.String"/>
 	<field name="articulos_codigo" class="java.lang.String"/>
@@ -148,7 +150,7 @@ Tel: 4484-2416]]></text>
 				<textFieldExpression><![CDATA[$F{Cotizacion_moneda} == false ? "ARS" : "U\$D"]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="411" y="60" width="104" height="20" uuid="52b41844-5465-49fd-a0df-120eb8ba70f8"/>
+				<reportElement x="402" y="60" width="113" height="20" uuid="52b41844-5465-49fd-a0df-120eb8ba70f8"/>
 				<textElement textAlignment="Right">
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -206,14 +208,14 @@ Tel: 4484-2416]]></text>
 				<reportElement x="-20" y="20" width="595" height="1" forecolor="#666666" uuid="f7577db7-a439-4c20-bc11-1936e55b6e17"/>
 			</line>
 			<staticText>
-				<reportElement x="0" y="1" width="81" height="20" uuid="30564863-b681-42d0-a5c6-1a788e98bd31"/>
+				<reportElement x="0" y="1" width="91" height="20" uuid="30564863-b681-42d0-a5c6-1a788e98bd31"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Codigo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="81" y="0" width="215" height="20" uuid="4da1b6c1-d2f2-4129-a7ea-d868ea56aace"/>
+				<reportElement x="91" y="0" width="205" height="20" uuid="4da1b6c1-d2f2-4129-a7ea-d868ea56aace"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -259,7 +261,7 @@ Tel: 4484-2416]]></text>
 	<detail>
 		<band height="20">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="81" y="0" width="215" height="20" uuid="b89cb5e4-9cc2-4eaf-b428-1c1ac5b3dacd"/>
+				<reportElement x="91" y="0" width="205" height="20" uuid="b89cb5e4-9cc2-4eaf-b428-1c1ac5b3dacd"/>
 				<box leftPadding="3"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{DetalleCotizacion_descripcion}]]></textFieldExpression>
@@ -295,7 +297,7 @@ Tel: 4484-2416]]></text>
 				<textFieldExpression><![CDATA[$F{DetalleCotizacion_cant} * $F{DetalleCotizacion_precio}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="81" height="20" uuid="87b1f2ab-49ce-44f8-88ee-cd08566e8569"/>
+				<reportElement x="0" y="0" width="91" height="20" uuid="87b1f2ab-49ce-44f8-88ee-cd08566e8569"/>
 				<box leftPadding="3"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{articulos_codigo}]]></textFieldExpression>
@@ -349,7 +351,9 @@ Tel: 4484-2416]]></text>
 				<text><![CDATA[Observaciones:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="73" width="429" height="20" uuid="9a7c1fee-6b49-47c0-a65b-599ba024eee3"/>
+				<reportElement x="0" y="73" width="429" height="20" uuid="9a7c1fee-6b49-47c0-a65b-599ba024eee3">
+					<printWhenExpression><![CDATA[$F{Cotizacion_esExportacion}==0]]></printWhenExpression>
+				</reportElement>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[A los precios cotizados se les debe agregar el IVA (21%)]]></text>
 			</staticText>

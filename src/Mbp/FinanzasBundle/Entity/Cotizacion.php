@@ -117,6 +117,13 @@ class Cotizacion
      * @ORM\Column(name="inactiva", type="boolean")
      */
     private $inactiva=0;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="esExportacion", type="boolean", nullable=false)
+     */
+    private $esExportacion=0;
 	
 	public function __construct() {
         $this->detalle = new ArrayCollection();
@@ -476,5 +483,29 @@ class Cotizacion
     public function getCliente()
     {
         return $this->cliente;
+    }
+
+    /**
+     * Set esExportacion
+     *
+     * @param boolean $esExportacion
+     *
+     * @return Cotizacion
+     */
+    public function setEsExportacion($esExportacion)
+    {
+        $this->esExportacion = $esExportacion;
+
+        return $this;
+    }
+
+    /**
+     * Get esExportacion
+     *
+     * @return boolean
+     */
+    public function getEsExportacion()
+    {
+        return $this->esExportacion;
     }
 }
