@@ -95,6 +95,9 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			'facturacion checkbox[itemId=sinIva]': {
 				change: this.SacarIVA
 			},
+			/*'facturacion combobox[itemId=tipo]': {
+				change: this.AsociarFacturaView
+			},*/
 			'facturacion combobox[itemId=tipo]': {
 				change: this.AsociarFacturaView
 			},
