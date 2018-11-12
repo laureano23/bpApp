@@ -477,14 +477,14 @@ class VentasController extends Controller
 				foreach ($intereses as $i) {
 					$em->remove($i);
 				}
-			}
 
-			//si la cobranza tiene algun detalle asociado a un mov. bancario x ej deposito de cheque no se puede borrar
-			$detallesCobranza=$record->getCobranzaDetalleId();
-			foreach ($detallesCobranza as $det) {
-				if($det->getEstado() != 0){ //Si el estado es distinto de cero es poque el cheque fue depositado o entregado a terceros y no puede borrarse la operacion
-					return $response->setContent(json_encode(array("success"=>false, "msg"=>"La cobranza tiene un movimiento bancario asociado")));
-				}					
+				//si la cobranza tiene algun detalle asociado a un mov. bancario x ej deposito de cheque no se puede borrar
+				$detallesCobranza=$record->getCobranzaDetalleId();
+				foreach ($detallesCobranza as $det) {
+					if($det->getEstado() != 0){ //Si el estado es distinto de cero es poque el cheque fue depositado o entregado a terceros y no puede borrarse la operacion
+						return $response->setContent(json_encode(array("success"=>false, "msg"=>"La cobranza tiene un movimiento bancario asociado")));
+					}					
+				}
 			}				
 			
 			$em->remove($record);
