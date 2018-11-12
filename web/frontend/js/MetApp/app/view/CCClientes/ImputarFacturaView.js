@@ -1,4 +1,4 @@
-Ext.define('MetApp.view.CCClientes.ImputarFacturaView' ,{
+Ext.define('MetApp.view.CCClientes.ImputarFacturaView' ,{ 
 	extend: 'Ext.window.Window',
 	height: 430,
 	width: 500,
