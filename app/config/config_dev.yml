@@ -18,6 +18,12 @@ monolog:
             type:   stream
             path:   "%kernel.logs_dir%/%kernel.environment%.log"
             level:  debug
+        facturacion:
+            type:    stream
+            path:    "%kernel.logs_dir%/facturacion.log"
+            level:   error
+            channels: [facturacion]
+            
         console:
             type:   console
             bubble: false

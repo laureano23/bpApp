@@ -52,6 +52,11 @@ mbp_finanzas:
     type:     annotation
     prefix:   /finanzas
 
+mbp_finanzas_test:
+    resource: "@MbpFinanzasBundle/Tests/Controller"
+    type:     annotation
+    prefix:   /finanzas/test
+
 mbp_personal_sueldos:
     resource: "@MbpPersonalBundle/Controller/"
     type:     annotation

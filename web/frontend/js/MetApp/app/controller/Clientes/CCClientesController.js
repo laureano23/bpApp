@@ -9,6 +9,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		'MetApp.store.Finanzas.TiposPagoStore',
 		'Finanzas.GridImputaFcStore',
 		'MetApp.store.Articulos.RemitosPendientesStore',
+		'MetApp.store.Finanzas.GridImputaFcStore'
 	],
 	views: [
 		'CCClientes.CCClientes',
@@ -17,7 +18,8 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		'MetApp.resources.ux.MailerWindow',
 		'Articulos.Stock.Remitos.RemitosPendientesView',
 		'MetApp.view.CCProveedores.BalanceView',
-		'MetApp.view.CCClientes.NotasCCView'
+		'MetApp.view.CCClientes.NotasCCView',
+		'MetApp.view.CCClientes.ImputarFacturaView'
 	],
 	refs:[
 		{
@@ -94,6 +96,12 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			'facturacion checkbox[itemId=sinIva]': {
 				change: this.SacarIVA
 			},
+			/*'facturacion combobox[itemId=tipo]': {
+				change: this.AsociarFacturaView
+			},*/
+			'facturacion combobox[itemId=tipo]': {
+				change: this.AsociarFacturaView
+			},
 			'cobranza button[itemId=btnEdit]': {
 				click: this.EditaItemCob
 			},
@@ -115,7 +123,77 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			'cobranza combobox[itemId=formaPago]': {
 				select: this.SetReadOnlyCuenta
 			},
+			'ImputarFacturaView button[itemId=insertar]': {
+				click: this.InsertarFcAsociada
+			},
+			'ImputarFacturaView checkcolumn': {
+				checkchange: this.CalcularTotal
+			},
 		});
+	},
+
+	CalcularTotal: function(check, rowIndex, checked){
+		var win=check.up('window');
+		var store=win.down('grid').getStore();
+		var rec=store.getAt(rowIndex);
+		var total=win.queryById('total');
+
+		if(checked){
+			total.setValue(total.getValue()+rec.data.haber);
+		}else{
+			total.setValue(total.getValue()-rec.data.haber);
+		}
+	},
+
+	InsertarFcAsociada: function(btn){
+		
+		var winAsociacion=btn.up('window');
+		var grid=winAsociacion.down('grid');
+		var store=grid.getStore();
+		var winFact=this.getFacturacion();
+		var txtFcAsociada=winFact.queryById('compAsociados');
+		txtFcAsociada.reset();
+		var totalAsociado=0;
+
+		store.each(function(rec){
+			if(rec.data.asociado){
+				if(txtFcAsociada.getValue()==""){
+					txtFcAsociada.setValue(rec.data.id);
+				}else{
+					txtFcAsociada.setValue(txtFcAsociada.getValue()+", "+rec.data.id);					
+				}
+				totalAsociado+=rec.data.haber;
+			}			
+		});
+		winAsociacion.close();
+		winFact.queryById('totalAsociados').setValue(totalAsociado);
+	},
+
+	AsociarFacturaView: function(combo){
+		var rec=combo.getStore().findRecord('id', combo.getValue());
+		if(rec.data.esNotaCredito){
+			var win=Ext.widget('ImputarFacturaView');
+			var store=win.down('grid').getStore();
+			var winCC = this.getCCClientes();
+
+			Ext.Ajax.request({
+				url: Routing.generate('mbp_CCClientes_listarFacturasParaAsociar'),
+	
+				params: {
+					idCliente: winCC.queryById('id').getValue()
+				},
+	
+				success: function(resp){
+					var jsonResp = Ext.JSON.decode(resp.responseText);
+					store.loadData(jsonResp.items);
+				},
+	
+				failure: function(resp){
+	
+				}
+			});
+
+		}
 	},
 
 	PercepcionManual: function(txt){
@@ -322,7 +400,6 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		store.on('datachanged', function(store){			
 			var win = me.getFacturacion();
 			var winCC = me.getCCClientes();
-			console.log(winCC);
 			var form=win.queryById('datosFc');
 			var aux = 0;
 			var fieldSub = win.queryById('subTotal');
@@ -689,7 +766,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 				}
 				
 				Ext.Ajax.request({
-					url: Routing.generate('mbp_CCClientes_guardarFc'),
+					url: Routing.generate('mbp_CCClientes_crearComprobanteVenta'),
 					
 					params: {
 						data: Ext.JSON.encode(arrayRecords),
@@ -733,7 +810,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 			})
 		}else{
 			Ext.Ajax.request({
-				url: Routing.generate('mbp_CCClientes_guardarFc'),
+				url: Routing.generate('mbp_CCClientes_crearComprobanteVenta'),
 				
 				params: {
 					data: Ext.JSON.encode(arrayRecords),

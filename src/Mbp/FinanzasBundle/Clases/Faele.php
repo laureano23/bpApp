@@ -18,21 +18,13 @@ class Faele extends wsfev1
 		$this->ptoVta = $ptoVta;	
 		$this->wsaa = new wsaa($cert, $key, $url); 		
 				
-
-		// Carga el archivo TA.xml
-		
+		// Carga el archivo TA.xml		
 		if($this->openTA() == false) {
 			$this->wsaa->generar_TA();
-			//throw new \Exception("Error al abrir el ticket TA", 1);
-			
-		};
-		
+		};		
 		
 		//VERIFICO QUE EL WSAA 
 		$time = strtotime($this->wsaa->get_expiration());
-		
-		//$newTime = strtotime(\DateTime::createFromFormat('U', $time));
-		//$this->wsaa->generar_TA();
 		$newDate = new \DateTime($this->wsaa->get_expiration());
 		
 		$format_date  = date('Y-m-d H:i:s', strtotime($this->wsaa->get_expiration()));
@@ -52,6 +44,10 @@ class Faele extends wsfev1
 		}
 	}
 
+	public function getPuntoVenta(){
+		return $this->ptoVta;
+	}
+
 	/*
 	* Analiza los datos del certificado tales como identidad, emisor, caducidad.
 	*/
@@ -67,32 +63,121 @@ class Faele extends wsfev1
 	 * $regfeiva = array con los datos de IVA
 	 * VER MANUAL PARA LA COMPOSICION DE LOS ARRAYS
 	 * */
-	public function generarFc($regfe, $regfeasoc, $regfetrib, $regfeiva)
+	public function generarFc(
+		$cbteTipo, $concepto, $docNro, $cbteFch, $impNeto, $impTotConc,		
+		$impIVA, $impTrib, $impOpEx, $impTotal, $fchServDesde, $fchServHasta, $fchVtoPago, $monId,
+		$monCotiz, $idTributo, $descTributo, $baseImpTributo, $alictributo, $importeTributo,
+		$idIVA, $baseImpIVA, $importeIVA, $cbtesAsoc)
 	{
-		$nro = $this->ultimoNroComp($regfe['CbteTipo']);
+		
+
+		$regfetrib=$this->getArrayImpFaele($idTributo, $descTributo, $baseImpTributo, $alictributo, $importeTributo);
+
+		$regfeiva=$this->getArrayIVAFaele($idIVA, $baseImpIVA, $importeIVA);
+			
+		$regfeasoc=$this->getArrayCbtesAsoc($cbtesAsoc); //resta desarrollar 
+		
+		
+		$nro = $this->ultimoNroComp($cbteTipo);
 		if($nro['success'] == FALSE){ return $nro; }
 		$nro = $nro['nro'];
-		$nro++;
-				
+		$nro++;		
+
+		
+
+		$cbteDesde=$nro; //si se quiere implementar por lote hay que modificar estas variables
+		$cbteHasta=$nro;		
+
+		$regfe=$this->getArrayDetalleFaele($cbteTipo, $concepto, $docNro, $cbteDesde, $cbteHasta, $cbteFch, $impNeto, $impTotConc,		
+		$impIVA, $impTrib, $impOpEx, $impTotal, $fchServDesde, $fchServHasta, $fchVtoPago, $monId, $monCotiz);
+
+
 		$cae = $this->FECAESolicitar($nro, // ultimo numero de comprobante autorizado mas uno 
                 $this->ptoVta,  // el punto de venta
                 $regfe, // los datos a facturar
-				$regfeasoc,
-				$regfetrib,
-				$regfeiva	
+				$regfeasoc, // comprobantes asociados
+				$regfetrib, // otros tributos ej: iibb
+				$regfeiva	// IVA
     	 );
 		 
 		if($cae['success'] == false || $cae['cae'] <= 0) {
-			return $cae;
+			throw new \Exception(json_encode($cae['msg']['msg']), 1);			
 		}
 		
 		$digito = $this->digitoVerificador($regfe['CbteTipo'], $cae['cae'], $cae['fecha_vencimiento']);
 		
-		 return array(
-		 	'cae' => $cae,
+		return array(
+			'cae' => $cae,
 		 	'success' => true,
 		 	'digitoVerificador' => $digito
-		 );
+		);
+	}
+
+	public function getArrayCbtesAsoc($arrayCbteAsoc){
+		$regfeasoc=[];
+		if (empty($arrayCbteAsoc)){
+			return null;
+		}else{
+			foreach($arrayCbteAsoc as $cbte){
+				\array_push($regfeasoc,
+				array(
+					'Tipo'=>$cbte['codigoAfip'],
+					'PtoVta'=>$cbte['ptoVta'],
+					'Nro'=>$cbte['fcNro']
+				));
+			}
+			return $regfeasoc;
+		}
+		
+		
+		
+	}
+
+	public function getArrayIVAFaele($idIVA, $baseImpIVA, $importeIVA){
+
+		$regfeiva['Id'] = $idIVA;
+		$regfeiva['BaseImp'] = $baseImpIVA;
+		$regfeiva['Importe'] = $importeIVA;
+
+		return $regfeiva;
+	}
+
+	public function getArrayImpFaele($idTributo, $descTributo, $baseImpTributo, $alictributo, $importeTributo){
+		// Detalle de otros tributos
+		$regfetrib['Id'] = $idTributo; 	//1: impuesto nacional, 2: imp. provincial, etc...		
+		$regfetrib['Desc'] = $descTributo;//'impuesto IIBB';
+		$regfetrib['BaseImp'] = $baseImpTributo;
+		$regfetrib['Alic'] = $alictributo; 
+		$regfetrib['Importe'] = $importeTributo;
+
+		return $regfetrib;
+	}
+
+	public function getArrayDetalleFaele(
+		$cbteTipo, $concepto, $docNro, $cbteDesde, $cbteHasta, $cbteFch, $impNeto, $impTotConc,		
+		$impIVA, $impTrib, $impOpEx, $impTotal, $fchServDesde, $fchServHasta, $fchVtoPago, $monId,
+		$monCotiz
+	){
+		$regfe['CbteTipo']=$cbteTipo;		
+        $regfe['Concepto']=$concepto;//ESTE DATO DEBE VENIR DEL CLIENTE 1=PRODUCTOS, 2=SERVICIOS, 3=PRODUCTOS Y SERVICIOS
+        $regfe['DocTipo']=$this->docTipo; //80=CUIT
+        $regfe['DocNro']=$docNro;
+        $regfe['CbteDesde']= $cbteDesde;	// nro de comprobante desde (para cuando es lote)
+        $regfe['CbteHasta']=$cbteHasta;	// nro de comprobante hasta (para cuando es lote)
+        $regfe['CbteFch']=$cbteFch; 	// fecha emision de factura
+        $regfe['ImpNeto']=$impNeto;			// neto gravado
+        $regfe['ImpTotConc']=$impTotConc;			// no gravado
+        $regfe['ImpIVA']=$impIVA;			// IVA liquidado
+        $regfe['ImpTrib']=$impTrib;			// otros tributos
+        $regfe['ImpOpEx']=$impOpEx;			// operacion exentas
+        $regfe['ImpTotal']=$impTotal;// total de la factura. ImpNeto + ImpTotConc + ImpIVA + ImpTrib + ImpOpEx
+        $regfe['FchServDesde']=null;	// solo concepto 2 o 3
+        $regfe['FchServHasta']=null;	// solo concepto 2 o 3
+        $regfe['FchVtoPago']=null;		// solo concepto 2 o 3
+        $regfe['MonCotiz'] = $monCotiz; //solo si la operacion es en otra moneda diferente al peso ARS
+		$regfe['MonId']=$monId;
+		
+		return $regfe;
 	}
 	
 	//OBTIENE EL ULTIMO NUMERO DE COMPROBANTE AUTOIRIZADO, POR ERROR DEVUELVE FALSE
@@ -158,8 +243,7 @@ class Faele extends wsfev1
 			 if((($sumaTotal + $i) % 10) == 0){
 			 	$numero += $i;
 			 }
-		}
-				
+		}				
 		return $numero;
 	}	
 }

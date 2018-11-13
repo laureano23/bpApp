@@ -2,16 +2,23 @@
 
 namespace Mbp\FinanzasBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Mbp\FinanzasBundle\Clases\Facturacion\Factura;
 
-class DefaultControllerTest extends WebTestCase
+class DefaultControllerTest extends Controller
 {
+    /**
+     * @Route("/pruebaObjetos", name="mbp_finanzas_pruebaObjetos", options={"expose"=true})
+     */
     public function testIndex()
     {
-        $client = static::createClient();
-
-        $crawler = $client->request('GET', '/hello/Fabien');
-
-        $this->assertTrue($crawler->filter('html:contains("Hello Fabien")')->count() > 0);
+        \print_r("hoasd");
+        $em = $this->getDoctrine()->getManager();
+        $repoFc = $em->getRepository('MbpFinanzasBundle:Facturas');
+        $factura=new Factura(1, 1, new \DateTime, 100, 0, new \DateTime, $repoFc);
+        //$factura->
+        return new Response;
     }
 }
