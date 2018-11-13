@@ -17,7 +17,29 @@ use Mbp\FinanzasBundle\Clases\Facturacion\NotaDebitoA;
 class VentasController extends Controller
 {	
 	
+	/**
+     * @Route("/CCClientes/listarFacturasParaAsociar", name="mbp_CCClientes_listarFacturasParaAsociar", options={"expose"=true})
+     */	    
+    public function listarFacturasParaAsociar()
+	{
+		//RECIBO PARAMETROS
+		$em = $this->getDoctrine()->getManager();
+		$req = $this->getRequest();
+		$response = new Response;
+		$idCliente = $req->request->get('idCliente');
+		
+		try{
+			$repoFc = $em->getRepository('MbpFinanzasBundle:Facturas');
 
+			$resp=$repoFc->listarFacturasParaAsociar($idCliente);
+			
+			return $response->setContent(json_encode(array('success'=>true, 'items'=>$resp)));
+		}catch(\Exception $e){
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response->setContent(json_encode(array('success'=>false, 'msg'=>$e->getMessage())));
+		}
+		
+	}
 
 	/**
      * @Route("/CCClientes/calcularPercepcion", name="mbp_CCClientes_calcularPercepcion", options={"expose"=true})

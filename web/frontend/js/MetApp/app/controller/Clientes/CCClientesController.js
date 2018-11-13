@@ -7,9 +7,8 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		'MetApp.store.Finanzas.CCClientesStore',
 		'MetApp.store.Finanzas.GrillaFacturacionStore',
 		'MetApp.store.Finanzas.TiposPagoStore',
-		'Finanzas.GridImputaFcStore',
+		'MetApp.store.Finanzas.GridImputaFcStore',
 		'MetApp.store.Articulos.RemitosPendientesStore',
-		'MetApp.store.Finanzas.GridImputaFcStore'
 	],
 	views: [
 		'CCClientes.CCClientes',
@@ -38,7 +37,7 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		me.control({
 			'#tbCCClientes': {
 				click: this.AddCCClientesTb
-			},
+			},			
 			'#CCClientes button[itemId=buscaCliente]': {
 				click: this.AddTablaClientes
 			},
@@ -1165,40 +1164,3 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		});
 	}
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

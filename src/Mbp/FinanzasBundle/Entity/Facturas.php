@@ -211,6 +211,20 @@ class Facturas
     private $tipoIva;
 
     /**
+	 * @ORM\ManyToMany(targetEntity="Mbp\FinanzasBundle\Entity\Facturas", mappedBy="facturasAsociadas")	 
+	 */
+    private $notasCreditoAsociadas;
+
+    /**
+	 * @ORM\ManyToMany(targetEntity="Mbp\FinanzasBundle\Entity\Facturas", inversedBy="notasCreditoAsociadas")	 
+     * @ORM\JoinTable(name="Facturas_NotasCredito",
+     *      joinColumns={@ORM\JoinColumn(name="fc_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="nc_id", referencedColumnName="id")}
+     *      )
+	 */
+    private $facturasAsociadas;
+
+    /**
      * Get id
      *
      * @return integer
@@ -888,5 +902,73 @@ class Facturas
     public function getTipoIva()
     {
         return $this->tipoIva;
+    }
+
+    /**
+     * Add notasCreditoAsociada
+     *
+     * @param \Mbp\FinanzasBundle\Entity\Facturas $notasCreditoAsociada
+     *
+     * @return Facturas
+     */
+    public function addNotasCreditoAsociada(\Mbp\FinanzasBundle\Entity\Facturas $notasCreditoAsociada)
+    {
+        $this->notasCreditoAsociadas[] = $notasCreditoAsociada;
+
+        return $this;
+    }
+
+    /**
+     * Remove notasCreditoAsociada
+     *
+     * @param \Mbp\FinanzasBundle\Entity\Facturas $notasCreditoAsociada
+     */
+    public function removeNotasCreditoAsociada(\Mbp\FinanzasBundle\Entity\Facturas $notasCreditoAsociada)
+    {
+        $this->notasCreditoAsociadas->removeElement($notasCreditoAsociada);
+    }
+
+    /**
+     * Get notasCreditoAsociadas
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getNotasCreditoAsociadas()
+    {
+        return $this->notasCreditoAsociadas;
+    }
+
+    /**
+     * Add facturasAsociada
+     *
+     * @param \Mbp\FinanzasBundle\Entity\Facturas $facturasAsociada
+     *
+     * @return Facturas
+     */
+    public function addFacturasAsociada(\Mbp\FinanzasBundle\Entity\Facturas $facturasAsociada)
+    {
+        $this->facturasAsociadas[] = $facturasAsociada;
+
+        return $this;
+    }
+
+    /**
+     * Remove facturasAsociada
+     *
+     * @param \Mbp\FinanzasBundle\Entity\Facturas $facturasAsociada
+     */
+    public function removeFacturasAsociada(\Mbp\FinanzasBundle\Entity\Facturas $facturasAsociada)
+    {
+        $this->facturasAsociadas->removeElement($facturasAsociada);
+    }
+
+    /**
+     * Get facturasAsociadas
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFacturasAsociadas()
+    {
+        return $this->facturasAsociadas;
     }
 }

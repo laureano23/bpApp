@@ -52,7 +52,7 @@ class Facturas
 	private $clienteId;
 	
 	/**
-	 * @ORM\ManyToMany(targetEntity="FacturaDetalle", cascade={"remove"})
+	 * @ORM\ManyToMany(targetEntity="FacturaDetalle", cascade={"remove", "persist"})
 	 * @ORM\JoinTable(name="factura_detallesFacturas",
 	 *  joinColumns={ @ORM\JoinColumn(name = "factura_id", referencedColumnName="id") }),
 	 *  inverseJoinColumns={@JoinColumn(name="detallesFacturas_id", referencedColumnName="id", unique=true)}
@@ -209,6 +209,20 @@ class Facturas
 	 * @ORM\JoinColumn(name="tipoIva", referencedColumnName="id", nullable=false)
 	 */
     private $tipoIva;
+
+    /**
+	 * @ORM\ManyToMany(targetEntity="Mbp\FinanzasBundle\Entity\Facturas", mappedBy="facturasAsociadas")	 
+	 */
+    private $notasCreditoAsociadas;
+
+    /**
+	 * @ORM\ManyToMany(targetEntity="Mbp\FinanzasBundle\Entity\Facturas", inversedBy="notasCreditoAsociadas")	 
+     * @ORM\JoinTable(name="Facturas_NotasCredito",
+     *      joinColumns={@ORM\JoinColumn(name="fc_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="nc_id", referencedColumnName="id")}
+     *      )
+	 */
+    private $facturasAsociadas;
 
     /**
      * Get id
@@ -865,4 +879,28 @@ class Facturas
     }
 
     
+
+    /**
+     * Set tipoIva
+     *
+     * @param \Mbp\FinanzasBundle\Entity\PosicionIVA $tipoIva
+     *
+     * @return Facturas
+     */
+    public function setTipoIva(\Mbp\FinanzasBundle\Entity\PosicionIVA $tipoIva)
+    {
+        $this->tipoIva = $tipoIva;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoIva
+     *
+     * @return \Mbp\FinanzasBundle\Entity\PosicionIVA
+     */
+    public function getTipoIva()
+    {
+        return $this->tipoIva;
+    }
 }

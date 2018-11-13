@@ -137,7 +137,7 @@ class Faele extends wsfev1
 
 		$regfeiva['Id'] = $idIVA;
 		$regfeiva['BaseImp'] = $baseImpIVA;
-		$regfeiva['Importe'] = $importeIVA;
+		$regfeiva['Importe'] = round($importeIVA,2);
 
 		return $regfeiva;
 	}
@@ -167,10 +167,10 @@ class Faele extends wsfev1
         $regfe['CbteFch']=$cbteFch; 	// fecha emision de factura
         $regfe['ImpNeto']=$impNeto;			// neto gravado
         $regfe['ImpTotConc']=$impTotConc;			// no gravado
-        $regfe['ImpIVA']=$impIVA;			// IVA liquidado
+        $regfe['ImpIVA']=round($impIVA, 2);			// IVA liquidado
         $regfe['ImpTrib']=$impTrib;			// otros tributos
         $regfe['ImpOpEx']=$impOpEx;			// operacion exentas
-        $regfe['ImpTotal']=$impTotal;// total de la factura. ImpNeto + ImpTotConc + ImpIVA + ImpTrib + ImpOpEx
+        $regfe['ImpTotal']=round($impTotal, 2);// total de la factura. ImpNeto + ImpTotConc + ImpIVA + ImpTrib + ImpOpEx
         $regfe['FchServDesde']=null;	// solo concepto 2 o 3
         $regfe['FchServHasta']=null;	// solo concepto 2 o 3
         $regfe['FchVtoPago']=null;		// solo concepto 2 o 3

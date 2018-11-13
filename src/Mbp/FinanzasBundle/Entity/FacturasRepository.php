@@ -19,7 +19,7 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 		$repoTipoCbte=$em->getRepository('MbpFinanzasBundle:TipoComprobante');
 		$repoCliente=$em->getRepository('MbpClientesBundle:Cliente');
 		$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
-		$repoRemitos=$em->getRepository('MbpArticulosBundle:RemitosClientes');
+		$repoRemitosDetalle=$em->getRepository('MbpArticulosBundle:RemitosClientesDetalles');
 
 		
 		$comprobante->setPtoVta($objFC->getPuntoVenta());
@@ -97,7 +97,7 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 			$detalleFc->setFacturaId($comprobante);
 			$detalleFc->setIvaGrabado($d->ivaGrabado);
 			$detalleFc->setPrecio($d->precio);
-			$rem=$repoRemitos->findOneByRemitoNum($d->remitoNum);
+			$rem=$repoRemitosDetalle->find($d->remitoNum);
 			$detalleFc->setRemitoDetalleId($rem);
 
 			$comprobante->addFacturaDetalleId($detalleFc);

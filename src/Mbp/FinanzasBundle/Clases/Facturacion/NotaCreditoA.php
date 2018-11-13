@@ -92,7 +92,7 @@ class NotaCreditoA extends ComprobanteVenta{
             $total+=$c['total'];
         }
         
-        if(\bccomp($total, $this->getTotalComprobante(), 2) != 0 && $total!=0){
+        if(\bccomp($total, round($this->getTotalComprobante(), 2), 2) != 0 && $total!=0){
             throw new \Exception("El total de la NC debe ser igual al total de los comprobantes imputados", 1);            
         }        
     }
