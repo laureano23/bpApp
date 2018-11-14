@@ -9,7 +9,7 @@ class NotaDebitoA extends ComprobanteVenta{
     private static $tipoComprobante=2; //SEGUN TABLAS GENERALES DE AFIP 2= nota de debito A
     private static $idOtrosTributos=2; //SEGUN TABLAS GENERALES DE AFIP 2= impuestos provinciales
     private static $alicIVA21=0.21;
-    private static $idIVA=5;             //SEGUN TABLAS GENERALES DE AFIP 5=21%
+    
 
 
     public function __construct($tipoCambio, $moneda,
@@ -27,6 +27,19 @@ class NotaDebitoA extends ComprobanteVenta{
         $this->setCAE($res['cae']['cae']);
         $this->setDigitoVerificador($res['digitoVerificador']);
         $this->setVencimientoCAE(\DateTime::createFromFormat('Ymd', $res['cae']['fecha_vencimiento']));
+    }
+
+    public function getIdIVA(){
+        $resIVA=$this->getFaeleService()->FEParamGetTiposIva();
+        $i=0;
+        while($i < sizeof($resIVA) && $resIVA[$i]->Desc=='21%'){            
+            $i++;
+        }
+
+        if($this->getImporteNetoGrabado()==0){
+            return self::$sinIva;
+        }
+        return self::$iva21;
     }
 
     public function getTotalComprobante(){
@@ -48,6 +61,12 @@ class NotaDebitoA extends ComprobanteVenta{
     }
 
     public function generarFcElectronica(){
+        $idIva=null;
+        if($this->getImporteNetoGrabado()==0){
+            $idIva=$this->getSinIva();
+        }else{
+            $idIva=$this->getIva21();
+        }
         
         $res=$this->getFaeleService()->generarFc(
             self::$tipoComprobante, 
@@ -70,7 +89,7 @@ class NotaDebitoA extends ComprobanteVenta{
             $this->getImporteNetoGrabado(),
             $this->getAlicuotaPercepcion(),
             $this->getMontoPercepcion(),
-            self::$idIVA,
+            $idIva,
             $this->getImporteNetoGrabado(),
             $this->getTotalIVA(),
             null

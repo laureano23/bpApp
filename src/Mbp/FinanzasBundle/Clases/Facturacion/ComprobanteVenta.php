@@ -27,6 +27,13 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
     protected static $concepto=1;//ESTE DATO DEBE VENIR DEL CLIENTE 1=PRODUCTOS, 2=SERVICIOS, 3=PRODUCTOS Y SERVICIOS    
     public static $impExcento=0; //no implementado, = 0
     private static $alicIVA21=0.21;
+    //TABLAS IVA AFIP
+    private static $noGrabado=1;
+    private static $excento=2;
+    private static $sinIva=3;
+    private static $iva10=4;
+    private static $iva21=5;
+    private static $iva27=6;
 
     private $repoFactura;
     private $repoCliente;
@@ -163,7 +170,10 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
     }
 
     public function getAlicuotaPercepcion(){
-        return round(($this->montoPercepcionIIBB * 100 / $this->getImporteNetoGrabado()), 2);
+        if($this->getImporteNetoGrabado() > 0){
+            return round(($this->montoPercepcionIIBB * 100 / $this->getImporteNetoGrabado()), 2);
+        }
+        return 0;
     }
     
     
@@ -563,6 +573,46 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
     public function setNumero($numero)
     {
         $this->numero = $numero;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of sinIva
+     */ 
+    public function getSinIva()
+    {
+        return self::$sinIva;
+    }
+
+    /**
+     * Set the value of sinIva
+     *
+     * @return  self
+     */ 
+    public function setSinIva($sinIva)
+    {
+        self::$sinIva = $sinIva;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of iva21
+     */ 
+    public function getIva21()
+    {
+        return self::$iva21;
+    }
+
+    /**
+     * Set the value of iva21
+     *
+     * @return  self
+     */ 
+    public function setIva21($iva21)
+    {
+        self::$iva21 = $iva21;
 
         return $this;
     }
