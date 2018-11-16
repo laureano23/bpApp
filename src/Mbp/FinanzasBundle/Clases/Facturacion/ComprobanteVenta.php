@@ -139,15 +139,19 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
     }
 
     protected function getImporteNetoNoGrabado(){
-        return $this->getTotalDetallesNoGrabados()-$this->descuento;
+        if($this->getTotalDetallesNoGrabados()==0){
+            return $this->getTotalDetallesNoGrabados();
+        }else{
+            return $this->getTotalDetallesNoGrabados()-$this->getDescuento();
+        }
     }
     
     protected function getImporteNetoGrabado(){
-        return $this->getTotalDetallesGrabados()-$this->descuento;
+        return $this->getTotalDetallesGrabados()-$this->getDescuento();
     }
 
     protected function getTotalComprobante(){
-        return $this->getTotalDetallesGrabados() + $this->getTotalDetallesNoGrabados() - $this->descuento;
+        return $this->getTotalDetallesGrabados() + $this->getTotalDetallesNoGrabados() - $this->getDescuento();
     }
     
 
@@ -456,7 +460,7 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
      */ 
     public function getDescuento()
     {
-        return $this->descuento;
+        return ($this->getTotalDetallesGrabados()+$this->getTotalDetallesNoGrabados()) * ($this->descuento/100);
     }
 
     /**

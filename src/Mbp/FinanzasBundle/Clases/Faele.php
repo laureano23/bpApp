@@ -72,6 +72,7 @@ class Faele extends wsfev1
 		
 
 		$regfetrib=$this->getArrayImpFaele($idTributo, $descTributo, $baseImpTributo, $alictributo, $importeTributo);
+		
 
 		$regfeiva=$this->getArrayIVAFaele($idIVA, $baseImpIVA, $importeIVA);
 			
@@ -90,7 +91,7 @@ class Faele extends wsfev1
 
 		$regfe=$this->getArrayDetalleFaele($cbteTipo, $concepto, $docNro, $cbteDesde, $cbteHasta, $cbteFch, $impNeto, $impTotConc,		
 		$impIVA, $impTrib, $impOpEx, $impTotal, $fchServDesde, $fchServHasta, $fchVtoPago, $monId, $monCotiz);
-
+		
 
 		$cae = $this->FECAESolicitar($nro, // ultimo numero de comprobante autorizado mas uno 
                 $this->ptoVta,  // el punto de venta
