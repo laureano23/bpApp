@@ -14,11 +14,11 @@ class NotaDebitoA extends ComprobanteVenta{
 
     public function __construct($tipoCambio, $moneda,
         $cliente, $detallesVenta, $descuento, $percepcionIIBB,
-        $faeleService, $repoFactura, $repoCliente){
+        $faeleService, $repoFactura, $repoCliente, $condicionVenta){
 
         parent::__construct($tipoCambio, 
         $moneda, $cliente, $detallesVenta, $descuento, $percepcionIIBB,     
-        $faeleService, $repoFactura, $repoCliente, 'NOTA DE DEBITO A');
+        $faeleService, $repoFactura, $repoCliente, 'NOTA DE DEBITO A', $condicionVenta);
 
         $this->montoPercepcionIIBB=$percepcionIIBB;
 

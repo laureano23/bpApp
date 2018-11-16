@@ -22,6 +22,7 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
     private $fchServHasta;
     private $docCliente;
     private $montoPercepcionIIBB;
+    private $condicionVenta;
 
     //VARIABLES ESTATICAS
     protected static $concepto=1;//ESTE DATO DEBE VENIR DEL CLIENTE 1=PRODUCTOS, 2=SERVICIOS, 3=PRODUCTOS Y SERVICIOS    
@@ -43,7 +44,7 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
     
     public function __construct($tipoCambio,
     $moneda, $cliente, $detallesVenta, $descuento, $percepcionIIBB,
-    $faeleService, $repoFactura, $repoCliente, $descripcionCbte){
+    $faeleService, $repoFactura, $repoCliente, $descripcionCbte, $condicionVenta){
             
         parent::__construct($tipoCambio, $moneda, $descripcionCbte);
         $this->repoFactura=$repoFactura;
@@ -53,6 +54,7 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
         $this->descuento=$descuento;
         $this->montoPercepcionIIBB=$percepcionIIBB;
         $this->cliente=$cliente;
+        $this->condicionVenta=$condicionVenta;
 
         $this->cargarParametrosFacturacion();
         $this->cargarInfoCliente($cliente);        
@@ -613,6 +615,26 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
     public function setIva21($iva21)
     {
         self::$iva21 = $iva21;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of condicionVenta
+     */ 
+    public function getCondicionVenta()
+    {
+        return $this->condicionVenta;
+    }
+
+    /**
+     * Set the value of condicionVenta
+     *
+     * @return  self
+     */ 
+    public function setCondicionVenta($condicionVenta)
+    {
+        $this->condicionVenta = $condicionVenta;
 
         return $this;
     }

@@ -15,11 +15,11 @@ class FacturaA extends ComprobanteVenta{
 
     public function __construct($tipoCambio, $moneda,
         $cliente, $detallesVenta, $descuento, $percepcionIIBB,
-        $faeleService, $repoFactura, $repoCliente){
+        $faeleService, $repoFactura, $repoCliente, $condicionVenta){
 
         parent::__construct($tipoCambio, 
         $moneda, $cliente, $detallesVenta, $descuento, $percepcionIIBB,     
-        $faeleService, $repoFactura, $repoCliente, 'FACTURA A');
+        $faeleService, $repoFactura, $repoCliente, 'FACTURA A', $condicionVenta);
 
         $this->montoPercepcionIIBB=$percepcionIIBB;
 

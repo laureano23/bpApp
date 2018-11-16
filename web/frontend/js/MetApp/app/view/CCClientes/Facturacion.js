@@ -1,6 +1,6 @@
 Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 	extend: 'Ext.window.Window',
-	height: 450,
+	height: 550,
 	width: 1000,
 	modal: true,
 	autoShow: true,
@@ -156,12 +156,21 @@ Ext.define('MetApp.view.CCClientes.Facturacion' ,{
 									name: 'totalAsociados',
 								}
 							]
-						},												
+						},
+						{
+							xtype: 'textfield',
+							name: 'condicion',
+							itemId: 'condicion',
+							fieldLabel: 'Condicion',
+							margin: '5 0 0 5',
+							width: 500
+						}												
 					]
 				},
 				{
 					xtype: 'grid',
 					region: 'center',
+					height: 300,
 					store: 'MetApp.store.Finanzas.GrillaFacturacionStore',
 					plugins: [
 				        Ext.create('Ext.grid.plugin.CellEditing', {

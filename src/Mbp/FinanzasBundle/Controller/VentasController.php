@@ -181,7 +181,7 @@ class VentasController extends Controller
 					$comprobante=new FacturaA(
 						$decodefcData->tipoCambio, $decodefcData->moneda,
 						$decodefcData->idCliente, $decodeData, $descuento, $percepcionIIBB,
-						$faele, $repoFc, $repoCliente, null
+						$faele, $repoFc, $repoCliente, $decodefcData->condicion
 					);
 					$idCbte=$repoFc->crearComprobante($comprobante);
 					break;
@@ -190,7 +190,7 @@ class VentasController extends Controller
 					$comprobante=new NotaCreditoA(
 						$decodefcData->tipoCambio, $decodefcData->moneda,
 						$decodefcData->idCliente, $decodeData, $descuento, $percepcionIIBB,
-						$faele, $repoFc, $repoCliente, $fcsAsociadas
+						$faele, $repoFc, $repoCliente, $fcsAsociadas, $decodefcData->condicion
 					);
 					$idCbte=$repoFc->crearComprobante($comprobante);
 					break;
@@ -198,7 +198,7 @@ class VentasController extends Controller
 					$comprobante=new NotaDebitoA(
 						$decodefcData->tipoCambio, $decodefcData->moneda,
 						$decodefcData->idCliente, $decodeData, $descuento, $percepcionIIBB,
-						$faele, $repoFc, $repoCliente, null
+						$faele, $repoFc, $repoCliente, $decodefcData->condicion
 					);
 					$idCbte=$repoFc->crearComprobante($comprobante);
 					break;

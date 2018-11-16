@@ -382,7 +382,11 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 		var store = winFact.down('grid').getStore();	
 		var comboTipo = winFact.queryById('tipo');
 		var storeTipo = comboTipo.getStore();
+		var recordCliente = me.getCCClientes().down('form').getForm().getRecord();
+		console.log(recordCliente);
 		
+		var condicionVta=winFact.queryById('condicion');
+		condicionVta.setValue(recordCliente.data.condVenta);
 		
 		storeTipo.load({
 			callback: function(){

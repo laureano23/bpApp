@@ -86,14 +86,20 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 		if(empty($posicion)) throw new \Exception("El cliente no tiene una posición definida frente al IVA", 1);
 		$comprobante->setIvaCond($posicion);
 
-		$comprobante->setCondVta($cliente->getCondVenta());
+		$comprobante->setCondVta($objFC->getCondicionVenta());
 
 		foreach ($objFC->getDetallesVenta() as $d) {
 			$art=$repoArt->findOneByCodigo($d->codigo);
 			$detalleFc=new FacturaDetalle();
 			$detalleFc->setArticuloId($art);
 			$detalleFc->setCantidad($d->cantidad);
-			$detalleFc->setDescripcion($art->getDescripcion());
+			//SI EL CODIGO ES ZZZ SETEO LA DESCRIPCION ENVIADA POR EL CLIENTE
+			if($art->getCodigo()=="ZZZ"){
+				$detalleFc->setDescripcion($d->descripcion);
+			}else{
+				$detalleFc->setDescripcion($art->getDescripcion());
+			}
+			
 			$detalleFc->setFacturaId($comprobante);
 			$detalleFc->setIvaGrabado($d->ivaGrabado);
 			$detalleFc->setPrecio($d->precio);
