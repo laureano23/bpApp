@@ -24,20 +24,20 @@ class EnviarTXTRetCommand extends ContainerAwareCommand
 		$desde=new \DateTime();
 		$hasta=new \DateTime();
 		$quincena;
-
+		$dia=$desde->format('d');
 		//PARA QUE LAS FECHAS FUNCIONEN EL COMANDO SE DEBE EJECUTAR EL 1 Y EL 16 DE CADA MES
-		if(16 >= $desde->format('d') && $desde->format('d') <= 31){
-			$desde->modify('first day of this month');
+		if($desde->format('d') >= 16 && $desde->format('d') <= 31){
+			$desde->modify('first day of this month');			
 			$hasta->modify('first day of this month');
 			$hasta->modify('+14 day');
-			$quincena=2;
+			$quincena=1;
 		}else{
 			$desde->modify('-1 month');
 			$hasta->modify('-1 month');
 			$desde->modify('first day of this month');
 			$desde->modify('+15 day');
 			$hasta->modify('last day of this month');
-			$quincena=1;
+			$quincena=2;
 		}
 								
 		$kernel = $this->getContainer()->get('kernel');			
