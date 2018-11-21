@@ -105,8 +105,14 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 			$detalleFc->setPrecio($d->precio);
 			$rem=$repoRemitosDetalle->find($d->remitoNum);
 			$detalleFc->setRemitoDetalleId($rem);
+			//marcamos el remito como entregado
+			if($rem != NULL){
+				$rem->setFacturado(true);
+			}
 
 			$comprobante->addFacturaDetalleId($detalleFc);
+
+			
 		}
 
 
