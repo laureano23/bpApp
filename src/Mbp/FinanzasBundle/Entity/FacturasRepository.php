@@ -27,7 +27,7 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 		if(empty($tipoIVA)) throw new \Exception("No existe el tipo de IVA responsable inscripto", 1);
 		$comprobante->setTipoIva($tipoIVA);
 		$comprobante->setDigitoVerificador($objFC->getDigitoVerificador());
-		$comprobante->setTipoCambioRefFac($objFC->getCotizacionMoneda());
+		$comprobante->setTipoCambioRefFac($objFC->getRefTipoCambio());
 		$cc=$repoCCClientes->crearMovimientoCC($objFC, $comprobante);
 		$comprobante->setCcId($cc);
 

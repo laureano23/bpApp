@@ -8,6 +8,7 @@ abstract class ComprobanteComercial{
     private $moneda;
     private $tipoCambio;
     private $descripcionCbte;
+    private $refTipoCambio; //variable solo de referencia para el pie de factura
     
     public function __construct($tipoCambio, $moneda, $descripcionCbte){
         if($moneda==0){
@@ -15,7 +16,7 @@ abstract class ComprobanteComercial{
         }else{
             $this->tipoCambio=$tipoCambio;
         }
-        
+        $this->refTipoCambio=$tipoCambio;
         $this->fechaEmision=\date("Ymd");        
         $this->moneda=$moneda;
         $this->descripcionCbte=$descripcionCbte;
@@ -74,6 +75,26 @@ abstract class ComprobanteComercial{
     public function setDescripcionCbte($descripcionCbte)
     {
         $this->descripcionCbte = $descripcionCbte;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of refTipoCambio
+     */ 
+    public function getRefTipoCambio()
+    {
+        return $this->refTipoCambio;
+    }
+
+    /**
+     * Set the value of refTipoCambio
+     *
+     * @return  self
+     */ 
+    public function setRefTipoCambio($refTipoCambio)
+    {
+        $this->refTipoCambio = $refTipoCambio;
 
         return $this;
     }
