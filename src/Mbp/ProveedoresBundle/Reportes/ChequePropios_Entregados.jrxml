@@ -102,7 +102,7 @@ ORDER BY Pago.`diferido` ASC]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[CHEQUES DE TERCEROS INGRESADOS Y ENTREGADOS]]></text>
+				<text><![CDATA[CHEQUES PROPIOS EMITIDOS Y ENTREGADOS]]></text>
 			</staticText>
 		</band>
 	</title>

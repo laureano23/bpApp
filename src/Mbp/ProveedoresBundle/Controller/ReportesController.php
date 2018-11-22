@@ -51,70 +51,51 @@ class ReportesController extends Controller
 			$conn = $reporteador->getJdbc();
 						
 			$sql = "
-				SELECT
-						Pago.`id` AS Pago_id,
-						Pago.`banco` AS Pago_banco,
-						Pago.`emision` AS Pago_emision,
-						Pago.`numero` AS Pago_numero,
-						Pago.`importe` AS Pago_importe,
-						Pago.`diferido` AS Pago_diferido,
-						Pago.`idFormaPago` AS Pago_idFormaPago,
-						Pago.`cuentaId` AS Pago_cuentaId,
-						Pago.`movBancoId` AS Pago_movBancoId,
-						OrdenPago.`id` AS OrdenPago_id,
-						OrdenPago.`fechaEmision` AS OrdenPago_fechaEmision,
-						OrdenPago.`proveedorId` AS OrdenPago_proveedorId,
-						OrdenPago.`importe` AS OrdenPago_importe,
-						OrdenPago.`ccId` AS OrdenPago_ccId,
-						OrdenDePago_detallesPagos.`pago_id` AS OrdenDePago_detallesPagos_pago_id,
-						OrdenDePago_detallesPagos.`ordenPago_id` AS OrdenDePago_detallesPagos_ordenPago_id,
-						FormasPagos.`id` AS FormasPagos_id,
-						FormasPagos.`descripcion` AS FormasPagos_descripcion,
-						FormasPagos.`inactivo` AS FormasPagos_inactivo,
-						FormasPagos.`retencionIIBB` AS FormasPagos_retencionIIBB,
-						FormasPagos.`retencionIVA21` AS FormasPagos_retencionIVA21,
-						FormasPagos.`esChequePropio` AS FormasPagos_esChequePropio,
-						FormasPagos.`chequeTerceros` AS FormasPagos_chequeTerceros,
-						FormasPagos.`ceonceptoBancoId` AS FormasPagos_ceonceptoBancoId,
-						FormasPagos.`depositaEnCuenta` AS FormasPagos_depositaEnCuenta,
-						Proveedor.`id` AS Proveedor_id,
-						Proveedor.`rsocial` AS Proveedor_rsocial,
-						CobranzasDetalle.`id` AS CobranzasDetalle_id,
-						CobranzasDetalle.`importe` AS CobranzasDetalle_importe,
-						CobranzasDetalle.`numero` AS CobranzasDetalle_numero,
-						CobranzasDetalle.`banco` AS CobranzasDetalle_banco,
-						CobranzasDetalle.`vencimiento` AS CobranzasDetalle_vencimiento,
-						CobranzasDetalle.`estado` AS CobranzasDetalle_estado,
-						CobranzasDetalle.`formaPagoId` AS CobranzasDetalle_formaPagoId,
-						CobranzasDetalle.`cuentaId` AS CobranzasDetalle_cuentaId,
-						CobranzasDetalle.`movBancoId` AS CobranzasDetalle_movBancoId,
-						Cobranzas.`id` AS Cobranzas_id,
-						Cobranzas.`ptoVenta` AS Cobranzas_ptoVenta,
-						Cobranzas.`numRecibo` AS Cobranzas_numRecibo,
-						Cobranzas.`emision` AS Cobranzas_emision,
-						Cobranzas.`fechaRecibo` AS Cobranzas_fechaRecibo,
-						Cobranzas.`clienteId` AS Cobranzas_clienteId,
-						Cobranzas.`totalCobranza` AS Cobranzas_totalCobranza,
-						Cobranzas.`ccId` AS Cobranzas_ccId,
-						cobranza_detallesCobranzas.`cobranza_id` AS cobranza_detallesCobranzas_cobranza_id,
-						cobranza_detallesCobranzas.`cobranzasdetalle_id` AS cobranza_detallesCobranzas_cobranzasdetalle_id,
-						cliente.`rsocial` AS cliente_rsocial,
-						cliente.`idCliente` AS cliente_idCliente
-				FROM
-						`Pago` Pago INNER JOIN `OrdenDePago_detallesPagos` OrdenDePago_detallesPagos ON Pago.`id` = OrdenDePago_detallesPagos.`pago_id`
-						INNER JOIN `OrdenPago` OrdenPago ON OrdenDePago_detallesPagos.`ordenPago_id` = OrdenPago.`id`
-						INNER JOIN `Proveedor` Proveedor ON OrdenPago.`proveedorId` = Proveedor.`id`
-						LEFT OUTER JOIN `FormasPagos` FormasPagos ON Pago.`idFormaPago` = FormasPagos.`id`
-						INNER JOIN `CobranzasDetalle` CobranzasDetalle ON Pago.`numero` = CobranzasDetalle.`numero`
-						AND CobranzasDetalle.`banco` = Pago.`banco`
-						AND FormasPagos.`id` = CobranzasDetalle.`formaPagoId`
-						INNER JOIN `cobranza_detallesCobranzas` cobranza_detallesCobranzas ON CobranzasDetalle.`id` = cobranza_detallesCobranzas.`cobranzasdetalle_id`
-						INNER JOIN `Cobranzas` Cobranzas ON cobranza_detallesCobranzas.`cobranza_id` = Cobranzas.`id`
-						INNER JOIN `cliente` cliente ON Cobranzas.`clienteId` = cliente.`idCliente`
-				WHERE
-							FormasPagos.`chequeTerceros` = TRUE AND
-					Cobranzas.`emision` BETWEEN '$desdeSQL' AND '$hastaSQL'
-				ORDER BY Pago.`diferido` ASC
+			SELECT
+			Pago.`id` AS Pago_id,
+			Pago.`banco` AS Pago_banco,
+			Pago.`emision` AS Pago_emision,
+			Pago.`numero` AS Pago_numero,
+			Pago.`importe` AS Pago_importe,
+			Pago.`diferido` AS Pago_diferido,
+			Pago.`idFormaPago` AS Pago_idFormaPago,
+			Pago.`cuentaId` AS Pago_cuentaId,
+			Pago.`movBancoId` AS Pago_movBancoId,
+			OrdenPago.`id` AS OrdenPago_id,
+			OrdenPago.`fechaEmision` AS OrdenPago_fechaEmision,
+			OrdenPago.`proveedorId` AS OrdenPago_proveedorId,
+			OrdenPago.`importe` AS OrdenPago_importe,
+			OrdenDePago_detallesPagos.`pago_id` AS OrdenDePago_detallesPagos_pago_id,
+			OrdenDePago_detallesPagos.`ordenPago_id` AS OrdenDePago_detallesPagos_ordenPago_id,
+			FormasPagos.`id` AS FormasPagos_id,
+			FormasPagos.`descripcion` AS FormasPagos_descripcion,
+			FormasPagos.`inactivo` AS FormasPagos_inactivo,
+			FormasPagos.`retencionIIBB` AS FormasPagos_retencionIIBB,
+			FormasPagos.`retencionIVA21` AS FormasPagos_retencionIVA21,
+			FormasPagos.`esChequePropio` AS FormasPagos_esChequePropio,
+			FormasPagos.`chequeTerceros` AS FormasPagos_chequeTerceros,
+			FormasPagos.`ceonceptoBancoId` AS FormasPagos_ceonceptoBancoId,
+			FormasPagos.`depositaEnCuenta` AS FormasPagos_depositaEnCuenta,
+			Proveedor.`id` AS Proveedor_id,
+			Proveedor.`rsocial` AS Proveedor_rsocial,
+			CuentasBancarias.`id` AS CuentasBancarias_id,
+			CuentasBancarias.`tipo` AS CuentasBancarias_tipo,
+			CuentasBancarias.`numero` AS CuentasBancarias_numero,
+			CuentasBancarias.`bancoId` AS CuentasBancarias_bancoId,
+			CuentasBancarias.`inactivo` AS CuentasBancarias_inactivo,
+			Bancos.`id` AS Bancos_id,
+			Bancos.`nombre` AS Bancos_nombre
+	   FROM
+			`Pago` Pago INNER JOIN `OrdenDePago_detallesPagos` OrdenDePago_detallesPagos ON Pago.`id` = OrdenDePago_detallesPagos.`pago_id`
+			INNER JOIN `OrdenPago` OrdenPago ON OrdenDePago_detallesPagos.`ordenPago_id` = OrdenPago.`id`
+			INNER JOIN `Proveedor` Proveedor ON OrdenPago.`proveedorId` = Proveedor.`id`
+			INNER JOIN `FormasPagos` FormasPagos ON Pago.`idFormaPago` = FormasPagos.`id`
+			INNER JOIN `CuentasBancarias` CuentasBancarias ON Pago.`cuentaId` = CuentasBancarias.`id`
+			INNER JOIN `Bancos` Bancos ON CuentasBancarias.`bancoId` = Bancos.`id`
+	   WHERE
+			Pago.`diferido` BETWEEN '$desdeSQL' AND '$hastaSQL'
+		AND FormasPagos.`esChequePropio` = TRUE
+	   ORDER BY Pago.`diferido` ASC
 			";	
 
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
