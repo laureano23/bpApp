@@ -39,9 +39,7 @@ class FacturaA extends ComprobanteVenta{
     }
 
     public function cargarParametrosFacturacion(){
-        parent::cargarParametrosFacturacion();
-        $res=$this->getFaeleService()->ultimoNroComp(self::$tipoComprobante);
-        $this->setNumero($res['nro']++);
+        parent::cargarParametrosFacturacion();        
     }
 
     public function sosFacturaA(){
@@ -76,6 +74,9 @@ class FacturaA extends ComprobanteVenta{
             $this->getTotalIVA(),
             null
         );
+        
+        $nro=$this->getFaeleService()->ultimoNroComp(self::$tipoComprobante);
+        $this->setNumero($nro['nro']);
 
         return $res;
     }   

@@ -52,8 +52,6 @@ class NotaDebitoA extends ComprobanteVenta{
 
     public function cargarParametrosFacturacion(){
         parent::cargarParametrosFacturacion();
-        $res=$this->getFaeleService()->ultimoNroComp(self::$tipoComprobante);
-        $this->setNumero($res['nro']++);
     }
 
     public function sosNotaDebitoA(){
@@ -94,6 +92,9 @@ class NotaDebitoA extends ComprobanteVenta{
             $this->getTotalIVA(),
             null
         );
+
+        $nro=$this->getFaeleService()->ultimoNroComp(self::$tipoComprobante);
+        $this->setNumero($nro['nro']);
 
         return $res;
     }

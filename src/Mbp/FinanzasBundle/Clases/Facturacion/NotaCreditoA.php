@@ -61,14 +61,14 @@ class NotaCreditoA extends ComprobanteVenta{
             $this->getCbtesAsociados()
         );
 
+        $nro=$this->getFaeleService()->ultimoNroComp(self::$tipoComprobante);
+        $this->setNumero($nro['nro']);
 
         return $res;
     }
     
     public function cargarParametrosFacturacion(){
         parent::cargarParametrosFacturacion();
-        $res=$this->getFaeleService()->ultimoNroComp(self::$tipoComprobante);
-        $this->setNumero($res['nro']++);
     }
 
     public function getIdOtrosTributos(){
