@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ChequeTerceros_Entregados" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="35b8b2ce-2b69-4f4a-af56-e4794868f55c">
-	<property name="ireport.zoom" value="0.9090909090909118"/>
+	<property name="ireport.zoom" value="1.1000000000000034"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="FECHA_DESDE" class="java.util.Date">
@@ -24,7 +24,6 @@
      OrdenPago.`fechaEmision` AS OrdenPago_fechaEmision,
      OrdenPago.`proveedorId` AS OrdenPago_proveedorId,
      OrdenPago.`importe` AS OrdenPago_importe,
-     OrdenPago.`ccId` AS OrdenPago_ccId,
      OrdenDePago_detallesPagos.`pago_id` AS OrdenDePago_detallesPagos_pago_id,
      OrdenDePago_detallesPagos.`ordenPago_id` AS OrdenDePago_detallesPagos_ordenPago_id,
      FormasPagos.`id` AS FormasPagos_id,
@@ -37,43 +36,15 @@
      FormasPagos.`ceonceptoBancoId` AS FormasPagos_ceonceptoBancoId,
      FormasPagos.`depositaEnCuenta` AS FormasPagos_depositaEnCuenta,
      Proveedor.`id` AS Proveedor_id,
-     Proveedor.`rsocial` AS Proveedor_rsocial,
-     CobranzasDetalle.`id` AS CobranzasDetalle_id,
-     CobranzasDetalle.`importe` AS CobranzasDetalle_importe,
-     CobranzasDetalle.`numero` AS CobranzasDetalle_numero,
-     CobranzasDetalle.`banco` AS CobranzasDetalle_banco,
-     CobranzasDetalle.`vencimiento` AS CobranzasDetalle_vencimiento,
-     CobranzasDetalle.`estado` AS CobranzasDetalle_estado,
-     CobranzasDetalle.`formaPagoId` AS CobranzasDetalle_formaPagoId,
-     CobranzasDetalle.`cuentaId` AS CobranzasDetalle_cuentaId,
-     CobranzasDetalle.`movBancoId` AS CobranzasDetalle_movBancoId,
-     Cobranzas.`id` AS Cobranzas_id,
-     Cobranzas.`ptoVenta` AS Cobranzas_ptoVenta,
-     Cobranzas.`numRecibo` AS Cobranzas_numRecibo,
-     Cobranzas.`emision` AS Cobranzas_emision,
-     Cobranzas.`fechaRecibo` AS Cobranzas_fechaRecibo,
-     Cobranzas.`clienteId` AS Cobranzas_clienteId,
-     Cobranzas.`totalCobranza` AS Cobranzas_totalCobranza,
-     Cobranzas.`ccId` AS Cobranzas_ccId,
-     cobranza_detallesCobranzas.`cobranza_id` AS cobranza_detallesCobranzas_cobranza_id,
-     cobranza_detallesCobranzas.`cobranzasdetalle_id` AS cobranza_detallesCobranzas_cobranzasdetalle_id,
-     cliente.`rsocial` AS cliente_rsocial,
-     cliente.`idCliente` AS cliente_idCliente
+     Proveedor.`rsocial` AS Proveedor_rsocial
 FROM
      `Pago` Pago INNER JOIN `OrdenDePago_detallesPagos` OrdenDePago_detallesPagos ON Pago.`id` = OrdenDePago_detallesPagos.`pago_id`
      INNER JOIN `OrdenPago` OrdenPago ON OrdenDePago_detallesPagos.`ordenPago_id` = OrdenPago.`id`
      INNER JOIN `Proveedor` Proveedor ON OrdenPago.`proveedorId` = Proveedor.`id`
-     LEFT OUTER JOIN `FormasPagos` FormasPagos ON Pago.`idFormaPago` = FormasPagos.`id`
-     INNER JOIN `CobranzasDetalle` CobranzasDetalle ON Pago.`numero` = CobranzasDetalle.`numero`
-     AND CobranzasDetalle.`banco` = Pago.`banco`
-     AND FormasPagos.`id` = CobranzasDetalle.`formaPagoId`
-     INNER JOIN `cobranza_detallesCobranzas` cobranza_detallesCobranzas ON CobranzasDetalle.`id` = cobranza_detallesCobranzas.`cobranzasdetalle_id`
-     INNER JOIN `Cobranzas` Cobranzas ON cobranza_detallesCobranzas.`cobranza_id` = Cobranzas.`id`
-     INNER JOIN `cliente` cliente ON Cobranzas.`clienteId` = cliente.`idCliente`
+     INNER JOIN `FormasPagos` FormasPagos ON Pago.`idFormaPago` = FormasPagos.`id`
 WHERE
-     	FormasPagos.`chequeTerceros` = TRUE AND
-	Cobranzas.`emision` BETWEEN $P{FECHA_DESDE} AND $P{FECHA_HASTA}
-ORDER BY Pago.`diferido` ASC]]>
+     Pago.`diferido` BETWEEN $P{FECHA_DESDE} AND $P{FECHA_HASTA}
+ AND FormasPagos.`esChequePropio` = TRUE]]>
 	</queryString>
 	<field name="Pago_id" class="java.lang.Integer"/>
 	<field name="Pago_banco" class="java.lang.String"/>
@@ -88,7 +59,6 @@ ORDER BY Pago.`diferido` ASC]]>
 	<field name="OrdenPago_fechaEmision" class="java.sql.Timestamp"/>
 	<field name="OrdenPago_proveedorId" class="java.lang.Integer"/>
 	<field name="OrdenPago_importe" class="java.math.BigDecimal"/>
-	<field name="OrdenPago_ccId" class="java.lang.Integer"/>
 	<field name="OrdenDePago_detallesPagos_pago_id" class="java.lang.Integer"/>
 	<field name="OrdenDePago_detallesPagos_ordenPago_id" class="java.lang.Integer"/>
 	<field name="FormasPagos_id" class="java.lang.Integer"/>
@@ -102,27 +72,6 @@ ORDER BY Pago.`diferido` ASC]]>
 	<field name="FormasPagos_depositaEnCuenta" class="java.lang.Boolean"/>
 	<field name="Proveedor_id" class="java.lang.Integer"/>
 	<field name="Proveedor_rsocial" class="java.lang.String"/>
-	<field name="CobranzasDetalle_id" class="java.lang.Integer"/>
-	<field name="CobranzasDetalle_importe" class="java.math.BigDecimal"/>
-	<field name="CobranzasDetalle_numero" class="java.lang.String"/>
-	<field name="CobranzasDetalle_banco" class="java.lang.String"/>
-	<field name="CobranzasDetalle_vencimiento" class="java.sql.Date"/>
-	<field name="CobranzasDetalle_estado" class="java.lang.Integer"/>
-	<field name="CobranzasDetalle_formaPagoId" class="java.lang.Integer"/>
-	<field name="CobranzasDetalle_cuentaId" class="java.lang.Integer"/>
-	<field name="CobranzasDetalle_movBancoId" class="java.lang.Integer"/>
-	<field name="Cobranzas_id" class="java.lang.Integer"/>
-	<field name="Cobranzas_ptoVenta" class="java.lang.Integer"/>
-	<field name="Cobranzas_numRecibo" class="java.lang.Integer"/>
-	<field name="Cobranzas_emision" class="java.sql.Timestamp"/>
-	<field name="Cobranzas_fechaRecibo" class="java.sql.Date"/>
-	<field name="Cobranzas_clienteId" class="java.lang.Integer"/>
-	<field name="Cobranzas_totalCobranza" class="java.math.BigDecimal"/>
-	<field name="Cobranzas_ccId" class="java.lang.Integer"/>
-	<field name="cobranza_detallesCobranzas_cobranza_id" class="java.lang.Integer"/>
-	<field name="cobranza_detallesCobranzas_cobranzasdetalle_id" class="java.lang.Integer"/>
-	<field name="cliente_rsocial" class="java.lang.String"/>
-	<field name="cliente_idCliente" class="java.lang.Integer"/>
 	<variable name="TOTAL" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{Pago_importe}]]></variableExpression>
 	</variable>
@@ -242,18 +191,6 @@ ORDER BY Pago.`diferido` ASC]]>
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
-			<textField isStretchWithOverflow="true">
-				<reportElement x="0" y="0" width="177" height="20" uuid="8cf6c525-9db6-4047-aea1-b3c2d13a1540"/>
-				<box leftPadding="3">
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="0.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="0.0"/>
-				</box>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{cliente_rsocial}]]></textFieldExpression>
-			</textField>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="177" y="0" width="71" height="20" uuid="af77edf9-b391-4d71-b0b8-3a08835cc5b2"/>
 				<box leftPadding="3">
@@ -264,7 +201,7 @@ ORDER BY Pago.`diferido` ASC]]>
 					<rightPen lineWidth="0.0"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{Cobranzas_emision}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Pago_emision}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="248" y="0" width="76" height="20" uuid="55d03973-669e-4150-a490-5d807f0d587d"/>
@@ -338,6 +275,14 @@ ORDER BY Pago.`diferido` ASC]]>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{OrdenPago_id}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="177" height="20" uuid="33fc42db-3f44-4b46-9ead-6ffad3768e91"/>
+				<box leftPadding="2">
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[METALURGICA BP]]></text>
+			</staticText>
 		</band>
 	</detail>
 	<columnFooter>
@@ -373,7 +318,7 @@ ORDER BY Pago.`diferido` ASC]]>
 				<text><![CDATA[TOTAL]]></text>
 			</staticText>
 			<textField evaluationTime="Report" pattern="¤ #,##0.00" isBlankWhenNull="true">
-				<reportElement x="500" y="17" width="100" height="25" uuid="8e4cb6fb-23f5-48f5-90c8-80d53d7dfb2b"/>
+				<reportElement x="500" y="17" width="188" height="25" uuid="8e4cb6fb-23f5-48f5-90c8-80d53d7dfb2b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14"/>
 				</textElement>

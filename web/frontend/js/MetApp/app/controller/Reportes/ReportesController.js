@@ -19,14 +19,21 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 		'MetApp.view.Reportes.RepoOrdenesDePago',
 		'MetApp.view.Reportes.RepoCobranzasEntreFechas',
 		'MetApp.view.Reportes.ReporteCCProveedores',
-		'MetApp.view.Reportes.RepoSaldoAcreedor'
+		'MetApp.view.Reportes.RepoSaldoAcreedor',
+		'MetApp.view.Reportes.RepoChequesPropiosEntregados'
 	],
 	refs:[
 	],
 	
 	init: function(){
 		var me = this;
-		me.control({	
+		me.control({
+			'RepoChequesPropiosEntregados button[itemId=printReport]': {
+				click: this.PrintChequesPropiosEntregados
+			},	
+			'viewport menuitem[itemId=reporteChequePropiosEntregados]': {
+				click: this.FormChequePropioEntregado
+			},
 			'viewport menuitem[itemId=reporteResumenSaldoAcreedor]': {
 				click: this.FormResumenSaldoAcreedor
 			},
@@ -160,6 +167,22 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 				click: this.SubmitCCProveedoresReport
 			},
 		});
+	},
+
+	PrintChequesPropiosEntregados: function(btn){
+		var form=btn.up('form');
+
+		form.getForm().submit({
+			url: Routing.generate('mbp_proveedores_reporteChequePropioEntregado'),
+			success: function(resp){
+				var ruta=Routing.generate('mbp_proveedores_verReporteChequePropioEntregado');
+				window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+			}
+		})
+	},
+
+	FormChequePropioEntregado: function(bnt){
+		Ext.widget('RepoChequesPropiosEntregados');
 	},
 
 	FormResumenSaldoAcreedor: function(){
