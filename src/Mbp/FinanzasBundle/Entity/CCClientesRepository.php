@@ -31,10 +31,16 @@ class CCClientesRepository extends \Doctrine\ORM\EntityRepository
 		$repoCliente=$em->getRepository('MbpClientesBundle:Cliente');
 
 		$cc=new CCClientes;
+		$monto=$mov->getTotalComprobante();
+
+		if($mov->getMoneda()=='DOL'){
+			$monto=$mov->getTotalComprobante()*$mov->getCotizacionMoneda();
+		}
+
 		if($mov->sosNotaCreditoA()){
-			$cc->setHaber($mov->getTotalComprobante());	
+			$cc->setHaber($monto);	
 		}else{
-			$cc->setDebe($mov->getTotalComprobante());
+			$cc->setDebe($monto);
 		}		
 		$cliente=$repoCliente->find($mov->getCliente());
 		$cc->setClienteId($cliente);

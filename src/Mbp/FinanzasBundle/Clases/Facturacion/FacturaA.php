@@ -28,8 +28,6 @@ class FacturaA extends ComprobanteVenta{
         $this->setCAE($res['cae']['cae']);
         $this->setDigitoVerificador($res['digitoVerificador']);
         $this->setVencimientoCAE(\DateTime::createFromFormat('Ymd', $res['cae']['fecha_vencimiento']));
-        \print_r($this->getNumero());
-        exit;
     }
 
     public function getTotalComprobante(){

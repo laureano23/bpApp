@@ -60,7 +60,11 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 		
 		$comprobante->setTipoId($tipoCbte);
 		$comprobante->setTipoCambio($objFC->getCotizacionMoneda());
-		$comprobante->setMoneda($objFC->getMoneda());
+		if($comprobante->getMoneda()=='DOL'){
+			$comprobante->setMoneda(1);
+		}else{
+			$comprobante->setMoneda(0);
+		}
 		$comprobante->setDepartamento($objFC->getPartido());
 		$comprobante->setPorcentajeIIBB($objFC->getAlicuotaPercepcion());
 		$comprobante->setTotal($objFC->getTotalComprobante());
