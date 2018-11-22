@@ -36,15 +36,25 @@
      FormasPagos.`ceonceptoBancoId` AS FormasPagos_ceonceptoBancoId,
      FormasPagos.`depositaEnCuenta` AS FormasPagos_depositaEnCuenta,
      Proveedor.`id` AS Proveedor_id,
-     Proveedor.`rsocial` AS Proveedor_rsocial
+     Proveedor.`rsocial` AS Proveedor_rsocial,
+     CuentasBancarias.`id` AS CuentasBancarias_id,
+     CuentasBancarias.`tipo` AS CuentasBancarias_tipo,
+     CuentasBancarias.`numero` AS CuentasBancarias_numero,
+     CuentasBancarias.`bancoId` AS CuentasBancarias_bancoId,
+     CuentasBancarias.`inactivo` AS CuentasBancarias_inactivo,
+     Bancos.`id` AS Bancos_id,
+     Bancos.`nombre` AS Bancos_nombre
 FROM
      `Pago` Pago INNER JOIN `OrdenDePago_detallesPagos` OrdenDePago_detallesPagos ON Pago.`id` = OrdenDePago_detallesPagos.`pago_id`
      INNER JOIN `OrdenPago` OrdenPago ON OrdenDePago_detallesPagos.`ordenPago_id` = OrdenPago.`id`
      INNER JOIN `Proveedor` Proveedor ON OrdenPago.`proveedorId` = Proveedor.`id`
      INNER JOIN `FormasPagos` FormasPagos ON Pago.`idFormaPago` = FormasPagos.`id`
+     INNER JOIN `CuentasBancarias` CuentasBancarias ON Pago.`cuentaId` = CuentasBancarias.`id`
+     INNER JOIN `Bancos` Bancos ON CuentasBancarias.`bancoId` = Bancos.`id`
 WHERE
      Pago.`diferido` BETWEEN $P{FECHA_DESDE} AND $P{FECHA_HASTA}
- AND FormasPagos.`esChequePropio` = TRUE]]>
+ AND FormasPagos.`esChequePropio` = TRUE
+ORDER BY Pago.`diferido` ASC]]>
 	</queryString>
 	<field name="Pago_id" class="java.lang.Integer"/>
 	<field name="Pago_banco" class="java.lang.String"/>
@@ -72,6 +82,13 @@ WHERE
 	<field name="FormasPagos_depositaEnCuenta" class="java.lang.Boolean"/>
 	<field name="Proveedor_id" class="java.lang.Integer"/>
 	<field name="Proveedor_rsocial" class="java.lang.String"/>
+	<field name="CuentasBancarias_id" class="java.lang.Integer"/>
+	<field name="CuentasBancarias_tipo" class="java.lang.String"/>
+	<field name="CuentasBancarias_numero" class="java.lang.String"/>
+	<field name="CuentasBancarias_bancoId" class="java.lang.Integer"/>
+	<field name="CuentasBancarias_inactivo" class="java.lang.Boolean"/>
+	<field name="Bancos_id" class="java.lang.Integer"/>
+	<field name="Bancos_nombre" class="java.lang.String"/>
 	<variable name="TOTAL" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{Pago_importe}]]></variableExpression>
 	</variable>
@@ -225,7 +242,7 @@ WHERE
 					<rightPen lineWidth="0.0"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{Pago_banco}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Bancos_nombre}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="424" y="0" width="76" height="20" uuid="2e067554-dc53-418d-b850-69ae2a0ec26c"/>
