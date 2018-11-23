@@ -352,7 +352,7 @@ Tel: 4484-2416]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="73" width="429" height="20" uuid="9a7c1fee-6b49-47c0-a65b-599ba024eee3">
-					<printWhenExpression><![CDATA[$F{Cotizacion_esExportacion}==0]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$F{Cotizacion_esExportacion}==false]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[A los precios cotizados se les debe agregar el IVA (21%)]]></text>
