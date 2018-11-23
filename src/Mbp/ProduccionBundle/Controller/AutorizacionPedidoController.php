@@ -42,7 +42,8 @@ class AutorizacionPedidoController extends Controller
 			$sector=$repoSectores->findOneByDescripcion('ADMINISTRACION');
 		    $data=array(
 				'message' => 'Se autorizó una entrega, verficiar panel de autorizaciones',
-				'sectorReceptor' => $sector->getDescripcion()
+				'sectorReceptor' => $sector->getDescripcion(),
+				'env'=>$this->container->get('kernel')->getEnvironment()
 			);
 			
 		    $pusher->trigger('my-channel', 'my-event', json_encode($data));

@@ -94,6 +94,7 @@ Ext.define('MetApp.view.Produccion.Pedidos.PedidosAutorizadosView', {
 							format: 'd/m/Y',
 							submitFormat: 'd/m/Y',
 							xtype:'datecolumn',	
+							hidden: true
 						},
 						{
 							header: 'Autorizado',
@@ -108,7 +109,7 @@ Ext.define('MetApp.view.Produccion.Pedidos.PedidosAutorizadosView', {
 						{
 							header: 'Observaciones',
 							dataIndex: 'observacionesAutorizacion',
-							width: 'auto'
+							width: 250
 						},
 						/*{ 
 							xtype : 'checkcolumn',
