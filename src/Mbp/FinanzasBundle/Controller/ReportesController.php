@@ -945,7 +945,7 @@ ORDER BY
 					LEFT JOIN `cobranza_detallesCobranzas` cob_det ON cob_det.`cobranzasdetalle_id` = DetalleMovimientosBancos.`ChequeTerceros_id`
 					LEFT JOIN `Cobranzas` cob ON cob.`id` = cob_det.`cobranza_id`
 					LEFT JOIN `cliente` clienteCob ON clienteCob.`idCliente` = cob.`clienteId`
-			WHERE CAST(MovimientosBancos.`fechaMovimiento` AS DATE) BETWEEN '$desde' AND '$hasta'
+			WHERE CAST(DetalleMovimientosBancos.`fechaDiferida` AS DATE) BETWEEN '$desde' AND '$hasta'
 				AND ConceptosBanco.`id` BETWEEN $concepto1 AND $concepto2
 				AND CuentasBancarias.`id` BETWEEN $cuenta1 AND $cuenta2
 				ORDER BY DetalleMovimientosBancos.`fechaDiferida` ASC
