@@ -66,7 +66,8 @@ FROM
      LEFT JOIN `cliente` clienteCob ON clienteCob.`idCliente` = cob.`clienteId`
 WHERE CAST(MovimientosBancos.`fechaMovimiento` AS DATE) BETWEEN $P{DESDE} AND $P{HASTA}
 	AND ConceptosBanco.`id` BETWEEN $P{CONCEPTO_DESDE} AND $P{CONCEPTO_HASTA}
-	AND CuentasBancarias.`id` BETWEEN $P{CUENTA_DESDE} AND $P{CUENTA_HASTA}]]>
+	AND CuentasBancarias.`id` BETWEEN $P{CUENTA_DESDE} AND $P{CUENTA_HASTA}
+ORDER BY DetalleMovimientosBancos.`fechaDiferida` ASC]]>
 	</queryString>
 	<field name="MovimientosBancos_id" class="java.lang.Integer"/>
 	<field name="MovimientosBancos_fechaMovimiento" class="java.sql.Timestamp"/>

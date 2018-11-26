@@ -948,6 +948,7 @@ ORDER BY
 			WHERE CAST(MovimientosBancos.`fechaMovimiento` AS DATE) BETWEEN '$desde' AND '$hasta'
 				AND ConceptosBanco.`id` BETWEEN $concepto1 AND $concepto2
 				AND CuentasBancarias.`id` BETWEEN $cuenta1 AND $cuenta2
+				ORDER BY DetalleMovimientosBancos.`fechaDiferida` ASC
 			     ";
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	
