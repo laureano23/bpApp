@@ -1178,9 +1178,10 @@ ORDER BY
 			GROUP BY Facturas.`id`, TransaccionCobranzaFactura.`facturaId`) AS sub
 			WHERE
 				Facturas_total > TransaccionCobranzaFactura_aplicado AND
-				esFactura = true and ncAnula > 0 OR 
+				esFactura = true OR 
 				Facturas_total > TransaccionCobranzaFactura_aplicado AND
-				esNotaDebito = true  and ncAnula > 0
+				esNotaDebito = true OR
+				ncAnula > 0
 			ORDER BY cliente_idCliente, Facturas_fecha";
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	

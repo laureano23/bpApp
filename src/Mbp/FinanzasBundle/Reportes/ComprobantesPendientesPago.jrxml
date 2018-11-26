@@ -51,7 +51,7 @@ WHERE
 	esFactura = true OR
 	Facturas_total > TransaccionCobranzaFactura_aplicado AND
 	esNotaDebito = true OR
-	ncAnula != null
+	ncAnula > 0
 
 ORDER BY cliente_idCliente, Facturas_fecha]]>
 	</queryString>
