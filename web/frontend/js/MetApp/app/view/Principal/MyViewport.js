@@ -841,7 +841,11 @@ Ext.define('MetApp.view.Principal.MyViewport', {
         				itemId: 'tbCITIVentas',
         			},
         		]
-			}
+			},
+			{
+        		text: 'Verificación de Comprobantes AFIP',
+        		itemId: 'tbVerificacionCbtes'
+        	},
         ]
     		    	
     	var me = this;    	

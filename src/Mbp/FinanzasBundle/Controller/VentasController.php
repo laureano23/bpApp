@@ -92,14 +92,31 @@ class VentasController extends Controller
 	{
 
 		$response = new Response;
-
+		$req=$this->getRequest();
+		$tipo=$req->request->get('tipo');
+		$numero=$req->request->get('numero');
+		$puntoVenta=$req->request->get('puntoVta');
 		$faele = $this->get('mbp.faele'); //FACTURA ELECTRONICA			
 		
-		$cae=$faele->consultarCaeEmitido(1, 5034, 2);
+		try{
+			$cae=$faele->consultarCaeEmitido($tipo, $numero, $puntoVenta);
+			if(property_exists($cae->FECompConsultarResult, 'Errors')){
+				throw new \Exception($cae->FECompConsultarResult->Errors->Err->Msg, 1);			
+			}
 
-		print_r($cae);
-		$dig=$faele->digitoVerificador(1, $cae->FECompConsultarResult->ResultGet->CodAutorizacion, $cae->FECompConsultarResult->ResultGet->FchVto);
-		print_r('dig verificador: '.$dig);
+			$dig=$faele->digitoVerificador($tipo, $cae->FECompConsultarResult->ResultGet->CodAutorizacion, $cae->FECompConsultarResult->ResultGet->FchVto);			
+			
+			$response->setContent(
+				json_encode(array('success'=>true, 'info'=>$cae->FECompConsultarResult->ResultGet, 'digito'=>$dig))
+			);
+		}catch(\Exception $e){
+			$response->setContent(
+				json_encode(array(
+					'success'=>false,
+					'msg'=>$e->getMessage()
+				))
+			);
+		}
 		return $response;
 	}
 
