@@ -1164,21 +1164,23 @@ ORDER BY
 			     cliente.`rsocial` AS cliente_rsocial,
 			     cliente.`idCliente` AS cliente_idCliente,
 			     tipo.esFactura as esFactura,
-			     tipo.esNotaDebito as esNotaDebito
+			     tipo.esNotaDebito as esNotaDebito,
+				 fn.fc_id as ncAnula
 			FROM
 			     `Cobranzas` Cobranzas INNER JOIN `TransaccionCobranzaFactura` TransaccionCobranzaFactura ON Cobranzas.`id` = TransaccionCobranzaFactura.`cobranzaId`
 			     RIGHT JOIN `Facturas` Facturas ON TransaccionCobranzaFactura.`facturaId` = Facturas.`id`
 			     INNER JOIN `cliente` cliente ON Facturas.`clienteId` = cliente.`idCliente`
 			     INNER JOIN `TipoComprobante` tipo ON tipo.`id` = Facturas.`tipoId`
+				 left join Facturas_NotasCredito fn on fn.nc_id = Facturas.id
 			WHERE
 				cliente.`idCliente` BETWEEN $cliente1 AND $cliente2 AND
 				Facturas.`fecha` BETWEEN '$desde' AND '$hasta'
 			GROUP BY Facturas.`id`, TransaccionCobranzaFactura.`facturaId`) AS sub
 			WHERE
 				Facturas_total > TransaccionCobranzaFactura_aplicado AND
-				esFactura = true OR
+				esFactura = true and ncAnula > 0 OR 
 				Facturas_total > TransaccionCobranzaFactura_aplicado AND
-				esNotaDebito = true
+				esNotaDebito = true  and ncAnula > 0
 			ORDER BY cliente_idCliente, Facturas_fecha";
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	

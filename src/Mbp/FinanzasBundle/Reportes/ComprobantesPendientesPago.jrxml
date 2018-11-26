@@ -34,12 +34,14 @@ SELECT
      cliente.`rsocial` AS cliente_rsocial,
      cliente.`idCliente` AS cliente_idCliente,
      tipo.esFactura as esFactura,
-     tipo.esNotaDebito as esNotaDebito
+     tipo.esNotaDebito as esNotaDebito,
+	fn.fc_id as ncAnula
 FROM
      `Cobranzas` Cobranzas INNER JOIN `TransaccionCobranzaFactura` TransaccionCobranzaFactura ON Cobranzas.`id` = TransaccionCobranzaFactura.`cobranzaId`
      RIGHT JOIN `Facturas` Facturas ON TransaccionCobranzaFactura.`facturaId` = Facturas.`id`
      INNER JOIN `cliente` cliente ON Facturas.`clienteId` = cliente.`idCliente`
      INNER JOIN `TipoComprobante` tipo ON tipo.`id` = Facturas.`tipoId`
+	left join Facturas_NotasCredito fn on fn.nc_id = Facturas.id
 WHERE
 	cliente.`idCliente` BETWEEN $P{CLIENTE_DESDE} AND $P{CLIENTE_HASTA} AND
 	Facturas.`fecha` BETWEEN $P{FECHA_DESDE} AND $P{FECHA_HASTA}
@@ -48,7 +50,9 @@ WHERE
 	Facturas_total > TransaccionCobranzaFactura_aplicado AND
 	esFactura = true OR
 	Facturas_total > TransaccionCobranzaFactura_aplicado AND
-	esNotaDebito = true
+	esNotaDebito = true OR
+	ncAnula != null
+
 ORDER BY cliente_idCliente, Facturas_fecha]]>
 	</queryString>
 	<field name="TransaccionCobranzaFactura_aplicado" class="java.math.BigDecimal"/>
@@ -80,6 +84,7 @@ ORDER BY cliente_idCliente, Facturas_fecha]]>
 	<field name="esNotaDebito" class="java.lang.Boolean">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="ncAnula" class="java.lang.Integer"/>
 	<variable name="TOTAL_FC" class="java.lang.Double" resetType="Group" resetGroup="CLIENTE" calculation="Sum">
 		<variableExpression><![CDATA[$F{Facturas_total} * $F{Facturas_tipoCambio}]]></variableExpression>
 	</variable>
