@@ -63,7 +63,9 @@ Ext.define('MetApp.view.CCProveedores.PagoProveedores' ,{
 									{ text: 'Banco', dataIndex: 'banco', flex: 1 },
 									{ text: 'Cuenta', dataIndex: 'cuenta', flex: 1 },
 									{ text: 'Importe', dataIndex: 'importe', xtype: 'numbercolumn', flex: 1 },
-									{ text: 'Diferido', dataIndex: 'diferido', flex: 1 },							
+									{ text: 'Diferido', dataIndex: 'diferido', flex: 1,
+										xtype: 'datecolumn',
+										format : 'd/m/Y', },							
 								]
 							},
 						},						
