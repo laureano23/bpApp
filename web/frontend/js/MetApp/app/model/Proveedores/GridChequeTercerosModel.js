@@ -5,7 +5,7 @@ Ext.define('MetApp.model.Proveedores.GridChequeTercerosModel',{
 		{name: 'id', type: 'int'},
 		{name: 'banco', type: 'string'},
 		{name: 'emision', type: 'datetime'},
-		{name: 'diferido', type: 'datetime'},
+		{name: 'diferido', type: 'date', dateFormat: 'd/m/Y'},
 		{name: 'numero', type: 'string'},
 		{name: 'librador', type: 'string'},
 		{name: 'importe', type: 'float'},
