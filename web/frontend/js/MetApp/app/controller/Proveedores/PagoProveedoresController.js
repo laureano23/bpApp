@@ -157,7 +157,9 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 		
 		var arrayRecords = [];
 		var fcImputar = [];
-		store.each(function(rec) {				    
+		store.each(function(rec) {	
+			console.log(rec);
+			rec.data.diferido=Ext.Date.format(rec.data.diferido, "d/m/Y")			    
 	        arrayRecords.push(rec.getData());		    
 		});
 		

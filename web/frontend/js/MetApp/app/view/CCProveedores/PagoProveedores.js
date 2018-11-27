@@ -65,6 +65,8 @@ Ext.define('MetApp.view.CCProveedores.PagoProveedores' ,{
 									{ text: 'Importe', dataIndex: 'importe', xtype: 'numbercolumn', flex: 1 },
 									{ text: 'Diferido', dataIndex: 'diferido', flex: 1,
 										xtype: 'datecolumn',
+										submitFormat: 'd/m/Y',
+										submitValue: true,
 										format : 'd/m/Y', },							
 								]
 							},
