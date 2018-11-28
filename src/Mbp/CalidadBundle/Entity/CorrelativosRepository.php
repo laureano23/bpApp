@@ -14,14 +14,20 @@ class CorrelativosRepository extends EntityRepository
 		$date = new \DateTime('2013-03-11');
 		try{
 			$em = $this->getEntityManager();			
-					
-			$q = "SELECT c FROM MbpCalidadBundle:Correlativos c";
-			$res = $em->createQuery($q);
+			$repo=$em->getRepository('MbpCalidadBundle:Correlativos');
 			
-			$correlativos = $res->getArrayResult();			
+			$res = $repo->createQueryBuilder('c')
+				->select('c.cant, c.fecha, c.idCorrelativos, c.numCorrelativo, c.obs, enf.ot as otEnf, ot1.ot as ot1panel, ot2.ot as ot2panel, ot3.ot as ot3panel, ot4.ot as ot4panel')
+				->leftJoin('c.ot_Enf', 'enf')
+				->leftJoin('c.ot1panel', 'ot1')
+				->leftJoin('c.ot2panel', 'ot2')
+				->leftJoin('c.ot3panel', 'ot3')
+				->leftJoin('c.ot4panel', 'ot4')
+				->getQuery()
+				->getArrayResult();
 			
 			echo json_encode(array(
-				'data' => $correlativos
+				'data' => $res
 			));
 		}catch(\Doctrine\ORM\ORMException $e){
 			$this->get('logger')->error($e->getMessage());
@@ -37,6 +43,7 @@ class CorrelativosRepository extends EntityRepository
 		$finaldata = array();
 				
 		$em = $this->getEntityManager();
+		$repo=$em->getRepository('MbpProduccionBundle:Ot');
 		
 		/*
 		 * Comprobamos si el correlativo ya existe en nuestra tabla
@@ -71,11 +78,11 @@ class CorrelativosRepository extends EntityRepository
 			$corre->setnumCorrelativo($data->numCorrelativo);						
 			$corre->setcant($data->cant);
 			$corre->setfecha($date);			
-			$corre->setOtEnf($data->otEnf);			
-			$corre->setOt1panel($data->ot1panel);
-			$corre->setOt2panel($data->ot2panel);
-			$corre->setOt3panel($data->ot3panel);
-			$corre->setOt4panel($data->ot4panel);
+			$corre->setOtEnf($repo->find($data->otEnf));			
+			$corre->setOt1panel($repo->find($data->ot1panel));
+			$corre->setOt2panel($repo->find($data->ot2panel));
+			$corre->setOt3panel($repo->find($data->ot3panel));
+			$corre->setOt4panel($repo->find($data->ot4panel));
 			$corre->setObs($data->obs);
 			
 			/*
@@ -115,7 +122,7 @@ class CorrelativosRepository extends EntityRepository
 		$finaldata = array();
 				
 		$em = $this->getEntityManager();
-		
+		$repo=$em->getRepository('MbpProduccionBundle:Ot');
 				
 		/*
 		 * Creamos el objeto fecha con el string del cliente
@@ -136,11 +143,11 @@ class CorrelativosRepository extends EntityRepository
 		 $reg->setnumCorrelativo($data->numCorrelativo);
 		 $reg->setcant($data->cant);
 		 $reg->setfecha($date);
-		 $reg->setOtEnf($data->otEnf);		 
-		 $reg->setOt1panel($data->ot1panel);
-		 $reg->setOt2panel($data->ot2panel);
-		 $reg->setOt3panel($data->ot3panel);
-		 $reg->setOt4panel($data->ot4panel);
+		 $reg->setOtEnf($repo->find($data->otEnf));		 
+		 $reg->setOt1panel($repo->find($data->ot1panel));
+		 $reg->setOt2panel($repo->find($data->ot2panel));
+		 $reg->setOt3panel($repo->find($data->ot3panel));
+		 $reg->setOt4panel($repo->find($data->ot4panel));
 		 $reg->setObs($data->obs);
 		 
 		 /*
