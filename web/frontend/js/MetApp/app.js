@@ -22,6 +22,7 @@ Ext.application({
 		'Calidad.CalidadController',
 		'Calidad.CalidadReportesController',
 		'Calidad.RecepcionController',
+		'Calidad.TrazabilidadController',
 		'Clientes.ClientesController',
 		'Proveedores.ProveedoresController',
 		'Articulos.ArticulosController',

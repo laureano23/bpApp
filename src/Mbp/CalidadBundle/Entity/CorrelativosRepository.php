@@ -204,6 +204,20 @@ class CorrelativosRepository extends EntityRepository
 		  $em->remove($reg);
 		  $em->flush();
 	}
+
+	public function buscarCorrelativo($numCorrelativo){
+		$repo = $this->getEntityManager()->getRepository('MbpCalidadBundle:Correlativos');
+		$data = $repo->createQueryBuilder('c')
+			->select('art.codigo, art.descripcion')
+			->leftJoin('c.ot_Enf', 'radiador')
+			->leftJoin('radiador.idCodigo', 'art')
+			->where('c.numCorrelativo = :num')
+			->setParameter('num', $numCorrelativo)
+			->getQuery()
+			->getArrayResult();
+
+		return $data;
+	}
 }
 
 

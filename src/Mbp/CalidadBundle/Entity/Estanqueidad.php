@@ -33,7 +33,8 @@ class Estanqueidad
     /**
      * @var integer
      *
-     * @ORM\Column(name="ot", type="integer")
+     * @ORM\ManyToOne(targetEntity="Mbp\ProduccionBundle\Entity\Ot")
+     * @ORM\JoinColumn(name="ot", referencedColumnName="ot", nullable=false)
      */
     private $ot;
 

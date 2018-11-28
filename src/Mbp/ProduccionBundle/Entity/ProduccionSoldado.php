@@ -50,7 +50,8 @@ class ProduccionSoldado
     /**
      * @var string
      *
-     * @ORM\Column(name="ot", type="string", length=255, nullable=false)
+     * @ORM\ManyToOne(targetEntity="Mbp\ProduccionBundle\Entity\Ot")
+     * @ORM\JoinColumn(name="ot", referencedColumnName="ot", nullable=false)
 	 * @Assert\NotNull()
      */
     private $ot;

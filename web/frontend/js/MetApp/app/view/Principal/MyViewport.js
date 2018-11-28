@@ -609,6 +609,13 @@ Ext.define('MetApp.view.Principal.MyViewport', {
                 listeners : {
                     render : dragZone,
                 }, 
+			},
+			{
+                text: 'Cargar Correlativos',
+                itemId: 'verCargaCorrelativos',
+                listeners : {
+                    render : dragZone,
+                }, 
             },
         ]
         
