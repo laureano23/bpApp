@@ -418,11 +418,11 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 					hasta: values.hasta,
 				},
 				
-				success: function(resp){					
+				success: function(resp){		
 					var jsonResp = Ext.JSON.decode(resp.responseText);
 					if(jsonResp.success == true){
 						var ruta = Routing.generate('mbp_Reportes_VerInventarioCheques');						
-						window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+						window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 					}
 					myMask.hide();
 				},
@@ -487,7 +487,7 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 					var jsonResp = Ext.JSON.decode(resp.responseText);
 					if(jsonResp.success == true){
 						var ruta = Routing.generate('mbp_Reportes_VerCbptesNoPagados');						
-						window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+						window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 					}
 					myMask.hide();
 				},
@@ -519,7 +519,7 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 					var jsonResp = Ext.JSON.decode(resp.responseText);
 					if(jsonResp.success == true){
 						var ruta = Routing.generate('mbp_Reportes_VerReporteSaldoDeudor');						
-						window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+						window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 					}
 					myMask.hide();
 				},
@@ -542,7 +542,7 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 			success: function(resp){
 				var ruta = Routing.generate('mbp_calidad_showRepoRG014');
 						
-				window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+				window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 			}
 		})
 	},
@@ -571,7 +571,7 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 					if(jsonResp.success == true){
 						var ruta = Routing.generate('mbp_reportes_historicoMov_PDF');
 						
-						window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+						window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 					}
 					myMask.hide();
 				},
@@ -631,7 +631,7 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 					if(jsonResp.success == true){
 						var ruta = Routing.generate('mbp_Reportes_VerReporteIntResarcitorios');
 						
-						window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+						window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 					}
 					myMask.hide();
 				},
@@ -691,7 +691,7 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 					if(jsonResp.success == true){
 						var ruta = Routing.generate('mbp_Reportes_VerArtVendidos');
 						
-						window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+						window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 					}
 					myMask.hide();
 				},
@@ -749,7 +749,7 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 					if(jsonResp.success == true){
 						var ruta = Routing.generate('mbp_CCClientes_VerLibroIVAVentas');
 						
-						window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+						window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 					}
 					myMask.hide();
 				},
@@ -786,7 +786,7 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 					if(jsonResp.success == true){
 						var ruta = Routing.generate('mbp_proveedores_VerReporteLibroIVACompras');
 						
-						window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+						window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
 					}
 					myMask.hide();
 				},
