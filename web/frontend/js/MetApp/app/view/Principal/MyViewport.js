@@ -785,7 +785,14 @@ Ext.define('MetApp.view.Principal.MyViewport', {
 				                }, 
         					}
         				]		        				
-        			}
+					},
+					{
+						text: 'Trazabilidad',
+						itemId: 'trazabilidadRepo',
+						listeners : {
+							render : dragZone,
+						}, 
+					},
         		]
         	}
         ]

@@ -3,7 +3,7 @@ mbp_calidad_trazabilidad:
     type:     annotation
     prefix:   /trazabilidad
 
-mbp_calidad_trazabilidad:
+mbp_calidad_reportes:
     resource: "@MbpCalidadBundle/Controller/ReportesController.php"
     type:     annotation
     prefix:   /reportes

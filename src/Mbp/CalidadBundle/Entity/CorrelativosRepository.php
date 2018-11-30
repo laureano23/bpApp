@@ -9,6 +9,47 @@ use Mbp\ClientesBundle\Entity\Cliente;
 
 class CorrelativosRepository extends EntityRepository
 {
+	public function buscarTrazabilidad($correlativo){
+		$queryReporte="
+		select
+		c.numCorrelativo,
+		art.codigo,
+		art.descripcion,
+		probador.apellido,
+		probador.nombre,
+		ot1.ot otPanel1,
+		c.ot_Enf,
+		c.obs,
+		soldador.nombre as soldadorNombre,
+		soldador.apellido as soldadorApellido,
+		ope.descripcion as operacion,
+		ot1.ot as ot1,
+		ot2.ot as ot2,
+		ot3.ot as ot3,
+		ot4.ot as ot4,
+		rem.remitoNum,
+		rem.fecha,
+		cli.rsocial
+	from correlativos c
+	left join Ot ot1 on ot1.ot = c.ot1panel
+	left join Ot ot2 on ot2.ot = c.ot2panel
+	left join Ot ot3 on ot3.ot = c.ot3panel
+	left join Ot ot4 on ot4.ot = c.ot4panel
+	left join Estanqueidad e on e.ot = c.ot_Enf
+	left join Ot otRadiador on otRadiador.ot = c.ot_Enf
+	left join articulos art on otRadiador.idCodigo = art.idArticulos
+	left join Personal probador on probador.idP = e.probador
+	left join ProduccionSoldado prod on prod.ot = c.ot_Enf
+	left join Personal soldador on soldador.idP = prod.personalId
+	left join Operaciones ope on ope.id = prod.operacionId
+	left join RemitosClientes rem on rem.id = c.remitoId
+	left join cliente cli on cli.idCliente = rem.clienteId
+	where c.numCorrelativo = $correlativo
+	group by ope.id, ot_Enf";
+		
+		return $queryReporte;
+	}
+
 	public function listarCorrelativos()
 	{
 		$date = new \DateTime('2013-03-11');

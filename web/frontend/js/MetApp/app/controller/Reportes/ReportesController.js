@@ -20,7 +20,8 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 		'MetApp.view.Reportes.RepoCobranzasEntreFechas',
 		'MetApp.view.Reportes.ReporteCCProveedores',
 		'MetApp.view.Reportes.RepoSaldoAcreedor',
-		'MetApp.view.Reportes.RepoChequesPropiosEntregados'
+		'MetApp.view.Reportes.RepoChequesPropiosEntregados',
+		'MetApp.view.Reportes.RepoTrazabilidad'
 	],
 	refs:[
 	],
@@ -166,7 +167,29 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 			'ReporteCCProveedores button[itemId=printDateReport]': {
 				click: this.SubmitCCProveedoresReport
 			},
+			'viewport menuitem[itemId=trazabilidadRepo]': {
+				click: this.AddReporteTrazabilidad
+			},
+			'RepoTrazabilidad button[itemId=printReport]': {
+				click: this.SubmitTrazabilidadReport
+			},
 		});
+	},
+
+	SubmitTrazabilidadReport: function(btn){
+		var form=btn.up('form');
+		form.getForm().submit({
+			url: Routing.generate('mbp_calidad_repoTrazabilidad'),
+
+			success: function(form, atcion){
+				var ruta=Routing.generate('mbp_calidad_showRepoTrazabilidad');
+				window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
+			}
+		})
+	},
+
+	AddReporteTrazabilidad: function(btn){
+		Ext.widget('RepoTrazabilidad');
 	},
 
 	PrintChequesPropiosEntregados: function(btn){

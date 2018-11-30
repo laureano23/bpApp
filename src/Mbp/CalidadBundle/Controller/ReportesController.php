@@ -14,6 +14,70 @@ use Mbp\ProduccionBundle\Clases\Calculo;
 
 class ReportesController extends Controller
 {
+	/**
+     * @Route("/repoTrazabilidad", name="mbp_calidad_repoTrazabilidad", options={"expose"=true})
+     */
+	public function repoTrazabilidad(){
+		$repo = $this->get('reporteador');		
+		$kernel = $this->get('kernel');		
+		$req=$this->get('request');
+		$em = $this->getDoctrine()->getManager();
+		$repoCorrelativos=$em->getRepository('MbpCalidadBundle:Correlativos');
+		$response=new Response;
+
+		try{
+			$correlativo=$req->request->get('correlativo');
+			$sql=$repoCorrelativos->buscarTrazabilidad($correlativo);
+
+			$jru = $repo->jru();
+				
+			$ruta = $kernel->locateResource('@MbpCalidadBundle/Reportes/TraceCorrelativos.jrxml');		
+			$destino = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'TraceCorrelativos.pdf';
+						
+			$param = $repo->getJava('java.util.HashMap');
+			$param->put('numCorrelativo', $correlativo);
+			
+			$conn = $repo->getJdbc();	
+			
+			$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
+			
+			
+			return $response->setContent(json_encode(
+					array(
+						'success'=> true,
+						'reporte' => $destino,		
+					)
+				));
+
+
+		}catch(\Exception $e){
+			throw $e;
+			$response->setContent(json_encode(
+				array('success'=>false, 'msg'=>$e->getMessage())
+			));
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	/**
+     * @Route("/showRepoTrazabilidad", name="mbp_calidad_showRepoTrazabilidad", options={"expose"=true})
+     */
+	public function showRepoTrazabilidad()
+	{		
+		$kernel = $this->get('kernel');	
+		$basePath = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'TraceCorrelativos.pdf';
+		$response = new BinaryFileResponse($basePath);
+        $response->trustXSendfileTypeHeader();
+		$filename = 'TraceCorrelativos.pdf';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $filename,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
+        );
+		$response->headers->set('Content-type', 'application/pdf');
+
+        return $response;
+	}
 
 	/**
      * @Route("/generateFormRg010", name="mbp_calidad_generateFormRg010", options={"expose"=true})
