@@ -3,6 +3,11 @@ mbp_calidad_trazabilidad:
     type:     annotation
     prefix:   /trazabilidad
 
+mbp_calidad_trazabilidad:
+    resource: "@MbpCalidadBundle/Controller/ReportesController.php"
+    type:     annotation
+    prefix:   /reportes
+
 mbp_calidad_ingresos:
     resource: "@MbpCalidadBundle/Controller/ControlRecepcionController.php"
     type:     annotation
@@ -40,33 +45,6 @@ mbp_calidad_addEstanqueidadReg:
     options:
        expose: true
 
-#Formulario Control de estanqueidad
-
-mbp_calidad_showFormRg010:
-    path:     /showFormRg010
-    defaults: { _controller: MbpCalidadBundle:Reportes:showFormRg010 }
-    options:
-       expose: true
-
-mbp_calidad_generateFormRg010:
-    path:     /generateFormRg010
-    defaults: { _controller: MbpCalidadBundle:Reportes:generateFormRg010 }
-    options:
-       expose: true
-
-#Reportes Control de estanqueidad
-
-mbp_calidad_generateReporteRg010:
-    path:     /generateReporteRg010
-    defaults: { _controller: MbpCalidadBundle:Reportes:generateReporteRg010 }
-    options:
-       expose: true
-       
-mbp_calidad_showReporteRg010:
-    path:     /showReporteRg010
-    defaults: { _controller: MbpCalidadBundle:Reportes:showReporteRg010 }
-    options:
-       expose: true
 
 mbp_calidad_listEstanqueidad:
     path:     /listEstanqueidad
@@ -77,65 +55,5 @@ mbp_calidad_listEstanqueidad:
 mbp_calidad_deleteEstanqueidad:
     path:     /deleteEstanqueidad
     defaults: { _controller: MbpCalidadBundle:Default:deleteEstanqueidadReg }
-    options:
-       expose: true
-
-mbp_calidad_generateReporteRg010Fechas:
-    path:     /generateReporteRg010Fechas
-    defaults: { _controller: MbpCalidadBundle:Reportes:generateReporteRg010Fechas }
-    options:
-       expose: true
-
-mbp_calidad_showReporteRg010Fechas:
-    path:     /showReporteRg010Fechas
-    defaults: { _controller: MbpCalidadBundle:Reportes:showReporteRg010Fechas }
-    options:
-       expose: true
-
-mbp_calidad_generateRepoFallasSoldadura:
-    path:     /generateRepoFallasSoldadura
-    defaults: { _controller: MbpCalidadBundle:Reportes:generateRepoFallasSoldadura }
-    options:
-       expose: true
-
-mbp_calidad_showRepoFallasSoldadura:
-    path:     /showRepoFallasSoldadura
-    defaults: { _controller: MbpCalidadBundle:Reportes:showRepoFallasSoldadura }
-    options:
-       expose: true
-
-mbp_calidad_generateRepoEstanqueidad3D:
-    path:     /generateRepoEstanqueidad3D
-    defaults: { _controller: MbpCalidadBundle:Reportes:generateRepoEstanqueidad3D }
-    options:
-       expose: true
-
-mbp_calidad_showRepoEstanqueidad3D:
-    path:     /showRepoEstanqueidad3D
-    defaults: { _controller: MbpCalidadBundle:Reportes:showRepoEstanqueidad3D }
-    options:
-       expose: true
-
-mbp_calidad_generateRepoAcumuladoOpe:
-    path:     /generateRepoAcumuladoOpe
-    defaults: { _controller: MbpCalidadBundle:Reportes:generateRepoAcumuladoOpe }
-    options:
-       expose: true
-
-mbp_calidad_showRepoAcumuladoOpe:
-    path:     /showRepoAcumuladoOpe
-    defaults: { _controller: MbpCalidadBundle:Reportes:showRepoAcumuladoOpe }
-    options:
-       expose: true
-
-mbp_calidad_generateRepoRG014:
-    path:     /generateRepoRG014
-    defaults: { _controller: MbpCalidadBundle:Reportes:generateRepoRG014 }
-    options:
-       expose: true
-
-mbp_calidad_showRepoRG014:
-    path:     /showRepoRG014
-    defaults: { _controller: MbpCalidadBundle:Reportes:showRepoRG014 }
     options:
        expose: true

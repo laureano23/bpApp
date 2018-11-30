@@ -7,16 +7,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 
 use Mbp\ProduccionBundle\Clases\Calculo;
 
 class ReportesController extends Controller
 {
-	/*
-	 * RG-010 Estanqueidad Form
-	 */
-	public function generateFormRg010Action()
+
+	/**
+     * @Route("/generateFormRg010", name="mbp_calidad_generateFormRg010", options={"expose"=true})
+     */
+	public function generateFormRg010()
 	{
 		$repo = $this->get('reporteador');		
 		$kernel = $this->get('kernel');		
@@ -45,7 +47,10 @@ class ReportesController extends Controller
 		return new Response();
 	}
 	
-	public function showFormRg010Action()
+	/**
+     * @Route("/showFormRg010", name="mbp_calidad_showFormRg010", options={"expose"=true})
+     */
+	public function showFormRg010()
 	{		
 		$kernel = $this->get('kernel');	
 		$basePath = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'RG-010 Estanqueidad.pdf';
@@ -62,10 +67,10 @@ class ReportesController extends Controller
         return $response;
 	}
     
-	/*
-	 * RG-010 Estanqueidad Reporte
-	 */
-	public function generateReporteRg010Action()
+	/**
+     * @Route("/generateReporteRg010", name="mbp_calidad_generateReporteRg010", options={"expose"=true})
+     */
+	public function generateReporteRg010()
 	{
 		$repo = $this->get('reporteador');		
 		$kernel = $this->get('kernel');	
@@ -146,7 +151,10 @@ class ReportesController extends Controller
 		return new Response();
 	}
 	
-	public function showReporteRg010Action()
+	/**
+     * @Route("/showReporteRg010", name="mbp_calidad_showReporteRg010", options={"expose"=true})
+     */
+	public function showReporteRg010()
 	{
 		$kernel = $this->get('kernel');	
 		$basePath = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'RG010-01.pdf';
@@ -163,10 +171,10 @@ class ReportesController extends Controller
         return $response;
 	}
 
-	/*
-	 * RG-010 Estanqueidad Reporte ENTRE FECHAS
-	 */
-	public function generateReporteRg010FechasAction()
+	/**
+     * @Route("/generateReporteRg010Fechas", name="mbp_calidad_generateReporteRg010Fechas", options={"expose"=true})
+     */
+	public function generateReporteRg010Fechas()
 	{
 		$repo = $this->get('reporteador');		
 		$kernel = $this->get('kernel');	
@@ -250,7 +258,10 @@ class ReportesController extends Controller
 		return new Response();
 	}
 	
-	public function showReporteRg010FechasAction()
+	/**
+     * @Route("/showReporteRg010Fechas", name="mbp_calidad_showReporteRg010Fechas", options={"expose"=true})
+     */
+	public function showReporteRg010Fechas()
 	{
 		$kernel = $this->get('kernel');	
 		$basePath = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'RG010-01Fechas.pdf';
@@ -266,8 +277,11 @@ class ReportesController extends Controller
 
         return $response;
 	}
-	
-   public function generateRepoFallasSoldaduraAction()
+
+	/**
+     * @Route("/generateRepoFallasSoldadura", name="mbp_calidad_generateRepoFallasSoldadura", options={"expose"=true})
+     */
+   public function generateRepoFallasSoldadura()
    {
    		$repo = $this->get('reporteador');		
 		$kernel = $this->get('kernel');	
@@ -354,8 +368,11 @@ class ReportesController extends Controller
 			return false;
 		}
    }
-   
-   public function showRepoFallasSoldaduraAction()
+
+   /**
+     * @Route("/showRepoFallasSoldadura", name="mbp_calidad_showRepoFallasSoldadura", options={"expose"=true})
+     */   
+   public function showRepoFallasSoldadura()
    {
    		$kernel = $this->get('kernel');	
 		$basePath = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'fallasSoldadura.pdf';
@@ -372,7 +389,10 @@ class ReportesController extends Controller
         return $response;
    } 
    
-   public function generateRepoEstanqueidad3DAction()
+   /**
+     * @Route("/generateRepoEstanqueidad3D", name="mbp_calidad_generateRepoEstanqueidad3D", options={"expose"=true})
+     */ 
+   public function generateRepoEstanqueidad3D()
    {
    		$repo = $this->get('reporteador');		
 		$kernel = $this->get('kernel');	
@@ -457,7 +477,10 @@ class ReportesController extends Controller
 		}	
    }
    
-   public function showRepoEstanqueidad3DAction()
+   /**
+     * @Route("/showRepoEstanqueidad3D", name="mbp_calidad_showRepoEstanqueidad3D", options={"expose"=true})
+     */ 
+   public function showRepoEstanqueidad3D()
    {
    		$kernel = $this->get('kernel');	
 		$basePath = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'ReporteGraficoEstanqueidad.pdf';
@@ -474,7 +497,10 @@ class ReportesController extends Controller
         return $response;
    } 
    
-   public function generateRepoAcumuladoOpeAction()
+   /**
+     * @Route("/generateRepoAcumuladoOpe", name="mbp_calidad_generateRepoAcumuladoOpe", options={"expose"=true})
+     */ 
+   public function generateRepoAcumuladoOpe()
    {
    		$repo = $this->get('reporteador');		
 		$kernel = $this->get('kernel');	
@@ -562,7 +588,10 @@ class ReportesController extends Controller
 		}	
    }
    
-   public function showRepoAcumuladoOpeAction()
+   /**
+     * @Route("/showRepoAcumuladoOpe", name="mbp_calidad_showRepoAcumuladoOpe", options={"expose"=true})
+     */
+   public function showRepoAcumuladoOpe()
    {
    		$kernel = $this->get('kernel');	
 		$basePath = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'Operaciones_soldadura_entreFechas.pdf';
@@ -579,7 +608,10 @@ class ReportesController extends Controller
         return $response;
    } 
    
-   public function generateRepoRG014Action()
+   /**
+     * @Route("/generateRepoRG014", name="mbp_calidad_generateRepoRG014", options={"expose"=true})
+     */
+   public function generateRepoRG014()
    {
    		$repo = $this->get('reporteador');		
 		$kernel = $this->get('kernel');	
@@ -635,7 +667,10 @@ class ReportesController extends Controller
 		}	
    }
 
-	public function showRepoRG014Action()
+	/**
+     * @Route("/showRepoRG014", name="mbp_calidad_showRepoRG014", options={"expose"=true})
+     */
+	public function showRepoRG014()
    {
    		$kernel = $this->get('kernel');	
 		$basePath = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'RG-014 Numeracion Correlativa.pdf';

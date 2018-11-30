@@ -20,6 +20,7 @@ class EstanqueidadRepository extends EntityRepository
 	public function addRegistro($reg, $idReg, $validator)
 	{
 		$em = $this->getEntityManager();
+		$repo = $em->getRepository('MbpProduccionBundle:Ot');
 		
 		$encoder = new JsonEncoder();
 		$normalizer = new GetSetMethodNormalizer();
@@ -52,7 +53,7 @@ class EstanqueidadRepository extends EntityRepository
 				$obj = new Estanqueidad();
 			}
 			$obj->setfechaPrueba($date)
-				->setot($reg['ot'])
+				->setot($repo->find($reg['ot']))
 				->setpresion($reg['presion'])
 				->setpruebaNum($reg['pruebaNum'])
 				->setestado($reg['estado']) // 0 OK, 1 NO OK, 2 REPARADO
@@ -114,7 +115,7 @@ class EstanqueidadRepository extends EntityRepository
 			$query = $repo->createQueryBuilder('e')
 					->select("e.id,
 							DATE_FORMAT(e.fechaPrueba, '%d/%m/%Y') AS fechaPrueba,
-							e.ot,
+							ot.ot,
 							e.pruebaNum,
 							e.estado,
 							e.mChapa,
@@ -137,6 +138,7 @@ class EstanqueidadRepository extends EntityRepository
 							")
 					->leftJoin('e.soldador', 's')
 					->leftJoin('e.probador', 'p')
+					->leftJoin('e.ot', 'ot')
 					->getQuery()
 					->getArrayResult();
 			$rec = array();

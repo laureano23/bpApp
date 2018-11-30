@@ -32,7 +32,7 @@ class ProduccionSoldadoController extends Controller
 						DATE_FORMAT(p.hsInicio, '%H:%i') as hsInicio,
 						DATE_FORMAT(p.hsFin, '%H:%i') as hsFin,
 						p.id,
-						p.ot,
+						ot.ot,
 						p.cantidad,
 						p.observaciones,
 						personal.idP as idP,
@@ -40,8 +40,9 @@ class ProduccionSoldadoController extends Controller
 						CONCAT(op.codigo, ' | ',op.descripcion) as operacion,
 						op.id as operacionId
 						")
-				->join('p.personalId', 'personal')
-				->join('p.operacionId', 'op')
+				->leftjoin('p.personalId', 'personal')
+				->leftjoin('p.operacionId', 'op')
+				->leftjoin('p.ot', 'ot')
 				->where('p.fecha > :delay')
 				->setParameter('delay', $delay)
 				->orderBy('p.id', 'ASC')
@@ -68,7 +69,7 @@ class ProduccionSoldadoController extends Controller
 		$repoPersonal = $em->getRepository('MbpPersonalBundle:Personal');
 		$repoProd = $em->getRepository('MbpProduccionBundle:ProduccionSoldado');
 		$repoOperaciones = $em->getRepository('MbpProduccionBundle:Operaciones');
-		
+		$repoOT = $em->getRepository('MbpProduccionBundle:Ot');		
 		
 		try{
 			$data = $req->request->get('data');
@@ -85,7 +86,7 @@ class ProduccionSoldadoController extends Controller
 			
 			$registro->setFechaCarga(new \DateTime());
 			$registro->setFecha(\DateTime::createFromFormat('d/m/Y', $decodeData->fecha));
-			$registro->setOt($decodeData->ot);
+			$registro->setOt($repoOT->find($decodeData->ot));
 			$registro->setHsInicio(\DateTime::createFromFormat('H:i', $decodeData->hsInicio));
 			$registro->setHsFin(\DateTime::createFromFormat('H:i', $decodeData->hsFin));
 			$registro->setObservaciones($decodeData->observaciones);
