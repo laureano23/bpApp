@@ -27,6 +27,7 @@ security:
         - { path: ^/articulos/extranet/*, roles: ROLE_EXTRANET }
         - { path: ^/articulos/*, roles: ROLE_FABRICA }        
         - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/calidad/trazabilidad, roles: ROLE_FABRICA }
         - { path: ^/calidad, roles: ROLE_CALIDAD }
         - { path: ^/personal, roles: ROLE_CALIDAD }
         - { path: ^/sueldos, roles: ROLE_ADMINISTRACION }
