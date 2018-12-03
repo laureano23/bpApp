@@ -40,7 +40,7 @@ class Correlativos
      * @ORM\ManyToOne(targetEntity="Mbp\ProduccionBundle\Entity\Ot")
      * @ORM\JoinColumn(name="ot_Enf", referencedColumnName="ot")
      */
-    private $ot_Enf;
+    private $otEnf;
     
     /**
      * @var integer

@@ -59,11 +59,12 @@ class CorrelativosRepository extends EntityRepository
 			
 			$res = $repo->createQueryBuilder('c')
 				->select('c.cant, c.fecha, c.idCorrelativos, c.numCorrelativo, c.obs, enf.ot as otEnf, ot1.ot as ot1panel, ot2.ot as ot2panel, ot3.ot as ot3panel, ot4.ot as ot4panel')
-				->leftJoin('c.ot_Enf', 'enf')
+				->leftJoin('c.otEnf', 'enf')
 				->leftJoin('c.ot1panel', 'ot1')
 				->leftJoin('c.ot2panel', 'ot2')
 				->leftJoin('c.ot3panel', 'ot3')
 				->leftJoin('c.ot4panel', 'ot4')
+				->where('c.idCorrelativos = 18976')
 				->getQuery()
 				->getArrayResult();
 			

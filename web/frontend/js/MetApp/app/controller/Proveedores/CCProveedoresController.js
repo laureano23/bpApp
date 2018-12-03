@@ -284,13 +284,14 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 		
 		Ext.Ajax.request({
 			url: Routing.generate('mbp_proveedores_reporteDetallePago'),
-			
+			standardSubmit: true,
+			target: '_blank',
 			params: {
 				idProv: idProv,
 				idOp: data.idOP
 			},
 			
-			success: function(resp){
+			/*success: function(resp){
 				var jsonResp = Ext.JSON.decode(resp.responseText);
 				var ruta = Routing.generate('mbp_proveedores_verReporteDetallePago');
 				if(jsonResp.success == true){
@@ -309,7 +310,7 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 						}
 					});
 				}
-			}
+			}*/
 		});
 	},
 	

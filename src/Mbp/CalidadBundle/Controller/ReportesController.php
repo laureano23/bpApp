@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Mbp\UtilitariosBundle\Clases\CustomResponse;
 
 
 use Mbp\ProduccionBundle\Clases\Calculo;
@@ -23,7 +24,7 @@ class ReportesController extends Controller
 		$req=$this->get('request');
 		$em = $this->getDoctrine()->getManager();
 		$repoCorrelativos=$em->getRepository('MbpCalidadBundle:Correlativos');
-		$response=new Response;
+		$response=new CustomResponse;
 
 		try{
 			$correlativo=$req->request->get('correlativo');
@@ -40,43 +41,15 @@ class ReportesController extends Controller
 			$conn = $repo->getJdbc();	
 			
 			$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
-			
-			
-			return $response->setContent(json_encode(
-					array(
-						'success'=> true,
-						'reporte' => $destino,		
-					)
-				));
 
+			return new BinaryFileResponse($destino);
 
 		}catch(\Exception $e){
-			throw $e;
 			$response->setContent(json_encode(
 				array('success'=>false, 'msg'=>$e->getMessage())
 			));
 			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 		}
-	}
-
-	/**
-     * @Route("/showRepoTrazabilidad", name="mbp_calidad_showRepoTrazabilidad", options={"expose"=true})
-     */
-	public function showRepoTrazabilidad()
-	{		
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'TraceCorrelativos.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'TraceCorrelativos.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-
-        return $response;
 	}
 
 	/**

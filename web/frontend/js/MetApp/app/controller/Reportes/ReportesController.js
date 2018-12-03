@@ -179,12 +179,9 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 	SubmitTrazabilidadReport: function(btn){
 		var form=btn.up('form');
 		form.getForm().submit({
-			url: Routing.generate('mbp_calidad_repoTrazabilidad'),
-
-			success: function(form, atcion){
-				var ruta=Routing.generate('mbp_calidad_showRepoTrazabilidad');
-				window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
-			}
+			standardSubmit: true,
+			target: '_blank',
+			url: Routing.generate('mbp_calidad_repoTrazabilidad')
 		})
 	},
 
@@ -196,11 +193,9 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 		var form=btn.up('form');
 
 		form.getForm().submit({
-			url: Routing.generate('mbp_proveedores_reporteChequePropioEntregado'),
-			success: function(resp){
-				var ruta=Routing.generate('mbp_proveedores_verReporteChequePropioEntregado');
-				window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
-			}
+			standardSubmit: true,
+			target: '_blank',
+			url: Routing.generate('mbp_proveedores_reporteChequePropioEntregado')
 		})
 	},
 
@@ -214,32 +209,21 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 
 	PrintResumenSaldoAcreedor: function(btn){
 		var form=btn.up('form');
+		
 		form.submit({
-			url: Routing.generate('mbp_proveedores_reporteSaldoAcreedor'),
-
-			success: function(resp){
-				var ruta=Routing.generate('mbp_proveedores_verReporteSaldoAcreedor');
-				window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
-			}
+			standardSubmit: true,
+			target: '_blank',
+			url: Routing.generate('mbp_proveedores_reporteSaldoAcreedor')
 		})
 	},
 
 	SubmitCCProveedoresReport: function(btn){
 		var form=btn.up('form');
-
-		/*Ext.Ajax.request({
-			url: Routing.generate('mbp_proveedores_reporteCC'),
-		})*/
 		form.getForm().suspendEvent('actionfailed');
 		form.submit({
 			url: Routing.generate('mbp_proveedores_reporteCC'),
-			success: function(){
-				var ruta=Routing.generate('mbp_proveedores_verReporteCC');
-				window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
-			},
-			failure: function(){
-
-			}
+			standardSubmit: true,
+			target: '_blank'
 		});
 	},
 
@@ -267,12 +251,9 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 		var form=btn.up('form').getForm();
 
 		form.submit({
-			url: Routing.generate('mbp_finanzas_CobranzasEntreFechas'),
-			waitMsg: 'Cargando...',
-			success: function(){
-				var ruta=Routing.generate('mbp_finanzas_VerCobranzasEntreFechas');
-				window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
-			}
+			standardSubmit: true,
+			target: '_blank',
+			url: Routing.generate('mbp_finanzas_CobranzasEntreFechas')
 		})
 	},
 
@@ -281,11 +262,8 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 
 		form.submit({
 			url: Routing.generate('mbp_proveedores_OrdenesDePago'),
-			waitMsg: 'Cargando...',
-			success: function(){
-				var ruta=Routing.generate('mbp_proveedores_VerOrdendesDePago');
-				window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
-			}
+			standardSubmit: true,
+			target: '_blank'
 		})
 	},
 

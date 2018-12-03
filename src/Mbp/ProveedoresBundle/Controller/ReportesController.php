@@ -100,11 +100,7 @@ class ReportesController extends Controller
 
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 			
-			return $response->setContent(json_encode(
-				array(
-					'success'=> true,	
-				)
-			));
+			return new BinaryFileResponse($destino);
 		}catch(\Exception $e){
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(json_encode(array(
@@ -115,26 +111,6 @@ class ReportesController extends Controller
 	}
 
 	/**
-     * @Route("/proveedores/verReporteChequePropioEntregado", name="mbp_proveedores_verReporteChequePropioEntregado", options={"expose"=true})
-     */	    
-    public function verReporteChequePropioEntregado()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpProveedoresBundle/Resources/public/pdf/').'ChequePropios_Entregados.pdf';	
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'ChequePropios_Entregados.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-
-        return $response;
-	}
-
-	/**
      * @Route("/proveedores/reporteSaldoAcreedor", name="mbp_proveedores_reporteSaldoAcreedor", options={"expose"=true})
      */
     public function reporteSaldoAcreedor()
@@ -142,7 +118,6 @@ class ReportesController extends Controller
     	//RECIBO PARAMETROS
 		$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
-		$response = new Response;
 		
 		try{
 			$vencimiento = $req->request->get('vencimiento');								
@@ -198,11 +173,7 @@ class ReportesController extends Controller
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 			
 			
-			return $response->setContent(json_encode(
-				array(
-					'success'=> true,	
-				)
-			));
+			return new BinaryFileResponse($destino);
 		}catch(\Exception $e){
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(json_encode(array(
@@ -213,26 +184,6 @@ class ReportesController extends Controller
 	}
 
 	/**
-     * @Route("/proveedores/verReporteSaldoAcreedor", name="mbp_proveedores_verReporteSaldoAcreedor", options={"expose"=true})
-     */	    
-    public function verReporteSaldoAcreedor()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpProveedoresBundle/Resources/public/pdf/').'ResumenSaldoAcreedor.pdf';	
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'ResumenSaldoAcreedor.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-
-        return $response;
-	}
-
-	/**
      * @Route("/proveedores/reporteCC", name="mbp_proveedores_reporteCC", options={"expose"=true})
      */
     public function reporteCC()
@@ -240,32 +191,18 @@ class ReportesController extends Controller
     	//RECIBO PARAMETROS
 		$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
-		$response = new Response;
 		
 		try{
-			/*
-			 * PARAMETROS
-			 */	
 			$desde = $req->request->get('desde');	
 			$idProveedor = $req->request->get('proveedor');
 							
 			$reporteador = $this->get('reporteador');
 			$kernel = $this->get('kernel');
 			
-			/*
-			 * Configuro reporte
-			 */
 			$jru = $reporteador->jru();
-			
-			/*
-			 * Ruta archivo Jasper
-			 */				
 					
 			$ruta = $kernel->locateResource('@MbpProveedoresBundle/Reportes/ResumenCCProveedor.jrxml');
 			
-			/*
-			 * Ruta de destino del PDF
-			 */
 			$destino = $kernel->locateResource('@MbpProveedoresBundle/Resources/public/pdf/').'ResumenCCProveedor.pdf';		
 			
 			//Parametros HashMap
@@ -334,11 +271,7 @@ class ReportesController extends Controller
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 			
 			
-			return $response->setContent(json_encode(
-				array(
-					'success'=> true,	
-				)
-			));
+			return new BinaryFileResponse($destino);
 		}catch(\Exception $e){
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(json_encode(array(
@@ -346,26 +279,6 @@ class ReportesController extends Controller
 				'msg' => $e->getMessage()
 			)));
 		}		
-	}
-
-	/**
-     * @Route("/proveedores/verReporteCC", name="mbp_proveedores_verReporteCC", options={"expose"=true})
-     */	    
-    public function verReporteCC()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpProveedoresBundle/Resources/public/pdf/').'ResumenCCProveedor.pdf';	
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'ResumenCCProveedor.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-
-        return $response;
 	}
 
 
@@ -587,11 +500,7 @@ class ReportesController extends Controller
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 			
 			
-			return $response->setContent(json_encode(
-				array(
-					'success'=> true,	
-				)
-			));
+			return new BinaryFileResponse($destino);
 		}catch(\Exception $e){
 			return $response->setContent(json_encode(array(
 				'success' => false,
@@ -1156,33 +1065,19 @@ class ReportesController extends Controller
     	//RECIBO PARAMETROS
 		$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
-		$response = new Response;
-		
 		
 		try{
-			/*
-			 * PARAMETROS
-			 */
 			$desde =  \DateTime::createFromFormat('d/m/Y', $req->request->get('desde'));
 			$hasta = \DateTime::createFromFormat('d/m/Y', $req->request->get('hasta'));			
 
 			$reporteador = $this->get('reporteador');
 			$kernel = $this->get('kernel');
 			
-			/*
-			 * Configuro reporte
-			 */
+			
 			$jru = $reporteador->jru();
 			
-			/*
-			 * Ruta archivo Jasper
-			 */				
-					
 			$ruta = $kernel->locateResource('@MbpProveedoresBundle/Reportes/OrdenPagoEntreFechas.jrxml');
 			
-			/*
-			 * Ruta de destino del PDF
-			 */
 			$destino = $kernel->locateResource('@MbpProveedoresBundle/Resources/public/pdf/').'OrdenPagoEntreFechas.pdf';		
 			
 			//Parametros HashMap
@@ -1247,9 +1142,7 @@ class ReportesController extends Controller
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 
-			return $response->setContent(
-				json_encode(array('success' => true))
-			);	
+			return new BinaryFileResponse($destino);
 				
 		}catch(\Exception $e){
 			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
@@ -1257,27 +1150,7 @@ class ReportesController extends Controller
 				json_encode(array('success' => false, 'msg' => $e->getMessage()))
 				);
 		}
-	}   
-		
-	/**
-	 * @Route("/proveedores/VerOrdendesDePago", name="mbp_proveedores_VerOrdendesDePago", options={"expose"=true})
-	 */	    
-	public function VerOrdendesDePago()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpProveedoresBundle/Resources/public/pdf/').'OrdenPagoEntreFechas.pdf';	
-		$response = new BinaryFileResponse($basePath);
-		$response->trustXSendfileTypeHeader();
-		$filename = 'OrdenPagoEntreFechas.pdf';
-		$response->setContentDisposition(
-			ResponseHeaderBag::DISPOSITION_INLINE,
-			$filename,
-			iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-		);
-		$response->headers->set('Content-type', 'application/pdf');
-
-		return $response;
-	}
+	}  
 	
 	/**
      * @Route("/finanzas/CobranzasEntreFechas", name="mbp_finanzas_CobranzasEntreFechas", options={"expose"=true})
@@ -1286,33 +1159,17 @@ class ReportesController extends Controller
     	//RECIBO PARAMETROS
 		$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
-		$response = new Response;
-		
-		
 		try{
-			/*
-			 * PARAMETROS
-			 */
 			$desde =  \DateTime::createFromFormat('d/m/Y', $req->request->get('desde'));
 			$hasta = \DateTime::createFromFormat('d/m/Y', $req->request->get('hasta'));			
 
 			$reporteador = $this->get('reporteador');
 			$kernel = $this->get('kernel');
 			
-			/*
-			 * Configuro reporte
-			 */
 			$jru = $reporteador->jru();
 			
-			/*
-			 * Ruta archivo Jasper
-			 */				
-					
 			$ruta = $kernel->locateResource('@MbpFinanzasBundle/Reportes/ReciboCobranzasEntreFechas.jrxml');
 			
-			/*
-			 * Ruta de destino del PDF
-			 */
 			$destino = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'ReciboCobranzasEntreFechas.pdf';		
 			
 			//Parametros HashMap
@@ -1327,7 +1184,6 @@ class ReportesController extends Controller
 			
 			$desdeSql = $desde->format('Y-m-d');
 			$hastaSql = $hasta->format('Y-m-d');
-
 
 			$sql = "
 			SELECT
@@ -1359,9 +1215,7 @@ class ReportesController extends Controller
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 
-			return $response->setContent(
-				json_encode(array('success' => true))
-			);	
+			return new BinaryFileResponse($destino);
 				
 		}catch(\Exception $e){
 			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
@@ -1369,26 +1223,6 @@ class ReportesController extends Controller
 				json_encode(array('success' => false, 'msg' => $e->getMessage()))
 				);
 		}
-	}
-
-	/**
-	 * @Route("/finanzas/VerCobranzasEntreFechas", name="mbp_finanzas_VerCobranzasEntreFechas", options={"expose"=true})
-	 */	    
-	public function VerCobranzasEntreFechas()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'ReciboCobranzasEntreFechas.pdf';	
-		$response = new BinaryFileResponse($basePath);
-		$response->trustXSendfileTypeHeader();
-		$filename = 'ReciboCobranzasEntreFechas.pdf';
-		$response->setContentDisposition(
-			ResponseHeaderBag::DISPOSITION_INLINE,
-			$filename,
-			iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-		);
-		$response->headers->set('Content-type', 'application/pdf');
-
-		return $response;
 	}
 }
 
