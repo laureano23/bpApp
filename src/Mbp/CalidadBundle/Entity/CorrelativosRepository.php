@@ -64,7 +64,6 @@ class CorrelativosRepository extends EntityRepository
 				->leftJoin('c.ot2panel', 'ot2')
 				->leftJoin('c.ot3panel', 'ot3')
 				->leftJoin('c.ot4panel', 'ot4')
-				->where('c.idCorrelativos = 18976')
 				->getQuery()
 				->getArrayResult();
 			
