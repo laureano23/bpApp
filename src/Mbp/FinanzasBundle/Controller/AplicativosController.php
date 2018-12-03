@@ -31,8 +31,9 @@ class AplicativosController extends Controller
 			$desde=$req->request->get('desde');
 			$hasta=$req->request->get('hasta');
 			$desde= \DateTime::createFromFormat('d/m/Y', $desde);
+			$desde->setTime(0,0,1);			
 			$hasta= \DateTime::createFromFormat('d/m/Y', $hasta);
-			
+			$hasta->setTime(23,59,59);			
 			
 			$res=$repo->percepcionesTXT($desde, $hasta);			
 			
@@ -75,6 +76,8 @@ class AplicativosController extends Controller
 			//parametros del form
 			$desde= \DateTime::createFromFormat('d/m/Y', $desde);
 			$hasta= \DateTime::createFromFormat('d/m/Y', $hasta);
+			$desde->setTime(0,0,1);	
+			$hasta->setTime(23,59,59);	
 			//
 			
 			$desdeSql=$desde->format("Y-m-d");
