@@ -686,14 +686,7 @@ class ReportesController extends Controller
 			$em->persist($indice);
 			$em->flush();
 			
-			echo json_encode(
-					array(
-						'success'=> true,
-						'reporte' => $destino,		
-					)
-				);
-			
-			return new Response();		
+			return new BinaryFileResponse($destino);		
 		}catch(JavaException $ex){
 			$trace = new Java('java.io.ByteArrayOutputStream');
 			$ex->printStackTrace(new Java('java.io.PrintStream', $trace));
@@ -703,26 +696,6 @@ class ReportesController extends Controller
 					);
 		}	
    }
-
-	/**
-     * @Route("/showRepoRG014", name="mbp_calidad_showRepoRG014", options={"expose"=true})
-     */
-	public function showRepoRG014()
-   {
-   		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'RG-014 Numeracion Correlativa.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'RG-014 Numeracion Correlativa.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-
-        return $response;
-   } 
 }
 
 

@@ -293,29 +293,16 @@ class ReportesController extends Controller
 		$response = new Response;
 		
 		try{
-			/*
-			 * PARAMETROS
-			 */	
 			$desde = $req->request->get('desde');	
 			$hasta = $req->request->get('hasta');	
 							
 			$reporteador = $this->get('reporteador');
 			$kernel = $this->get('kernel');
 			
-			/*
-			 * Configuro reporte
-			 */
 			$jru = $reporteador->jru();
 			
-			/*
-			 * Ruta archivo Jasper
-			 */				
-					
 			$ruta = $kernel->locateResource('@MbpProveedoresBundle/Reportes/Retenciones.jrxml');
 			
-			/*
-			 * Ruta de destino del PDF
-			 */
 			$destino = $kernel->locateResource('@MbpProveedoresBundle/Resources/public/pdf/').'Retenciones.pdf';		
 			
 			//Parametros HashMap
@@ -373,6 +360,7 @@ class ReportesController extends Controller
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 			
+			return new BinaryFileResponse($destino);
 			
 			return $response->setContent(json_encode(
 				array(
@@ -388,26 +376,6 @@ class ReportesController extends Controller
 	}
 
 	/**
-     * @Route("/proveedores/verReporteRetencion", name="mbp_proveedores_verReporteRetencion", options={"expose"=true})
-     */	    
-    public function verReporteRetencion()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpProveedoresBundle/Resources/public/pdf/').'Retenciones.pdf';	
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'Retenciones.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-
-        return $response;
-	}
-
-	/**
      * @Route("/proveedores/reporteDetallePago", name="mbp_proveedores_reporteDetallePago", options={"expose"=true})
      */
     public function reporteDetallePagoAction()
@@ -418,28 +386,15 @@ class ReportesController extends Controller
 		$response = new Response;
 		
 		try{
-			/*
-			 * PARAMETROS
-			 */	
 			$idOp = (int)$req->request->get('idOp');	
 							
 			$reporteador = $this->get('reporteador');
 			$kernel = $this->get('kernel');
 			
-			/*
-			 * Configuro reporte
-			 */
 			$jru = $reporteador->jru();
-			
-			/*
-			 * Ruta archivo Jasper
-			 */				
 					
 			$ruta = $kernel->locateResource('@MbpProveedoresBundle/Reportes/Detalle_Pago_Proveedor.jrxml');
 			
-			/*
-			 * Ruta de destino del PDF
-			 */
 			$destino = $kernel->locateResource('@MbpProveedoresBundle/Resources/public/pdf/').'Detalle_Pago_Proveedor.pdf';		
 			
 			//Parametros HashMap
@@ -499,7 +454,7 @@ class ReportesController extends Controller
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 			
-			
+			echo \json_encode(array('success'=>true));
 			return new BinaryFileResponse($destino);
 		}catch(\Exception $e){
 			return $response->setContent(json_encode(array(
@@ -766,13 +721,8 @@ class ReportesController extends Controller
     	//RECIBO PARAMETROS
 		$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
-		$response = new Response;
-		
-		
+
 		try{
-			/*
-			 * PARAMETROS
-			 */
 			$desde = \DateTime::createFromFormat('d/m/Y', $req->request->get('desde'));		
 			$hasta = \DateTime::createFromFormat('d/m/Y', $req->request->get('hasta'));	
 			
@@ -782,20 +732,10 @@ class ReportesController extends Controller
 			$reporteador = $this->get('reporteador');
 			$kernel = $this->get('kernel');
 			
-			/*
-			 * Configuro reporte
-			 */
 			$jru = $reporteador->jru();
-			
-			/*
-			 * Ruta archivo Jasper
-			 */				
-					
+				
 			$ruta = $kernel->locateResource('@MbpProveedoresBundle/Reportes/ChequeTerceros_Entregados.jrxml');
 			
-			/*
-			 * Ruta de destino del PDF
-			 */
 			$destino = $kernel->locateResource('@MbpProveedoresBundle/Resources/public/pdf/').'ChequeTerceros_Entregados.pdf';		
 			
 			//Parametros HashMap
@@ -874,6 +814,8 @@ class ReportesController extends Controller
 			ORDER BY Pago.`diferido` ASC";		     
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
+
+			return new BinaryFileResponse($destino);
 				
 		}catch(\Exception $e){
 			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
@@ -918,28 +860,15 @@ class ReportesController extends Controller
 		
 		
 		try{
-			/*
-			 * PARAMETROS
-			 */
 			$idOp = (int)$req->request->get('idOp');
 			
 			$reporteador = $this->get('reporteador');
 			$kernel = $this->get('kernel');
 			
-			/*
-			 * Configuro reporte
-			 */
 			$jru = $reporteador->jru();
-			
-			/*
-			 * Ruta archivo Jasper
-			 */				
 					
 			$ruta = $kernel->locateResource('@MbpProveedoresBundle/Reportes/Comprobante_Retencion.jrxml');
 			
-			/*
-			 * Ruta de destino del PDF
-			 */
 			$destino = $kernel->locateResource('@MbpProveedoresBundle/Resources/public/pdf/').'Comprobante_Retencion.pdf';		
 			
 			//Parametros HashMap
@@ -1025,6 +954,8 @@ class ReportesController extends Controller
 			and FacturaProveedor.`neto` > OrdenPago.`topeRetencionIIBB`";		     
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
+
+			return new BinaryFileResponse($destino);
 				
 		}catch(\Exception $e){
 			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
@@ -1036,27 +967,7 @@ class ReportesController extends Controller
 		return $response->setContent(
 			json_encode(array('success' => true))
 			);	
-    } 
-    
-    /**
-     * @Route("/proveedores/VerCertificadoRetencion", name="mbp_proveedores_VerCertificadoRetencion", options={"expose"=true})
-     */	    
-    public function VerCertificadoRetencion()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpProveedoresBundle/Resources/public/pdf/').'Comprobante_Retencion.pdf';	
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'Comprobante_Retencion.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-
-        return $response;
-	}     
+    }     
 
 	/**
      * @Route("/proveedores/OrdenesDePago", name="mbp_proveedores_OrdenesDePago", options={"expose"=true})

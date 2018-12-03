@@ -401,9 +401,6 @@ class ReportesController extends Controller
 		$repo = $this->get('reporteador');		
 		$kernel = $this->get('kernel');	
 		
-		/*
-		 * Recibo parametros del request 
-		 */
 		$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
 		
@@ -437,10 +434,6 @@ class ReportesController extends Controller
 				
 		$conn = $repo->getJdbc();
 		
-		/*
-		 * SQL
-		 * 
-		 */
 		$sql = "
 			SELECT fechaMov, numComprobante, concepto,
 				CASE WHEN TIPO_MOV = 0 THEN DetalleMovArt.cantidad ELSE null END AS entrada,
@@ -488,39 +481,10 @@ class ReportesController extends Controller
 			GROUP BY idFila
 			ORDER BY codigo
 		";
-		 /*
-		  * FIN SQL
-		  */
-		
 		//Exportamos el reporte
 		$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
 		
 		
-		return new Response(
-			json_encode(array(
-				'success' => true,
-				'reporte' => $destino,	
-			))
-		);
-	}
-	
-	/**
-     * @Route("/ReporteHistoricoMov_PDF", name="mbp_reportes_historicoMov_PDF", options={"expose"=true})
-     */
-	public function ReporteHistoricoMov_PDF()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpArticulosBundle/Resources/public/pdf/').'MovimientosArticulos.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'MovimientosArticulos.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-
-        return $response;
+		return new BinaryFileResponse($destino);
 	}
 }
