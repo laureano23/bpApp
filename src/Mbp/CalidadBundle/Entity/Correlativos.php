@@ -38,15 +38,15 @@ class Correlativos
      * @var integer
      *
      * @ORM\ManyToOne(targetEntity="Mbp\ProduccionBundle\Entity\Ot")
-     * @ORM\JoinColumn(name="ot_Enf", referencedColumnName="ot")
+     * @ORM\JoinColumn(name="otEnf", referencedColumnName="ot", nullable=true)
      */
-    private $ot_Enf;
+    private $otEnf;
     
     /**
      * @var integer
      *
      * @ORM\ManyToOne(targetEntity="Mbp\ProduccionBundle\Entity\Ot")
-     * @ORM\JoinColumn(name="ot1panel", referencedColumnName="ot", nullable=false)
+     * @ORM\JoinColumn(name="ot1panel", referencedColumnName="ot", nullable=true)
      */
     private $ot1panel;
 

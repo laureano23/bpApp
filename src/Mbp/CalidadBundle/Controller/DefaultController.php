@@ -26,17 +26,21 @@ class DefaultController extends Controller
 		$em = $this->getDoctrine()->getManager();
 		$request = $this->getRequest();
 		$info = $request->request->get('data');
+		$response= new Response();		
 		
 		try{
 			$repo = $em->getRepository('MbpCalidadBundle:Correlativos')->newCorrelativo($info);	
 			
-		}catch(Exception $e){
-			$em->getConnection()->rollback();
-		    $em->close();
-		    throw $e;
+		}catch(\Exception $e){
+		    $response->setContent(\json_encode(array(
+				'success'=>false,
+				'msg'=>$e->getMessage()
+			)));
+			return $response->setStatusCode(500);
 		}
+
+		return $response;
 		
-		return new Response();		
 	}
 	
 	public function updatecorrelativoAction()
