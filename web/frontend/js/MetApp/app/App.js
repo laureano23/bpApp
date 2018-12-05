@@ -13,6 +13,7 @@ Ext.application({
 		'MetApp.resources.overrides.menu', //REQUIERE OVERRIDE DE ESTA CLASE PARA ARREGLAR UN BUG DE CHROME DONDE DESAPARECEN LOS SUB MENUES
 		'Ext.grid.plugin.DragDrop',
 		'MetApp.resources.ux.ParametersSingleton',
+		'Ext.form.action.StandardSubmit'
 	], 
 	
 	
