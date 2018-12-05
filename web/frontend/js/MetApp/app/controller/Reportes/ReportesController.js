@@ -530,36 +530,12 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 	},
 	
 	ImprimirIvaVentas: function(btn){
-		var win = btn.up('window');
 		var form = btn.up('form');
-		var values = form.getValues();
-		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-				
-		if(form.isValid()){
-			myMask.show();
-			Ext.Ajax.request({
-				url: Routing.generate('mbp_CCClientes_LibroIVAVentas'),
-				
-				params: {
-					desde: values.desde,
-					hasta: values.hasta
-				},
-				
-				success: function(resp){
-					var jsonResp = Ext.JSON.decode(resp.responseText);
-					if(jsonResp.success == true){
-						var ruta = Routing.generate('mbp_CCClientes_VerLibroIVAVentas');
-						
-						window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
-					}
-					myMask.hide();
-				},
-				
-				failure: function(resp){
-					myMask.hide();
-				}
-			});
-		}
+		form.submit({
+			url: Routing.generate('mbp_CCClientes_LibroIVAVentas'),
+			standardSubmit: true,
+			target: '_blank'
+		})
 	},
 	
 	AddReporteIVACompras: function(btn){
@@ -567,36 +543,12 @@ Ext.define('MetApp.controller.Reportes.ReportesController',{
 	},
 	
 	ImprimirIvaCompras: function(btn){
-		var win = btn.up('window');
 		var form = btn.up('form');
-		var values = form.getValues();
-		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-				
-		if(form.isValid()){
-			myMask.show();
-			Ext.Ajax.request({
-				url: Routing.generate('mbp_proveedores_ReporteLibroIVACompras'),
-				
-				params: {
-					desde: values.desde,
-					hasta: values.hasta
-				},
-				
-				success: function(resp){
-					var jsonResp = Ext.JSON.decode(resp.responseText);
-					if(jsonResp.success == true){
-						var ruta = Routing.generate('mbp_proveedores_VerReporteLibroIVACompras');
-						
-						window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
-					}
-					myMask.hide();
-				},
-				
-				failure: function(resp){
-					myMask.hide();
-				}
-			});
-		}
+		form.submit({
+			url: Routing.generate('mbp_proveedores_ReporteLibroIVACompras'),
+			standardSubmit: true,
+			target: '_blank'
+		})
 	}
 })
 

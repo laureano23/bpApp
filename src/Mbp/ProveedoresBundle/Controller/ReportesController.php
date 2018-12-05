@@ -597,9 +597,6 @@ class ReportesController extends Controller
 		
 		
 		try{
-			/*
-			 * PARAMETROS
-			 */
 			$desde = \DateTime::createFromFormat('d/m/Y', $req->request->get('desde'));		
 			$hasta = \DateTime::createFromFormat('d/m/Y', $req->request->get('hasta'));	
 			
@@ -609,20 +606,10 @@ class ReportesController extends Controller
 			$reporteador = $this->get('reporteador');
 			$kernel = $this->get('kernel');
 			
-			/*
-			 * Configuro reporte
-			 */
 			$jru = $reporteador->jru();
-			
-			/*
-			 * Ruta archivo Jasper
-			 */				
-					
+				
 			$ruta = $kernel->locateResource('@MbpProveedoresBundle/Reportes/LibroIVACompras.jrxml');
 			
-			/*
-			 * Ruta de destino del PDF
-			 */
 			$destino = $kernel->locateResource('@MbpProveedoresBundle/Resources/public/pdf/').'LibroIVACompras.pdf';		
 			
 			//Parametros HashMap
@@ -630,8 +617,7 @@ class ReportesController extends Controller
 			$rutaLogo = $reporteador->getRutaLogo($kernel);
 			
 			$param->put('fechaDesde', $desde);
-			$param->put('fechaHasta', $hasta);
-			
+			$param->put('fechaHasta', $hasta);			
 			
 			$conn = $reporteador->getJdbc();
 						
@@ -681,38 +667,14 @@ class ReportesController extends Controller
 			     FacturaProveedor.`fechaEmision` BETWEEN '$desde' AND '$hasta'";		     
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
-				
+			return new BinaryFileResponse($destino);
 		}catch(\Exception $e){
 			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(
 				json_encode(array('success' => false, 'msg' => $e->getMessage()))
 				);
 		}	
-		
-		return $response->setContent(
-			json_encode(array('success' => true))
-			);	
     } 
-    
-    /**
-     * @Route("/proveedores/VerReporteLibroIVACompras", name="mbp_proveedores_VerReporteLibroIVACompras", options={"expose"=true})
-     */	    
-    public function VerReporteLibroIVACompras()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpProveedoresBundle/Resources/public/pdf/').'LibroIVACompras.pdf';	
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'LibroIVACompras.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-
-        return $response;
-	}   
 	
 	/**
      * @Route("/proveedores/ChequesTercerosEntregados", name="mbp_proveedores_ChequesTercerosEntregados", options={"expose"=true})
