@@ -1,3 +1,9 @@
+mbp_articulos_formArticulos:
+    path:     /formArticulos
+    defaults: { _controller: MbpArticulosBundle:Articulos:formArticulos }
+    options:
+      expose: true
+
 mbp_articulos_updateProv:
     path:     /updateProv
     defaults: { _controller: MbpArticulosBundle:Articulos:updateProv }

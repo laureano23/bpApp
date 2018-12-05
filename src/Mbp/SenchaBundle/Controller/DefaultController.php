@@ -13,7 +13,7 @@ class DefaultController extends Controller
     	$env = $this->container->get('kernel')->getEnvironment();
     	
 		if($env == 'dev' && $logged){
-			return $this->render('MbpSenchaBundle:MetApp:index.html.twig');
+			return $this->render('MbpSenchaBundle:MetApp:dashboard.html.twig');
 		}
 
 		if($env = 'prod' && $logged){

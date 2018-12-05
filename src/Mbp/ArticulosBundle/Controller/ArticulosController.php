@@ -14,6 +14,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ArticulosController extends Controller
 {
+
+	public function formArticulosAction(){
+		return $this->render('MbpArticulosBundle:Default:FormArticulos.html.twig');
+	}
+
 	public function updateProvAction()
     {    	
     	$em = $this->getDoctrine()->getManager();				
