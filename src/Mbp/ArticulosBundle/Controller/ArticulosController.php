@@ -16,7 +16,16 @@ class ArticulosController extends Controller
 {
 
 	public function formArticulosAction(){
-		return $this->render('MbpArticulosBundle:Default:FormArticulos.html.twig');
+		$art=new Articulos;
+
+		$form=$this->createFormBuilder($art)
+			->add('codigo')
+			->add('descripcion')
+			->add('unidad')
+			->getForm();
+		return $this->render('MbpArticulosBundle:Default:FormArticulos.html.twig', array(
+			'form'=>$form->createView()
+		));
 	}
 
 	public function updateProvAction()
