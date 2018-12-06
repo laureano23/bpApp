@@ -34,9 +34,6 @@ class ReportesController extends Controller
 			
 			$jru = $reporteador->jru();
 			
-			/*
-			 * Ruta archivo Jasper
-			 */				
 					
 			$ruta = $kernel->locateResource('@MbpFinanzasBundle/Reportes/ComisionesVendedores.jrxml');
 			
@@ -46,14 +43,11 @@ class ReportesController extends Controller
 			$param = $reporteador->getJava('java.util.HashMap');
 			$rutaLogo = $reporteador->getRutaLogo($kernel);
 			
-			
-			
+					
 			$conn = $reporteador->getJdbc();
 			$desdeObj=\DateTime::createFromFormat('d/m/Y', $desde);
 			$hastaObj=\DateTime::createFromFormat('d/m/Y', $hasta);
-			//print_r($desdeObj);
-			//exit;
-
+			
 			$desdeSql=$desdeObj->format('Y-m-d');
 			$hastaSql=$hastaObj->format('Y-m-d');
 
@@ -104,33 +98,12 @@ class ReportesController extends Controller
 			$res = $jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 			
 			//ARMO RESPUESTA
-			$response = new Response();
-			return $response->setContent(json_encode(array('success'=>true)));		
+			return new BinaryFileResponse($destino);
+			
 		}catch(\Exception $e){
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(json_encode(array('success'=>false, 'msg'=>$e->getMessage())));
 		}
-	}
-
-	/**
-     * @Route("/Reportes/servirReporteComisiones", name="mbp_Reportes_servirReporteComisiones", options={"expose"=true})
-     */	    
-    public function servirReporteComisiones()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'ComisionesVendedores.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'ComisionesVendedores.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-		$response->deleteFileAfterSend(TRUE);
-
-        return $response;
 	}
 
 
@@ -431,29 +404,16 @@ class ReportesController extends Controller
 		$response = new Response;
 				
 		try{
-			/*
-			 * PARAMETROS
-			 */
 			$desde = $this->get('request')->get('desde');
 			$hasta = $this->get('request')->get('hasta');
 							
 			$reporteador = $this->get('reporteador');
 			$kernel = $this->get('kernel');
 			
-			/*
-			 * Configuro reporte
-			 */
 			$jru = $reporteador->jru();
-			
-			/*
-			 * Ruta archivo Jasper
-			 */				
-					
+				
 			$ruta = $kernel->locateResource('@MbpFinanzasBundle/Reportes/LibroIVAVentas.jrxml');
 			
-			/*
-			 * Ruta de destino del PDF
-			 */
 			$destino = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'LibroIVAVentas.pdf';		
 			
 			//Parametros HashMap
@@ -539,49 +499,21 @@ class ReportesController extends Controller
 			     Facturas.`fecha` ASC";
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	
+			return new BinaryFileResponse($destino);
 		}catch(\Exception $e){
 			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(
 				json_encode(array('success' => false, 'msg' => $e->getMessage()))
 				);
 		}
-		
-		return $response->setContent(
-			json_encode(array('success' => true))
-			);
-	}
-	
-	/**
-     * @Route("/CCClientes/Reportes/VerLibroIVAVentas", name="mbp_CCClientes_VerLibroIVAVentas", options={"expose"=true})
-     */	
-    public function VerLibroIVAVentasAction()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'LibroIVAVentas.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'ReciboCobranzas.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-		
-		return $response;
 	}
 	
 	/**
      * @Route("/Reportes/ArtVendidos", name="mbp_Reportes_ArtVendidos", options={"expose"=true})
      */	
     public function ArtVendidos()
-	{
-		$response = new Response;
-				
+	{	
 		try{
-			/*
-			 * PARAMETROS
-			 */
 			$desde = $this->get('request')->get('desde');
 			$hasta = $this->get('request')->get('hasta');
 			$cod1 = $this->get('request')->get('codigo1');
@@ -592,20 +524,11 @@ class ReportesController extends Controller
 			$reporteador = $this->get('reporteador');
 			$kernel = $this->get('kernel');
 			
-			/*
-			 * Configuro reporte
-			 */
 			$jru = $reporteador->jru();
-			
-			/*
-			 * Ruta archivo Jasper
-			 */				
+						
 					
 			$ruta = $kernel->locateResource('@MbpFinanzasBundle/Reportes/ArtClientePeriodo.jrxml');
 			
-			/*
-			 * Ruta de destino del PDF
-			 */
 			$destino = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'ArtClientePeriodo.pdf';		
 			
 			//Parametros HashMap
@@ -695,49 +618,22 @@ ORDER BY
      Facturas.`fecha` ASC";
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	
+
+			return new BinaryFileResponse($destino);
 		}catch(\Exception $e){
 			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(
 				json_encode(array('success' => false, 'msg' => $e->getMessage()))
 				);
 		}
-		
-		return $response->setContent(
-			json_encode(array('success' => true))
-			);
-	}
-	
-	/**
-     * @Route("/Reportes/VerArtVendidos", name="mbp_Reportes_VerArtVendidos", options={"expose"=true})
-     */	
-    public function VerArtVendidos()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'ArtClientePeriodo.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'ArtClientePeriodo.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-		
-		return $response;
 	}
 	
 	/**
      * @Route("/Reportes/InteresesResarcitorios", name="mbp_Reportes_InteresesResarcitorios", options={"expose"=true})
      */	
     public function InteresesResarcitorios()
-	{
-		$response = new Response;
-				
+	{				
 		try{
-			/*
-			 * PARAMETROS
-			 */
 			$desde = $this->get('request')->get('desde');
 			$hasta = $this->get('request')->get('hasta');
 			$cliente1 = $this->get('request')->get('cliente1');
@@ -746,21 +642,11 @@ ORDER BY
 			$reporteador = $this->get('reporteador');
 			$kernel = $this->get('kernel');
 			
-			/*
-			 * Configuro reporte
-			 */
 			$jru = $reporteador->jru();
-			
-			/*
-			 * Ruta archivo Jasper
-			 */				
-					
+				
 			$ruta = $kernel->locateResource('@MbpFinanzasBundle/Reportes/InteresesResarcitorios.jrxml');
 			$rutaLogo = $reporteador->getRutaLogo($kernel);
-			
-			/*
-			 * Ruta de destino del PDF
-			 */
+			 
 			$destino = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'InteresesResarcitorios.pdf';		
 			
 			//Parametros HashMap
@@ -811,36 +697,14 @@ ORDER BY
 				AND Cobranzas.`fechaRecibo` BETWEEN '$desde' AND '$hasta'";
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	
+
+			return new BinaryFileResponse($destino);
 		}catch(\Exception $e){
 			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(
 				json_encode(array('success' => false, 'msg' => $e->getMessage()))
 				);
 		}
-		
-		return $response->setContent(
-			json_encode(array('success' => true))
-			);
-	}
-	
-	/**
-     * @Route("/Reportes/VerReporteIntResarcitorios", name="mbp_Reportes_VerReporteIntResarcitorios", options={"expose"=true})
-     */	
-    public function VerReporteIntResarcitorios()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'InteresesResarcitorios.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'InteresesResarcitorios.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-		
-		return $response;
 	}
 	
 	/**
@@ -988,33 +852,18 @@ ORDER BY
      * @Route("/Reportes/Reportes/SaldoDeudor", name="mbp_Reportes_SaldoDeudor", options={"expose"=true})
      */	
     public function SaldoDeudor()
-	{
-		$response = new Response;
-				
+	{				
 		try{
-			/*
-			 * PARAMETROS
-			 */
 			$vencimiento = $this->get('request')->get('vencimiento');
 							
 			$reporteador = $this->get('reporteador');
 			$kernel = $this->get('kernel');
 			
-			/*
-			 * Configuro reporte
-			 */
 			$jru = $reporteador->jru();
-			
-			/*
-			 * Ruta archivo Jasper
-			 */				
-					
+				
 			$ruta = $kernel->locateResource('@MbpFinanzasBundle/Reportes/resumenSaldoDeudor.jrxml');
 			$rutaLogo = $reporteador->getRutaLogo($kernel);
 			
-			/*
-			 * Ruta de destino del PDF
-			 */
 			$destino = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'resumenSaldoDeudor.pdf';		
 			
 			//Parametros HashMap
@@ -1052,36 +901,14 @@ ORDER BY
 			     "; 
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	
+
+			return new BinaryFileResponse($destino);
 		}catch(\Exception $e){
 			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(
 				json_encode(array('success' => false, 'msg' => $e->getMessage()))
 				);
 		}
-		
-		return $response->setContent(
-			json_encode(array('success' => true))
-			);
-	}
-	
-	/**
-     * @Route("/Reportes/Bancos/VerReporteSaldoDeudor", name="mbp_Reportes_VerReporteSaldoDeudor", options={"expose"=true})
-     */	
-    public function VerReporteSaldoDeudor()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'resumenSaldoDeudor.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'resumenSaldoDeudor.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-		
-		return $response;
 	}
 	
 	/**
@@ -1089,12 +916,8 @@ ORDER BY
      */	
     public function CbtesNoPagados()
 	{
-		$response = new Response;
 				
 		try{
-			/*
-			 * PARAMETROS
-			 */
 			$request = $this->get('request');
 			$desde = $request->get('desde');
 			$hasta = $request->get('hasta');
@@ -1104,21 +927,12 @@ ORDER BY
 			$reporteador = $this->get('reporteador');
 			$kernel = $this->get('kernel');
 			
-			/*
-			 * Configuro reporte
-			 */
 			$jru = $reporteador->jru();
-			
-			/*
-			 * Ruta archivo Jasper
-			 */				
+						
 					
 			$ruta = $kernel->locateResource('@MbpFinanzasBundle/Reportes/ComprobantesPendientesPago.jrxml');
 			$rutaLogo = $reporteador->getRutaLogo($kernel);
 			
-			/*
-			 * Ruta de destino del PDF
-			 */
 			$destino = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'ComprobantesPendientesPago.pdf';		
 			
 			//Parametros HashMap
@@ -1185,16 +999,14 @@ ORDER BY
 			ORDER BY cliente_idCliente, Facturas_fecha";
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	
+
+			return new BinaryFileResponse($destino);
 		}catch(\Exception $e){
 			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(
 				json_encode(array('success' => false, 'msg' => $e->getMessage()))
 				);
 		}
-		
-		return $response->setContent(
-			json_encode(array('success' => true))
-			);
 	}
 	
 	/**
@@ -1222,12 +1034,8 @@ ORDER BY
      */	
     public function InventarioCheques()
 	{
-		$response = new Response;
 				
 		try{
-			/*
-			 * PARAMETROS
-			 */
 			$request = $this->get('request');
 			$desde = $request->get('desde');
 			$hasta = $request->get('hasta');
@@ -1235,21 +1043,12 @@ ORDER BY
 			$reporteador = $this->get('reporteador');
 			$kernel = $this->get('kernel');
 			
-			/*
-			 * Configuro reporte
-			 */
 			$jru = $reporteador->jru();
-			
-			/*
-			 * Ruta archivo Jasper
-			 */				
+					
 					
 			$ruta = $kernel->locateResource('@MbpFinanzasBundle/Reportes/InventarioCheques.jrxml');
 			$rutaLogo = $reporteador->getRutaLogo($kernel);
 			
-			/*
-			 * Ruta de destino del PDF
-			 */
 			$destino = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'InventarioCheques.pdf';		
 			
 			//Parametros HashMap
@@ -1312,6 +1111,8 @@ ORDER BY
 			ORDER BY CobranzasDetalle.`vencimiento` ASC";
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	
+
+			return new BinaryFileResponse($destino);
 		}catch(\Exception $e){
 			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(
@@ -1325,26 +1126,6 @@ ORDER BY
 	}
 	
 	/**
-     * @Route("/Reportes/VerInventarioCheques", name="mbp_Reportes_VerInventarioCheques", options={"expose"=true})
-     */	
-    public function VerInventarioCheques()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'InventarioCheques.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'InventarioCheques.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-		
-		return $response;
-	}
-	
-	/**
      * @Route("/CCClientes/Reportes/reporteCC", name="mbp_CCClientes_reporteCC", options={"expose"=true})
      */	    
     public function reporteCC()
@@ -1352,32 +1133,18 @@ ORDER BY
 		//RECIBO PARAMETROS
 		$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
-		$response = new Response();	
 		
 		try{
-			/*
-			 * PARAMETROS
-			 */
 			$idCliente = $req->request->get('cliente1');
 			$desde = $req->request->get('desde');		
 							
 			$reporteador = $this->get('reporteador');
 			$kernel = $this->get('kernel');
 			
-			/*
-			 * Configuro reporte
-			 */
 			$jru = $reporteador->jru();
-			
-			/*
-			 * Ruta archivo Jasper
-			 */				
-					
+				
 			$ruta = $kernel->locateResource('@MbpFinanzasBundle/Reportes/ResumenCuenta.jrxml');
 			
-			/*
-			 * Ruta de destino del PDF
-			 */
 			$destino = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'ccCliente.pdf';		
 			
 			//Parametros HashMap
@@ -1398,15 +1165,7 @@ ORDER BY
 			
 			$res = $jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 			
-			//ARMO RESPUESTA	
-			$response->setContent(
-					json_encode(array(
-						'success' =>true,					
-						)
-					)
-				);
-			
-			return $response;
+			return new BinaryFileResponse($destino);
 		}catch(\Exception $e){
 			throw $e;
 			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
@@ -1416,29 +1175,7 @@ ORDER BY
 		}
 			
 	}
-	
-	/**
-     * @Route("/CCClientes/Reportes/verCCCliente", name="mbp_CCClientes_verCCCliente", options={"expose"=true})
-     */	    
-    public function verCCCliente()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'ccCliente.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'ccCliente.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-		
-		$response->deleteFileAfterSend(TRUE);
-		
-        return $response;
-	}
-	
+
 	/**
      * @Route("/Cotizaciones/Reportes/cotizacionReporte", name="mbp_Cotizaciones_reporteCoti", options={"expose"=true})
      */	    

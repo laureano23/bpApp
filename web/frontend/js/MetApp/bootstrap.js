@@ -880,6 +880,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.controller.Calidad.CalidadController": [],
   "MetApp.controller.Calidad.CalidadReportesController": [],
   "MetApp.controller.Calidad.RecepcionController": [],
+  "MetApp.controller.Calidad.TrazabilidadController": [],
   "MetApp.controller.Clientes.CCClientesController": [],
   "MetApp.controller.Clientes.ClientesController": [],
   "MetApp.controller.Clientes.TransportesController": [],
@@ -892,6 +893,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.controller.Produccion.Maquinas.MaquinasController": [],
   "MetApp.controller.Produccion.OrdenesTrabajo.OTController": [],
   "MetApp.controller.Produccion.OrdenesTrabajo.SeguimientoOTController": [],
+  "MetApp.controller.Produccion.PedidoClientes.AutorizarEntregasController": [],
   "MetApp.controller.Produccion.PedidoClientes.PedidoClientesController": [],
   "MetApp.controller.Produccion.Programacion.FormulasMoController": [],
   "MetApp.controller.Produccion.Programacion.OperacionesController": [],
@@ -915,7 +917,10 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.controller.Security.Roles": [],
   "MetApp.controller.Security.SecurityController": [],
   "MetApp.controller.Security.UserParamsController": [],
+  "MetApp.controller.Utilitarios.CITIVentasController": [],
+  "MetApp.controller.Utilitarios.HojaDeRutaController": [],
   "MetApp.controller.Utilitarios.UtilitariosController": [],
+  "MetApp.controller.Utilitarios.VerificacionComprobanteController": [],
   "MetApp.model.Articulos.Articulos": [],
   "MetApp.model.Articulos.ConceptosEntradaModel": [],
   "MetApp.model.Articulos.DepositoArticulosModel": [],
@@ -973,6 +978,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.model.Proveedores.ImputacionGastosModel": [],
   "MetApp.model.Proveedores.PagoProveedoresModel": [],
   "MetApp.model.Proveedores.ProveedoresModel": [],
+  "MetApp.model.Utilitarios.HojaDeRutaModel": [],
   "MetApp.resources.overrides.menu": [],
   "MetApp.resources.ux.BtnABMC": [],
   "MetApp.resources.ux.IFrame": [],
@@ -1033,6 +1039,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.store.Produccion.OrdenesTrabajo.CierreOTGridStore": [],
   "MetApp.store.Produccion.OrdenesTrabajo.OTStore": [],
   "MetApp.store.Produccion.OrdenesTrabajo.OTStoreEmisor": [],
+  "MetApp.store.Produccion.PedidoClientes.AutorizarEntregaStore": [],
   "MetApp.store.Produccion.PedidoClientes.PedidoClientesGridStore": [],
   "MetApp.store.Produccion.PedidoClientes.PedidoClientesStore": [],
   "MetApp.store.Produccion.ProduccionSoldadoStore": [],
@@ -1048,11 +1055,13 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.store.Proveedores.ImputacionGastosStore": [],
   "MetApp.store.Proveedores.PagoProveedoresStore": [],
   "MetApp.store.Proveedores.ProveedoresStore": [],
+  "MetApp.store.Utilitarios.HojaDeRutaStore": [],
   "MetApp.view.Articulos.ArticuloSearchGrd": [],
   "MetApp.view.Articulos.ArticulosForm": [],
   "MetApp.view.Articulos.ArticulosFormulas": [],
   "MetApp.view.Articulos.EnfriadoresFormView": [],
   "MetApp.view.Articulos.FamiliaView": [],
+  "MetApp.view.Articulos.FormEtiquetaArticuloView": [],
   "MetApp.view.Articulos.ListaDePrecios.ReporteListaMaestra": [],
   "MetApp.view.Articulos.ParametrosForm": [],
   "MetApp.view.Articulos.Stock.EntradaSalidaArticulos": [],
@@ -1069,6 +1078,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.view.CCClientes.CCClientes": [],
   "MetApp.view.CCClientes.Cobranza": [],
   "MetApp.view.CCClientes.Facturacion": [],
+  "MetApp.view.CCClientes.ImputarFacturaView": [],
   "MetApp.view.CCClientes.NotasCCView": [],
   "MetApp.view.CCProveedores.BalanceView": [],
   "MetApp.view.CCProveedores.CCProveedores": [],
@@ -1076,6 +1086,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.view.CCProveedores.FacturaProveedor": [],
   "MetApp.view.CCProveedores.NotasCCViewProv": [],
   "MetApp.view.CCProveedores.PagoProveedores": [],
+  "MetApp.view.Calidad.AsociarTrazabilidadView": [],
   "MetApp.view.Calidad.ControlRecepcionView": [],
   "MetApp.view.Calidad.FormEstanqueidadRG010": [],
   "MetApp.view.Calidad.GridNumCorrelativa": [],
@@ -1107,13 +1118,16 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.view.Produccion.CalculoRadiadores.WinCalculo": [],
   "MetApp.view.Produccion.Maquinas.MaquinasTabla": [],
   "MetApp.view.Produccion.Maquinas.SearchGridMaquinas": [],
+  "MetApp.view.Produccion.OrdenesTrabajo.AsociarOTView": [],
   "MetApp.view.Produccion.OrdenesTrabajo.CierreOTView": [],
   "MetApp.view.Produccion.OrdenesTrabajo.NuevaOTView": [],
   "MetApp.view.Produccion.OrdenesTrabajo.SeguimientoOTView": [],
   "MetApp.view.Produccion.OrdenesTrabajo.VerCodigoOTView": [],
   "MetApp.view.Produccion.OrdenesTrabajo.VerOTView": [],
+  "MetApp.view.Produccion.Pedidos.AutorizarEntregaView": [],
   "MetApp.view.Produccion.Pedidos.ModificacionPedidosView": [],
   "MetApp.view.Produccion.Pedidos.NuevoPedidoForm": [],
+  "MetApp.view.Produccion.Pedidos.PedidosAutorizadosView": [],
   "MetApp.view.Produccion.Pedidos.PedidosPendientesView": [],
   "MetApp.view.Produccion.Pedidos.Reportes.ReportePedidos": [],
   "MetApp.view.Produccion.Programacion.FormProgramacion": [],
@@ -1155,20 +1169,29 @@ Ext.ClassManager.addNameAlternateMappings({
   "MetApp.view.RRHH.TablaSindicatos": [],
   "MetApp.view.Reportes.RepoChequeTerceros": [],
   "MetApp.view.Reportes.RepoChequesEntregados": [],
+  "MetApp.view.Reportes.RepoChequesPropiosEntregados": [],
+  "MetApp.view.Reportes.RepoCobranzasEntreFechas": [],
   "MetApp.view.Reportes.RepoComisiones": [],
   "MetApp.view.Reportes.RepoIVACompras": [],
   "MetApp.view.Reportes.RepoIVAVentas": [],
+  "MetApp.view.Reportes.RepoOrdenesDePago": [],
   "MetApp.view.Reportes.RepoRetenciones": [],
+  "MetApp.view.Reportes.RepoSaldoAcreedor": [],
   "MetApp.view.Reportes.RepoSaldoDeudor": [],
+  "MetApp.view.Reportes.RepoTrazabilidad": [],
   "MetApp.view.Reportes.ReporteArtVendidos": [],
   "MetApp.view.Reportes.ReporteCCCliente": [],
+  "MetApp.view.Reportes.ReporteCCProveedores": [],
   "MetApp.view.Reportes.ReporteCbteNoPagodos": [],
   "MetApp.view.Reportes.ReporteHistoricoMov": [],
   "MetApp.view.Reportes.ReporteHistoricoMovBancarios": [],
   "MetApp.view.Reportes.ReporteIntResarcitorios": [],
+  "MetApp.view.Utilitarios.CITIVentasView": [],
   "MetApp.view.Utilitarios.CotizacionView": [],
+  "MetApp.view.Utilitarios.HojaDeRutaView": [],
   "MetApp.view.Utilitarios.ListadoCotizaciones": [],
-  "MetApp.view.Utilitarios.TxtRetencionesView": []
+  "MetApp.view.Utilitarios.TxtRetencionesView": [],
+  "MetApp.view.Utilitarios.VerificacionComprobanteView": []
 });
 Ext.ClassManager.addNameAliasMappings({
   "Ext.AbstractComponent": [],
@@ -2191,6 +2214,7 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.controller.Calidad.CalidadController": [],
   "MetApp.controller.Calidad.CalidadReportesController": [],
   "MetApp.controller.Calidad.RecepcionController": [],
+  "MetApp.controller.Calidad.TrazabilidadController": [],
   "MetApp.controller.Clientes.CCClientesController": [],
   "MetApp.controller.Clientes.ClientesController": [],
   "MetApp.controller.Clientes.TransportesController": [],
@@ -2203,6 +2227,7 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.controller.Produccion.Maquinas.MaquinasController": [],
   "MetApp.controller.Produccion.OrdenesTrabajo.OTController": [],
   "MetApp.controller.Produccion.OrdenesTrabajo.SeguimientoOTController": [],
+  "MetApp.controller.Produccion.PedidoClientes.AutorizarEntregasController": [],
   "MetApp.controller.Produccion.PedidoClientes.PedidoClientesController": [],
   "MetApp.controller.Produccion.Programacion.FormulasMoController": [],
   "MetApp.controller.Produccion.Programacion.OperacionesController": [],
@@ -2226,7 +2251,10 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.controller.Security.Roles": [],
   "MetApp.controller.Security.SecurityController": [],
   "MetApp.controller.Security.UserParamsController": [],
+  "MetApp.controller.Utilitarios.CITIVentasController": [],
+  "MetApp.controller.Utilitarios.HojaDeRutaController": [],
   "MetApp.controller.Utilitarios.UtilitariosController": [],
+  "MetApp.controller.Utilitarios.VerificacionComprobanteController": [],
   "MetApp.model.Articulos.Articulos": [],
   "MetApp.model.Articulos.ConceptosEntradaModel": [],
   "MetApp.model.Articulos.DepositoArticulosModel": [],
@@ -2284,6 +2312,7 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.model.Proveedores.ImputacionGastosModel": [],
   "MetApp.model.Proveedores.PagoProveedoresModel": [],
   "MetApp.model.Proveedores.ProveedoresModel": [],
+  "MetApp.model.Utilitarios.HojaDeRutaModel": [],
   "MetApp.resources.overrides.menu": [],
   "MetApp.resources.ux.BtnABMC": [],
   "MetApp.resources.ux.IFrame": [
@@ -2448,6 +2477,9 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.store.Produccion.OrdenesTrabajo.OTStoreEmisor": [
     "store.OTStoreEmisor"
   ],
+  "MetApp.store.Produccion.PedidoClientes.AutorizarEntregaStore": [
+    "AutorizarEntregaStore"
+  ],
   "MetApp.store.Produccion.PedidoClientes.PedidoClientesGridStore": [
     "pedidoClientesGridStore"
   ],
@@ -2493,6 +2525,9 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.store.Proveedores.ProveedoresStore": [
     "ProveedoresStore"
   ],
+  "MetApp.store.Utilitarios.HojaDeRutaStore": [
+    "CCProveedoresStore"
+  ],
   "MetApp.view.Articulos.ArticuloSearchGrd": [
     "widget.articulosearchgrd"
   ],
@@ -2507,6 +2542,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "MetApp.view.Articulos.FamiliaView": [
     "widget.FamiliaView"
+  ],
+  "MetApp.view.Articulos.FormEtiquetaArticuloView": [
+    "widget.FormEtiquetaArticuloView"
   ],
   "MetApp.view.Articulos.ListaDePrecios.ReporteListaMaestra": [
     "widget.ReporteListaMaestra"
@@ -2556,6 +2594,9 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.view.CCClientes.Facturacion": [
     "widget.facturacion"
   ],
+  "MetApp.view.CCClientes.ImputarFacturaView": [
+    "widget.ImputarFacturaView"
+  ],
   "MetApp.view.CCClientes.NotasCCView": [
     "widget.NotasCCView"
   ],
@@ -2576,6 +2617,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "MetApp.view.CCProveedores.PagoProveedores": [
     "widget.PagoProveedores"
+  ],
+  "MetApp.view.Calidad.AsociarTrazabilidadView": [
+    "widget.AsociarTrazabilidadView"
   ],
   "MetApp.view.Calidad.ControlRecepcionView": [
     "widget.ControlRecepcionView"
@@ -2670,6 +2714,9 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.view.Produccion.Maquinas.SearchGridMaquinas": [
     "widget.maquinasSearchGrid"
   ],
+  "MetApp.view.Produccion.OrdenesTrabajo.AsociarOTView": [
+    "widget.AsociarOTView"
+  ],
   "MetApp.view.Produccion.OrdenesTrabajo.CierreOTView": [
     "widget.CierreOTView"
   ],
@@ -2685,11 +2732,17 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.view.Produccion.OrdenesTrabajo.VerOTView": [
     "widget.VerOTView"
   ],
+  "MetApp.view.Produccion.Pedidos.AutorizarEntregaView": [
+    "widget.AutorizarEntregaView"
+  ],
   "MetApp.view.Produccion.Pedidos.ModificacionPedidosView": [
     "widget.ModificacionPedidosView"
   ],
   "MetApp.view.Produccion.Pedidos.NuevoPedidoForm": [
     "widget.nuevoPedidoForm"
+  ],
+  "MetApp.view.Produccion.Pedidos.PedidosAutorizadosView": [
+    "widget.PedidosAutorizadosView"
   ],
   "MetApp.view.Produccion.Pedidos.PedidosPendientesView": [
     "widget.PedidosPendientesView"
@@ -2814,6 +2867,12 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.view.Reportes.RepoChequesEntregados": [
     "widget.RepoChequesEntregados"
   ],
+  "MetApp.view.Reportes.RepoChequesPropiosEntregados": [
+    "widget.RepoChequesPropiosEntregados"
+  ],
+  "MetApp.view.Reportes.RepoCobranzasEntreFechas": [
+    "widget.RepoCobranzasEntreFechas"
+  ],
   "MetApp.view.Reportes.RepoComisiones": [
     "widget.RepoComisiones"
   ],
@@ -2823,17 +2882,29 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.view.Reportes.RepoIVAVentas": [
     "widget.RepoIVAVentas"
   ],
+  "MetApp.view.Reportes.RepoOrdenesDePago": [
+    "widget.RepoOrdenesDePago"
+  ],
   "MetApp.view.Reportes.RepoRetenciones": [
     "widget.RepoRetenciones"
   ],
+  "MetApp.view.Reportes.RepoSaldoAcreedor": [
+    "widget.RepoSaldoAcreedor"
+  ],
   "MetApp.view.Reportes.RepoSaldoDeudor": [
     "widget.RepoSaldoDeudor"
+  ],
+  "MetApp.view.Reportes.RepoTrazabilidad": [
+    "widget.RepoTrazabilidad"
   ],
   "MetApp.view.Reportes.ReporteArtVendidos": [
     "widget.ReporteArtVendidos"
   ],
   "MetApp.view.Reportes.ReporteCCCliente": [
     "widget.ReporteCCCliente"
+  ],
+  "MetApp.view.Reportes.ReporteCCProveedores": [
+    "widget.ReporteCCProveedores"
   ],
   "MetApp.view.Reportes.ReporteCbteNoPagodos": [
     "widget.ReporteCbteNoPagodos"
@@ -2847,14 +2918,23 @@ Ext.ClassManager.addNameAliasMappings({
   "MetApp.view.Reportes.ReporteIntResarcitorios": [
     "widget.ReporteIntResarcitorios"
   ],
+  "MetApp.view.Utilitarios.CITIVentasView": [
+    "widget.CITIVentasView"
+  ],
   "MetApp.view.Utilitarios.CotizacionView": [
     "widget.CotizacionView"
+  ],
+  "MetApp.view.Utilitarios.HojaDeRutaView": [
+    "widget.HojaDeRutaView"
   ],
   "MetApp.view.Utilitarios.ListadoCotizaciones": [
     "widget.ListadoCotizaciones"
   ],
   "MetApp.view.Utilitarios.TxtRetencionesView": [
     "widget.TxtRetencionesView"
+  ],
+  "MetApp.view.Utilitarios.VerificacionComprobanteView": [
+    "widget.VerificacionComprobanteView"
   ]
 });
 Ext.setVersion("ext-locale-es", "4.2.0");

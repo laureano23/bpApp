@@ -52,6 +52,9 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 			'CCProveedores actioncolumn[itemId=detalle]': {
 				click: this.ReporteDetallePago
 			},
+			'CCProveedores actioncolumn[itemId=retencion]': {
+				click: this.ReporteRetencion
+			},
 			'CCProveedores actioncolumn[itemId=eliminar]': {
 				click: this.EliminarOrdenPago
 			},
@@ -271,6 +274,23 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 			}
 		})
 	},
+
+	ReporteRetencion: function(btn){
+		var win = btn.up('window');
+		var grid = win.down('grid');
+		var selection = grid.getSelectionModel().getSelection()[0];
+		var data = selection.getData();
+		var form=win.down('form');
+
+		form.getForm().submit({
+			url: Routing.generate('mbp_proveedores_CertificadoRetencion'),
+			standardSubmit: true,
+			target: '_blank',
+			params: {
+				idOp: data.idOP
+			},
+		})
+	},
 	
 	ReporteDetallePago: function(btn){
 		var win = btn.up('window');
@@ -278,39 +298,21 @@ Ext.define('MetApp.controller.Proveedores.CCProveedoresController',{
 		var selection = grid.getSelectionModel().getSelection()[0];
 		var data = selection.getData();
 		var idProv = win.queryById('id').getValue();
+		var form=win.down('form');
 		
-		var myMask = new Ext.LoadMask(grid, {msg:"Cargando..."});
-		myMask.show();
-		
-		Ext.Ajax.request({
+
+		form.getForm().submit({
 			url: Routing.generate('mbp_proveedores_reporteDetallePago'),
-			
+			standardSubmit: true,
+			target: '_blank',
+			reader: {
+				success: "",
+			},
 			params: {
 				idProv: idProv,
 				idOp: data.idOP
 			},
-			
-			success: function(resp){
-				var jsonResp = Ext.JSON.decode(resp.responseText);
-				var ruta = Routing.generate('mbp_proveedores_verReporteDetallePago');
-				if(jsonResp.success == true){
-					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
-					myMask.hide();	
-					Ext.Ajax.request({
-						url: Routing.generate('mbp_proveedores_CertificadoRetencion'),
-						
-						params: {
-							idOp: data.idOP
-						},
-						
-						success: function(resp){
-							var ruta = Routing.generate('mbp_proveedores_VerCertificadoRetencion');
-							window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
-						}
-					});
-				}
-			}
-		});
+		})
 	},
 	
 	EliminarOrdenPago: function(btn){

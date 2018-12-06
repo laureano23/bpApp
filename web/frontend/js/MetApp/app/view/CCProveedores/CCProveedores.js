@@ -201,6 +201,31 @@ Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 								dataIndex: 'detalle'
 							},
 							{ 
+								header: 'Retención',
+								renderer: function(val){
+									if(val==false){
+										this.removeCls('search');
+									}
+								},
+								itemId: 'retencion',
+								xtype: 'actioncolumn',								
+								items: [
+									{ 
+										iconCls: 'search',
+										getClass: function(value,metadata,record){
+											var debe = record.get('detalle');
+											if (debe == 0 ) {
+											    return 'x-hide-display'; 
+											} else {
+											    return 'search';               
+											}
+										},
+									}										
+								],
+								flex: 1,
+								dataIndex: 'retencion'
+							},
+							{ 
 								header: 'Eliminar',
 								itemId: 'eliminar',
 								xtype: 'actioncolumn',
