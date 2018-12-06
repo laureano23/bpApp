@@ -71,62 +71,21 @@ Ext.define('MetApp.controller.Calidad.CalidadReportesController',{
 	},
 	
 	PrintRepoRG010: function(btn){
-		form = btn.up('form');
-		ot = form.queryById('ot').getValue();
-		
-		if(form.isValid() == true){
-			Ext.Ajax.request({
-				url: Routing.generate('mbp_calidad_generateReporteRg010'),
-				
-				params: {
-					ot: ot
-				},
-				
-				success: function(resp, opt){
-				var jsonReporte = Ext.JSON.decode(resp.responseText);
-				Reporte=jsonReporte.reporte;
-				
-				var ruta = Routing.generate('mbp_calidad_showReporteRg010');
-								
-				window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
-				}	
-				
-			});
-		}		
+		var form=btn.up('form');
+		form.getForm().submit({
+			standardSubmit: true,
+			target: '_blank',
+			url: Routing.generate('mbp_calidad_generateReporteRg010')
+		})			
 	},
 	
 	PrintDateRepoRG010: function(btn){
-		var win = btn.up('window');
-		var form = btn.up('form');
-		var fechaDesde = form.queryById('desde').getValue();
-		var fechaHasta = form.queryById('hasta').getValue();
-		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-		
-		if(form.isValid() == true){
-			myMask.show();
-			Ext.Ajax.request({
-				url: Routing.generate('mbp_calidad_generateReporteRg010Fechas'),
-				
-				params: {
-					fechaDesde: fechaDesde,
-					fechaHasta: fechaHasta
-				},
-				
-				success: function(resp, opt){
-					myMask.hide();
-					var jsonReporte = Ext.JSON.decode(resp.responseText);
-					Reporte=jsonReporte.reporte;
-					
-					var ruta = Routing.generate('mbp_calidad_showReporteRg010Fechas');
-									
-					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
-				},
-				
-				failure: function(resp){
-					myMask.hide();
-				}	
-			});
-		}
+		var form=btn.up('form');
+		form.getForm().submit({
+			standardSubmit: true,
+			target: '_blank',
+			url: Routing.generate('mbp_calidad_generateReporteRg010Fechas')
+		})
 	},
 	
 	NewRepoFallasSoldadura: function(){
@@ -134,35 +93,12 @@ Ext.define('MetApp.controller.Calidad.CalidadReportesController',{
 	},
 	
 	PrintReportFallasSoldadura: function(btn){
-		var win = btn.up('window');
-		var form = btn.up('form');
-		var values = form.getValues();
-		
-		Ext.Ajax.request({
-			url: Routing.generate('mbp_calidad_generateRepoFallasSoldadura'),
-			
-			params: {
-				desde: values.desde,
-				hasta: values.hasta
-			},
-			
-			success: function(resp){
-				jsonResp = Ext.JSON.decode(resp.responseText);
-				if(jsonResp.success == true){
-					var ruta = Routing.generate('mbp_calidad_showRepoFallasSoldadura');
-					
-					var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-					myMask.show();			
-					
-					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');				
-				}
-				myMask.hide();	
-			},
-				
-			failure: function(resp){
-				myMask.hide();
-			}
-		});
+		var form=btn.up('form');
+		form.getForm().submit({
+			standardSubmit: true,
+			target: '_blank',
+			url: Routing.generate('mbp_calidad_generateRepoFallasSoldadura')
+		})
 	},
 	
 	NewRepoEstanqueidad3D: function(btn){
@@ -170,35 +106,12 @@ Ext.define('MetApp.controller.Calidad.CalidadReportesController',{
 	},
 	
 	PrintRepoEstanqueidad3D: function(btn){
-		var win = btn.up('window');
-		var form = btn.up('form');
-		var values = form.getValues();
-		
-		Ext.Ajax.request({
-			url: Routing.generate('mbp_calidad_generateRepoEstanqueidad3D'),
-			
-			params: {
-				desde: values.desde,
-				hasta: values.hasta
-			},
-			
-			success: function(resp){
-				jsonResp = Ext.JSON.decode(resp.responseText);
-				if(jsonResp.success == true){
-					var ruta = Routing.generate('mbp_calidad_showRepoEstanqueidad3D');
-					
-					var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-					myMask.show();			
-					
-					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');			
-				}
-				myMask.hide();	
-			},
-				
-			failure: function(resp){
-				myMask.hide();
-			}
-		});
+		var form=btn.up('form');
+		form.getForm().submit({
+			standardSubmit: true,
+			target: '_blank',
+			url: Routing.generate('mbp_calidad_generateRepoEstanqueidad3D')
+		})
 	},
 	
 	NewRepoAcumuladoOpe: function(btn){
@@ -206,34 +119,11 @@ Ext.define('MetApp.controller.Calidad.CalidadReportesController',{
 	},
 	
 	PrintRepoAcumuladoOpe: function(btn){
-		var win = btn.up('window');
-		var form = btn.up('form');
-		var values = form.getValues();
-		
-		Ext.Ajax.request({
-			url: Routing.generate('mbp_calidad_generateRepoAcumuladoOpe'),
-			
-			params: {
-				desde: values.desde,
-				hasta: values.hasta
-			},
-			
-			success: function(resp){
-				jsonResp = Ext.JSON.decode(resp.responseText);
-				if(jsonResp.success == true){
-					var ruta = Routing.generate('mbp_calidad_showRepoAcumuladoOpe');
-					
-					var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-					myMask.show();			
-					
-					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');			
-				}
-				myMask.hide();	
-			},
-				
-			failure: function(resp){
-				myMask.hide();
-			}
-		});
+		var form=btn.up('form');
+		form.getForm().submit({
+			standardSubmit: true,
+			target: '_blank',
+			url: Routing.generate('mbp_calidad_generateRepoAcumuladoOpe')
+		})
 	}
 });

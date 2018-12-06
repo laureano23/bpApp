@@ -715,9 +715,6 @@ ORDER BY
 		$response = new Response;
 				
 		try{
-			/*
-			 * PARAMETROS
-			 */
 			$desde = $this->get('request')->get('fecha1');
 			$hasta = $this->get('request')->get('fecha2');
 			$cuenta1 = $this->get('request')->get('cuenta1');
@@ -728,21 +725,11 @@ ORDER BY
 			$reporteador = $this->get('reporteador');
 			$kernel = $this->get('kernel');
 			
-			/*
-			 * Configuro reporte
-			 */
 			$jru = $reporteador->jru();
-			
-			/*
-			 * Ruta archivo Jasper
-			 */				
-					
+				
 			$ruta = $kernel->locateResource('@MbpFinanzasBundle/Reportes/MovimientosBancarios.jrxml');
 			$rutaLogo = $reporteador->getRutaLogo($kernel);
 			
-			/*
-			 * Ruta de destino del PDF
-			 */
 			$destino = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'MovimientosBancarios.pdf';		
 			
 			//Parametros HashMap
@@ -816,36 +803,13 @@ ORDER BY
 			     ";
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	
+			return new BinaryFileResponse($destino);
 		}catch(\Exception $e){
 			$response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response->setContent(
 				json_encode(array('success' => false, 'msg' => $e->getMessage()))
 				);
 		}
-		
-		return $response->setContent(
-			json_encode(array('success' => true))
-			);
-	}
-	
-	/**
-     * @Route("/Reportes/Bancos/VerReporteMovBancos", name="mbp_Reportes_VerReporteMovBancos", options={"expose"=true})
-     */	
-    public function VerReporteMovBancos()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpFinanzasBundle/Resources/public/pdf/').'MovimientosBancarios.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'MovimientosBancarios.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-		
-		return $response;
 	}
 	
 	/**

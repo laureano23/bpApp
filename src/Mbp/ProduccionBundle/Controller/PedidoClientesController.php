@@ -130,9 +130,6 @@ class PedidoClientesController extends Controller
 		$req = $this->getRequest();
 		$response = new Response;
 		
-		$values = $req->request->get('data');
-		$values = json_decode($values);
-		
 		$repo = $this->get('reporteador');
 		$kernel = $this->get('kernel');
 		
@@ -156,15 +153,13 @@ class PedidoClientesController extends Controller
 			
 			$conn = $repo->getJdbc("com.mysql.jdbc.Driver","jdbc:mysql://".$host."/".$dbName, $dbUser, $dbPass);
 						
-			$codigoDesde = $values->articuloDesde;
-			$codigoHasta = $values->articuloHasta;
-			$clienteDesde = (int)$values->clienteDesde;
-			$clienteHasta = (int)$values->clienteHasta;
-			/*
-			 * NUEVA FECHA FORMATO PHP 
-			 */	
-			$fechaDesde = \DateTime::createFromFormat('d/m/Y', $values->fechaDesde);
-			$fechaHasta = \DateTime::createFromFormat('d/m/Y', $values->fechaHasta);
+			$codigoDesde = $req->request->get('articuloDesde');
+			$codigoHasta = $req->request->get('articuloHasta');
+			$clienteDesde = (int)$req->request->get('clienteDesde');
+			$clienteHasta = (int)$req->request->get('clienteHasta');
+		
+			$fechaDesde = \DateTime::createFromFormat('d/m/Y', $req->request->get('fechaDesde'));
+			$fechaHasta = \DateTime::createFromFormat('d/m/Y', $req->request->get('fechaHasta'));
 			
 			//PARAMETROS
 			$param = $repo->getJava('java.util.HashMap');
@@ -244,16 +239,7 @@ class PedidoClientesController extends Controller
 			//Exportamos el reporte
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 			
-			$response->setContent(
-				json_encode(
-					array(
-						'success'=> true,
-						'reporte' => $destino,		
-					)
-				)
-			);
-		
-			return $response;
+			return new BinaryFileResponse($destino);
 			
 		}catch(\JavaException $ex){
 			$trace = new \Java('java.io.ByteArrayOutputStream');

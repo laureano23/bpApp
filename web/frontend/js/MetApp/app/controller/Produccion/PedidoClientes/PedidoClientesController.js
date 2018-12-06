@@ -37,6 +37,9 @@ Ext.define('MetApp.controller.Produccion.PedidoClientes.PedidoClientesController
 			'#articulosPedidos': {
 				click: this.NewFormReportePedidos
 			},
+			'repoPedidos button[action=newReportePedidos]': {
+				click: this.VerRepoPedido
+			},
 			'repoPedidos button[action=buscaClienteDesde]': {
 				click: this.BuscaClienteDesde
 			},
@@ -275,37 +278,16 @@ Ext.define('MetApp.controller.Produccion.PedidoClientes.PedidoClientesController
 
 	//FORMULARIO REPORTE DE PEDIDOS PENDIENTES
 	NewFormReportePedidos: function(button){		
-		var repo = Ext.widget('repoPedidos');
-		var btnSubmit = repo.queryById('newReportePedidos');
-		
-		btnSubmit.on('click', function(){
-			var form = btnSubmit.up('form');
-			var values = form.getForm().getValues();
-			
-			var jsonVal = Ext.JSON.encode(values);
-			
-			Ext.Ajax.request({
-				url: Routing.generate('mbp_produccion_reporte_pedido'),
-				
-				params: {
-					data: jsonVal
-				},
-				
-				success: function(resp, opt){
-					var win = btnSubmit.up('window');
-				    var jsonResp = Ext.JSON.decode(resp.responseText);
-					if(jsonResp.success == true){
-						var ruta = Routing.generate('mbp_produccion_reporte_pedidoPdf');
-						
-						var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-						myMask.show();			
-						
-						window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
-						myMask.hide();
-					}
-				}
-			});
-		});
+		Ext.widget('repoPedidos');		
+	},
+
+	VerRepoPedido: function(btn){
+		var form=btn.up('form');
+		form.getForm().submit({
+			standardSubmit: true,
+			target: '_blank',
+			url: Routing.generate('mbp_produccion_reporte_pedido')
+		})
 	},
 
 	//BUSCADOR DE CLIENTES

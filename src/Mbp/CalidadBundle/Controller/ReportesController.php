@@ -112,9 +112,6 @@ class ReportesController extends Controller
 		$repo = $this->get('reporteador');		
 		$kernel = $this->get('kernel');	
 		
-		/*
-		 * Recibo parametros del request 
-		 */
 		$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
 		$ot = (int)$req->request->get('ot');
@@ -132,10 +129,6 @@ class ReportesController extends Controller
 		
 		$conn = $repo->getJdbc();
 		
-		/*
-		 * SQL
-		 * 
-		 */
 		$sql = "
 			SELECT
 			     Estanqueidad.`fechaPrueba` AS Estanqueidad_fechaPrueba,
@@ -170,42 +163,11 @@ class ReportesController extends Controller
 			WHERE
 			     Estanqueidad.`ot` = $ot
 		";
-		 /*
-		  * FIN SQL
-		  */
-		
 		//Exportamos el reporte
 		$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
 		
 		
-		echo json_encode(
-				array(
-					'success'=> true,
-					'reporte' => $destino,		
-				)
-			);
-		
-		return new Response();
-	}
-	
-	/**
-     * @Route("/showReporteRg010", name="mbp_calidad_showReporteRg010", options={"expose"=true})
-     */
-	public function showReporteRg010()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'RG010-01.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'RG010-01.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-
-        return $response;
+		return new BinaryFileResponse($destino);
 	}
 
 	/**
@@ -216,9 +178,6 @@ class ReportesController extends Controller
 		$repo = $this->get('reporteador');		
 		$kernel = $this->get('kernel');	
 		
-		/*
-		 * Recibo parametros del request 
-		 */
 		$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
 		$desde = $req->request->get('fechaDesde'); 
@@ -241,10 +200,6 @@ class ReportesController extends Controller
 		
 		$conn = $repo->getJdbc();
 		
-		/*
-		 * SQL
-		 * 
-		 */
 		$sql = "SELECT
 			     Estanqueidad.`fechaPrueba` AS Estanqueidad_fechaPrueba,
 			     Estanqueidad.`ot` AS Estanqueidad_ot,
@@ -277,42 +232,11 @@ class ReportesController extends Controller
 				     LEFT JOIN `Personal` Personal_A ON Estanqueidad.`probador` = Personal_A.`idP`
 				WHERE
     		 		fechaPrueba BETWEEN '$fechaDesde[0]' AND '$fechaHasta[0]'";
-		 /*
-		  * FIN SQL
-		  */
-		
+		 
 		//Exportamos el reporte
 		$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
 		
-		
-		echo json_encode(
-				array(
-					'success'=> true,
-					'reporte' => $destino,		
-				)
-			);
-		
-		return new Response();
-	}
-	
-	/**
-     * @Route("/showReporteRg010Fechas", name="mbp_calidad_showReporteRg010Fechas", options={"expose"=true})
-     */
-	public function showReporteRg010Fechas()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'RG010-01Fechas.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'RG010-01Fechas.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-
-        return $response;
+		return new BinaryFileResponse($destino);	
 	}
 
 	/**
@@ -323,9 +247,6 @@ class ReportesController extends Controller
    		$repo = $this->get('reporteador');		
 		$kernel = $this->get('kernel');	
 		
-		/*
-		 * Recibo parametros del request 
-		 */
 		$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
 		$desde = $req->request->get('desde'); 
@@ -336,21 +257,13 @@ class ReportesController extends Controller
 		$ruta = $kernel->locateResource('@MbpCalidadBundle/Reportes/fallasSoldadura.jrxml');
 		$rutaLogo = $repo->getRutaLogo($kernel);
 		
-		//Ruta de destino
 		$destino = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'fallasSoldadura.pdf';
 		
-		//Parametros HashMap
 		$param = $repo->getJava('java.util.HashMap');
 		
-		/*
-		 * NUEVA FECHA FORMATO PHP 
-		 */	
 		$fechaDesde = \DateTime::createFromFormat('d/m/Y', $desde);
 		$fechaHasta = \DateTime::createFromFormat('d/m/Y', $hasta);		
-		
-		/*
-		 * FECHA OUTPUT FORMATO SQL PARA CONSULTA
-		 */		
+			
 		$fechaDesdeSql = $fechaDesde->format('Y-m-d');
 		$fechaHastaSql = $fechaHasta->format('Y-m-d');
 		
@@ -361,10 +274,6 @@ class ReportesController extends Controller
 			
 			$conn = $repo->getJdbc();
 			
-			/*
-			 * SQL
-			 * 
-			 */
 			$sql = "SELECT
 			     SUM(Estanqueidad.`sConector`) AS Estanqueidad_sConector,
 			     SUM(Estanqueidad.`sTapaPanel`) AS Estanqueidad_sTapaPanel,
@@ -382,22 +291,11 @@ class ReportesController extends Controller
 			     Estanqueidad.`fechaPrueba` BETWEEN '$fechaDesdeSql' AND '$fechaHastaSql'
 			GROUP BY
 			     Estanqueidad_soldador";
-			 /*
-			  * FIN SQL
-			  */
-			
+			 
 			//Exportamos el reporte
 			$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
 			
-			
-			echo json_encode(
-					array(
-						'success'=> true,
-						'reporte' => $destino,		
-					)
-				);
-			
-			return new Response();	
+			return new BinaryFileResponse($destino);
 		}catch(JavaException $ex){
 			$trace = new Java('java.io.ByteArrayOutputStream');
 			$ex->printStackTrace(new Java('java.io.PrintStream', $trace));
@@ -405,26 +303,6 @@ class ReportesController extends Controller
 			return false;
 		}
    }
-
-   /**
-     * @Route("/showRepoFallasSoldadura", name="mbp_calidad_showRepoFallasSoldadura", options={"expose"=true})
-     */   
-   public function showRepoFallasSoldadura()
-   {
-   		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'fallasSoldadura.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'fallasSoldadura.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-
-        return $response;
-   } 
    
    /**
      * @Route("/generateRepoEstanqueidad3D", name="mbp_calidad_generateRepoEstanqueidad3D", options={"expose"=true})
@@ -434,9 +312,6 @@ class ReportesController extends Controller
    		$repo = $this->get('reporteador');		
 		$kernel = $this->get('kernel');	
 		
-		/*
-		 * Recibo parametros del request 
-		 */
 		$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
 		$desde = $req->request->get('desde'); 
@@ -451,15 +326,9 @@ class ReportesController extends Controller
 		//Parametros HashMap
 		$param = $repo->getJava('java.util.HashMap');
 		
-		/*
-		 * NUEVA FECHA FORMATO PHP 
-		 */	
 		$fechaDesde = \DateTime::createFromFormat('d/m/Y', $desde);
 		$fechaHasta = \DateTime::createFromFormat('d/m/Y', $hasta);	
-		
-		/*
-		 * FECHA OUTPUT FORMATO SQL PARA CONSULTA
-		 */		
+			
 		$fechaDesdeSql = $fechaDesde->format('Y-m-d');
 		$fechaHastaSql = $fechaHasta->format('Y-m-d');
 		
@@ -495,15 +364,7 @@ class ReportesController extends Controller
 			//Exportamos el reporte
 			$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
 			
-			
-			echo json_encode(
-					array(
-						'success'=> true,
-						'reporte' => $destino,		
-					)
-				);
-			
-			return new Response();	
+			return new BinaryFileResponse($destino);
 		}catch(JavaException $ex){
 			$trace = new Java('java.io.ByteArrayOutputStream');
 			$ex->printStackTrace(new Java('java.io.PrintStream', $trace));
@@ -515,26 +376,6 @@ class ReportesController extends Controller
    }
    
    /**
-     * @Route("/showRepoEstanqueidad3D", name="mbp_calidad_showRepoEstanqueidad3D", options={"expose"=true})
-     */ 
-   public function showRepoEstanqueidad3D()
-   {
-   		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'ReporteGraficoEstanqueidad.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'ReporteGraficoEstanqueidad.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-
-        return $response;
-   } 
-   
-   /**
      * @Route("/generateRepoAcumuladoOpe", name="mbp_calidad_generateRepoAcumuladoOpe", options={"expose"=true})
      */ 
    public function generateRepoAcumuladoOpe()
@@ -542,9 +383,6 @@ class ReportesController extends Controller
    		$repo = $this->get('reporteador');		
 		$kernel = $this->get('kernel');	
 		
-		/*
-		 * Recibo parametros del request 
-		 */
 		$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
 		$desde = $req->request->get('desde'); 
@@ -559,15 +397,9 @@ class ReportesController extends Controller
 		//Parametros HashMap
 		$param = $repo->getJava('java.util.HashMap');
 		
-		/*
-		 * NUEVA FECHA FORMATO PHP 
-		 */	
 		$fechaDesde = \DateTime::createFromFormat('d/m/Y', $desde);
 		$fechaHasta = \DateTime::createFromFormat('d/m/Y', $hasta);	
-		
-		/*
-		 * FECHA OUTPUT FORMATO SQL PARA CONSULTA
-		 */		
+			
 		$fechaDesdeSql = $fechaDesde->format('Y-m-d');
 		$fechaHastaSql = $fechaHasta->format('Y-m-d');
 		
@@ -606,15 +438,7 @@ class ReportesController extends Controller
 			//Exportamos el reporte
 			$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
 			
-			
-			echo json_encode(
-					array(
-						'success'=> true,
-						'reporte' => $destino,		
-					)
-				);
-			
-			return new Response();	
+			return new BinaryFileResponse($destino);
 		}catch(JavaException $ex){
 			$trace = new Java('java.io.ByteArrayOutputStream');
 			$ex->printStackTrace(new Java('java.io.PrintStream', $trace));
@@ -623,27 +447,7 @@ class ReportesController extends Controller
 						'msg' => 'Error al generar el reporte',		
 					);
 		}	
-   }
-   
-   /**
-     * @Route("/showRepoAcumuladoOpe", name="mbp_calidad_showRepoAcumuladoOpe", options={"expose"=true})
-     */
-   public function showRepoAcumuladoOpe()
-   {
-   		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpCalidadBundle/Resources/public/pdf/').'Operaciones_soldadura_entreFechas.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'ReporteGraficoEstanqueidad.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-
-        return $response;
-   } 
+   }   
    
    /**
      * @Route("/generateRepoRG014", name="mbp_calidad_generateRepoRG014", options={"expose"=true})
