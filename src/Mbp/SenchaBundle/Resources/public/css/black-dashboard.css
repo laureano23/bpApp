@@ -17,6 +17,11 @@
 
 /* navbar color */
 
+
+option:not(:checked) { 
+  background-color: #525f7f !important; 
+}
+
 :root {
   --blue: #5e72e4;
   --indigo: #5603ad;
@@ -1918,7 +1923,7 @@ select.form-control:focus::-ms-value {
   padding-bottom: 0.5rem;
   margin-bottom: 0;
   line-height: 1.428571;
-  color: #525f7f;
+  color: #527f58;
   background-color: transparent;
   border: solid transparent;
   border-width: 1px 0;
