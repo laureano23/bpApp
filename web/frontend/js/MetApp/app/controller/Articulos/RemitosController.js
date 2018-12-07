@@ -100,7 +100,20 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 				if(jsonResp.success == true){
 					Ext.Msg.show({
 						title: 'Atención',
-						msg: 'Desea restrablecer el stock de estos produtos?'
+						msg: 'Desea restrablecer el stock de estos produtos?',
+						buttons: Ext.Msg.YESNO,
+						 icon: Ext.Msg.INFO,
+						 fn: function(btn){
+							 console.log(btn);
+							 if(btn=='yes'){
+								Ext.Ajax.request({
+									url: Routing.generate('mbp_articulos_restablecerStockRemito'),
+									params: {
+										idRemito: selection.data.id
+									},
+								})
+							 }
+						 }
 					})
 				}								
 			}			
@@ -240,8 +253,6 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 			var sel = grid.getSelectionModel().getSelection()[0];
 			winRemito.queryById('pedidoNum').setValue(sel.data.idDetalle);
 			win.close();
-			
-			console.log(sel);
 		});
 	},
 	

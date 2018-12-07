@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RemitoClientes" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b2a08521-8f54-4c4a-9e6b-a0cbf483e6eb">
-	<property name="ireport.zoom" value="1.6105100000000088"/>
-	<property name="ireport.x" value="335"/>
-	<property name="ireport.y" value="65"/>
+	<property name="ireport.zoom" value="1.464100000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="14"/>
 	<parameter name="remitoId" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -16,6 +16,7 @@
      RemitosClientes.`domicilio` AS RemitosClientes_domicilio,
      RemitosClientes.`provincia` AS RemitosClientes_provincia,
      RemitosClientes.`localidad` AS RemitosClientes_localidad,
+     RemitosClientes.`anulado` AS RemitosClientes_anulado,
      RemitosClientesDetalles.`id` AS RemitosClientesDetalles_id,
      RemitosClientesDetalles.`descripcion` AS RemitosClientesDetalles_descripcion,
      RemitosClientesDetalles.`cantidad` AS RemitosClientesDetalles_cantidad,
@@ -76,6 +77,7 @@ WHERE
 	<field name="RemitosClientes_domicilio" class="java.lang.String"/>
 	<field name="RemitosClientes_provincia" class="java.lang.String"/>
 	<field name="RemitosClientes_localidad" class="java.lang.String"/>
+	<field name="RemitosClientes_anulado" class="java.lang.Boolean"/>
 	<field name="RemitosClientesDetalles_id" class="java.lang.Integer"/>
 	<field name="RemitosClientesDetalles_descripcion" class="java.lang.String"/>
 	<field name="RemitosClientesDetalles_cantidad" class="java.math.BigDecimal"/>
@@ -145,6 +147,16 @@ WHERE
 				<reportElement x="424" y="190" width="131" height="20" uuid="d04b4a95-e958-4f8b-8da2-4631b2f97c25"/>
 				<textFieldExpression><![CDATA[$F{RemitosClientes_localidad}+" "+$F{RemitosClientes_provincia}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="314" height="63" forecolor="#FF0033" uuid="314907d3-b24c-423d-856c-a2030e8c73ed">
+					<printWhenExpression><![CDATA[$F{RemitosClientes_anulado}==true]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="10"/>
+				<textElement>
+					<font size="30"/>
+				</textElement>
+				<text><![CDATA[ANULADO]]></text>
+			</staticText>
 		</band>
 	</title>
 	<detail>

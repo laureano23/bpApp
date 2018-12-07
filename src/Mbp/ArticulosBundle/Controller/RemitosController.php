@@ -16,7 +16,40 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class RemitosController extends Controller
 {
-	
+	/**
+     * @Route("/restablecerStockRemito", name="mbp_articulos_restablecerStockRemito", options={"expose"=true})
+     */
+    public function restablecerStockRemito()
+    {
+		$em = $this->getDoctrine()->getManager();
+        $req = $this->getRequest();
+    	$repo=$em->getRepository('MbpArticulosBundle:RemitosClientes');
+		$response=new Response;
+		
+		try{
+			$id = json_decode($req->request->get('idRemito'));
+			$remito=$repo->find($id);
+			
+			foreach($remito->getDetalleRemito() as $det){
+				$det->getArticuloId()->setStock($det->getArticuloId()->getStock()+$det->getCantidad());
+				$em->persist($det);
+			}
+
+			$em->flush();
+			
+			return $response->setContent(\json_encode(
+				array('success'=>true)
+			));
+			
+		}catch(\Exception $e){
+			$response->setContent(
+				json_encode(array('success'=>false, 'msg'=>$e->getMessage()))
+			);
+			
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+	}
+
 	/**
      * @Route("/anularRemito", name="mbp_articulos_anularRemito", options={"expose"=true})
      */
