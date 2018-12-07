@@ -134,7 +134,7 @@ class Empleado
 	}
 	
 	public function getEntradas(){
-		return $this->entradas;
+		return array_reverse($this->fecha);
 	}
 	
 	public function getFichadaSalida(){
@@ -165,7 +165,7 @@ class Empleado
 	}
 	
 	public function getSalidas(){
-		return $this->salidas;
+		return $this->fecha;
 	}
 	
 	public function vaciarArraySalidas(){
