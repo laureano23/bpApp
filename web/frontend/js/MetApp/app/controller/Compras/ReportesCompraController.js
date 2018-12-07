@@ -44,7 +44,6 @@ Ext.define('MetApp.controller.Compras.ReportesCompraController',{
 		var btn = view.down('button');
 		
 		btn.on('click', function(){		
-			console.log(btnSearch);	
 			var sel = view.down('grid').getSelectionModel().getSelection()[0];
 			
 			if(btnSearch.itemId == 'btnCodigo1'){
@@ -74,20 +73,11 @@ Ext.define('MetApp.controller.Compras.ReportesCompraController',{
 	},
 	
 	ImprimirArtComprados: function(btn){
-		var win = btn.up('window');
-		var form = win.down('form');
-		
+		var form=btn.up('form');
 		form.getForm().submit({
-			clientValidation: true,
-			url: Routing.generate('mbp_compras_articulosComprados'),
-			success: function(resp){
-				var ruta = Routing.generate('mbp_personal_verArticulosComprados');
-						
-				window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
-			},
-			failure: function(resp){
-				
-			}
+			standardSubmit: true,
+			target: '_blank',
+			url: Routing.generate('mbp_compras_articulosComprados')
 		})
 	},
 });

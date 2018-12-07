@@ -61,7 +61,7 @@ Ext.define('MetApp.view.Produccion.Reportes.ReporteOrdenesPorCliente', {
 									xtype: 'textfield',
 									margins: '0 0 0 5',
 									itemId: 'clienteId',
-									name: 'clienteId',
+									name: 'cliente1',
 									listeners: {
 										blur: {
 											fn: function(txt){
@@ -83,7 +83,7 @@ Ext.define('MetApp.view.Produccion.Reportes.ReporteOrdenesPorCliente', {
 									xtype: 'textfield',
 									margins: '0 0 0 5',
 									itemId: 'clienteId2',
-									name: 'clienteId2',
+									name: 'cliente2',
 									labelWidth: 40,
 									listeners: {
 										blur: {

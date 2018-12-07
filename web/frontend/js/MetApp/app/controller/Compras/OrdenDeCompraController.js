@@ -299,8 +299,6 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 		var jsonOrdenData = Ext.JSON.encode(formValues);
 		
 		if(formProv.isValid() && store.getCount() != 0){
-			var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-			myMask.show();
 			Ext.Ajax.request({
 				url: Routing.generate('mbp_compras_nuevaOrden'),
 				params: {
@@ -311,33 +309,22 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 					var msg = Ext.JSON.decode(resp.responseText);
 					if(msg.success == true){
 						//DEPLEGAMOS LA OC
-						Ext.Ajax.request({
+						var form=Ext.create('Ext.form.Panel',{
 							url: Routing.generate('mbp_compras_reporteOrden'),
-							
+						});
+						form.submit({
+							standardSubmit: true,
 							params: {
 								idOC: msg.idOC
 							},
-							
-							success: function(resp){								
-								var ruta = Routing.generate('mbp_personal_verOC');
-						    	window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
-								myMask.hide();	
-							},
-
-							failure: function(){
-								myMask.hide();
-							}
-						});
+							target: '_blank'
+						})
 
 						formProv.getForm().reset();
 						store.removeAll();
 						descuentoGral.setValue(0);
 					}					
 				},
-
-				failure: function(){
-					myMask.hide();
-				}
 			})
 		}
 	},
@@ -447,29 +434,17 @@ Ext.define('MetApp.controller.Compras.OrdenDeCompraController',{
 
 	VerOrdenDetalle: function(btn){
 		var win = btn.up('window');
-		var grid=win.down('grid');
 		var selection = win.down('grid').getSelectionModel().getSelection()[0];
 
-		var myMask = new Ext.LoadMask(grid, {msg:"Cargando..."});
-		myMask.show();
-		Ext.Ajax.request({
-			url: Routing.generate('mbp_compras_reporteOrden'),
+		var form=Ext.create('Ext.form.Panel',{
+			url: Routing.generate('mbp_compras_reporteOrden')			
+		})
 
+		form.submit({
+			standardSubmit: true,
+			target: '_blank',
 			params: {
 				idOC: selection.data.idOc
-			},
-
-			success: function(resp){
-				myMask.hide();	
-				var jsonResp = Ext.JSON.decode(resp.responseText);
-				var ruta = Routing.generate('mbp_personal_verOC');
-				if(jsonResp.success == true){
-					window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');				 
-				}
-			},
-
-			failure: function(resp){
-				myMask.hide();
 			}
 		});
 	},

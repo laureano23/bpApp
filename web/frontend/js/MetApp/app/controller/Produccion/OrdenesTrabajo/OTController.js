@@ -368,7 +368,6 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 	},
 	
 	FiltrarCliente: function(txt){
-		console.log("aaa");
 		var win = txt.up('window');
 		var grid = win.down('grid');
 		var store = grid.getStore();
@@ -380,8 +379,6 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 			anyMatch: true}
 		);
 	},
-	
-	
 	
 	VerOT: function(btn){
 		var view = Ext.widget('VerOTView');
@@ -412,28 +409,16 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 		var win = btn.up('window');
 		var grid = win.down('grid');
 		var selection = grid.getSelectionModel().getSelection()[0];
-		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-		myMask.show();
-		
-		Ext.Ajax.request({
-			url: Routing.generate('mbp_produccion_generarOt'),
-			
+
+		var form=btn.up('form');
+		form.getForm().submit({
+			clientValidation: false,
+			standardSubmit: true,
+			target: '_blank',
 			params: {
 				ot: selection.data.otNum
 			},
-			
-			success: function(resp){
-				myMask.hide();
-				var jResp = Ext.JSON.decode(resp.responseText);
-				if(jResp.success == true){
-					var ruta = Routing.generate('mbp_produccion_verOt');
-					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');		
-				}
-			},
-			
-			failure: function(resp){
-				myMask.hide();
-			}
+			url: Routing.generate('mbp_produccion_generarOt')
 		})
 	},
 	

@@ -16,32 +16,18 @@ class ReportesController extends Controller
      */
     public function reporteOrdenAction()
     {
-        /*
-		 * PARAMETROS
-		 */
 		$idOC = $this->getRequest()->request->get('idOC');
 		$response = new Response;
 
 		try {
 			$reporteador = $this->get('reporteador');
 			$kernel = $this->get('kernel');
-			
-			
-			/*
-			 * Configuro reporte
-			 */
+						
 			$jru = $reporteador->jru();
-			
-			/*
-			 * Ruta archivo Jasper
-			 */				
 					
 			$ruta = $kernel->locateResource('@MbpComprasBundle/Reportes/OrdenDeCompra.jrxml');
 			$rutaLogo = $reporteador->getRutaLogo($kernel);
 			
-			/*
-			 * Ruta de destino del PDF
-			 */
 			$destino = $kernel->locateResource('@MbpComprasBundle/Resources/public/pdf/').'OC.pdf';
 			
 			
@@ -100,14 +86,7 @@ class ReportesController extends Controller
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 
-			
-			return $response->setContent(
-					json_encode(
-						array(
-							'success'=> true,	
-						)
-					)
-				);
+			return new BinaryFileResponse($destino);
 		} catch (\Exception $e) {
 			$response->setContent(
 				json_encode(
@@ -121,26 +100,6 @@ class ReportesController extends Controller
 			return $response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
 		}	
     }
-
-    /**
-     * @Route("/verOC", name="mbp_personal_verOC", options={"expose"=true})
-     */
-	public function verOCAction()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpComprasBundle/Resources/public/pdf/').'OC.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'OC.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-Type', 'application/pdf');
-
-        return $response;
-	}
 	
 	/**
      * @Route("/ordenCompra/articulosComprados", name="mbp_compras_articulosComprados", options={"expose"=true})
@@ -206,32 +165,10 @@ class ReportesController extends Controller
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 			
-			return $response->setContent(json_encode(array('success'=> true)));
+			return new BinaryFileResponse($destino);
 		} catch (\Exception $e) {
-			throw $e;
 			$response->setContent(json_encode(array('success'=> false,'msg' => $e->getMessage())));
 			return $response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
 		}	
     }
-
-    /**
-     * @Route("/verArticulosComprados", name="mbp_personal_verArticulosComprados", options={"expose"=true})
-     */
-	public function verArticulosComprados()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpComprasBundle/Resources/public/pdf/').'ComprasPendientes.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'ComprasPendientes.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-Type', 'application/pdf');		
-		$response->deleteFileAfterSend(TRUE);
-
-        return $response;
-	}
 }

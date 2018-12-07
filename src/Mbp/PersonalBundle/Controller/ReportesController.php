@@ -256,9 +256,6 @@ class ReportesController extends Controller
 		$req = $this->getRequest();
 		$repo = $em->getRepository('MbpPersonalBundle:Recibos');
 		
-		/*
-		 * PARAMETROS
-		 */
 		$mesDesde = $req->request->get('mesDesde');
 		$mesHasta = $req->request->get('mesHasta');
 		$anioDesde = $req->request->get('anioDesde');
@@ -277,21 +274,11 @@ class ReportesController extends Controller
 		$reporteador = $this->get('reporteador');
 		$kernel = $this->get('kernel');
 		
-		
-		/*
-		 * Configuro reporte
-		 */
 		$jru = $reporteador->jru();
-		
-		/*
-		 * Ruta archivo Jasper
-		 */				
+					
 				
 		$ruta = $kernel->locateResource('@MbpPersonalBundle/Reportes/LibroSueldos.jrxml');
 		
-		/*
-		 * Ruta de destino del PDF
-		 */
 		$destino = $kernel->locateResource('@MbpPersonalBundle/Resources/public/pdf/').'LibroSueldos.pdf';
 		
 		
@@ -362,34 +349,8 @@ class ReportesController extends Controller
 		
 		$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 		
-		echo json_encode(
-			array(
-				'success'=> true,	
-			)
-		);
-		
-		return new Response();
+		return new BinaryFileResponse($destino);
 	} 
-	
-	/**
-     * @Route("/libroSueldosPdf", name="mbp_personal_libroSueldosPdf", options={"expose"=true})
-     */ 
-	public function libroSueldosPdfAction()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpPersonalBundle/Resources/public/pdf/').'LibroSueldos.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'LibroSueldos.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-
-        return $response;
-	}
 	
 	/**
      * @Route("/crearResumenAguinaldo", name="mbp_personal_crearResumenAguinaldo", options={"expose"=true})
@@ -400,9 +361,6 @@ class ReportesController extends Controller
 		$req = $this->getRequest();
 		$repo = $em->getRepository('MbpPersonalBundle:Recibos');
 		
-		/*
-		 * PARAMETROS
-		 */
 		$mesDesde = $req->request->get('mesDesde');
 		$mesHasta = $req->request->get('mesHasta');
 		$anioDesde = $req->request->get('anioDesde');
@@ -413,20 +371,11 @@ class ReportesController extends Controller
 		$reporteador = $this->get('reporteador');
 		$kernel = $this->get('kernel');
 		
-		/*
-		 * Configuro reporte
-		 */
 		$jru = $reporteador->jru();
-		
-		/*
-		 * Ruta archivo Jasper
-		 */				
+					
 				
 		$ruta = $kernel->locateResource('@MbpPersonalBundle/Reportes/resumenAguinaldo.jrxml');
 		
-		/*
-		 * Ruta de destino del PDF
-		 */
 		$destino = $kernel->locateResource('@MbpPersonalBundle/Resources/public/pdf/').'resumenAguinaldo.pdf';
 				
 		//Parametros HashMap
@@ -473,35 +422,11 @@ class ReportesController extends Controller
 		     Personal.nombre, Recibos.mes
 		ORDER BY
 		     Personal_nombre ASC
-		";
-		
+		";		
 		
 		$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 		
-		return new Response(json_encode(array(
-				'success' => true
-			))
-		);
-	}
-	
-	/**
-     * @Route("/resumenAguinaldoPdf", name="mbp_personal_resumenAguinaldoPdf", options={"expose"=true})
-     */ 
-	public function resumenAguinaldoPdfAction()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpPersonalBundle/Resources/public/pdf/').'resumenAguinaldo.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'resumenAguianldo.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-
-        return $response;
+		return new BinaryFileResponse($destino);
 	}
 
 	/**
@@ -513,29 +438,16 @@ class ReportesController extends Controller
 		$req = $this->getRequest();
 		$repo = $em->getRepository('MbpPersonalBundle:Recibos');
 		
-		/*
-		 * PARAMETROS
-		 */
 		$mes = $req->request->get('mes');
 		$anio = $req->request->get('anio');
 		
 		$reporteador = $this->get('reporteador');
 		$kernel = $this->get('kernel');
 		
-		/*
-		 * Configuro reporte
-		 */
 		$jru = $reporteador->jru();
-		
-		/*
-		 * Ruta archivo Jasper
-		 */				
-				
+			
 		$ruta = $kernel->locateResource('@MbpPersonalBundle/Reportes/ResumenDepositos.jrxml');
 		
-		/*
-		 * Ruta de destino del PDF
-		 */
 		$destino = $kernel->locateResource('@MbpPersonalBundle/Resources/public/pdf/').'ResumenDepositos.pdf';
 				
 		//Parametros HashMap
@@ -594,30 +506,7 @@ class ReportesController extends Controller
 
 		$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 
-		return new Response(json_encode(array(
-				'success' => true
-			))
-		);
-	}
-
-	/**
-     * @Route("/resumenLiquidacionesPdf", name="mbp_personal_resumenLiquidacionesPdf", options={"expose"=true})
-     */ 
-	public function resumenLiquidacionesPdfAction()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpPersonalBundle/Resources/public/pdf/').'ResumenDepositos.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'ResumenDepositos.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-
-        return $response;
+		return new BinaryFileResponse($destino);
 	}
 }
 

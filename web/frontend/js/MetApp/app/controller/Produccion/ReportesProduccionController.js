@@ -92,39 +92,12 @@ Ext.define('MetApp.controller.Produccion.ReportesProduccionController',{
 	},
 	
 	GenerarReporteHistoricoProd: function(btn){
-		var win = btn.up('window');
-		var form = win.down('form');
-		var values = form.getForm().getValues();
-		
-		form.getForm().isValid();
-		
-		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-		myMask.show();	
-		
-		Ext.Ajax.request({
-			url: Routing.generate('mbp_produccion_reporteHistoricoOT'),
-			
-			params: {
-				desde: values.desde,
-				hasta: values.hasta,
-				codigo1: values.codigo1,
-				codigo2: values.codigo2,
-			},
-			
-			success: function(resp){
-				var jsonResp = Ext.JSON.decode(resp.responseText);
-				if(jsonResp.success == true){
-					var ruta = Routing.generate('mbp_produccion_verHistoricoOt');		
-					
-					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
-					myMask.hide();
-				}
-			},
-			
-			failure: function(resp){
-				myMask.hide();
-			}
-		});
+		var form=btn.up('form');
+		form.getForm().submit({
+			standardSubmit: true,
+			target: '_blank',
+			url: Routing.generate('mbp_produccion_reporteHistoricoOT')
+		})
 	},
 	
 	ReporteOrdenesPorCliente: function(btn){
@@ -137,7 +110,6 @@ Ext.define('MetApp.controller.Produccion.ReportesProduccionController',{
 		var store = win.down('grid').getStore();
 		store.load();
 		
-		console.log(btn);
 		var txt;
 		if(btn.itemId == "clienteBtn"){
 			txt = winReporte.queryById('clienteId');
@@ -152,46 +124,13 @@ Ext.define('MetApp.controller.Produccion.ReportesProduccionController',{
 		});
 	},
 	
-	
-	
 	GenerarReporteOTClientes: function(btn){
-		var win = btn.up('window');
-		var form = btn.up('form');
-		var values = form.getValues();
-		
-		if(!form.isValid()) return;
-		
-		var urlReporte, urlPdf;
-		
-		
-		urlReporte = 'mbp_produccion_reporteOTPorClientes';
-		urlPdf = 'mbp_produccion_verOTPorCliente';
-		
-		
-		 Ext.Ajax.request({
-		 	url: Routing.generate(urlReporte),
-		 	
-		 	params: {
-		 		desde: values.desde,
-		 		hasta: values.hasta,
-		 		cliente1: values.clienteId,
-		 		cliente2: values.clienteId2
-		 	},
-		 	
-		 	success: function(resp){
-		 		var jsonResp = Ext.JSON.decode(resp.responseText);
-		 		
-		 		if(jsonResp.success == true){
-		 			var ruta = Routing.generate(urlPdf);
-					
-					var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-					myMask.show();			
-					
-					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');	
-		 		}
-		 		myMask.hide();
-		 	}
-		 });
+		var form=btn.up('form');
+		form.getForm().submit({
+			standardSubmit: true,
+			target: '_blank',
+			url: Routing.generate('mbp_produccion_reporteOTPorClientes')
+		})
 	},
 	
 	ControlProduccion: function(btn){
@@ -199,45 +138,22 @@ Ext.define('MetApp.controller.Produccion.ReportesProduccionController',{
 	},
 	
 	GenerarReporteOTSector: function(btn){
-		var win = btn.up('window');
 		var form = btn.up('form');
 		var values = form.getValues();
 		
-		var urlReporte, urlPdf;
+		var urlReporte;
 		
 		if(values.tipo == null || values.tipo == ""){
 			urlReporte = 'mbp_produccion_reporteOTPorSector';
-			urlPdf = 'mbp_produccion_verOTPorSector';
 		}else{
 			urlReporte = 'mbp_produccion_reporteOTPorSectorFiltrado';
-			urlPdf = 'mbp_produccion_verOTPorSectorFiltrado';
 		}
-		
-		 Ext.Ajax.request({
-		 	url: Routing.generate(urlReporte),
-		 	
-		 	params: {
-		 		desde: values.desde,
-		 		hasta: values.hasta,
-		 		sector: values.tipo,
-		 	},
-		 	
-		 	success: function(resp){
-		 		var jsonResp = Ext.JSON.decode(resp.responseText);
-		 		
-		 		if(jsonResp.success == true){
-		 			var ruta = Routing.generate(urlPdf);
-					
-					var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-					myMask.show();			
-					
-					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');	
-		 		}
-		 		myMask.hide();
-		 	}
-		 });
-	}
-	
+		form.getForm().submit({
+			standardSubmit: true,
+			target: '_blank',
+			url: Routing.generate(urlReporte)
+		})
+	}	
 });
 
 

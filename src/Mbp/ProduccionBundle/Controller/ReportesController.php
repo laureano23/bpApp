@@ -417,9 +417,6 @@ class ReportesController extends Controller
      */
     public function generarOt()
     {
-        /*
-		 * PARAMETROS
-		 */
 		$ot = $this->getRequest()->request->get('ot');
 		$response = new Response;
 
@@ -427,23 +424,12 @@ class ReportesController extends Controller
 			$reporteador = $this->get('reporteador');
 			$kernel = $this->get('kernel');
 			
-			
-			/*
-			 * Configuro reporte
-			 */
 			$jru = $reporteador->jru();
-			
-			/*
-			 * Ruta archivo Jasper
-			 */				
-					
+				
 			$ruta = $kernel->locateResource('@MbpProduccionBundle/Reportes/OT.jrxml');
 			$rutaSubReport = $kernel->locateResource('@MbpProduccionBundle/Reportes/');
 			$rutaLogo = $reporteador->getRutaLogo($kernel);
 			
-			/*
-			 * Ruta de destino del PDF
-			 */
 			$destino = $kernel->locateResource('@MbpProduccionBundle/Resources/public/pdf/').'OT.pdf';
 			
 			
@@ -508,13 +494,7 @@ class ReportesController extends Controller
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 
 			
-			return $response->setContent(
-					json_encode(
-						array(
-							'success'=> true,	
-						)
-					)
-				);
+			return new BinaryFileResponse($destino);
 		} catch (\Exception $e) {
 			$response->setContent(
 				json_encode(
@@ -528,60 +508,27 @@ class ReportesController extends Controller
 			return $response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
 		}
     }
-    
-    /**
-     * @Route("/produccion/verOt", name="mbp_produccion_verOt", options={"expose"=true})
-     */
-	public function verOt()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpProduccionBundle/Resources/public/pdf/').'OT.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'OT.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-Type', 'application/pdf');
-
-        return $response;
-	}
 	
 	/**
      * @Route("/produccion/reporteOTPorSectorFiltrado", name="mbp_produccion_reporteOTPorSectorFiltrado", options={"expose"=true})
      */
     public function reporteOTPorSectorFiltrado()
     {
-        /*
-		 * PARAMETROS
-		 */
 		$desde = $this->getRequest()->request->get('desde');
 		$hasta = $this->getRequest()->request->get('hasta');
-		$sectorId = $this->getRequest()->request->get('sector');
+		$sectorId = $this->getRequest()->request->get('tipo');
 		$response = new Response;
 
 		try {
 			$reporteador = $this->get('reporteador');
 			$kernel = $this->get('kernel');
 			
-			
-			/*
-			 * Configuro reporte
-			 */
 			$jru = $reporteador->jru();
-			
-			/*
-			 * Ruta archivo Jasper
-			 */				
+						
 					
 			$ruta = $kernel->locateResource('@MbpProduccionBundle/Reportes/OrdenesPorSector2.jrxml');
 			$rutaLogo = $reporteador->getRutaLogo($kernel);
 			
-			/*
-			 * Ruta de destino del PDF
-			 */
 			$destino = $kernel->locateResource('@MbpProduccionBundle/Resources/public/pdf/').'OrdenesPorSector2.pdf';
 			
 			
@@ -654,13 +601,7 @@ class ReportesController extends Controller
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 			
-			return $response->setContent(
-					json_encode(
-						array(
-							'success'=> true,	
-						)
-					)
-				);
+			return new BinaryFileResponse($destino);
 		} catch (\Exception $e) {
 			$response->setContent(
 				json_encode(
@@ -675,60 +616,29 @@ class ReportesController extends Controller
 		}
     }
     
-    /**
-     * @Route("/produccion/verOTPorSectorFiltrado", name="mbp_produccion_verOTPorSectorFiltrado", options={"expose"=true})
-     */
-	public function verOTPorSectorFiltrado()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpProduccionBundle/Resources/public/pdf/').'OrdenesPorSector2.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'OrdenesPorSector2.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-Type', 'application/pdf');
-
-        return $response;
-	}
 	
 	/**
      * @Route("/produccion/reporteOTPorClientes", name="mbp_produccion_reporteOTPorClientes", options={"expose"=true})
      */
     public function reporteOTPorClientes()
     {
-        /*
-		 * PARAMETROS
-		 */
 		$desde = $this->getRequest()->request->get('desde');
 		$hasta = $this->getRequest()->request->get('hasta');
 		$clienteId1 = $this->getRequest()->request->get('cliente1');
 		$clienteId2 = $this->getRequest()->request->get('cliente2');
 		$response = new Response;
 
+
 		try {
 			$reporteador = $this->get('reporteador');
 			$kernel = $this->get('kernel');
 			
-			
-			/*
-			 * Configuro reporte
-			 */
 			$jru = $reporteador->jru();
-			
-			/*
-			 * Ruta archivo Jasper
-			 */				
+						
 					
 			$ruta = $kernel->locateResource('@MbpProduccionBundle/Reportes/OrdenesPorCliente.jrxml');
 			$rutaLogo = $reporteador->getRutaLogo($kernel);
 			
-			/*
-			 * Ruta de destino del PDF
-			 */
 			$destino = $kernel->locateResource('@MbpProduccionBundle/Resources/public/pdf/').'reporteOTPorClientes.pdf';
 			
 			
@@ -742,10 +652,7 @@ class ReportesController extends Controller
 			$param->put('idCliente2', $clienteId2);
 			
 			$conn = $reporteador->getJdbc(); 
-			
-			/*
-			 * FECHA OUTPUT FORMATO SQL PARA CONSULTA
-			 */		
+				
 			$fechaDesdeSql = $desde->format('Y-m-d');
 			$fechaHastaSql = $hasta->format('Y-m-d');
 			
@@ -792,15 +699,8 @@ class ReportesController extends Controller
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 			
-			return $response->setContent(
-					json_encode(
-						array(
-							'success'=> true,	
-						)
-					)
-				);
+			return new BinaryFileResponse($destino);
 		} catch (\Exception $e) {
-			throw $e;
 			$response->setContent(
 				json_encode(
 					array(
@@ -809,65 +709,32 @@ class ReportesController extends Controller
 					)
 				)
 			);
-
 			return $response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
 		}
     }
-    
-    /**
-     * @Route("/produccion/verOTPorCliente", name="mbp_produccion_verOTPorCliente", options={"expose"=true})
-     */
-	public function verOTPorCliente()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpProduccionBundle/Resources/public/pdf/').'reporteOTPorClientes.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'reporteOTPorClientes.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-Type', 'application/pdf');
-
-        return $response;
-	}
 	
 	/**
      * @Route("/produccion/reporteHistoricoOT", name="mbp_produccion_reporteHistoricoOT", options={"expose"=true})
      */
     public function reporteHistoricoOT()
     {
-        /*
-		 * PARAMETROS
-		 */
 		$desde = $this->getRequest()->request->get('desde');
 		$hasta = $this->getRequest()->request->get('hasta');
 		$codigo1 = $this->getRequest()->request->get('codigo1');
 		$codigo2 = $this->getRequest()->request->get('codigo2');
+
+
 		$response = new Response;
 
 		try {
 			$reporteador = $this->get('reporteador');
 			$kernel = $this->get('kernel');
 			
-			
-			/*
-			 * Configuro reporte
-			 */
 			$jru = $reporteador->jru();
 			
-			/*
-			 * Ruta archivo Jasper
-			 */				
-					
 			$ruta = $kernel->locateResource('@MbpProduccionBundle/Reportes/HistoricoOt.jrxml');
 			$rutaLogo = $reporteador->getRutaLogo($kernel);
 			
-			/*
-			 * Ruta de destino del PDF
-			 */
 			$destino = $kernel->locateResource('@MbpProduccionBundle/Resources/public/pdf/').'HistoricoOt.pdf';
 			
 			
@@ -881,10 +748,7 @@ class ReportesController extends Controller
 			$param->put('codigo2', $codigo2);
 			
 			$conn = $reporteador->getJdbc(); 
-			
-			/*
-			 * FECHA OUTPUT FORMATO SQL PARA CONSULTA
-			 */		
+				
 			$fechaDesdeSql = $desde->format('Y-m-d');
 			$fechaHastaSql = $hasta->format('Y-m-d');
 			
@@ -930,13 +794,7 @@ class ReportesController extends Controller
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 			
-			return $response->setContent(
-					json_encode(
-						array(
-							'success'=> true,	
-						)
-					)
-				);
+			return new BinaryFileResponse($destino);
 		} catch (\Exception $e) {
 			$response->setContent(
 				json_encode(
@@ -946,30 +804,9 @@ class ReportesController extends Controller
 					)
 				)
 			);
-
 			return $response->setStatusCode($response::HTTP_INTERNAL_SERVER_ERROR);
 		}
     }
-    
-    /**
-     * @Route("/produccion/verHistoricoOt", name="mbp_produccion_verHistoricoOt", options={"expose"=true})
-     */
-	public function verHistoricoOt()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpProduccionBundle/Resources/public/pdf/').'HistoricoOt.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'reporteOTPorClientes.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-Type', 'application/pdf');
-
-        return $response;
-	}
 }
 
 

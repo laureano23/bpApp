@@ -500,33 +500,12 @@ Ext.define('MetApp.controller.RRHH.RecibosController', {
 	},
 	
 	ImprimeResumenAguinaldo: function(btn){
-		console.log('hola');
-		var win = btn.up('window');
-		var form = win.down('form');
-		var values = form.getValues();
-		
-		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-		myMask.show();
-		
-		Ext.Ajax.request({
-			url: Routing.generate('mbp_personal_crearResumenAguinaldo'),
-			
-			params: {
-				mesDesde: values.mesDesde,
-				mesHasta: values.mesHasta,
-				anioDesde: values.anioDesde,
-				anioHasta: values.anioHasta,
-				compensatorio: values.compensatorio
-			},
-			
-			success: function(resp){
-				var ruta = Routing.generate('mbp_personal_resumenAguinaldoPdf');
-		    	window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
-			}
+		var form=btn.up('form');
+		form.getForm().submit({
+			standardSubmit: true,
+			target: '_blank',
+			url: Routing.generate('mbp_personal_crearResumenAguinaldo')
 		})
-		
-        
-	    
 	},
 	
 	ImprimeRecibos: function(btn){
@@ -560,24 +539,12 @@ Ext.define('MetApp.controller.RRHH.RecibosController', {
 	},
 	
 	ImprimirLibroSueldos: function(btn){
-		var win = btn.up('window');
-		var form = win.down('form');
-		var values = form.getValues();
-		
-		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-		myMask.show();
-		
-		Ext.Ajax.request({
-			url: Routing.generate('mbp_personal_reporteLibroSueldos'),
-			
-			params: values,
-			
-			success: function(resp){
-				var ruta = Routing.generate('mbp_personal_libroSueldosPdf');
-		        window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
-				myMask.hide();
-			}
-		});
+		var form=btn.up('form');
+		form.getForm().submit({
+			standardSubmit: true,
+			target: '_blank',
+			url: Routing.generate('mbp_personal_reporteLibroSueldos')
+		})
 	},
 	
 	WinReporteResumenAguinaldo: function(btn){
@@ -589,28 +556,12 @@ Ext.define('MetApp.controller.RRHH.RecibosController', {
 	},
 
 	ImprimeResumenLiquidaciones: function(btn){
-		var win = btn.up('window');
-		var form = win.down('form');
-		var values = form.getValues();
-		
-		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-		myMask.show();
-		
-		Ext.Ajax.request({
-			url: Routing.generate('mbp_personal_crearResumenLiquidaciones'),
-			
-			params: values,
-			
-			success: function(resp){
-				var ruta = Routing.generate('mbp_personal_resumenLiquidacionesPdf');
-		        window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');
-				myMask.hide();
-			},
-
-			failure: function(resp){
-				myMask.hide();
-			}
-		});
+		var form=btn.up('form');
+		form.getForm().submit({
+			standardSubmit: true,
+			target: '_blank',
+			url: Routing.generate('mbp_personal_crearResumenLiquidaciones')
+		})
 	},
 	
 	WinReliquidarPeriodo: function(btn){
