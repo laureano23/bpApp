@@ -99,10 +99,6 @@ class ReportesController extends Controller
 		$response = new Response;
 		
 		try{
-			/*
-			 * Recibo parametros del request 
-			 */
-			
 			$id = $req->request->get('idArt');
 			$jru = $repo->jru();
 					
@@ -117,10 +113,6 @@ class ReportesController extends Controller
 					
 			$conn = $repo->getJdbc();
 			
-			/*
-			 * SQL
-			 * 
-			 */
 			$sql = "
 				SELECT sub.*, art.codigo as codigoHijo, art.descripcion as descripcionHijo
 				from
@@ -138,12 +130,7 @@ class ReportesController extends Controller
 			//Exportamos el reporte
 			$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
 						
-			return $response->setContent(
-				json_encode(array(
-					'success' => true,
-					'reporte' => $destino,	
-				))
-			);
+			return new BinaryFileResponse($destino);
 		}catch(\Exception $e){
 			return $response->setContent(
 				json_encode(array(
@@ -153,26 +140,6 @@ class ReportesController extends Controller
 			);
 		}
 			
-	}
-	
-	/**
-     * @Route("/enQueFormulasPDF", name="mbp_formulas_enQueFormulas_pdf", options={"expose"=true})
-     */
-	public function enQueFormulasPDF()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpArticulosBundle/Resources/public/pdf/').'EnQueFormulas.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'EnQueFormulas.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-
-        return $response;
 	}
 
 	 /**
@@ -327,9 +294,6 @@ class ReportesController extends Controller
 		$repoArt=$em->getRepository('MbpArticulosBundle:Articulos');
 		$response=new Response;
 		
-		/*
-		 * Recibo parametros del request 
-		 */
 		$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
 		$idArt=$req->request->get('idArt');
@@ -364,32 +328,7 @@ class ReportesController extends Controller
 		$jru->runPdfFromSql($ruta, $destino, $param,$sql,$conn->getConnection());
 		
 		
-		return $response->setContent(
-			json_encode(array(
-				'success' => true,
-				'reporte' => $destino,	
-			))
-		);
-	}
-	
-	/**
-     * @Route("/extranet/muestraReporteEstructura", name="mbp_formulas_muestraReporte", options={"expose"=true})
-     */
-	public function muestraReporteEstructuraAction()
-	{
-		$kernel = $this->get('kernel');	
-		$basePath = $kernel->locateResource('@MbpArticulosBundle/Resources/public/pdf/').'Estructura_materiales.pdf';
-		$response = new BinaryFileResponse($basePath);
-        $response->trustXSendfileTypeHeader();
-		$filename = 'Estructura_materiales.pdf';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-		$response->headers->set('Content-type', 'application/pdf');
-
-        return $response;
+		return new BinaryFileResponse($destino);
 	}
 	
 	

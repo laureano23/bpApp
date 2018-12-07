@@ -114,8 +114,7 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 		var win=Ext.widget('VerOTView');
 		var store=win.down('grid').getStore();
 
-		console.log(idArt);
-		console.log(store);
+		
 		Ext.Ajax.request({
 			url: Routing.generate('mbp_produccion_ListarOrdenesCompletas'),
 			params: {
@@ -137,8 +136,6 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 		var form=winArt.down('form');
 		var values=form.getForm().getValues();
 
-		console.log(values);
-		
 
 		store.load({
 			params: {
@@ -149,21 +146,14 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 
 	EnQueFormulas: function(btn){
 		var win=btn.up('window');
-
-		Ext.Ajax.request({
-			url: Routing.generate('mbp_formulas_enQueFormulas'),
-
+		var form=btn.up('form');
+		form.getForm().submit({
+			standardSubmit: true,
+			target: '_blank',
 			params: {
 				idArt: win.queryById('id').getValue()
 			},
-
-			success: function(resp){
-				var jsonResp = Ext.JSON.decode(resp.responseText);
-				if(jsonResp.success == true){
-					var ruta = Routing.generate('mbp_formulas_enQueFormulas_pdf');
-					window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');					
-				}
-			}
+			url: Routing.generate('mbp_formulas_enQueFormulas')
 		})
 	},
 
@@ -177,44 +167,21 @@ Ext.define('MetApp.controller.Articulos.ArticulosController',{
 	},
 	
 	PedidosPendientes: function(btn){
-		var win=btn.up('window');
-		var form=win.down('form');
-		var myMask = new Ext.LoadMask(form, {msg:"Cargando..."});
-		myMask.show();
-		
-		
+		var form=btn.up('form');
 		var codigo=form.queryById('codigo').getValue();
-		var data={
-			articuloDesde: codigo,
-			articuloHasta:codigo,
-			clienteDesde:1,
-			clienteHasta:999999,
-			fechaDesde:"01/01/2000",
-			fechaHasta:"01/01/2500"
-		};
-		var values=Ext.JSON.encode(data);
-		
-		
-		Ext.Ajax.request({
-			url: Routing.generate('mbp_produccion_reporte_pedido'),
-			
+		form.getForm().submit({
+			standardSubmit: true,
+			target: '_blank',
 			params: {
-				data: values
+				articuloDesde: codigo,
+				articuloHasta:codigo,
+				clienteDesde:1,
+				clienteHasta:999999,
+				fechaDesde:"01/01/2000",
+				fechaHasta:"01/01/2500"
 			},
-			
-			success: function(resp, opt){
-			    var jsonResp = Ext.JSON.decode(resp.responseText);
-				if(jsonResp.success == true){
-					var ruta = Routing.generate('mbp_produccion_reporte_pedidoPdf');
-					window.open(ruta, '_blank, location=yes,height=800,width=1200,scrollbars=yes,status=yes');
-					myMask.hide();
-				}
-			},
-			
-			failure: function(res){
-				myMask.hide();
-			}
-		});
+			url: Routing.generate('mbp_produccion_reporte_pedido')
+		})			
 	},
 	
 	CopiarRuta: function(btn){
