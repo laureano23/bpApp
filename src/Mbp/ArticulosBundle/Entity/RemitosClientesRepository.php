@@ -68,6 +68,7 @@ class RemitosClientesRepository extends \Doctrine\ORM\EntityRepository
 							p.rsocial as proveedor")
 						->leftJoin('r.proveedorId', 'p')
 						->leftJoin('r.clienteId', 'c')
+						->orderBy('r.remitoNum', 'DESC')
 						->getQuery()
 						->getArrayResult();
 		
