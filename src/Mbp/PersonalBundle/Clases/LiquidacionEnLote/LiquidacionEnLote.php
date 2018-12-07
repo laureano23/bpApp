@@ -406,7 +406,6 @@ class LiquidacionEnLote
 			
 			//SON LAS HORAS QUE EL EMPLEADO DEBERIA HABER TRABAJO
 			$hsATrabajar = $this->horasNormales - $hsJustificadas;		
-			
 			$hsNormales = 0;
 			$hsExtras = 0;
 			

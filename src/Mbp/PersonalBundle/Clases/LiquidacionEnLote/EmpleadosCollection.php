@@ -140,11 +140,10 @@ class EmpleadosCollection
 
 	private function ValidarColeccionEmpleados()
 	{
-		//$this->ValidarFaltaDeIngreso();
+		$this->ValidarFaltaDeIngreso();
 		$this->ValidarIngresosEgresos();
 	}
 
-	
 	
 	/*
 	 * FUNCION PARA COMPRAR SI LOS EGRESOS SON IGUALES A LOS INGRESOS
@@ -154,17 +153,15 @@ class EmpleadosCollection
 		$totalIngresos = 0;
 		$totalEgresos = 0;
 		
-		foreach($this->getEmpleado() as $empleado){
-			
-									
+		foreach($this->getEmpleado() as $empleado){		
 			foreach($empleado->getEntradas() as $entrada){
-				if(!empty($entrada)){
+				if(!empty($entrada['fichadaE'])){
 					$totalIngresos++;
 				}
 				
 			}
 			foreach($empleado->getSalidas() as $salida){
-				if(!empty($salida)){
+				if(!empty($salida['fichadaS'])){
 					$totalEgresos++;
 				}
 			}
@@ -173,7 +170,7 @@ class EmpleadosCollection
 			
 			//VALIDAMOS LAS ENTRADAS Y SALIDAS DEBEN SER IGUALES
 			if($totalEgresos != $totalIngresos){
-				$str = $empleado->getNombre().": El total de entradas no es igual al de salidas";
+				$str = $empleado->getNombre().": El total de entradas no es igual al de salidas el ";
 				$this->addError($str);
 			}
 			
@@ -192,18 +189,17 @@ class EmpleadosCollection
 			$dias = $empleado->getDia();
 			$fecha = $empleado->getFecha();
 			$observaciones = $empleado->getObservaciones();
+			$i=0;
 			foreach($empleado->getEntradas() as $entrada){
-				if(empty($entrada) && $dias[$i] != "Sábado" && $dias[$i] != "Domingo" && $observaciones[$i] == -1){
-					$str = $empleado->getNombre()." ".$fecha[$i]->format('d/m/Y').": No hay fichada en la fecha";
-					$this->addError($str);					
+				if(empty($entrada['fichadaE']) && $dias[$i] != "Sábado" && $dias[$i] != "Domingo" && $observaciones[$i] == -1){
+					$str = $empleado->getNombre()." ".$entrada['fecha']->format('d/m/Y').": No hay fichada en la fecha";
+					$this->addError($str);
 				}
 				$i++;
 			}
-			$i=0;
+			$i=count($empleado->getEntradas());
 		}
 	}
-	
-	
 	
 	
 	public function addEmpleado($empleado)
