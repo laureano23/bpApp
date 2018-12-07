@@ -31,6 +31,9 @@ class Empleado
 		
 	}
 	
+	public function ordenarObs(){
+		sort($this->observaciones);
+	}
 	public function getHsJustificadas()
 	{
 		return $this->hsJustificadas;
