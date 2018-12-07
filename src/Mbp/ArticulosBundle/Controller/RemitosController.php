@@ -18,6 +18,36 @@ class RemitosController extends Controller
 {
 	
 	/**
+     * @Route("/anularRemito", name="mbp_articulos_anularRemito", options={"expose"=true})
+     */
+    public function anularRemito()
+    {
+		$em = $this->getDoctrine()->getManager();
+        $req = $this->getRequest();
+    	$repo=$em->getRepository('MbpArticulosBundle:RemitosClientes');
+		$response=new Response;
+		
+		try{
+			$id = json_decode($req->request->get('idRemito'));
+			$remito=$repo->find($id);
+			$remito->setAnulado(true);
+			$em->persist($remito);
+			$em->flush();
+			
+			return $response->setContent(\json_encode(
+				array('success'=>true)
+			));
+			
+		}catch(\Exception $e){
+			$response->setContent(
+				json_encode(array('success'=>false, 'msg'=>$e->getMessage()))
+			);
+			
+			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	/**
      * @Route("/anularRemitoPendienteFacturacion", name="mbp_articulos_anularRemitoPendienteFacturacion", options={"expose"=true})
      */
     public function anularRemitoPendienteFacturacion()
@@ -215,6 +245,7 @@ class RemitosController extends Controller
 			     RemitosClientes.`domicilio` AS RemitosClientes_domicilio,
 			     RemitosClientes.`provincia` AS RemitosClientes_provincia,
 			     RemitosClientes.`localidad` AS RemitosClientes_localidad,
+				 RemitosClientes.`anulado` AS RemitosClientes_anulado,
 			     RemitosClientesDetalles.`id` AS RemitosClientesDetalles_id,
 			     RemitosClientesDetalles.`descripcion` AS RemitosClientesDetalles_descripcion,
 			     RemitosClientesDetalles.`cantidad` AS RemitosClientesDetalles_cantidad,

@@ -34,10 +34,11 @@ Ext.define('MetApp.view.Articulos.Stock.Remitos.RemitosListadoView' ,{
 									submitFormat: 'd/m/Y',
 									xtype:'datecolumn',
 								},
-								{header: 'Cliente', dataIndex: 'cliente', width: 300},
-								{header: 'Proveedor', dataIndex: 'proveedor', width: 300},
+								{header: 'Cliente', dataIndex: 'cliente', width: 280},
+								{header: 'Proveedor', dataIndex: 'proveedor', width: 280},
 								{header: 'Remito Num.', dataIndex: 'remitoNum', flex: 1},
-								{xtype: 'actioncolumn', header: 'Ver', itemId: 'verRemito', iconCls: 'reportes'}
+								{xtype: 'actioncolumn', header: 'Ver', itemId: 'verRemito', iconCls: 'reportes', flex: 1},
+								{xtype: 'actioncolumn', header: 'Anular', itemId: 'anular', iconCls: 'delete', flex: 1}
 							
 							]
 						},

@@ -85,6 +85,13 @@ class RemitosClientes
     private $localidad;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="anulado", type="boolean", nullable=true)
+     */
+    private $anulado=0;
+
+    /**
      * Get id
      *
      * @return integer
@@ -303,5 +310,29 @@ class RemitosClientes
     public function getLocalidad()
     {
         return $this->localidad;
+    }
+
+    /**
+     * Set anulado
+     *
+     * @param boolean $anulado
+     *
+     * @return RemitosClientes
+     */
+    public function setAnulado($anulado)
+    {
+        $this->anulado = $anulado;
+
+        return $this;
+    }
+
+    /**
+     * Get anulado
+     *
+     * @return boolean
+     */
+    public function getAnulado()
+    {
+        return $this->anulado;
     }
 }

@@ -73,10 +73,38 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 			'RemitosListadoView textfield[itemId=proveedor]': {
 				change: this.FiltrarRemitosProveedor
 			},
+			'RemitosListadoView actioncolumn[itemId=anular]': {
+				click: this.AnularRemito
+			},
 			'viewport menuitem[itemId=verRemitosPendientesFc]': {
 				click: this.VerRemitosPendientesFc
 			},
+			
 		});
+	},
+
+	AnularRemito: function(grid, colIndex, rowIndex){
+		var store = grid.getStore();
+		var selection = store.getAt(rowIndex);
+		var win = grid.up('window');
+		
+		Ext.Ajax.request({
+			url: Routing.generate('mbp_articulos_anularRemito'),
+			
+			params: {
+				idRemito: selection.data.id
+			},
+			
+			success: function(resp){
+				var jsonResp = Ext.JSON.decode(resp.responseText);
+				if(jsonResp.success == true){
+					Ext.Msg.show({
+						title: 'Atención',
+						msg: 'Desea restrablecer el stock de estos produtos?'
+					})
+				}								
+			}			
+		});	
 	},
 
 	InsertarItemAutorizado: function(btn){
