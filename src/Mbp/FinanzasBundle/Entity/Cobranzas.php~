@@ -303,28 +303,4 @@ class Cobranzas
     {
         return $this->ccId;
     }
-
-    /**
-     * Set paraPresupuesto
-     *
-     * @param boolean $paraPresupuesto
-     *
-     * @return Cobranzas
-     */
-    public function setParaPresupuesto($paraPresupuesto)
-    {
-        $this->paraPresupuesto = $paraPresupuesto;
-
-        return $this;
-    }
-
-    /**
-     * Get paraPresupuesto
-     *
-     * @return boolean
-     */
-    public function getParaPresupuesto()
-    {
-        return $this->paraPresupuesto;
-    }
 }

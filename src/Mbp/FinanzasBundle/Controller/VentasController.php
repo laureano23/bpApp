@@ -13,10 +13,12 @@ use Mbp\FinanzasBundle\Entity\TipoComprobante;
 use Mbp\FinanzasBundle\Clases\Facturacion\FacturaA;
 use Mbp\FinanzasBundle\Clases\Facturacion\NotaCreditoA;
 use Mbp\FinanzasBundle\Clases\Facturacion\NotaDebitoA;
+use Mbp\FinanzasBundle\Clases\Facturacion\Presupuesto;
 
 class VentasController extends Controller
 {	
-	
+
+		
 	/**
      * @Route("/CCClientes/listarFacturasParaAsociar", name="mbp_CCClientes_listarFacturasParaAsociar", options={"expose"=true})
      */	    
@@ -219,6 +221,14 @@ class VentasController extends Controller
 					);
 					$idCbte=$repoFc->crearComprobante($comprobante);
 					break;
+				case 5:
+					$comprobante=new Presupuesto(
+						$decodefcData->tipoCambio, $decodefcData->moneda,
+						$decodefcData->idCliente, $decodeData, $descuento, $percepcionIIBB,
+						$faele, $repoFc, $repoCliente, $decodefcData->condicion
+					);
+					$idCbte=$repoFc->crearComprobante($comprobante);
+					break;
 			}
 			
 			
@@ -237,6 +247,7 @@ class VentasController extends Controller
 			return $response;
 				
 		}catch(\Exception $e){
+			throw $e;
 			$logger=$this->get('monolog.logger.facturacion');
 			$logger->err($e->getMessage());
 			$msg=json_decode($e->getMessage());
@@ -308,6 +319,7 @@ class VentasController extends Controller
 		
 		$idCobranza = $req->request->get('idCobranza');
 		$idBalance = $req->request->get('idBalance');
+		$esPrespuesto = $req->request->get('esPrespuesto');
 		
 		$repo = $em->getRepository('MbpFinanzasBundle:Cobranzas');
 		$repoFc = $em->getRepository('MbpFinanzasBundle:Facturas');
@@ -315,6 +327,8 @@ class VentasController extends Controller
 			
 		try{
 			if($idBalance > 0){
+				$record = $repoFc->find($idBalance);
+			}elseif($esPrespuesto){
 				$record = $repoFc->find($idBalance);
 			}else{
 				$record = $repo->find($idCobranza);

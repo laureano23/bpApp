@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="InventarioCheques" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="614c1295-2fdb-4850-97d1-c65bc2acdad4">
-	<property name="ireport.zoom" value="0.7513148009015789"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="2.143588810000005"/>
+	<property name="ireport.x" value="1125"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="FECHA_DESDE" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -19,6 +19,7 @@
      Cobranzas.`fechaRecibo` AS Cobranzas_fechaRecibo,
      Cobranzas.`totalCobranza` AS Cobranzas_totalCobranza,
      Cobranzas.`ccId` AS Cobranzas_ccId,
+     Cobranzas.`paraPresupuesto` AS Cobranzas_paraPresupuesto,
      CobranzasDetalle.`id` AS CobranzasDetalle_id,
      CobranzasDetalle.`importe` AS CobranzasDetalle_importe,
      CobranzasDetalle.`numero` AS CobranzasDetalle_numero,
@@ -61,6 +62,7 @@ ORDER BY CobranzasDetalle.`vencimiento` ASC]]>
 	<field name="Cobranzas_fechaRecibo" class="java.sql.Date"/>
 	<field name="Cobranzas_totalCobranza" class="java.math.BigDecimal"/>
 	<field name="Cobranzas_ccId" class="java.lang.Integer"/>
+	<field name="Cobranzas_paraPresupuesto" class="java.lang.Boolean"/>
 	<field name="CobranzasDetalle_id" class="java.lang.Integer"/>
 	<field name="CobranzasDetalle_importe" class="java.math.BigDecimal"/>
 	<field name="CobranzasDetalle_numero" class="java.lang.String"/>
@@ -228,10 +230,16 @@ ORDER BY CobranzasDetalle.`vencimiento` ASC]]>
 				<textFieldExpression><![CDATA[$F{CobranzasDetalle_vencimiento}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="709" y="0" width="93" height="20" uuid="ed896c58-fcd9-49aa-9ef2-656a39fb66f7"/>
+				<reportElement x="709" y="0" width="75" height="20" uuid="ed896c58-fcd9-49aa-9ef2-656a39fb66f7"/>
 				<box leftPadding="2"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{CobranzasDetalle_importe}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="784" y="0" width="18" height="20" uuid="d25df9d9-f256-405d-b8b2-44a33a07d028"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Cobranzas_paraPresupuesto}==true?"N":""]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

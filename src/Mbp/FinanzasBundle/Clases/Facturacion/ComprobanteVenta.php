@@ -61,6 +61,10 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
         $this->cargarDetallesVenta($detallesVenta);
     }
 
+    public function sosPresupuesto(){
+        return false;
+    }
+
     public function getTotalIVA(){
         return $this->getImporteNetoGrabado() * self::$alicIVA21;
     }
@@ -150,7 +154,7 @@ abstract class ComprobanteVenta extends ComprobanteComercial{
         return round($this->getTotalDetallesGrabados()-$this->getDescuento(), 2);
     }
 
-    protected function getTotalComprobante(){
+    public function getTotalComprobante(){
         return round($this->getTotalDetallesGrabados() + $this->getTotalDetallesNoGrabados() - $this->getDescuento(), 2);
     }
     

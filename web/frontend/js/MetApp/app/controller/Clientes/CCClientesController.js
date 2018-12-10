@@ -551,7 +551,8 @@ Ext.define('MetApp.controller.Clientes.CCClientesController',{
 						
 						params: {
 							idCobranza: data.idCob,
-							idBalance: data.idF
+							idBalance: data.idF,
+							esPresupuesto: data.esPresupuesto
 						},
 						
 						success: function(resp){

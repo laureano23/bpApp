@@ -225,6 +225,13 @@ class Facturas
     private $facturasAsociadas;
 
     /**
+     * @var \boolean
+     *
+     * @ORM\Column(name="esPresupuesto", type="boolean", nullable=false)
+     */
+    private $esPresupuesto=0;
+
+    /**
      * Get id
      *
      * @return integer
@@ -970,5 +977,29 @@ class Facturas
     public function getFacturasAsociadas()
     {
         return $this->facturasAsociadas;
+    }
+
+    /**
+     * Set esPresupuesto
+     *
+     * @param boolean $esPresupuesto
+     *
+     * @return Facturas
+     */
+    public function setEsPresupuesto($esPresupuesto)
+    {
+        $this->esPresupuesto = $esPresupuesto;
+
+        return $this;
+    }
+
+    /**
+     * Get esPresupuesto
+     *
+     * @return boolean
+     */
+    public function getEsPresupuesto()
+    {
+        return $this->esPresupuesto;
     }
 }

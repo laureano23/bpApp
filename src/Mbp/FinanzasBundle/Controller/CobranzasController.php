@@ -63,7 +63,14 @@ class CobranzasController extends Controller
 			$cliente = $repoCliente->find($idCliente);
 			$cobranza->setClienteId($cliente);
 			$cobranza->setPtoVenta((int)$datosRecibo->ptoVta);
-			$cobranza->setNumRecibo((int)$datosRecibo->reciboNum);
+			
+
+			if($datosRecibo->paraPresupuesto=="on"){
+				$cobranza->setParaPresupuesto(true);
+				$cobranza->setNumRecibo(0);
+			}else{
+				$cobranza->setNumRecibo((int)$datosRecibo->reciboNum);
+			}
 			
 			$importeTotal = 0;
 			foreach($decodeData as $data){

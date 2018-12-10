@@ -77,6 +77,14 @@ Ext.define('MetApp.view.CCClientes.Cobranza' ,{
 									name: 'emisionFecha',
 									readOnly: true,
 									value: new Date()
+								},
+								{
+									xtype: 'checkbox',
+									margins: '0 0 0 5',		
+									fieldLabel: 'Para Presupuesto',
+									name: 'paraPresupuesto',
+									labelWidth: 110,
+									uncheckedValue: false
 								}
 							]	
 						},						

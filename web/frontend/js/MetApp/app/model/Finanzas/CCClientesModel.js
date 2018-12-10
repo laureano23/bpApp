@@ -14,5 +14,6 @@ Ext.define('MetApp.model.Finanzas.CCClientesModel',{
 		{ name: 'tipoCbte', type: 'string' },
 		{ name: 'esBalance', type: 'bool' },
 		{ name: 'pagado', type: 'bool' },
+		{ name: 'esPresupuesto', type: 'bool' },
 	]
 });

@@ -50,6 +50,10 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 				$tipoCbte=$repoTipoCbte->findOneBy(array('esNotaDebito'=>true, 'subTipoA'=>true));
 				if(empty($tipoCbte)) throw new \Exception("No existe el tipo de comprobante Nota de débito A", 1);
 				break;
+			case $objFC->sosPresupuesto();
+				$tipoCbte=$repoTipoCbte->findOneBy(array('esNegro'=>true));
+				if(empty($tipoCbte)) throw new \Exception("No existe el tipo de comprobante Presupuesto", 1);
+				break;
 			default:
 				# code...
 				break;
@@ -86,6 +90,10 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 		$comprobante->setDomicilio($cliente->getDireccion());
 		$comprobante->setCuit($cliente->getCuit());
 
+		if($objFC->sosPresupuesto()){
+			$comprobante->setEsPresupuesto(true);
+		}
+
 		$posicion=$cliente->getIva()->getPosicion();
 		if(empty($posicion)) throw new \Exception("El cliente no tiene una posición definida frente al IVA", 1);
 		$comprobante->setIvaCond($posicion);
@@ -118,7 +126,6 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 
 			
 		}
-
 
 		$em->persist($comprobante);
 		$em->persist($cc);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReciboCobranzas" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="c33ce8c6-1a4c-46bd-9270-7b87efd587d4">
 	<property name="ireport.zoom" value="1.331000000000001"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="130"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="cobranzaId" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -15,6 +15,7 @@
      Cobranzas.`id` AS Cobranzas_id,
      Cobranzas.`emision` AS Cobranzas_emision,
      Cobranzas.`clienteId` AS Cobranzas_clienteId,
+     Cobranzas.`paraPresupuesto` AS Cobranzas_paraPresupuesto,
      CobranzasDetalle.`id` AS CobranzasDetalle_id,
      CobranzasDetalle.`importe` AS CobranzasDetalle_importe,
      CobranzasDetalle.`vencimiento` AS CobranzasDetalle_vencimiento,
@@ -38,6 +39,7 @@ WHERE
 	<field name="Cobranzas_id" class="java.lang.Integer"/>
 	<field name="Cobranzas_emision" class="java.sql.Timestamp"/>
 	<field name="Cobranzas_clienteId" class="java.lang.Integer"/>
+	<field name="Cobranzas_paraPresupuesto" class="java.lang.Boolean"/>
 	<field name="CobranzasDetalle_id" class="java.lang.Integer"/>
 	<field name="CobranzasDetalle_importe" class="java.math.BigDecimal"/>
 	<field name="CobranzasDetalle_vencimiento" class="java.sql.Date"/>
@@ -91,7 +93,8 @@ WHERE
 				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Cobranzas_numRecibo}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Cobranzas_paraPresupuesto}==false?$F{Cobranzas_numRecibo}
+:$F{Cobranzas_id}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="190" y="46" width="215" height="20" uuid="14eaa254-4d27-43fb-ba94-f5c0569c8bc6"/>
@@ -107,6 +110,15 @@ WHERE
 				</textElement>
 				<textFieldExpression><![CDATA[$F{Cobranzas_emision}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="405" y="46" width="139" height="20" forecolor="#FF0033" uuid="b005550f-8640-4537-aff5-f26980940c56">
+					<printWhenExpression><![CDATA[$F{Cobranzas_paraPresupuesto}==true]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Para Presupuesto]]></text>
+			</staticText>
 		</band>
 	</title>
 	<columnHeader>
