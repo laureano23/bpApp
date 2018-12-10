@@ -1042,6 +1042,7 @@ ORDER BY
 			     Cobranzas.`fechaRecibo` AS Cobranzas_fechaRecibo,
 			     Cobranzas.`totalCobranza` AS Cobranzas_totalCobranza,
 			     Cobranzas.`ccId` AS Cobranzas_ccId,
+				 Cobranzas.`paraPresupuesto` AS Cobranzas_paraPresupuesto,
 			     CobranzasDetalle.`id` AS CobranzasDetalle_id,
 			     CobranzasDetalle.`importe` AS CobranzasDetalle_importe,
 			     CobranzasDetalle.`numero` AS CobranzasDetalle_numero,
