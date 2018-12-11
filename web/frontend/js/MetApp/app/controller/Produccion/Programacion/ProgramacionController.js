@@ -50,10 +50,7 @@ Ext.define('MetApp.controller.Produccion.Programacion.ProgramacionController', {
 	},	
 	
 	CambiarFechaEntrega: function(field, row){
-		console.log(field);
-		console.log(row);
-		var date = Ext.Date.format(row.record.data.programado, 'd/m/Y');
-		console.log(date);
+		var date = Ext.Date.format(row.record.data.programado, 'd/m/Y');		
 		Ext.Ajax.request({
 			url: Routing.generate('mbp_produccion_cambiarFechaEntrega'),
 			

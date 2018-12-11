@@ -116,6 +116,7 @@ Ext.application({
 		
 		
 		channel.bind('my-event', function(data) {
+			var msg = Ext.JSON.decode(data);
 		    if(msg.sectorReceptor == MetApp.User.name.sector && msg.env==MetApp.User.name.env){
 		    	//btnNotificacion.addCls('nuevaNotificacion'); 
 		    	Ext.create('widget.uxNotification', {

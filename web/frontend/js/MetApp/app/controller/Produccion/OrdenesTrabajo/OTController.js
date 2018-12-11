@@ -247,68 +247,43 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 		var form = win.down('form');
 		var grid = win.down('grid');
 		
-		if(form.isValid()){
-			var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-			myMask.show();
-			var values = form.getValues();
-			var otAsociadas = grid.getSelectionModel().getSelection();
-						
-			var jsonArray = [];
-			var i=0;
-			otAsociadas.forEach(function(e){
-				jsonArray[i] = e.data;
-				i++;
-			});
-			
-			jsonArray = Ext.JSON.encode(jsonArray);			
-			
-			Ext.Ajax.request({
-				url: Routing.generate('mbp_produccion_nuevaot'),
-				
-				params: {
-					data: Ext.JSON.encode(values),
-					otAsociada: jsonArray
-				},
-				
-				success: function(resp){
-					var jsonResp = Ext.JSON.decode(resp.responseText);
-					if(jsonResp.success == true){
-						form.getForm().reset();
-						form.query('field').forEach(function(field){
-							field.setReadOnly(true);		
-						});
-						
-						Ext.Ajax.request({
-							url: Routing.generate('mbp_produccion_generarOt'),
-							
-							params: {
-								ot: jsonResp.ot
-							},
-							
-							success: function(resp){
-								var jResp = Ext.JSON.decode(resp.responseText);
-								if(jResp.success == true){
-									var ruta = Routing.generate('mbp_produccion_verOt');
-		    						window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');		
-								}
-								myMask.hide();
-							},
-							
-							failure: function(resp){
-								myMask.hide();
-							}
-						})
-					}
-				},
-				
-				failure: function(resp){
-					var jsonResp = Ext.JSON.decode(resp.responseText);
-					form.getForm().markInvalid(jsonResp.errors);
-					myMask.hide();
-				}
-			});
-		}
 		
+		var values = form.getValues();
+		var otAsociadas = grid.getSelectionModel().getSelection();
+					
+		var jsonArray = [];
+		var i=0;
+		otAsociadas.forEach(function(e){
+			jsonArray[i] = e.data;
+			i++;
+		});
+
+		jsonArray = Ext.JSON.encode(jsonArray);		
+		
+		form.getForm().submit({
+			clientValidation: true,
+			target: '_blank',
+			params: {
+				data: Ext.JSON.encode(values),
+				otAsociada: jsonArray
+			},
+			url: Routing.generate('mbp_produccion_nuevaot'),
+			success: function(form, action){
+				var jsonResp=Ext.JSON.decode(action.response.responseText);
+				if(jsonResp.success){
+					form.submit({
+						standardSubmit: true,
+						target: '_blank',
+						params: {
+							ot: jsonResp.ot,
+						},
+						url: Routing.generate('mbp_produccion_generarOt'),
+					})					
+				}
+				form.reset();
+			}
+		})
+				
 	},
 	
 	CerrarOT: function(btn){
