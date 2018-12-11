@@ -55,6 +55,7 @@ Ext.define('MetApp.view.Calidad.Reportes.RepoRG010-1', {
 						{
 							xtype: 'numberfield',
 							itemId: 'ot',
+							name: 'ot',
 							fieldLabel: 'O.T',
 							labelWidth: 30
 						},

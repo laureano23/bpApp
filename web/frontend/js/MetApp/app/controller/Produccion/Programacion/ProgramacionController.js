@@ -184,31 +184,15 @@ Ext.define('MetApp.controller.Produccion.Programacion.ProgramacionController', {
 
 	ImprimirOt: function(grid, colIndex, rowIndex){
 		var selection = grid.getStore().getAt(rowIndex);
-		var win = grid.up('window');
-		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-		myMask.show();
-
-
-		Ext.Ajax.request({
-			url: Routing.generate('mbp_produccion_generarOt'),
-			
+		var form=Ext.create('Ext.form.Panel');
+		form.getForm().submit({
+			standardSubmit: true,
+			target: '_blank',
 			params: {
 				ot: selection.data.otNum
 			},
-			
-			success: function(resp){
-				var jResp = Ext.JSON.decode(resp.responseText);
-				if(jResp.success == true){
-					var ruta = Routing.generate('mbp_produccion_verOt');
-					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');		
-				}
-				myMask.hide();
-			},
-			
-			failure: function(resp){
-				myMask.hide();
-			}
-		})
+			url: Routing.generate('mbp_produccion_generarOt')
+		})	
 	},
 	
 	ActualizarProgramacion: function(btn){
