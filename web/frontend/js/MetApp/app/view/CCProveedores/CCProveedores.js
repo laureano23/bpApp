@@ -1,7 +1,7 @@
 Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 	extend: 'Ext.window.Window',
 	height: 450,
-	width: 1000,
+	width: 1200,
 	modal: true,
 	autoShow: true,
 	alias: 'widget.CCProveedores',
@@ -197,7 +197,7 @@ Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 										},
 									}										
 								],
-								flex: 1,
+								width: 60,
 								dataIndex: 'detalle'
 							},
 							{ 
@@ -222,8 +222,8 @@ Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 										},
 									}										
 								],
-								flex: 1,
-								dataIndex: 'retencion'
+								width: 60,
+								dataIndex: 'retencion',
 							},
 							{ 
 								header: 'Eliminar',
@@ -232,7 +232,7 @@ Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 								items: [
 									{ iconCls: 'delete' }										
 								],
-								flex: 1 
+								width: 60
 							},
 							{ 
 								header: 'Imputado',
@@ -256,7 +256,7 @@ Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 										},
 									}										
 								],
-								flex: 1,
+								width: 60,
 								dataIndex: 'imputado'
 							},
 							{ 
@@ -281,7 +281,7 @@ Ext.define('MetApp.view.CCProveedores.CCProveedores' ,{
 										},
 									}										
 								],
-								flex: 1,
+								width: 60,
 								dataIndex: 'editable'
 							},
 							{ text: 'tipo', dataIndex: 'tipo', hidden: true },

@@ -270,6 +270,7 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 			url: Routing.generate('mbp_produccion_nuevaot'),
 			success: function(form, action){
 				var jsonResp=Ext.JSON.decode(action.response.responseText);
+				console.log(jsonResp)
 				if(jsonResp.success){
 					form.submit({
 						standardSubmit: true,
@@ -278,12 +279,10 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 							ot: jsonResp.ot,
 						},
 						url: Routing.generate('mbp_produccion_generarOt'),
-					})					
-				}
-				form.reset();
+					})	
+				}				
 			}
 		})
-				
 	},
 	
 	CerrarOT: function(btn){
