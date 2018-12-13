@@ -425,6 +425,11 @@ class OtController extends Controller
 					break;
 				case 'Terminada':
 					$ot->setEstado(2);
+
+					//LA OT PARA ESTAR TERMINADA DEBE COINCIDIR LA CANTIDAD TERMINADA CON LA OT
+					if($ot->getCantidad() != $data->aprobado){
+						throw new \Exception("Para terminar la OT debe coincidir la cantidad programada con la cantidad de piezas aprobadas, de lo contrario debe modificar la cantidad original de la OT", 1);						
+					}
 										
 					/* Si la OT esta terminada enviamos una notificacion al sector que la solicitó */
 					//NOTIFICACION
