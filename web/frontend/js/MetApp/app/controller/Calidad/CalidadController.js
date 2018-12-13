@@ -213,7 +213,12 @@ Ext.define('MetApp.controller.Calidad.CalidadController',{
 		var fieldSet = win.down('fieldset').collapse(); //Se colapsa del controlador porque en la vista tiene un BUG
 		var grid = win.down('grid');
 		var combo = win.down('combobox');
-		grid.getStore().load(); //Cargamos el store para rellenar la grilla
+		grid.getStore().load({
+			params: {
+				start: 0,
+				limit: 500
+			}
+		}); //Cargamos el store para rellenar la grilla
 		combo.store.load(); //Cargamos el store para los combos de personal		
 	},
 	

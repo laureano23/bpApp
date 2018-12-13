@@ -30,7 +30,12 @@ Ext.define('MetApp.view.Produccion.Programacion.Programacion',{
 			        			Ext.create('Ext.grid.plugin.CellEditing',{
 			        				clicksToEdit: 1,
 			        				pluginId: 'cellplugin',
-			        			})
+								}),
+								{
+									ptype: 'bufferedrenderer',
+									trailingBufferZone: 20,  
+									leadingBufferZone: 50  
+								}
 				        	],
 				        	selType: 'cellmodel',
 				        	viewConfig: {
@@ -147,7 +152,12 @@ Ext.define('MetApp.view.Produccion.Programacion.Programacion',{
 				        	plugins: [
 			        			Ext.create('Ext.grid.plugin.CellEditing',{
 			        				clicksToEdit: 1,				
-			        			})
+								}),
+								{
+									ptype: 'bufferedrenderer',
+									trailingBufferZone: 20,  
+									leadingBufferZone: 50  
+								}
 				        	],	
 				        	selType: 'cellmodel',
 				        	viewConfig: {

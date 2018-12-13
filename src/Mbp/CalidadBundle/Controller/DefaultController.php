@@ -113,10 +113,19 @@ class DefaultController extends Controller
 	public function listEstanqueidadAction()
 	{
 		$em = $this->getDoctrine()->getManager();
-		
-		$rep = $em->getRepository('MbpCalidadBundle:Estanqueidad')->listRegistro();
+		$request = $this->getRequest();
 
-		return new Response();
+		$firsResult = $request->query->get('start');
+		$maxResult = $request->query->get('limit');
+		$repo=$em->getRepository('MbpCalidadBundle:Estanqueidad');
+		$res = $repo->listRegistro($firsResult, $maxResult);
+
+		$resp= new Response();
+		return $resp->setContent(\json_encode(
+			array(
+				'data'=>$res,
+				'total'=>$repo->contar())
+		));
 	}
 	
 	public function deleteEstanqueidadRegAction()

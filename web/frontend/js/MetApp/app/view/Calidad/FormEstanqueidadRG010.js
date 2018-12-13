@@ -200,17 +200,18 @@ Ext.define('MetApp.view.Calidad.FormEstanqueidadRG010', {
 					region: 'center',
 					itemId: 'gridEstanqueidad',
 					alias: 'widget.gridEstanqueidad',
-					plugins: {
-				        ptype: 'bufferedrenderer',
-				        trailingBufferZone: 20,  // Keep 20 rows rendered in the table behind scroll
-				        leadingBufferZone: 50   // Keep 50 rows rendered in the table ahead of scroll
-				    },
 					anchorSize: '100%',
 					height: 200,	
 					autoScroll: true,				
 					store: 'Calidad.Estanqueidad',
 					multiSelect: true,
 					idProperty: 'id',
+					dockedItems: [{
+						xtype: 'pagingtoolbar',
+						store: 'Calidad.Estanqueidad',   // same store GridPanel is using
+						dock: 'bottom',
+						displayInfo: true
+					}],
 					columns: [
 						{text: 'Id', dataIndex: 'id', hidden: false},		
 						{

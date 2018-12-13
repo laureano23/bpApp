@@ -106,9 +106,21 @@ class EstanqueidadRepository extends EntityRepository
 			);
 		}		
 	}
+
+	public function contar()
+	{		
+		$em = $this->getEntityManager();
+		$repo = $em->getRepository('MbpCalidadBundle:Estanqueidad');
 	
-	public function listRegistro()
-	{
+		$query = $repo->createQueryBuilder('e')
+				->select("COUNT(e.id)")
+				->getQuery()
+				->getSingleScalarResult();
+		return $query;
+	}
+	
+	public function listRegistro($firstResult, $maxResult)
+	{		
 		$em = $this->getEntityManager();
 		$repo = $em->getRepository('MbpCalidadBundle:Estanqueidad');
 		try{
@@ -139,11 +151,12 @@ class EstanqueidadRepository extends EntityRepository
 					->leftJoin('e.soldador', 's')
 					->leftJoin('e.probador', 'p')
 					->leftJoin('e.ot', 'ot')
+					->setFirstResult($firstResult)
+					->setMaxResults($maxResult)
+					->orderBy('e.pruebaNum', 'DESC')
 					->getQuery()
 					->getArrayResult();
-			$rec = array();
-			$i=0;
-			echo json_encode($query);
+			return $query;
 			
 		}catch(\Doctrine\ORM\ORMException $e){
 			$this->get('logger')->error($e->getMessage());
@@ -170,7 +183,6 @@ class EstanqueidadRepository extends EntityRepository
     public function listData()
     {
         $em = $this->getEntityManager();
-        
         try{
             $dql = 'SELECT e.ot, count(e.estado), count(e.mChapa), count(e.mBagueta) FROM MbpCalidadBundle:Estanqueidad e WHERE e.ot = 1';
             $rs = $em->createQuery($dql);

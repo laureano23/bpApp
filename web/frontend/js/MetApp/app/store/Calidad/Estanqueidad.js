@@ -4,12 +4,8 @@ Ext.define('MetApp.store.Calidad.Estanqueidad',{
 	autoLoad: false,
 	autoSync: true,
 	id: 'estanqueidadStore',
-	sorters: [{
-        property: 'id',
-        direction: 'DESC'
-    }],
-   // buffered: true,
-    //pageSize: 2000,
+    //buffered: true,
+    pageSize: 500,
 	
 	proxy: {
 		type: 'ajax',
@@ -25,7 +21,8 @@ Ext.define('MetApp.store.Calidad.Estanqueidad',{
 			root: 'data',
 			idProperty: 'id',
 			messageProperty: 'message',
-			successProperty	: 'success'
+			successProperty	: 'success',
+			totalProperty: 'total'
 		},
 		
 		writer: {
