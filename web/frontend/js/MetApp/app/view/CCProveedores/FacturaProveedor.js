@@ -240,8 +240,14 @@ Ext.define('MetApp.view.CCProveedores.FacturaProveedor',{
 										{
 											xtype: 'grid',
 											anchor: '100%',
+											plugins: [
+												Ext.create('Ext.grid.plugin.CellEditing',{
+													clicksToEdit: 1,
+													pluginId: 'cellplugin',	
+												})
+											],
 											store: {
-												fields: ['emision', 'tipoCbte', 'numero', 'importe', 'activo', 'idFcAsociada'],
+												fields: ['emision', 'tipoCbte', 'numero', 'importe', 'aplicar', 'idFcAsociada'],
 												proxy: {
 													type: 'memory',
 													reader: {
@@ -253,13 +259,21 @@ Ext.define('MetApp.view.CCProveedores.FacturaProveedor',{
 											margin: '5 0 0 0',
 											height: 150,
 											itemId: 'gridImputacion',
+											selType: 'cellmodel',
 											columns: [
 												{ header: 'Id', dataIndex: 'idFcAsociada', flex: 1 },
 												{ header: 'Fecha', dataIndex: 'emision', flex: 1 },
 												{ header: 'Tipo', dataIndex: 'tipoCbte', flex: 1 },
 												{ header: 'N°', dataIndex: 'numero', flex: 1 },
 												{ header: 'Importe', dataIndex: 'importe', flex: 1 },
-												{ xtype : 'checkcolumn', text : 'Active',  dataIndex: 'activo', flex: 1 }
+												{ 
+													header: 'Aplicar',
+													dataIndex: 'aplicar',
+													flex: 1,
+													editor: {
+														xtype: 'numberfield',
+													}
+												},
 											]
 										}
 									]

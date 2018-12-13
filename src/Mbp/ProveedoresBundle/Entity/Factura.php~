@@ -25,6 +25,20 @@ class Factura
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+	 * @ORM\ManyToMany(targetEntity="Mbp\ProveedoresBundle\Entity\Factura", mappedBy="facturasAsociadas")	 
+	 */
+    private $notasCreditoAsociadas;
+
+    /**
+	 * @ORM\ManyToMany(targetEntity="Mbp\ProveedoresBundle\Entity\Factura", inversedBy="notasCreditoAsociadas")	 
+     * @ORM\JoinTable(name="FacturasProveedor_NotasCredito",
+     *      joinColumns={@ORM\JoinColumn(name="nc_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="fc_id", referencedColumnName="id")}
+     *      )
+	 */
+    private $facturasAsociadas;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="Mbp\ProveedoresBundle\Entity\Proveedor")
@@ -195,20 +209,8 @@ class Factura
 	 */
     private $ccId;
 
-    /**
-	 * @ORM\OneToMany(targetEntity="Mbp\ProveedoresBundle\Entity\Factura", mappedBy="fcAsociadaConNC")
-	 */
-    private $ncAsociadaConFc;    
-
-    /**
-	 * @ORM\ManyToOne(targetEntity="Mbp\ProveedoresBundle\Entity\Factura", inversedBy="ncAsociadaConFc")
-	 */
-    private $fcAsociadaConNC;
-
     public function __construct() {
         $this->ordenPago = new ArrayCollection();
-        $this->ncAsociadaConFc = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->fcAsociadaConNC = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**

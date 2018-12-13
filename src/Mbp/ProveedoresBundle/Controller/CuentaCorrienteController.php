@@ -134,9 +134,10 @@ class CuentaCorrienteController extends Controller
 			//si es una NC tengo que verificar si tiene facturas asociadas
 			if($tipo->getEsNotaCredito()){
 				if(!empty($objData->idFcAsociada)){
-					foreach ($objData->idFcAsociada as $id) {
-						$fcAsociada=$repoFc->find($id);
-						$fcAsociada->setFcAsociadaConNC($fcProveedor);
+					foreach ($objData->idFcAsociada as $fac) {
+						$fcAsociada=$repoFc->find($fac->idFac);
+						$fcAsociada->addNotasCreditoAsociada($fcProveedor);
+						$fcAsociada->setImputado($fcAsociada->getImputado() + $fac->importe);
 						$em->persist($fcAsociada);
 					}
 				}

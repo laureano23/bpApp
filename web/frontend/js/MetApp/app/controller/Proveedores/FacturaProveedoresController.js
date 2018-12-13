@@ -125,7 +125,10 @@ Ext.define('MetApp.controller.Proveedores.FacturaProveedoresController',{
 			var rec=storeCbteAsociado.getModifiedRecords();
 			var fcsAsociadas=[];
 			rec.forEach(function(element){
-				fcsAsociadas.push(element.getData().idFcAsociada);
+				fcsAsociadas.push({
+					idFac: element.getData().idFcAsociada,
+					importe: element.getData().aplicar
+				});
 			})
 			fcModel.set('idFcAsociada', fcsAsociadas);
 			store.add(fcModel);
