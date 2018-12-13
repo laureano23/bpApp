@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 
 class PersonalController extends Controller
@@ -51,18 +52,27 @@ class PersonalController extends Controller
      */
 	 public function listFullAction()
     {
-    	if (false === $this->get('security.context')->isGranted('ROLE_ADMINISTRACION')) {
-        	throw new AccessDeniedException();
-    	}else{
-    		$req = $this->getRequest();
-			$idPersonal = $req->request->get('idPersonal');
-	        $em = $this->getDoctrine()->getManager();
-			$repo = $em->getRepository('MbpPersonalBundle:Personal');
-						
-			$repo->fullListaPersonal($idPersonal);
-						
-			return new Response();
+		$response=new Response;
+		try{
+			if (false === $this->get('security.context')->isGranted('ROLE_ADMINISTRACION')) {
+				throw new AccessDeniedException();
+			}else{
+				$req = $this->getRequest();
+				$idPersonal = $req->request->get('idPersonal');
+				$em = $this->getDoctrine()->getManager();
+				$repo = $em->getRepository('MbpPersonalBundle:Personal');
+							
+				$repo->fullListaPersonal($idPersonal);
+							
+				return $response;
+			}
+		}catch(\Exception $e){
+			$response->setStatusCode(500);
+			return $response->setContent(json_encode(
+				array('success'=>true, 'msg'=>$e->getMessage())
+			));
 		}
+    	
     }
 	
 	/**

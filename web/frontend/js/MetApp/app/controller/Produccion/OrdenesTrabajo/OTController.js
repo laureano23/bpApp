@@ -260,6 +260,7 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 
 		jsonArray = Ext.JSON.encode(jsonArray);		
 		
+		
 		form.getForm().submit({
 			clientValidation: true,
 			target: '_blank',
@@ -270,10 +271,11 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.OTController', {
 			url: Routing.generate('mbp_produccion_nuevaot'),
 			success: function(form, action){
 				var jsonResp=Ext.JSON.decode(action.response.responseText);
-				console.log(jsonResp)
+				form.reset();
 				if(jsonResp.success){
 					form.submit({
 						standardSubmit: true,
+						clientValidation: false,
 						target: '_blank',
 						params: {
 							ot: jsonResp.ot,
