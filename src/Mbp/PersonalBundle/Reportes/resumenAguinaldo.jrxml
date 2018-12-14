@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="resumenAguinaldo" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ab2d6695-69d1-44f6-8b87-b0f94fb51f3b">
-<<<<<<< HEAD
-	<property name="ireport.zoom" value="1.9487171000000028"/>
-	<property name="ireport.x" value="20"/>
-=======
-	<property name="ireport.zoom" value="1.4641000000000017"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
->>>>>>> bcfa4018228ed05992a9134003af6f296f86e9e5
 	<property name="ireport.y" value="0"/>
 	<parameter name="mesInicio" class="java.lang.String"/>
 	<parameter name="mesFin" class="java.lang.String"/>
@@ -15,40 +10,6 @@
 	<parameter name="comp" class="java.lang.Boolean"/>
 	<queryString>
 		<![CDATA[SELECT
-<<<<<<< HEAD
-		     SUM(RecibosDetalle.`remunerativo`) AS RecibosDetalle_remunerativo,
-		     recibo_detallesRecibos.`recibo_id` AS recibo_detallesRecibos_recibo_id,
-		     recibo_detallesRecibos.`recibosdetalle_id` AS recibo_detallesRecibos_recibosdetalle_id,
-		     RecibosPersonal.`recibos_id` AS RecibosPersonal_recibos_id,
-		     RecibosPersonal.`personal_id` AS RecibosPersonal_personal_id,
-		     RecibosDetalle.`id` AS RecibosDetalle_id,
-		     RecibosDetalle.`cantConceptoVar` AS RecibosDetalle_cantConceptoVar,
-		     RecibosDetalle.`valorConceptoHist` AS RecibosDetalle_valorConceptoHist,
-		     Recibos.`id` AS Recibos_id,
-		     Recibos.`compensatorio` AS Recibos_compensatorio,
-		     Recibos.`periodo` AS Recibos_periodo,
-		     Recibos.`mes` AS Recibos_mes,
-		     Recibos.`anio` AS Recibos_anio,
-		     Personal.`idP` AS Personal_idP,
-		     Personal.`nombre` AS Personal_nombre
-		FROM
-		     `RecibosDetalle` RecibosDetalle INNER JOIN `recibo_detallesRecibos` recibo_detallesRecibos ON RecibosDetalle.`id` = recibo_detallesRecibos.`recibosdetalle_id`
-		     INNER JOIN `Recibos` Recibos ON recibo_detallesRecibos.`recibo_id` = Recibos.`id`
-		     INNER JOIN `RecibosPersonal` RecibosPersonal ON Recibos.`id` = RecibosPersonal.`recibos_id`
-		     INNER JOIN `Personal` Personal ON RecibosPersonal.`personal_id` = Personal.`idP`
-		WHERE
-		     Recibos.mes BETWEEN $P{mesInicio} AND $P{mesFin} AND
-		     Recibos.anio BETWEEN $P{anioInicio} AND $P{anioFin} AND
-		     Recibos.periodo != 7 AND /*PREMIOS 1°*/
-		     Recibos.periodo != 5 AND /*SAC°*/
-		     Recibos.periodo != 8 AND /*PREMIOS 2°*/
-		     Recibos.periodo != 4 AND /*VACACIONES°*/
-		     Recibos.compensatorio = $P{comp}
-		GROUP BY
-		     Personal.nombre, Recibos.mes
-		ORDER BY
-		     Personal_nombre ASC]]>
-=======
      SUM(RecibosDetalle.`remunerativo`) AS RecibosDetalle_remunerativo,
      recibo_detallesRecibos.`recibo_id` AS recibo_detallesRecibos_recibo_id,
      recibo_detallesRecibos.`recibosdetalle_id` AS recibo_detallesRecibos_recibosdetalle_id,
@@ -90,7 +51,6 @@ GROUP BY
      Recibos.mes
 ORDER BY
      Personal_nombre ASC]]>
->>>>>>> bcfa4018228ed05992a9134003af6f296f86e9e5
 	</queryString>
 	<field name="RecibosDetalle_remunerativo" class="java.math.BigDecimal"/>
 	<field name="recibo_detallesRecibos_recibo_id" class="java.lang.Integer"/>
@@ -216,7 +176,7 @@ ORDER BY
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="0" width="555" height="42" uuid="9fac01c6-0ba0-489d-b2b0-d2c27d59942b"/>
-				<text><![CDATA[El importe no incluye premios, vacaciones, ni SAC.]]></text>
+				<text><![CDATA[El importe representa sueldos brutos y no incluye premios, vacaciones, ni SAC.]]></text>
 			</staticText>
 		</band>
 	</columnHeader>

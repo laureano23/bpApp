@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ResumenSaldoAcreedor" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ff538e5c-5b30-4887-a896-1ef4bbbd98a9">
 	<property name="ireport.zoom" value="1.4641000000000026"/>
-	<property name="ireport.x" value="29"/>
+	<property name="ireport.x" value="21"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="VENCIMIENTO" class="java.util.Date">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="RUTA_LOGO" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idImputacion" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
@@ -31,6 +34,7 @@ FROM
 WHERE
      CCProv.`fechaEmision` < $P{VENCIMIENTO}
 	and ImputacionGastos.`esGastoRepresentacion`=0
+	and ImputacionGastos.`id`= $P{idImputacion}
 GROUP BY
      Proveedor.`id`
 ORDER BY

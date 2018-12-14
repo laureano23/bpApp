@@ -11,6 +11,52 @@ use Mbp\FinanzasBundle\Entity\CCClientes;
  */
 class CCClientesRepository extends \Doctrine\ORM\EntityRepository
 {	
+	public function reporteCC($idCliente, $desde){
+		return "
+			select sub2.*
+			from
+			(select sub.*, @b := @b + sub.haber - sub.debe AS saldo, p.rSocial
+			from
+				(SELECT
+				DATE_FORMAT(s.fechaEmision, '%d-%m-%Y') as fechaEmision1,
+				s.fechaEmision,
+				CASE WHEN s.cobranzaId IS NOT NULL THEN CONCAT('ORDEN DE PAGO N° ', cob.id) ELSE CONCAT(tc.descripcion, ' N° ', f.ptoVta, '-', f.fcNro) END AS concepto,
+				CASE WHEN s.cobranzaId IS NOT NULL THEN true ELSE false END AS detalle,
+				DATE_FORMAT(s.fechaVencimiento, '%d-%m-%Y %H:%i:%s') as fechaVencimiento,
+				s.debe,
+				s.haber,
+				f.id as idF,
+				cob.id as idcob,
+				SUM(tr.aplicado) as aplicado,
+				CASE WHEN SUM(tr.aplicado)=haber
+					THEN true
+					ELSE false
+					END AS pagado
+				FROM
+					(SELECT @b := 0) AS dummy
+				CROSS JOIN
+					CCClientes AS s
+				LEFT JOIN
+					Facturas f ON f.id = s.facturaId
+				LEFT JOIN
+					TipoComprobante tc ON tc.id = f.tipoId
+				LEFT JOIN
+					Cobranzas cob ON cob.id = s.cobranzaId
+				LEFT JOIN
+					TransaccionCobranzaFactura tr ON tr.facturaId = f.id
+				LEFT JOIN
+					cliente cli ON s.clienteId
+				WHERE
+					s.clienteId = $idCliente
+				GROUP BY
+					f.id, cob.id
+				ORDER BY
+					s.fechaEmision, s.id ASC) as sub
+			left join cliente p on p.idCliente=$idCliente)as sub2
+			where sub2.fechaEmision >= '$desde'
+		";
+	}
+
 	public function listarCCClientes($idCliente){
 		$em = $this->getEntityManager()->getConnection();
 		

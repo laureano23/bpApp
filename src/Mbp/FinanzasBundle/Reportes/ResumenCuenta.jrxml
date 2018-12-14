@@ -10,24 +10,57 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[call listarCCClienteDesde($P{ID_CLIENTE}, $P{FECHA_DESDE})]]>
+		<![CDATA[select sub2.*
+from
+(select sub.*, @b := @b + sub.haber - sub.debe AS saldo, p.rSocial
+ from
+    (SELECT
+    DATE_FORMAT(s.fechaEmision, '%d-%m-%Y') as fechaEmision1,
+    s.fechaEmision,
+    CASE WHEN s.cobranzaId IS NOT NULL THEN CONCAT('ORDEN DE PAGO N° ', cob.id) ELSE CONCAT(tc.descripcion, ' N° ', f.ptoVta, '-', f.fcNro) END AS concepto,
+    CASE WHEN s.cobranzaId IS NOT NULL THEN true ELSE false END AS detalle,
+    DATE_FORMAT(s.fechaVencimiento, '%d-%m-%Y %H:%i:%s') as fechaVencimiento,
+    s.debe,
+    s.haber,
+    f.id as idF,
+    cob.id as idcob,
+    SUM(tr.aplicado) as aplicado,
+    CASE WHEN SUM(tr.aplicado)=haber
+		 THEN true
+         ELSE false
+         END AS pagado
+	FROM
+		(SELECT @b := 0) AS dummy
+	CROSS JOIN
+		CCClientes AS s
+	LEFT JOIN
+		Facturas f ON f.id = s.facturaId
+	LEFT JOIN
+        TipoComprobante tc ON tc.id = f.tipoId
+    LEFT JOIN
+		Cobranzas cob ON cob.id = s.cobranzaId
+	LEFT JOIN
+		TransaccionCobranzaFactura tr ON tr.facturaId = f.id
+	LEFT JOIN
+		cliente cli ON s.clienteId
+	WHERE
+		s.clienteId = $P{ID_CLIENTE}
+	GROUP BY
+		f.id, cob.id
+	ORDER BY
+		s.fechaEmision, s.id ASC) as sub
+left join cliente p on p.idCliente=$P{ID_CLIENTE})as sub2
+where sub2.fechaEmision >= $P{FECHA_DESDE}]]>
 	</queryString>
-	<field name="id" class="java.lang.Integer">
+	<field name="fechaEmision1" class="java.lang.String"/>
+	<field name="fechaEmision" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="idF" class="java.lang.Integer"/>
-	<field name="idCob" class="java.lang.Integer"/>
 	<field name="concepto" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="detalle" class="java.lang.Integer"/>
-	<field name="vencimiento" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="emision" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="esBalance" class="java.lang.Boolean">
+	<field name="fechaVencimiento" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="debe" class="java.math.BigDecimal">
@@ -36,13 +69,18 @@
 	<field name="haber" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="rsocial" class="java.lang.String">
+	<field name="idF" class="java.lang.Integer"/>
+	<field name="idcob" class="java.lang.Integer"/>
+	<field name="aplicado" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="pagado" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="saldo" class="java.math.BigDecimal"/>
+	<field name="saldo" class="java.lang.Double"/>
+	<field name="rSocial" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<variable name="TOTAL_DEBE" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{debe}]]></variableExpression>
 	</variable>
@@ -71,7 +109,7 @@
 			<textField>
 				<reportElement x="0" y="0" width="402" height="20" uuid="d5f88fe7-ac1f-4449-b315-e034db00c693"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA["Cliente: "+$F{rsocial}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Cliente: "+$F{rSocial}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="20" width="44" height="20" uuid="f7e65ff3-52e7-454b-a1f6-d438dd5a5cd8"/>
@@ -154,7 +192,7 @@
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="0" y="0" width="59" height="20" uuid="a4d82970-ded9-4fe0-b5a4-ce3630bfe8c7"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{emision}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{fechaEmision}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="59" y="0" width="217" height="20" uuid="06c087cb-fc3b-44f3-bc9f-4059f9377689"/>
@@ -227,14 +265,6 @@
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{TOTAL_HABER}]]></textFieldExpression>
-			</textField>
-			<textField evaluationTime="Report" pattern="#,##0.00">
-				<reportElement x="462" y="0" width="93" height="20" uuid="21612049-b5a1-4b90-9c96-45d23e4720b4"/>
-				<box leftPadding="3"/>
-				<textElement verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{TOTAL_SALDO}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

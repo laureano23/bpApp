@@ -1100,6 +1100,7 @@ ORDER BY
 		//RECIBO PARAMETROS
 		$em = $this->getDoctrine()->getManager();
 		$req = $this->getRequest();
+		$repoCC=$em->getRepository('MbpFinanzasBundle:CCClientes');
 		
 		try{
 			$idCliente = $req->request->get('cliente1');
@@ -1128,7 +1129,7 @@ ORDER BY
 
 			$conn = $reporteador->getJdbc();
 			
-			$sql = "call listarCCClienteDesde($idCliente, '$desdeSql')";
+			$sql = $repoCC->reporteCC($idCliente, $desdeSql);
 			
 			$res = $jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 			
