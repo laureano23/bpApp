@@ -22,7 +22,13 @@
     prov.cuit,
     fc.neto,
     fc.totalFc,
-    LPAD((truncate((tr.aplicado * pago.importe / baseImponible), 2)), 11 ,'0') AS retencion,
+    case when
+		(op.alicuotaRetencionIIBB * tr.aplicado) = null
+        then
+    LPAD((truncate((tr.aplicado * pago.importe / baseImponible), 2)), 11 ,'0')
+    else
+		op.alicuotaRetencionIIBB * tr.aplicado
+    end AS retencion,
     baseImponible,
     tr.aplicado,
     pago.importe
@@ -79,7 +85,7 @@ where fp.retencionIIBB = true
 	<field name="totalFc" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="retencion" class="java.math.BigDecimal"/>
+	<field name="retencion" class="java.lang.String"/>
 	<field name="baseImponible" class="java.math.BigDecimal"/>
 	<field name="aplicado" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>

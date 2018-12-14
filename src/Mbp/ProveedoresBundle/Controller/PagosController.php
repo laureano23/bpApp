@@ -39,7 +39,7 @@ class PagosController extends Controller
 		try{
 			$proveedor = $repoProv->find($idProv);
 			$repoFinanzas = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
-			$parametrosFinanzas = $repoFinanzas->find(1);			
+			$parametrosFinanzas=$repoFinanzas->find(1);
 			
 			//iibb si corresponde
 			$alicuotaRetencion=0;
@@ -169,6 +169,10 @@ class PagosController extends Controller
 				$proveedor->getProvincia()->getId() == $parametrosFinanzas->getProvincia()->getId()){
 				$retencion = $this->calculoRentecion($fcImputarDec, $proveedor);
 				if($retencion > 0){
+					$iibbService = $this->get('ServiceIIBB');	//SERVICIO PARA ALICUOTAS DE IIBB
+					$iibbService->setOpts($proveedor->getCuit());
+					$alicuotaRetencion = $iibbService->getAlicuotaRetencion();
+					$ordenPago->setAlicuotaRetencionIIBB($alicuotaRetencion);
 					$pago = new Pago;
 					$tipoPago = $repoTipoPago->findOneByRetencionIIBB(true);
 					$pago->setIdFormaPago($tipoPago);
@@ -225,7 +229,30 @@ class PagosController extends Controller
 			
 			return $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 		}
-    }
+	}
+	
+	private function calculoRentecionParaGuardar(array $imputado, $proveedor){
+		$em = $this->getDoctrine()->getManager();
+		$repoFc = $em->getRepository('MbpProveedoresBundle:Factura');
+		$repoFinanzas = $em->getRepository('MbpFinanzasBundle:ParametrosFinanzas');
+		$parametrosFinanzas = $repoFinanzas->find(1);
+		
+		$iibbService = $this->get('ServiceIIBB');	//SERVICIO PARA ALICUOTAS DE IIBB
+		$iibbService->setOpts($proveedor->getCuit());
+		$alicuotaRetencion = $iibbService->getAlicuotaRetencion();
+		
+		
+		$retencion=0;
+		foreach($imputado as $imp){
+			$fcProv = $repoFc->find($imp->id);
+			
+			if($parametrosFinanzas->getTopeRetencionIIBB() <= $fcProv->getNeto()){					
+				$retencion += $imp->aplicar * $alicuotaRetencion / 100;				
+				$retencion = number_format($retencion, 2, ".", "");
+			}
+		}		
+		return $retencion;
+	}
 
 	private function calculoRentecion(array $imputado, $proveedor)
 	{
@@ -244,7 +271,11 @@ class PagosController extends Controller
 			$fcProv = $repoFc->find($imp->id);
 			
 			if($parametrosFinanzas->getTopeRetencionIIBB() <= $fcProv->getNeto()){	
-				$retencion += $imp->aplicar * $alicuotaRetencion / 100;
+				if($fcProv->getTipoId()->getEsNotaCredito()){
+					$retencion -= $imp->aplicar * $alicuotaRetencion / 100;
+				}else{
+					$retencion += $imp->aplicar * $alicuotaRetencion / 100;
+				}
 				$retencion = number_format($retencion, 2, ".", "");
 			}
 		}		

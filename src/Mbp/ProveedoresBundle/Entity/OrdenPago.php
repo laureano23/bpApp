@@ -55,6 +55,14 @@ class OrdenPago
      * @ORM\Column(name="importe", type="decimal", precision=11, scale=2, nullable=false)
      */
     private $importeTotal;
+
+    
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="alicuotaRetencionIIBB", type="decimal", precision=11, scale=2, nullable=true)
+     */
+    private $alicuotaRetencionIIBB;
 	
 	/**
 	 * @ORM\OneToOne(targetEntity="Mbp\ProveedoresBundle\Entity\CCProv", mappedBy="factura", cascade={"remove", "persist"})
@@ -272,5 +280,29 @@ class OrdenPago
     public function getTopeRetencionIIBB()
     {
         return $this->topeRetencionIIBB;
+    }
+
+    /**
+     * Set alicuotaRetencionIIBB
+     *
+     * @param string $alicuotaRetencionIIBB
+     *
+     * @return OrdenPago
+     */
+    public function setAlicuotaRetencionIIBB($alicuotaRetencionIIBB)
+    {
+        $this->alicuotaRetencionIIBB = $alicuotaRetencionIIBB;
+
+        return $this;
+    }
+
+    /**
+     * Get alicuotaRetencionIIBB
+     *
+     * @return string
+     */
+    public function getAlicuotaRetencionIIBB()
+    {
+        return $this->alicuotaRetencionIIBB;
     }
 }
