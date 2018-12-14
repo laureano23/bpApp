@@ -357,8 +357,12 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 		var store = grid.getStore();
 		var proxy = store.getProxy();
 		
-		proxy.setExtraParam('idProv', idProv);
+		//proxy.setExtraParam('idProv', idProv);
 		store.load({
+			params: {
+				idProv: idProv,
+				pendientePago: true
+			},
 			callback: function(){
 				
 			}
@@ -387,7 +391,7 @@ Ext.define('MetApp.controller.Proveedores.PagoProveedoresController',{
 				totalImputadoNC = totalImputadoNC + rec.data.aplicar;
 			}			
 		});
-		txtTotal.setValue(totalImputado);
+		txtTotal.setValue(totalImputado-totalImputadoNC);
 		txtTotalAPagar.setValue(totalImputadoNC);
 		
 		//actualizamos el calculo de retencion

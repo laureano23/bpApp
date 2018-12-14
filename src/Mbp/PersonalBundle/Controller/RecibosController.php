@@ -89,8 +89,6 @@ class RecibosController extends Controller
 			$recibo->setObraSocial($empleado->getObraSocial());
 			$recibo->addPersonal($empleado);
 			
-			
-			
 			//VALIDO LOS DATOS DEL RECIBO
 			$validator = $this->get('validator');
     		$errors = $validator->validate($recibo);

@@ -496,6 +496,7 @@ class ReportesController extends Controller
 			WHERE
 			     Facturas.`fecha` BETWEEN '$desde' AND '$hasta'
 			 AND TipoComprobante.`esBalance` = 0
+			 AND TipoComprobante.`esNegro` = 0
 			GROUP BY Facturas.`id`
 			ORDER BY
 			     Facturas.`fecha` ASC";

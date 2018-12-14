@@ -129,7 +129,7 @@ class FacturaRepository extends \Doctrine\ORM\EntityRepository
 				SELECT * FROM 
 					(SELECT 
 						fc.id,
-						IFNULL(SUM(t.aplicado), 0) AS valorAplicado,
+						IFNULL(SUM(t.aplicado), 0)+fc.imputado AS valorAplicado,
 						DATE_FORMAT(fc.fechaEmision, '%d-%m-%Y') AS fechaEmision,
 						fc.numFc AS numFc,
 						DATE_FORMAT(fc.vencimiento, '%d-%m-%Y') As vencimiento,

@@ -5,20 +5,13 @@ Ext.define('MetApp.store.Produccion.OrdenesTrabajo.OTStore',{
 	autoSync: true,
 	autoLoad: false,
     id: 'OTStore',
-    storeId: 'OTStore',
+	storeId: 'OTStore',
 	
 	proxy: {
-        type: 'memory',
+		type: 'memory',
         
         reader: {
-            type: 'json',
-           // root: 'items'
-        },
-        
-        /*writer: {
 			type: 'json',
-			root: 'items',
-			encode: true
-		}*/
+        },
     }
 });
