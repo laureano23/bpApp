@@ -134,7 +134,7 @@ and FacturaProveedor.`neto` > OrdenPago.`topeRetencionIIBB`]]>
 	<field name="localidades_nombre" class="java.lang.String"/>
 	<field name="baseImponible" class="java.math.BigDecimal"/>
 	<variable name="RETENCION" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{OrdenPago_alciuotaRetencionIIBB}>0 ? $F{TransaccionOPFC_aplicado}*$F{OrdenPago_alciuotaRetencionIIBB}:
+		<variableExpression><![CDATA[$F{OrdenPago_alciuotaRetencionIIBB}>0 ? $F{TransaccionOPFC_aplicado}*$F{OrdenPago_alciuotaRetencionIIBB}/100:
 $F{TransaccionOPFC_aplicado}*$F{Pago_importe}/$F{baseImponible}]]></variableExpression>
 	</variable>
 	<background>

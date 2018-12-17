@@ -35,6 +35,13 @@ class Periodos
      */
     private $numero;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="esSAC", type="integer", nullable=true)
+     */
+    private $esSAC=0;
+
 
     /**
      * Get id
@@ -92,5 +99,29 @@ class Periodos
     public function getNumero()
     {
         return $this->numero;
+    }
+
+    /**
+     * Set esSAC
+     *
+     * @param integer $esSAC
+     *
+     * @return Periodos
+     */
+    public function setEsSAC($esSAC)
+    {
+        $this->esSAC = $esSAC;
+
+        return $this;
+    }
+
+    /**
+     * Get esSAC
+     *
+     * @return integer
+     */
+    public function getEsSAC()
+    {
+        return $this->esSAC;
     }
 }

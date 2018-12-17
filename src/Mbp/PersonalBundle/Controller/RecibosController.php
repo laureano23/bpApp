@@ -40,8 +40,10 @@ class RecibosController extends Controller
 		$em = $this->getDoctrine()->getManager();
 		$repoBancos = $em->getRepository('MbpFinanzasBundle:Bancos');
 		$repoEmpleado = $em->getRepository('MbpPersonalBundle:Personal');		
+		$repoPeriodos = $em->getRepository('MbpPersonalBundle:Periodos');		
 		$req = $this->getRequest();
 		$remunerativo = 0; //CONTADOR PARA CONCEPTOR REMUNERATIVOS SOBRE EL QUE SE CALCULAN LOS DESCUENTOS
+
 		
 		//OBTENGO DATOS DEL HEADER
 		$compensatorio = $req->request->get('compensatorio');
@@ -58,7 +60,7 @@ class RecibosController extends Controller
 		$detalles = json_decode($req->request->get('data'));
 		$banco = $repoBancos->find($this->banco);		
 		$empleado = $repoEmpleado->find($this->idP);
-		
+		$periodo=$repoPeriodos->find($this->periodo);
 		
 		
 		$antiguedad = $empleado->getFechaIngreso()->diff(new \DateTime("now"));
@@ -130,7 +132,7 @@ class RecibosController extends Controller
 			
 			//ANTIGUEDAD
 			$detalleAntiguedad = $this->calculaAntiguedad($remunerativo);
-			if($detalleAntiguedad != null){
+			if($detalleAntiguedad != null && !$periodo->getEsSAC()){
 				$recibo->addReciboDetalleId($detalleAntiguedad);
 				$remunerativo += $detalleAntiguedad->getRemunerativo();
 			}

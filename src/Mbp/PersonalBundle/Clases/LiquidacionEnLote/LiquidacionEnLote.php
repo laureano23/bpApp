@@ -316,7 +316,6 @@ class LiquidacionEnLote
 				
 		$dias=0;
 		$diasMes = cal_days_in_month(CAL_GREGORIAN, $this->mes, $this->anio);
-		
 		if($this->periodo == 1){
 			$fechas = $empleados[0]->getFecha();
 			
