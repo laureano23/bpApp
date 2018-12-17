@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LibroIVACompras" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="c4b105ad-c9d2-4e6e-aab2-f046571798ae">
-	<property name="ireport.zoom" value="1.4641000000000175"/>
+	<property name="ireport.zoom" value="1.2100000000000144"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="fechaDesde" class="java.lang.String">
@@ -18,18 +18,12 @@
     fc.sucursal,
     fc.numFc,
     op.id,
+    op.alicuotaRetencionIIBB as alicuota,
     prov.rsocial,
     prov.cuit,
     fc.neto,
     fc.totalFc,
-    case when
-		(op.alicuotaRetencionIIBB * tr.aplicado) = null
-        then
-    LPAD((truncate((tr.aplicado * pago.importe / baseImponible), 2)), 11 ,'0')
-    else
-		op.alicuotaRetencionIIBB * tr.aplicado
-    end AS retencion,
-    baseImponible,
+    (op.alicuotaRetencionIIBB/100 * tr.aplicado) as retencion,
     tr.aplicado,
     pago.importe
 from TransaccionOPFC tr
@@ -40,13 +34,6 @@ from TransaccionOPFC tr
 	inner join OrdenDePago_detallesPagos op_det on op_det.ordenPago_id = op.id
 	inner join Pago pago on pago.id = op_det.pago_id
 	left join FormasPagos fp on fp.id = pago.idFormaPago
-	inner join
-	(select SUM(case when f.neto > op.topeRetencionIIBB then tr.aplicado else 0 end) as baseImponible, op.id as opId
-		from TransaccionOPFC as tr
-		inner join FacturaProveedor f on f.id = tr.facturaId
-		inner join OrdenPago op on op.id = tr.ordenPagoId
-		where op.fechaEmision between $P{fechaDesde} and $P{fechaHasta}
-		group by op.id) as sub on sub.opId = op.id
 where fp.retencionIIBB = true
 	and op.fechaEmision between $P{fechaDesde} and $P{fechaHasta}
 	and fc.neto > op.topeRetencionIIBB
@@ -73,6 +60,7 @@ where fp.retencionIIBB = true
 	<field name="id" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="alicuota" class="java.math.BigDecimal"/>
 	<field name="rsocial" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -85,17 +73,13 @@ where fp.retencionIIBB = true
 	<field name="totalFc" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="retencion" class="java.lang.String"/>
-	<field name="baseImponible" class="java.math.BigDecimal"/>
+	<field name="retencion" class="java.math.BigDecimal"/>
 	<field name="aplicado" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="importe" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<variable name="ALICUOTA" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{aplicado}*$F{importe}/$F{baseImponible}]]></variableExpression>
-	</variable>
 	<variable name="TOTAL" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{retencion}]]></variableExpression>
 	</variable>
@@ -280,7 +264,7 @@ where fp.retencionIIBB = true
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Alícuota]]></text>
+				<text><![CDATA[Alícuota (%)]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="632" y="0" width="84" height="20" uuid="43978bed-d578-4646-842c-d8f5279d93e7"/>
@@ -367,13 +351,13 @@ $F{subTipoB}==true?
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{totalFc}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00 %" isBlankWhenNull="true">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="569" y="0" width="63" height="20" uuid="60f2d78d-bc88-4f26-896a-3befec1ec94f"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$V{ALICUOTA}/$F{aplicado}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{alicuota}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="632" y="0" width="84" height="20" uuid="c4f51351-b79f-423d-a31a-ee5ce98338a5"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>

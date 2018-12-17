@@ -397,9 +397,9 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 				LPAD(fc.sucursal, 4, '0') AS ptoVta,
 				LPAD(tr.id, 8, '0') AS fcNro,
 				tr.aplicado as aplicado,
+				op.alicuotaRetencionIIBB as alicuota,
 				pago.importe as pagoImporte,
-				baseImponible,
-				LPAD((truncate((tr.aplicado * pago.importe / baseImponible), 2)), 11 ,'0') AS retencion,
+				LPAD((truncate((op.alicuotaRetencionIIBB/100 * tr.aplicado), 2)), 11 ,'0') AS retencion,
 				'A' AS finLinea
 			from TransaccionOPFC tr
 				left join FacturaProveedor fc on fc.id = tr.facturaId
@@ -408,13 +408,6 @@ class FacturasRepository extends \Doctrine\ORM\EntityRepository
 				inner join OrdenDePago_detallesPagos op_det on op_det.ordenPago_id = op.id
 				inner join Pago pago on pago.id = op_det.pago_id
 				left join FormasPagos fp on fp.id = pago.idFormaPago
-				inner join
-				(select SUM(case when f.neto > op.topeRetencionIIBB then tr.aplicado else 0 end) as baseImponible, op.id as opId
-					from TransaccionOPFC as tr
-					inner join FacturaProveedor f on f.id = tr.facturaId
-					inner join OrdenPago op on op.id = tr.ordenPagoId
-					where op.fechaEmision between '$desdeSql' and '$hastaSql'
-					group by op.id) as sub on sub.opId = op.id
 			where fp.retencionIIBB = true
 				and op.fechaEmision between '$desdeSql' and '$hastaSql'
 				and fc.neto > op.topeRetencionIIBB
