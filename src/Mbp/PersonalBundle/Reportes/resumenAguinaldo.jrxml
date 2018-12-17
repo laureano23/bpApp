@@ -25,6 +25,7 @@
      Recibos.`anio` AS Recibos_anio,
      Personal.`idP` AS Personal_idP,
      Personal.`nombre` AS Personal_nombre,
+     Personal.`apellido` AS Personal_apellido,
      RecibosDetalles_CodigoSueldos.`recibosDetalles_id` AS RecibosDetalles_CodigoSueldos_recibosDetalles_id,
      RecibosDetalles_CodigoSueldos.`codigoSueldos_id` AS RecibosDetalles_CodigoSueldos_codigoSueldos_id,
      CodigoSueldos.`id` AS CodigoSueldos_id,
@@ -67,6 +68,7 @@ ORDER BY
 	<field name="Recibos_anio" class="java.lang.Integer"/>
 	<field name="Personal_idP" class="java.lang.Integer"/>
 	<field name="Personal_nombre" class="java.lang.String"/>
+	<field name="Personal_apellido" class="java.lang.String"/>
 	<field name="RecibosDetalles_CodigoSueldos_recibosDetalles_id" class="java.lang.Integer"/>
 	<field name="RecibosDetalles_CodigoSueldos_codigoSueldos_id" class="java.lang.Integer"/>
 	<field name="CodigoSueldos_id" class="java.lang.Integer"/>
@@ -190,7 +192,7 @@ ORDER BY
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Personal_nombre}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Personal_apellido}+" "+$F{Personal_nombre}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="180" y="0" width="38" height="20" uuid="d5260c74-6fdd-4099-945a-d98e7e870976"/>

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Comprobante_Retencion" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c25a2003-a08e-44e6-8e9a-ae881a1f34de">
 	<property name="ireport.zoom" value="1.2100000000000006"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="126"/>
+	<property name="ireport.y" value="107"/>
 	<parameter name="OP_ID" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -134,8 +134,7 @@ and FacturaProveedor.`neto` > OrdenPago.`topeRetencionIIBB`]]>
 	<field name="localidades_nombre" class="java.lang.String"/>
 	<field name="baseImponible" class="java.math.BigDecimal"/>
 	<variable name="RETENCION" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{OrdenPago_alciuotaRetencionIIBB}>0 ? $F{TransaccionOPFC_aplicado}*$F{OrdenPago_alciuotaRetencionIIBB}/100:
-$F{TransaccionOPFC_aplicado}*$F{Pago_importe}/$F{baseImponible}]]></variableExpression>
+		<variableExpression><![CDATA[$F{OrdenPago_alciuotaRetencionIIBB}/100*$F{TransaccionOPFC_aplicado}]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -336,8 +335,7 @@ San Justo, Buenos Aires]]></text>
 				<reportElement x="355" y="0" width="100" height="20" uuid="ee6ddaf2-2473-41af-bccb-9f197453b073"/>
 				<box leftPadding="3"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{OrdenPago_alciuotaRetencionIIBB}>0? $F{OrdenPago_alciuotaRetencionIIBB}:
-$V{RETENCION} / $F{TransaccionOPFC_aplicado}*100]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{OrdenPago_alciuotaRetencionIIBB}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
 				<reportElement x="455" y="0" width="100" height="20" uuid="c6bd3121-2f17-4aee-95f7-2d1ea487a201"/>

@@ -404,7 +404,8 @@ class ReportesController extends Controller
 		     Recibos.`mes` AS Recibos_mes,
 		     Recibos.`anio` AS Recibos_anio,
 		     Personal.`idP` AS Personal_idP,
-		     Personal.`nombre` AS Personal_nombre
+			 Personal.`nombre` AS Personal_nombre,
+			 Personal.`apellido` AS Personal_apellido
 		FROM
 		     `RecibosDetalle` RecibosDetalle INNER JOIN `recibo_detallesRecibos` recibo_detallesRecibos ON RecibosDetalle.`id` = recibo_detallesRecibos.`recibosdetalle_id`
 		     INNER JOIN `Recibos` Recibos ON recibo_detallesRecibos.`recibo_id` = Recibos.`id`
