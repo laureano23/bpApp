@@ -11,6 +11,37 @@ use Mbp\FinanzasBundle\Entity\FacturaDetalle;
  */
 class FacturasRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function reporteRetenciones($desde, $hasta){
+		return "select
+			DATE_FORMAT(op.fechaEmision, '%d/%m/%Y') AS fechaEmision,
+			tipo.subTipoA,
+			tipo.subTipoB,
+			tipo.subTipoE,
+			fc.sucursal,
+			fc.numFc,
+			op.id,
+			op.alicuotaRetencionIIBB as alicuota,
+			prov.rsocial,
+			prov.cuit,
+			fc.neto,
+			fc.totalFc,
+			(op.alicuotaRetencionIIBB/100 * tr.aplicado) as retencion,
+			tr.aplicado,
+			pago.importe
+		from TransaccionOPFC tr
+			left join FacturaProveedor fc on fc.id = tr.facturaId
+			left join TipoComprobante tipo on tipo.id=fc.tipoId
+			left join OrdenPago op on op.id = tr.ordenPagoId
+			inner join Proveedor prov on prov.id = op.proveedorId
+			inner join OrdenDePago_detallesPagos op_det on op_det.ordenPago_id = op.id
+			inner join Pago pago on pago.id = op_det.pago_id
+			left join FormasPagos fp on fp.id = pago.idFormaPago
+		where fp.retencionIIBB = true
+			and op.fechaEmision between '$desde' and '$hasta'
+			and fc.neto > op.topeRetencionIIBB
+			group by tr.id";
+	}
+
 	public function crearComprobante($objFC){
 		$em = $this->getEntityManager();
 		$comprobante=new Facturas;

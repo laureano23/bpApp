@@ -138,7 +138,8 @@ class FacturaRepository extends \Doctrine\ORM\EntityRepository
 					FROM `FacturaProveedor` fc
 					LEFT JOIN TransaccionOPFC t ON fc.id = t.facturaId
 					LEFT JOIN TipoComprobante tipo ON fc.tipoId = tipo.id
-					WHERE fc.proveedorId = $idProv						
+					WHERE fc.proveedorId = $idProv	
+						AND tipo.esBalance != 1					
 					GROUP BY fc.id, t.facturaId) AS sub
 				WHERE sub.valorAplicado < sub.haber
 			";

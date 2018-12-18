@@ -75,44 +75,9 @@ class EnviarTXTRetCommand extends ContainerAwareCommand
 		$hastaSql=$hasta->format('Y/m/d');
 		$conn = $reporteador->getJdbc();
 
-		$sql = "select
-				DATE_FORMAT(op.fechaEmision, '%d/%m/%Y') AS fechaEmision,
-				tipo.subTipoA,
-				tipo.subTipoB,
-				tipo.subTipoE,
-				fc.sucursal,
-				fc.numFc,
-				op.id,
-				prov.rsocial,
-				prov.cuit,
-				fc.neto,
-				fc.totalFc,
-				LPAD((truncate((tr.aplicado * pago.importe / baseImponible), 2)), 11 ,'0') AS retencion,
-				baseImponible,
-				tr.aplicado,
-				pago.importe
-			from TransaccionOPFC tr
-				left join FacturaProveedor fc on fc.id = tr.facturaId
-				left join TipoComprobante tipo on tipo.id=fc.tipoId
-				left join OrdenPago op on op.id = tr.ordenPagoId
-				inner join Proveedor prov on prov.id = op.proveedorId
-				inner join OrdenDePago_detallesPagos op_det on op_det.ordenPago_id = op.id
-				inner join Pago pago on pago.id = op_det.pago_id
-				left join FormasPagos fp on fp.id = pago.idFormaPago
-				inner join
-				(select SUM(case when f.neto > op.topeRetencionIIBB then tr.aplicado else 0 end) as baseImponible, op.id as opId
-					from TransaccionOPFC as tr
-					inner join FacturaProveedor f on f.id = tr.facturaId
-					inner join OrdenPago op on op.id = tr.ordenPagoId
-					where op.fechaEmision between '$desdeSql' and '$hastaSql'
-					group by op.id) as sub on sub.opId = op.id
-			where fp.retencionIIBB = true
-				and op.fechaEmision between '$desdeSql' and '$hastaSql'
-				and fc.neto > op.topeRetencionIIBB
-				group by tr.id";
+		$sql = $repo->reporteRetenciones($desdeSql, $hastaSql);
 			
-		$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
-		
+		$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());		
 
 		$mensaje = \Swift_Message::newInstance()
 				->setSubject("TXT Retenciones IIBB Metalurgica BP")
