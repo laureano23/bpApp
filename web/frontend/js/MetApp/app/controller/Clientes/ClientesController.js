@@ -178,7 +178,6 @@ Ext.define('MetApp.controller.Clientes.ClientesController',{
 		var store = Ext.StoreManager.lookup('Clientes.Clientes');
 		
 		store.on('write', function(st, op){
-			console.log(op.getRecords());
 			var rec = op.getRecords();
 			form.loadRecord(rec[0]);
 			botonera.guardarItem(botonera);

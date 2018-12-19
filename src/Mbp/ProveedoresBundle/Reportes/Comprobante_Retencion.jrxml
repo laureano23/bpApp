@@ -134,7 +134,7 @@ and FacturaProveedor.`neto` > OrdenPago.`topeRetencionIIBB`]]>
 	<field name="localidades_nombre" class="java.lang.String"/>
 	<field name="baseImponible" class="java.math.BigDecimal"/>
 	<variable name="RETENCION" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{OrdenPago_alciuotaRetencionIIBB}/100*$F{TransaccionOPFC_aplicado}]]></variableExpression>
+		<variableExpression><![CDATA[$F{OrdenPago_alciuotaRetencionIIBB}/100*$F{FacturaProveedor_neto}]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -329,7 +329,7 @@ San Justo, Buenos Aires]]></text>
 				<reportElement x="255" y="0" width="100" height="20" uuid="065431b2-a5b4-4efb-8da0-59cc79678b4f"/>
 				<box leftPadding="3"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{TransaccionOPFC_aplicado}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{FacturaProveedor_neto}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="false">
 				<reportElement x="355" y="0" width="100" height="20" uuid="ee6ddaf2-2473-41af-bccb-9f197453b073"/>
