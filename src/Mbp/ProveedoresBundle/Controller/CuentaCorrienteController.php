@@ -278,8 +278,14 @@ class CuentaCorrienteController extends Controller
 					->getQuery()
 					->getResult();
 				
-				foreach ($comprobante as $comp) {
-					$em->remove($comp);								
+				foreach ($comprobante as $tr) { //es una colecciones de transacciones
+					//quitamos el importe aplicado de cada factura
+					
+					$tr->getFacturaImputada()->setImputado(
+						$tr->getFacturaImputada()->getImputado() - $tr->getAplicado()
+					);
+					
+					$em->remove($tr);								
 				}	
 
 				//ELIMINO LA ORDEN DE PAGO CON TODOS LOS DETALLES ASOCIADOS				
