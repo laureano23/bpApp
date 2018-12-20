@@ -11,6 +11,16 @@ use Mbp\UtilitariosBundle\Entity\Viaje;
 class DefaultController extends Controller
 {
     /**
+     * @Route("/parsearEmails", name="mbp_parsearEmails", options={"expose"=true})     
+     */
+    public function parsearEmails()
+    {
+        $response=new Response;
+        $em = $this->getDoctrine()->getManager();
+        $repo=$em->getRepository('MbpUtilitariosBundle:Viaje'); 
+    }
+
+    /**
      * @Route("/hojaDeRuta/nuevoDestino", name="mbp_hojaDeRuta_nuevoDestino", options={"expose"=true})     
      */
     public function nuevoDestino(Request $req)

@@ -7,6 +7,19 @@
 
 {% block body %}
 
+<!-- Creates the bootstrap modal where the image will appear -->
+  <div class="modal fade" id="myModal" tabindex="" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-admin" id="modalImg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>          
+        </div>
+        <div class="modal-body">
+          <img src={{ asset('bundles/mbpweb/images/publicidad/Navidad2018-2') }} id="imagepreviewPublicidad" class="img-responsive center-block">
+        </div>
+      </div>
+    </div>
+  </div>
 
 <!--#######################  CAROUSEL #######################-->
 <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">

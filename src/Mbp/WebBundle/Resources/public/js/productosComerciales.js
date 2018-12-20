@@ -126,7 +126,9 @@ $(function () {
 		   $('#imagepreview').attr('src', $(this).attr('value')); // here asign the image to the modal when the user click the enlarge link
 		   $('#myModal').modal('show'); // imagemodal is the id attribute assigned to the bootstrap modal, then i use the show function
 		});	
-    }
+	}
+	
+	
 
     function completarTabla(i, item, pathImg){
     	$("#tablaProductos").append("<tr><th>"+item.codigo+"</th><th>"+item.descripcion+"</th><th>"+item.oem+"</th><th>"+item.marca+"</th><th><a href='#' value="+pathImg+item.imagen+"><span class='glyphicon glyphicon-camera'></span></a></th></tr>");
