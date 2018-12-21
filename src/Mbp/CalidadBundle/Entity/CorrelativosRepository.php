@@ -18,8 +18,9 @@ class CorrelativosRepository extends EntityRepository
 		probador.apellido,
 		probador.nombre,
 		ot1.ot otPanel1,
-		c.ot_Enf,
+		c.otEnf,
 		c.obs,
+		c.fecha,
 		soldador.nombre as soldadorNombre,
 		soldador.apellido as soldadorApellido,
 		ope.descripcion as operacion,
@@ -35,17 +36,17 @@ class CorrelativosRepository extends EntityRepository
 	left join Ot ot2 on ot2.ot = c.ot2panel
 	left join Ot ot3 on ot3.ot = c.ot3panel
 	left join Ot ot4 on ot4.ot = c.ot4panel
-	left join Estanqueidad e on e.ot = c.ot_Enf
-	left join Ot otRadiador on otRadiador.ot = c.ot_Enf
+	left join Estanqueidad e on e.ot = c.otEnf
+	left join Ot otRadiador on otRadiador.ot = c.otEnf
 	left join articulos art on otRadiador.idCodigo = art.idArticulos
 	left join Personal probador on probador.idP = e.probador
-	left join ProduccionSoldado prod on prod.ot = c.ot_Enf
+	left join ProduccionSoldado prod on prod.ot = c.otEnf
 	left join Personal soldador on soldador.idP = prod.personalId
 	left join Operaciones ope on ope.id = prod.operacionId
 	left join RemitosClientes rem on rem.id = c.remitoId
 	left join cliente cli on cli.idCliente = rem.clienteId
 	where c.numCorrelativo = $correlativo
-	group by ope.id, ot_Enf";
+	group by ope.id, otEnf";
 		
 		return $queryReporte;
 	}

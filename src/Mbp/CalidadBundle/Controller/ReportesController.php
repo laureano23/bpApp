@@ -24,7 +24,7 @@ class ReportesController extends Controller
 		$req=$this->get('request');
 		$em = $this->getDoctrine()->getManager();
 		$repoCorrelativos=$em->getRepository('MbpCalidadBundle:Correlativos');
-		$response=new CustomResponse;
+		$response=new Response;
 
 		try{
 			$correlativo=$req->request->get('correlativo');
