@@ -17,7 +17,32 @@ class DefaultController extends Controller
     {
         $response=new Response;
         $em = $this->getDoctrine()->getManager();
-        $repo=$em->getRepository('MbpUtilitariosBundle:Viaje'); 
+        $repo=$em->getRepository('MbpClientesBundle:Cliente');
+        
+        $emails=$repo->createQueryBuilder('c')
+            ->select('c.email')
+            ->where("c.email != ''")
+            ->getQuery()
+            ->getArrayResult();
+        $newEmails=[];
+        
+        $pattern = '/[a-z0-9_\-\+\.]+@[a-z0-9\-]+\.([a-z]{2,4})(?:\.[a-z]{2})?/i';
+        foreach ($emails as &$e) {
+            preg_match_all($pattern, $e['email'], $matches); 
+            foreach ($matches[0] as $m) {
+                array_push($newEmails, $m);
+            }
+            
+        }
+        //print_r($newEmails);   
+        $fp=fopen("mails", "w");
+        foreach ($newEmails as $e) {
+            //print_r($e);
+            fwrite($fp, $e."\n");
+        }
+        
+        
+        return new Response;
     }
 
     /**

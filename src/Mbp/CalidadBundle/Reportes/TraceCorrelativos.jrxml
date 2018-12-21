@@ -14,8 +14,9 @@
     probador.apellido,
     probador.nombre,
     ot1.ot otPanel1,
-    c.ot_Enf,
+    c.otEnf,
     c.obs,
+    c.fecha,
     soldador.nombre as soldadorNombre,
     soldador.apellido as soldadorApellido,
     ope.descripcion as operacion,
@@ -31,17 +32,17 @@ left join Ot ot1 on ot1.ot = c.ot1panel
 left join Ot ot2 on ot2.ot = c.ot2panel
 left join Ot ot3 on ot3.ot = c.ot3panel
 left join Ot ot4 on ot4.ot = c.ot4panel
-left join Estanqueidad e on e.ot = c.ot_Enf
-left join Ot otRadiador on otRadiador.ot = c.ot_Enf
+left join Estanqueidad e on e.ot = c.otEnf
+left join Ot otRadiador on otRadiador.ot = c.otEnf
 left join articulos art on otRadiador.idCodigo = art.idArticulos
 left join Personal probador on probador.idP = e.probador
-left join ProduccionSoldado prod on prod.ot = c.ot_Enf
+left join ProduccionSoldado prod on prod.ot = c.otEnf
 left join Personal soldador on soldador.idP = prod.personalId
 left join Operaciones ope on ope.id = prod.operacionId
 left join RemitosClientes rem on rem.id = c.remitoId
 left join cliente cli on cli.idCliente = rem.clienteId
 where c.numCorrelativo = $P{numCorrelativo}
-group by ope.id, ot_Enf]]>
+group by ope.id, otEnf]]>
 	</queryString>
 	<field name="numCorrelativo" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -59,10 +60,13 @@ group by ope.id, ot_Enf]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="otPanel1" class="java.lang.Integer"/>
-	<field name="ot_Enf" class="java.lang.Integer">
+	<field name="otEnf" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="obs" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="soldadorNombre" class="java.lang.String"/>
@@ -73,9 +77,6 @@ group by ope.id, ot_Enf]]>
 	<field name="ot3" class="java.lang.Integer"/>
 	<field name="ot4" class="java.lang.Integer"/>
 	<field name="remitoNum" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="fecha" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="rsocial" class="java.lang.String">
@@ -266,7 +267,7 @@ group by ope.id, ot_Enf]]>
 				<text><![CDATA[Código:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="219" y="0" width="100" height="20" uuid="0a2d3977-0aad-4bd0-8f8c-0af154c21ad0"/>
+				<reportElement x="219" y="0" width="154" height="20" uuid="0a2d3977-0aad-4bd0-8f8c-0af154c21ad0"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
 			</textField>
@@ -318,6 +319,18 @@ group by ope.id, ot_Enf]]>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{remitoNum}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="373" y="0" width="95" height="20" uuid="821af11c-04a0-4e1e-a5e8-b990bddfd412"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de control]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="468" y="0" width="100" height="20" uuid="b0a775a3-92e4-499e-9571-fc0ca21720b3"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>
@@ -330,7 +343,7 @@ group by ope.id, ot_Enf]]>
 			<textField isBlankWhenNull="true">
 				<reportElement x="173" y="0" width="73" height="20" uuid="c3119e5f-578f-4fd1-b86f-26cfcea7d243"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{ot_Enf}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{otEnf}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="246" y="0" width="264" height="20" uuid="9e3fb304-522d-4c46-9aab-2d2aa18ccf41"/>
