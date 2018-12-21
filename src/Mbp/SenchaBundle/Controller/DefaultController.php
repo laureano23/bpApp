@@ -20,7 +20,7 @@ class DefaultController extends Controller
 			return $this->render('MbpSenchaBundle:MetApp:indexBuild.html.twig');
 		}
 
-		return $this->render('MbpWebBundle:Default:index.html.twig');
+		return $this->render('MbpWebBundle:newFront:index.html.twig');
         
     }
 	
