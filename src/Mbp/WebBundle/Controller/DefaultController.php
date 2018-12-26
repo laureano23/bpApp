@@ -52,7 +52,24 @@ class DefaultController extends Controller
      */
     public function products()
     {
-        return $this->render('MbpWebBundle:newFront:products.html.twig');
+        $em = $this->getDoctrine()->getManager('web');
+    	$repo = $em->getRepository('MbpWebBundle:Categorias');
+    	$req = $this->getRequest();
+    	$categoria = $repo->find($req->query->get('cat')); 
+
+
+        return $this->render('MbpWebBundle:newFront:products.html.twig', array('categorias' => $categoria));
+    }
+
+    public function listarCategoriasAsideAction()
+    {
+    	$em = $this->getDoctrine()->getManager('web');
+        $em->clear();
+    	$repo = $em->getRepository('MbpWebBundle:Categorias');
+    	$items = $repo->findAll();		
+
+
+    	return $this->render('MbpWebBundle:Default:lista_categorias_aside.html.twig', array('items' => $items));
     }
 }
  

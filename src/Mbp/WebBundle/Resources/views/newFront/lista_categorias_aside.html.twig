@@ -1,0 +1,10 @@
+{% for item in items %}
+	<li class="list-group-item"><a href="{{ path('productos', {'cat': item.id}) }}"><strong>{{ item.descripcion }}</strong></a></li>
+	
+	{% for sub in item.subCategoria %}
+		<li class="list-group-item"><a href="{{ path('productos-por-categoria', {'cat': item.id, 'sub':sub.id}) }}">{{ '---' ~  sub.descripcion }}</a></li>
+	{% endfor %}
+
+{% endfor %}
+<li class="list-group-item"><a href="{{ path('productosComerciales') }}"><strong>Intercoolers</strong></a></li>
+<li class="list-group-item"><a href="{{ path('productosComerciales') }}"><strong>{{ "Radiadores de agua"|trans }}</strong></a></li>
