@@ -922,48 +922,47 @@ ORDER BY
 									
 			
 			$sql = "SELECT * FROM(
-			SELECT
-			     CASE WHEN TransaccionCobranzaFactura.`aplicado` IS NULL THEN 0 ELSE SUM(TransaccionCobranzaFactura.`aplicado`) END AS TransaccionCobranzaFactura_aplicado,
-			     Cobranzas.`id` AS Cobranzas_id,
-			     Cobranzas.`emision` AS Cobranzas_emision,
-			     TransaccionCobranzaFactura.`id` AS TransaccionCobranzaFactura_id,
-			     TransaccionCobranzaFactura.`facturaId` AS TransaccionCobranzaFactura_facturaId,
-			     TransaccionCobranzaFactura.`cobranzaId` AS TransaccionCobranzaFactura_cobranzaId,
-			     Facturas.`id` AS Facturas_id,
-			     Facturas.`fecha` AS Facturas_fecha,
-			     Facturas.`concepto` AS Facturas_concepto,
-			     Facturas.`fcNro` AS fcNro,
-			     Facturas.`vencimiento` AS Facturas_vencimiento,
-			     Facturas.`clienteId` AS Facturas_clienteId,
-			     Facturas.`ptoVta` AS Facturas_ptoVta,
-			     Facturas.`total` AS Facturas_total,
-			     Facturas.`moneda` AS Facturas_moneda,
-			     Facturas.`tipoCambio` AS Facturas_tipoCambio,
-			     CASE WHEN tipo.esFactura = true then 'FA N° '
-				when tipo.esNotaDebito=true then 'NC N° '
-				else 'ND N° ' end as concepto,
-			     cliente.`rsocial` AS cliente_rsocial,
-			     cliente.`idCliente` AS cliente_idCliente,
-			     tipo.esFactura as esFactura,
-			     tipo.esNotaDebito as esNotaDebito,
-				 fn.fc_id as ncAnula
-			FROM
-			     `Cobranzas` Cobranzas INNER JOIN `TransaccionCobranzaFactura` TransaccionCobranzaFactura ON Cobranzas.`id` = TransaccionCobranzaFactura.`cobranzaId`
-			     RIGHT JOIN `Facturas` Facturas ON TransaccionCobranzaFactura.`facturaId` = Facturas.`id`
-			     INNER JOIN `cliente` cliente ON Facturas.`clienteId` = cliente.`idCliente`
-			     INNER JOIN `TipoComprobante` tipo ON tipo.`id` = Facturas.`tipoId`
-				 left join Facturas_NotasCredito fn on fn.nc_id = Facturas.id
-			WHERE
-				cliente.`idCliente` BETWEEN $cliente1 AND $cliente2 AND
-				Facturas.`fecha` BETWEEN '$desde' AND '$hasta'
-			GROUP BY Facturas.`id`, TransaccionCobranzaFactura.`facturaId`) AS sub
-			WHERE
-				Facturas_total > TransaccionCobranzaFactura_aplicado AND
-				esFactura = true OR 
-				Facturas_total > TransaccionCobranzaFactura_aplicado AND
-				esNotaDebito = true OR
-				ncAnula > 0
-			ORDER BY cliente_idCliente, Facturas_fecha";
+				SELECT
+					 CASE WHEN TransaccionCobranzaFactura.`aplicado` IS NULL THEN 0 ELSE SUM(TransaccionCobranzaFactura.`aplicado`) END AS TransaccionCobranzaFactura_aplicado,
+					 Cobranzas.`id` AS Cobranzas_id,
+					 Cobranzas.`emision` AS Cobranzas_emision,
+					 TransaccionCobranzaFactura.`id` AS TransaccionCobranzaFactura_id,
+					 TransaccionCobranzaFactura.`facturaId` AS TransaccionCobranzaFactura_facturaId,
+					 TransaccionCobranzaFactura.`cobranzaId` AS TransaccionCobranzaFactura_cobranzaId,
+					 Facturas.`id` AS Facturas_id,
+					 Facturas.`fecha` AS Facturas_fecha,
+					 Facturas.`concepto` AS Facturas_concepto,
+					 Facturas.`fcNro` AS fcNro,
+					 Facturas.`vencimiento` AS Facturas_vencimiento,
+					 Facturas.`clienteId` AS Facturas_clienteId,
+					 Facturas.`ptoVta` AS Facturas_ptoVta,
+					 Facturas.`total` AS Facturas_total,
+					 Facturas.`moneda` AS Facturas_moneda,
+					 Facturas.`tipoCambio` AS Facturas_tipoCambio,
+					 cliente.`rsocial` AS cliente_rsocial,
+					 cliente.`idCliente` AS cliente_idCliente,
+					 tipo.esFactura as esFactura,
+					 tipo.abreviatura as abreviatura,
+					 tipo.esNotaDebito as esNotaDebito,
+					fn.nc_id as ncAnula
+				FROM
+					 `Cobranzas` Cobranzas INNER JOIN `TransaccionCobranzaFactura` TransaccionCobranzaFactura ON Cobranzas.`id` = TransaccionCobranzaFactura.`cobranzaId`
+					 RIGHT JOIN `Facturas` Facturas ON TransaccionCobranzaFactura.`facturaId` = Facturas.`id`
+					 INNER JOIN `cliente` cliente ON Facturas.`clienteId` = cliente.`idCliente`
+					 INNER JOIN `TipoComprobante` tipo ON tipo.`id` = Facturas.`tipoId`
+					left join Facturas_NotasCredito fn on fn.nc_id = Facturas.id
+				WHERE
+					cliente.`idCliente` BETWEEN $cliente1 AND $cliente2 AND
+					Facturas.`fecha` BETWEEN '$desde' AND '$hasta'
+				GROUP BY Facturas.`id`, TransaccionCobranzaFactura.`facturaId`) AS sub
+				WHERE
+					Facturas_total > TransaccionCobranzaFactura_aplicado AND
+					esFactura = true  AND isnull(ncAnula) OR
+					Facturas_total > TransaccionCobranzaFactura_aplicado AND
+					esNotaDebito = true AND isnull(ncAnula)
+				
+				
+				ORDER BY cliente_idCliente, Facturas_fecha";
 			
 			$jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());	
 
