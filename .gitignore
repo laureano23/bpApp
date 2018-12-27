@@ -1,8 +1,12 @@
 #IGNORAMOS LA CARPETA COMPLETA
 /web/bundles
+/web/newFront
+/bp
+/.vscode
 
 #EXCLUIMOS FRONTEND
 !/web/frontend/
+
 
 #IGNORAMOS LA CARPETA COMPLETA
 /web/frontend/*
