@@ -27,15 +27,16 @@ class MovimientosArticulosRepository extends \Doctrine\ORM\EntityRepository
 				det.certificadoNum,
 				det.id AS id
 				')
-			->join('mov.movDetalleId', 'det')
-			->join('mov.proveedorId', 'prov')
-			->join('det.articuloId', 'art')
-			->join('det.ordenCompraDetalleId', 'oc')
+			->leftjoin('mov.movDetalleId', 'det')
+			->leftjoin('mov.proveedorId', 'prov')
+			->leftjoin('det.articuloId', 'art')
+			->leftjoin('det.ordenCompraDetalleId', 'oc')
 			->where('art.requiereControl = 1')
 			->andWhere('det.estadoCalidad is NULL')
 			//->andWhere('oc.anulada = false')
 			->getQuery()
 			->getArrayResult();	
+			
 		return $qb;	
 	}
 }
