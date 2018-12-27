@@ -194,6 +194,7 @@ class ReportesController extends Controller
 		
 		try{
 			$desde = $req->request->get('desde');	
+			$hasta = $req->request->get('hasta');	
 			$idProveedor = $req->request->get('proveedor');
 							
 			$reporteador = $this->get('reporteador');
@@ -211,13 +212,17 @@ class ReportesController extends Controller
 			
 			
 			$simpleDateFormat = new \Java("java.text.SimpleDateFormat", 'd/M/yyyy');
-			$javaDate = $simpleDateFormat->parse($desde); // This is a Java date
+			$javaDateDesde = $simpleDateFormat->parse($desde); // This is a Java date
+			$javaDateHasta = $simpleDateFormat->parse($hasta); // This is a Java date
 			
-			$param->put('FECHA_DESDE', $javaDate);
+			$param->put('FECHA_DESDE', $javaDateDesde);
+			$param->put('FECHA_HASTA', $javaDateHasta);
 
 			$desde=\DateTime::createFromFormat('d/m/Y', $desde);
+			$hasta=\DateTime::createFromFormat('d/m/Y', $hasta);
 
 			$desdeSql=$desde->format('Y/m/d');
+			$hastaSql=$hasta->format('Y/m/d');
 			
 			$conn = $reporteador->getJdbc();
 						
@@ -263,7 +268,7 @@ class ReportesController extends Controller
 					ORDER BY
 						s.fechaEmision, s.id ASC) as sub
 				left join Proveedor p on p.id=$idProveedor)as sub2
-				where sub2.fechaEmision >= '$desdeSql'
+				where sub2.fechaEmision BETWEEN '$desdeSql' AND '$hastaSql'
 			";	
 
 		   	$param->put('SUBREPORT_DIR', $kernel->locateResource('@MbpProveedoresBundle/Reportes/'));

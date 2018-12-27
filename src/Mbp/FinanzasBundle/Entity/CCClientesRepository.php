@@ -11,7 +11,7 @@ use Mbp\FinanzasBundle\Entity\CCClientes;
  */
 class CCClientesRepository extends \Doctrine\ORM\EntityRepository
 {	
-	public function reporteCC($idCliente, $desde){
+	public function reporteCC($idCliente, $desde, $hasta){
 		return "
 			select sub2.*
 			from
@@ -53,7 +53,7 @@ class CCClientesRepository extends \Doctrine\ORM\EntityRepository
 				ORDER BY
 					s.fechaEmision, s.id ASC) as sub
 			left join cliente p on p.idCliente=$idCliente)as sub2
-			where sub2.fechaEmision >= '$desde'
+			where sub2.fechaEmision BETWEEN '$desde' AND '$hasta'
 		";
 	}
 

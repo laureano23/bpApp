@@ -1105,6 +1105,7 @@ ORDER BY
 		try{
 			$idCliente = $req->request->get('cliente1');
 			$desde = $req->request->get('desde');		
+			$hasta = $req->request->get('hasta');		
 							
 			$reporteador = $this->get('reporteador');
 			$kernel = $this->get('kernel');
@@ -1120,16 +1121,20 @@ ORDER BY
 			$rutaLogo = $reporteador->getRutaLogo($kernel);
 			
 			$simpleDateFormat = new \Java("java.text.SimpleDateFormat", 'd/M/yyyy');
-			$javaDate = $simpleDateFormat->parse($desde); // This is a Java date
+			$javaDateDesde = $simpleDateFormat->parse($desde); // This is a Java date
+			$javaDateHasta = $simpleDateFormat->parse($hasta); // This is a Java date
 			$param->put('ID_CLIENTE', $idCliente);
-			$param->put('FECHA_DESDE', $javaDate);
+			$param->put('FECHA_DESDE', $javaDateDesde);
+			$param->put('FECHA_HASTA', $javaDateHasta);
 
 			$desde=\DateTime::createFromFormat("d/m/Y", $desde);
+			$hasta=\DateTime::createFromFormat("d/m/Y", $hasta);
 			$desdeSql=$desde->format("Y/m/d");
+			$hastaSql=$hasta->format("Y/m/d");
 
 			$conn = $reporteador->getJdbc();
 			
-			$sql = $repoCC->reporteCC($idCliente, $desdeSql);
+			$sql = $repoCC->reporteCC($idCliente, $desdeSql, $hastaSql);
 			
 			$res = $jru->runPdfFromSql($ruta, $destino, $param, $sql, $conn->getConnection());
 			

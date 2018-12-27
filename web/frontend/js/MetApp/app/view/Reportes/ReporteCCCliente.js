@@ -37,6 +37,15 @@ Ext.define('MetApp.view.Reportes.ReporteCCCliente', {
 							labelWidth: 40
 						},
 						{
+							xtype: 'datefield',
+							itemId: 'hasta',
+							name: 'hasta',
+							submitFormat: 'd/m/Y',
+							format: 'd/m/Y',
+							fieldLabel: 'Hasta',
+							labelWidth: 40
+						},
+						{
 							xtype: 'fieldset',
 							title: 'Cliente',
 							layout: 'hbox',
