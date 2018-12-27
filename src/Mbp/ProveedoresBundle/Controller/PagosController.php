@@ -244,13 +244,12 @@ class PagosController extends Controller
 		
 		$retencion=0;
 		foreach($imputado as $imp){
-			$fcProv = $repoFc->find($imp->id);
-			
+			$fcProv = $repoFc->find($imp->id);			
 			if($parametrosFinanzas->getTopeRetencionIIBB() <= $fcProv->getNeto()){					
-				$retencion += $imp->aplicar * $alicuotaRetencion / 100;				
-				$retencion = number_format($retencion, 2, ".", "");
+				$retencion += $imp->aplicar * $alicuotaRetencion / 100;								
 			}
 		}		
+		$retencion = number_format($retencion, 2, ".", "");
 		return $retencion;
 	}
 
@@ -274,17 +273,17 @@ class PagosController extends Controller
 				switch ($fcProv->getTipoId()->getEsNotaCredito()) {
 					case true:
 						if($fcProv->getNeto() <= $imp->aplicar){
-							$retencion = $fcProv->getNeto() * $alicuotaRetencion / 100 * -1;
+							$retencion += $fcProv->getNeto() * $alicuotaRetencion / 100 * -1;
 						}else{
-							$retencion = $imp->aplicar * $alicuotaRetencion / 100 * -1;
+							$retencion += $imp->aplicar * $alicuotaRetencion / 100 * -1;
 						}		
 						break;
 					
 					case false:
 						if($fcProv->getNeto() <= $imp->aplicar){
-							$retencion = $fcProv->getNeto() * $alicuotaRetencion / 100;
+							$retencion += $fcProv->getNeto() * $alicuotaRetencion / 100;
 						}else{
-							$retencion = $imp->aplicar * $alicuotaRetencion / 100;
+							$retencion += $imp->aplicar * $alicuotaRetencion / 100;
 						}
 						break;	
 					default:
