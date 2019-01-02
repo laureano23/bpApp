@@ -1,0 +1,14 @@
+{% for item in items %}
+    <div class="col-md-6 col-sm-6">
+        <div class="service-list call-to-action">
+            <img src="{{ asset('bundles/mbpweb/images/page/'~item.imagen~'') }}" alt="">
+            <div class="service-caption">
+                <div class="service-left">
+                    <h2>{{item.titulo}}</h2>
+                    <p>{{item.descripcion}}</p>							
+                    <a href="{{ path('productos', {'cat': item.id}) }}"><i class="fa fa-angle-right"></i>Ver</a>
+                </div>										
+            </div>
+        </div>
+    </div>
+{% endfor %}

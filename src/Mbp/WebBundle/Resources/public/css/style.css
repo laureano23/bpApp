@@ -59,8 +59,32 @@ Author: Cloud Software Solution Ltd.
 
 /*Mis estilos*/
 
+article h3 a{
+  color: #000000;
+}
+
+article h3 a:hover{
+  color: #000000;
+}
+
 aside li a{
   color: #000000;
+}
+
+section nav li a{
+  color: #000000;
+}
+
+section nav li a:hover{
+  color: #3a6bf8;
+}
+
+section article p a:hover{
+  color: #3a6bf8 !important;
+}
+
+aside li a:hover{
+  color: #3a6bf8;
 }
 
 article h2 a {
@@ -70,6 +94,41 @@ article h2 a {
 article p a{
   color: #000000 !important;
 }
+
+div a span{
+  color: #000000 !important;
+}
+
+#modalImg{
+  display: inline-block;
+  
+}
+
+.modal-admin {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.modal {
+  text-align: center;
+  padding: 0!important;
+}
+
+.modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -4px; /* Adjusts for spacing */
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+
 
 /* Mis estilos */
 
@@ -651,6 +710,8 @@ offcanvas-menu
 .service-left{
   float:left;
   width:50%;
+  display: inline-block;
+  vertical-align: middle;
 }
 .service-left h2{
   color:#ffffff;

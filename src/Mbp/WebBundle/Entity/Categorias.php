@@ -28,7 +28,15 @@ class Categorias implements Translatable
      * @var string
      * 
      * @Gedmo\Translatable
-     * @ORM\Column(name="descripcion", type="string", length=80)
+     * @ORM\Column(name="titulo", type="string", length=80)
+     */
+    private $titulo;
+
+    /**
+     * @var string
+     * 
+     * @Gedmo\Translatable
+     * @ORM\Column(name="descripcion", type="string", length=250)
      */
     private $descripcion;
 
@@ -63,6 +71,13 @@ class Categorias implements Translatable
      */
     private $subCategoria; 
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="esComercial", type="boolean")
+     */
+    private $esComercial=0;
+
     public function __construct()
     {
 		$this->subCategoria = new ArrayCollection();
@@ -78,29 +93,6 @@ class Categorias implements Translatable
         return $this->id;
     }
 
-    /**
-     * Set descripcion
-     *
-     * @param string $descripcion
-     *
-     * @return Categorias
-     */
-    public function setDescripcion($descripcion)
-    {
-        $this->descripcion = $descripcion;
-
-        return $this;
-    }
-
-    /**
-     * Get descripcion
-     *
-     * @return string
-     */
-    public function getDescripcion()
-    {
-        return $this->descripcion;
-    }
 
     /**
      * Set rutaCatalogo
@@ -221,5 +213,77 @@ class Categorias implements Translatable
     public function setTranslatableLocale($locale)
     {
         $this->locale = $locale;
+    }
+
+    /**
+     * Set titulo
+     *
+     * @param string $titulo
+     *
+     * @return Categorias
+     */
+    public function setTitulo($titulo)
+    {
+        $this->titulo = $titulo;
+
+        return $this;
+    }
+
+    /**
+     * Get titulo
+     *
+     * @return string
+     */
+    public function getTitulo()
+    {
+        return $this->titulo;
+    }
+
+    /**
+     * Set descripcion
+     *
+     * @param string $descripcion
+     *
+     * @return Categorias
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+
+        return $this;
+    }
+
+    /**
+     * Get descripcion
+     *
+     * @return string
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+
+    /**
+     * Set esComercial
+     *
+     * @param boolean $esComercial
+     *
+     * @return Categorias
+     */
+    public function setEsComercial($esComercial)
+    {
+        $this->esComercial = $esComercial;
+
+        return $this;
+    }
+
+    /**
+     * Get esComercial
+     *
+     * @return boolean
+     */
+    public function getEsComercial()
+    {
+        return $this->esComercial;
     }
 }

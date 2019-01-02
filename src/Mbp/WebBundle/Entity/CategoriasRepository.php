@@ -18,7 +18,7 @@ class CategoriasRepository extends \Doctrine\ORM\EntityRepository
 		$repo = $em->getRepository('MbpWebBundle:Categorias');
 
 		$res = $repo->createQueryBuilder('cat')
-			->select('cat.descripcion, cat.id')			
+			->select('cat.descripcion, cat.id, cat.titulo, cat.imagen, cat.esComercial')			
 			->getQuery()
 			->setHint( \Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER,
             	'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker')

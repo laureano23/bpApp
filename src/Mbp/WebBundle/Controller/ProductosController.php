@@ -7,7 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Mbp\WebBundle\Entity\Categorias;
+use Mbp\WebBundle\Entity\CategoriproductosComerciales;
 
 class ProductosController extends Controller
 {
@@ -63,12 +63,10 @@ class ProductosController extends Controller
                        $em->refresh($tipo);
                    }           
 
-        return $this->render('MbpWebBundle:Default:radiadoresComerciales.html.twig', array(
+        return $this->render('MbpWebBundle:newFront:radiadoresComerciales.html.twig', array(
             'tipos' => $tipos,
 
-            ));        
-
-        
+            ));
     }
 
     /**

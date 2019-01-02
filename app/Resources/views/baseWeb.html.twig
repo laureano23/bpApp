@@ -52,7 +52,7 @@
             ========================================== -->
             <link rel="shortcut icon" href="{{ asset('bundles/mbpweb/images/favicon.ico') }}" >
             <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
-            <link rel="stylesheet" href="{{ asset('bundles/mbpweb/css/off-canvas.css') }}"/>
+            <!-- <link rel="stylesheet" href="{{ asset('bundles/mbpweb/css/off-canvas.css') }}"/> -->
             <link rel="stylesheet" href="{{ asset('bundles/mbpweb/css/style.css') }}"/>
         {% endblock %}
     <script src='https://www.google.com/recaptcha/api.js'></script> <!-- SCRIPT PARA CAPTCHA -->
@@ -111,13 +111,11 @@
                                                     <li><a href="{{ path('about') }}">Nosotros</a></li>
                                                     <li class="dropdown"><a href="#">Productos</a>
                                                         <ul class="dropdown-menu">
-                                                            <li><a href="{{ path('products', {'cat': 4}) }}">Equipos Autónomos</a></li>
-                                                            <li><a href="{{ path('products') }}">Radiadores de Agua</a></li>
-                                                            <li><a href="{{ path('products') }}">Radiadores de Aceite</a></li>
-                                                            <li><a href="{{ path('products') }}">Intercoolers</a></li>
+                                                            {{ render(controller('MbpWebBundle:Default:listarCategorias')) }}
                                                         </ul>
                                                     </li>
                                                 
+                                                    <li><a href="{{ path('novedades') }}">Novedades</a></li>
                                                     <li><a href="{{ path('contacto') }}">Contacto</a></li>
                                                 </ul>
                                                 <!-- /navbar-nav -->
@@ -135,6 +133,28 @@
 
 
                 {% block body %} 
+                    <!-- ALERTAS CON MENSAJES EXITOSOS -->
+                    {% if app.session.flashBag.get('statusOk') %} 
+                        <div class="alert alert-success" role="alert">
+                            {% for flash_message in app.session.flashBag.get('success') %}
+                                <div class="flash-notice">
+                                    {{ flash_message }}
+                                </div>
+                            {% endfor %}
+                        </div>    
+                    {% endif %}       
+                    
+                    
+                    <!-- ALERTAS CON MENSAJES FALLIDOS -->
+                    {% if app.session.flashBag.get('statusFail') %}                        
+                        <div class="alert alert-danger" role="alert">
+                            {% for flash_message in app.session.flashBag.get('fail') %}                    
+                                <div class="flash-notice">
+                                    {{ flash_message }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 {% endblock %}
 
 
@@ -147,8 +167,7 @@
                     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
                     <script src="{{ asset('bundles/mbpweb/js/owl.carousel.min.js') }}"></script>
                     <script src="{{ asset('bundles/mbpweb/js/hippo-off-canvas.js') }}"></script>
-                    <script src="{{ asset('bundles/mbpweb/js/script.js') }}"></script>
-                    <script src="http://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"></script>
+                    <script src="{{ asset('bundles/mbpweb/js/script.js') }}"></script>                    
                 {% endblock %}
 
                 {% block footer %}
@@ -161,23 +180,14 @@
                                         <div class="about">
                                             <h4>Nosotros</h4>
                                             <img src="{{ asset('bundles/mbpweb/images/page/footer-about.jpg') }}" alt="">
-                                            <p>Desde 1994 contribuyendo al desarrollo de la industria Argentina con innovación y desarrollo permanente.</p>
+                                            <p>Desde 1994 contribuyendo al desarrollo de la industria Argentina con innovación permanente.</p>
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-sm-6">
                                         <div class="recent-news list-group">
                                             <h4>Ultimas Novedades</h4>
                                             <ul>
-                                                <li>
-                                                    <a href="#" title="">Radiador de agua para competición.</a>
-                                                    <span class="date">February 9, 2016
-                                                    </span>								
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="">Visita de la Universidad de Luján.</a>
-                                                    <span class="date">February 9, 2016
-                                                    </span>								
-                                                </li>                                                
+                                                {{ render(controller('MbpWebBundle:Default:lastNews')) }}
                                             </ul>
                                         </div>
                                     </div>
@@ -185,10 +195,7 @@
                                         <div class="services">
                                             <h4>Productos</h4>
                                             <ul>
-                                                <li><a href="#">Equipos Autónomos</a></li>
-                                                <li><a href="#">Radiadores de Agua</a></li>
-                                                <li><a href="#">Radiadores de Aceite</a></li>
-                                                <li><a href="#">Intercoolers</a></li>
+                                                {{ render(controller('MbpWebBundle:Default:listarCategorias')) }}
                                             </ul>
                                         </div>
                                     </div>

@@ -29,50 +29,9 @@
 				<section class="service-section">
 					<div class="service-items">
 						<div class="row">
-							<div class="col-md-6 col-sm-6">
-								<div class="service-list call-to-action">
-									<img src="{{ asset('bundles/mbpweb/images/page/RADIADOR ACEITE.png') }}" alt="">
-									<div class="service-caption">
-										<div class="service-left">
-											<h2>Radiadores de aceite</h2>
-											<p>Trifásico y 12/24V, con electroventilador.</p>
-										</div>
-										<div class="service-right">
-											<a href="duct.html"><i class="fa fa-angle-right"></i></a>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-6 col-sm-6">
-								<div class="service-list call-to-action">
-									<img src="{{ asset('bundles/mbpweb/images/page/INTERCOOLER.png') }}" alt="">
-									<div class="service-caption">
-										<div class="service-left">
-											<h2>Intercooler</h2>
-											<p>En aluminio para diversas aplicaciones.</p>
-										</div>
-										<div class="service-right">
-											<a href="stacks"><i class="fa fa-angle-right"></i></a>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-6 col-sm-6">
-								<div class="service-list call-to-action">
-									<img src="{{ asset('bundles/mbpweb/images/page/INTERCOOLER.png') }}" alt="">
-									<div class="service-caption">
-										<div class="service-left">
-											<h2>Pos Enfriadores</h2>
-											<p>Para compresores, varias aplicaciones.</p>
-											<div class="service-right">
-												<a href="tanks.html"><i class="fa fa-angle-right"></i></a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
+							{{ render(controller('MbpWebBundle:Default:listarProductosMain')) }}
+
+						
 							<div class="col-md-6 col-sm-6">
 								<div class="service-list call-to-action">
 									<img src="{{ asset('bundles/mbpweb/images/page/RADIADOR AGUA.png') }}" alt="">
@@ -80,13 +39,13 @@
 										<div class="service-left">
 											<h2>Radiadores de agua</h2>
 											<p>En aluminio para diversas aplicaciones.</p>
-										</div>
-										<div class="service-right">
-											<a href="beam.html"><i class="fa fa-angle-right"></i></a>
-										</div>
+											<a href="beam.html"><i class="fa fa-angle-right"></i>Ver</a>
+										</div>										
 									</div>
 								</div>
 							</div>
+							
+							
 						</div>
 					</div>
 				</section>
@@ -212,7 +171,7 @@
 								<img src="{{ asset('bundles/mbpweb/images/page/welcome.jpg') }}" alt="">
 								<div class="welcome-details">
 									<h3>Bienvenido a Metalúrgica BP</h3>
-									<p>Trabajamos con un plantel estable de 45 personas, somos lideres en la fabricación de intercambiadores de aluminio para la industria. Contamos con procesos de fundución, mencanizado, brazing, soldadura y armado y prueba de radiadores.</p>				</div>
+									<p>Trabajamos con un plantel estable de 45 personas, somos lideres en la fabricación de intercambiadores de aluminio para la industria. Contamos con procesos de fundución, mencanizado, brazing, soldadura, armado y prueba de radiadores.</p>				</div>
 							</div>
 						</div>
 						<div class="col-md-6 col-xs-12 col-sm-6">
@@ -235,14 +194,14 @@
 									<div role="tabpanel" class="tab-pane fade in active" id="Profile">
 										<div class="tab-content-details">
 											<h4>Innovación Permanente</h4>
-											<img src="{{ asset('bundles/mbpweb/images/page/profile.jpg') }}" alt="">
+											<img src="{{ asset('bundles/mbpweb/images/page/INNOVACION.png') }}" alt="">
 											<p>Estamos a la vanguardia de los procesos de fabricación, contamos con equipamiento e instalaciones modernas.</p>
 										</div>
 									</div>
 									<div role="tabpanel" class="tab-pane fade" id="magazine">
 										<div class="tab-content-details">
 											<h4>Diseño</h4>
-											<img src="{{ asset('bundles/mbpweb/images/page/profile.jpg') }}" alt="">
+											<img src="{{ asset('bundles/mbpweb/images/page/DISEÑO.png') }}" alt="">
 											<p>Trabajamos con las últimas tecnologías de software de diseño para garantizar un producto de excelencia.</p>
 										</div>										    	
 									</div>
@@ -255,9 +214,9 @@
 									</div>
 									<div role="tabpanel" class="tab-pane fade" id="mission">
 										<div class="tab-content-details">
-											<h4>Servicio</h4>
-											<img src="{{ asset('bundles/mbpweb/images/page/profile.jpg') }}" alt="">
-											<p>Brindamos servicio de reparación de radiadores y fabricación de paneles a medida.</p>
+											<h4>Novedades</h4>
+											<img src="{{ asset('bundles/mbpweb/images/page/guillotina.jpg') }}" alt="">
+											<p>Incorporamos nueva maquinaria para agilizar procesos de fabricación.</p>
 										</div>										    		
 									</div>
 								</div>
@@ -285,7 +244,7 @@
 										<img src="{{ asset('bundles/mbpweb/images/page/ROBERTO.png') }}" class="pr-3" alt="">
 									</div>
 									<div class="client-comments pull-right" style="padding-left: 10px;">
-										<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+										<p>Desde 1994 aportando soluciones térmicas a la industria nacional</p>
 										<span class="name">Roberto Montaña</span>
 										<span class="designation">CEO, Metalúrgica BP SRL.</span>
 									</div>
@@ -295,7 +254,7 @@
 										<img src="{{ asset('bundles/mbpweb/images/page/JORGE.png') }}" alt="">
 									</div>
 									<div class="client-comments pull-right" style="padding-left: 10px;">
-										<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+										<p>La tecnología y la capacidad de nuestro personal definen la calidad de nuestros productos.</p>
 										<span class="name">Jorge Panzitta</span>
 										<span class="designation">Jefe de Ingeniería, Metalúrgica BP SRL.</span>
 									</div>
