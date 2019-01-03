@@ -15,6 +15,15 @@ use Mbp\WebBundle\Entity\TiposRadiadores;
 
 class DefaultController extends Controller
 {
+    /**
+     * @Route("/calidad", name="calidad")
+     * @Cache(smaxage="604800")
+     * @Template()
+     */
+    public function calidadAction()
+    {
+        return $this->render('MbpWebBundle:newFront:calidad.html.twig');
+    }
 
     /**
      * @Route("/novedades/{page}", name="novedades", defaults={"page": 1})

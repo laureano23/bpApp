@@ -48,7 +48,7 @@
             this.defaultOptions = {
                 documentWrapper : '.offcanvas-wrapper',
                 position        : 'offcanvas-left', // class name
-                //opener         : 'offcanvas-open', // class name
+                opener         : 'offcanvas-open', // class name
                 effect          : 'slide-on-top',         // class name
                 contentWrapper  : '.offcanvas-contents',
                 closeButton     : '.offcanvas-close',
@@ -111,7 +111,7 @@
                     .addClass(settings.position)
                     .addClass(settings.effect);
 
-                //$(settings.menuWrapper).show();
+                $(settings.menuWrapper).show();
                 $(settings.menuWrapper).addClass('offcanvas-init');
                 $(settings.menuWrapper).addClass('offcanvas-container');
                 $(settings.documentPusher).addClass('offcanvas-pusher');
@@ -150,7 +150,7 @@
 
                     }, 400);
 
-                    /*$(settings.menuWrapper).one(transitionEvent(), function (e) {
+                    $(settings.menuWrapper).one(transitionEvent(), function (e) {
 
                      e.stopPropagation();
                      $('html').removeClass('offcanvas-html-open');
@@ -165,7 +165,7 @@
                      $('html').removeClass('offcanvas-html-open');
                      $('body').removeClass('offcanvas-body-open');
                      $(window).trigger('offcanvas-closed', [settings]);
-                     });*/
+                     });
                 });
 
                 $(document).on(eventType, function (event) {
@@ -184,7 +184,7 @@
 
                         }, 400);
 
-                        /*$(settings.menuWrapper).one(transitionEvent(), function (e) {
+                        $(settings.menuWrapper).one(transitionEvent(), function (e) {
 
                          e.stopPropagation();
                          $('html').removeClass('offcanvas-html-open');
@@ -200,7 +200,7 @@
                          $('body').removeClass('offcanvas-body-open');
 
                          $(window).trigger('offcanvas-closed', [settings]);
-                         });*/
+                         });
                     }
                 });
             });

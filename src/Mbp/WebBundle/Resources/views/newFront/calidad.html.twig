@@ -1,0 +1,73 @@
+{% extends 'baseWeb.html.twig' %}
+
+{% block head %}	
+	{{parent()}}
+	<title>Calidad | Metalúrgica BP</title>
+	<meta name=”robots” content=”noindex, follow”>
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="wrapper" id="wrapper">
+        <div class="offcanvas-pusher">
+            <div class="content-wrapper">
+                <div class="container">
+                    <div class="row">
+                        <div class="inner-content">
+                            <div class="company">
+                                <div class="">
+                                    <h2>{{"Normas de calidad y medio ambiente ISO9001, ISO14001"|trans}}</h2>
+                                    <p>
+                                        {{"Metalúrgica BP S.R.L., empresa argentina en constante crecimiento desde su fundación, ha decidido desarrollar sus actividades dentro del marco de un Sistema de Gestión de la Calidad y cuidado del Medio Ambiente basado en la norma ISO 9001 / 2008, ISO 14001/2004; con el objeto de satisfacer a sus clientes con productos de calidad, respetando el medio ambiente y asegurando una rentabilidad que permita un crecimiento sustentable. Esto queda representado en su Política de Calidad, donde se compromete a"|trans}}:
+																			<em>
+																				<strong>
+																					{{"Todos los que integramos Metalúrgica BP, asumimos el compromiso de “Satisfacer las necesidades de nuestros clientes, a través del suministro de productos de calidad asegurada y el cuidado del medio ambiente”"|trans}}
+																				</strong>
+																			</em>
+																		</p>
+																		<p>
+																				{{"La Dirección de Metalúrgica BP S.R.L establece Objetivos de Calidad y Medio Ambiente mensurables y coherentes con la Política de Calidad y Medio Ambiente expresado. En ese sentido los objetivos están orientados a la mejora continua de los procesos y a la búsqueda de la eficacia del Sistema de Gestión de Calidad y Medio Ambiente."|trans}}
+														
+																				{{"Estos objetivos son revisados en forma continua para lograr su adecuación a las exigencias del Sistema de Gestión de Calidad y Medio Ambiente de la empresa. Los objetivos generales determinados por la empresa son"|trans}}:
+														
+																				<ul class="list-group">
+																					<li class="list-group-item list-group-item-success">
+																						{{"Trabajar por la mejora continua de nuestros procesos e impacto ambiental y un índice de cero defectos."|trans}}
+																					</li>
+																					<li class="list-group-item list-group-item-success">
+																						{{"Obtener el reconocimiento de nuestros productos a nivel internacional."|trans}}
+																					</li>
+																					<li class="list-group-item list-group-item-success">
+																						{{"Desarrollar y mantener fluidos canales de comunicación con nuestros clientes, proveedores y el mercado en general."|trans}}  
+																					</li class="list-group-item list-group-item-success">
+																					<li class="list-group-item list-group-item-success">
+																						{{"Mantener la fidelidad de nuestros clientes."|trans}}
+																					</li class="list-group-item list-group-item-success">
+																					<li class="list-group-item list-group-item-success">
+																						{{"Mantener adecuados niveles de capacitación del personal para lograr que la seguridad, la salud, la protección del medio ambiente y la calidad sean aseguradas por todos,  y contribuya de manera decisiva a la imagen de la Empresa."|trans}} 
+																					</li class="list-group-item list-group-item-success">
+																					<li class="list-group-item list-group-item-success">
+																						{{"Obtener la productividad y rentabilidad esperada en función de los costos de producción estimados, para garantizar la competitividad y permanencia en el mercado."|trans}}
+																					</li>
+																				</ul>
+																		</p>
+                                </div>
+														</div>
+														<a target="_blank" href="{{ asset('bundles/mbpweb/images/page/IRAM ISO9001') }}">{{ "Descargar Certificado ISO 9001"|trans }} <span class="glyphicon glyphicon-file"></span></a>
+													</br>
+														<a target="_blank" href="{{ asset('bundles/mbpweb/images/page/IRAM ISO14001') }}">{{ "Descargar Certificado ISO 14001"|trans }} <span class="glyphicon glyphicon-file"></span></a>							
+                        </div>
+                        <!--inner content -->
+                    </div>
+                    <!--section row -->		
+                </div>
+                <!-- .container-->
+            </div>
+            <!--content-wrapper-->
+        </div>
+        <!-- offcanvas-pusher -->
+    </div>
+</div>
+<!-- #wrapper -->
+
+{% endblock %}
