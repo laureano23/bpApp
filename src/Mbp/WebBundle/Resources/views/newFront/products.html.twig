@@ -1,0 +1,47 @@
+{% extends 'baseWeb.html.twig' %}
+
+{% block head %}
+	{{ parent() }}
+	<title>Inicio | Metalurgica BP SRL</title>	
+{% endblock %}
+
+{% block body %}
+
+<div class="row">
+    <div class="wrapper" id="wrapper">
+        <div class="offcanvas-pusher">
+            <div class="content-wrapper">
+                <section class="main container" id="contenedorProductos">
+                    <div class="row">
+                        
+                        <aside class="col-md-3 hidden-xs hidden-sm">
+                            <h4>{{"Productos"|trans}}</h4>
+                            <ul class="list-group">
+                                {{ render(controller('MbpWebBundle:Default:listarCategoriasAside')) }}
+                            </ul>   
+                        </aside>
+                
+                        <article class="post clearfix col-md-9 product-article">        
+                            <h2 class="post-title">
+                                <a href="#">
+                                {{ categorias.descripcion }}
+                                </a>          
+                            </h2>
+                    
+                                <!-- SI LA CATEGORIA TIENE CATALOGO SE AGREGA ACA -->
+                            <p>            
+                            {% if categorias.rutaCatalogo != "" %}
+                                <a class="" target="_blank" href="{{ asset('bundles/mbpweb/pdf/catalogo/') }}{{ categorias.rutaCatalogo }}">{{ "Catalogo general"|trans }} <span class="glyphicon glyphicon-file"></span></a>
+                            {% endif %}
+                            </p> 
+                        </article>
+                    </div>
+                </section>
+          </div>
+          <!--content-wrapper-->
+      </div>
+      <!-- offcanvas-pusher -->		
+  </div>
+</div>
+
+{% endblock %}

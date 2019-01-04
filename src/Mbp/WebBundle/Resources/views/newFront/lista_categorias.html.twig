@@ -1,0 +1,9 @@
+{% for item in items %}
+	<li><a href=
+		{% if not item.esComercial %}
+		"{{path('productos', {'cat': item.id}) }}"
+		{% else %}
+		"{{path('productosComerciales') }}"
+		{% endif %}>
+		{{ item.titulo }}</a></li>
+{% endfor %}

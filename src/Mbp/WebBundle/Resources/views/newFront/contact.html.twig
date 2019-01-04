@@ -1,0 +1,83 @@
+{% extends 'baseWeb.html.twig' %}
+
+{% block head %}
+	{{ parent() }}
+	<title>Inicio | Metalurgica BP SRL</title>	
+{% endblock %}
+
+{% block body %}
+{{ parent() }}
+<div class="row">
+    <div class="wrapper" id="wrapper">
+        <div class="offcanvas-pusher">
+            <div class="content-wrapper">
+                <div class="container">
+                    <div class="row">
+                        <div class="inner-content">
+                            <div class="contact">
+                                <div class="contact-head">
+                                    <h2>Envianos tu consulta</h2>
+                                </div>
+                                <div class="contact-us">
+                                    <div class="row">
+                                        <div class="col-md-8 col-xs-12">
+                                            <div class="main-contact-form">
+                                                <h4>Formulario de contacto</h4>
+                                                <form action="" method="POST">
+                                                    <input type="text" id="full-name" name="name" placeholder="Nombre" required>
+                                                    <input type="email" id="email" name="email" placeholder="Email Address" required>
+                                                    <input type="tel" id="phone" name="phone" placeholder="Telefono">
+                                                    <input type="text" id="subject" name="subject" placeholder="Asunto" required>
+                                                    <textarea name="message" id="message" cols="30" rows="4" required></textarea>
+                                                    <div class="g-recaptcha" data-sitekey="6Ld-NSoUAAAAAFz86LMFP9VOMhtez-AqwYqH-DRt"></div> <!-- SCRIPT PARA CAPTCHA -->
+                                                    <input type="submit" class="btn btn-primary" value="Enviar">
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-xs-12">
+                                            <div class="get-in-Touch">
+                                                <h4>Dirección</h4>
+                                                <address>
+                                                    <i class="fa fa-map-marker"></i>
+                                                    San Justo, La Matanza,<br> Buenos Aires, Argentina.
+                                                </address>
+                                                <address>
+                                                    <i class="fa fa-phone"></i>
+                                                    011 4484 2416<br>Lunes a Viernes, 6am a 15pm 
+                                                </address>
+                                                <address>
+                                                    <i class="fa fa-envelope-o"></i>
+                                                    <a href="mailto:info@metalurgicabp.com.ar">info@metalurgicabp.com.ar </a>
+                                                </address>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--.contact-us-->
+                            
+                           
+                            <div class="map-area">
+                                <div id="map" class="map-canvas">
+                                    
+                                </div>
+                            </div>
+                           
+    
+                        </div>
+                        <!--.inner-content-->
+                    </div>
+                    <!--inner-row-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}		
+    {{ parent() }}
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqokRB5yuLk3DB3pzGbE2_teUXfz6RAnQ"></script>
+	<script src="{{ asset('bundles/mbpweb/js/maps.js') }}"></script>
+{% endblock %}

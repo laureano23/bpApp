@@ -7,13 +7,48 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Mbp\ArticulosBundle\Entity\ArticulosRepository;
 use Mbp\ArticulosBundle\Entity\Articulos;
+use Mbp\ArticulosBundle\Entity\Familia;
 use Mbp\ArticulosBundle\Clases\FileUploader;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class ArticulosController extends Controller
 {
+
+	public function formArticulosAction(){
+		$art=new Articulos;
+
+		$form=$this->createFormBuilder($art)
+			->add('codigo')
+			->add('descripcion')
+			->add('unidad')
+			->add('familiaId', 'entity', array(
+				'class'=>'MbpArticulosBundle:Familia',
+				'choice_label'=>'familia'
+				))
+			->add('subFamiliaId', 'entity', array(
+				'class'=>'MbpArticulosBundle:SubFamilia',
+				'choice_label'=>'subfamilia'
+				))
+			->add('presentacion')
+			->add('costo')
+			->add('peso')
+			->add('stock')
+			->add('fechaStock', null, array(
+				'widget'=>'single_text'
+				))
+			->add('provSug1', 'entity', array(
+				'class'=>'MbpProveedoresBundle:Proveedor',
+				'choice_label'=>'rsocial'
+				))
+			->getForm();
+		return $this->render('MbpArticulosBundle:Default:FormArticulos.html.twig', array(
+			'form'=>$form->createView()
+		));
+	}
+
 	public function updateProvAction()
     {    	
     	$em = $this->getDoctrine()->getManager();				

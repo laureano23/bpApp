@@ -4,149 +4,279 @@
 
 <head>
     {% block head %}
-        <meta charset="UTF-8">
-        <link rel="alternate" href="http://www.metalurgicabp.com.ar/" hreflang="x-default" />
-        <link rel="alternate" hreflang="en" href="http://www.metalurgicabp.com.ar/en/index" />
-        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <!-- =========================================
+	    Basic
+	    ========================================== -->
+	    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	    <title>Metal</title>
+	    <meta name="keywords" content="HTML5, CSS3, responsive, Template"/>
+	    <meta name="author" content="Cloud Software"/>
+	    <meta name="description" content="Metal- Responsive HTML5/CSS3 Template"/>
+
+	    <!-- =========================================
+	    Mobile Configurations
+	    ========================================== -->
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no"/>
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+	    <meta name="apple-mobile-web-app-capable" content="yes"/>
+
+        <!-- =========================================
+	    SEO
+	    ========================================== -->
         <meta name="description" content="Fábrica de radiadores de aluminio para diversas aplicaciones, uso industrial, agrícola, vial, etc">
         <meta name="keywords" content="Metalúrgica, radiadores, homologación internacional, Radiadores Aceite - Aire, Radiadores Intercooler, Bujes bimetalicos, Post Enfriadores de Aire (para circuitos de aire), Radiadores Combinados Aceite - Aire y Aire - Aire (para compresores), Radiadores para Cajas Automáticas, Radiadores Especiales, exportación a  empresas de BRASIL, tornos CNC, centros de mecanizado CNC, maquina de medir MITUTOYO, exportación a empresas de EEUU; CHILE Y URUGUAY, Se certifica el proceso bajo la Norma ISO 9001-2008, radiadores de aluminio, fabricante de radiadores"  />       
+
+        <!-- =========================================
+	    Head Libs
+	    ========================================== -->
+        <script src="{{ asset('bundles/mbpweb/js/modernizr-2.6.2.min.js') }}"></script>
         
 
         {% block stylesheets %}
+
+            <!-- Fonts -->
+            <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,400italic,600,700' rel='stylesheet' type='text/css'>
+            <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>
+            <link rel="stylesheet" href="{{ asset('bundles/mbpweb/fonts/flaticon/flaticon.css') }}"/>
+            <!-- //Fonts -->
+
+            <!-- Normalize CSS -->
+	        <link rel="stylesheet" href="{{ asset('bundles/mbpweb/css/normalize.css') }}"/>
+
+            <!-- Owl Carousel CSS -->
+            <link href="{{ asset('bundles/mbpweb/css/owl.carousel.css') }}" rel="stylesheet" media="screen">
+            <link href="{{ asset('bundles/mbpweb/css/owl.theme.css') }}" rel="stylesheet" media="screen">
+
+            <!-- =========================================
+            CSS
+            ========================================== -->
             <link rel="shortcut icon" href="{{ asset('bundles/mbpweb/images/favicon.ico') }}" >
-            <link rel="stylesheet" href="{{ asset('bundles/mbpweb/css/bootstrap.min.css') }}">
-            <link rel="stylesheet" href="{{ asset('bundles/mbpweb/css/estilos.css') }}">    
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">          
-            <link rel="stylesheet" href="{{ asset('bundles/mbpweb/css/footer.css') }}">  
+            <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+            <link rel="stylesheet" href="{{ asset('bundles/mbpweb/css/off-canvas.css') }}"/>
+            <link rel="stylesheet" href="{{ asset('bundles/mbpweb/css/style.css') }}"/>
         {% endblock %}
     <script src='https://www.google.com/recaptcha/api.js'></script> <!-- SCRIPT PARA CAPTCHA -->
     {% endblock %}    
 </head>
 
 <body>
-    <header>
-        <!--  COLOCAMOS LA BARRA DE NAVEGACION SUPERIOR -->
-        {{ include('barra-navegacion.html.twig') }}   
-        
-    </header>
-
-    {% block body %} 
-
-        <!-- VENTANA MODAL GENERAL -->
-        <div id="generalModal" class="modal fade" role="dialog">
-          <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                
-              </div>
-              <div class="modal-body">
-                <p>Gracias por su comuniación, en breve le responderemos</p>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-              </div>
-            </div>
-
-          </div>
-        </div>   
-
-        <!-- ALERTAS CON MENSAJES EXITOSOS -->
-        {% if app.session.flashBag.get('statusOk') %} 
-            <div class="alert alert-success" role="alert">
-                {% for flash_message in app.session.flashBag.get('success') %}
-                    <div class="flash-notice">
-                        {{ flash_message }}
-                    </div>
-                {% endfor %}
-            </div>    
-        {% endif %}       
-        
-        
-        <!-- ALERTAS CON MENSAJES FALLIDOS -->
-        {% if app.session.flashBag.get('statusFail') %}                        
-            <div class="alert alert-danger" role="alert">
-                {% for flash_message in app.session.flashBag.get('fail') %}                    
-                    <div class="flash-notice">
-                        {{ flash_message }}
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-
-    {% endblock %}
-
-
-    {% block javascripts %}
-        <!-- FOS RoutingBundle -->
-        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-        <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-
-        <!-- Jquery -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <!-- Bootstrap -->
-        <script src="{{ asset('bundles/mbpweb/js/bootstrap.min.js') }}"></script>
-
-        <!-- Publicidad -->
-        <script src="{{ asset('bundles/mbpweb/js/publicidad.js') }}" type="text/javascript"></script>
-    {% endblock %}
-
-    {% block footer %}
-        <footer>
-            <div class="footer" id="footer">
-                <div class="container-fluid">
+<div class="wrapper" id="wrapper">
+    <div class="offcanvas-pusher">
+        <div class="content-wrapper">
+            <div class="container">
+                {% block header %}
                     <div class="row">
-                        <div class="col-lg-3  col-md-3 col-sm-4 col-xs-6">
-                            <h3> {{"Quienes somos"|trans}} </h3>
-                            <ul>
-                                <li> <a href="{{ path('historiaEmpresa') }}"> {{"Historia de la empresa"|trans}} </a> </li>
-                                <li> <a href="{{ path('mision') }}"> {{"Mision, vision"|trans}} </a> </li>
-                                <li> <a href="{{ path('calidad') }}"> {{"Calidad y medio ambiente"|trans}} </a> </li>
-                            </ul>
-                        </div>
-                        <div class="col-lg-3  col-md-3 col-sm-4 col-xs-6">
-                            <h3> {{"Que hacemos"|trans}} </h3>
-                            <ul>
-                                <li> <a href="{{ path('productos', {'cat': 1}) }}"> {{"Radiadores de aceite"|trans}} </a> </li>
-                                <li> <a href="{{ path('productos', {'cat': 3}) }}"> {{"PosEnfriadores"|trans}} </a> </li>
-                                <li> <a href="{{ path('productosComerciales') }}"> {{"Radiadores de agua"|trans}} </a> </li>
-                            </ul>
-                        </div>
-                        <div class="col-lg-3  col-md-3 col-sm-4 col-xs-6">
-                            <h3> {{"Ubicacion"|trans}} </h3>
-                            <ul>
-                                <li> <a href="{{ path('contacto') }}"> {{"Contacto"|trans}} </a> </li>
-                                <li> <a href="{{ path('comoLlegar') }}"> {{"Como llegar"|trans}} </a> </li>
-                            </ul>
-                        </div>               
-                        <div class="col-lg-3  col-md-3 col-sm-6 col-xs-12 ">
-                            <h3> {{"Seguinos en"|trans}} </h3>
-                            <ul class="social">
-                                <li> <a href="https://www.facebook.com/profile.php?id=100011079996789"> <i class="fa fa-facebook-official">   </i> </a> </li>
-                                <li> <a href="https://twitter.com/MetalurgicaBp"> <i class="fa fa-twitter">   </i> </a> </li>
-                            </ul>
+                        <section class="header">
+                            <header class="header-wrapper">
+                                <div class="header-top">
+                                    <div class="row">
+                                        <div class="col-md-4 col-xs-12 col-sm-5">
+                                            <div class="logo">
+                                                <a title="metalurgica BP" href="{{ path('index') }}">
+                                                    <img src="{{ asset('bundles/mbpweb/images/page/logoNuevo.png') }}" alt="metalurgica BP">
+                                                </a>                                                
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-3">                                        
+                                            <img src="{{ asset('bundles/mbpweb/images/page/NORMAS.png') }}" alt="metalurgica BP" class="logoHide">                                        
+                                        </div>
+                                        <div class="col-md-2 col-sm-3">
+                                            <div class="phone logoHide">
+                                                <p>Ombu 3865 San Justo <br>
+                                                 Buenos Aires.</p>
+                                            </div>                                            
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="pull-right" id="navBarMobile">
+                                     <button type="button" class="hamburger is-closed animated fadeInLeft" data-toggle="offcanvas"> 
+                                            <span class="hamb-top"></span> 
+                                            <span class="hamb-middle"></span>
+                                            <span class="hamb-bottom"></span> 
+                                        </button>   
+                                    </div>
+                                    
+                                </div>
+                                <div class="main-nav-bar">   
+                                        <div class="navbar">
+                                            <div class="navbar-header navbar-right pull-left">
+                                                
+                                            </div>
 
-                                
-                        </div>
+                                            <!-- navbar-collapse -->
+                                            <nav role="navigation" class="collapse navbar-collapse navbar main-nav">
+                                                <ul class="nav navbar-nav navbar-left">
+                                                    <li><a href="{{ path('index') }}">Inicio</a></li>
+                                                    <li class="dropdown"><a href="#">Nosotros</a>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a href="{{ path('about') }}">Misión y Visión</a></li>
+                                                            <li><a href="{{ path('calidad') }}">Calidad y Medio Ambiente</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li class="dropdown"><a href="#">Productos</a>
+                                                        <ul class="dropdown-menu">
+                                                            {{ render(controller('MbpWebBundle:Default:listarCategorias')) }}
+                                                        </ul>
+                                                    </li>
+                                                
+                                                    <li><a href="{{ path('novedades') }}">Novedades</a></li>
+                                                    <li><a href="{{ path('contacto') }}">Contacto</a></li>
+                                                    
+                                                </ul>
+                                                <ul class="nav navbar-nav navbar-right" id="navBarMobile">
+                                                    <li>
+                                                        
+                                                    </li>
+                                                </ul>
+                                                <!-- /navbar-nav -->
+                                            </nav>
+                                            <!-- /navbar-collapse -->
+                                        </div>
+                                        <!-- /navbar -->
+                                </div>
+                                <!-- .main-nav-bar -->
+                            </header>
+                        </section>
+                        <!--End .header -->
                     </div>
-                    <!--/.row--> 
-                </div>
-                <!--/.container--> 
-            </div>
-            <!--/.footer-->
-            
-            <div class="footer-bottom">
-                <div class="container-fluid">
-                    <p class="pull-left"> Copyright © 2016 Metalurgica BP SRL. {{"Todos los derechos reservados"|trans}}. 
-                        <br>
-                        Ombu 3865 San Justo - Buenos Aires - Argentina - (011) 4484-2416
-                    </p>
-                </div>
-            </div>
-            <!--/.footer-bottom--> 
-        </footer>
-    {% endblock %}
+                {% endblock %}
+
+
+                {% block body %} 
+                    <!-- ALERTAS CON MENSAJES EXITOSOS -->
+                    {% if app.session.flashBag.get('statusOk') %} 
+                        <div class="alert alert-success" role="alert">
+                            {% for flash_message in app.session.flashBag.get('success') %}
+                                <div class="flash-notice">
+                                    {{ flash_message }}
+                                </div>
+                            {% endfor %}
+                        </div>    
+                    {% endif %}       
+                    
+                    
+                    <!-- ALERTAS CON MENSAJES FALLIDOS -->
+                    {% if app.session.flashBag.get('statusFail') %}                        
+                        <div class="alert alert-danger" role="alert">
+                            {% for flash_message in app.session.flashBag.get('fail') %}                    
+                                <div class="flash-notice">
+                                    {{ flash_message }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endblock %}
+
+
+                {% block javascripts %}
+                    <!-- FOS RoutingBundle -->
+                    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+                    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+
+                    <script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+                    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+                    <script src="{{ asset('bundles/mbpweb/js/owl.carousel.min.js') }}"></script>
+                    <script src="{{ asset('bundles/mbpweb/js/hippo-off-canvas.js') }}"></script>
+                    <script src="{{ asset('bundles/mbpweb/js/script.js') }}"></script>                    
+                {% endblock %}
+
+                {% block footer %}
+                    <!-- .row -->
+                    <div class="row">
+                        <section class="footer-section">
+                            <div class="footer-top">
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="about">
+                                            <h4>Nosotros</h4>
+                                            <img src="{{ asset('bundles/mbpweb/images/page/footer-about.jpg') }}" alt="">
+                                            <p>Desde 1994 contribuyendo al desarrollo de la industria Argentina con innovación permanente.</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="recent-news list-group">
+                                            <h4>Ultimas Novedades</h4>
+                                            <ul>
+                                                {{ render(controller('MbpWebBundle:Default:lastNews')) }}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="services">
+                                            <h4>Productos</h4>
+                                            <ul>
+                                                {{ render(controller('MbpWebBundle:Default:listarCategorias')) }}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="get-in-Touch">
+                                            <h4>Contáctenos</h4>
+                                            <address>
+                                                <i class="fa fa-map-marker"></i>
+                                                San Justo, <br> Buenos Aires, Argentina.
+                                            </address>
+                                            <address>
+                                                <i class="fa fa-phone"></i>
+                                                (011) 4484-2416<br>Lunes a Viernes, 6am a 15pm 
+                                            </address>
+                                            <address>
+                                                <i class="fa fa-envelope-o"></i>
+                                                <a href="mailto:info@metalurgicabp.com.ar">info@metalurgicabp.com.ar </a>
+                                                <br>
+                                            </address>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--End .footer-top-->
+                            <footer class="footer">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="copyright">
+                                            <p> 
+                                            &copy; Metalurgica BP SRL 2018. Todos los derechos reservados.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="footer-social">
+                                            <ul>
+                                                <li><a href="https://www.facebook.com/Metal%C3%BArgica-BP-2238194499796199/?modal=admin_todo_tour"><i class="fa fa-facebook"></i>Facebook</a></li>
+                                                <li><a href=""><i class="fa fa-twitter"></i>Twitter</a></li>
+                                                <li><a href=""><i class="fa fa-linkedin"></i>Linkedin</a></li>
+                                                <li><a href=""><i class="fa fa-google-plus"></i>Google+</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </footer>
+                        </section>
+                    </div>
+                    <!-- .footer-section -->
+                {% endblock %}
+            </div> <!-- eof container -->
+        </div> <!-- eof content-wrapper -->
+        
+        <div id="wrapper">
+                <div class="overlay"></div>                
+                <!-- Sidebar -->
+                <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
+                  <ul class="nav sidebar-nav">
+                    <li class="sidebar-brand"> <a href="#"> Metalúrgica BP</a> </li>
+                    <li> <a href="{{ path('index') }}"><i class="fa fa-fw fa-home"></i>Inicio</a> </li>
+                    <li> <a href="{{ path('about') }}"><i class="fa fa-fw fa-industry"></i> Nosotros</a> </li>
+                    <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-product-hunt"></i> Productos <span class="caret"></span></a>
+                      <ul class="dropdown-menu" role="menu">
+                        {{ render(controller('MbpWebBundle:Default:listarCategorias')) }}
+                      </ul>
+                    </li>
+                    <li> <a href="{{ path('novedades') }}"><i class="fa fa-fw fa-file"></i>Novedades</a> </li>
+                    <li> <a href="{{ path('contacto') }}"><i class="fa fa-fw fa-envelope-square"></i>Contacto</a> </li>
+                  </ul>
+                </nav>
+                <!-- /#sidebar-wrapper --> 
+        </div> <!-- eof offcanvas-pusher -->
+</div> <!-- eof wrapper -->
 </body>
 </html>

@@ -1,0 +1,216 @@
+{% extends 'baseWeb.html.twig' %}
+
+{% block head %}
+	{{ parent() }}
+	<title>Inicio | Metalurgica BP SRL</title>	
+{% endblock %}
+
+{% block body %}
+	
+			<div class="row">
+				<section class="banner-section">
+
+					<!-- Wrapper for slides -->
+					<div class="carousel-inner" role="listbox">
+						<div class="item active">
+							<img src="{{ asset('bundles/mbpweb/images/page/PORTADA.png') }}" alt="slide1">
+							<div class="banner-caption pull-right">
+								<h1>Fabricantes de soluciones
+									térmicas para la industria
+								</h1>
+								<p></p>
+							</div>
+						</div>
+					</div>
+				</section>
+				<!-- .banner-section-->
+			</div>
+			<div class="row">
+				<section class="service-section">
+					<div class="service-items">
+						<div class="row">
+							{{ render(controller('MbpWebBundle:Default:listarProductosMain')) }}
+						</div>
+					</div>
+				</section>
+				<!-- .banner-section-->
+			</div>
+			<!-- section row --> 
+
+			<div class="row">
+				<section class="about-section">
+					<div class="col-md-12">
+						<div class="about-us-carousel">
+							<div class="about-carousel-item">
+								<div class="item">
+									<div class="about-us">
+										<h3>Calidad</h3>
+										<p>
+											Certificación en normas de calidad ISO9001. 
+										</p>
+									</div>
+								</div>
+								<div class="item">
+									<div class="about-us">
+										<h3>Experiencia</h3>
+										<p>
+											25 años de trayectoria en el mercado. 
+										</p>
+									</div>
+								</div>
+								<div class="item">
+									<div class="about-us">
+										<h3>Confiabilidad</h3>
+										<p>
+											Procesos controlados, calidad asegurada. 
+										</p>
+									</div>
+								</div>
+								<div class="item">
+									<div class="about-us">
+										<h3>Flexibilidad</h3>
+										<p>
+											Rápida respuesta ante cualquier necesidad. 
+										</p>
+									</div>
+								</div>
+								<div class="item">
+									<div class="about-us">
+										<h3>Competencia</h3>
+										<p>
+											Personal altamentemente capacitado. 
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="customNavigation clients-navigation">
+								<a class="next"><i class="fa fa-angle-right"></i></a>
+								<a class="prev"><i class="fa fa-angle-left"></i></a>
+							</div>			                        
+						</div>
+					</div>
+				</section>
+				<!-- .about-section --> 
+			</div>
+			<!-- section row --> 
+
+						
+			<!-- .products-section-->	
+			<div class="row">
+				<section class="section-welcome">
+					<div class="row">
+						<div class="col-md-6 col-xs-12 col-sm-6">
+							<div class="welcome">
+								<img src="{{ asset('bundles/mbpweb/images/page/welcome.jpg') }}" alt="">
+								<div class="welcome-details">
+									<h3>Bienvenido a Metalúrgica BP</h3>
+									<p>Trabajamos con un plantel estable de 45 personas, somos lideres en la fabricación de intercambiadores de aluminio para la industria. Contamos con procesos de fundución, mencanizado, brazing, soldadura, armado y prueba de radiadores.</p>				</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-xs-12 col-sm-6">
+							<div class="hiring-tab">
+
+								<!-- Nav tabs -->
+								<ul class="nav nav-tabs" role="tablist">
+									<li role="presentation" class="active"><a href="#Profile" aria-controls="Profile" role="tab" data-toggle="tab">Innovación</a>
+									</li>
+									<li role="presentation"><a href="#magazine" aria-controls="magazine" role="tab" data-toggle="tab">Diseño</a>
+									</li>
+									<li role="presentation"><a href="#corporate-values" aria-controls="corporate-values" role="tab" data-toggle="tab">Ingeniería</a>
+									</li>
+									<li role="presentation"><a href="#mission" aria-controls="mission" role="tab" data-toggle="tab">Novedades</a>
+									</li>
+								</ul>
+
+								<!-- Tab panes -->
+								<div class="tab-content">
+									<div role="tabpanel" class="tab-pane fade in active" id="Profile">
+										<div class="tab-content-details">
+											<h4>Innovación Permanente</h4>
+											<img src="{{ asset('bundles/mbpweb/images/page/INNOVACION.png') }}" alt="">
+											<p>Estamos a la vanguardia de los procesos de fabricación, contamos con equipamiento e instalaciones modernas.</p>
+										</div>
+									</div>
+									<div role="tabpanel" class="tab-pane fade" id="magazine">
+										<div class="tab-content-details">
+											<h4>Diseño</h4>
+											<img src="{{ asset('bundles/mbpweb/images/page/DISEÑO.png') }}" alt="">
+											<p>Trabajamos con las últimas tecnologías de software de diseño para garantizar un producto de excelencia.</p>
+										</div>										    	
+									</div>
+									<div role="tabpanel" class="tab-pane fade" id="corporate-values">
+										<div class="tab-content-details">
+											<h4>Ingeniería</h4>
+											<img src="{{ asset('bundles/mbpweb/images/page/INGENIERIA.png') }}" alt="">
+											<p>Nuestros productos son el resultado de un extenso trabajo de cálculo e ingeniería.</p>
+										</div>										    		
+									</div>
+									<div role="tabpanel" class="tab-pane fade" id="mission">
+										<div class="tab-content-details">
+											<h4>Novedades</h4>
+											<img src="{{ asset('bundles/mbpweb/images/page/guillotina.jpg') }}" alt="">
+											<p>Incorporamos nueva maquinaria para agilizar procesos de fabricación.</p>
+										</div>										    		
+									</div>
+								</div>
+							</div>
+						</div>									
+					</div>
+				</section>
+				<!-- .section-welcome -->  
+			</div>
+			<!-- section row --> 
+
+			<div class="row">
+				<section class="call-to-action">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="action-serve">
+								<h3>Una solución para cada necesidad</h3>
+								<p>Abastecemos a la industria agrícola, de maquinaria vial, pesada y energética. Ponemos énfasis en la mejora continua de nuestros servicios y productos.</p>
+							</div>
+						</div>
+						<div class="col-md-8">
+							<div id="action-testimonial">
+								<div class="item">
+									<div class="client-thumb pull-left">
+										<img src="{{ asset('bundles/mbpweb/images/page/ROBERTO.png') }}" class="pr-3" alt="">
+									</div>
+									<div class="client-comments pull-right" style="padding-left: 10px;">
+										<p>Desde 1994 aportando soluciones térmicas a la industria nacional</p>
+										<span class="name">Roberto Montaña</span>
+										<span class="designation">CEO, Metalúrgica BP SRL.</span>
+									</div>
+								</div>
+								<div class="item">
+									<div class="client-thumb pull-left">
+										<img src="{{ asset('bundles/mbpweb/images/page/JORGE.png') }}" alt="">
+									</div>
+									<div class="client-comments pull-right" style="padding-left: 10px;">
+										<p>La tecnología y la capacidad de nuestro personal definen la calidad de nuestros productos.</p>
+										<span class="name">Jorge Panzitta</span>
+										<span class="designation">Jefe de Ingeniería, Metalúrgica BP SRL.</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+				<!-- .call-to-action -->
+			</div>
+			<!-- section row -->
+
+			<div class="row">
+				<div class="our-clients-section">
+					<div class="col-md-12">
+						<div class="our-clients-carousel">
+							
+								
+							<img src="{{ asset('bundles/mbpweb/images/page/clientes/Layout Clientes.png') }}" alt="">
+							
+						</div>								
+					</div>								
+				</div>
+				<!-- .our-clients-section-->
+			</div>
+{% endblock %}

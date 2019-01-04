@@ -1,0 +1,64 @@
+{% extends 'baseWeb.html.twig' %}
+
+{% block head %}
+	{{ parent() }}
+	<title>Inicio | Metalurgica BP SRL</title>	
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="wrapper" id="wrapper">
+        <div class="offcanvas-pusher">
+            <div class="content-wrapper">
+                <div class="container">
+                    <div class="row">
+                        <div class="inner-content">
+                            <div class="company">
+                                <div class="company-description pull-left">
+                                    <h2>Metalúrgica BP SRL</h2>
+                                    <h3>Misión</h3>
+                                    <p>
+                                        Fabricacion y comercializacion de intercambiadores para toda la industria teniendo en cuenta la calidad en nuestros procesos y brindando un servicio de respuesta agil y flexible a la demanda de nuestros clientes.
+                                        
+                                        Visión
+                                        A largo plazo posicionarnos como el principal fabricante a nivel nacional de intercambiadores de aceite, aire y agua, mejorando continuamente nuestros estandares de calidad y promoviendo la internacionalizacion de nuestros productos.
+                                    </p>
+                                    <h3>Visión</h3>
+                                    <p>
+                                        A largo plazo posicionarnos como el principal fabricante a nivel nacional de intercambiadores de aceite, aire y agua, mejorando continuamente nuestros estandares de calidad y promoviendo la internacionalizacion de nuestros productos. 
+                                    </p>
+                                </div>
+                                <div class="company-thumb pull-right">
+                                    <img src="{{ asset('bundles/mbpweb/images/page/fabrica.jpg') }}" alt="">
+                                </div>
+                            </div>							
+                        </div>
+                        <!--inner content -->
+                    </div>
+                    <!--section row -->		
+                </div>
+                <!-- .container-->
+            </div>
+            <!--content-wrapper-->
+        </div>
+        <!-- offcanvas-pusher -->
+
+        <div class="offcanvas-menu offcanvas-effect visible-xs">
+            <button type="button" class="close" aria-hidden="true" data-toggle="offcanvas" id="off-canvas-close-btn">&times;</button>
+            <div>
+            <div>
+                <ul id="menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About us</a></li>
+                    <li><a href="service.html">Services</a></li>
+                    <li><a href="contact.html">Contact us</a></li>
+                </ul>
+            </div>
+            </div>
+        </div>
+        <!-- offcanvas-menu end -->			
+    </div>
+</div>
+<!-- #wrapper -->
+
+{% endblock %}
