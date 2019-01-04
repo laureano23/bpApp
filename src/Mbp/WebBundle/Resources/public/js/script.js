@@ -51,23 +51,6 @@ jQuery(function ($) {
 
 
 
-    // -------------------------------------------------------------
-    // OffCanvas
-    // -------------------------------------------------------------
-    (function () {
-        $('button.navbar-toggle').OffCanvasMenu({
-        documentWrapper: '#wrapper',
-        contentWrapper : '.content-wrapper',
-        position       : 'offcanvas-left',    // class name
-        effect         : 'slide-in-on-top',             // class name
-        closeButton    : '#off-canvas-close-btn',
-        menuWrapper    : '.offcanvas-menu',                 // class name below-pusher
-        documentPusher : '.offcanvas-pusher'
-        });
-    }());
-
-
-
     //-------------------------------------------------------
     // Owl-carousel
     //--------------------------------------------------

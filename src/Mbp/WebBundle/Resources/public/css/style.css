@@ -58,17 +58,8 @@ Author: Cloud Software Solution Ltd.
 ========================================================================== */
 
 /*Mis estilos*/
-div a{
-  color: #000000;
-}
 
-div a:hover{
-  color: #3a6bf8;
-}
 
-div a:visited{
-  color: #000000;
-}
 
 div h2{
   line-height: normal
@@ -96,6 +87,10 @@ section nav li a:hover{
 
 section article p a:hover{
   color: #3a6bf8 !important;
+}
+
+.mainTitle h3{
+  color: #ffffff !important;
 }
 
 aside li a:hover{
@@ -671,10 +666,13 @@ offcanvas-menu
 .carousel-inner .item img{
   height:650px;
 }
-@media(max-width: 767px){
+@media(max-width: 770px){
   .banner-caption{
     width: 18.857em;
     padding:1.000em;
+  }
+  .logoHide{
+    display: none
   }
 }
 
@@ -717,14 +715,15 @@ offcanvas-menu
   left:0;
   bottom:0;
   z-index: 10;
+  width: 40%;
 }
 .service-caption{
-    padding: 0px 0px 15px 30px;
+    padding: 0px 0px 5% 5px;
 }
 
 .service-left{
   float:left;
-  width:50%;
+  width:100%;
   display: inline-block;
   vertical-align: middle;
 }
