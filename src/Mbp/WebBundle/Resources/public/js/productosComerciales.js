@@ -1,7 +1,8 @@
 $(function () {	
-
+console.log("hola")
 	$("#tipo").change(function(){
 		var categoria = $("#tipo").val();
+		
 		$.ajax({
 		    // la URL para la petición
 		    url : Routing.generate("listarAplicaciones", {tipo: categoria}),

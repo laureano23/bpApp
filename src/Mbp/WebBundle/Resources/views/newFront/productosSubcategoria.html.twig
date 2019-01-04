@@ -1,0 +1,51 @@
+{% extends 'baseWeb.html.twig' %}
+  
+{% block body %} 
+  <section class="main container" id="contenedorProductos">
+    <div class="row">
+
+      <aside class="col-md-3 hidden-xs hidden-sm">
+        <h4>Productos</h4>
+        <ul class="list-group">
+          {{ render(controller('MbpWebBundle:Default:listarCategoriasAside')) }}
+        </ul>   
+      </aside>
+
+      <article class="post clearfix col-md-9">
+        
+        <h2 class="post-title">
+          <a href="#">
+            {{ categorias.descripcion }}
+          </a>
+        </h2>
+
+        <!-- SI LA CATEGORIA TIENE CATALOGO SE AGREGA ACA -->
+        <p>            
+          {% if categorias.rutaCatalogo != "" %}
+            <a class="" target="_blank" href="{{ asset('bundles/mbpweb/pdf/catalogo/') }}{{ categorias.rutaCatalogo }}">Catalogo general <span class="glyphicon glyphicon-file"></span></a>
+          {% endif %}
+        </p>
+        
+        <section class="col-md-9 productos-container">              
+          <h3>{{categorias.subCategoria[0].descripcion}}</h3>
+          <div class="row">
+          </div>
+          {% for item in categorias.subCategoria[0].articulos %}                
+
+              <div class="row">                    
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <p class="post-contenido text-justify">
+                        {{ item.descripcion }}
+                        <a class="pull-right" target="_blank" href="{{ asset('bundles/mbpweb/pdf/catalogo/') }}{{ item.rutaHojaDatos }}">Hoja de datos <span class="glyphicon glyphicon-file"></span></a>
+                      </p>                             
+                    </div>
+                  </div>                    
+              </div>                
+              
+        {% endfor %}           
+        </section>
+      </article>
+    </div>
+  </section>
+{% endblock %} 
