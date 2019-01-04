@@ -23,7 +23,7 @@ class ProductosController extends Controller
     	$categoria = $repo->find($req->query->get('cat')); 
 
 
-        return $this->render('MbpWebBundle:Default:productos.html.twig', array('categorias' => $categoria));
+        return $this->render('MbpWebBundle:newFront:products.html.twig', array('categorias' => $categoria));
     }
 
     /**
@@ -40,7 +40,7 @@ class ProductosController extends Controller
         
         $categoria = $repo->listarCatSub($cat, $subCat); 
 
-        return $this->render('MbpWebBundle:Default:productosSubcategoria.html.twig', array(
+        return $this->render('MbpWebBundle:newFront:productosSubcategoria.html.twig', array(
                 'categorias' => $categoria,
             ));
     }
