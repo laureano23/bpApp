@@ -18,6 +18,8 @@
 #EXCLUIMOS METAPP
 !/web/frontend/js/MetApp/
  
+#IGNORAMOS EL KERNEL PARA EVITAR PROBLEMAS DE SINCROCNIZACION DE CIERTAS LIBRERIAS DEL HOSTING
+/app/AppKernel.php
 
 /app/bootstrap.php.cache
 
