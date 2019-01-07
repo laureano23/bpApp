@@ -61,6 +61,9 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 			'PedidosAutorizadosView button[itemId=insertar]': {
 				click: this.InsertarItemAutorizado
 			},
+			'PedidosAutorizadosView actioncolumn[itemId=borrarAutorizacion]': {
+				click: this.BorrarAutorizacion
+			},
 			'viewport menuitem[itemId=verRemitos]': {
 				click: this.VerRemitos
 			},
@@ -81,6 +84,33 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 			},
 			
 		});
+	},
+
+	BorrarAutorizacion: function(grid, colIndex, rowIndex){
+		var store=grid.getStore();
+		var selection = store.getAt(rowIndex);		
+		Ext.Msg.show({
+			title: 'Atención',
+			msg: 'Desea borrar esta autorización?',
+			buttons: Ext.Msg.YESNO,
+			icon: Ext.Msg.INFO,
+			fn: function(btn){
+				if(btn=='yes'){
+				Ext.Ajax.request({
+					url: Routing.generate('mbp_produccion_borrarAutorizacionPedido'),
+					params: {
+						idDetallePedido: selection.data.idDetalle
+					},
+					success: function(resp){
+						let jsonResp=Ext.JSON.decode(resp.responseText);
+						if(jsonResp.success){
+							store.remove(selection);
+						}
+					}
+				})
+				}
+			}
+		})
 	},
 
 	AnularRemito: function(grid, colIndex, rowIndex){

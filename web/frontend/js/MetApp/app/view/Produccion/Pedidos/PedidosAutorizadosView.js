@@ -64,8 +64,16 @@ Ext.define('MetApp.view.Produccion.Pedidos.PedidosAutorizadosView', {
 					multiSelect: true,
 					store: 'Produccion.PedidoClientes.AutorizarEntregaStore',
 					columns: [
-						//{xtype: 'rownumberer', width: 50, sortable: false},
 						{header: 'id Pedido', dataIndex: 'idPedido', width: 50, hidden: true},
+						{ 
+							header: 'Borrar',
+							itemId: 'borrarAutorizacion',
+							xtype: 'actioncolumn',
+							items: [
+								{ iconCls: 'delete' }										
+							],
+							flex: 1
+						},
 						{header: 'id Detalle', dataIndex: 'idDetalle', width: 50, hidden: true},					
 						{header: 'Codigo', dataIndex: 'codigo', width: 110},
 						{header: 'Descripcion', dataIndex: 'descripcion', width: 250},

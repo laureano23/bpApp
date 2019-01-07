@@ -69,6 +69,11 @@ Ext.define('MetApp.view.Produccion.Pedidos.AutorizarEntregaView', {
 							width: 'auto',
 						},
 						{
+							header: 'OC',
+							dataIndex: 'oc',
+							width: 80
+						},
+						{
 							header: 'Entregado',
 							dataIndex: 'entregado',
 							width: 'auto',

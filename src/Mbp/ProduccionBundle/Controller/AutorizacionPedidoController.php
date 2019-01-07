@@ -57,5 +57,36 @@ class AutorizacionPedidoController extends Controller
 					json_encode(array('success' => false, 'msg' => $e->getMessage()))
 				);
 		}		
+	}	
+	
+	/** 
+     * @Route("/borrarAutorizacionPedido", name="mbp_produccion_borrarAutorizacionPedido", options={"expose"=true})
+     */
+    public function borrarAutorizacionPedido()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+		$response = new Response;
+		
+		try{
+			$idDetallePedido = $request->request->get('idDetallePedido');			
+			
+			$repoPedidos = $em->getRepository('MbpProduccionBundle:PedidoClientesDetalle');
+
+			$pedido=$repoPedidos->find($idDetallePedido);
+			$pedido->setCantAutorizada(0);
+			$pedido->setObservacionesAutorizacion("EL PEDIDO FUE ANULADO POR ".$this->get('security.token_storage')->getToken()->getUser()->getUsername());			
+			$em->persist($pedido);
+			$em->flush();
+				        
+	        return $response->setContent(
+				json_encode(array('success' => true))
+			);
+		}catch(\Exception $e){
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR); 
+			return $response->setContent(
+					json_encode(array('success' => false, 'msg' => $e->getMessage()))
+				);
+		}		
     }	
 }

@@ -36,8 +36,6 @@ Ext.define('MetApp.controller.Produccion.PedidoClientes.AutorizarEntregasControl
 		
 		store.clearFilter(true);
 		store.load();
-
-		
 	}
 	
 	
