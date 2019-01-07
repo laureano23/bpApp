@@ -70,15 +70,15 @@
                             <header class="header-wrapper">
                                 <div class="header-top">
                                     <div class="row">
-                                        <div class="col-md-4 col-xs-12 col-sm-5">
+                                        <div class="col-md-4 col-xs-12 col-sm-5" style="padding-right: 0;">
                                             <div class="logo">
-                                                <a title="metalurgica BP" href="{{ path('index') }}">
-                                                    <img src="{{ asset('bundles/mbpweb/images/page/logoNuevo.png') }}" alt="metalurgica BP">
+                                                <a title="metalurgica BP" href="{{ path('index') }}" >
+                                                    <img src="{{ asset('bundles/mbpweb/images/page/logoNuevo.png') }}" alt="metalurgica BP" class="pull-left img-responsive">
                                                 </a>                                                
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-sm-3">                                        
-                                            <img src="{{ asset('bundles/mbpweb/images/page/NORMAS.png') }}" alt="metalurgica BP" class="logoHide">                                        
+                                            <img src="{{ asset('bundles/mbpweb/images/page/NORMAS.png') }}" alt="metalurgica BP">                
                                         </div>
                                         <div class="col-md-2 col-sm-3">
                                             <div class="phone logoHide">
@@ -122,6 +122,12 @@
                                                     <li><a href="{{ path('novedades') }}">Novedades</a></li>
                                                     <li><a href="{{ path('contacto') }}">Contacto</a></li>
                                                     
+                                                </ul>
+                                                <ul class="nav navbar-nav navbar-right">
+                                                    <li><a href="{{ path('login') }}"> 
+                                                        <i class="fa fa-sign-in"></i>
+                                                        Intranet
+                                                    </a></li>
                                                 </ul>
                                                 <ul class="nav navbar-nav navbar-right" id="navBarMobile">
                                                     <li>
@@ -242,10 +248,10 @@
                                     <div class="col-md-6">
                                         <div class="footer-social">
                                             <ul>
-                                                <li><a href="https://www.facebook.com/Metal%C3%BArgica-BP-2238194499796199/?modal=admin_todo_tour"><i class="fa fa-facebook"></i>Facebook</a></li>
-                                                <li><a href=""><i class="fa fa-twitter"></i>Twitter</a></li>
-                                                <li><a href=""><i class="fa fa-linkedin"></i>Linkedin</a></li>
-                                                <li><a href=""><i class="fa fa-google-plus"></i>Google+</a></li>
+                                                <li><a href="https://www.facebook.com/Metal%C3%BArgica-BP-2238194499796199/?modal=admin_todo_tour" target="__blank"><i class="fa fa-facebook"></i>Facebook</a></li>
+                                                <li><a href="https://www.instagram.com/metalurgicabp/" target="__blank"><i class="fa fa-instagram"></i>Instagram</a></li>
+                                                <li><a href="https://www.linkedin.com/company/metalurgicabp/" target="__blank"><i class="fa fa-linkedin"></i>Linkedin</a></li>
+                                                <li><a href="https://twitter.com/metalurgicabp" target="__blank"><i class="fa fa-twitter"></i>Twitter</a></li>
                                             </ul>
                                         </div>
                                     </div>
