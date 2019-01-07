@@ -88,7 +88,8 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 
 	BorrarAutorizacion: function(grid, colIndex, rowIndex){
 		var store=grid.getStore();
-		var selection = store.getAt(rowIndex);		
+		var selection = store.getAt(rowIndex);
+		
 		Ext.Msg.show({
 			title: 'Atención',
 			msg: 'Desea borrar esta autorización?',
@@ -102,7 +103,7 @@ Ext.define('MetApp.controller.Articulos.RemitosController',{
 						idDetallePedido: selection.data.idDetalle
 					},
 					success: function(resp){
-						let jsonResp=Ext.JSON.decode(resp.responseText);
+						var jsonResp=Ext.JSON.decode(resp.responseText);
 						if(jsonResp.success){
 							store.remove(selection);
 						}
