@@ -220,6 +220,13 @@ class Cliente
     private $observaciones;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="inactivo", type="boolean", nullable=false)
+     */
+    private $inactivo=0;
+
+    /**
      * Set rsocial
      *
      * @param string $rsocial
@@ -888,5 +895,29 @@ class Cliente
     public function getObservaciones()
     {
         return $this->observaciones;
+    }
+
+    /**
+     * Set inactivo
+     *
+     * @param boolean $inactivo
+     *
+     * @return Cliente
+     */
+    public function setInactivo($inactivo)
+    {
+        $this->inactivo = $inactivo;
+
+        return $this;
+    }
+
+    /**
+     * Get inactivo
+     *
+     * @return boolean
+     */
+    public function getInactivo()
+    {
+        return $this->inactivo;
     }
 }

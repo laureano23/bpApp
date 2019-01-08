@@ -77,7 +77,8 @@ class ClienteRepository extends  EntityRepository
 			->leftjoin('c.localidad', 'l')
 			->leftjoin('c.iva', 'i')
 			->leftjoin('c.transporteId', 't')
-			->leftjoin('c.vendedor', 'v')			
+			->leftjoin('c.vendedor', 'v')	
+			->where('c.inactivo=0')		
 		    ->getQuery()
 		    ->getArrayResult();
 		echo json_encode($res);

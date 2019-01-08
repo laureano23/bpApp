@@ -220,6 +220,13 @@ class Cliente
     private $observaciones;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="inactivo", type="boolean", nullable=false)
+     */
+    private $inactivo=0;
+
+    /**
      * Set rsocial
      *
      * @param string $rsocial
@@ -864,5 +871,29 @@ class Cliente
     public function getNoAplicaPercepcion()
     {
         return $this->noAplicaPercepcion;
+    }
+
+    /**
+     * Set observaciones
+     *
+     * @param string $observaciones
+     *
+     * @return Cliente
+     */
+    public function setObservaciones($observaciones)
+    {
+        $this->observaciones = $observaciones;
+
+        return $this;
+    }
+
+    /**
+     * Get observaciones
+     *
+     * @return string
+     */
+    public function getObservaciones()
+    {
+        return $this->observaciones;
     }
 }

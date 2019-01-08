@@ -132,7 +132,8 @@ class DefaultController extends Controller
 		$id = $request->request->get('id');
 		$cliente = $repo->find($id);
 		
-		$em->remove($cliente);
+		$cliente->setInactivo(true);
+		$em->persist($cliente);
 		$em->flush();
 		
 		echo json_encode(array(

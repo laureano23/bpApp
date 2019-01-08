@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Detalle_Pago_Proveedor" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="890e90cc-cf89-4202-bb29-76354a7dbc5d">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.0000000000000002"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="294"/>
+	<property name="ireport.y" value="64"/>
 	<parameter name="ordenPagoId" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -56,12 +56,11 @@ FROM
      `Pago` Pago INNER JOIN `OrdenDePago_detallesPagos` OrdenDePago_detallesPagos ON Pago.`id` = OrdenDePago_detallesPagos.`pago_id`
      INNER JOIN `OrdenPago` OrdenPago ON OrdenDePago_detallesPagos.`ordenPago_id` = OrdenPago.`id`
      INNER JOIN `Proveedor` Proveedor ON OrdenPago.`proveedorId` = Proveedor.`id`
-     LEFT OUTER JOIN `localidades` localidades ON Proveedor.`localidad` = localidades.`id`
+     LEFT JOIN `localidades` localidades ON Proveedor.`localidad` = localidades.`id`
      LEFT JOIN `provincia` provincia ON localidades.`provincia_id` = provincia.`id`
      LEFT JOIN `FormasPagos` FormasPagos ON Pago.`idFormaPago` = FormasPagos.`id`
 WHERE
      OrdenPago.`fechaEmision` BETWEEN $P{DESDE} AND $P{HASTA}
-GROUP BY OrdenPago.`id`
 ORDER BY OrdenPago.`id`]]>
 	</queryString>
 	<field name="Pago_id" class="java.lang.Integer"/>
@@ -246,9 +245,9 @@ Tel/Fax: 4484-2416]]></text>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="500">
+			<band height="250">
 				<textField evaluationTime="Group" evaluationGroup="ORDEN_PAGO_ID" pattern="#,##0.00">
-					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="427" y="467" width="128" height="22" uuid="59920641-4cc2-446b-9f23-08d353ffb98f"/>
+					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="427" y="217" width="128" height="22" uuid="59920641-4cc2-446b-9f23-08d353ffb98f"/>
 					<box leftPadding="2" rightPadding="0"/>
 					<textElement verticalAlignment="Middle">
 						<font size="14" isBold="true"/>
@@ -256,31 +255,31 @@ Tel/Fax: 4484-2416]]></text>
 					<textFieldExpression><![CDATA[$V{totalImporte}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="334" y="467" width="93" height="22" uuid="879ddaa8-88d0-41fa-8f09-23ca498c691f"/>
+					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="334" y="217" width="93" height="22" uuid="879ddaa8-88d0-41fa-8f09-23ca498c691f"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="14" isBold="true" isItalic="true" isUnderline="false"/>
 					</textElement>
 					<text><![CDATA[Total:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="0" y="435" width="57" height="25" uuid="7947b8f0-1ea5-49f5-8297-290c50dcfe9b"/>
+					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="0" y="185" width="57" height="25" uuid="7947b8f0-1ea5-49f5-8297-290c50dcfe9b"/>
 					<textElement verticalAlignment="Middle">
 						<font size="10" isBold="true" isUnderline="false"/>
 					</textElement>
 					<text><![CDATA[Firma:                            ]]></text>
 				</staticText>
 				<staticText>
-					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="0" y="475" width="57" height="25" uuid="b7ceac8c-9065-4e6e-aa61-ba2480f9e9a7"/>
+					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="0" y="225" width="57" height="25" uuid="b7ceac8c-9065-4e6e-aa61-ba2480f9e9a7"/>
 					<textElement verticalAlignment="Middle">
 						<font size="10" isBold="true" isUnderline="false"/>
 					</textElement>
 					<text><![CDATA[Aclaración: ]]></text>
 				</staticText>
 				<line>
-					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="71" y="460" width="146" height="1" uuid="cfceb2b1-2d76-40f3-9e05-c17ef5c2c3a6"/>
+					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="71" y="210" width="146" height="1" uuid="cfceb2b1-2d76-40f3-9e05-c17ef5c2c3a6"/>
 				</line>
 				<line>
-					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="71" y="494" width="146" height="1" uuid="30a5e9c9-bef0-48b3-a1b0-1d8684668a40"/>
+					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="71" y="244" width="146" height="1" uuid="30a5e9c9-bef0-48b3-a1b0-1d8684668a40"/>
 				</line>
 			</band>
 		</groupFooter>
