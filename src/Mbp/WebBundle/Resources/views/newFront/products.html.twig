@@ -13,14 +13,7 @@
             <div class="content-wrapper">
                 <section class="main container" id="contenedorProductos">
                     <div class="row">
-                        
-                        <aside class="col-md-3 hidden-xs hidden-sm">
-                            <h4>{{"Productos"|trans}}</h4>
-                            <ul class="list-group">
-                                {{ render(controller('MbpWebBundle:Default:listarCategoriasAside')) }}
-                            </ul>   
-                        </aside>
-                
+
                         <article class="post clearfix col-md-9 product-article">        
                             <h2 class="post-title">
                                 <a href="#">
@@ -35,6 +28,15 @@
                             {% endif %}
                             </p> 
                         </article>
+                        
+                        <aside class="col-md-3">
+                            <h4>{{"Productos"|trans}}</h4>
+                            <ul class="list-group">
+                                {{ render(controller('MbpWebBundle:Default:listarCategoriasAside')) }}
+                            </ul>   
+                        </aside>
+                
+                        
                     </div>
                 </section>
           </div>

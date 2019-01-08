@@ -132,7 +132,7 @@ console.log("hola")
 	
 
     function completarTabla(i, item, pathImg){
-    	$("#tablaProductos").append("<tr><th>"+item.codigo+"</th><th>"+item.descripcion+"</th><th>"+item.oem+"</th><th>"+item.marca+"</th><th><a href='#' value="+pathImg+item.imagen+"><span class='glyphicon glyphicon-camera'></span></a></th></tr>");
+    	$("#tablaProductos").append("<tr><th class='col-md-2 col-xs-2'>"+item.codigo+"</th><th class='col-md-5 hidden-xs'>"+item.descripcion+"</th><th class='col-md-2 hidden-xs'>"+item.oem+"</th><th class='col-md-2 col-xs-2'>"+item.marca+"</th><th class='col-md-1 col-xs-1'><a href='#' value="+pathImg+item.imagen+"><span class='glyphicon glyphicon-camera'></span></a></th></tr>");
     }
 
 
