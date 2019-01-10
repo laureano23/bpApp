@@ -401,8 +401,8 @@ Ext.define('MetApp.view.Proveedores.FormProveedores' ,{
 													xtype: 'textareafield',
 													anchor: '100%',											
 													grow: true,
-													name: 'notas',
-													itemId: 'notas',
+													name: 'observaciones',
+													itemId: 'observaciones',
 													readOnly: true,
 													disabledCls: 'myDisabledClass'
 												}									

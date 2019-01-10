@@ -66,6 +66,7 @@ class DefaultController extends Controller
 							p.telefono2, p.contacto2, p.telefono3, p.contacto3, p.condCompra, p.vencimientoFc, 
 							p.noAplicaRetencion, p.cuentaCerrada, imputacion.id AS tipoGasto,
 							p.notasCC,
+							p.observaciones,
 							prov.id AS provincia,
 							dep.id AS departamento,
 							loc.id AS localidad
@@ -160,6 +161,7 @@ class DefaultController extends Controller
 			$proveedor->setTelefono3($decData->telefono3);
 			$proveedor->setContacto3($decData->contacto3);
 			$proveedor->setCondCompra($decData->condCompra);
+			$proveedor->setObservaciones($decData->observaciones);
 			$proveedor->setVencimientoFc($decData->vencimientoFc);
 			$proveedor->setNoAplicaRetencion($decData->noAplicaRetencion == 'on' ? true : false);
 			$proveedor->setCuentaCerrada($decData->cuentaCerrada == 'on' ? true : false);
