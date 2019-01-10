@@ -41,6 +41,7 @@ Ext.define('MetApp.view.Produccion.OrdenesTrabajo.SeguimientoOTView', {
 											fieldLabel: 'OT numero:',	
 											allowBlank: false,
 											itemId: 'otNum',
+											name: 'ot',
 											readOnly: false						
 										},
 										{

@@ -52,32 +52,11 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.SeguimientoOTController'
 		var win = btn.up('window');
 		var form = win.down('form');
 		if(!form.isValid()) return;
-		var ot = win.queryById('otNum').getValue();
 		
-		
-		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-		myMask.show();
-
-
-		Ext.Ajax.request({
+		form.getForm().submit({
 			url: Routing.generate('mbp_produccion_generarOt'),
-			
-			params: {
-				ot: ot
-			},
-			
-			success: function(resp){
-				var jResp = Ext.JSON.decode(resp.responseText);
-				if(jResp.success == true){
-					var ruta = Routing.generate('mbp_produccion_verOt');
-					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');		
-				}
-				myMask.hide();
-			},
-			
-			failure: function(resp){
-				myMask.hide();
-			}
+			standardSubmit: true,
+			target: '_blank',
 		})
 	},
 	
