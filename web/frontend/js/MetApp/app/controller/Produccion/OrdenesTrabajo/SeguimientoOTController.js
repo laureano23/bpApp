@@ -138,7 +138,6 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.SeguimientoOTController'
 		
 		var seguimientoView = me.getSeguimientoView();
 		
-		console.log(data);
 		
 		seguimientoView.queryById('otNum').setValue(data.otNum);
 		seguimientoView.queryById('codigo').setValue(data.codigo);
@@ -152,29 +151,14 @@ Ext.define('MetApp.controller.Produccion.OrdenesTrabajo.SeguimientoOTController'
 	
 	ImprimirOT: function(grid, colIndex, rowIndex){
 		var selection = grid.getStore().getAt(rowIndex);
-		var win = grid.up('window');
-		var myMask = new Ext.LoadMask(win, {msg:"Cargando..."});
-		myMask.show();
+		var form=Ext.create('Ext.form.Panel');
 
-
-		Ext.Ajax.request({
+		form.getForm().submit({
 			url: Routing.generate('mbp_produccion_generarOt'),
-			
+			standardSubmit: true,
+			target: '_blank',
 			params: {
 				ot: selection.data.otNum
-			},
-			
-			success: function(resp){
-				var jResp = Ext.JSON.decode(resp.responseText);
-				if(jResp.success == true){
-					var ruta = Routing.generate('mbp_produccion_verOt');
-					window.open(ruta, 'location=yes,height=800,width=1200,scrollbars=yes,status=yes');		
-				}
-				myMask.hide();
-			},
-			
-			failure: function(resp){
-				myMask.hide();
 			}
 		})
 	}
