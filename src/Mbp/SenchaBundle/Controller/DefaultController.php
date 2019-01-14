@@ -9,7 +9,8 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-    	$logged = $this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY');
+		$authorizationChecker = $this->get('security.authorization_checker');
+    	$logged = $authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY');
     	$env = $this->container->get('kernel')->getEnvironment();
     	
 		if($env == 'dev' && $logged){
