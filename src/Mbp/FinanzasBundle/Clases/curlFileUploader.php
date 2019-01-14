@@ -27,15 +27,16 @@ class curlFileUploader
    		curl_setopt($ch, CURLOPT_URL, $this->uploadURL );
    		curl_setopt($ch, CURLOPT_POST, 1 );
    		curl_setopt($ch, CURLOPT_POSTFIELDS, $this->postParams);
-   		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 4); 
+		curl_setopt($ch, CURLOPT_TIMEOUT, 4); //timeout in seconds
    		$postResult = curl_exec($ch);
 
 
    		if (curl_errno($ch)) 
 		{
-       			print curl_error($ch);
-	       		print "<br>Unable to upload file.";
-       			exit();
+			throw new \Exception("El sitio Web de ARBA no responde ".curl_error($ch), 1);				   
+			exit();
    		}
 		else
 		{
