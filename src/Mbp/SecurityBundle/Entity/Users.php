@@ -69,7 +69,13 @@ class Users implements AdvancedUserInterface, \Serializable
 	 * @ORM\ManyToOne(targetEntity="Mbp\ProduccionBundle\Entity\Sectores")
 	 * @ORM\JoinColumn(name="sectorId", referencedColumnName="id")
 	 */
-	private $sectorId;
+    private $sectorId;
+    
+    /**
+     * @ORM\Column(type="string", unique=true)
+     */
+    private $apiKey;
+
 
 
     public function __construct()

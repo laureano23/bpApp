@@ -36,17 +36,8 @@ class ArticulosRepository extends EntityRepository
 		$res = $art->getArrayResult();
 		
 		$total = count($res);
-				
-		if(!isset($res)){
-			echo json_encode(array(
-				'msg'=>'No hay resultados'
-			));
-		}else{
-			echo json_encode(array(
-				'data' => $res,
-				'total_art' => $total
-			));
-		}
+		
+		return $res;
 	}
 	
 	/*

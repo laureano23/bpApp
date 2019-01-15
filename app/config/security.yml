@@ -2,8 +2,11 @@
 # app/config/security.yml
 security:
     access_denied_url: /foo/error403
-    firewalls:        
-        secured_area:
+    firewalls:   
+        secured_area:  
+            guard:
+                authenticators:
+                    - app.token_authenticator          
             access_denied_handler: app.security.access_denied_handler
             pattern:    ^/
             anonymous: ~
@@ -46,9 +49,11 @@ security:
     providers: 
         chain_provider:
             chain:
-                providers: [administrators, in_memory]
+                providers: [api, administrators, in_memory]
         administrators:
-            entity: { class: MbpSecurityBundle:Users, property: username }        
+            entity: { class: MbpSecurityBundle:Users, property: username }
+        api:
+            entity: { class: MbpSecurityBundle:Users, property: apiKey }      
         in_memory:
             memory:
                 users:

@@ -83,7 +83,6 @@ class ArticulosController extends Controller
 			$em->persist($art);
 
 		}
-		//print_r($res);
 		$em->flush();
 		$em->clear();
 		return new Response();
@@ -92,17 +91,18 @@ class ArticulosController extends Controller
     public function articuloslistAction()
     {    	
     	$em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+		$request = $this->getRequest();
 		
 		try{
 			$rep = $em->getRepository('MbpArticulosBundle:Articulos');
 			$res = $rep->listarArticulos();	
+			$response=new Response;
+			return $response->setContent(\json_encode(
+				$res
+			));
 		}catch(\Exception $e){
 			throw $e;
 		}	
-		
-		
-		return new Response();
     }
 	
 	public function articuloConCostoAction()

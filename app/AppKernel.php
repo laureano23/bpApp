@@ -32,6 +32,7 @@ class AppKernel extends Kernel
             new Mbp\TestBundle\MbpTestBundle(),
             new Lopi\Bundle\PusherBundle\LopiPusherBundle(),
             new Mbp\UtilitariosBundle\MbpUtilitariosBundle(),
+            new Nelmio\CorsBundle\NelmioCorsBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test', 'prod'))) {

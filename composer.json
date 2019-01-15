@@ -8,7 +8,7 @@
     },
     "require": {
         "php": ">=5.3.3",
-        "symfony/symfony": "2.7.*",
+        "symfony/symfony": "2.8.*",
         "doctrine/orm": "~2.2,>=2.2.3",
         "doctrine/doctrine-bundle": "~1.2",
         "twig/extensions": "~1.0",
@@ -19,7 +19,6 @@
         "sensio/framework-extra-bundle": "~3.0",
         "incenteev/composer-parameter-handler": "~2.0",
 		"friendsofsymfony/jsrouting-bundle": "1.5.3",
-		"symfony/serializer": "2.5.3",
 		"jms/serializer-bundle": "0.9",
 		"mapado/mysql-doctrine-functions": "1.*",
 		"liuggio/excelbundle": "~2.0",
@@ -28,7 +27,7 @@
         "stof/doctrine-extensions-bundle": "^1.2",
         "laupifrpar/pusher-bundle": "^1.2",
         "beberlei/DoctrineExtensions": "^1.0",
-        "whatsapp/chat-api": "^2.5"
+        "nelmio/cors-bundle": "^1.5"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

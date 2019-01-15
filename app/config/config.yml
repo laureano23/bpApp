@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: doctrine_extensions.yml }
+    - { resource: nelmio_cors.yml }
     - { resource: "@MbpArticulosBundle/Resources/config/services.yml" }
     - { resource: "@MbpFinanzasBundle/Resources/config/services.yml" }
     - { resource: "@MbpProduccionBundle/Resources/config/services.yml" }
@@ -183,3 +184,5 @@ services:
    DBF.class:
      class: Mbp\SenchaBundle\Librerias\DBFclass 
      arguments: ['%directorio_dbf%']
+   app.token_authenticator:
+     class: Mbp\SecurityBundle\Controller\TokenAuthenticator
