@@ -1,3 +1,8 @@
 services:
     app.security.access_denied_handler:
-        class: Mbp\SecurityBundle\Controller\AccessDeniedHandler
+        class: Mbp\SecurityBundle\Controller\AccessDeniedHandler    
+    apikey_authenticator:
+        class:  Mbp\SecurityBundle\Controller\ApiKeyAuthenticator
+        public: false
+    api_key_user_provider:
+        class: Mbp\SecurityBundle\Controller\ApiKeyUserProvider

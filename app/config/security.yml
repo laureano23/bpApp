@@ -3,13 +3,15 @@
 security:
     access_denied_url: /foo/error403
     firewalls:   
-        secured_area:  
-            guard:
-                authenticators:
-                    - app.token_authenticator          
+        secured_area:          
             access_denied_handler: app.security.access_denied_handler
             pattern:    ^/
             anonymous: ~
+            stateless: true
+            simple_preauth:
+                authenticator: apikey_authenticator
+            provider: api_key_user_provider
+
             form_login:
                 login_path:  login
                 check_path:  login_check
@@ -47,6 +49,8 @@ security:
         #ROLE_CLIENTE: ROLE_USER
       
     providers: 
+        api_key_user_provider:
+            id: api_key_user_provider
         chain_provider:
             chain:
                 providers: [api, administrators, in_memory]
