@@ -49,19 +49,22 @@ security:
         #ROLE_CLIENTE: ROLE_USER
       
     providers: 
-        api_key_user_provider:
-            id: api_key_user_provider
         chain_provider:
             chain:
-                providers: [api, administrators, in_memory]
+                providers: [in_memory, administrators, api_key_user_provider]
         administrators:
             entity: { class: MbpSecurityBundle:Users, property: username }
-        api:
-            entity: { class: MbpSecurityBundle:Users, property: apiKey }      
         in_memory:
             memory:
                 users:
-                    admin: { password: d033e22ae348aeb5660fc2140aec35850c4da997, roles: 'ROLE_ADMIN' }
+                    admin: 
+                        password: $2a$12$VlhzBdCbFKnj7Q5qvwxBh.IbC1AfpGMtFh1Iui9h626Fint6ud1Qy
+                        roles: 'ROLE_ADMIN'
+                    laureano:
+                        password: lalo23490
+                        roles: 'ROLE_ADMIN'
+        api_key_user_provider:
+            id: api_key_user_provider
 
 
     encoders:
