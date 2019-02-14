@@ -4,20 +4,6 @@
 /bp
 /.vscode
 
-#EXCLUIMOS FRONTEND
-!/web/frontend/
-
-
-#IGNORAMOS LA CARPETA COMPLETA
-/web/frontend/*
-#EXCLUIMOS FRONTEND
-!/web/frontend/js/
-
-#IGNORAMOS JS
-/web/frontend/js/*
-#EXCLUIMOS METAPP
-!/web/frontend/js/MetApp/
- 
 #IGNORAMOS EL KERNEL PARA EVITAR PROBLEMAS DE SINCROCNIZACION DE CIERTAS LIBRERIAS DEL HOSTING
 /app/AppKernel.php
 
