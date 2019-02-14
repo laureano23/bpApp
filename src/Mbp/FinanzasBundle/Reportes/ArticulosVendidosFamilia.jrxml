@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ArticulosVendidosFamilia" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e47e2ed9-ffcd-4b77-a461-4bda05508bc6">
+	<property name="ireport.zoom" value="1.1000000000000003"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="desde" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="hasta" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="rutaLogo" class="java.lang.String"/>
+	<parameter name="familiaId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="subFamiliaId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     FacturaDetalle.`id` AS FacturaDetalle_id,
+     FacturaDetalle.`descripcion` AS FacturaDetalle_descripcion,
+     FacturaDetalle.`cantidad` AS FacturaDetalle_cantidad,
+     FacturaDetalle.`precio` AS FacturaDetalle_precio,
+     FacturaDetalle.`articuloId` AS FacturaDetalle_articuloId,
+     articulos.`codigo` AS articulos_codigo,
+     articulos.`descripcion` AS articulos_descripcion,
+     articulos.`idArticulos` AS articulos_idArticulos,
+     articulos.`familiaId` AS articulos_familiaId,
+     articulos.`subFamiliaId` AS articulos_subFamiliaId,
+     Familia.`id` AS Familia_id,
+     Familia.`familia` AS Familia_familia,
+     Familia.`isActive` AS Familia_isActive,
+     SubFamilia.`id` AS SubFamilia_id,
+     SubFamilia.`subFamilia` AS SubFamilia_subFamilia,
+     SubFamilia.`isActive` AS SubFamilia_isActive,
+     Facturas.`id` AS Facturas_id,
+     Facturas.`fecha` AS Facturas_fecha,
+     Facturas.`TipoCambio` AS TipoCambio,
+     Facturas.`Moneda` AS Moneda,
+     CASE WHEN  Facturas.`Moneda` = 1
+	THEN Facturas.`TipoCambio`*FacturaDetalle.`cantidad`*FacturaDetalle.`precio`
+	ELSE FacturaDetalle.`cantidad`*FacturaDetalle.`precio` END AS neto,
+     factura_detallesFacturas.`factura_id` AS factura_detallesFacturas_factura_id,
+     factura_detallesFacturas.`facturadetalle_id` AS factura_detallesFacturas_facturadetalle_id
+FROM
+     `articulos` articulos INNER JOIN `FacturaDetalle` FacturaDetalle ON articulos.`idArticulos` = FacturaDetalle.`articuloId`
+     LEFT JOIN `Familia` Familia ON articulos.`familiaId` = Familia.`id`
+     LEFT JOIN `SubFamilia` SubFamilia ON articulos.`subFamiliaId` = SubFamilia.`id`
+     LEFT JOIN `factura_detallesFacturas` factura_detallesFacturas ON FacturaDetalle.`id` = factura_detallesFacturas.`facturadetalle_id`
+     LEFT JOIN `Facturas` Facturas ON factura_detallesFacturas.`factura_id` = Facturas.`id`
+WHERE Facturas.`fecha` BETWEEN $P{desde} AND $P{hasta}
+AND Familia.`id` = $P{familiaId}
+AND SubFamilia.`id` = $P{subFamiliaId}
+HAVING neto > 0
+ORDER BY Familia.`id`, SubFamilia.`id`
+]]>
+	</queryString>
+	<field name="FacturaDetalle_id" class="java.lang.Integer"/>
+	<field name="FacturaDetalle_descripcion" class="java.lang.String"/>
+	<field name="FacturaDetalle_cantidad" class="java.math.BigDecimal"/>
+	<field name="FacturaDetalle_precio" class="java.math.BigDecimal"/>
+	<field name="FacturaDetalle_articuloId" class="java.lang.Integer"/>
+	<field name="articulos_codigo" class="java.lang.String"/>
+	<field name="articulos_descripcion" class="java.lang.String"/>
+	<field name="articulos_idArticulos" class="java.lang.Integer"/>
+	<field name="articulos_familiaId" class="java.lang.Integer"/>
+	<field name="articulos_subFamiliaId" class="java.lang.Integer"/>
+	<field name="Familia_id" class="java.lang.Integer"/>
+	<field name="Familia_familia" class="java.lang.String"/>
+	<field name="Familia_isActive" class="java.lang.Boolean"/>
+	<field name="SubFamilia_id" class="java.lang.Integer"/>
+	<field name="SubFamilia_subFamilia" class="java.lang.String"/>
+	<field name="SubFamilia_isActive" class="java.lang.Boolean"/>
+	<field name="Facturas_id" class="java.lang.Integer"/>
+	<field name="Facturas_fecha" class="java.sql.Date"/>
+	<field name="TipoCambio" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Moneda" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="neto" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="factura_detallesFacturas_factura_id" class="java.lang.Integer"/>
+	<field name="factura_detallesFacturas_facturadetalle_id" class="java.lang.Integer"/>
+	<variable name="TOTAL_SUB" class="java.math.BigDecimal" resetType="Group" resetGroup="subfamilia" calculation="Sum">
+		<variableExpression><![CDATA[$F{neto}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_FAMILIA" class="java.math.BigDecimal" resetType="Group" resetGroup="FAMILIA" calculation="Sum">
+		<variableExpression><![CDATA[$F{neto}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_GRAL" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{neto}]]></variableExpression>
+	</variable>
+	<group name="FAMILIA">
+		<groupExpression><![CDATA[$F{Familia_id}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<staticText>
+					<reportElement x="0" y="0" width="83" height="20" uuid="05e36cdb-073f-422b-928f-fcfd95e411e0"/>
+					<box leftPadding="2">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Familia:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="83" y="0" width="719" height="20" uuid="40ef812a-c0c6-454e-9c19-a303a5ce84fe"/>
+					<box leftPadding="2">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Familia_familia} == null?"SIN FAMILIA":$F{Familia_familia}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="20">
+				<textField>
+					<reportElement x="0" y="0" width="672" height="20" uuid="781d8386-b697-48d6-ab48-9853d8616d50"/>
+					<box rightPadding="3">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Total "+($F{Familia_familia}==null?"SIN FAMILIA":$F{Familia_familia})+":"]]></textFieldExpression>
+				</textField>
+				<textField pattern="¤ #,##0.00">
+					<reportElement x="672" y="0" width="130" height="20" uuid="09b3ef5e-b60e-4748-9d87-db87652a7294"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{TOTAL_FAMILIA}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="subfamilia">
+		<groupExpression><![CDATA[$F{SubFamilia_id}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<staticText>
+					<reportElement x="0" y="0" width="83" height="20" uuid="83692405-4b4d-4de1-97da-a422fd57f90e"/>
+					<box leftPadding="2">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Sub Familia]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="83" y="0" width="719" height="20" uuid="38002556-d535-43ef-bb82-3f45a70d7867"/>
+					<box leftPadding="2">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{SubFamilia_subFamilia}==null?"SIN SUB FAMILIA":$F{SubFamilia_subFamilia}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="20">
+				<textField>
+					<reportElement x="0" y="0" width="672" height="20" uuid="3efb3fdc-4db2-4a51-9354-8dd9f35c414f"/>
+					<box rightPadding="3">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Total "+($F{SubFamilia_subFamilia}==null?"SIN SUB FAMILIA":$F{SubFamilia_subFamilia})+":"]]></textFieldExpression>
+				</textField>
+				<textField pattern="¤ #,##0.00">
+					<reportElement x="672" y="0" width="130" height="20" uuid="daeba69f-00aa-46e5-a392-5d12bd4d1b9c"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{TOTAL_SUB}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement x="133" y="0" width="669" height="50" uuid="e7ea8b78-64af-46d6-8335-b8af5a11a36d"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="22" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Articulos Vendidos por Familia]]></text>
+			</staticText>
+			<image scaleImage="FillFrame" onErrorType="Blank">
+				<reportElement x="0" y="0" width="100" height="70" uuid="695b33ba-3b30-48ce-8c1f-bbe6ab65c5b6"/>
+				<imageExpression><![CDATA[$P{rutaLogo}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20">
+			<staticText>
+				<reportElement x="0" y="0" width="58" height="20" uuid="531de9f0-9e38-414b-a749-3700b4cf5f9d"/>
+				<box leftPadding="2">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Desde:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="58" y="0" width="100" height="20" uuid="8623bec5-020d-46c6-9a11-fc078cdf70b4"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{desde}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="216" y="0" width="100" height="20" uuid="0dd7b877-2096-43a8-b9f4-06c3bd75a068"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{hasta}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="158" y="0" width="58" height="20" uuid="e6e545a7-c226-48f5-b26a-3571423867b4"/>
+				<box leftPadding="2">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hasta:]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="50">
+			<staticText>
+				<reportElement x="0" y="30" width="83" height="20" uuid="32238797-ee9c-40c5-beef-f68e376b1023"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Código]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="83" y="30" width="389" height="20" uuid="dff7ad83-33ac-4124-b1ce-5e4a31e2d357"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="472" y="30" width="100" height="20" uuid="295e96a3-e10d-4a49-bae8-2a4f060288f5"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="572" y="30" width="99" height="20" uuid="594cd945-e7eb-433b-921a-432c9f9927ac"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Precio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="671" y="30" width="131" height="20" uuid="e20afa26-f565-43c3-9e34-6b3c66d1002f"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Neto]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20" uuid="02ac0ce6-50dc-437e-9cbc-437685688aad"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{articulos_codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="372" height="20" uuid="d0c29fe0-fad3-4bbe-9930-972a2f9df0dd"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{FacturaDetalle_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="472" y="0" width="100" height="20" uuid="7d641637-49ea-492b-bdb3-30d1caf09f93"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{FacturaDetalle_cantidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="572" y="0" width="100" height="20" uuid="2f0c3290-31b0-44c4-b0e8-8d89c2049755"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{FacturaDetalle_precio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="672" y="0" width="130" height="20" uuid="e23e71a6-d3d5-4e82-9d2c-ac9910cce14c"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{FacturaDetalle_precio}*$F{FacturaDetalle_cantidad}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField evaluationTime="Report">
+				<reportElement x="739" y="0" width="63" height="20" uuid="314f4de4-29c7-44b1-accf-99b43bcb511f"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="671" y="0" width="68" height="20" uuid="cf1d8e68-d097-4ba8-9885-05500de0c00e"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Pág. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="20" splitType="Stretch">
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="625" y="0" width="177" height="20" uuid="d012960e-a905-45da-8131-120ef29ea8be"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL_GRAL}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="487" y="0" width="138" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="ad1c2a9a-3d00-43bf-afce-7a984c151333"/>
+				<box rightPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="14" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total: "]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b3053d3a-045f-46c3-a8f1-24a90911b783">
+	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.x" value="323"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idCliente" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="rutaLogo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     ListaPrecios.`id` AS ListaPrecios_id,
+     ListaPrecios.`descripcion` AS ListaPrecios_descripcion,
+     ListaPreciosDetalle.`id` AS ListaPreciosDetalle_id,
+     ListaPreciosDetalle.`precio` AS ListaPreciosDetalle_precio,
+     ListaPreciosDetalle.`listaId` AS ListaPreciosDetalle_listaId,
+     ListaPreciosDetalle.`articuloId` AS ListaPreciosDetalle_articuloId,
+     articulos.`codigo` AS articulos_codigo,
+     articulos.`descripcion` AS articulos_descripcion,
+     articulos.`idArticulos` AS articulos_idArticulos,
+     ListaPrecios.`moneda` AS ListaPrecios_moneda,
+     articulos.`cliente` AS articulos_cliente,
+     cliente.`idCliente` AS cliente_idCliente,
+     cliente.`rsocial` AS cliente_rsocial
+FROM
+     `ListaPrecios` ListaPrecios INNER JOIN `ListaPreciosDetalle` ListaPreciosDetalle ON ListaPrecios.`id` = ListaPreciosDetalle.`listaId`
+     INNER JOIN `articulos` articulos ON ListaPreciosDetalle.`articuloId` = articulos.`idArticulos`
+     INNER JOIN `cliente` cliente ON articulos.`cliente` = cliente.`idCliente`
+WHERE
+     cliente.`idCliente` = $P{idCliente}
+ORDER BY
+     articulos.`codigo` ASC]]>
+	</queryString>
+	<field name="ListaPrecios_id" class="java.lang.Integer"/>
+	<field name="ListaPrecios_descripcion" class="java.lang.String"/>
+	<field name="ListaPreciosDetalle_id" class="java.lang.Integer"/>
+	<field name="ListaPreciosDetalle_precio" class="java.math.BigDecimal"/>
+	<field name="ListaPreciosDetalle_listaId" class="java.lang.Integer"/>
+	<field name="ListaPreciosDetalle_articuloId" class="java.lang.Integer"/>
+	<field name="articulos_codigo" class="java.lang.String"/>
+	<field name="articulos_descripcion" class="java.lang.String"/>
+	<field name="articulos_idArticulos" class="java.lang.Integer"/>
+	<field name="ListaPrecios_moneda" class="java.lang.Boolean"/>
+	<field name="articulos_cliente" class="java.lang.Integer"/>
+	<field name="cliente_idCliente" class="java.lang.Integer"/>
+	<field name="cliente_rsocial" class="java.lang.String"/>
+	<group name="ID_LISTA">
+		<groupExpression><![CDATA[$F{ListaPrecios_id}]]></groupExpression>
+		<groupHeader>
+			<band height="40">
+				<staticText>
+					<reportElement x="0" y="0" width="100" height="20" uuid="b6746227-319a-4486-8aae-de754416de42"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.0"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true" isItalic="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[Lista:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="100" y="0" width="252" height="40" uuid="52528de9-286d-4b44-ba5c-cdae7f22c1f6"/>
+					<box topPadding="3" leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font isBold="true" isItalic="true" isUnderline="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{ListaPrecios_descripcion}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="50"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement x="113" y="0" width="442" height="70" uuid="d9a0dee8-19a4-45c4-8e0f-68ec0b6ef110"/>
+				<box leftPadding="3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lista de Precios]]></text>
+			</staticText>
+			<image scaleImage="FillFrame" onErrorType="Blank">
+				<reportElement x="0" y="0" width="100" height="50" uuid="8ff902d1-5ae0-4fcb-a65f-d7f1d33a914a"/>
+				<imageExpression><![CDATA[$P{rutaLogo}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="58" height="20" uuid="9590e16a-e9b8-4d49-b1c0-027253499b45"/>
+				<box leftPadding="3"/>
+				<textElement verticalAlignment="Top">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cliente:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="58" y="0" width="497" height="20" uuid="d043f70c-284e-4aae-b17a-9d95f5415785"/>
+				<box leftPadding="3"/>
+				<textElement verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{cliente_rsocial}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="3496bb42-10cb-47bb-9634-a0a0440c1530"/>
+				<box leftPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Código]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="0" width="338" height="20" uuid="cdc930c3-75b6-48ca-ac66-1ab534a8524d"/>
+				<box leftPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="490" y="0" width="65" height="20" uuid="1ecf78a7-52ec-475b-84ca-03f8ef4f8490"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Precio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="438" y="0" width="52" height="20" uuid="cbf74c8b-11f1-45e1-a584-16249e44efbf"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Moneda]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20" uuid="ef3c383f-58d3-4ca2-8e15-4e891a924ad6"/>
+				<box leftPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{articulos_codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="338" height="20" isPrintWhenDetailOverflows="true" uuid="404dbf16-c2f7-4a99-a57c-2e0d9e488e01"/>
+				<box leftPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{articulos_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="490" y="0" width="65" height="20" uuid="4634da47-bb19-4afa-a7a8-4d6df46f6628"/>
+				<box rightPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ListaPreciosDetalle_precio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="438" y="0" width="52" height="20" uuid="fb636f36-c2ff-45e2-a631-6f251dabd573"/>
+				<box leftPadding="0">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="false" isItalic="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ListaPrecios_moneda} == true ? 'U$S' : 'ARS']]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="198" height="60" uuid="466f89d3-1d44-4c48-b589-c76028a8903e"/>
+				<box leftPadding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Los precios no incluyen IVA
+Metalúrgica BP SRL
+Tel: (11) 4484-2416
+info@metalurgicabp.com.ar]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -3,14 +3,17 @@
 security:
     access_denied_url: /foo/error403
     firewalls:   
-        secured_area:          
-            access_denied_handler: app.security.access_denied_handler
-            pattern:    ^/
-            anonymous: ~
+        secured_area2:
+            pattern: ^/articulos/.*
             stateless: true
             simple_preauth:
                 authenticator: apikey_authenticator
             provider: api_key_user_provider
+
+        secured_area:          
+            access_denied_handler: app.security.access_denied_handler
+            pattern:    ^/
+            anonymous: ~
 
             form_login:
                 login_path:  login
@@ -22,6 +25,8 @@ security:
             remember_me:
                 key: prueba123
                 lifetime: 604800 # 7 * 24 * 3600 = 604.800 = 1 semana
+        
+        
             
 
     access_control:
@@ -58,10 +63,7 @@ security:
             memory:
                 users:
                     admin: 
-                        password: $2a$12$VlhzBdCbFKnj7Q5qvwxBh.IbC1AfpGMtFh1Iui9h626Fint6ud1Qy
-                        roles: 'ROLE_ADMIN'
-                    laureano:
-                        password: lalo23490
+                        password: $2a$12$C8KgMzJr9CbOQ/x6dYuNbuKEg8bRip.zsQFeqYDzu2BqALOMH1T.a
                         roles: 'ROLE_ADMIN'
         api_key_user_provider:
             id: api_key_user_provider

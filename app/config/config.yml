@@ -2,7 +2,6 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: doctrine_extensions.yml }
-    - { resource: nelmio_cors.yml }
     - { resource: "@MbpArticulosBundle/Resources/config/services.yml" }
     - { resource: "@MbpFinanzasBundle/Resources/config/services.yml" }
     - { resource: "@MbpProduccionBundle/Resources/config/services.yml" }
