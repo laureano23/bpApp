@@ -84,6 +84,15 @@ class Users implements AdvancedUserInterface, \Serializable
         $this->isActive = true;
         $this->salt = md5(uniqid(null, true));
     }
+
+    public function setApiKey($apiKey){
+        $this->apiKey=$apiKey;
+    }
+
+    public function getApiKey(){
+        return $this->apiKey;
+    }
+
     /**
      * Get id
      *

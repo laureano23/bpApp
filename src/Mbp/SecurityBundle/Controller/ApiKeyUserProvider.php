@@ -5,16 +5,26 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Firebase\JWT\JWT;
+use Doctrine\ORM\EntityManager;
 
 class ApiKeyUserProvider implements UserProviderInterface
 {
+    private $em;
+
+    public function __construct(EntityManager $em)
+	{
+		$this->em = $em;
+    }
+    
     public function getUsernameForApiKey($apiKey)
     {
         // Look up the username based on the token in the database, via
         // an API call, or do something entirely different
         
-        $username = 'laureano';
-
+        $username = 'pepe';
+        $repoUsers=$this->em->getRepository('MbpSecurityBundle:Users');
+        
         return $username;
     }
 

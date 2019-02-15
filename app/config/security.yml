@@ -4,7 +4,7 @@ security:
     access_denied_url: /foo/error403
     firewalls:   
         secured_area2:
-            pattern: ^/articulos/.*
+            pattern: ^/api/*
             stateless: true
             simple_preauth:
                 authenticator: apikey_authenticator
@@ -31,6 +31,7 @@ security:
 
     access_control:
         - { path: ^/index, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/apiLogin, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         #- { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/web/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
@@ -56,15 +57,9 @@ security:
     providers: 
         chain_provider:
             chain:
-                providers: [in_memory, administrators, api_key_user_provider]
+                providers: [administrators, api_key_user_provider]
         administrators:
             entity: { class: MbpSecurityBundle:Users, property: username }
-        in_memory:
-            memory:
-                users:
-                    admin: 
-                        password: $2a$12$C8KgMzJr9CbOQ/x6dYuNbuKEg8bRip.zsQFeqYDzu2BqALOMH1T.a
-                        roles: 'ROLE_ADMIN'
         api_key_user_provider:
             id: api_key_user_provider
 

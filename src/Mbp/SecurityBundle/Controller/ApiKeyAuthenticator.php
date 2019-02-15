@@ -15,20 +15,18 @@ class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface
     public function createToken(Request $request, $providerKey)
     {
         // look for an apikey query parameter
-        //$apiKey = $request->query->get('apikey');
+        $apiKey = "";
 
-        $apiKey='sarasa';
 
         // or if you want to use an "apikey" header, then do something like this:
-        // $apiKey = $request->headers->get('apikey');
+        $apiKey = $request->headers->get('apikey');
 
-        if (!$apiKey) {
-            throw new BadCredentialsException();
-
-            // or to just skip api key authentication
-            // return null;
+        if (!$apiKey) { 
+            //throw new BadCredentialsException();
+            // or to just skip api key authentication            
+            return null;
         }
-
+        
         return new PreAuthenticatedToken(
             'anon.',
             $apiKey,
@@ -53,8 +51,9 @@ class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface
         //         )
         //     );
         // }
-
         $apiKey = $token->getCredentials();
+        \var_dump($apiKey);
+        exit;
         $username = $userProvider->getUsernameForApiKey($apiKey);
 
         if (!$username) {

@@ -7,9 +7,75 @@ use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Firebase\JWT\JWT;
 
 class DefaultController extends Controller
 {
+    public function apiLoginAction(Request $request){
+        $request = $this->getRequest();
+        $username=$request->query->get('user');
+        $password=$request->query->get('password');
+        // Retrieve the security encoder of symfony
+        $factory = $this->get('security.encoder_factory');
+        $em=$this->getDoctrine()->getManager();
+        $repo=$em->getRepository("MbpSecurityBundle:Users");
+
+        //buscamos el usuario
+        $user = $repo->findOneBy(array('username' => $username));
+
+        // Check if the user exists !
+        if(!$user){
+            return new Response(
+                'Username doesnt exists',
+                Response::HTTP_UNAUTHORIZED,
+                array('Content-type' => 'application/json')
+            );
+        }
+
+        /// Start verification
+        $encoder = $factory->getEncoder($user);
+        $salt = $user->getSalt();
+
+        if(!$encoder->isPasswordValid($user->getPassword(), $password, $salt)) {
+            return new Response(
+                'Username or Password not valid.',
+                Response::HTTP_UNAUTHORIZED,
+                array('Content-type' => 'application/json')
+            );
+        } 
+        /// End Verification
+
+        //CREAMOS EL TOKEN PARA ACCESO VIA API CON 2DO FIREWALL
+        $time = time();
+        $key = $this->getParameter('secret');
+
+
+        $token = array(
+            'iat' => $time, // Tiempo que inició el token
+            'exp' => $time + (60*60), // Tiempo que expirará el token (+1 hora)
+            'data' => [ // información del usuario
+                'name' => $user
+            ]
+        );
+
+        $jwtToken = JWT::encode($token, $key);
+
+        //$data = JWT::decode($jwtToken, $key, array('HS256'));
+        $user->setApiKey($jwtToken);
+        $em->persist($user);
+        $em->flush();
+
+        $data = array(
+            'token'=>$jwtToken
+        );
+
+        $response=new Response;
+        // Allow all websites
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+
+        return $response->setContent(\json_encode($data));
+    }
+
     public function loginAction(Request $request)
     {
         $request = $this->getRequest();
@@ -57,7 +123,8 @@ class DefaultController extends Controller
 		if(!empty($resSector)){
 			$sector = $resSector->getDescripcion();
 		}
-		
+        
+        
 		
 		
 		$data = array(

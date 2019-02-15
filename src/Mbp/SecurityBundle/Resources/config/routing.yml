@@ -1,3 +1,9 @@
+apiLogin:
+    path:     /login2
+    defaults: { _controller: MbpSecurityBundle:Default:apiLogin }
+    options:
+        expose: true
+
 login:
     path:     /login
     defaults: { _controller: MbpSecurityBundle:Default:login }

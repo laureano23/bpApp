@@ -6,3 +6,4 @@ services:
         public: false
     api_key_user_provider:
         class: Mbp\SecurityBundle\Controller\ApiKeyUserProvider
+        arguments: [@doctrine.orm.entity_manager]
