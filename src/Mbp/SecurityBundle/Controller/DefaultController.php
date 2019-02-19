@@ -13,6 +13,10 @@ class DefaultController extends Controller
 {
     public function apiLoginAction(Request $request){
         $request = $this->getRequest();
+        $response=new Response;
+        // Allow all websites
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+
         $username=$request->query->get('user');
         $password=$request->query->get('password');
         // Retrieve the security encoder of symfony
@@ -25,11 +29,8 @@ class DefaultController extends Controller
 
         // Check if the user exists !
         if(!$user){
-            return new Response(
-                'Username doesnt exists',
-                Response::HTTP_UNAUTHORIZED,
-                array('Content-type' => 'application/json')
-            );
+            $response->setStatusCode(500); //401 es no autorizado
+            return $response->setContent('Username doesnt exists');
         }
 
         /// Start verification
@@ -37,11 +38,8 @@ class DefaultController extends Controller
         $salt = $user->getSalt();
 
         if(!$encoder->isPasswordValid($user->getPassword(), $password, $salt)) {
-            return new Response(
-                'Username or Password not valid.',
-                Response::HTTP_UNAUTHORIZED,
-                array('Content-type' => 'application/json')
-            );
+            $response->setStatusCode(500);
+            return $response->setContent('Username or Password not valid');
         } 
         /// End Verification
 
@@ -69,9 +67,7 @@ class DefaultController extends Controller
             'token'=>$jwtToken
         );
 
-        $response=new Response;
-        // Allow all websites
-        $response->headers->set('Access-Control-Allow-Origin', '*');
+        
 
         return $response->setContent(\json_encode($data));
     }
