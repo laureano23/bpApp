@@ -16,7 +16,6 @@ class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface
     {
         // look for an apikey query parameter
         $apiKey = "";
-        print_r('sarasa');
 
         // or if you want to use an "apikey" header, then do something like this:
         $apiKey = $request->headers->get('apikey');

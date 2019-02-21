@@ -30,7 +30,6 @@ class ApiKeyUserProvider implements UserProviderInterface
 
     public function loadUserByUsername($username)
     {
-        print_r($username);
         return new User(
             $username,
             null,
