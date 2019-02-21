@@ -100,7 +100,7 @@ mbp_clientes:
 
 mbp_articulos:
     resource: "@MbpArticulosBundle/Resources/config/routing.yml"
-    prefix:   /articulos/
+    prefix:   /api/articulos/
 
 mbp_calidad:
     resource: "@MbpCalidadBundle/Resources/config/routing.yml"

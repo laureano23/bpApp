@@ -92,11 +92,17 @@ class ArticulosController extends Controller
     {    	
     	$em = $this->getDoctrine()->getManager();
 		$request = $this->getRequest();
+		$response=new Response;
+		// Allow all websites
+		$response->headers->set('Access-Control-Allow-Origin', '*');
+		$response->headers->set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+		$response->headers->set('Access-Control-Allow-Headers', 'apikey, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Authorization');
+		$response->headers->set('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
 		
 		try{
 			$rep = $em->getRepository('MbpArticulosBundle:Articulos');
 			$res = $rep->listarArticulos();	
-			$response=new Response;
+			
 			return $response->setContent(\json_encode(
 				$res
 			));

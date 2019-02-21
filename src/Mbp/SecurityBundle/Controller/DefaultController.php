@@ -16,6 +16,10 @@ class DefaultController extends Controller
         $response=new Response;
         // Allow all websites
         $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+        $response->headers->set('Access-Control-Allow-Headers', 'apikey, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, authorization');
+        $response->headers->set('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
+
 
         $username=$request->query->get('user');
         $password=$request->query->get('password');
@@ -66,8 +70,6 @@ class DefaultController extends Controller
         $data = array(
             'token'=>$jwtToken
         );
-
-        
 
         return $response->setContent(\json_encode($data));
     }
